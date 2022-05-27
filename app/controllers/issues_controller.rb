@@ -2,6 +2,7 @@
 
 class IssuesController < ApplicationController
   before_action :ensure_unconfirmed_user_is_not_over_edit_limit, except: [:index, :show]
+  before_action :ensure_user_is_superadmin, only: [:destroy]
 
   def index
     @issues = Issue.by_status_and_date.includes(:user).paginate(page: params[:page])
@@ -45,6 +46,15 @@ class IssuesController < ApplicationController
     else
       render :edit
     end
+  end
+
+  def destroy
+    issue = find_issue
+
+    issue.destroy!
+    issue.create_activity Activity::DESTROY, current_user
+
+    redirect_to issues_path, notice: "Issue was successfully deleted."
   end
 
   def close

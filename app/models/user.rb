@@ -12,7 +12,6 @@ class User < ApplicationRecord
 
   UNCONFIRMED_USER_EDIT_LIMIT_COUNT = 5
   UNCONFIRMED_USER_EDIT_LIMIT_PERIOD = 24.hours
-  MAX_NEW_REGISTRATIONS_PER_DAY = 20
 
   IGNORE_PAPER_TRAIL_COLUMNS = %i[
     current_sign_in_at
@@ -54,11 +53,6 @@ class User < ApplicationRecord
     s.key :editing_helpers, defaults: { create_combination: false }
   end
   trackable parameters: proc { { user_id: id } }
-
-  # NOTE: Super primitive way of preventing mass registrations.
-  def self.too_many_registrations_today?
-    where(created_at: 1.day.ago..Time.current).count > MAX_NEW_REGISTRATIONS_PER_DAY
-  end
 
   def active_for_authentication?
     super && !locked? && !deleted

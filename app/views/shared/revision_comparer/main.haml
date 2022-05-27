@@ -2,12 +2,15 @@
   =stylesheet_link_tag "diffy"
   =javascript_include_tag "revision_comparer"
 
-.row#revision-comparer
-  .medium-3.medium-push-9.columns
-    .callout
-      =render "shared/revision_comparer/help"
+-content_for :breadcrumbs_right do
+  =link_to "Hide/show help", "#", data: { show_hide_toggler_for: "revision_comparer_help" }, class: "btn-nodanger"
 
-  .medium-9.medium-pull-3.columns
+%div{data: { show_hide_toggable_id: "revision_comparer_help" }}
+  .callout.medium-9.margin-bottom
+    =render "shared/revision_comparer/help"
+
+.row#revision-comparer
+  .medium-12.columns
     -if comparer.diff_with
       %h5 Difference between revisions
       .callout.margin-bottom
@@ -30,7 +33,7 @@
         =preserve do
           =revision_presenter.render_revision(comparer.selected || comparer.most_recent, view_context: self)
 
-  .medium-9.columns.medium-pull-3.margin-bottom.margin-top
+  .medium-12.columns.margin-bottom.margin-top
     =render "shared/revision_comparer/revision_history_table",
       comparer: comparer,
       revision_presenter: revision_presenter,

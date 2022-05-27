@@ -12,6 +12,10 @@ describe IssuesController do
       specify { expect(post(:close, params: { id: 1 })).to redirect_to_signin_form }
       specify { expect(post(:reopen, params: { id: 1 })).to redirect_to_signin_form }
     end
+
+    context "when signed in as an editor", as: :editor do
+      specify { expect(delete(:destroy, params: { id: 1 })).to have_http_status :forbidden }
+    end
   end
 
   describe "GET index", as: :visitor do
@@ -90,6 +94,20 @@ describe IssuesController do
       expect(activity.trackable).to eq issue
       expect(activity.edit_summary).to eq "summary"
       expect(activity.parameters).to eq(title: issue.title)
+    end
+  end
+
+  describe "DELETE destroy", as: :current_user do
+    let(:current_user) { create(:user, :superadmin, :helper) }
+    let!(:issue) { create :issue }
+
+    it 'deletes the issue' do
+      expect { delete(:destroy, params: { id: issue.id }) }.to change { Issue.count }.by(-1)
+    end
+
+    it 'creates an activity' do
+      expect { delete(:destroy, params: { id: issue.id }) }.
+        to change { Activity.where(event: Activity::DESTROY, trackable: issue).count }.by(1)
     end
   end
 end
