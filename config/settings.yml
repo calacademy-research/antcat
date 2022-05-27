@@ -3,8 +3,8 @@ production_url: "https://antcat.org"
 
 http_basic_auth:
   enabled: false
-  name:
-  password:
+  name: ''
+  password: ''
 
 email:
   # Quickfix to disable emails because Google keeps blocking sign-in attemps after some inactivity.
