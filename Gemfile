@@ -41,10 +41,7 @@ gem 'redcarpet'
 gem 'request_store'
 gem 'ruby-progressbar'
 gem 'strip_attributes'
-# TODO: Using GitHub ref for Ruby 3 compatibility, see https://github.com/sunspot/sunspot/issues/1007
-# version must be above at least https://rubygems.org/gems/sunspot_rails/versions/2.5.0
-# Without it, `rake sunspot:reindex` fails with "ArgumentError: wrong number of arguments (given 1, expected 0)".
-gem 'sunspot_rails', github: 'sunspot/sunspot', ref: 'f2f01a6278030d086e0efb141dceefdcca8932bd'
+gem 'sunspot_rails'
 gem 'sunspot_solr', '2.2.0'
 gem 'twitter-typeahead-rails'
 gem 'unread'
