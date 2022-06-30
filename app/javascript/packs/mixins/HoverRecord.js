@@ -39,7 +39,6 @@ const HoverRecord = {
 
       this.fetcher().fetch(recordId).
         then((data) => { this.previewContent = data.preview }).
-        then((_data) => { window.AntCat.CreateCopyButtons(this.$refs.preview_content) }).
         then((_data) => { this.isFetching = false; this.contentFetchedForId = recordId })
     },
     onMouseleave() {
