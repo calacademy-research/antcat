@@ -21,6 +21,8 @@
     =javascript_pack_tag 'vue_app'
     =stylesheet_pack_tag 'vue_app'
 
+    =javascript_pack_tag 'hotwire_app'
+
     =stylesheet_link_tag 'application'
     =stylesheet_link_tag 'logged_in_only' if current_user
     =stylesheet_link_tag "env_specific/#{Rails.env}" if Rails.env.in?(['staging', 'development', 'test'])
