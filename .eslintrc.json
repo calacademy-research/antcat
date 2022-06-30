@@ -14,10 +14,12 @@
   "plugins": [
     "vue"
   ],
+  "ignorePatterns": ["app/javascript/controllers/clipboard_controller.js"],
   "rules": {
     "consistent-return": "off",
     "dot-location": ["error", "object"],
     "func-names": "off",
+    "import/newline-after-import": "off",
     "import/no-unresolved": "off",
     "key-spacing": "off",
     "max-len": ["warn", { "code": 120 }],

@@ -42,4 +42,3 @@
 //= require all_pages/global
 //= require all_pages/jquery_plugins
 //= require all_pages/show_hide_toggler
-//= require globals/create_copy_buttons

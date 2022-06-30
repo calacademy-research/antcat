@@ -4,6 +4,7 @@
     "lint": "eslint app/javascript/**/*.{js,vue}"
   },
   "dependencies": {
+    "@hotwired/stimulus": "^3.0.1",
     "@rails/webpacker": "5.1.1",
     "axios": "^0.21.1",
     "vue": "^2.6.12",
