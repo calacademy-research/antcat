@@ -90,7 +90,6 @@ class MakePreviewable
       dataType: "html"
       success: (html) =>
         tab.html html
-        window.AntCatVue.askForRecompile(tab)
         window.setupLinkables()
         if typeof variable != 'undefined'
           window.setupTaxtEditors()

@@ -5,3 +5,20 @@
   color: #000
   border-bottom: dotted 1px #8a8a8a
   display: inline-block
+
+.stimulus-hover-preview
+  max-width: 400px
+  min-width: 300px
+  color: #000
+  padding: 0.5rem
+  border-radius: 0.5rem
+  position: absolute
+  z-index: 2000
+  background-color: $color_pale
+
+  // NOTE: Hacky way to reset styles to make previews of "Formicidae" and references look normal;
+  // they inherit styles because elements are inserted as child nodes (as opposed to just being
+  // being shown besides the hovered element).
+  font-size: 16px
+  font-weight: normal
+  font-family: Raleway, "Helvetica Neue", Arial, sans-serif

@@ -10,9 +10,11 @@ class ReferenceDecorator < Draper::Decorator
 
   delegate :plain_text, :expanded_reference, to: :reference_formatter
 
+  # TODO: Probably move to `CatalogFormatter`.
   def link_to_reference
     h.link_to reference.key_with_suffixed_year, h.reference_path(reference),
-      'v-hover-reference' => reference.id
+      "data-controller" => "hover-preview",
+      "data-hover-preview-url-value" => "/references/#{reference.id}/hover_preview.json"
   end
 
   def format_public_notes

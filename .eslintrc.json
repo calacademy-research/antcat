@@ -14,7 +14,7 @@
   "plugins": [
     "vue"
   ],
-  "ignorePatterns": ["app/javascript/controllers/clipboard_controller.js"],
+  "ignorePatterns": ["app/javascript/controllers/*_controller.js"],
   "rules": {
     "consistent-return": "off",
     "dot-location": ["error", "object"],
