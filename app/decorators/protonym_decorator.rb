@@ -15,6 +15,7 @@ class ProtonymDecorator < Draper::Decorator
     link_to_protonym_with_label(protonym.name.epithet_html)
   end
 
+  # TODO: Probably move to `CatalogFormatter`.
   def link_to_protonym_with_linked_author_citation
     authorship_reference = protonym.authorship_reference
 
@@ -24,7 +25,8 @@ class ProtonymDecorator < Draper::Decorator
         h.link_to(
           protonym.author_citation.html_safe,
           h.reference_path(authorship_reference),
-          'v-hover-reference' => authorship_reference.id
+          "data-controller" => "hover-preview",
+          "data-hover-preview-url-value" => "/references/#{authorship_reference.id}/hover_preview.json"
         ),
         class: 'discret-author-citation'
       )
@@ -60,7 +62,8 @@ class ProtonymDecorator < Draper::Decorator
 
     def link_to_protonym_with_label label
       h.link_to label, h.protonym_path(protonym),
-        'v-hover-protonym' => protonym.id,
+        "data-controller" => "hover-preview",
+        "data-hover-preview-url-value" => "/protonyms/#{protonym.id}/hover_preview.json",
         class: 'protonym'
     end
 end

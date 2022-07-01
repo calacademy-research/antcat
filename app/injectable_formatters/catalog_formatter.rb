@@ -6,7 +6,9 @@ module CatalogFormatter
   module_function
 
   def link_to_taxon taxon
-    %(<a v-hover-taxon="#{taxon.id}" class="#{taxon_disco_mode_css(taxon)}" \
+    %(<a data-controller="hover-preview" \
+data-hover-preview-url-value="/catalog/#{taxon.id}/hover_preview.json" \
+class="#{taxon_disco_mode_css(taxon)}" \
 href="/catalog/#{taxon.id}">#{taxon.name_with_fossil}</a>).html_safe
   end
 
@@ -19,7 +21,9 @@ href="/catalog/#{taxon.id}">#{taxon.name_with_fossil}</a>).html_safe
   end
 
   def link_to_taxon_with_label taxon, label
-    %(<a v-hover-taxon="#{taxon.id}" class="#{taxon_disco_mode_css(taxon)}" \
+    %(<a data-controller="hover-preview" \
+data-hover-preview-url-value="/catalog/#{taxon.id}/hover_preview.json" \
+class="#{taxon_disco_mode_css(taxon)}" \
 href="/catalog/#{taxon.id}">#{label}</a>).html_safe
   end
 
@@ -43,13 +47,17 @@ href="/catalog/#{taxon.id}">#{label}</a>).html_safe
   end
 
   def link_to_taxt_reference reference
-    %(<a v-hover-reference="#{reference.id}" class="taxt-hover-reference" \
+    %(<a data-controller="hover-preview" \
+data-hover-preview-url-value="/references/#{reference.id}/hover_preview.json" \
+class="taxt-hover-reference" \
 href="/references/#{reference.id}">#{reference.key_with_suffixed_year}</a>).html_safe
   end
 
   # HACK: Performance hack for as long as we have history items with a lot of ref-tags.
   def link_to_taxt_reference_cached reference_id, key_with_suffixed_year_cache
-    %(<a v-hover-reference="#{reference_id}" class="taxt-hover-reference" \
+    %(<a data-controller="hover-preview" \
+data-hover-preview-url-value="/references/#{reference_id}/hover_preview.json" \
+class="taxt-hover-reference" \
 href="/references/#{reference_id}">#{key_with_suffixed_year_cache}</a>)
   end
 end

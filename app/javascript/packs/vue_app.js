@@ -15,8 +15,10 @@ window.AntCatVue ||= {}
 Vue.config.productionTip = false
 Vue.config.devtools = false
 
-// HACK: To make server-rendered HTML in markdown previews works. Very hacky and
-// it will remain so for a some (long) time as long as we're mixing jQuery and Vue.
+// HACK: To render HTML returned by Ajax. We need this to make elements
+// with record pickers work after being inserted by JS.
+// Test by quick-editing + saving and then quick-editing the same history item again (for example
+// a 'junior_synonym_of' item like one on http://localhost:3000/protonyms/156600).
 window.AntCatVue.askForRecompile = function(element) {
   const html = $(element).prop("outerHTML") // eslint-disable-line no-undef
   const res = Vue.compile(html)
