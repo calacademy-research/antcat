@@ -5,6 +5,7 @@
   },
   "dependencies": {
     "@hotwired/stimulus": "^3.0.1",
+    "@hotwired/stimulus-webpack-helpers": "^1.0.1",
     "@rails/webpacker": "5.1.1",
     "axios": "^0.21.1",
     "stimulus-use": "^0.50.0",
