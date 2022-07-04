@@ -2,7 +2,7 @@
 
 namespace :antcat do
   namespace :references do
-    desc "Find references that are not in the Solr results of their author_names_string_cache"
+    desc "Find references that are not in the Solr results of their `author_names_string_cache`"
     task solr_search_test: [:environment] do
       puts "Checking author_names_string_cache + year...".blue
 

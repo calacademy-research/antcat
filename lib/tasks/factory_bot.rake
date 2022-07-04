@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 namespace :factory_bot do
-  desc "Verify that all FactoryBot factories are valid"
+  desc "Verify that all FactoryBot factories are valid (use LINT_TRAITS=y to also lint traits)"
   task lint: :environment do
     require 'sunspot_test'
     SunspotTest.stub

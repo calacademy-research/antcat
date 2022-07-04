@@ -28,6 +28,10 @@ module AntCat
       attr_reader :start_time
 
       def models_to_check
+        if ENV['MODELS_TO_CHECK']
+          return ENV['MODELS_TO_CHECK'].split(',').map(&:classify).map(&:constantize)
+        end
+
         Zeitwerk::Loader.eager_load_all # For STI subclasses.
 
         ignored_models = [PaperTrail::Version, Activity]

@@ -69,6 +69,7 @@ describe AuthorName do
       end
 
       # TODO: Probably do not allow this.
+      # To find them, update validation and run: `MODELS_TO_CHECK=AuthorName rake ac:ir`.
       it 'allows Unicode Mark diacritics' do
         is_expected.to allow_value("Guénard, B.").for(:name)
       end
