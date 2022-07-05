@@ -1,2 +1,4 @@
 *.rb diff=ruby
 *.rake diff=ruby
+
+vendor/* linguist-vendored

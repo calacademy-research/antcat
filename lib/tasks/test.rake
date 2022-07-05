@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 task(:test).clear
-desc 'Run linters and tests'
+desc 'Run linters and tests (shortcut: `rake t`)'
 task :test do # rubocop:disable Rake/DuplicateTask
   system "rubocop"
   system "haml-lint"
+  system "./bin/yarn lint"
 
   system "rspec"
   system "cucumber"

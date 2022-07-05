@@ -1,0 +1,2 @@
+web: bin/rails server -p ${SERVER_PORT:-3000}
+pack: bin/webpack-dev-server

@@ -3,7 +3,7 @@
 namespace :antweb do
   DEFAULT_EXPORT_FILENAME = 'data/output/antcat.antweb.txt'
 
-  desc "Export taxonomy"
+  desc "Export taxonomy for AntWeb"
   task :export, [:filename] => :environment do |_task, args|
     filename = args[:filename] || DEFAULT_EXPORT_FILENAME
     Exporters::Antweb::Exporter[filename]
