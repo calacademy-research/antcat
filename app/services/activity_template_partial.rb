@@ -2,9 +2,9 @@
 
 # Returns the partial's full path like this:
 # 1) The activity has no `#trackable_type` --> `events/_<event>` (like the event "approve_all_references")
-# 2) There is a partial named `events/_<event>.haml` --> use that
-# 3) There is a partial named `_<trackable_type>.haml` --> use that
-# 4) Else --> `_default.haml`
+# 2) There is a partial named `events/_<event>.html.haml` --> use that
+# 3) There is a partial named `_<trackable_type>.html.haml` --> use that
+# 4) Else --> `_default.html.haml`
 
 class ActivityTemplatePartial
   include Service
@@ -36,6 +36,6 @@ class ActivityTemplatePartial
     end
 
     def partial_exists? path
-      File.file?("./app/views/#{path}.haml")
+      File.file?("./app/views/#{path}.html.haml")
     end
 end

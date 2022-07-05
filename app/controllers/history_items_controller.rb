@@ -120,6 +120,7 @@ class HistoryItemsController < ApplicationController
     def render_json history_item, partial:
       render json: {
         content: render_to_string(
+          formats: :html,
           partial: partial,
           locals: { history_item: history_item }
         ),

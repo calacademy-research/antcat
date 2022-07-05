@@ -14,7 +14,8 @@ module References
       end
 
       def render_preview reference
-        render_to_string partial: 'references/hover_previews/reference', locals: { reference: reference }
+        render_to_string formats: :html,
+          partial: 'references/hover_previews/reference', locals: { reference: reference }
       end
   end
 end

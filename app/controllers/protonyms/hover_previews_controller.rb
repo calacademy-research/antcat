@@ -14,7 +14,8 @@ module Protonyms
       end
 
       def render_preview protonym
-        render_to_string partial: 'protonyms/hover_previews/protonym', locals: { protonym: protonym }
+        render_to_string formats: :html,
+          partial: 'protonyms/hover_previews/protonym', locals: { protonym: protonym }
       end
   end
 end

@@ -14,7 +14,8 @@ module Catalog
       end
 
       def render_preview taxon
-        render_to_string partial: 'catalog/hover_previews/taxon', locals: { taxon: taxon }
+        render_to_string formats: :html,
+          partial: 'catalog/hover_previews/taxon', locals: { taxon: taxon }
       end
   end
 end

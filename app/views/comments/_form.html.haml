@@ -1,4 +1,4 @@
--# See also edit forms in `comments/edit.haml`.
+-# See also edit forms in `comments/edit.html.haml`.
 =form_with model: new_comment do |f|
   =f.hidden_field :commentable_id, value: new_comment.commentable_id
   =f.hidden_field :commentable_type, value: new_comment.commentable_type

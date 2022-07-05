@@ -97,6 +97,7 @@ class ReferenceSectionsController < ApplicationController
     def render_json reference_section
       render json: {
         content: render_to_string(
+          formats: :html,
           partial: 'reference_sections/taxt_editor_template',
           locals: { reference_section: reference_section }
         ),
