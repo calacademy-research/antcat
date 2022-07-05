@@ -6,7 +6,6 @@ class UserMailer < ApplicationMailer
 
     @user = user
     @notification = notification
-    @unsubscribe_token = ubsubscribe_token(@user)
 
     mail(
       to: @user.decorate.angle_bracketed_email,
