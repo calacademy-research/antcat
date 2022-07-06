@@ -58,6 +58,7 @@ task :antcat do
     'logged',
     'seed:',
     /test[^:]/,
+    /lint[^:]/,
     'yamllint'
   ]
   puts rake_tasks.grep(/^rake #{Regexp.union(prefixes)}/)
