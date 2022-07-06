@@ -37,8 +37,8 @@ Feature: Editing a history item
     And I should see "Reference can't be blank"
     And I should see "Pages can't be blank"
 
-  @javascript
-   Scenario: Editing a history item (via history item page)
+  @retry_ci @javascript
+  Scenario: Editing a history item (via history item page)
     Given Batiatus, 2004a: "77-78" has described the forms "q." for the protonym "Formica fusca"
 
     When I go to the protonym page for "Formica fusca"
@@ -52,8 +52,8 @@ Feature: Editing a history item
     Then I should see "Successfully updated history item"
     And I should see "Batiatus, 2004a: 99 (w.)"
 
-  @javascript
-   Scenario: Editing a history item (Quick edit)
+  @retry_ci @javascript
+  Scenario: Editing a history item (Quick edit)
     Given Batiatus, 2004a: "77-78" has described the forms "q." for the protonym "Formica fusca"
 
     When I go to the protonym page for "Formica fusca"

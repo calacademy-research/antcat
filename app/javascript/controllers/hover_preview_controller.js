@@ -20,6 +20,12 @@ export default class extends Controller {
     this.previewContent = null
   }
 
+  disconnect() {
+    if (this.previewWrapper) {
+      this.previewWrapper.remove()
+    }
+  }
+
   mouseEnter() {
     this.isVisible = true
     this.show()
