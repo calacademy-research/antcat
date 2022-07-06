@@ -8,19 +8,12 @@ task :antcat do
     ./bin/webpack-dev-server
     brakeman
     bundle audit check --update
-    cucumber
-      PRINT_FEATURE_NAME=y   cucumber
+    cucumber                   # Or: PRINT_FEATURE_NAME=y cucumber
     cat docker_dev/README.md
-    guard
-      GUARD=all              guard
-      GUARD=spec             guard
-      GUARD=rubocop          guard
+    guard                      # Or: GUARD=all guard; GUARD=spec guard; GUARD=rubocop guard
     haml-lint
-    rspec
-      PROFILE_EXAMPLES=y     rspec
-      rspec --tag=relational_hi
-      rspec --only-failures
-      rspec --next-failure
+    rspec                      # Or: PROFILE_EXAMPLES=y rspec; rspec --tag=relational_hi
+                               # Or: rspec --only-failures; rspec --next-failure
     rubocop
 
   STR
@@ -30,8 +23,7 @@ task :antcat do
     DEV_MONKEY_PATCHES=y   rails c       # Enable dev monkey patches in other envs.
     DLL=y                  rails s       # Debug Log Level.
     NO_REF_CACHE=y         rails s       # Don't show cached `Reference`s (always render).
-    SIMULATE_PRODUCTION=y  rails s       # Ctrl+F for more info.
-    SIMULATE_STAGING=y     rails s
+    SIMULATE_STAGING=y     rails s       # Or: SIMULATE_PRODUCTION=y rails s; Ctrl+F for more info.
 
   STR
 
