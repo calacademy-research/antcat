@@ -14,15 +14,16 @@
 # `ddt("Atta").species.count` = Atta species count
 #   => 17
 #
-# `ddpg ddrg.l` = puts AntCat catalog link of random species, with name, in green!
+# `ddpg Species.first.l` = puts AntCat catalog link of first species, with name, in green!
 #   => https://antcat.org/catalog/429929?Leptothorax
 #
-# `ddff.immediate_children.peach` = puts each child of the first genus
+# `Family.first.immediate_children.peach` = puts each child of the first family
 #   => Total: 31 of types Genus.
 #      429012 (valid) genus Calyptites
 #      429013 (valid) genus Condylodon ...
 #
-# `ddlt.ll.open` = launch web browser (xdg-open) and open last taxon on localhost
+# `Reference.last.ll.open` = launch web browser (xdg-open) and open last reference on localhost
+# `Reference.limit(3).llo` = open first 3 references on localhost
 
 require_relative "dev_monkey_patches/antcat"
 require_relative "dev_monkey_patches/array"
