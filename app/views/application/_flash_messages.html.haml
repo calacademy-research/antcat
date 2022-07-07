@@ -2,9 +2,5 @@
   .row
     .small-12.columns
       -flash.each do |type, message|
-        -css_class = foundation_class_for(type)
-
-        .callout.small-12.medium-6{class: css_class, data: { closable: true }}
+        .callout.small-12.medium-6{class: foundation_class_for(type)}
           =sanitize message, tags: %w[strong em a i span p br], attributes: %w[href data-method class title]
-          %button.close-button{"aria-label" => "Dismiss alert", data: { close: true }, type: "button"}
-            %span{"aria-hidden" => "true"} &times;
