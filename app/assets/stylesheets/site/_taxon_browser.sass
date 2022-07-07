@@ -81,22 +81,17 @@
         margin-right: 0.5rem
         margin-top: 0.5rem
 
-    // Equally space out elements.
     #taxon-key
       font-size: 90%
       background: #fff
       display: none
-      width: 100%
-      text-align: justify
-      div
-        display: inline-block
-        margin-top: 0
-        padding-top: 0.7rem
-        margin-bottom: -1em
-        padding-left: 1rem
-        padding-right: 1rem
-      &:after
-        content: ""
-        width: 100%
-        display: inline-block
-      margin-bottom: -1rem
+
+      padding-left: 1rem
+      padding-right: 1rem
+      padding-bottom: 0.3rem
+
+      // Equally space out elements.
+      display: flex
+      justify-content: space-between
+      column-gap: 3px
+      flex-wrap: wrap
