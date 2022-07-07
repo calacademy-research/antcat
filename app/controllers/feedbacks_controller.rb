@@ -24,7 +24,7 @@ class FeedbacksController < ApplicationController
 
     unless recaptcha_v3_valid?(params[:recaptcha_token], RECAPTCHA_V3_ACTION)
       flash.now[:error] = "reCAPTCHA verification failed. Please try again."
-      return render :new
+      return render :new, status: :unprocessable_entity
     end
 
     @feedback.ip = request.remote_ip
@@ -34,7 +34,7 @@ class FeedbacksController < ApplicationController
         You have already posted a couple of feedbacks in the last few minutes. Thanks for that!
         Please wait for a few minutes while we are trying to figure out if you are a bot...
       MSG
-      render :new
+      render :new, status: :unprocessable_entity
       return
     end
 
@@ -50,7 +50,7 @@ class FeedbacksController < ApplicationController
         Message sent (feedback id #{@feedback.id}). Thanks for helping us make AntCat better!
       MSG
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -65,7 +65,7 @@ class FeedbacksController < ApplicationController
       @feedback.create_activity Activity::UPDATE, current_user, edit_summary: params[:edit_summary]
       redirect_to @feedback, notice: "Successfully updated feedback."
     else
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 

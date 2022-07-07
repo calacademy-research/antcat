@@ -26,7 +26,7 @@ class InstitutionsController < ApplicationController
       @institution.create_activity Activity::CREATE, current_user, edit_summary: params[:edit_summary]
       redirect_to @institution, notice: 'Successfully created institution.'
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -44,7 +44,7 @@ class InstitutionsController < ApplicationController
       @institution.create_activity Activity::UPDATE, current_user, edit_summary: params[:edit_summary]
       redirect_to @institution, notice: "Successfully updated institution."
     else
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 

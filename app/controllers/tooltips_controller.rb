@@ -22,7 +22,7 @@ class TooltipsController < ApplicationController
       @tooltip.create_activity Activity::CREATE, current_user, edit_summary: params[:edit_summary]
       redirect_to @tooltip, notice: 'Tooltip was successfully created.'
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -37,7 +37,7 @@ class TooltipsController < ApplicationController
       @tooltip.create_activity Activity::UPDATE, current_user, edit_summary: params[:edit_summary]
       redirect_to @tooltip, notice: 'Tooltip was successfully updated.'
     else
-      render :show
+      render :show, status: :unprocessable_entity
     end
   end
 

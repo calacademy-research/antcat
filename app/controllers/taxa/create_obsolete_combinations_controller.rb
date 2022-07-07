@@ -16,7 +16,7 @@ module Taxa
 
       unless @obsolete_genus
         flash.now[:alert] = "Obsolete genus must be set."
-        render :show
+        render :show, status: :unprocessable_entity
         return
       end
 
@@ -27,7 +27,7 @@ module Taxa
         redirect_to catalog_path(obsolete_combination), notice: "Successfully created missing obsolete combination."
       else
         flash.now[:alert] = obsolete_combination.errors.full_messages.to_sentence
-        render :show
+        render :show, status: :unprocessable_entity
       end
     end
 

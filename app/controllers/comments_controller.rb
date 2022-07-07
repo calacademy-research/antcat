@@ -41,7 +41,7 @@ class CommentsController < ApplicationController
         <a href="#comment-#{@comment.id}">Comment</a> was successfully updated.
       MSG
     else
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 

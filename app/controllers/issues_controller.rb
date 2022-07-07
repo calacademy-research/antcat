@@ -28,7 +28,7 @@ class IssuesController < ApplicationController
       Notifications::NotifyMentionedUsers[@issue.description, attached: @issue, notifier: current_user]
       redirect_to @issue, notice: "Successfully created issue."
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -44,7 +44,7 @@ class IssuesController < ApplicationController
       Notifications::NotifyMentionedUsers[@issue.description, attached: @issue, notifier: current_user]
       redirect_to @issue, notice: "Successfully updated issue."
     else
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 

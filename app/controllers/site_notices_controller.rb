@@ -28,7 +28,7 @@ class SiteNoticesController < ApplicationController
       Notifications::NotifyMentionedUsers[@site_notice.message, attached: @site_notice, notifier: current_user]
       redirect_to @site_notice, notice: "Successfully created site notice."
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -44,7 +44,7 @@ class SiteNoticesController < ApplicationController
       Notifications::NotifyMentionedUsers[@site_notice.message, attached: @site_notice, notifier: current_user]
       redirect_to @site_notice, notice: "Successfully updated site notice."
     else
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 

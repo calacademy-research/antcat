@@ -16,7 +16,7 @@ module Taxa
         redirect_to taxon_reorder_reference_sections_path(@taxon), notice: 'Reference sections were successfully reordered.'
       else
         flash.now[:alert] = @taxon.errors.full_messages.to_sentence
-        render :show
+        render :show, status: :unprocessable_entity
       end
     end
 

@@ -17,19 +17,19 @@ module Taxa
 
       unless @new_species.is_a?(Species)
         @taxon.errors.add :base, 'Please select a species.'
-        render :new
+        render :new, status: :unprocessable_entity
         return
       end
 
       if @taxon.subspecies.present?
         @taxon.errors.add :base, "Species with subspecies of its own cannot be converted to subspecies"
-        render :new
+        render :new, status: :unprocessable_entity
         return
       end
 
       unless @new_species.genus == @taxon.genus
         @taxon.errors.add :base, "The new parent must be in the same genus."
-        render :new
+        render :new, status: :unprocessable_entity
         return
       end
 
