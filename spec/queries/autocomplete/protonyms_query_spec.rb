@@ -46,7 +46,7 @@ describe Autocomplete::ProtonymsQuery, :search do
       let!(:protonym) { create :protonym, authorship_reference: reference }
 
       before do
-        create :protonym # Non-match.
+        create :protonym, authorship_reference: create(:any_reference, year: 1999) # Non-match.
         Sunspot.commit
       end
 
