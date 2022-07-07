@@ -581,6 +581,10 @@ GEM
     timeout (0.3.0)
     tty-screen (0.8.1)
     tty-which (0.4.2)
+    turbo-rails (1.1.1)
+      actionpack (>= 6.0.0)
+      activejob (>= 6.0.0)
+      railties (>= 6.0.0)
     twitter-typeahead-rails (0.11.1)
       actionpack (>= 3.1)
       jquery-rails
@@ -684,6 +688,7 @@ DEPENDENCIES
   sunspot_solr (= 2.2.0)
   sunspot_test
   tabulo
+  turbo-rails
   twitter-typeahead-rails
   uglifier
   unread
