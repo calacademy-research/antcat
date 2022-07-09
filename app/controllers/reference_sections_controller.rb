@@ -31,7 +31,7 @@ class ReferenceSectionsController < ApplicationController
       @reference_section.create_activity Activity::CREATE, current_user, edit_summary: params[:edit_summary]
       redirect_to edit_taxon_path(@reference_section.taxon), notice: "Successfully added reference section."
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -54,7 +54,7 @@ class ReferenceSectionsController < ApplicationController
         if updated
           redirect_to catalog_path(@reference_section.taxon), notice: "Successfully updated reference section."
         else
-          render :edit
+          render :edit, status: :unprocessable_entity
         end
       end
     end

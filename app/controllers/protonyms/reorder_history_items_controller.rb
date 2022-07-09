@@ -16,7 +16,7 @@ module Protonyms
         redirect_to protonym_reorder_history_items_path(@protonym), notice: 'History items were successfully reordered.'
       else
         flash.now[:alert] = @protonym.errors.full_messages.to_sentence
-        render :show
+        render :show, status: :unprocessable_entity
       end
     end
 

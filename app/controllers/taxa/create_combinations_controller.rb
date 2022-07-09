@@ -34,7 +34,7 @@ module Taxa
         redirect_to catalog_path(new_combination), notice: "Successfully created new combination."
       else
         flash.now[:alert] = operation.context.errors.to_sentence
-        render :show
+        render :show, status: :unprocessable_entity
       end
     end
 

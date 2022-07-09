@@ -35,7 +35,7 @@ class HistoryItemsController < ApplicationController
       redirect_url = redirect_back_url || @history_item.protonym
       redirect_to redirect_url, notice: "Successfully added history item " + history_item_link(@history_item) + '.'
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -61,7 +61,7 @@ class HistoryItemsController < ApplicationController
           redirect_url = redirect_back_url || @history_item
           redirect_to redirect_url, notice: "Successfully updated history item " + history_item_link(@history_item) + '.'
         else
-          render :edit
+          render :edit, status: :unprocessable_entity
         end
       end
     end

@@ -23,7 +23,7 @@ module Taxa
 
       if reference_sections.empty?
         flash.now[:alert] = "At least one item must be selected."
-        render :show
+        render :show, status: :unprocessable_entity
         return
       end
 
@@ -33,11 +33,11 @@ module Taxa
           notice: "Successfully moved items. Items can be re-ordered at the taxon's edit page."
       else
         flash.now[:alert] = "Something went wrong... ?"
-        render :show
+        render :show, status: :unprocessable_entity
       end
     rescue Taxa::Operations::MoveItems::ReferenceSectionsNotSupportedForRank
       flash.now[:alert] = "Rank of target does not support reference sections."
-      render :show
+      render :show, status: :unprocessable_entity
     end
 
     private

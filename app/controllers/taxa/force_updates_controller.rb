@@ -15,7 +15,7 @@ module Taxa
 
       if edit_summary.blank?
         flash.now[:error] = "An edit summary is required for this change."
-        render :show
+        render :show, status: :unprocessable_entity
         return
       end
 
@@ -23,7 +23,7 @@ module Taxa
         @taxon.create_activity Activity::FORCE_UPDATE_DATABASE_RECORD, current_user, edit_summary: edit_summary
         redirect_to catalog_path(@taxon), notice: "Successfully force-updated database record."
       else
-        render :show
+        render :show, status: :unprocessable_entity
       end
     end
 

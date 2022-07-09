@@ -26,7 +26,7 @@ class TaxaController < ApplicationController
       @taxon.create_activity Activity::CREATE, current_user, edit_summary: params[:edit_summary]
       redirect_to catalog_path(@taxon), notice: "Taxon was successfully added. " + add_another_species_link(@taxon)
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -41,7 +41,7 @@ class TaxaController < ApplicationController
       @taxon.create_activity Activity::UPDATE, current_user, edit_summary: params[:edit_summary]
       redirect_to catalog_path(@taxon), notice: "Taxon was successfully updated."
     else
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 

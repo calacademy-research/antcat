@@ -44,6 +44,7 @@ gem 'stimulus-rails'
 gem 'strip_attributes'
 gem 'sunspot_rails'
 gem 'sunspot_solr', '2.2.0'
+gem 'turbo-rails'
 gem 'twitter-typeahead-rails'
 gem 'unread'
 # NOTE: webrick is required for `ReferenceDocument#actual_url`, but specs may incorrectly pass even after removing

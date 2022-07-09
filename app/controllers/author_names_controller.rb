@@ -17,7 +17,7 @@ class AuthorNamesController < ApplicationController
       @author_name.create_activity Activity::CREATE, current_user, edit_summary: params[:edit_summary]
       redirect_to @author_name.author, notice: 'Author name was successfully created.'
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -32,7 +32,7 @@ class AuthorNamesController < ApplicationController
       @author_name.create_activity Activity::UPDATE, current_user, edit_summary: params[:edit_summary]
       redirect_to @author_name.author, notice: 'Author name was successfully updated.'
     else
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 

@@ -18,7 +18,7 @@ class NamesController < ApplicationController
       @name.create_activity Activity::UPDATE, current_user, edit_summary: params[:edit_summary]
       redirect_to name_path(@name), notice: "Successfully updated name."
     else
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 
