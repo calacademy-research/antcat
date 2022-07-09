@@ -6,13 +6,13 @@ $ ->
 setupJournalAutocompletion = ->
   $('#reference_journal_name').autocomplete
     autoFocus: true
-    source: '/journals/autocomplete'
+    source: '/journals/autocomplete.json'
     minLength: 1
 
 setupPublisherAutocompletion = ->
   $('#reference_publisher_string').autocomplete
     autoFocus: true
-    source: '/publishers/autocomplete'
+    source: '/publishers/autocomplete.json'
     minLength: 1
 
 setupAdvancedAuthorAutocomplete = ->
@@ -23,7 +23,7 @@ setupAdvancedAuthorAutocomplete = ->
       selectionStart = AntCat.getInputSelection(@element.get(0), true)
       searchTerm = extractAuthorSearchTerm(@element.val(), selectionStart)
       if searchTerm.length >= 1
-        $.getJSON '/authors/autocomplete', { term: searchTerm }, response
+        $.getJSON '/authors/autocomplete.json', { term: searchTerm }, response
       else
         response []
       return

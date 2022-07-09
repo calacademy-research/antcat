@@ -18,12 +18,10 @@ setupMentionables = ->
         if AntCat._cachedMentionableUsers?
           return callback AntCat._cachedMentionableUsers
 
-        MarkdownPreview.showSpinner this.$inputor
         $.getJSON "/users/mentionables.json", (data) =>
           data = data.map (user) ->
             user.search_key = "#{user.id} #{user.name} #{user.email}"
             user
 
           AntCat._cachedMentionableUsers = data
-          MarkdownPreview.hideSpinner this.$inputor
           callback data

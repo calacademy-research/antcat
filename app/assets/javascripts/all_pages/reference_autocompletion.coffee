@@ -3,7 +3,7 @@ $ ->
     datumTokenizer: Bloodhound.tokenizers.whitespace
     queryTokenizer: Bloodhound.tokenizers.whitespace
     remote:
-      url: '/authors/autocomplete?term=%QUERY&limit=5'
+      url: '/authors/autocomplete.json?term=%QUERY&limit=5'
       wildcard: '%QUERY'
 
   authorsDataSet =
@@ -21,7 +21,7 @@ $ ->
     datumTokenizer: Bloodhound.tokenizers.whitespace
     queryTokenizer: Bloodhound.tokenizers.whitespace
     remote:
-      url: '/references/autocomplete?reference_q=%QUERY&include_search_query=yes'
+      url: '/references/autocomplete.json?reference_q=%QUERY&include_search_query=yes'
       wildcard: '%QUERY'
 
   referencesDataSet =

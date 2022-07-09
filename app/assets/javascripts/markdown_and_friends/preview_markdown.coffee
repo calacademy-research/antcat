@@ -6,7 +6,6 @@
 
 $ ->
   AntCat.makeAllPreviewable()
-  makeLoadingSpinnersAvailableForAtJs()
 
 AntCat.makeAllPreviewable = ->
   $("textarea[data-previewable]").each -> $(this).makePreviewable()
@@ -54,7 +53,6 @@ class MakePreviewable
         <div class="medium-6 columns">
           Preview
           <button class="btn-nodanger btn-tiny preview-link">Rerender preview</button>
-          <a><span class="shared-spinner"><i class="antcat_icon refresh fa-spin"></i></span></a>
         </div>
       </div>
       <div class="row">
@@ -79,8 +77,6 @@ class MakePreviewable
       tab.html "No content. Try this: <code>{tax 430207}</code>."
       return
 
-    @showSpinner()
-
     $.ajax
       url: "/markdown/preview"
       type: "post"
@@ -93,12 +89,7 @@ class MakePreviewable
         window.setupLinkables()
         if typeof variable != 'undefined'
           window.setupTaxtEditors()
-        @hideSpinner() # Only hide on success.
       error: -> tab.text "Error rendering preview"
-
-  spinner: -> @textarea.closest(".preview-area").find ".shared-spinner"
-  showSpinner: -> @spinner().show()
-  hideSpinner: -> @spinner().hide()
 
 class ExtrasArea
   DEFAULT_REFERENCE_BUTTON_ID        = "default-reference-button"
@@ -215,13 +206,3 @@ defaultReference = ->
   referenceKey = reference.data('reference-key')
 
   { id: id, referenceKey: referenceKey }
-
-# Global to make it callable by at.js.
-makeLoadingSpinnersAvailableForAtJs = ->
-  findSpinner = (inputorElement) ->
-    textarea = inputorElement
-    textarea.closest(".preview-area").find(".shared-spinner")
-
-  window.MarkdownPreview =
-    showSpinner: (inputorElement) -> findSpinner(inputorElement).show()
-    hideSpinner: (inputorElement) -> findSpinner(inputorElement).hide()

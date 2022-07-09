@@ -1,20 +1,10 @@
 // Via the `high_voltage` gem (we have no `PagesController`).
 
 .high_voltage_pages-controller
-  // Equally space out images.
   #partner-links
-    text-align: justify
-    padding-top: 3rem
     padding-left: 1rem
     padding-right: 1rem
 
-    div
-      display: inline-block
-      vertical-align: middle
-      margin-top: 0.5em
-      margin-bottom: -0.5em
-
-    &:after
-      content: ""
-      width: 100%
-      display: inline-block
+    // Equally space out images.
+    display: flex
+    justify-content: space-between

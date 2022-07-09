@@ -89,9 +89,9 @@ export default {
       results: [],
       selected: null,
       // TODO: Move to config.
-      taxaUrl: "/catalog/autocomplete?include_protonym=yes",
-      protonymsUrl: "/protonyms/autocomplete?include_terminal_taxon=yes",
-      referencesUrl: "/references/autocomplete",
+      taxaUrl: "/catalog/autocomplete.json?include_protonym=yes",
+      protonymsUrl: "/protonyms/autocomplete.json?include_terminal_taxon=yes",
+      referencesUrl: "/references/autocomplete.json",
       inputProps: {
         id: "autosuggest__input",
         placeholder: "Search",

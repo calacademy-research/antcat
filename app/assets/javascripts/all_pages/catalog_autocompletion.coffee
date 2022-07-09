@@ -5,7 +5,7 @@ $ ->
     datumTokenizer: Bloodhound.tokenizers.whitespace
     queryTokenizer: Bloodhound.tokenizers.whitespace
     remote:
-      url: '/catalog/autocomplete?q=%QUERY'
+      url: '/catalog/autocomplete.json?q=%QUERY'
       wildcard: '%QUERY'
 
   taxaDataSet =
@@ -31,7 +31,7 @@ $ ->
     datumTokenizer: Bloodhound.tokenizers.whitespace
     queryTokenizer: Bloodhound.tokenizers.whitespace
     remote:
-      url: '/protonyms/autocomplete?qq=%QUERY'
+      url: '/protonyms/autocomplete.json?qq=%QUERY'
       wildcard: '%QUERY'
 
   protonymsDataSet =
