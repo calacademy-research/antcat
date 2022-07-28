@@ -5,7 +5,14 @@ module Exporters
     class Formatter
       include Service
 
+      # NOTE: `NestedReference` is not included because it just renders a blank string.
+      EXPORTABLE_TYPES = [ArticleReference, BookReference]
+
       attr_private_initialize :references
+
+      def self.exportable? reference
+        reference.class.in?(EXPORTABLE_TYPES)
+      end
 
       def call
         references.map do |reference|

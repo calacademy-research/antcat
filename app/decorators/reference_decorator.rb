@@ -57,6 +57,14 @@ class ReferenceDecorator < Draper::Decorator
     Taxon.joins(protonym: { authorship: :reference }).where(references: { id: reference.id })
   end
 
+  def exportable_to_endnote?
+    Exporters::Endnote::Formatter.exportable?(reference)
+  end
+
+  def exportable_to_wikipedia?
+    Wikipedia::ReferenceExporter.exportable?(reference)
+  end
+
   private
 
     def reference_formatter

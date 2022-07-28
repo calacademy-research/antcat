@@ -1,6 +1,8 @@
 -title "#{Unitalicize[@reference.key_with_suffixed_year]} - References"
 -breadcrumb :reference, @reference
 
+-decorated = @reference.decorate
+
 -content_for :breadcrumbs_right do
   .right
     -if user_is_at_least_helper?
@@ -9,12 +11,14 @@
       =link_to "History", reference_history_path(@reference), class: "btn-normal"
       =link_to "What Links Here", reference_what_links_here_path(@reference), class: "btn-normal"
 
-    .btn-normal.dropdown.button{data: { toggle: "export-dropdown"}, type: "button"} Export
-    #export-dropdown.dropdown-pane{data: { dropdown: 'true', hover: 'true', hover_pane: 'true' }}
-      %ul.no-bullet
-        %li=link_to "EndNote", endnote_export_references_path(id: @reference.id)
-        -if @reference.is_a?(ArticleReference) || @reference.is_a?(BookReference)
-          %li=link_to "Wikipedia", wikipedia_export_reference_path(@reference)
+    -if decorated.exportable_to_endnote? || decorated.exportable_to_wikipedia?
+      .btn-normal.dropdown.button{data: { toggle: "export-dropdown"}, type: "button"} Export
+      #export-dropdown.dropdown-pane{data: { dropdown: 'true', hover: 'true', hover_pane: 'true' }}
+        %ul.no-bullet
+          -if decorated.exportable_to_endnote?
+            %li=link_to "EndNote", endnote_export_references_path(id: @reference.id)
+          -if decorated.exportable_to_wikipedia?
+            %li=link_to "Wikipedia", wikipedia_export_reference_path(@reference)
 
     -if user_is_at_least_helper?
       .btn-normal.dropdown.button{data: { toggle: "more-dropdown"}, type: "button"} More
@@ -26,8 +30,6 @@
           -if user_is_editor?
             %li=link_to "Delete", reference_path(@reference), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-warning"
           =activities_link_for_trackable @reference
-
--decorated = @reference.decorate
 
 .row.margin-bottom
   .medium-9.columns

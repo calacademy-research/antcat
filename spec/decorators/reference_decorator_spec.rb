@@ -76,4 +76,20 @@ describe ReferenceDecorator do
       end
     end
   end
+
+  describe '#exportable_to_endnote?' do
+    context 'when reference is a `NestedReference`' do
+      let(:reference) { build_stubbed :nested_reference }
+
+      specify { expect(decorated.exportable_to_endnote?).to eq false }
+    end
+  end
+
+  describe '#exportable_to_wikipedia?' do
+    context 'when reference is an `ArticleReference`' do
+      let(:reference) { build_stubbed :article_reference }
+
+      specify { expect(decorated.exportable_to_wikipedia?).to eq true }
+    end
+  end
 end
