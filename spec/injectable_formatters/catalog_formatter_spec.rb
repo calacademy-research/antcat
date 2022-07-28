@@ -65,4 +65,11 @@ describe CatalogFormatter do
       specify { expect(described_class.taxon_disco_mode_css(taxon)).to eq "valid unresolved-homonym" }
     end
   end
+
+  describe ".link_to_reference" do
+    let(:reference) { build_stubbed :any_reference }
+
+    specify { expect(described_class.link_to_reference(reference).html_safe?).to eq true }
+    specify { expect(described_class.link_to_reference(reference)).to eq reference_link(reference) }
+  end
 end

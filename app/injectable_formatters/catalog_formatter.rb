@@ -46,6 +46,12 @@ href="/catalog/#{taxon.id}">#{label}</a>).html_safe
     protonym.decorate.link_to_protonym << " (" << terminal_taxa_links << ")"
   end
 
+  def link_to_reference reference
+    %(<a data-controller="hover-preview" \
+data-hover-preview-url-value="/references/#{reference.id}/hover_preview.json" \
+href="/references/#{reference.id}">#{reference.key_with_suffixed_year}</a>).html_safe
+  end
+
   def link_to_taxt_reference reference
     %(<a data-controller="hover-preview" \
 data-hover-preview-url-value="/references/#{reference.id}/hover_preview.json" \
