@@ -5,6 +5,7 @@ module TestLinksHelpers
     %(<a href="/authors/#{author_name.author.id}">#{author_name.name}</a>)
   end
 
+  # Taxa.
   def taxon_link taxon, label = nil
     css_classes = CatalogFormatter.taxon_disco_mode_css(taxon)
 
@@ -27,6 +28,7 @@ module TestLinksHelpers
     HTML
   end
 
+  # Protonyms.
   def protonym_link protonym
     <<~HTML.squish
       <a data-controller="hover-preview"
@@ -36,6 +38,7 @@ module TestLinksHelpers
     HTML
   end
 
+  # References.
   def reference_link reference
     <<~HTML.squish
       <a data-controller="hover-preview"
