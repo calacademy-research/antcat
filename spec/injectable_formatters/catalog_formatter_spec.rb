@@ -20,6 +20,18 @@ describe CatalogFormatter do
     specify { expect(described_class.link_to_taxon(taxon)).to eq taxon_link(taxon) }
   end
 
+  describe ".link_to_taxon_with_linked_author_citation" do
+    let(:taxon) { create :any_taxon }
+
+    specify { expect(described_class.link_to_taxon_with_linked_author_citation(taxon).html_safe?).to eq true }
+
+    specify do
+      expect(described_class.link_to_taxon_with_linked_author_citation(taxon)).to eq <<~HTML.squish
+        #{taxon_link(taxon)} <span class="discret-author-citation">#{reference_link(taxon.authorship_reference)}</span>
+      HTML
+    end
+  end
+
   describe ".link_to_taxon_with_label" do
     let(:taxon) { build_stubbed :any_taxon }
 
