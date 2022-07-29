@@ -28,7 +28,7 @@ class ProtonymDecorator < Draper::Decorator
           "data-controller" => "hover-preview",
           "data-hover-preview-url-value" => "/references/#{authorship_reference.id}/hover_preview.json"
         ),
-        class: 'discret-author-citation'
+        class: 'discreet-author-citation'
       )
   end
 

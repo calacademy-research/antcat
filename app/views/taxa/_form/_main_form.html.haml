@@ -9,7 +9,7 @@
           %td=form.label :parent, 'Parent'
           %td
             -if taxon.parent
-              =taxon.parent.decorate.link_to_taxon_with_linked_author_citation
+              =CatalogFormatter.link_to_taxon_with_linked_author_citation(taxon.parent)
             -else
               (none)
 

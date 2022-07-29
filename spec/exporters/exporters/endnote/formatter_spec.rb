@@ -3,6 +3,14 @@
 require 'rails_helper'
 
 describe Exporters::Endnote::Formatter do
+  describe '.exportable?' do
+    specify do
+      expect(described_class.exportable?(ArticleReference.new)).to eq true
+      expect(described_class.exportable?(BookReference.new)).to eq true
+      expect(described_class.exportable?(NestedReference.new)).to eq false
+    end
+  end
+
   describe '#call' do
     context 'when reference has content in italics' do
       let(:reference) do

@@ -13,7 +13,7 @@
       %span.show-on-hover
         =inline_expandable("show raw") { comment.body }
         -if current_user == comment.user
-          %small=link_to "edit", edit_comment_path(comment), class: "discrete"
+          %small=link_to "edit", edit_comment_path(comment), class: "discreet"
       %br
 
   %p=markdown comment.body

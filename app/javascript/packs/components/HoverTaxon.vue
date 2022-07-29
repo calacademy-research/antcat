@@ -8,7 +8,7 @@
       </div>
     </a>
 
-    <span class="discret-author-citation" v-html="item.authorCitation" />
+    <span class="discreet-author-citation" v-html="item.authorCitation" />
   </span>
 </template>
 

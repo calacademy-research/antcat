@@ -14,23 +14,6 @@ class TaxonDecorator < Draper::Decorator
     CatalogFormatter.link_to_taxon(taxon) << ' ' << taxon.author_citation.html_safe
   end
 
-  # TODO: Probably move to `CatalogFormatter`.
-  def link_to_taxon_with_linked_author_citation
-    authorship_reference = taxon.authorship_reference
-
-    CatalogFormatter.link_to_taxon(taxon) <<
-      ' ' <<
-      h.tag.span(
-        h.link_to(
-          taxon.author_citation.html_safe,
-          h.reference_path(authorship_reference),
-          "data-controller" => "hover-preview",
-          "data-hover-preview-url-value" => "/references/#{authorship_reference.id}/hover_preview.json"
-        ),
-        class: 'discret-author-citation'
-      )
-  end
-
   def id_and_name_and_author_citation
     h.tag.span do
       h.concat h.tag.small("##{taxon.id}", class: "gray")

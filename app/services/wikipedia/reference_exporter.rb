@@ -10,7 +10,13 @@ module Wikipedia
   class ReferenceExporter
     include Service
 
+    EXPORTABLE_TYPES = [ArticleReference, BookReference]
+
     attr_private_initialize :reference
+
+    def self.exportable? reference
+      reference.class.in?(EXPORTABLE_TYPES)
+    end
 
     def call
       return "cannot export references of type #{reference.type}" unless formatter_class

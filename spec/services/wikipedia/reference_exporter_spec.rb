@@ -3,6 +3,14 @@
 require 'rails_helper'
 
 describe Wikipedia::ReferenceExporter do
+  describe '.exportable?' do
+    specify do
+      expect(described_class.exportable?(ArticleReference.new)).to eq true
+      expect(described_class.exportable?(BookReference.new)).to eq true
+      expect(described_class.exportable?(NestedReference.new)).to eq false
+    end
+  end
+
   describe '#call' do
     let(:batiatus) { create :author_name, name: "Batiatus, Q. L." }
     let(:glaber) { create :author_name, name: "Glaber, G. C." }

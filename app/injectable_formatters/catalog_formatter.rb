@@ -5,6 +5,7 @@ module CatalogFormatter
 
   module_function
 
+  # Taxa.
   def link_to_taxon taxon
     %(<a data-controller="hover-preview" \
 data-hover-preview-url-value="/catalog/#{taxon.id}/hover_preview.json" \
@@ -17,7 +18,8 @@ href="/catalog/#{taxon.id}">#{taxon.name_with_fossil}</a>).html_safe
   end
 
   def link_to_taxon_with_linked_author_citation taxon
-    taxon.decorate.link_to_taxon_with_linked_author_citation
+    link_to_taxon(taxon) <<
+      %( <span class="discreet-author-citation">#{link_to_reference(taxon.authorship_reference)}</span>).html_safe
   end
 
   def link_to_taxon_with_label taxon, label
@@ -33,6 +35,7 @@ href="/catalog/#{taxon.id}">#{label}</a>).html_safe
     css_classes.join(' ')
   end
 
+  # Protonyms.
   def link_to_protonym protonym
     protonym.decorate.link_to_protonym
   end
@@ -44,6 +47,13 @@ href="/catalog/#{taxon.id}">#{label}</a>).html_safe
   def link_to_protonym_with_terminal_taxa protonym
     terminal_taxa_links = link_to_taxa(protonym.terminal_taxa).presence || 'no terminal taxon'
     protonym.decorate.link_to_protonym << " (" << terminal_taxa_links << ")"
+  end
+
+  # References.
+  def link_to_reference reference
+    %(<a data-controller="hover-preview" \
+data-hover-preview-url-value="/references/#{reference.id}/hover_preview.json" \
+href="/references/#{reference.id}">#{reference.key_with_suffixed_year}</a>).html_safe
   end
 
   def link_to_taxt_reference reference
