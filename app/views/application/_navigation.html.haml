@@ -1,81 +1,83 @@
-#desktop-only.show-for-large
-  .top-bar
-    #desktop-logo.top-bar-title
-      =link_to root_path do
-        =image_tag 'logos/antcat_white_174x37.png', alt: 'AntCat', id: "desktop-logo-image"
+#desktop-only-header
+  #desktop-upper-menu
+    %ul.no-bullet.horizontal
+      -if user_is_developer?
+        %li
+          %small=link_to_current_page_on_live_site_or_localhost
+      -if Rails.env.staging?
+        %li
+          %small=link_to_current_page_on_live_site_from_staging
+      -if user_signed_in?
+        =unseen_notifications_badge = capture { render "unseen_notifications_badge" }
+        =unread_site_notices_badge = capture { render "unread_site_notices_badge" }
+        %li=link_to "Editor's Panel", editors_panel_path, class: "desktop-upper-menu-link #{'very-active' if menu_active?(:editors_panel)}"
+        %li=link_to 'Activity Feed', activities_path, class: "desktop-upper-menu-link #{'very-active' if menu_active?(:activity_feed)}"
+        %li=link_to current_user.name, current_user, class: "desktop-upper-menu-link"
+        %li=link_to 'Logout', destroy_user_session_path, method: :delete, class: "desktop-upper-menu-link"
+      -else
+        %li=link_to 'Login', new_user_session_path, class: "desktop-upper-menu-link"
+        %li=link_to 'Sign up', new_user_registration_path, class: "desktop-upper-menu-link"
 
-    #desktop-menu
-      #desktop-upper-menu.top-bar-right
-        %ul.menu
-          -if user_is_developer?
-            %li
-              %small.left=link_to_current_page_on_live_site_or_localhost
-          -if Rails.env.staging?
-            %li
-              %small=link_to_current_page_on_live_site_from_staging
-          -if user_signed_in?
-            =unseen_notifications_badge = capture { render "unseen_notifications_badge" }
-            =unread_site_notices_badge = capture { render "unread_site_notices_badge" }
-            %li=link_to "Editor's Panel", editors_panel_path, class: "top-header-link #{'very-active' if menu_active?(:editors_panel)}"
-            %li=link_to 'Activity Feed', activities_path, class: "top-header-link #{'very-active' if menu_active?(:activity_feed)}"
-            %li=link_to current_user.name, current_user, class: "top-header-link"
-            %li=link_to 'Logout', destroy_user_session_path, method: :delete, class: "top-header-link"
-          -else
-            %li=link_to 'Login', new_user_session_path, class: "top-header-link"
-            %li=link_to 'Sign up', new_user_registration_path, class: "top-header-link"
+  .clearfix
 
-      %br
-      %br
+  #desktop-logo
+    =link_to root_path do
+      =image_tag 'logos/antcat_white_174x37.png', alt: 'AntCat', id: "desktop-logo-image"
 
-      #desktop-lower-menu.top-bar-right
-        %ul.menu
-          %li=link_to 'References', references_latest_additions_path, class: "big-screaming-orange-button #{'very-active' if menu_active?(:references)}"
-          %li=link_to 'Catalog', root_path, class: "big-screaming-green-button #{'very-active' if menu_active?(:catalog)}"
-          %li
-            =form_with url: references_search_index_path, method: :get, class: "reference-search-form" do |f|
-              .input-group
-                =f.text_field "reference_q", value: params[:reference_q], placeholder: "Search References", "aria-label" => "Search References", id: nil, class: "typeahead-references-js input-group-field expandable-reference-search"
-                =button_tag type: 'submit', name: nil, id: "header-reference-search-button-test-hook", "aria-label" => 'Search References' do
-                  %i.inline-search-icon.icon-search
+  #desktop-lower-menu
+    %ul.no-bullet.horizontal.no-margin-bottom
+      %li=link_to 'References', references_latest_additions_path, class: "big-screaming-orange-button #{'very-active' if menu_active?(:references)}"
+      %li=link_to 'Catalog', root_path, class: "big-screaming-green-button #{'very-active' if menu_active?(:catalog)}"
+      %li
+        =form_with url: references_search_index_path, method: :get, class: "reference-search-form" do |f|
+          .input-group
+            =f.text_field "reference_q", value: params[:reference_q], placeholder: "Search References", "aria-label" => "Search References", id: nil, class: "typeahead-references-js input-group-field expandable-reference-search"
+            =button_tag type: 'submit', name: nil, id: "header-reference-search-button-test-hook", "aria-label" => 'Search References' do
+              %i.inline-search-icon.icon-search
 
-          %li
-            =form_with url: catalog_search_path, method: :get do |f|
-              .input-group
-                =f.text_field 'qq', value: params[:qq], placeholder: "Search Catalog", "aria-label" => "Search Catalog", id: nil, class: 'input-group-field expandable-catalog-search typeahead-taxa-js-hook'
-                =hidden_field_tag Catalog::SearchesController::SEARCHING_FROM_HEADER, true, id: nil
-                =button_tag type: 'submit', name: nil, id: "header-catalog-search-button-test-hook", "aria-label" => 'Search Catalog' do
-                  %i.inline-search-icon.icon-search
+      %li
+        =form_with url: catalog_search_path, method: :get do |f|
+          .input-group
+            =f.text_field 'qq', value: params[:qq], placeholder: "Search Catalog", "aria-label" => "Search Catalog", id: nil, class: 'input-group-field expandable-catalog-search typeahead-taxa-js-hook'
+            =hidden_field_tag Catalog::SearchesController::SEARCHING_FROM_HEADER, true, id: nil
+            =button_tag type: 'submit', name: nil, id: "header-catalog-search-button-test-hook", "aria-label" => 'Search Catalog' do
+              %i.inline-search-icon.icon-search
 
-#mobile-only.hide-for-large
-  .top-bar
-    .row
-      .small-5.columns
-        #mobile-logo.top-bar-title{data: { hide_for: "large", responsive_toggle: "mobile-menu" }}
-          %span.float-left
-            %span.menu-icon{data: { toggle: true }}
-          =link_to root_path do
-            =image_tag 'logos/antcat_white_174x37.png', alt: 'AntCat', data: { toggle: true }
-      =unseen_notifications_badge
-      =unread_site_notices_badge
+#mobile-only-header
+  %input#mobile-hamburger-input{type: "checkbox", checked: false}
+  %label#mobile-hamburger-label{for: "mobile-hamburger-input"}
+    %span#mobile-hamburger-lines
 
-  #mobile-menu
-    %ul.vertical.menu
-      %li.has-form
+  #mobile-logo
+    =link_to root_path do
+      =image_tag 'logos/antcat_white_174x37.png', alt: 'AntCat'
+
+  .clearfix
+
+  %ul.unseen-notifications-ul
+    =unseen_notifications_badge
+    =unread_site_notices_badge
+
+  .clearfix
+
+  #mobile-menu-content
+    %ul#mobile-menu-ul.no-bullet
+      %li.mobile-menu-search-li
         =form_with url: references_search_index_path, method: :get do |f|
-          .row.search-row
+          .row
             .small-9.columns
               =f.text_field 'reference_q', value: params[:reference_q], placeholder: "Search References", "aria-label" => "Search References", id: nil, class: "typeahead-references-js"
             .small-3.columns
-              =button_tag search_icon, type: "submit", name: nil, class: "button expanded mobile-search-button"
+              =button_tag search_icon, type: "submit", name: nil, class: "button expanded mobile-menu-search-button"
 
-      %li.has-form
+      %li.mobile-menu-search-li
         =form_with url: catalog_search_path, method: :get do |f|
-          .row.search-row
+          .row
             .small-9.columns
               =f.text_field 'qq', value: params[:qq], placeholder: "Search Catalog", "aria-label" => "Search Catalog", id: nil, class: "typeahead-taxa-js-hook"
               =hidden_field_tag Catalog::SearchesController::SEARCHING_FROM_HEADER, true, id: nil
             .small-3.columns
-              =button_tag search_icon, type: "submit", name: nil, class: "button expanded mobile-search-button"
+              =button_tag search_icon, type: "submit", name: nil, class: "button expanded mobile-menu-search-button"
 
       %li=link_to 'References', references_latest_additions_path
       %li=link_to "Catalog", root_path
@@ -88,6 +90,8 @@
         %li=link_to 'Login', new_user_session_path
         %li=link_to 'Sign up', new_user_registration_path
       %li=link_to 'Feedback or suggest an edit', new_feedback_path(page: current_page_for_feedback)
+
+.clearfix
 
 .left=render "tagline"
 

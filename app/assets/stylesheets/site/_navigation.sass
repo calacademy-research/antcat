@@ -1,7 +1,5 @@
 @import "colors"
 
-$mobile-topbar-background: $color_primary
-
 #header
   ::-webkit-input-placeholder
     font-size: 90%
@@ -12,87 +10,106 @@ $mobile-topbar-background: $color_primary
   ::placeholder
     font-size: 90%
 
+  font-family: Montserrat, Roboto, "Helvetica Neue", Arial, sans-serif
+  color: #fff
+  background-color: $color_primary
+
   #toggle-disco-mode-js-hook
     // Hidden initially due to FoUC link text from JavaScript.
     display: none
 
-  font-family: Montserrat, Roboto, "Helvetica Neue", Arial, sans-serif
-  background-color: $color_primary
-  padding-top: 1rem
-  padding-bottom: 2rem
-  @media screen and (max-width: 999px)
-    padding-bottom: 1rem
-  color: #fff
+  a
+    color: #fff
 
-  .top-bar
-    white-space: nowrap !important
-    padding-left: 0
-    padding-right: 0
-    .top-bar-title
-      color: #000 !important
-      margin-left: 0 !important
-    li.unseen-notifications
-      font-size: 90%
-      > a
-        padding: 0.7rem
-        color: #fff
-        font-weight: bold
-        > span
-          cursor: pointer
-          color: $color_primary
-          background-color: #fff
+  ul.unseen-notifications-ul
+    margin-left: 0
+    margin-top: -1rem
 
-  #desktop-only
-    #desktop-logo, #desktop-logo-image
-      margin-top: 1.3rem
-      color: $almost_white !important
-    #desktop-menu
-      #desktop-upper-menu
-        float: right
-      #desktop-lower-menu
-        float: right
-        .reference-search-form
-          margin-right: 1rem
-        .expandable-catalog-search
-          width: 155px
-        .expandable-reference-search
-          width: 180px
-        .expandable-catalog-search, .expandable-reference-search
-          transition: all .5s
-          height: 2.6rem !important
-          margin-right: 0rem
-          // Fix background after typeahead.
-          background-color: #fff !important
-          &:focus
-            width: 250px
-        .without-top-padding
-          padding-top: 0 !important
-
-  #mobile-only
+  li.unseen-notifications
     font-size: 90%
-    .top-bar
-      // To make the AntCat logo bigger on mobile.
-      display: block
-    .menu-icon
-      margin-top: 10px
-    #mobile-menu
-      background-color: $mobile-topbar-background
-    #mobile-logo
+    list-style: none
+    > a
+      font-weight: bold
       > span
-        padding-right: 1rem
-    li.unseen-notifications
-      list-style: none
+        cursor: pointer
+        color: $color_primary
+        background-color: #fff
+
+  #desktop-only-header
+    #desktop-upper-menu
+      padding-top: 0.7rem
       float: right
-    .vertical.menu
-      margin-bottom: 1rem
-      padding-bottom: 0.7rem
-      a
-        color: #fff
-    .search-row
-      padding-left: 1rem
-      padding-right: 1rem
-      margin-bottom: 5px
-      .mobile-search-button
+      ul
+        li
+          padding-left: 1rem
+          padding-right: 1rem
+
+    #desktop-logo
+      float: left
+      color: $almost_white !important
+
+    #desktop-lower-menu
+      float: right
+      .reference-search-form
+        margin-right: 1rem
+      .expandable-catalog-search
+        width: 155px
+      .expandable-reference-search
+        width: 180px
+      .expandable-catalog-search, .expandable-reference-search
+        transition: all .5s
+        height: 2.6rem !important
+        margin-right: 0rem
+        // Fix background after typeahead.
+        background-color: #fff !important
+        &:focus
+          width: 250px
+
+  #mobile-only-header
+    font-size: 90%
+
+    #mobile-hamburger-input
+      display: none
+    #mobile-hamburger-input:checked ~ #mobile-menu-content
+      display: block
+    #mobile-hamburger-label
+      cursor: pointer
+      float: right
+      padding: 40px 20px
+    #mobile-hamburger-lines
+      background: #f9f9f9
+      display: block
+      height: 2px
+      position: relative
+      width: 24px
+      &::before, &::after
+        background: #f9f9f9
+        content: ''
+        display: block
+        height: 100%
+        position: absolute
+        transition: all .2s ease-out
+        width: 100%
+      &::before
+        top: 5px
+      &::after
+        top: -5px
+
+    #mobile-logo
+      padding-top: 1rem
+
+    #mobile-menu-content
+      display: none
+      padding-left: 1.1rem
+      padding-right: 1.1rem
+      #mobile-menu-ul
+        li
+          padding-top: 0.4rem
+          padding-bottom: 0.4rem
+        li.mobile-menu-search-li
+          padding-top: 0
+          padding-bottom: 0
+      .mobile-menu-search-button
         border: 2px #fff solid
       // Restore width after Typeahead.
       .twitter-typeahead
@@ -102,9 +119,93 @@ $mobile-topbar-background: $color_primary
     @media screen and (max-width: 640px)
       font-size: 85%
 
+// Show "on antcat.org/localhost" on hover.
+#header
+  #desktop-only-header
+    a.dev-link
+      display: none
+    &:hover .show-on-hover
+      display: inline
+
+#header
+  .big-screaming-button
+    background-color: $color_primary
+    border: 3px #fff
+
+    border-radius: 3px !important
+    font-weight: 900
+    font-size: 12px
+    margin-right: 28px
+    text-transform: uppercase
+    font-family: 'Montserrat', sans-serif
+
+    padding-left: 1rem
+    padding-right: 1rem
+    padding-top: 0.6rem
+    padding-bottom: 0.6rem
+
+  .big-screaming-green-button
+    @extend .big-screaming-button
+    border: 3px #fff solid
+    color: $color_primary !important
+    background-color: #fff !important
+
+    &.very-active
+      color: #fff !important
+      border: 3px $color_scream_green solid
+      background-color: $color_scream_green !important
+      &:hover
+        color: #fff !important
+    &:hover
+      box-shadow: 0 0 0 0.5rem rgba(69, 210, 152, 0.35)
+      transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+      color: $color_scream_green !important
+
+  .big-screaming-orange-button
+    @extend .big-screaming-button
+    border: 3px #fff solid
+    color: $color_primary !important
+    background-color: #fff !important
+
+    &.very-active
+      color: #fff !important
+      background-color: $color_scream_orange !important
+      border: 3px $color_scream_orange solid
+      &:hover
+        color: #fff !important
+    &:hover
+      box-shadow: 0 0 0 0.5rem rgba(255, 133, 27, 0.50)
+      transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+      color: $color_scream_orange !important
+
 #breadcrumbs
   margin-bottom: 2rem
 
   #subnavigation
     margin-top: 1rem
     margin-bottom: 1rem
+
+// Responsive-related.
+// Small screens.
+@media (max-width: 900px)
+  #header
+    padding-top: 0.7rem
+    padding-bottom: 1rem
+
+  #desktop-only-header
+    display: none
+  #mobile-only-header
+    display: block
+
+// Big screens.
+@media (min-width: 900px)
+  #header
+    padding-top: 1rem
+    padding-bottom: 2rem
+
+  #desktop-only-header
+    display: block
+  #mobile-only-header
+    display: none
+  #mobile-hamburger-label
+    display: none

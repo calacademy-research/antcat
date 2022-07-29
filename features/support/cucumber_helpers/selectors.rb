@@ -9,7 +9,7 @@ module CucumberHelpers
       when 'the page header'
         "#header"
       when 'the desktop menu'
-        "#desktop-menu"
+        "#desktop-only-header"
       when 'the breadcrumbs'
         "#breadcrumbs"
 
