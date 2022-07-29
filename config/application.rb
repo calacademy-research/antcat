@@ -22,6 +22,12 @@ module AntCat
 
     config.secret_key_base = Settings.rails.secret_key_base
 
+    # NOTE: Without this, for example `activity.parameters[:name]` from
+    # 'app/views/activities/templates/_protonym.html.haml' raises
+    # `Psych::DisallowedClass Tried to load unspecified class: Symbol`
+    # See https://github.com/rails/rails/blob/7-0-stable/activerecord/CHANGELOG.md#rails-7031-july-12-2022
+    config.active_record.yaml_column_permitted_classes = [Symbol]
+
     console do
       ARGV.push "-r", root.join("config/initializers/irb.rb")
     end
