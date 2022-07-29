@@ -19,7 +19,7 @@ describe CatalogFormatter do
 
     specify do
       expect(described_class.link_to_taxon_with_linked_author_citation(taxon)).to eq <<~HTML.squish
-        #{taxon_link(taxon)} <span class="discret-author-citation">#{reference_link(taxon.authorship_reference)}</span>
+        #{taxon_link(taxon)} <span class="discreet-author-citation">#{reference_link(taxon.authorship_reference)}</span>
       HTML
     end
   end

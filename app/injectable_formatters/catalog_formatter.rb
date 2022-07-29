@@ -19,7 +19,7 @@ href="/catalog/#{taxon.id}">#{taxon.name_with_fossil}</a>).html_safe
 
   def link_to_taxon_with_linked_author_citation taxon
     link_to_taxon(taxon) <<
-      %( <span class="discret-author-citation">#{link_to_reference(taxon.authorship_reference)}</span>).html_safe
+      %( <span class="discreet-author-citation">#{link_to_reference(taxon.authorship_reference)}</span>).html_safe
   end
 
   def link_to_taxon_with_label taxon, label

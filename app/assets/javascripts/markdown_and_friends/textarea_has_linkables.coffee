@@ -47,7 +47,7 @@ window.setupLinkables = =>
         <li>
           <span class='record-id'>#${id}</span>
           <span class='main-result ${css_classes}'>${name_with_fossil}</span>
-          <span class='discret-author-citation'>${author_citation}</span>
+          <span class='discreet-author-citation'>${author_citation}</span>
         </li>
       """
       callbacks: reuseCallbacks "/catalog/autocomplete.json"
@@ -71,7 +71,7 @@ window.setupLinkables = =>
         <li>
           <span class='record-id'>#${id}</span>
           <span class='main-result'>${name_with_fossil}</span>
-          <span class='discret-author-citation'>${author_citation}</span>
+          <span class='discreet-author-citation'>${author_citation}</span>
         </li>
       """
       callbacks: reuseCallbacks "/protonyms/autocomplete.json"

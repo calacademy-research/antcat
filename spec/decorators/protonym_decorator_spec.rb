@@ -29,7 +29,7 @@ describe ProtonymDecorator do
     specify do
       expect(decorated.link_to_protonym_with_linked_author_citation).to eq <<~HTML.squish
         #{protonym_link(protonym)}
-        <span class="discret-author-citation">#{reference_link(protonym.authorship_reference)}</span>
+        <span class="discreet-author-citation">#{reference_link(protonym.authorship_reference)}</span>
       HTML
     end
   end
