@@ -25,4 +25,4 @@ Feature: Searching references
     When I fill in "reference_q" with "zzzzzz year:1972-1980" within the desktop menu
     And I click on the reference search button
     Then I should see "No results found"
-    And the "reference_q" field within "#desktop-menu" should contain "zzzzzz year:1972-1980"
+    And the "reference_q" field within "#desktop-only-header" should contain "zzzzzz year:1972-1980"

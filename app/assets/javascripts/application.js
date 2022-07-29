@@ -14,8 +14,8 @@
 //= require plugins/foundation.util.triggers
 // require plugins/foundation.abide
 // require plugins/foundation.accordion
-//= require plugins/foundation.accordionMenu
-//= require plugins/foundation.drilldown
+// require plugins/foundation.accordionMenu
+// require plugins/foundation.drilldown
 //= require plugins/foundation.dropdown
 //= require plugins/foundation.dropdownMenu
 // require plugins/foundation.equalizer
@@ -23,8 +23,8 @@
 // require plugins/foundation.magellan
 // require plugins/foundation.offcanvas
 // require plugins/foundation.orbit
-//= require plugins/foundation.responsiveMenu
-//= require plugins/foundation.responsiveToggle
+// require plugins/foundation.responsiveMenu
+// require plugins/foundation.responsiveToggle
 // require plugins/foundation.reveal
 // require plugins/foundation.slider
 // require plugins/foundation.smoothScroll
