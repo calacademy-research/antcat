@@ -3,7 +3,6 @@ Feature: Move items
   Background:
     Given I log in as a catalog editor named "Archibald"
 
-  @skip_ci
   Scenario: Moving reference sections (with feed)
     Given there is a subfamily "Antcatinae" with a reference section "Antcatinae section"
     And there is a genus "Formica"
@@ -22,7 +21,7 @@ Feature: Move items
     When I press "Move selected items"
     Then I should see "At least one item must be selected"
 
-    When I follow "Select all"
+    When I click css "span.btn-tiny" with text "Select/deselect all"
     And I press "Move selected items"
     Then I should see "Successfully moved items"
 
@@ -32,7 +31,6 @@ Feature: Move items
     When I go to the activity feed
     Then I should see "Archibald moved items belonging to Antcatinae to Formica" within the activity feed
 
-  @skip_ci
   Scenario: Moving history items (with feed)
     Given there is a subfamily protonym "Antcatinae" with a history item "Antcatinae history"
     And there is a genus protonym "Formica"
@@ -51,7 +49,7 @@ Feature: Move items
     When I press "Move selected items"
     Then I should see "At least one item must be selected"
 
-    When I follow "Select all"
+    When I click css "span.btn-tiny" with text "Select/deselect all"
     And I press "Move selected items"
     Then I should see "Successfully moved items"
 

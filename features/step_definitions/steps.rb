@@ -30,6 +30,10 @@ When("I click css {string}") do |css_selector|
   find(css_selector).click
 end
 
+When("I click css {string} with text {string}") do |css_selector, text|
+  find(css_selector, text: text).click
+end
+
 When("I press {string}") do |button_text|
   click_button button_text
 end

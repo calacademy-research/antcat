@@ -1,10 +1,7 @@
 -title "Move items"
 -breadcrumb :move_taxon_items_to, @taxon, @to_taxon
 
--content_for :javascripts do
-  =javascript_include_tag "controllers/taxa/move_items/select_checkboxes"
-
-=form_with path: taxon_move_items_path do |f|
+=form_with path: taxon_move_items_path, data: { controller: 'checkbox-select-all' } do |f|
   =hidden_field_tag :to_taxon_id, @to_taxon.id
   .row
     .medium-6.columns
@@ -26,13 +23,13 @@
         %table.reference-sections
           %caption
             Reference sections
-            .right
-              =link_to "Select all", "#", id: "select-all-reference-sections", class: "btn-normal btn-tiny"
-              =link_to "Unselect all", "#", id: "unselect-all-reference-sections", class: "btn-normal btn-tiny"
+            %label.right
+              %input.hidden{"data-checkbox-select-all-target" => "parentCheckbox", 'data-action' => "change->checkbox-select-all#toggle", type: "checkbox"}
+              %span.btn-nodanger.btn-tiny Select/deselect all
           %tbody
             -@taxon.reference_sections.each do |reference_section|
               %tr
-                %td=check_box_tag "reference_section_ids[]", reference_section.id
+                %td=check_box_tag "reference_section_ids[]", reference_section.id, false, data: { 'checkbox-select-all-target': "checkbox" }
                 %td
                   =render 'reference_section', reference_section: reference_section
 
