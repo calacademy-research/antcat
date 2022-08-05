@@ -1,4 +1,4 @@
-# AntCat
+# AntCat ![build](https://github.com/calacademy-research/antcat/actions/workflows/main.yml/badge.svg)
 *California Academy of Sciences*
 
 Ant taxonomy database -- https://antcat.org/
@@ -17,7 +17,7 @@ Ant taxonomy database -- https://antcat.org/
                                                  -'     \__/
                                                  
 ## Installation
-See [INSTALL.md](INSTALL.md)
+See [`INSTALL.md`](INSTALL.md)
 
 ## Contributing
 Contributions welcome! Please see [the wiki page](https://github.com/calacademy-research/antcat/wiki/Contributing).

@@ -2,13 +2,14 @@
   %div
     #taxon-browser-new.taxon-browser-css-tabs
       #taxon-key.color-coded-catalog-links{data: { show_hide_toggable_id: "taxon-key" }}
-        %div &dagger;fossil
-        .valid valid
-        .synonym synonym
-        .unidentifiable unidentifiable/excluded from Formicidae
-        .homonym homonym
-        .unavailable unavailable/nomen nudum
-        .obsolete-combination obsolete combination
+        .equally-space-out
+          %div &dagger;fossil
+          .valid valid
+          .synonym synonym
+          .unidentifiable unidentifiable/excluded from Formicidae
+          .homonym homonym
+          .unavailable unavailable/nomen nudum
+          .obsolete-combination obsolete combination
 
       -taxon_browser.tabs.each.with_index do |tab, index|
         %input.taxon-browser-tab-input{id: tab.id, class: "taxon-browser-tab-#{index}", checked: ("checked" if tab.open?), name: "taxon_browser_tab", type: "radio", value: 'selected tab'}

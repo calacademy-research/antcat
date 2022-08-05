@@ -87,8 +87,8 @@ GEM
     attr_extras (6.2.5)
     awesome_print (1.9.2)
     aws-eventstream (1.2.0)
-    aws-partitions (1.613.0)
-    aws-sdk-core (3.131.5)
+    aws-partitions (1.615.0)
+    aws-sdk-core (3.131.6)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.525.0)
       aws-sigv4 (~> 1.1)
@@ -247,7 +247,7 @@ GEM
       launchy (~> 2.1)
       mail (~> 2.7)
     equalizer (0.0.11)
-    erubi (1.10.0)
+    erubi (1.11.0)
     execjs (2.8.1)
     ey_config (0.0.7)
     factory_bot (6.2.1)
@@ -477,7 +477,7 @@ GEM
       rspec-mocks (~> 3.10)
       rspec-support (~> 3.10)
     rspec-support (3.11.0)
-    rubocop (1.32.0)
+    rubocop (1.33.0)
       json (~> 2.3)
       parallel (~> 1.10)
       parser (>= 3.1.0.0)
@@ -602,7 +602,7 @@ GEM
       equalizer (~> 0.0, >= 0.0.9)
     warden (1.2.9)
       rack (>= 2.0.9)
-    webmock (3.14.0)
+    webmock (3.17.0)
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
@@ -670,7 +670,7 @@ DEPENDENCIES
   redcarpet
   request_store
   rspec-rails
-  rubocop (~> 1.32.0)
+  rubocop (~> 1.33.0)
   rubocop-performance
   rubocop-rails
   rubocop-rake

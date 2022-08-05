@@ -292,7 +292,7 @@ Rake/Desc:
 RSpec/BeEq:
   Enabled: false
 
-# Disabled because it's useful to add empty placeholders.
+# Disabled because it's useful for empty placeholders.
 RSpec/EmptyExampleGroup:
   Enabled: false
 
@@ -308,6 +308,7 @@ RSpec/FactoryBot/CreateList:
   EnforcedStyle: n_times
 
 RSpec/FilePath:
+  # TODO: See if we can remove this after https://github.com/rubocop/rubocop-rspec/pull/1266
   CustomTransform:
     AntCatVersionLink: antcat_version_link
     ParseAntCatTags: parse_antcat_tags
