@@ -2,9 +2,9 @@
   =javascript_include_tag "markdown_and_friends"
 
 -content_for :breadcrumbs_right do
-  =link_to "Hide/show help", "#", data: { show_hide_toggler_for: "help" }, class: "btn-nodanger"
+  %button.btn-nodanger{"data-action" => "toggler#toggle", "data-toggler-target" => "help"} Show/hide help
 
-.row{data: { show_hide_toggable_id: "help" }}
+.row.is-hidden{data: { toggler_name: "help" }}
   .medium-12.columns
     .callout
       %h6 Help

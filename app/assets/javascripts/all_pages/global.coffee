@@ -7,18 +7,11 @@ AntCat.CONSTANTS.PROTONYM_NAME_STRING = '#protonym_name_string' # For the taxon 
 $ ->
   $(document).foundation()
 
-  enableInlineExpansions()
-
   # To make ".disabled" link be unclickable.
   $('body').on 'click', 'a.disabled', (event) -> event.preventDefault()
 
 AntCat.notifySuccess = (content, autoHide = true) -> $.notify content, className: "success", autoHide: autoHide
 AntCat.notifyError = (content, autoHide = true) -> $.notify content, autoHide: autoHide
-
-# Used by `ApplicationHelper#inline_expandable`.
-enableInlineExpansions = ->
-  $(".expandable").on "click", (_event) ->
-    $(this).find(".show-when-expanded, .hide-when-expanded").toggle()
 
 AntCat.escapeRegExp = (string) ->
   string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')

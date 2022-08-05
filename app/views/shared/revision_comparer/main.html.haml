@@ -3,9 +3,9 @@
   =javascript_include_tag "revision_comparer"
 
 -content_for :breadcrumbs_right do
-  =link_to "Hide/show help", "#", data: { show_hide_toggler_for: "revision_comparer_help" }, class: "btn-nodanger"
+  %button.btn-nodanger{"data-action" => "toggler#toggle", "data-toggler-target" => "revision_comparer_help"} Show/hide help
 
-%div{data: { show_hide_toggable_id: "revision_comparer_help" }}
+.is-hidden{data: { toggler_name: "revision_comparer_help" }}
   .callout.medium-9.margin-bottom
     =render "shared/revision_comparer/help"
 
