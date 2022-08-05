@@ -1,7 +1,7 @@
 .taxon-browser-sticky
   %div
     #taxon-browser-new.taxon-browser-css-tabs
-      #taxon-key.color-coded-catalog-links{data: { show_hide_toggable_id: "taxon-key" }}
+      #taxon-key.color-coded-catalog-links.is-hidden{data: { toggler_name: "taxon_key" }}
         .equally-space-out
           %div &dagger;fossil
           .valid valid
@@ -16,8 +16,7 @@
         %label{for: tab.id}=tab.title
 
       .right-side-buttons.hide-for-small-only
-        %span.white-label
-          =link_to "toggle legend", "#", data: { show_hide_toggler_for: "taxon-key" }
+        %button.btn-tiny.btn-nodanger{"data-action" => "toggler#toggle", "data-toggler-target" => "taxon_key"} toggle legend
         %span.label.secondary
           =taxon_browser_presenter.toggle_invalid_or_valid_only_link
 

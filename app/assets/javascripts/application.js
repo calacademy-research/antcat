@@ -41,4 +41,3 @@
 //= require all_pages/reference_autocompletion
 //= require all_pages/global
 //= require all_pages/jquery_plugins
-//= require all_pages/show_hide_toggler

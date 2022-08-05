@@ -31,7 +31,7 @@
 
     =yield :javascripts
 
-    %body{class: controller_css_class(params[:controller])}
+    %body{class: controller_css_class(params[:controller]), "data-controller" => "toggler"}
       -unless params[:controller] == 'feedback'
         %button#feedback-button.hide-for-small-only
           =link_to 'Suggest edit', new_feedback_path(page: current_page_for_feedback), rel: 'nofollow'

@@ -2,7 +2,7 @@
 -breadcrumb :feedback, @feedback
 
 -content_for :breadcrumbs_right do
-  =link_to "Hide/show formatted for email", "#", data: { show_hide_toggler_for: "for_email" }, class: "btn-nodanger"
+  %button.btn-nodanger{"data-action" => "toggler#toggle", "data-toggler-target" => "for_email"} Show/hide formatted for email
   -if @feedback.closed?
     =link_to("Re-open", reopen_feedback_path(@feedback), method: :put, class: "btn-warning")
   -else
@@ -14,7 +14,7 @@
 
 =render "feedback", feedback: @feedback
 
-%div{data: { show_hide_toggable_id: "for_email" }}
+.is-hidden{data: { toggler_name: "for_email" }}
   %h6 Formatted for email replies
   =preserve do
     %pre.callout
