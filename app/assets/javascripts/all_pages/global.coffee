@@ -5,8 +5,6 @@ AntCat.CONSTANTS.TAXON_NAME_STRING = '#taxon_name_string' # For the taxon form.
 AntCat.CONSTANTS.PROTONYM_NAME_STRING = '#protonym_name_string' # For the taxon and protonym forms.
 
 $ ->
-  $(document).foundation()
-
   # To make ".disabled" link be unclickable.
   $('body').on 'click', 'a.disabled', (event) -> event.preventDefault()
 

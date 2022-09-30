@@ -12,24 +12,30 @@
       =link_to "What Links Here", reference_what_links_here_path(@reference), class: "btn-normal"
 
     -if decorated.exportable_to_endnote? || decorated.exportable_to_wikipedia?
-      .btn-normal.dropdown.button{data: { toggle: "export-dropdown"}, type: "button"} Export
-      #export-dropdown.dropdown-pane{data: { dropdown: 'true', hover: 'true', hover_pane: 'true' }}
-        %ul.no-bullet
-          -if decorated.exportable_to_endnote?
-            %li=link_to "EndNote", endnote_export_references_path(id: @reference.id)
-          -if decorated.exportable_to_wikipedia?
-            %li=link_to "Wikipedia", wikipedia_export_reference_path(@reference)
+      .dropdown-container
+        %button.btn-normal{"data-action" => "toggler#toggle", "data-toggler-target" => "export_dropdown"}
+          Export
+          %i.arrow-down.small-left-margin
+        .is-hidden.callout.dropdown-content{data: { toggler_name: "export_dropdown" }}
+          %ul.no-bullet
+            -if decorated.exportable_to_endnote?
+              %li=link_to "EndNote", endnote_export_references_path(id: @reference.id)
+            -if decorated.exportable_to_wikipedia?
+              %li=link_to "Wikipedia", wikipedia_export_reference_path(@reference)
 
     -if user_is_at_least_helper?
-      .btn-normal.dropdown.button{data: { toggle: "more-dropdown"}, type: "button"} More
-      #more-dropdown.dropdown-pane{data: { dropdown: 'true', hover: 'true', hover_pane: 'true' }}
-        %ul.no-bullet
-          -if @reference.is_a?(ArticleReference) || @reference.is_a?(BookReference)
-            %li=link_to "New Nested Reference", new_reference_path(nesting_reference_id: @reference.id, year: @reference.year, stated_year: @reference.stated_year), class: "btn-normal"
-          %li=link_to "Copy", new_reference_path(reference_to_copy: @reference.id), class: "btn-normal"
-          -if user_is_editor?
-            %li=link_to "Delete", reference_path(@reference), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-warning"
-          =activities_link_for_trackable @reference
+      .dropdown-container
+        %button.btn-normal{"data-action" => "toggler#toggle", "data-toggler-target" => "more_dropdown"}
+          More
+          %i.arrow-down.small-left-margin
+        .is-hidden.callout.dropdown-content{data: { toggler_name: "more_dropdown" }}
+          %ul.no-bullet
+            -if @reference.is_a?(ArticleReference) || @reference.is_a?(BookReference)
+              %li=link_to "New Nested Reference", new_reference_path(nesting_reference_id: @reference.id, year: @reference.year, stated_year: @reference.stated_year), class: "btn-normal"
+            %li=link_to "Copy", new_reference_path(reference_to_copy: @reference.id), class: "btn-normal"
+            -if user_is_editor?
+              %li=link_to "Delete", reference_path(@reference), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-warning"
+            =activities_link_for_trackable @reference
 
 .row.margin-bottom
   .medium-9.columns
