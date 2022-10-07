@@ -3,10 +3,13 @@
 
 -content_for :breadcrumbs_right do
   -# NOTE: Added as a dropdown because that was less confusing.
-  .btn-normal.dropdown.button{data: { toggle: "more-dropdown"}, type: "button"} Other Search forms
-  #more-dropdown.dropdown-pane{data: { dropdown: 'true', hover: 'true', hover_pane: 'true' }}
-    %ul.no-bullet
-      %li=link_to "Search History Items form", history_items_path, class: 'btn-normal'
+  .dropdown-container
+    %button.btn-normal{"data-action" => "toggler#toggle", "data-toggler-target" => "more_dropdown"}
+      Other Search forms
+      %i.arrow-down.small-left-margin
+    .is-hidden.callout.dropdown-content{data: { toggler_name: "more_dropdown" }}
+      %ul.no-bullet
+        %li=link_to "Search History Items form", history_items_path, class: 'btn-normal'
 
 =form_with url: request.path, method: :get do |f|
   .row
