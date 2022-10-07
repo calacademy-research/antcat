@@ -211,6 +211,9 @@ Rails/Delegate:
 Rails/EnvironmentVariableAccess:
   Enabled: false
 
+Rails/FreezeTime:
+  Enabled: false
+
 # TODO: Maybe enable and use `dependent: nil` for "read-only" associations.
 Rails/HasManyOrHasOneDependent:
   Enabled: false
@@ -266,6 +269,9 @@ Rails/WhereEquals:
 
 # Disabled because it makes queries less chainable which makes them harder to test/debug in the console.
 Rails/WhereExists:
+  Enabled: false
+
+Rails/WhereMissing:
   Enabled: false
 
 # Disabled because it's not safe (for example with handwritten SQL/joins).
