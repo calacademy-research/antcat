@@ -7,7 +7,7 @@ describe DatabaseScriptsPresenter do
 
   describe '#tallied_tags' do
     it 'returns a tally of all tags actually used in database script files' do
-      expect(presenter.tallied_tags).to include ['slow', be_a_kind_of(Integer)]
+      expect(presenter.tallied_tags).to include ['slow', be_a(Integer)]
     end
   end
 end
