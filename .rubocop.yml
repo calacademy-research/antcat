@@ -253,7 +253,6 @@ Rails/SaveBang:
 
 Rails/SkipsModelValidations:
   Exclude:
-    - 'lib/tasks/**/*.rake'
     - 'spec/**/*'
   AllowedMethods:
     - update_all
