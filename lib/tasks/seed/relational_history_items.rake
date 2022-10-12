@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "relational_history_items"
+require_relative 'relational_history_items'
 
 if Rails.env.development? || Rails.env.test?
   namespace :seed do

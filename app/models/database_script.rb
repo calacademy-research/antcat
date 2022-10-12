@@ -79,13 +79,15 @@ class DatabaseScript
 
     # TODO: Probably remove.
     def cached_results
-      return @_results if defined? @_results
+      return @_results if defined?(@_results)
+
       if respond_to?(:results)
         start = Time.current
         @_results = results
         @_results = @_results.load if @_results.is_a?(ActiveRecord::Relation)
         self.results_runtime = Time.current - start
       end
+
       @_results
     end
 
@@ -97,7 +99,8 @@ class DatabaseScript
 
     # TODO: Probably remove and/or inline special cases in `DatabaseScript` subclasses.
     def default_statistics
-      return unless respond_to? :results
+      return unless respond_to?(:results)
+
       count = cached_results.count
       count = count.count if count.is_a?(Hash) # HACK: For grouped queries.
       "Results: #{count}"

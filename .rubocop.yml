@@ -6,6 +6,7 @@ require:
 
 AllCops:
   NewCops: enable
+  ActiveSupportExtensionsEnabled: true
   Exclude:
     - 'bin/**/*'
     - 'cookbooks/**/*'
@@ -168,8 +169,8 @@ Metrics/ParameterLists:
   CountKeywordArgs: false
 
 Metrics/PerceivedComplexity:
-  Max: 12
   Enabled: false
+  Max: 12
 
 ### Naming.
 
@@ -207,9 +208,10 @@ Rails/DefaultScope:
 Rails/Delegate:
   Enabled: false
 
-# Disabled because it flags dev ENV variables.
+# Allow reads for dev ENV variables.
 Rails/EnvironmentVariableAccess:
-  Enabled: false
+  Enabled: true
+  AllowReads: true
 
 Rails/FreezeTime:
   Enabled: false

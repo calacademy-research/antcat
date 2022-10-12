@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# :nocov:
 module Seed
   class RelationalHistoryItems
     def self.call
@@ -103,3 +104,4 @@ module Seed
       end
   end
 end
+# :nocov:

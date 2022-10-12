@@ -17,7 +17,7 @@ module References
     end
 
     def any?
-      return @_any if defined? @_any
+      return @_any if defined?(@_any)
       @_any ||= any_columns? || any_taxts?
     end
 
@@ -26,7 +26,7 @@ module References
     end
 
     def any_columns?
-      return @_any_columns if defined? @_any_columns
+      return @_any_columns if defined?(@_any_columns)
       @_any_columns ||= what_links_here_columns.any?
     end
 
@@ -35,7 +35,7 @@ module References
     end
 
     def any_taxts?
-      return @_any_taxts if defined? @_any_taxts
+      return @_any_taxts if defined?(@_any_taxts)
       @_any_taxts ||= what_links_here_taxts.any?
     end
 

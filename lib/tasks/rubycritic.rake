@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 if Rails.env.development?
-  require "rubycritic/rake_task"
+  require 'rubycritic/rake_task'
 
   RubyCritic::RakeTask.new do |task|
     task.name = 'antcat:rubycritic'
