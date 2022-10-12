@@ -65,13 +65,13 @@ describe References::Formatted::PlainText do
     end
 
     context 'when reference is a `NestedReference`' do
-      let(:nestee_reference) do
+      let(:nesting_reference) do
         create :book_reference, author_names: [create(:author_name, name: "Mayr, E.")],
           year: 2010, title: '*Lasius* <i>and such</i>', pagination: '32 pp.',
           publisher: create(:publisher, name: 'Wiley', place: 'New York')
       end
       let(:reference) do
-        create :nested_reference, nesting_reference: nestee_reference,
+        create :nested_reference, nesting_reference: nesting_reference,
           author_names: [create(:author_name, name: "Forel, A.")], title: '*Italics* <i>and such</i>',
           year: 1874, pagination: 'Pp. 32-45 in:'
       end

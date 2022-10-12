@@ -10,7 +10,7 @@ describe Reference do
     it { is_expected.to have_many(:citations).dependent(:restrict_with_error) }
     it { is_expected.to have_many(:citations_from_type_names).dependent(:restrict_with_error) }
     it { is_expected.to have_many(:history_items).dependent(:restrict_with_error) }
-    it { is_expected.to have_many(:nestees).dependent(:restrict_with_error) }
+    it { is_expected.to have_many(:nested_references).dependent(:restrict_with_error) }
     it { is_expected.to have_one(:document).dependent(:destroy) }
   end
 
@@ -56,21 +56,21 @@ describe Reference do
         expect { reference.save! }.to change { reference.reload.plain_text_cache }.to(nil)
       end
 
-      context "when reference has nestees" do
-        let!(:nestee) { create :nested_reference, nesting_reference: reference }
+      context "when reference has nested references" do
+        let!(:nested_reference) { create :nested_reference, nesting_reference: reference }
 
-        it "nilifies caches for its nestees" do
-          expect(reference.reload.nestees).to eq [nestee]
+        it "nilifies caches for its nested references" do
+          expect(reference.reload.nested_references).to eq [nested_reference]
 
-          References::Cache::Regenerate[nestee]
-          expect(nestee.plain_text_cache).not_to eq nil
-          expect(nestee.expanded_reference_cache).not_to eq nil
+          References::Cache::Regenerate[nested_reference]
+          expect(nested_reference.plain_text_cache).not_to eq nil
+          expect(nested_reference.expanded_reference_cache).not_to eq nil
 
           reference.save!
-          nestee.reload
+          nested_reference.reload
 
-          expect(nestee.plain_text_cache).to eq nil
-          expect(nestee.expanded_reference_cache).to eq nil
+          expect(nested_reference.plain_text_cache).to eq nil
+          expect(nested_reference.expanded_reference_cache).to eq nil
         end
       end
     end

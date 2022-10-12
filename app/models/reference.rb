@@ -23,7 +23,7 @@ class Reference < ApplicationRecord
   has_many :reference_author_names, -> { order(:position) }, inverse_of: :reference, dependent: :destroy
   has_many :author_names, -> { order('reference_author_names.position') }, through: :reference_author_names
   has_many :authors, through: :author_names
-  has_many :nestees, class_name: "Reference", foreign_key: :nesting_reference_id, dependent: :restrict_with_error
+  has_many :nested_references, class_name: "Reference", foreign_key: :nesting_reference_id, dependent: :restrict_with_error
   has_many :citations, dependent: :restrict_with_error
   has_many :citations_from_type_names, class_name: 'TypeName', dependent: :restrict_with_error # [grep:unify_citations].
   has_many :history_items, class_name: 'HistoryItem', dependent: :restrict_with_error # [grep:unify_citations].

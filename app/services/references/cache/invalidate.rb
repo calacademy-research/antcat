@@ -27,7 +27,7 @@ module References
             expanded_reference_cache: nil
           )
 
-          References::Cache::Invalidate[reference.nestees]
+          References::Cache::Invalidate[reference.nested_references]
         end
     end
   end
