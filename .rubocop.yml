@@ -255,6 +255,10 @@ Rails/SkipsModelValidations:
   Exclude:
     - 'lib/tasks/**/*.rake'
     - 'spec/**/*'
+  AllowedMethods:
+    - update_all
+    - update_column
+    - update_columns
 
 Rails/UnknownEnv:
   Environments:
