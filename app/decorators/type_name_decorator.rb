@@ -38,6 +38,7 @@ class TypeNameDecorator < Draper::Decorator
     def show_now_prefix?
       return false if most_recent_before_now_taxon == taxon
       return false if most_recent_before_now_taxon == taxon.now_taxon
+
       true
     end
 

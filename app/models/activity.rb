@@ -91,6 +91,7 @@ class Activity < ApplicationRecord
     def execute_script_activity user, edit_summary
       raise "You must assign a user." unless user
       raise "You must include an edit summary." unless edit_summary
+
       create!(trackable: nil, event: Activity::EXECUTE_SCRIPT, user: user, edit_summary: edit_summary)
     end
     # :nocov:
@@ -99,6 +100,7 @@ class Activity < ApplicationRecord
   def pagination_page activities
     index = activities.where("id > ?", id).count
     per_page = self.class.per_page
+
     (index + per_page) / per_page
   end
 end

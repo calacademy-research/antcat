@@ -13,6 +13,7 @@ module Taxa
              when Infrasubspecies   then taxon.subspecies
              end
       return unless base
+
       base.name.name + ' '
     end
   end

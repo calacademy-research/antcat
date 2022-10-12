@@ -116,6 +116,7 @@ class Taxon < ApplicationRecord
   def author_citation
     citation = authorship_reference.key_with_year
     return citation unless is_a?(SpeciesGroupTaxon) && recombination?
+
     '('.html_safe + citation + ')'
   end
 
@@ -179,6 +180,7 @@ class Taxon < ApplicationRecord
     def validate_current_taxon_rank
       return unless current_taxon
       return if Rank.group_rank(type) == Rank.group_rank(current_taxon.type)
+
       errors.add :current_taxon, "must be of same rank as taxon"
     end
 

@@ -38,6 +38,7 @@ class Feedback < ApplicationRecord
 
     def comment_has_not_previously_been_submitted
       return unless self.class.where(comment: comment).exists?
+
       errors.add :comment, <<~MSG
         has already been submitted. If it is unlikely that the exact comment has already
         been submitted, please let us know. Either way, we got your feedback, thanks!.

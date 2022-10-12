@@ -131,6 +131,7 @@ class Reference < ApplicationRecord
     def ensure_bolton_key_unique
       return unless bolton_key
       return unless (conflict = self.class.where(bolton_key: bolton_key).where.not(id: id).first)
+
       errors.add :bolton_key, "Bolton key has already been taken by #{conflict.decorate.link_to_reference}."
     end
 

@@ -70,6 +70,7 @@ class User < ApplicationRecord
   def remaining_edits_for_unconfirmed_user
     edit_count = activities.where(created_at: UNCONFIRMED_USER_EDIT_LIMIT_PERIOD.ago..Time.current).count
     raise "unconfirmed user #{id} has negative remaining edits" if edit_count > UNCONFIRMED_USER_EDIT_LIMIT_COUNT
+
     UNCONFIRMED_USER_EDIT_LIMIT_COUNT - edit_count
   end
 

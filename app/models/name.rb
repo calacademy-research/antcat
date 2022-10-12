@@ -113,6 +113,7 @@ class Name < ApplicationRecord
 
     def set_epithet
       return unless name
+
       last_name_part = name.split.last
       self[:epithet] = if is_a?(SubgenusName)
                          last_name_part.tr('()', '')

@@ -84,6 +84,7 @@ class ApplicationController < ActionController::Base
     def recaptcha_v3_valid? token, recaptcha_action
       return true unless Settings.recaptcha.enabled
       return true if current_user
+
       VerifyRecaptchaV3[token, recaptcha_action]
     end
 end

@@ -168,6 +168,7 @@ class HistoryItem < ApplicationRecord
     def reference_and_pages_both_blank_or_present?
       return true if reference && pages
       return true if !reference && !pages
+
       false
     end
 end

@@ -10,6 +10,7 @@ module Markdowns
 
     def call
       return unless content
+
       rendered = Markdowns::Render[content.dup]
       strip_wrapping_p(rendered).html_safe
     end
