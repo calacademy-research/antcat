@@ -29,7 +29,7 @@ describe Reference do
     it { is_expected.to validate_inclusion_of(:review_state).in_array(Reference::REVIEW_STATES) }
     it { is_expected.not_to allow_value(nil).for(:review_state) }
 
-    describe '`bolton_key` uniqueness' do
+    describe '#bolton_key uniqueness validation' do
       let!(:conflict) { create :any_reference, bolton_key: 'Batiatus 2000' }
       let!(:duplicate) { create :any_reference }
 

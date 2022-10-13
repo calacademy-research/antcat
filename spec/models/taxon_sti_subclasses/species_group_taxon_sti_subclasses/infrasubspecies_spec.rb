@@ -18,7 +18,7 @@ describe Infrasubspecies do
     it { is_expected.to validate_absence_of(:tribe_id) }
     it { is_expected.to validate_absence_of(:subgenus_id) }
 
-    describe '#rank`' do
+    describe '#rank validations' do
       subject(:taxon) { create :infrasubspecies }
 
       it { is_expected.not_to allow_value(Status::VALID).for(:status).with_message("is not allowed for rank.") }

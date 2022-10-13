@@ -17,7 +17,7 @@ describe HistoryItem, :relational_hi do
         in_array(Rank::AntCatSpecific::TYPE_SPECIFIC_HISTORY_ITEM_TYPES).allow_nil
     end
 
-    describe '#object_protonym_id' do
+    describe '#object_protonym_id validations' do
       let(:history_item) { build_stubbed :history_item, :junior_synonym_of }
 
       it 'cannot refer to its own protonym in `object_protonym_id`' do
@@ -28,7 +28,7 @@ describe HistoryItem, :relational_hi do
       end
     end
 
-    describe '#pages' do
+    describe '#pages validations' do
       subject(:history_item) { build_stubbed :history_item, :junior_synonym_of }
 
       let(:format_error_message) { "cannot contain: ; < > { }" }
@@ -59,7 +59,7 @@ describe HistoryItem, :relational_hi do
       end
     end
 
-    describe '#text_value' do
+    describe '#text_value validations' do
       subject(:history_item) { build_stubbed :history_item, :form_descriptions }
 
       let(:format_error_message) { "cannot contain: ; { }" }

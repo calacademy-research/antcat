@@ -6,7 +6,7 @@ describe TypeName do
   it { is_expected.to be_versioned }
 
   describe 'validations' do
-    describe '#fixation_method' do
+    describe '#fixation_method validations' do
       subject(:type_name) { build_stubbed :type_name }
 
       it do
