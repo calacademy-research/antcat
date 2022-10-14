@@ -209,11 +209,15 @@ describe HistoryPresenter, :relational_hi do
       end
 
       context 'with unparsable reference dates' do
-        let(:reference_1) { create :any_reference, year: 2001, date: '20010600<' }
+        let(:reference_1) { create :any_reference, year: 2001 }
         let(:reference_2) { create :any_reference, year: 2001, date: '20010100' }
 
         let!(:item_1) { create :history_item, :form_descriptions, protonym: protonym, reference: reference_1 }
         let!(:item_2) { create :history_item, :form_descriptions, protonym: protonym, reference: reference_2 }
+
+        before do
+          reference_1.update_columns(date: '20010600<')
+        end
 
         it 'positions unparasable dates first' do
           expect(presenter.grouped_items.map(&:taxt)).to eq [
