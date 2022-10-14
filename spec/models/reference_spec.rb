@@ -27,7 +27,7 @@ describe Reference do
     it { is_expected.not_to allow_value('A').for(:year_suffix) }
 
     describe '#date validations' do
-      # TODO: We want to replace the below `describe` with this.
+      # TODO: We want to replace the below `describe` with this after clearing `ReferencesWithInvalidDates`.
       # let!(:reference) { build_stubbed :any_reference }
       #
       # specify do

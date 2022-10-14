@@ -19,6 +19,14 @@ class ReferenceDateFormatValidator < ActiveModel::EachValidator
     \Z
   /x
 
+  MYSQL_OPTIONAL_DATE_PARTS = %w[
+    [0-9][0-9]
+    [0-9][0-9][0-9][0-9]
+    -[0-9][0-9]
+    -[0-9][0-9]-[0-9][0-9]
+  ]
+  VALID_FORMAT_REGEX_MYSQL = "^[0-9][0-9][0-9][0-9](#{MYSQL_OPTIONAL_DATE_PARTS.join('|')})?[?]?$"
+
   def validate_each record, attribute, value
     return if value.nil? || valid_format?(value)
 
