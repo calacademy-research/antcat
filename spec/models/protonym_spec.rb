@@ -16,7 +16,7 @@ describe Protonym do
   end
 
   describe 'validations' do
-    describe "#bioregion" do
+    describe "#bioregion validations" do
       it do
         expect(build_stubbed(:protonym)).to validate_inclusion_of(:bioregion).
           in_array(described_class::BIOREGIONS).allow_nil
@@ -47,7 +47,7 @@ describe Protonym do
       end
     end
 
-    describe "#forms" do
+    describe "#forms validations" do
       context 'when protonym is above species rank' do
         let(:protonym) { build_stubbed :protonym, :genus_group }
 
@@ -61,7 +61,7 @@ describe Protonym do
       end
     end
 
-    describe "#locality" do
+    describe "#locality validations" do
       context 'when protonym is above species rank' do
         let(:protonym) { build_stubbed :protonym, :genus_group }
 
@@ -75,7 +75,7 @@ describe Protonym do
       end
     end
 
-    describe "#gender_agreement_type" do
+    describe "#gender_agreement_type validations" do
       it do
         expect(build_stubbed(:protonym, :species_group)).
           to validate_inclusion_of(:gender_agreement_type).
@@ -95,7 +95,7 @@ describe Protonym do
       end
     end
 
-    describe "#ichnotaxon" do
+    describe "#ichnotaxon validations" do
       context 'when protonym is not fossil' do
         let(:protonym) { build_stubbed :protonym }
 

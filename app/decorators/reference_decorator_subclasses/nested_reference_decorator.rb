@@ -3,7 +3,7 @@
 class NestedReferenceDecorator < ReferenceDecorator
   delegate :nesting_reference
 
-  # Fall back to nesting reference's PDF is nestee does not have one.
+  # Fall back to nesting reference's PDF if nested does not have one.
   def pdf_link
     return nesting_reference_pdf_link unless reference.downloadable?
     h.external_link_to 'PDF', reference.routed_url

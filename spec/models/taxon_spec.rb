@@ -23,14 +23,14 @@ describe Taxon do
   end
 
   describe 'validations' do
-    describe '#status' do
+    describe '#status validations' do
       subject(:taxon) { build_stubbed :any_taxon }
 
       it { is_expected.to validate_inclusion_of(:status).in_array(Status::STATUSES) }
       it { is_expected.not_to allow_value(nil).for(:status) }
     end
 
-    describe "#homonym_replaced_by" do
+    describe "#homonym_replaced_by validations" do
       context 'when taxon is a homonym' do
         let(:taxon) { build_stubbed :any_taxon, :homonym }
 
@@ -54,7 +54,7 @@ describe Taxon do
       end
     end
 
-    describe "#unresolved_homonym" do
+    describe "#unresolved_homonym validations" do
       context 'when taxon is a homonym' do
         let(:taxon) { build_stubbed :any_taxon, :unresolved_homonym }
 
@@ -67,7 +67,7 @@ describe Taxon do
       end
     end
 
-    describe "#collective_group_name" do
+    describe "#collective_group_name validations" do
       context 'when taxon is not fossil' do
         let(:taxon) { build_stubbed :any_taxon }
 

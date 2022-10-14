@@ -2,8 +2,7 @@
 
 module TooltipHelper
   def db_tooltip_icon key, scope:
-    tooltip = Tooltip.find_by(key: key, scope: scope)
-    return new_db_tooltip(key, scope) unless tooltip
+    return new_db_tooltip(key, scope) unless (tooltip = Tooltip.find_by(key: key, scope: scope))
     link_to tooltip_icon(tooltip.text), tooltip
   end
 

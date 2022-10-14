@@ -15,81 +15,83 @@ describe AuthorName do
     it { is_expected.to validate_presence_of :name }
     it { is_expected.to validate_length_of(:name).is_at_least(described_class::NAME_MIN_LENGTH) }
 
-    describe 'allowed formats' do
-      it 'allows single-word names' do
-        is_expected.to allow_value('CSIRO').for(:name)
+    describe '#name validations' do
+      describe 'allowed formats' do
+        it 'allows single-word names' do
+          is_expected.to allow_value('CSIRO').for(:name)
+        end
+
+        it 'allows hyphenated first and last names' do
+          is_expected.to allow_value('Kim, J.-H.').for(:name)
+          is_expected.to allow_value('Abdul-Rassoul, M. S.').for(:name)
+        end
+
+        it 'allows more than one last names' do
+          is_expected.to allow_value('Baroni Urbani, C.').for(:name)
+        end
+
+        it 'allows prefixes, prepositions and nobiliary particles' do
+          is_expected.to allow_value('Silva, R. R. da').for(:name)
+          is_expected.to allow_value('da Silva, R. R.').for(:name)
+          is_expected.to allow_value('Feitosa, R. dos S. M.').for(:name)
+          is_expected.to allow_value('do Nascimento, I. C.').for(:name)
+
+          is_expected.to allow_value('Frauenfeld, G. R. von').for(:name)
+          is_expected.to allow_value('von Aesch, L.').for(:name)
+          is_expected.to allow_value('Boven, J. K. A. van').for(:name)
+
+          is_expected.to allow_value('St. Romain, M. K.').for(:name)
+        end
+
+        it 'allows suffixes (including comma before the suffix)' do
+          is_expected.to allow_value('Morrison, W. R., III').for(:name)
+          is_expected.to allow_value('Watkins, J. F., II').for(:name)
+
+          is_expected.to allow_value('Cresson, E. T. Sr.').for(:name)
+          is_expected.to allow_value('Arnaud, P. H., Jr.').for(:name)
+        end
+
+        it 'only allows no comma or a single comma (excluding allowed suffixes)' do
+          error_message = "can only contain a single comma " \
+            "(excluding allowed suffixes: #{described_class::ALLOWED_SUFFIXES.join(', ')})"
+
+          is_expected.not_to allow_value('Author, A., Pizza').for(:name).with_message(error_message)
+        end
       end
 
-      it 'allows hyphenated first and last names' do
-        is_expected.to allow_value('Kim, J.-H.').for(:name)
-        is_expected.to allow_value('Abdul-Rassoul, M. S.').for(:name)
-      end
+      describe 'allowed characters' do
+        it 'allows diacritics, apostrophes and hyphens' do
+          is_expected.to allow_value('André, Edm.').for(:name)
+          is_expected.to allow_value('Depa, Ł.').for(:name)
 
-      it 'allows more than one last names' do
-        is_expected.to allow_value('Baroni Urbani, C.').for(:name)
-      end
+          is_expected.to allow_value("O'Donnell, S.").for(:name)
+          is_expected.to allow_value('Israel Kamakawiwoʻole').for(:name)
+          is_expected.to allow_value('Kim, J.-H.').for(:name)
+        end
 
-      it 'allows prefixes, prepositions and nobiliary particles' do
-        is_expected.to allow_value('Silva, R. R. da').for(:name)
-        is_expected.to allow_value('da Silva, R. R.').for(:name)
-        is_expected.to allow_value('Feitosa, R. dos S. M.').for(:name)
-        is_expected.to allow_value('do Nascimento, I. C.').for(:name)
+        # TODO: Probably do not allow this.
+        # To find them, update validation and run: `MODELS_TO_CHECK=AuthorName rake ac:ir`.
+        it 'allows Unicode Mark diacritics' do
+          is_expected.to allow_value("Guénard, B.").for(:name)
+        end
 
-        is_expected.to allow_value('Frauenfeld, G. R. von').for(:name)
-        is_expected.to allow_value('von Aesch, L.').for(:name)
-        is_expected.to allow_value('Boven, J. K. A. van').for(:name)
+        it 'does not allow digits or weird characters' do
+          error_message = "contains unsupported characters"
 
-        is_expected.to allow_value('St. Romain, M. K.').for(:name)
-      end
+          is_expected.not_to allow_value('Author1, A.').for(:name).with_message(error_message)
+          is_expected.not_to allow_value('Author; A.').for(:name).with_message(error_message)
+          is_expected.not_to allow_value('Author, A. & Author, B.').for(:name).with_message(error_message)
+        end
 
-      it 'allows suffixes (including comma before the suffix)' do
-        is_expected.to allow_value('Morrison, W. R., III').for(:name)
-        is_expected.to allow_value('Watkins, J. F., II').for(:name)
+        it 'only allows commas if followed by a space' do
+          is_expected.not_to allow_value('Author,A.').for(:name).
+            with_message("cannot contain commas not followed by a space")
+        end
 
-        is_expected.to allow_value('Cresson, E. T. Sr.').for(:name)
-        is_expected.to allow_value('Arnaud, P. H., Jr.').for(:name)
-      end
-
-      it 'only allows no comma or a single comma (excluding allowed suffixes)' do
-        error_message = "can only contain a single comma " \
-          "(excluding allowed suffixes: #{described_class::ALLOWED_SUFFIXES.join(', ')})"
-
-        is_expected.not_to allow_value('Author, A., Pizza').for(:name).with_message(error_message)
-      end
-    end
-
-    describe 'allowed characters' do
-      it 'allows diacritics, apostrophes and hyphens' do
-        is_expected.to allow_value('André, Edm.').for(:name)
-        is_expected.to allow_value('Depa, Ł.').for(:name)
-
-        is_expected.to allow_value("O'Donnell, S.").for(:name)
-        is_expected.to allow_value('Israel Kamakawiwoʻole').for(:name)
-        is_expected.to allow_value('Kim, J.-H.').for(:name)
-      end
-
-      # TODO: Probably do not allow this.
-      # To find them, update validation and run: `MODELS_TO_CHECK=AuthorName rake ac:ir`.
-      it 'allows Unicode Mark diacritics' do
-        is_expected.to allow_value("Guénard, B.").for(:name)
-      end
-
-      it 'does not allow digits or weird characters' do
-        error_message = "contains unsupported characters"
-
-        is_expected.not_to allow_value('Author1, A.').for(:name).with_message(error_message)
-        is_expected.not_to allow_value('Author; A.').for(:name).with_message(error_message)
-        is_expected.not_to allow_value('Author, A. & Author, B.').for(:name).with_message(error_message)
-      end
-
-      it 'only allows commas if followed by a space' do
-        is_expected.not_to allow_value('Author,A.').for(:name).
-          with_message("cannot contain commas not followed by a space")
-      end
-
-      it 'does not allow consecutive spaces' do
-        is_expected.not_to allow_value('Author,   A.').for(:name).
-          with_message("cannot contain consecutive spaces")
+        it 'does not allow consecutive spaces' do
+          is_expected.not_to allow_value('Author,   A.').for(:name).
+            with_message("cannot contain consecutive spaces")
+        end
       end
     end
 

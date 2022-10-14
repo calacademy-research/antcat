@@ -25,6 +25,7 @@ module References
 
         id = params[:reference_q].strip
         return unless id =~ /^\d+$/ && Reference.exists?(id.to_i)
+
         redirect_to reference_path(id)
       end
   end

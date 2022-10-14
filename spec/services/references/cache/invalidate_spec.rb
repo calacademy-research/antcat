@@ -17,21 +17,21 @@ describe References::Cache::Invalidate do
       expect(reference.expanded_reference_cache).to eq nil
     end
 
-    context "when reference has nestees" do
-      let!(:nestee) { create :nested_reference, nesting_reference: reference }
+    context "when reference has nested references" do
+      let!(:nested_reference) { create :nested_reference, nesting_reference: reference }
 
-      it "nilifies caches for its nestees" do
-        expect(reference.reload.nestees).to eq [nestee]
+      it "nilifies caches for its nested references" do
+        expect(reference.reload.nested_references).to eq [nested_reference]
 
-        References::Cache::Regenerate[nestee]
-        expect(nestee.plain_text_cache).not_to eq nil
-        expect(nestee.expanded_reference_cache).not_to eq nil
+        References::Cache::Regenerate[nested_reference]
+        expect(nested_reference.plain_text_cache).not_to eq nil
+        expect(nested_reference.expanded_reference_cache).not_to eq nil
 
         described_class[reference]
-        nestee.reload
+        nested_reference.reload
 
-        expect(nestee.plain_text_cache).to eq nil
-        expect(nestee.expanded_reference_cache).to eq nil
+        expect(nested_reference.plain_text_cache).to eq nil
+        expect(nested_reference.expanded_reference_cache).to eq nil
       end
     end
   end

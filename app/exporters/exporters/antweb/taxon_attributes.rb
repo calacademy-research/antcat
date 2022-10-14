@@ -79,6 +79,7 @@ module Exporters
 
         def current_valid_parent
           return unless taxon.parent
+
           parent = taxon.parent.is_a?(Subgenus) ? taxon.parent.parent : taxon.parent
           parent.current_taxon || parent
         end

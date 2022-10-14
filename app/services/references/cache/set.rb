@@ -11,7 +11,7 @@ module References
         return value unless reference.persisted?
         return value if already_up_to_date?
 
-        reference.update_column(column, value) # rubocop:disable Rails/SkipsModelValidations
+        reference.update_column(column, value)
         value
       end
 

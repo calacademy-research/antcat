@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "strip_attributes/matchers"
+require 'strip_attributes/matchers'
 
 RSpec::Expectations.configuration.warn_about_potential_false_positives = false
 

@@ -9,6 +9,7 @@ module References
     def call
       return unless reference_date
       return reference_date if reference_date.size < 4
+
       format_date
     end
 

@@ -25,10 +25,10 @@
 # `Reference.last.ll.open` = launch web browser (xdg-open) and open last reference on localhost
 # `Reference.limit(3).llo` = open first 3 references on localhost
 
-require_relative "dev_monkey_patches/antcat"
-require_relative "dev_monkey_patches/array"
-require_relative "dev_monkey_patches/object"
-require_relative "dev_monkey_patches/rails"
+require_relative 'dev_monkey_patches/antcat'
+require_relative 'dev_monkey_patches/array'
+require_relative 'dev_monkey_patches/object'
+require_relative 'dev_monkey_patches/rails'
 
 module DevMonkeyPatches
   def self.enable

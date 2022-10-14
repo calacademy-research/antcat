@@ -2,7 +2,7 @@
 
 desc "List interesting tasks and commands (AntCat, AntWeb, Solr, etc.)"
 task :antcat do
-  puts "### Various commands".green
+  puts "### Dev commands".green
   puts <<~STR
     ./bin/dev
     ./bin/webpack-dev-server
@@ -30,7 +30,7 @@ task :antcat do
   puts "## Interesting rake tasks".green
   rake_tasks = `rake -T`.lines
 
-  puts "### Default/vendored tasks".green
+  puts "### Default/vendored".blue
   prefixes = [
     'assets:clean',
     'assets:clobber',
@@ -41,16 +41,58 @@ task :antcat do
   puts rake_tasks.grep(/^rake #{Regexp.union(prefixes)}/)
   puts
 
-  puts "### Custom tasks".green
+  puts "### Data export".blue
   prefixes = [
-    'antcat:',
-    'antweb',
+    'antweb:export'
+  ]
+  puts rake_tasks.grep(/^rake #{Regexp.union(prefixes)}/)
+  puts
+
+  puts "### Data consistency".blue
+  prefixes = [
+    'antcat:invalid_records',
+    'antcat:references:check_content_caches',
+    'antcat:references:check_key_caches',
+    'antcat:references:solr_search_test',
+    'antcat:tooltips:missing',
+    'antcat:tooltips:unused'
+  ]
+  puts rake_tasks.grep(/^rake #{Regexp.union(prefixes)}/)
+  puts
+
+  puts "### Invalidate/regenerate caches".blue
+  prefixes = [
+    'antcat:references:invalidate_content_caches',
+    'antcat:references:regenerate_content_caches',
+    'antcat:references:regenerate_key_caches'
+  ]
+  puts rake_tasks.grep(/^rake #{Regexp.union(prefixes)}/)
+  puts
+
+  puts "### Testing/linting/coverage".blue
+  prefixes = [
+    'antcat:coverage',
+    'antcat:rubycritic',
+    'factory_bot:lint',
+    'test[^:]',
+    'test[^:]'
+  ]
+  puts rake_tasks.grep(/^rake #{Regexp.union(prefixes)}/)
+  puts
+
+  puts "### Dev data".blue
+  prefixes = [
     'db:import_latest',
-    'factory_bot',
-    'logged',
-    'seed:',
-    /test[^:]/,
-    /lint[^:]/
+    'db:import_latest_quick',
+    'seed:catalog',
+    'seed:relational_history_items'
+  ]
+  puts rake_tasks.grep(/^rake #{Regexp.union(prefixes)}/)
+  puts
+
+  puts "### Misc.".blue
+  prefixes = [
+    'logged'
   ]
   puts rake_tasks.grep(/^rake #{Regexp.union(prefixes)}/)
   puts

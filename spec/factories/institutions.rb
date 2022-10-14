@@ -9,5 +9,9 @@ FactoryBot.define do
       abbreviation { 'CASC' }
       name { 'California Academy of Sciences' }
     end
+
+    trait :with_grscicoll_identifier do
+      grscicoll_identifier { "institution/#{SecureRandom.uuid}" }
+    end
   end
 end

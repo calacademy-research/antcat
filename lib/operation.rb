@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require_relative "operation/context"
-require_relative "operation/errors"
-require_relative "operation/results"
+require_relative 'operation/context'
+require_relative 'operation/errors'
+require_relative 'operation/results'
 
 module Operation
   Failure = Class.new(StandardError)

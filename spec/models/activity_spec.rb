@@ -9,7 +9,7 @@ describe Activity do
     it { is_expected.to validate_inclusion_of(:event).in_array(Activity::EVENTS) }
     it { is_expected.not_to allow_value(nil).for(:event) }
 
-    describe '#user' do
+    describe '#user validations' do
       context 'with `trackable_type` that requires a user' do
         subject { build :activity, trackable: trackable }
 

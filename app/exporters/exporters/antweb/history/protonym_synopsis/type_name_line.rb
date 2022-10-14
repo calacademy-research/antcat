@@ -24,6 +24,7 @@ module Exporters
 
             def type_name_and_taxt
               return ''.html_safe unless (type_name = protonym.type_name)
+
               type_name_decorated = type_name.decorate
 
               string = type_name_decorated.format_rank

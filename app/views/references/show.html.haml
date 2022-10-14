@@ -113,13 +113,13 @@
             %th Nested in
             %td=@reference.nesting_reference.decorate.link_to_reference
 
-        -if @reference.nestees.present?
+        -if @reference.nested_references.present?
           %tr
             %th Nested references
             %td
               %ul.no-bullet
-                -@reference.nestees.each do |nestee|
-                  %li=nestee.decorate.link_to_reference
+                -@reference.nested_references.each do |nested_reference|
+                  %li=nested_reference.decorate.link_to_reference
         -if @reference.doi?
           %tr
             %th DOI
@@ -152,7 +152,7 @@
       .small-12.columns
         .callout.no-border-callout.logged-in-only-background
           %h5 Citations
-          %small Note: nestees of this reference are not included here.
+          %small Note: nested references of this reference are not included here.
 
           %table
             %thead
@@ -195,7 +195,7 @@
   .row.margin-bottom
     .small-12.columns
       %h5 Taxa originally described in this reference (including combinations)
-      %small Note: taxa described in nestees of this reference are not included here.
+      %small Note: taxa described in nested references of this reference are not included here.
       %table
         %thead
           %th Taxon

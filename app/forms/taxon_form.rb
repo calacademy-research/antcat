@@ -21,6 +21,7 @@ class TaxonForm
     taxon.attributes = params
 
     return false if invalid?
+
     persist!
   end
 

@@ -22,6 +22,7 @@ module Names
       end
 
       ####################
+
       def declensions
         first_declension_nominative_singular +
           first_declension_genitive_singular +
@@ -48,10 +49,12 @@ module Names
       def decline stem, endings
         endings_regexp = '(' + endings.join('|') + ')'
         return [] unless /#{stem}#{endings_regexp}$/.match?(epithet)
+
         endings.map { |ending| epithet.gsub(/(#{stem})#{endings_regexp}$/, "\\1#{ending}") }
       end
 
       ####################
+
       def orthographic
         ae_and_e + p_and_ph + v_and_w
       end
@@ -59,6 +62,7 @@ module Names
       def ae_and_e
         epithets = []
         consonants = "(?:[#{CONSONANTS}][ei]?|qu)"
+
         epithets << epithet.gsub(/(#{consonants})e(#{consonants})/) do |string|
           if ['ter', 'del'].include? string
             string
@@ -66,9 +70,11 @@ module Names
             Regexp.last_match(1) + 'ae' + Regexp.last_match(2)
           end
         end
+
         epithets << epithet.gsub(/(#{consonants})ae(#{consonants})/) do |_string|
           Regexp.last_match(1) + 'e' + Regexp.last_match(2)
         end
+
         epithets
       end
 
@@ -87,17 +93,20 @@ module Names
       end
 
       ####################
+
       def deemed_identical
         epithets = []
-        if ends_with epithet, 'i'
+
+        if ends_with?(epithet, 'i')
           epithets << replace_ending(epithet, 'i', 'ii')
-        elsif ends_with epithet, 'ii'
+        elsif ends_with?(epithet, 'ii')
           epithets << replace_ending(epithet, 'ii', 'i')
         end
+
         epithets
       end
 
-      def ends_with epithet, ending
+      def ends_with? epithet, ending
         epithet =~ /[#{CONSONANTS}]#{ending}$/
       end
 

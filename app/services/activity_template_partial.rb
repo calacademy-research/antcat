@@ -32,6 +32,7 @@ class ActivityTemplatePartial
     def partial_for_trackable_type
       underscored_trackable_type = trackable_type.underscore
       return unless partial_exists?("#{TEMPLATES_PATH}_#{underscored_trackable_type}")
+
       underscored_trackable_type
     end
 
