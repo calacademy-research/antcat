@@ -4,7 +4,7 @@ module DatabaseScripts
   module Tagging
     SECTIONS = [
       UNGROUPED_SECTION = "ungrouped",
-      MAIN_SECTION = "main",
+      MISC_SECTION = "misc",
       MISSING_TAGS_SECTION = "missing-tags",
       DISAGREEING_HISTORY_SECTION = "disagreeing-history",
       CODE_CHANGES_REQUIRED_SECTION = "code-changes-required",
