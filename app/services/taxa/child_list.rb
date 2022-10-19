@@ -12,12 +12,11 @@ module Taxa
     end
 
     def call
-      if taxon.is_a?(::Family)
+      case taxon
+      when Family
         child_list(taxon.subfamilies)
         child_list(taxon.genera_incertae_sedis_in, incertae_sedis_in: true)
-      end
-
-      if taxon.is_a?(::Subfamily)
+      when Subfamily
         child_list(taxon.tribes)
         child_list(taxon.genera_incertae_sedis_in, incertae_sedis_in: true)
         child_list(taxon.collective_group_names, collective_group_names: true)

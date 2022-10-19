@@ -4,6 +4,7 @@ info:
   version: "1.8.2"
   title: AntCat REST API
   description: Read only API to access antcat.org
+  # TODO: This shows up as "Created by Brian Fisher ... Contact the developer" but credit should go to Joe Russack.
   contact:
     name: Brian Fisher
     email: bfisher@calacademy.org
@@ -764,15 +765,15 @@ definitions:
         type: string
         description: Level of name
         enum:
+          - FamilyName
+          - SubfamilyName
+          - TribeName
           - SubtribeName
           - GenusName
-          - SpeciesName
-          - TribeName
-          - SubfamilyName
           - SubgenusName
+          - SpeciesName
           - SubspeciesName
           - InfrasubspeciesName
-          - SubtribeName
       name:
         type: string
         description: Plain text name
