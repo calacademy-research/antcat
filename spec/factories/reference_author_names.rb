@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# TODO: This creates two `ReferenceAuthorName`; one additional for the reference.
+# TODO: This creates two `ReferenceAuthorName`s (one additional in the reference factory).
 
 FactoryBot.define do
   factory :reference_author_name do

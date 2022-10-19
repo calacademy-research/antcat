@@ -46,7 +46,6 @@ module DatabaseScripts
         end.join('<br>')
       end
 
-      # TODO: Get rid of this.
       def quick_fix_link taxon, protonym
         return cannot_quick_fix('incompatible ranks [case B]') unless taxon.name.class == protonym.name.class
 

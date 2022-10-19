@@ -139,7 +139,7 @@ class Name < ApplicationRecord
     end
 
     # TODO: Uuhhh. See what to do here and with other validations. There should not be any taxa with names that
-    # are `names.non_conforming` once the data has been cleaned up (since all `Taxon`s should have moden names).
+    # are `names.non_conforming` once the data has been cleaned up (since all `Taxon`s should have modern names).
     def ensure_identified_name_type_matches
       return if name.blank? || non_conforming?
       return unless (identified_name_type = Names::IdentifyNameType[name])

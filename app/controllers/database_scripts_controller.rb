@@ -36,7 +36,6 @@ class DatabaseScriptsController < ApplicationController
         sort_by { |section, _scripts| DatabaseScripts::Tagging::SECTIONS_SORT_ORDER.index(section) || 0 }
     end
 
-    # TODO: Unify `params[:view]` and `params[:tag]`.
     def database_scripts_scope
       @_database_scripts_scope ||= if params[:view] == NON_EMPTY_REGRESSION_TESTS
                                      DatabaseScript.non_empty_regression_tests
@@ -57,7 +56,6 @@ class DatabaseScriptsController < ApplicationController
       params[:view].in?([CHECK_IF_EMPTY, NON_EMPTY_REGRESSION_TESTS])
     end
 
-    # TODO: Probably move from controller and wrap in a renderer.
     def timed_render database_script
       start = Time.current
       rendered = DatabaseScripts::Render.new(database_script, render_options).call
