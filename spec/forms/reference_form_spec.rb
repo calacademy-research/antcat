@@ -11,7 +11,6 @@ describe ReferenceForm do
       let(:params) do
         {
           author_names_string: reference.author_names_string,
-          journal_name: reference.journal.name,
           bolton_key: "Smith 1858b"
         }
       end
@@ -37,6 +36,24 @@ describe ReferenceForm do
         specify do
           expect { described_class.new(reference, params).save }.
             to change { reference.reload.journal }.to(new_journal)
+        end
+      end
+
+      context 'when journal (`journal_name`) is blanked (empty string)' do
+        let(:params) do
+          {
+            author_names_string: reference.author_names_string,
+            journal_name: ""
+          }
+        end
+
+        it "promotes validation errors" do
+          reference_form = described_class.new(reference, params)
+
+          expect(reference_form.save).to eq nil
+
+          reference_form.collect_errors
+          expect(reference_form.errors[:base]).to include "Journal: Name can't be blank"
         end
       end
 
@@ -80,8 +97,7 @@ describe ReferenceForm do
       context "when author names have not changed" do
         let(:params) do
           {
-            author_names_string: reference.author_names_string,
-            journal_name: reference.journal.name
+            author_names_string: reference.author_names_string
           }
         end
 
@@ -107,7 +123,6 @@ describe ReferenceForm do
           let(:params) do
             {
               author_names_string: reference.author_names_string,
-              journal_name: reference.journal.name,
               bolton_key: "Smith 1858b"
             }
           end
@@ -124,7 +139,6 @@ describe ReferenceForm do
           let(:params) do
             {
               author_names_string: "Batiatus, B.; Glaber, G.",
-              journal_name: reference.journal.name,
               bolton_key: "Smith 1858b"
             }
           end
@@ -156,14 +170,12 @@ describe ReferenceForm do
           let(:reversed_author_names_string) { 'Glaber, G.; Batiatus, B.' }
           let(:reverse_authors_params) do
             {
-              author_names_string: reversed_author_names_string,
-              journal_name: reference.journal.name
+              author_names_string: reversed_author_names_string
             }
           end
           let(:restore_authors_params) do
             {
-              author_names_string: original_author_names_string,
-              journal_name: reference.journal.name
+              author_names_string: original_author_names_string
             }
           end
 
@@ -178,7 +190,6 @@ describe ReferenceForm do
           let(:params) do
             {
               author_names_string: "Batiatus, B.; Glaber, G.; Borgia, C.",
-              journal_name: reference.journal.name,
               bolton_key: "Smith 1858b"
             }
           end
@@ -224,7 +235,6 @@ describe ReferenceForm do
           let(:params) do
             {
               author_names_string: "Batiatus, B.",
-              journal_name: reference.journal.name,
               bolton_key: "Smith 1858b"
             }
           end
@@ -250,7 +260,6 @@ describe ReferenceForm do
           let(:params) do
             {
               author_names_string: "Batiatus, B.",
-              journal_name: reference.journal.name,
               document_attributes: {
                 file: ""
               }
@@ -281,7 +290,6 @@ describe ReferenceForm do
           let(:params) do
             {
               author_names_string: "Batiatus, B.",
-              journal_name: 'Zootaxa',
               document_attributes: {
                 file: File.new(Rails.root.join('spec/fixtures/test_pdf.pdf'))
               }
@@ -307,7 +315,6 @@ describe ReferenceForm do
         let(:params) do
           {
             author_names_string: "Batiatus, B.",
-            journal_name: reference.journal.name,
             title: "Should be updated",
             document_attributes: {
               id: reference.document.id
@@ -337,7 +344,6 @@ describe ReferenceForm do
       let(:params) do
         {
           author_names_string: reference.author_names_string,
-          journal_name: reference.journal.name,
           bolton_key: "Smith & Wesson ,  1858:b"
         }
       end

@@ -109,7 +109,9 @@ class ReferenceForm
     end
 
     def set_journal
-      journal = Journal.find_or_initialize_by(name: params[:journal_name])
+      return unless (journal_name = params[:journal_name])
+
+      journal = Journal.find_or_initialize_by(name: journal_name)
       reference.journal = journal
 
       if journal.invalid?
@@ -118,7 +120,9 @@ class ReferenceForm
     end
 
     def set_publisher
-      place_and_name = Publisher.place_and_name_from_string(params[:publisher_string])
+      return unless (publisher_string = params[:publisher_string])
+
+      place_and_name = Publisher.place_and_name_from_string(publisher_string)
       publisher = Publisher.find_or_initialize_by(place_and_name)
       reference.publisher = publisher
 
