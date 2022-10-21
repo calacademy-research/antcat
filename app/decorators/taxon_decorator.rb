@@ -51,7 +51,7 @@ class TaxonDecorator < Draper::Decorator
   end
 
   def link_to_antweb
-    return if taxon.class.in? [Family, Tribe, Subtribe, Subgenus, Infrasubspecies]
+    return if taxon.class.in?([Family, Tribe, Subtribe, Subgenus, Infrasubspecies])
 
     # Rails' `Hash#to_param` sorts the params, this one doesn't
     query_string = antweb_params.map { |key, value| value.to_query(key) }.compact * '&'

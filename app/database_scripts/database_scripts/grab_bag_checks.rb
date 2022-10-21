@@ -101,7 +101,7 @@ module DatabaseScripts
       def no_harcoded_antcat_org_reference_documents
         {
           title: "No reference documents have hardcoded `antcat.org` URLs",
-          ok?: !ReferenceDocument.where("url LIKE ?", "%antcat\.org%").exists?
+          ok?: !ReferenceDocument.where("url LIKE ?", "%antcat.org%").exists?
         }
       end
   end

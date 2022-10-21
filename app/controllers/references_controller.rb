@@ -17,19 +17,7 @@ class ReferencesController < ApplicationController
   end
 
   def new
-    @reference = if params[:nesting_reference_id]
-                   NestedReference.new(
-                     year: params[:year],
-                     stated_year: params[:stated_year],
-                     pagination: "Pp. XX-XX in:",
-                     nesting_reference_id: params[:nesting_reference_id]
-                   )
-                 elsif params[:reference_to_copy]
-                   reference_to_copy = Reference.find(params[:reference_to_copy])
-                   References::NewFromCopy[reference_to_copy]
-                 else
-                   ArticleReference.new
-                 end
+    @reference = build_new_reference
     @reference_form = ReferenceForm.new(@reference, {})
   end
 
@@ -91,6 +79,22 @@ class ReferencesController < ApplicationController
 
     def reference_params
       params.require(:reference).permit(ReferenceForm::PERMITTED_PARAMS)
+    end
+
+    def build_new_reference
+      if params[:nesting_reference_id]
+        NestedReference.new(
+          year: params[:year],
+          stated_year: params[:stated_year],
+          pagination: "Pp. XX-XX in:",
+          nesting_reference_id: params[:nesting_reference_id]
+        )
+      elsif params[:reference_to_copy]
+        reference_to_copy = Reference.find(params[:reference_to_copy])
+        References::NewFromCopy[reference_to_copy]
+      else
+        ArticleReference.new
+      end
     end
 
     # NOTE: This is so references can be converted between types.

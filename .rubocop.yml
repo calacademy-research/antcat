@@ -216,7 +216,6 @@ Rails/EnvironmentVariableAccess:
 Rails/FreezeTime:
   Enabled: false
 
-# TODO: Maybe enable and use `dependent: nil` for "read-only" associations.
 Rails/HasManyOrHasOneDependent:
   Enabled: false
 
@@ -429,7 +428,6 @@ Style/MethodDefParentheses:
 Style/MultilineBlockChain:
   Enabled: false
 
-# TODO: Disabled for now. Maybe enable.
 Style/MutableConstant:
   Enabled: false
 

@@ -23,6 +23,8 @@ describe NestedReference do
         middle.nesting_reference = top
 
         expect(middle.valid?).to eq false
+        expect(middle.errors.where(:nesting_reference_id).map(&:message)).
+          to include("can't point to itself")
       end
     end
 

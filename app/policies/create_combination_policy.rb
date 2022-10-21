@@ -35,12 +35,10 @@ class CreateCombinationPolicy
       end
     end
 
-    # TODO: Model knowledge, but we don't want it there (we want to remove it).
     def any_unavailable_misspellings?
       taxon.current_taxon_of.where(status: Status::UNAVAILABLE_MISSPELLING).any?
     end
 
-    # TODO: Model knowledge, but we don't want it there (we don't know what we want).
     def any_homonym_replaced_bys?
       Taxon.where(homonym_replaced_by: taxon).any?
     end

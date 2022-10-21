@@ -4,6 +4,7 @@ module DatabaseScripts
   class SpeciesWithGeneraAppearingMoreThanOnceInItsProtonym < DatabaseScript
     def self.record_in_results? taxon
       return false unless taxon.is_a?(Species)
+
       taxon.protonym.taxa.where(type: Rank::SPECIES).
         to_a.count { |t| t.name.genus_epithet == taxon.name.genus_epithet } > 1
     end
@@ -12,6 +13,7 @@ module DatabaseScripts
       dups = Species.joins(:name).
         where.not(status: Status::UNAVAILABLE_MISSPELLING).
         group("protonym_id, SUBSTRING_INDEX(names.name, ' ', 1)").having("COUNT(taxa.id) > 1")
+
       Species.where(protonym_id: dups.select(:protonym_id)).distinct
     end
 

@@ -39,7 +39,6 @@ class DatabaseScript
         all.map(&:decorate).select(&:regression_test?).select(&:empty?).map(&:undecorate)
     end
 
-    # TODO: Indicate record type in scripts.
     def record_in_results? record
       new.results.where(id: record.id).exists?
     end
