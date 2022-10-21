@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# TODO: `described_class` requires a lot of non-required params to be passed in.
-
 require 'rails_helper'
 
 describe ReferenceForm do
@@ -10,7 +8,6 @@ describe ReferenceForm do
       let!(:reference) { create :article_reference }
       let(:params) do
         {
-          author_names_string: reference.author_names_string,
           bolton_key: "Smith 1858b"
         }
       end
@@ -28,7 +25,6 @@ describe ReferenceForm do
         let!(:new_journal) { create :journal }
         let(:params) do
           {
-            author_names_string: reference.author_names_string,
             journal_name: new_journal.name
           }
         end
@@ -42,7 +38,6 @@ describe ReferenceForm do
       context 'when journal (`journal_name`) is blanked (empty string)' do
         let(:params) do
           {
-            author_names_string: reference.author_names_string,
             journal_name: ""
           }
         end
@@ -60,7 +55,6 @@ describe ReferenceForm do
       context 'when journal has not changed' do
         let(:params) do
           {
-            author_names_string: reference.author_names_string,
             journal_name: reference.journal.name
           }
         end
@@ -122,7 +116,6 @@ describe ReferenceForm do
         context "when author names have not changed" do
           let(:params) do
             {
-              author_names_string: reference.author_names_string,
               bolton_key: "Smith 1858b"
             }
           end
@@ -314,7 +307,6 @@ describe ReferenceForm do
       context 'when updating a reference' do
         let(:params) do
           {
-            author_names_string: "Batiatus, B.",
             title: "Should be updated",
             document_attributes: {
               id: reference.document.id
@@ -343,7 +335,6 @@ describe ReferenceForm do
       let!(:reference) { create :article_reference }
       let(:params) do
         {
-          author_names_string: reference.author_names_string,
           bolton_key: "Smith & Wesson ,  1858:b"
         }
       end
@@ -387,7 +378,6 @@ describe ReferenceForm do
     let!(:reference) { create :article_reference }
     let(:params) do
       {
-        author_names_string: reference.author_names_string,
         journal_name: '',
         pagination: ''
       }

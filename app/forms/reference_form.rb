@@ -87,7 +87,7 @@ class ReferenceForm
     # TODO: This needs to be improved, but we want to make author names unique first
     # (w.r.t. case and diacritics) and get rid of `FindOrInitializeNamesFromString`.
     def parse_author_names_string
-      author_names_string = params[:author_names_string]
+      return unless (author_names_string = params[:author_names_string])
       return if author_names_string.strip == reference.author_names_string
 
       author_names = Authors::FindOrInitializeNamesFromString[author_names_string]
