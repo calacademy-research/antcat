@@ -34,8 +34,8 @@ module Taxt
     TRAILING_CITATION = "; #{CITATION}"
     CITATIONS = "#{CITATION}(#{TRAILING_CITATION})*"
 
-    MISSPELLING = "{#{Taxt::MISSPELLING_TAG} (<i>)?[A-Za-z0-9 ä-]+(<\/i>)?}"
-    UNMISSING = "{#{Taxt::UNMISSING_TAG} (<i>)?[A-Za-z]+(<\/i>)?}"
+    MISSPELLING = "{#{Taxt::MISSPELLING_TAG} (<i>)?[A-Za-z0-9 ä-]+(</i>)?}"
+    UNMISSING = "{#{Taxt::UNMISSING_TAG} (<i>)?[A-Za-z]+(</i>)?}"
 
     # See also https://antcat.org/wiki/5
     FORMS = %w[
@@ -241,7 +241,7 @@ module Taxt
         type: X_IN_X_X
       },
       {
-        regex: "^#{TAX_OR_PRO_ISH} <i>incertae sedis<\/i> in #{TAX_OR_PRO_ISH}: #{CITATION}\\.?$",
+        regex: "^#{TAX_OR_PRO_ISH} <i>incertae sedis</i> in #{TAX_OR_PRO_ISH}: #{CITATION}\\.?$",
         name: X_INCERTAE_SEDIS_IN_X,
         type: X_INCERTAE_SEDIS_IN_X
       },
@@ -256,64 +256,64 @@ module Taxt
         type: UNNECESSARY_REPLACEMENT_NAME_FOR__AFTER_FIRST
       },
       {
-        regex: "^Material referred to #{TAX_ISH} by #{CITATIONS}\.?$",
+        regex: "^Material referred to #{TAX_ISH} by #{CITATIONS}.?$",
         name: MATERIAL_REFERRED_TO_BY,
         type: MATERIAL_REFERRED_TO_BY
       },
       {
-        regex: "^Unavailable name; material referred to #{TAX_ISH} by #{CITATIONS}\.?$",
+        regex: "^Unavailable name; material referred to #{TAX_ISH} by #{CITATIONS}.?$",
         name: UNAVAILABLE_NAME_AND_MATERIAL_REFERRED_TO_BY,
         type: UNAVAILABLE_NAME_AND_MATERIAL_REFERRED_TO_BY
       },
       {
-        regex: "^As unavailable \\(infrasubspecific\\) name: #{CITATIONS}\.?$",
+        regex: "^As unavailable \\(infrasubspecific\\) name: #{CITATIONS}.?$",
         name: AS_UNAVAILABLE_INFRASUBSPECIFIC_NAME,
         type: AS_UNAVAILABLE_INFRASUBSPECIFIC_NAME
       },
       {
-        regex: "^Declared as unavailable \\(infrasubspecific\\) name: #{CITATIONS}\.?$",
+        regex: "^Declared as unavailable \\(infrasubspecific\\) name: #{CITATIONS}.?$",
         name: DECLARED_AS_UNAVAILABLE_INFRASUBSPECIFIC_NAME,
         type: DECLARED_AS_UNAVAILABLE_INFRASUBSPECIFIC_NAME
       },
       {
-        regex: "^\\[First available use of #{TAXAC}; unavailable \\(infrasubspecific\\) name\.?\\]$",
+        regex: "^\\[First available use of #{TAXAC}; unavailable \\(infrasubspecific\\) name.?\\]$",
         name: FIRST_AVAILABLE_USE_OF_UNAVAILABLE_INFRASUBSPECIFIC_NAME,
         type: FIRST_AVAILABLE_USE_OF_UNAVAILABLE_INFRASUBSPECIFIC_NAME
       },
       {
-        regex: "^\\[First available use of #{TAXAC}; unavailable \\(infrasubspecific\\) name \\(#{CITATION}\\)\.?\\]$",
+        regex: "^\\[First available use of #{TAXAC}; unavailable \\(infrasubspecific\\) name \\(#{CITATION}\\).?\\]$",
         name: FIRST_AVAILABLE_USE_OF_UNAVAILABLE_INFRASUBSPECIFIC_NAME__WITH_SOURCE,
         type: FIRST_AVAILABLE_USE_OF_UNAVAILABLE_INFRASUBSPECIFIC_NAME__WITH_SOURCE
       },
       {
-        regex: "^\\[#{TAX_OR_PRO_ISH} also described as new by #{CITATION}\.?\\]$",
+        regex: "^\\[#{TAX_OR_PRO_ISH} also described as new by #{CITATION}.?\\]$",
         name: ALSO_DESCRIBED_AS_NEW_BY__GENUS_GROUP,
         type: ALSO_DESCRIBED_AS_NEW_BY__GENUS_GROUP
       },
       {
-        regex: "^\\[Also described as new by #{CITATIONS}\.?\\]$",
+        regex: "^\\[Also described as new by #{CITATIONS}.?\\]$",
         name: ALSO_DESCRIBED_AS_NEW_BY__SPECIES_GROUP,
         type: ALSO_DESCRIBED_AS_NEW_BY__SPECIES_GROUP
       },
       {
-        regex: "^\\[Misspelled as #{MISSPELLING} by #{CITATIONS}\.?\\]$",
+        regex: "^\\[Misspelled as #{MISSPELLING} by #{CITATIONS}.?\\]$",
         name: MISSPELLED_AS_BY,
         type: MISSPELLED_AS_BY
       },
 
       # Deprecated.
       {
-        regex: "^See also: #{CITATIONS}\.?$",
+        regex: "^See also: #{CITATIONS}.?$",
         name: SEE_ALSO,
         type: SEE_ALSO
       },
       {
-        regex: "^Raised to species: #{CITATIONS}\.?$",
+        regex: "^Raised to species: #{CITATIONS}.?$",
         name: RAISED_TO_SPECIES,
         type: RAISED_TO_SPECIES
       },
       {
-        regex: "^Revived status as species: #{CITATIONS}\.?$",
+        regex: "^Revived status as species: #{CITATIONS}.?$",
         name: REVIVED_STATUS_AS_SPECIES,
         type: REVIVED_STATUS_AS_SPECIES
       }
