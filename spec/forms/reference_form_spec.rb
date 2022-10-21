@@ -67,10 +67,8 @@ describe ReferenceForm do
     end
 
     describe "updating author names" do
-      let!(:author_names) { [create(:author_name, name: "Batiatus, B.")] }
-      let!(:reference) { create :article_reference, author_names: author_names }
-
       context "when adding an invalid author name" do
+        let!(:reference) { create :any_reference }
         let(:params) do
           {
             author_names_string: "A"
@@ -89,6 +87,7 @@ describe ReferenceForm do
       end
 
       context "when author names have not changed" do
+        let!(:reference) { create :any_reference }
         let(:params) do
           {
             author_names_string: reference.author_names_string
@@ -96,6 +95,7 @@ describe ReferenceForm do
         end
 
         it "does not create new `AuthorName`s for existing authors" do
+          expect(reference.author_names.present?).to eq true
           expect { described_class.new(reference, params).save }.not_to change { AuthorName.count }
         end
 
@@ -112,136 +112,121 @@ describe ReferenceForm do
         end
       end
 
-      context "when something has changed" do
-        context "when author names have not changed" do
-          let(:params) do
-            {
-              bolton_key: "Smith 1858b"
-            }
-          end
+      context "when an author name have been added" do
+        let!(:author_names) { [create(:author_name, name: "Batiatus, B.")] }
+        let!(:reference) { create :article_reference, author_names: author_names }
 
-          it "creates a single version for the reference" do
-            with_versioning do
-              expect { described_class.new(reference, params).save }.
-                to change { reference.versions.count }.by(1)
-            end
+        let(:params) do
+          {
+            author_names_string: "Batiatus, B.; Glaber, G."
+          }
+        end
+
+        it "creates a single version for the reference" do
+          with_versioning do
+            expect { described_class.new(reference, params).save }.
+              to change { reference.versions.count }.by(1)
           end
         end
 
-        context "when an author name have been added" do
-          let(:params) do
-            {
-              author_names_string: "Batiatus, B.; Glaber, G.",
-              bolton_key: "Smith 1858b"
-            }
-          end
+        it "updates `#author_names_string_cache`" do
+          expect { described_class.new(reference, params).save }.
+            to change { reference.reload.author_names_string_cache }.
+            from('Batiatus, B.').to("Batiatus, B.; Glaber, G.")
+        end
+      end
 
-          it "creates a single version for the reference" do
-            with_versioning do
-              expect { described_class.new(reference, params).save }.
-                to change { reference.versions.count }.by(1)
-            end
-          end
+      describe "reordering author names (regression test)" do
+        let!(:author_names) do
+          [
+            create(:author_name, name: "Batiatus, B."),
+            create(:author_name, name: "Glaber, G.")
+          ]
+        end
+        let!(:reference) { create :article_reference, author_names: author_names }
+        # TODO: Being extra explicit here since the class mutates `params`.
+        let(:original_author_names_string) { 'Batiatus, B.; Glaber, G.' }
+        let(:reversed_author_names_string) { 'Glaber, G.; Batiatus, B.' }
+        let(:reverse_authors_params) do
+          {
+            author_names_string: reversed_author_names_string
+          }
+        end
+        let(:restore_authors_params) do
+          {
+            author_names_string: original_author_names_string
+          }
+        end
 
-          it "updates `#author_names_string_cache`" do
+        it "saves author names in the given order" do
+          expect { described_class.new(reference, reverse_authors_params).save }.
+            to change { reference.reload.author_names_string_cache }.
+            from(original_author_names_string).to(reversed_author_names_string)
+        end
+      end
+
+      context "when more than one author names have been added" do
+        let!(:author_names) { [create(:author_name, name: "Batiatus, B.")] }
+        let!(:reference) { create :article_reference, author_names: author_names }
+        let(:params) do
+          {
+            author_names_string: "Batiatus, B.; Glaber, G.; Borgia, C."
+          }
+        end
+
+        it "creates a single version for the reference" do
+          with_versioning do
             expect { described_class.new(reference, params).save }.
-              to change { reference.reload.author_names_string_cache }.
-              from('Batiatus, B.').to("Batiatus, B.; Glaber, G.")
+              to change { reference.versions.count }.by(1)
           end
         end
 
-        describe "reordering author names (regression test)" do
-          let!(:author_names) do
-            [
-              create(:author_name, name: "Batiatus, B."),
-              create(:author_name, name: "Glaber, G.")
-            ]
-          end
-          let!(:reference) { create :article_reference, author_names: author_names }
-          # TODO: Being extra explicit here since the class mutates `params`.
-          let(:original_author_names_string) { 'Batiatus, B.; Glaber, G.' }
-          let(:reversed_author_names_string) { 'Glaber, G.; Batiatus, B.' }
-          let(:reverse_authors_params) do
-            {
-              author_names_string: reversed_author_names_string
-            }
-          end
-          let(:restore_authors_params) do
-            {
-              author_names_string: original_author_names_string
-            }
-          end
+        it "creates 'create' versions for the added `ReferenceAuthorName`s" do
+          versions = PaperTrail::Version.where(item_type: 'ReferenceAuthorName', event: PaperTrail::Version::CREATE)
 
-          it "saves author names in the given order" do
-            expect { described_class.new(reference, reverse_authors_params).save }.
-              to change { reference.reload.author_names_string_cache }.
-              from(original_author_names_string).to(reversed_author_names_string)
+          with_versioning do
+            expect { described_class.new(reference, params).save }.to change { versions.count }.by(3)
           end
         end
 
-        context "when more than one author names have been added" do
-          let(:params) do
-            {
-              author_names_string: "Batiatus, B.; Glaber, G.; Borgia, C.",
-              bolton_key: "Smith 1858b"
-            }
-          end
+        it "creates 'destroy' versions for the removed `ReferenceAuthorName`s" do
+          versions = PaperTrail::Version.where(item_type: 'ReferenceAuthorName', event: PaperTrail::Version::DESTROY)
 
-          it "creates a single version for the reference" do
-            with_versioning do
-              expect { described_class.new(reference, params).save }.
-                to change { reference.versions.count }.by(1)
-            end
-          end
-
-          it "creates 'create' versions for the added `ReferenceAuthorName`s" do
-            versions = PaperTrail::Version.where(item_type: 'ReferenceAuthorName', event: PaperTrail::Version::CREATE)
-
-            with_versioning do
-              expect { described_class.new(reference, params).save }.to change { versions.count }.by(3)
-            end
-          end
-
-          it "creates 'destroy' versions for the removed `ReferenceAuthorName`s" do
-            versions = PaperTrail::Version.where(item_type: 'ReferenceAuthorName', event: PaperTrail::Version::DESTROY)
-
-            with_versioning do
-              expect { described_class.new(reference, params).save }.to change { versions.count }.by(1)
-            end
-          end
-
-          it "updates `#author_names_string_cache`" do
-            expect { described_class.new(reference, params).save }.
-              to change { reference.reload.author_names_string_cache }.
-              from('Batiatus, B.').to("Batiatus, B.; Glaber, G.; Borgia, C.")
+          with_versioning do
+            expect { described_class.new(reference, params).save }.to change { versions.count }.by(1)
           end
         end
 
-        context "when an author name has been removed" do
-          let!(:author_names) do
-            [
-              create(:author_name, name: "Batiatus, B."),
-              create(:author_name, name: "Glaber, G.")
-            ]
-          end
-          let!(:reference) { create :article_reference, author_names: author_names }
-          let(:params) do
-            {
-              author_names_string: "Batiatus, B.",
-              bolton_key: "Smith 1858b"
-            }
-          end
+        it "updates `#author_names_string_cache`" do
+          expect { described_class.new(reference, params).save }.
+            to change { reference.reload.author_names_string_cache }.
+            from('Batiatus, B.').to("Batiatus, B.; Glaber, G.; Borgia, C.")
+        end
+      end
 
-          it 'deletes orphaned `ReferenceAuthorName`s' do
-            expect { described_class.new(reference, params).save }.
-              to change { ReferenceAuthorName.count }.from(2).to(1)
-          end
+      context "when an author name has been removed" do
+        let!(:author_names) do
+          [
+            create(:author_name, name: "Batiatus, B."),
+            create(:author_name, name: "Glaber, G.")
+          ]
+        end
+        let!(:reference) { create :article_reference, author_names: author_names }
+        let(:params) do
+          {
+            author_names_string: "Batiatus, B."
+          }
+        end
 
-          it "updates `#author_names_string_cache`" do
-            expect { described_class.new(reference, params).save }.
-              to change { reference.reload.author_names_string_cache }.
-              from('Batiatus, B.; Glaber, G.').to("Batiatus, B.")
-          end
+        it 'deletes orphaned `ReferenceAuthorName`s' do
+          expect { described_class.new(reference, params).save }.
+            to change { ReferenceAuthorName.count }.from(2).to(1)
+        end
+
+        it "updates `#author_names_string_cache`" do
+          expect { described_class.new(reference, params).save }.
+            to change { reference.reload.author_names_string_cache }.
+            from('Batiatus, B.; Glaber, G.').to("Batiatus, B.")
         end
       end
     end
