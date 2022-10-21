@@ -93,7 +93,7 @@ describe Reference do
     it { is_expected.to strip_attributes(:series_volume_issue, :doi, :normalized_bolton_key) }
 
     describe '#before_update' do
-      let!(:reference) { create :article_reference }
+      let!(:reference) { create :any_reference }
 
       it "invalidates caches" do
         References::Cache::Regenerate[reference]

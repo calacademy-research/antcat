@@ -5,7 +5,7 @@ require 'rails_helper'
 describe ReferenceForm do
   describe "#save" do
     describe "updating attributes in its own columns" do
-      let!(:reference) { create :article_reference }
+      let!(:reference) { create :any_reference }
       let(:params) do
         {
           bolton_key: "Smith 1858b"
@@ -113,9 +113,7 @@ describe ReferenceForm do
       end
 
       context "when an author name have been added" do
-        let!(:author_names) { [create(:author_name, name: "Batiatus, B.")] }
-        let!(:reference) { create :article_reference, author_names: author_names }
-
+        let!(:reference) { create :any_reference, author_string: ["Batiatus, B."] }
         let(:params) do
           {
             author_names_string: "Batiatus, B.; Glaber, G."
@@ -137,13 +135,7 @@ describe ReferenceForm do
       end
 
       describe "reordering author names (regression test)" do
-        let!(:author_names) do
-          [
-            create(:author_name, name: "Batiatus, B."),
-            create(:author_name, name: "Glaber, G.")
-          ]
-        end
-        let!(:reference) { create :article_reference, author_names: author_names }
+        let!(:reference) { create :any_reference, author_string: ["Batiatus, B.", "Glaber, G."] }
         # TODO: Being extra explicit here since the class mutates `params`.
         let(:original_author_names_string) { 'Batiatus, B.; Glaber, G.' }
         let(:reversed_author_names_string) { 'Glaber, G.; Batiatus, B.' }
@@ -166,8 +158,7 @@ describe ReferenceForm do
       end
 
       context "when more than one author names have been added" do
-        let!(:author_names) { [create(:author_name, name: "Batiatus, B.")] }
-        let!(:reference) { create :article_reference, author_names: author_names }
+        let!(:reference) { create :any_reference, author_string: ["Batiatus, B."] }
         let(:params) do
           {
             author_names_string: "Batiatus, B.; Glaber, G.; Borgia, C."
@@ -205,13 +196,7 @@ describe ReferenceForm do
       end
 
       context "when an author name has been removed" do
-        let!(:author_names) do
-          [
-            create(:author_name, name: "Batiatus, B."),
-            create(:author_name, name: "Glaber, G.")
-          ]
-        end
-        let!(:reference) { create :article_reference, author_names: author_names }
+        let!(:reference) { create :any_reference, author_string: ["Batiatus, B.", "Glaber, G."] }
         let(:params) do
           {
             author_names_string: "Batiatus, B."
@@ -234,7 +219,7 @@ describe ReferenceForm do
     describe 'reference documents' do
       context 'when creating a reference' do
         context 'when no `file` is uploaded' do
-          let!(:reference) { build :article_reference }
+          let!(:reference) { build :any_reference }
           let(:params) do
             {
               author_names_string: "Batiatus, B.",
@@ -300,7 +285,7 @@ describe ReferenceForm do
         end
 
         context 'when reference has a document' do
-          let!(:reference) { create :article_reference }
+          let!(:reference) { create :any_reference }
           let!(:reference_document) { create :reference_document, :with_file, reference: reference }
 
           it 'does not create a new `ReferenceDocument`s' do
@@ -317,7 +302,7 @@ describe ReferenceForm do
     end
 
     describe "#cleanup_bolton_key" do
-      let!(:reference) { create :article_reference }
+      let!(:reference) { create :any_reference }
       let(:params) do
         {
           bolton_key: "Smith & Wesson ,  1858:b"
