@@ -31,7 +31,7 @@ class Reference < ApplicationRecord
 
   validates :year, :pagination, :title, :author_names, presence: true
   validates :year_suffix, format: { with: /\A[a-z]\z/, message: "must be blank or a single lowercase letter", allow_nil: true }
-  validates :date, reference_date_format: true, if: -> { date_changed? }
+  validates :date, reference_date_format: true
   validates :nesting_reference_id, absence: true, unless: -> { is_a?(NestedReference) }
   validates :doi, format: { with: /\A[^<>]*\z/ }
   validates :review_state, inclusion: { in: REVIEW_STATES }
