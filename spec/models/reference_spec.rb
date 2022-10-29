@@ -27,47 +27,13 @@ describe Reference do
     it { is_expected.not_to allow_value('A').for(:year_suffix) }
 
     describe '#date validations' do
-      # TODO: We want to replace the below `describe` with this after clearing `ReferencesWithInvalidDates`.
-      # let!(:reference) { build_stubbed :any_reference }
-      #
-      # specify do
-      #   expect { reference.date = '2022-2' }.
-      #     to change { reference.valid? }.from(true).to(false)
-      #
-      #   expect(reference.errors[:date]).to include ReferenceDateFormatValidator::ERROR_MESSAGE
-      # end
-      describe 'specs to be removed once invalid records have been fixed' do
-        context 'with a new reference' do
-          let!(:reference) { build :any_reference, date: '20-22-01' }
+      let!(:reference) { build_stubbed :any_reference }
 
-          it 'validates `date`' do
-            expect(reference.valid?).to eq false
-            expect(reference.errors[:date]).to include ReferenceDateFormatValidator::ERROR_MESSAGE
-          end
-        end
+      specify do
+        expect { reference.date = '2022-2' }.
+          to change { reference.valid? }.from(true).to(false)
 
-        context 'when `date` has been changed' do
-          let!(:reference) { create :any_reference, date: '2022-01' }
-
-          it 'validates `date`' do
-            expect { reference.date = '2022-2' }.
-              to change { reference.valid? }.from(true).to(false)
-
-            expect(reference.errors[:date]).to include ReferenceDateFormatValidator::ERROR_MESSAGE
-          end
-        end
-
-        context 'when `date` has not been changed' do
-          let!(:reference) { create :any_reference }
-
-          before do
-            reference.update_columns(date: '20-22-01')
-          end
-
-          it 'does not validate `date`' do
-            expect { reference.title = 'Changed something' }.not_to change { reference.valid? }.from(true)
-          end
-        end
+        expect(reference.errors[:date]).to include ReferenceDateFormatValidator::ERROR_MESSAGE
       end
     end
 

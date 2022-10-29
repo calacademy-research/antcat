@@ -24,9 +24,8 @@ end
 
 __END__
 
-section: misc
-tags: [new!, references, disagreeing-data]
+section: regression-test
+tags: [references, disagreeing-data]
 
 related_scripts:
   - ReferencesWithDisagreeingYearAndDate
-  - ReferencesWithInvalidDates
