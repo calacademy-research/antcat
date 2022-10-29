@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'routes', type: :routing do
+describe 'routes' do
   describe '/wiki' do
     specify do
       expect(get("/wiki/1")).to route_to("wiki_pages#show", id: "1")

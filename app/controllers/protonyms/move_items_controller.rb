@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# TODO: Disabled because `new` is step 1 and `show` step 2.
+# rubocop:disable Rails/ActionOrder
 module Protonyms
   class MoveItemsController < ApplicationController
     before_action :ensure_user_is_editor
@@ -53,3 +55,4 @@ module Protonyms
       end
   end
 end
+# rubocop:enable Rails/ActionOrder

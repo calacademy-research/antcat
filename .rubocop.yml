@@ -197,6 +197,16 @@ Performance/Casecmp:
 
 ### Rails.
 
+Rails/ActionOrder:
+  ExpectedOrder:
+    - index
+    - show
+    - new
+    - create
+    - edit
+    - update
+    - destroy
+
 # Disabled because it can be decided on a case-by-case basis if it's relevant.
 Rails/BulkChangeTable:
   Enabled: false
@@ -316,6 +326,9 @@ RSpec/ExpectChange:
 
 RSpec/FactoryBot/CreateList:
   EnforcedStyle: n_times
+
+RSpec/FactoryBot/ConsistentParenthesesStyle:
+  Enabled: false
 
 RSpec/FilePath:
   # TODO: See if we can remove this after https://github.com/rubocop/rubocop-rspec/pull/1266
