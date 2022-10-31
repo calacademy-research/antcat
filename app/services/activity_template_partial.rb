@@ -22,18 +22,18 @@ class ActivityTemplatePartial
     end
 
     def partial_for_event
-      return unless partial_exists?("#{TEMPLATES_PATH}/events/_#{event}")
+      return unless partial_exists?("events/_#{event}")
       "events/#{event}"
     end
 
     def partial_for_trackable_type
       underscored_trackable_type = trackable_type.underscore
-      return unless partial_exists?("#{TEMPLATES_PATH}/_#{underscored_trackable_type}")
+      return unless partial_exists?("_#{underscored_trackable_type}")
 
       underscored_trackable_type
     end
 
     def partial_exists? path
-      File.file?("./app/views/#{path}.html.haml")
+      File.file?("./app/views/#{TEMPLATES_PATH}/#{path}.html.haml")
     end
 end
