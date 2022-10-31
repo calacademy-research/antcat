@@ -14,7 +14,7 @@ describe ActivityTemplatePartial do
     context "when there is no partial for `event`" do
       it "returns the template for the `trackable_type`" do
         expect(described_class[event: 'Pizza', trackable_type: 'Taxon']).
-          to eq "activities/templates/taxon"
+          to eq "activities/templates/trackable_types/taxon"
       end
     end
   end
@@ -22,7 +22,7 @@ describe ActivityTemplatePartial do
   context "without `event`" do
     it "returns the template for the `trackable_type`" do
       expect(described_class[event: nil, trackable_type: 'Journal']).
-        to eq "activities/templates/journal"
+        to eq "activities/templates/trackable_types/journal"
     end
   end
 

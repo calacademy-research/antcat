@@ -2,7 +2,7 @@
 
 # Returns the partial's full path like this:
 # 1) If there is a partial named `events/_<event>.html.haml`, use that
-# 2) If there is a partial named `_<trackable_type>.html.haml`, use that
+# 2) If there is a partial named `trackable_types/_<trackable_type>.html.haml`, use that
 
 class ActivityTemplatePartial
   include Service
@@ -28,9 +28,9 @@ class ActivityTemplatePartial
 
     def partial_for_trackable_type
       underscored_trackable_type = trackable_type.underscore
-      return unless partial_exists?("_#{underscored_trackable_type}")
+      return unless partial_exists?("trackable_types/_#{underscored_trackable_type}")
 
-      underscored_trackable_type
+      "trackable_types/#{underscored_trackable_type}"
     end
 
     def partial_exists? path
