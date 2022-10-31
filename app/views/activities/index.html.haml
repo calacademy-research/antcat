@@ -27,7 +27,7 @@
     .small-6.medium-4.large-2.columns.end
       =f.button 'Filter', name: nil, class: "btn-normal"
       &nbsp;
-      =link_to "Clear", request.path, class: "button btn-nodanger"
+      =link_to "Clear", request.path, class: "btn-nodanger"
 
 =render "table", activities: @activities, highlighted_activity: @activity, show_delete_button: true
 

@@ -39,7 +39,7 @@
     .small-6.medium-4.large-2.columns.end
       =button_tag "Search ".html_safe + search_icon, type: "submit", name: nil, class: "btn-normal"
       &nbsp;
-      =link_to "Clear", request.path, class: "button btn-nodanger"
+      =link_to "Clear", request.path, class: "btn-nodanger"
 
 -if current_user && @history_items.present?
   .callout.no-border-callout.logged-in-only-background.small-text
