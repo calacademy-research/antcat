@@ -24,7 +24,7 @@
         authority = #{@taxon.author_citation}
         =Wikipedia::ReferenceExporter[@taxon.authorship_reference]
 
--if @taxon.class.in? [Family, Subfamily, Tribe, Genus]
+-if @taxon.class.in?([Family, Subfamily, Tribe, Genus])
   .row.margin-bottom
     .small-12.columns
       %h5 List of children
