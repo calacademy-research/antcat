@@ -285,9 +285,6 @@ Rails/WhereEquals:
 Rails/WhereExists:
   Enabled: false
 
-Rails/WhereMissing:
-  Enabled: false
-
 # Disabled because it's not safe (for example with handwritten SQL/joins).
 Rails/WhereNot:
   Enabled: false
