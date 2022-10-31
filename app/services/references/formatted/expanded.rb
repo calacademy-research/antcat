@@ -27,8 +27,8 @@ module References
 
         def author_names_with_links
           string = reference.author_names.map do |author_name|
-                     link_to(sanitize(author_name.name), author_path(author_name.author))
-                   end.join('; ')
+            link_to(sanitize(author_name.name), author_path(author_name.author))
+          end.join('; ')
 
           string << sanitize(" #{reference.author_names_suffix}") if reference.author_names_suffix
           string.html_safe

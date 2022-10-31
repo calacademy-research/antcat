@@ -22,9 +22,6 @@ AllCops:
 Layout/ArgumentAlignment:
   EnforcedStyle: with_fixed_indentation
 
-Layout/BlockAlignment:
-  Enabled: false
-
 Layout/ClassStructure:
   Enabled: true
 
@@ -34,9 +31,6 @@ Layout/DotPosition:
 
 # Disabled because guard clauses w/o empty lines look OK in short methods.
 Layout/EmptyLineAfterGuardClause:
-  Enabled: false
-
-Layout/FirstArrayElementIndentation:
   Enabled: false
 
 Layout/FirstArrayElementLineBreak:
@@ -127,8 +121,9 @@ Metrics/AbcSize:
     - 'db/migrate/**/*'
 
 Metrics/BlockLength:
-  Enabled: false
   Max: 25
+  AllowedMethods:
+    - solr_search
   Exclude:
     - 'app/database_scripts/database_scripts/**/*'
     - 'config/environments/**/*'
@@ -462,9 +457,6 @@ Style/ReturnNil:
 
 Style/Send:
   Enabled: true
-
-Style/SingleArgumentDig:
-  Enabled: false
 
 Style/SingleLineBlockParams:
   Enabled: true
