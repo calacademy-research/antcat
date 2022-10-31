@@ -88,7 +88,7 @@ description: >
   * {taxac 429366} junior homonym and junior synonym of {taxac 429365}: {ref 133029}: 451.
 
 
-  In the above example, "{ref 133029}: 451" is the only litterature citation, while `taxac`
+  In the above example, "{ref 133029}: 451" is the only literature citation, while `taxac`
   tags are used instead of `tax` tags for disambiguation purposes.
 
 

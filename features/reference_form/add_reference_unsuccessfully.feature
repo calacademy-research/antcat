@@ -73,7 +73,7 @@ Feature: Add reference unsuccessfully
     Then I should see "Author names (A): Name is too short (minimum is 2 characters)"
     And the "reference_author_names_string" field should contain "A"
 
-  Scenario: Unparseable (blank) journal name (and maintain already filled in fields)
+  Scenario: Unparsable (blank) journal name (and maintain already filled in fields)
     When I fill in "reference_title" with "A reference title"
     And I fill in "reference_journal_name" with ""
     And I fill in "reference_pagination" with "1"
@@ -85,7 +85,7 @@ Feature: Add reference unsuccessfully
     Then the "reference_journal_name" field should contain ""
     And the "reference_pagination" field should contain "1"
 
-  Scenario: Unparseable publisher string (and maintain already filled in fields)
+  Scenario: Unparsable publisher string (and maintain already filled in fields)
     When I fill in "reference_title" with "A reference title"
     And I select the reference tab "#book-tab"
     And I fill in "reference_publisher_string" with "Pensoft, Sophia"

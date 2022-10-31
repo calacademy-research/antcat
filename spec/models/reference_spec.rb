@@ -100,13 +100,13 @@ describe Reference do
   end
 
   describe '#downloadable?' do
-    context 'when referece has a `ReferenceDocument`' do
+    context 'when reference has a `ReferenceDocument`' do
       let(:reference) { create :any_reference, :with_document }
 
       specify { expect(reference.downloadable?).to eq true }
     end
 
-    context 'when referece does not have a `ReferenceDocument`' do
+    context 'when reference does not have a `ReferenceDocument`' do
       let(:reference) { create :any_reference }
 
       specify { expect(reference.downloadable?).to eq false }

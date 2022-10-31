@@ -89,24 +89,24 @@ describe Activity do
     end
 
     context 'when not using filters' do
-      let(:activites) { described_class.all }
+      let(:activities) { described_class.all }
 
       specify do
-        expect(activity_1.pagination_page(activites)).to eq 3
-        expect(activity_2.pagination_page(activites)).to eq 2
-        expect(activity_3.pagination_page(activites)).to eq 2
-        expect(activity_4.pagination_page(activites)).to eq 1
-        expect(activity_5.pagination_page(activites)).to eq 1
+        expect(activity_1.pagination_page(activities)).to eq 3
+        expect(activity_2.pagination_page(activities)).to eq 2
+        expect(activity_3.pagination_page(activities)).to eq 2
+        expect(activity_4.pagination_page(activities)).to eq 1
+        expect(activity_5.pagination_page(activities)).to eq 1
       end
     end
 
     context 'when using filters' do
-      let(:activites) { described_class.non_automated_edits }
+      let(:activities) { described_class.non_automated_edits }
 
       specify do
-        expect(activity_2.pagination_page(activites)).to eq 2
-        expect(activity_3.pagination_page(activites)).to eq 1 # Different page when not using filters.
-        expect(activity_5.pagination_page(activites)).to eq 1
+        expect(activity_2.pagination_page(activities)).to eq 2
+        expect(activity_3.pagination_page(activities)).to eq 1 # Different page when not using filters.
+        expect(activity_5.pagination_page(activities)).to eq 1
       end
     end
   end

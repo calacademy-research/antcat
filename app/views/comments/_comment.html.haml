@@ -1,7 +1,7 @@
 .comment.margin-bottom
   %p
     -# Anchor link to scroll down to comment by id.
-    -# Wrapped in a `span` because we only want to hightlight a small area.
+    -# Wrapped in a `span` because we only want to highlight a small area.
     %span.highlight-comment-anchor{id: "comment-#{comment.id}"}
       =comment.user.decorate.user_page_link
       commented

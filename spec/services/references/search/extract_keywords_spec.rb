@@ -34,7 +34,7 @@ describe References::Search::ExtractKeywords do
   end
 
   describe "#call" do
-    it "doesn't extract anything if there is nothing to extact" do
+    it "doesn't extract anything if there is nothing to extract" do
       expect(described_class["Bolton 2003"]).to eq(
         described_class::Extracted.new(
           freetext: "Bolton 2003"

@@ -127,7 +127,7 @@ module Markdowns
       end
 
       # Matches: {ref 130628}
-      # Renders: expandable referece as used in the catalog (Abdalla & Cruz-Landim, 2001).
+      # Renders: expandable reference as used in the catalog (Abdalla & Cruz-Landim, 2001).
       def parse_ref_tags
         # HACK: To eager load records in a single query for performance reasons.
         reference_ids = Taxt.extract_ids_from_reference_tags(content)

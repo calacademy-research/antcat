@@ -191,7 +191,7 @@ Performance/MapCompact:
 Performance/MethodObjectAsBlock:
   Enabled: false
 
-# Disabled because some comparisons are more readable when left/right hand sides look more similiar.
+# Disabled because some comparisons are more readable when left/right hand sides look more similar.
 Performance/Casecmp:
   Enabled: false
 
@@ -383,7 +383,7 @@ Style/CaseLikeIf:
 Style/ClassCheck:
   EnforcedStyle: is_a?
 
-# Disabled because some comparisons are more readable when left/right hand sides look more similiar.
+# Disabled because some comparisons are more readable when left/right hand sides look more similar.
 Style/ClassEqualityComparison:
   Enabled: false
 

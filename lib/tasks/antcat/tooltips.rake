@@ -44,7 +44,7 @@ namespace :antcat do
         if in_source_code
           puts "[OK]       In source code      #{message}".green
         else
-          puts "[NOT OK]   Not in souce code   #{message}".red
+          puts "[NOT OK]   Not in source code  #{message}".red
         end
       end
     end
