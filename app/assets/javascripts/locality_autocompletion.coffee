@@ -12,7 +12,7 @@ $ ->
     highlight: true
     minLength: 1
 
-  $('.locality-autocomplete-js-hook').typeahead options,
+  $("[data-use-locality-autocomplete]").typeahead options,
     name: 'localities'
     source: localities
     templates:

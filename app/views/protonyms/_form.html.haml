@@ -82,7 +82,7 @@
                 Locality
                 =db_tooltip_icon :locality, scope: :protonyms
             %td
-              =f.text_field :locality, class: 'locality-autocomplete-js-hook'
+              =f.text_field :locality, data: { use_locality_autocomplete: true }
 
       %h6.bold.margin-top Nomen attributes
       %ul.no-bullet
