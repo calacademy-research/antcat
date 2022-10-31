@@ -66,6 +66,23 @@ describe ActivityDecorator do
     let(:user) { build_stubbed :user }
 
     context 'when there is a trackable' do
+      context 'when trackable is an `Author`' do
+        let(:trackable) { create :author }
+
+        context 'when author was deleted' do
+          let(:activity) do
+            trackable.destroy
+            trackable.create_activity Activity::DESTROY, user
+          end
+
+          specify do
+            expect(decorated.did_something.squish).to eq <<~STR.squish
+              deleted the <code>Author</code> <a href="/authors">##{trackable.id}</a>
+            STR
+          end
+        end
+      end
+
       context 'when trackable is a `Name`' do
         let(:trackable) { create :genus_name, name: 'Lasius' }
 

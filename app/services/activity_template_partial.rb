@@ -4,7 +4,6 @@
 # 1) The activity has no `#trackable_type` --> `events/_<event>` (like the event "approve_all_references")
 # 2) There is a partial named `events/_<event>.html.haml` --> use that
 # 3) There is a partial named `_<trackable_type>.html.haml` --> use that
-# 4) Else --> `_default.html.haml`
 
 class ActivityTemplatePartial
   include Service
@@ -21,7 +20,7 @@ class ActivityTemplatePartial
   private
 
     def partial
-      partial_for_event || partial_for_trackable_type || "default"
+      partial_for_event || partial_for_trackable_type || raise('activity template missing')
     end
 
     def partial_for_event
