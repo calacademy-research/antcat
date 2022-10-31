@@ -4,10 +4,10 @@
   =javascript_include_tag 'controllers/activities/scroll_to_highlighted_activity'
 
 -if params[:id]
-  -title "Activity Item ##{@activity.id}"
+  -page_title "Activity Item ##{@activity.id}"
   -breadcrumb :activity_item, @activity.id
 -else
-  -title "Activity Feed"
+  -page_title "Activity Feed"
   -breadcrumb :activity_feed
 
 =form_with url: request.path, method: :get do |f|

@@ -5,7 +5,7 @@ module LayoutsHelper
     "#{controller_name.tr('/', '_')}-controller"
   end
 
-  def title title
+  def page_title title
     content_for :title_tag, title
   end
 
