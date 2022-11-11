@@ -2,7 +2,7 @@
   -soft_validations.failed.each do |soft_validation|
     %li
       =markdown_without_wrapping soft_validation.issue_description
-      =link_to 'See more similiar.', database_script_path(soft_validation.database_script), title: soft_validation.database_script.title
+      =link_to 'See more similar.', database_script_path(soft_validation.database_script), title: soft_validation.database_script.title
 
 -if soft_validations.warn_about_slow_runtime?
   %small.bold-warning

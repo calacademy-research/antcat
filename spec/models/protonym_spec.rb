@@ -144,7 +144,7 @@ describe Protonym do
     end
   end
 
-  describe "changable / unchangeable names" do
+  describe "changeable / unchangeable names" do
     context 'when `gender_agreement_type` is `ADJECTIVE`' do
       let(:protonym) { build_stubbed :protonym, :adjective_gender_agreement_type }
 

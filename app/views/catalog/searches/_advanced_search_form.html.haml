@@ -84,4 +84,4 @@
       =button_tag "Search ".html_safe + search_icon, type: 'submit', class: 'btn-normal'
       -if taxa.present?
         &nbsp;
-        =link_to 'Download', "/catalog/search.txt?#{request.parameters.to_param}", class: "button btn-normal"
+        =link_to 'Download', "/catalog/search.txt?#{request.parameters.to_param}", class: "btn-normal"

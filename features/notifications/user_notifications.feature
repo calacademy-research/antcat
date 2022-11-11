@@ -78,7 +78,7 @@ Feature: User notifications
     And I press "Post Comment"
     And I wait for the "success" message
 
-    # Comment on Batiatus' issue, mention him, reply to him in a disussion he is active in.
+    # Comment on Batiatus' issue, mention him, reply to him in a discussion he is active in.
     When I log in as "Archibald"
     And I go to the issue page for "My Favorite Ants"
     And I write a new comment <at Batiatus's id> "Great list already!"

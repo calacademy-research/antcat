@@ -73,7 +73,7 @@
                   Locality
                   =db_tooltip_icon :locality, scope: :protonyms
               %td
-                =protonym_form.text_field :locality, class: 'locality-autocomplete-js-hook'
+                =protonym_form.text_field :locality, data: { use_locality_autocomplete: true }
 
           -if taxon.type.in?(Rank::CAN_HAVE_TYPE_TAXON_TYPES)
             %tr

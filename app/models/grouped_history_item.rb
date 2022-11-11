@@ -3,7 +3,7 @@
 class GroupedHistoryItem
   attr_reader :items
 
-  # TODO: This should be delegated to the definiton once they have been extracted into new classes.
+  # TODO: This should be delegated to the definition once they have been extracted into new classes.
   delegate :underscored_type, :groupable?, :group_key, :type, :relational?, :protonym, to: :any_item_in_group
 
   def initialize items

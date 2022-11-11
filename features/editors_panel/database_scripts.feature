@@ -21,7 +21,7 @@ Feature: Database scripts
     When I reload the page
     Then I should see "The parent of this taxon is fossil, but this taxon is extant"
 
-    When I follow the first "See more similiar."
+    When I follow the first "See more similar."
     Then I should see "Extant taxa in fossil genera"
 
   Scenario: Clicking on all scripts just to see if the page renders

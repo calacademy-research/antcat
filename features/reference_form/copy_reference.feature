@@ -1,7 +1,7 @@
 Feature: Copy reference
   As Phil Ward
   I want to add new references using existing reference data
-  So that I can reduce copy and pasting beteen references
+  So that I can reduce copy and pasting between references
   And so that the bibliography continues to be up-to-date
 
   Background:

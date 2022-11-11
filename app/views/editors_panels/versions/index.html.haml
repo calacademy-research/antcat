@@ -1,4 +1,4 @@
--title "PaperTrail Versions"
+-page_title "PaperTrail Versions"
 -breadcrumb :versions
 
 =form_with url: request.path, method: :get do |f|
@@ -22,7 +22,7 @@
     .small-6.medium-4.large-2.columns.end
       =f.button "Filter", name: nil, class: "btn-normal"
       &nbsp;
-      =link_to "Clear", request.path, class: "button btn-nodanger"
+      =link_to "Clear", request.path, class: "btn-nodanger"
 
 -if @first_version
   .center-text

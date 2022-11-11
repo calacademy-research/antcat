@@ -78,7 +78,7 @@ issue_description:
 description: >
   The quick-fix button replaces one `missing` tag at a time - if the first `missing` tag cannot be
   replaced (due to <span class="bold-warning">no matches</span> or <span class="bold-warning">multiple matches</span>),
-  then the button cannot be used for <span class="bold-notice">convertable</span> tags until the first tag has been fixed.
+  then the button cannot be used for <span class="bold-notice">convertible</span> tags until the first tag has been fixed.
 
 related_scripts:
   - HistoryItemsWithMissingTagsQueue1

@@ -1,0 +1,3 @@
+[codespell]
+skip = .git,./coverage,./cookbooks,./data,./log,./node_modules,./solr,./tmp,./vendor,./public/packs-test,./public/packs,*.log,./yarn.lock
+ignore-words = codespell.txt

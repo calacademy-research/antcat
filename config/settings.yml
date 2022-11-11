@@ -7,7 +7,7 @@ http_basic_auth:
   password: ''
 
 email:
-  # Quickfix to disable emails because Google keeps blocking sign-in attemps after some inactivity.
+  # Quickfix to disable emails because Google keeps blocking sign-in attempts after some inactivity.
   # Note that this config does not affect `Rails.application.config.action_mailer.perform_deliveries`.
   # TODO: Split per env.
   # TODO: Ctrl+F Settings.email.enabled

@@ -35,7 +35,7 @@ module References
     def approve_all
       count = Reference.unreviewed.count
 
-      # Manually update since Worflow does not allow approving unreviewed references of any state.
+      # Manually update since Workflow does not allow approving unreviewed references of any state.
       Reference.unreviewed.find_each do |reference|
         reference.update!(review_state: Reference::REVIEW_STATE_REVIEWED)
       end

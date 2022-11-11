@@ -22,9 +22,6 @@ AllCops:
 Layout/ArgumentAlignment:
   EnforcedStyle: with_fixed_indentation
 
-Layout/BlockAlignment:
-  Enabled: false
-
 Layout/ClassStructure:
   Enabled: true
 
@@ -34,9 +31,6 @@ Layout/DotPosition:
 
 # Disabled because guard clauses w/o empty lines look OK in short methods.
 Layout/EmptyLineAfterGuardClause:
-  Enabled: false
-
-Layout/FirstArrayElementIndentation:
   Enabled: false
 
 Layout/FirstArrayElementLineBreak:
@@ -127,8 +121,9 @@ Metrics/AbcSize:
     - 'db/migrate/**/*'
 
 Metrics/BlockLength:
-  Enabled: false
   Max: 25
+  AllowedMethods:
+    - solr_search
   Exclude:
     - 'app/database_scripts/database_scripts/**/*'
     - 'config/environments/**/*'
@@ -191,7 +186,7 @@ Performance/MapCompact:
 Performance/MethodObjectAsBlock:
   Enabled: false
 
-# Disabled because some comparisons are more readable when left/right hand sides look more similiar.
+# Disabled because some comparisons are more readable when left/right hand sides look more similar.
 Performance/Casecmp:
   Enabled: false
 
@@ -283,9 +278,6 @@ Rails/WhereEquals:
 
 # Disabled because it makes queries less chainable which makes them harder to test/debug in the console.
 Rails/WhereExists:
-  Enabled: false
-
-Rails/WhereMissing:
   Enabled: false
 
 # Disabled because it's not safe (for example with handwritten SQL/joins).
@@ -383,7 +375,7 @@ Style/CaseLikeIf:
 Style/ClassCheck:
   EnforcedStyle: is_a?
 
-# Disabled because some comparisons are more readable when left/right hand sides look more similiar.
+# Disabled because some comparisons are more readable when left/right hand sides look more similar.
 Style/ClassEqualityComparison:
   Enabled: false
 
@@ -465,9 +457,6 @@ Style/ReturnNil:
 
 Style/Send:
   Enabled: true
-
-Style/SingleArgumentDig:
-  Enabled: false
 
 Style/SingleLineBlockParams:
   Enabled: true
