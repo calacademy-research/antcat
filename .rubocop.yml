@@ -352,6 +352,9 @@ RSpec/MultipleMemoizedHelpers:
 RSpec/NestedGroups:
   Max: 6
 
+RSpec/PendingWithoutReason:
+  Enabled: false
+
 # Disabled for now because `expect` is currently misused to make some specs less complicated. And `allow`s (which are more correct)
 # are more likely to be left unused by mistake when modifying specs (as opposed to `expect`s which would fail the spec).
 RSpec/StubbedMock:
@@ -451,6 +454,12 @@ Style/RedundantAssignment:
 # Disabled to due to redundant begins blocks added on purpose for consistency.
 Style/RedundantBegin:
   Enabled: false
+
+# Disabled for files included in `rails app:update`.
+Style/RedundantConstantBase:
+  Exclude:
+    - 'config/environments/production.rb'
+    - 'config/environments/staging.rb'
 
 Style/ReturnNil:
   Enabled: true

@@ -55,7 +55,7 @@ if guard_rspec?
   end
 
   # Do not run all specs.
-  ObjectSpace.each_object(::Guard::RSpec) do |object|
+  ObjectSpace.each_object(Guard::RSpec) do |object|
     def object.run_all
     end
   end
