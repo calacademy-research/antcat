@@ -257,4 +257,8 @@ Rails.application.routes.draw do
     resource :recently_used_references, only: [:show, :create]
     resource :default_reference, only: :update, controller: :default_reference
   end
+
+  if Rails.env.development?
+    resource :dev, only: :show
+  end
 end
