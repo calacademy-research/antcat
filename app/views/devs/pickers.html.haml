@@ -1,0 +1,23 @@
+-page_title "Dev - Pickers"
+
+%h4=link_to 'Pickers', pickers_dev_path
+
+-if show_picker?(picker_name = 'taxon_picker')
+  %h6.margin-top=link_to picker_name, pickers_dev_path(p: picker_name)
+  =taxon_picker Genus.invalid.first, name: 'genus_id', id: 'genus-picker'
+
+-if show_picker?(picker_name = 'taxon_picker_with_ranks')
+  %h6.margin-top=link_to picker_name, pickers_dev_path(p: picker_name)
+  =taxon_picker Species.first, name: 'species_id', ranks: Rank::RANKS_BY_GROUP['Species']
+
+-if show_picker?(picker_name = 'taxon_picker_nothing_selected')
+  %h6.margin-top=link_to picker_name, pickers_dev_path(p: picker_name)
+  =taxon_picker nil, name: 'taxon_id'
+
+-if show_picker?(picker_name = 'protonym_picker')
+  %h6.margin-top=link_to picker_name, pickers_dev_path(p: picker_name)
+  =protonym_picker Protonym.species_group_names.first, name: 'protonym_id'
+
+-if show_picker?(picker_name = 'reference_picker')
+  %h6.margin-top=link_to picker_name, pickers_dev_path(p: picker_name)
+  =reference_picker Reference.first, name: 'reference_id'

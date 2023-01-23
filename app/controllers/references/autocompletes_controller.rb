@@ -3,7 +3,13 @@
 module References
   class AutocompletesController < ApplicationController
     def show
-      render json: serialized_references
+      respond_to do |format|
+        format.json { render json: serialized_references }
+        format.html do
+          @references = references
+          render layout: false
+        end
+      end
     end
 
     private
@@ -20,7 +26,7 @@ module References
       end
 
       def search_query
-        params[:reference_q]
+        params[:reference_q] || params[:q]
       end
 
       def fulltext_params

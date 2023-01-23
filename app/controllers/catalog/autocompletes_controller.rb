@@ -5,7 +5,16 @@ module Catalog
     NUM_RESULTS = 10
 
     def show
-      render json: serialized_taxa
+      respond_to do |format|
+        format.json { render json: serialized_taxa }
+        format.html do
+          @taxa = taxa
+          @protonyms = protonyms
+          @pickable_type = params[:pickable_type]
+
+          render layout: false
+        end
+      end
     end
 
     private
@@ -17,7 +26,11 @@ module Catalog
       end
 
       def taxa
-        Autocomplete::TaxaQuery[search_query, rank: rank, per_page: NUM_RESULTS]
+        Autocomplete::TaxaQuery[search_query, rank: rank, per_page: per_page]
+      end
+
+      def protonyms
+        Autocomplete::ProtonymsQuery[search_query, per_page: per_page]
       end
 
       def search_query
@@ -30,6 +43,10 @@ module Catalog
 
       def include_protonym?
         params[:include_protonym].present?
+      end
+
+      def per_page
+        (Integer(params[:per_page], exception: false) || NUM_RESULTS).clamp(1, NUM_RESULTS)
       end
   end
 end

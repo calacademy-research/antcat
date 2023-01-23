@@ -259,6 +259,8 @@ Rails.application.routes.draw do
   end
 
   if Rails.env.development?
-    resource :dev, only: :show
+    resource :dev, only: :show do
+      get 'pickers'
+    end
   end
 end

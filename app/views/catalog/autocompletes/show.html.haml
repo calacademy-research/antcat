@@ -1,0 +1,70 @@
+-pickable_type = @pickable_type
+
+%small.bold Taxa
+-if @taxa.blank?
+  %p No results
+-else
+  %table.table.unstriped
+    %tbody
+      -@taxa.each do |taxon|
+        -if pickable_type == 'taxon'
+          -pickable = taxon
+        -elsif pickable_type == 'protonym'
+          -pickable = taxon.protonym
+
+        -taxon_label = CatalogFormatter.link_to_taxon_with_linked_author_citation(taxon)
+        -protonym_label = CatalogFormatter.link_to_protonym_with_linked_author_citation(taxon.protonym)
+
+        %tr.pickable-row{"data-picker-value" => "#{pickable.id}", "data-picker-pickable" => "true"}
+          %td.shrink
+            %span.pickable-record-id=taxon.id
+          %td.shrink
+            %span{class: ('pickable-outline' if pickable_type == 'taxon')}
+              =taxon_label
+          %td
+            Protonym:
+            %span{class: ('pickable-outline' if pickable_type == 'protonym')}
+              =protonym_label
+
+            %template{"data-picker-fake-input-label-template" => "true"}
+              -if pickable_type == 'taxon'
+                =taxon_label
+              -elsif pickable_type == 'protonym'
+                =protonym_label
+
+%small.margin-top.bold Protonyms
+-if @protonyms.blank?
+  %p No results
+-else
+  %table.table.unstriped
+    %tbody
+      -@protonyms.each do |protonym|
+        -terminal_taxon = protonym.terminal_taxon
+
+        -if pickable_type == 'taxon'
+          -pickable = terminal_taxon
+        -elsif pickable_type == 'protonym'
+          -pickable = protonym
+
+        -taxon_label = CatalogFormatter.link_to_taxon_with_linked_author_citation(terminal_taxon) if terminal_taxon
+        -protonym_label = CatalogFormatter.link_to_protonym_with_linked_author_citation(protonym)
+
+        %tr.pickable-row{"data-picker-value" => "#{pickable&.id}", "data-picker-pickable" => "true"}
+          %td.shrink
+            %span.pickable-record-id=protonym.id
+          %td.shrink
+            %span{class: ('pickable-outline' if pickable_type == 'protonym')}
+              =protonym_label
+          %td
+            Terminal taxon:
+            -if terminal_taxon
+              %span{class: ('pickable-outline' if pickable_type == 'taxon')}
+                =taxon_label
+            -else
+              %span.bold-warning No terminal taxon
+
+            %template{"data-picker-fake-input-label-template" => "true"}
+              -if pickable_type == 'taxon' && terminal_taxon
+                =taxon_label
+              -elsif pickable_type == 'protonym'
+                =protonym_label
