@@ -71,7 +71,6 @@ setupOkButtons = ->
 
         taxtPresenter = taxtEditor.find(TAXT_PRESENTER)
         taxtPresenter.show()
-        window.AntCatVue.askForRecompile(taxtPresenter)
 
         window.setupTaxtEditors()
       error: -> alert 'error :('
@@ -108,7 +107,6 @@ setupSaveHistoryItemButtons = ->
 
           parent = taxtEditor.parent()
           parent.html response.content
-          window.AntCatVue.askForRecompile(parent)
           window.setupLinkables()
           window.setupTaxtEditors()
       error: ->
@@ -140,7 +138,6 @@ setupSaveReferenceSectionButtons = ->
 
           parent = taxtEditor.parent()
           parent.html response.content
-          window.AntCatVue.askForRecompile(parent)
           window.setupLinkables()
           window.setupTaxtEditors()
       error: ->
