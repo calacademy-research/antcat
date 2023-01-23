@@ -50,6 +50,7 @@ gem 'sunspot_solr', '2.2.0'
 gem 'turbo-rails'
 gem 'twitter-typeahead-rails'
 gem 'unread'
+gem 'view_component'
 # NOTE: webrick is required for `ReferenceDocument#actual_url`, but specs may incorrectly pass even after removing
 # webrick from here if it happens to be loaded as a dependency for gems in the :test group (for example cucumber-rails).
 gem 'webrick'

@@ -110,6 +110,10 @@ Lint/EmptyBlock:
 Lint/HeredocMethodCallPosition:
   Enabled: true
 
+Lint/MissingSuper:
+  Exclude:
+    - 'app/components/**/*'
+
 Lint/RequireRelativeSelfPath:
   Exclude:
     - 'lib/tasks/**/*.rake'
