@@ -8,7 +8,6 @@ task :antcat do
     ./bin/webpack-dev-server
     brakeman
     bundle audit check --update
-    cucumber                   # Or: PRINT_FEATURE_NAME=y cucumber
     cat docker_dev/README.md
     guard                      # Or: GUARD=all guard; GUARD=spec guard; GUARD=rubocop guard
     haml-lint

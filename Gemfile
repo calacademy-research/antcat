@@ -85,7 +85,6 @@ group :test do
   gem 'apparition', github: 'twalpole/apparition', ref: 'ca86be4d54af835d531dbcd2b86e7b2c77f85f34'
   gem 'capybara'
   gem 'capybara-screenshot'
-  gem 'cucumber-rails', '> 2.4.0', require: false
   gem 'database_cleaner'
   gem 'rails-controller-testing'
   gem 'shoulda-matchers'

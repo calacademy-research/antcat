@@ -56,6 +56,5 @@ Visit http://localhost:3000/
 
 #### Run tests
 ```sh
-cucumber
 rspec
 ```
