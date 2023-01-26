@@ -50,6 +50,13 @@ RSpec.configure do |config|
     end
   end
 
+  # TODO: Fix hack used for checking metadata from the current example.
+  config.around do |example|
+    @current_example = example
+    example.run
+    @current_example = nil
+  end
+
   config.before(:each, :as, type: :controller) do |example|
     as = example.metadata[:as]
 
@@ -88,6 +95,8 @@ RSpec.configure do |config|
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.include JsonResponseHelper, type: :controller
   config.include Devise::Test::IntegrationHelpers, type: :request
+  config.include Devise::Test::IntegrationHelpers, type: :feature
+  config.include Features::StepHelpers, type: :feature
   config.include StripAttributes::Matchers, type: :model
 
   RSpec::Matchers.define_negated_matcher :not_change, :change

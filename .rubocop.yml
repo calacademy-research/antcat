@@ -304,6 +304,10 @@ Rake/Desc:
 RSpec/BeEq:
   Enabled: false
 
+RSpec/Capybara/FeatureMethods:
+  Exclude:
+    - 'spec/features/**/*'
+
 # Disabled because it's useful for empty placeholders.
 RSpec/EmptyExampleGroup:
   Enabled: false
@@ -352,7 +356,14 @@ RSpec/MultipleMemoizedHelpers:
 RSpec/NestedGroups:
   Max: 6
 
+RSpec/NoExpectationExample:
+  Exclude:
+    - 'spec/features/**/*'
+
 RSpec/PendingWithoutReason:
+  Enabled: false
+
+RSpec/SortMetadata:
   Enabled: false
 
 # Disabled for now because `expect` is currently misused to make some specs less complicated. And `allow`s (which are more correct)

@@ -50,3 +50,12 @@ Warden::Manager.serialize_into_session(&:email)
 Warden::Manager.serialize_from_session { |email| User.find_by!(email: email) }
 
 World FactoryBot::Syntax::Methods # To avoid typing `FactoryBot.create`.
+
+require_relative './cucumber_helpers/selectors'
+World CucumberHelpers::Selectors
+
+require_relative './cucumber_helpers/within_helpers'
+World CucumberHelpers::WithinHelpers
+
+require_relative './cucumber_helpers/paths'
+World CucumberHelpers::Paths

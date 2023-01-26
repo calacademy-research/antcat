@@ -75,5 +75,3 @@ module CucumberHelpers
     end
   end
 end
-
-World CucumberHelpers::Selectors

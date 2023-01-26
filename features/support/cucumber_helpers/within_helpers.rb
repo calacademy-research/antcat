@@ -7,5 +7,3 @@ module CucumberHelpers
     end
   end
 end
-
-World CucumberHelpers::WithinHelpers
