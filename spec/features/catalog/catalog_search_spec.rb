@@ -1,24 +1,33 @@
-Feature: Searching the catalog
-  Background:
-    Given there is a species "Lasius niger"
-    And I go to the catalog
+# frozen_string_literal: true
 
-  Scenario: Searching when no results
-    When I fill in "qq" with "zxxz" within the desktop menu
-    And I click on the catalog search button
-    Then I should see "No results found"
+require 'rails_helper'
 
-  Scenario: Searching with results
-    Given there is a species "Formica niger"
+feature "Searching the catalog" do
+  background do
+    there_is_a_species "Lasius niger"
+    i_go_to 'the catalog'
+  end
 
-    When I fill in "qq" with "niger" within the desktop menu
-    And I click on the catalog search button
-    Then I should see "Formica niger" within the search results
-    And I should see "Lasius niger" within the search results
+  scenario "Searching when no results" do
+    i_fill_in "qq", with: "zxxz", within: "the desktop menu"
+    i_click_on "the catalog search button"
+    i_should_see "No results found"
+  end
 
-  Scenario: Searching for an exact match
-    When I fill in "qq" with "Lasius niger" within the desktop menu
-    And I click on the catalog search button
-    Then I should be on the catalog page for "Lasius niger"
-    And I should see "You were redirected to an exact match"
-    And I should see "Show more results"
+  scenario "Searching with results" do
+    there_is_a_species "Formica niger"
+
+    i_fill_in "qq", with: "niger", within: "the desktop menu"
+    i_click_on "the catalog search button"
+    i_should_see "Formica niger", within: "the search results"
+    i_should_see "Lasius niger", within: "the search results"
+  end
+
+  scenario "Searching for an exact match" do
+    i_fill_in "qq", with: "Lasius niger", within: "the desktop menu"
+    i_click_on "the catalog search button"
+    i_should_be_on 'the catalog page for "Lasius niger"'
+    i_should_see "You were redirected to an exact match"
+    i_should_see "Show more results"
+  end
+end

@@ -1,50 +1,62 @@
-Feature: Using the catalog
-  Background:
-    Given the Formicidae family exists
-    And there is a subfamily "Dolichoderinae"
-    And there is a tribe "Dolichoderini" in the subfamily "Dolichoderinae"
-    And there is a genus "Dolichoderus" in the tribe "Dolichoderini"
-    And there is a species "Dolichoderus abruptus" in the genus "Dolichoderus"
-    And there is a subspecies "Dolichoderus abruptus minor" in the species "Dolichoderus abruptus"
-    And I go to the catalog
+# frozen_string_literal: true
 
-  Scenario: Going to the main page
-    Then I should see "Formicidae"
-    And I should see "Subfamilies of Formicidae: Dolichoderinae"
+require 'rails_helper'
 
-  Scenario: Selecting a subfamily
-    When I follow "Dolichoderinae" within the taxon browser
-    Then "Dolichoderinae" should be selected in the taxon browser
+feature "Using the catalog" do
+  background do
+    the_formicidae_family_exists
+    there_is_a_subfamily "Dolichoderinae"
+    there_is_a_tribe_in_the_subfamily "Dolichoderini", "Dolichoderinae"
+    there_is_a_genus_in_the_tribe "Dolichoderus", "Dolichoderini"
+    there_is_a_species_in_the_genus "Dolichoderus abruptus", "Dolichoderus"
+    there_is_a_subspecies_in_the_species "Dolichoderus abruptus minor", "Dolichoderus abruptus"
+    i_go_to 'the catalog'
+  end
 
-  Scenario: Selecting a tribe
-    When I follow "Dolichoderinae" within the taxon browser
-    And I follow "Dolichoderini" within the taxon browser
-    Then "Dolichoderinae" should be selected in the taxon browser
-    And "Dolichoderini" should be selected in the taxon browser
-    And I should see "Dolichoderus" within the taxon browser
+  scenario "Going to the main page" do
+    i_should_see "Formicidae"
+    i_should_see "Subfamilies of Formicidae: Dolichoderinae"
+  end
 
-  Scenario: Selecting a genus
-    When I follow "Dolichoderinae" within the taxon browser
-    And I select the taxon browser tab ".taxon-browser-tab-0"
-    And I follow "Dolichoderus"
-    Then "Dolichoderinae" should be selected in the taxon browser
-    And "Dolichoderus" should be selected in the taxon browser
-    And I should see "abruptus" within the taxon browser
+  scenario "Selecting a subfamily" do
+    i_follow "Dolichoderinae", within: 'the taxon browser'
+    should_be_selected_in_the_taxon_browser "Dolichoderinae"
+  end
 
-  Scenario: Selecting a species
-    When I follow "Dolichoderinae" within the taxon browser
-    And I select the taxon browser tab ".taxon-browser-tab-1"
-    And I follow "Dolichoderus"
-    And I follow "abruptus"
-    Then "Dolichoderinae" should be selected in the taxon browser
-    And "Dolichoderus" should be selected in the taxon browser
-    And "abruptus" should be selected in the taxon browser
+  scenario "Selecting a tribe" do
+    i_follow "Dolichoderinae", within: 'the taxon browser'
+    i_follow "Dolichoderini", within: 'the taxon browser'
+    should_be_selected_in_the_taxon_browser "Dolichoderinae"
+    should_be_selected_in_the_taxon_browser "Dolichoderini"
+    i_should_see "Dolichoderus", within: 'the taxon browser'
+  end
 
-  Scenario: Selecting a subspecies
-    When I follow "Dolichoderinae" within the taxon browser
-    And I select the taxon browser tab ".taxon-browser-tab-1"
-    And I follow "Dolichoderus"
-    Then I should see "abruptus" within the taxon browser
+  scenario "Selecting a genus" do
+    i_follow "Dolichoderinae", within: 'the taxon browser'
+    i_select_the_taxon_browser_tab ".taxon-browser-tab-0"
+    i_follow "Dolichoderus"
+    should_be_selected_in_the_taxon_browser "Dolichoderinae"
+    should_be_selected_in_the_taxon_browser "Dolichoderus"
+    i_should_see "abruptus", within: 'the taxon browser'
+  end
 
-    When I follow "abruptus"
-    Then I should see "minor" within the taxon browser
+  scenario "Selecting a species" do
+    i_follow "Dolichoderinae", within: 'the taxon browser'
+    i_select_the_taxon_browser_tab ".taxon-browser-tab-1"
+    i_follow "Dolichoderus"
+    i_follow "abruptus"
+    should_be_selected_in_the_taxon_browser "Dolichoderinae"
+    should_be_selected_in_the_taxon_browser "Dolichoderus"
+    should_be_selected_in_the_taxon_browser "abruptus"
+  end
+
+  scenario "Selecting a subspecies" do
+    i_follow "Dolichoderinae", within: 'the taxon browser'
+    i_select_the_taxon_browser_tab ".taxon-browser-tab-1"
+    i_follow "Dolichoderus"
+    i_should_see "abruptus", within: 'the taxon browser'
+
+    i_follow "abruptus"
+    i_should_see "minor", within: 'the taxon browser'
+  end
+end

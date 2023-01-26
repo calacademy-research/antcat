@@ -1,75 +1,84 @@
-Feature: Editing references sections
-  Background:
-    Given I log in as a catalog editor named "Archibald"
+# frozen_string_literal: true
 
-  Scenario: Adding a reference section (with edit summary)
-    Given there is a genus "Atta"
+require 'rails_helper'
 
-    When I go to the edit page for "Atta"
-    Then the reference section should be empty
+feature "Editing references sections" do
+  background do
+    i_log_in_as_a_catalog_editor_named "Archibald"
+  end
 
-    When I click on the add reference section button
-    And I fill in "references_taxt" with "New reference"
-    And I fill in "edit_summary" with "added new stuff"
-    And I press "Save"
-    Then the reference section should be "New reference"
+  scenario "Adding a reference section (with edit summary)" do
+    there_is_a_genus "Atta"
 
-    When I go to the activity feed
-    Then I should see "Archibald added the reference section #" within the activity feed
-    And I should see "belonging to Atta"
-    And I should see the edit summary "added new stuff"
+    i_go_to 'the edit page for "Atta"'
+    the_reference_section_should_be_empty
 
-  @retry_ci @javascript
-  Scenario: Editing a reference section (with edit summary)
-    Given there is a subfamily "Dolichoderinae" with a reference section "Original reference"
+    i_click_on 'the add reference section button'
+    i_fill_in "references_taxt", with: "New reference"
+    i_fill_in "edit_summary", with: "added new stuff"
+    i_press "Save"
+    the_reference_section_should_be "New reference"
 
-    When I go to the edit page for "Dolichoderinae"
-    Then the reference section should be "Original reference"
+    i_go_to 'the activity feed'
+    i_should_see "Archibald added the reference section #", within: 'the activity feed'
+    i_should_see "belonging to Atta"
+    i_should_see_the_edit_summary "added new stuff"
+  end
 
-    When I click on the edit reference section button
-    And I fill in "references_taxt" with "(none)"
-    And I fill in "edit_summary" with "fix typo" within "#references-section"
-    When I click on the save reference section button
-    Then I should not see "Original reference"
-    And the reference section should be "(none)"
+  # @retry_ci
+  scenario "Editing a reference section (with edit summary)", :js do
+    there_is_a_subfamily_with_a_reference_section "Dolichoderinae", "Original reference"
 
-    When I go to the activity feed
-    Then I should see "Archibald edited the reference section #" within the activity feed
-    And I should see "belonging to Dolichoderinae"
-    Then I should see the edit summary "fix typo"
+    i_go_to 'the edit page for "Dolichoderinae"'
+    the_reference_section_should_be "Original reference"
 
-  Scenario: Editing a reference section (without JavaScript)
-    Given there is a reference section with the references_taxt "California checklist"
+    i_click_on 'the edit reference section button'
+    i_fill_in "references_taxt", with: "(none)"
+    i_fill_in "edit_summary", with: "fix typo", within: '"#references-section"'
+    i_click_on 'the save reference section button'
+    i_should_not_see "Original reference"
+    the_reference_section_should_be "(none)"
 
-    When I go to the page of the most recent reference section
-    Then I should see "California checklist"
+    i_go_to 'the activity feed'
+    i_should_see "Archibald edited the reference section #", within: 'the activity feed'
+    i_should_see "belonging to Dolichoderinae"
+    i_should_see_the_edit_summary "fix typo"
+  end
 
-    When I follow "Edit"
-    And I fill in "references_taxt" with "reference section content"
-    And I press "Save"
-    Then I should see "Successfully updated reference section."
-    And I should see "reference section content"
+  scenario "Editing a reference section (without JavaScript)" do
+    there_is_a_reference_section_with_the_references_taxt "California checklist"
 
-  @javascript
-  Scenario: Editing a reference section, but cancelling
-    Given there is a subfamily "Dolichoderinae" with a reference section "Original reference"
+    i_go_to 'the page of the most recent reference section'
+    i_should_see "California checklist"
 
-    When I go to the edit page for "Dolichoderinae"
-    And I click on the edit reference section button
-    And I fill in "references_taxt" with "(none)"
-    And I click on the cancel reference section button
-    Then the reference section should be "Original reference"
+    i_follow "Edit"
+    i_fill_in "references_taxt", with: "reference section content"
+    i_press "Save"
+    i_should_see "Successfully updated reference section."
+    i_should_see "reference section content"
+  end
 
-  @javascript
-  Scenario: Deleting a reference section (with feed)
-    Given there is a subfamily "Dolichoderinae" with a reference section "Original reference"
+  scenario "Editing a reference section, but cancelling", :js do
+    there_is_a_subfamily_with_a_reference_section "Dolichoderinae", "Original reference"
 
-    When I go to the edit page for "Dolichoderinae"
-    And I click on the edit reference section button
-    And I will confirm on the next step
-    And I click on the delete reference section button
-    Then the reference section should be empty
+    i_go_to 'the edit page for "Dolichoderinae"'
+    i_click_on 'the edit reference section button'
+    i_fill_in "references_taxt", with: "(none)"
+    i_click_on 'the cancel reference section button'
+    the_reference_section_should_be "Original reference"
+  end
 
-    When I go to the activity feed
-    Then I should see "Archibald deleted the reference section #" within the activity feed
-    And I should see "belonging to Dolichoderinae"
+  scenario "Deleting a reference section (with feed)", :js do
+    there_is_a_subfamily_with_a_reference_section "Dolichoderinae", "Original reference"
+
+    i_go_to 'the edit page for "Dolichoderinae"'
+    i_click_on 'the edit reference section button'
+    i_will_confirm_on_the_next_step
+    i_click_on 'the delete reference section button'
+    the_reference_section_should_be_empty
+
+    i_go_to 'the activity feed'
+    i_should_see "Archibald deleted the reference section #", within: 'the activity feed'
+    i_should_see "belonging to Dolichoderinae"
+  end
+end

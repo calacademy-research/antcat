@@ -1,20 +1,27 @@
-Feature: Editing journals
-  Background:
-    Given I log in as a catalog editor named "Archibald"
-    And a journal exists with a name of "Psyche"
-    And I go to the references page
-    And I follow "Journals"
-    And I follow "Psyche"
+# frozen_string_literal: true
 
-  Scenario: Edit a journal's name (with feed)
-    When I follow "Edit journal name"
-    And I fill in "journal_name" with "Science"
-    And I press "Save"
-    Then I should see "Successfully updated journal"
+require 'rails_helper'
 
-    When I go to the references page
-    And I follow "Journals"
-    Then I should see "Science"
+feature "Editing journals" do
+  background do
+    i_log_in_as_a_catalog_editor_named "Archibald"
+    a_journal_exists_with_a_name_of "Psyche"
+    i_go_to 'the references page'
+    i_follow "Journals"
+    i_follow "Psyche"
+  end
 
-    When I go to the activity feed
-    Then I should see "Archibald edited the journal Science (changed journal name from Psyche)" within the activity feed
+  scenario "Edit a journal's name (with feed)" do
+    i_follow "Edit journal name"
+    i_fill_in "journal_name", with: "Science"
+    i_press "Save"
+    i_should_see "Successfully updated journal"
+
+    i_go_to 'the references page'
+    i_follow "Journals"
+    i_should_see "Science"
+
+    i_go_to 'the activity feed'
+    i_should_see "Archibald edited the journal Science (changed journal name from Psyche)", within: 'the activity feed'
+  end
+end

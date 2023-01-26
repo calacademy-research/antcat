@@ -1,59 +1,69 @@
-Feature: Editing a taxon
-  Background:
-    Given I log in as a catalog editor named "Archibald"
+# frozen_string_literal: true
 
-  Scenario: Changing protonym
-    Given there is a species "Eciton fusca"
-    And there is a species protonym "Formica fusca" with pages and form 'page 9, dealate queen'
+require 'rails_helper'
 
-    When I go to the catalog page for "Eciton fusca"
-    Then I should not see "Formica"
+feature "Editing a taxon" do
+  background do
+    i_log_in_as_a_catalog_editor_named "Archibald"
+  end
 
-    When I go to the edit page for "Eciton fusca"
-    And I pick "Formica fusca" from the "#taxon_protonym_id" protonym picker
-    And I press "Save"
-    Then I should see "Taxon was successfully updated"
-    And I should see "Formica fusca" within "#protonym-synopsis"
-    And I should see "page 9 (dealate queen)" within "#protonym-synopsis"
+  scenario "Changing protonym" do
+    there_is_a_species "Eciton fusca"
+    there_is_a_species_protonym_with_pages_and_form_page_9_dealate_queen "Formica fusca"
 
-  Scenario: Changing current taxon
-    Given there is a species "Atta major" which is a junior synonym of "Lasius niger"
-    And there is a species "Eciton minor"
+    i_go_to 'the catalog page for "Eciton fusca"'
+    i_should_not_see "Formica"
 
-    When I go to the catalog page for "Atta major"
-    Then I should see "synonym of current valid taxon Lasius niger"
+    i_go_to 'the edit page for "Eciton fusca"'
+    i_pick_from_the_protonym_picker "Formica fusca", "#taxon_protonym_id"
+    i_press "Save"
+    i_should_see "Taxon was successfully updated"
+    i_should_see "Formica fusca", within: '"#protonym-synopsis"'
+    i_should_see "page 9 (dealate queen)", within: '"#protonym-synopsis"'
+  end
 
-    When I go to the edit page for "Atta major"
-    And I pick "Eciton minor" from the "#taxon_current_taxon_id" taxon picker
-    And I press "Save"
-    Then I should see "Taxon was successfully updated"
-    And I should see "synonym of current valid taxon Eciton minor"
+  scenario "Changing current taxon" do
+    there_is_a_species_which_is_a_junior_synonym_of "Atta major", "Lasius niger"
+    there_is_a_species "Eciton minor"
 
-  Scenario: Changing incertae sedis (with edit summary)
-    Given there is a genus "Atta"
+    i_go_to 'the catalog page for "Atta major"'
+    i_should_see "synonym of current valid taxon Lasius niger"
 
-    When I go to the catalog page for "Atta"
-    Then I should not see "incertae sedis in subfamily"
+    i_go_to 'the edit page for "Atta major"'
+    i_pick_from_the_taxon_picker "Eciton minor", "#taxon_current_taxon_id"
+    i_press "Save"
+    i_should_see "Taxon was successfully updated"
+    i_should_see "synonym of current valid taxon Eciton minor"
+  end
 
-    When I go to the edit page for "Atta"
-    And I select "Subfamily" from "taxon_incertae_sedis_in"
-    And I fill in "edit_summary" with "fix incertae sedis"
-    And I press "Save"
-    Then I should be on the catalog page for "Atta"
-    And I should see "incertae sedis in subfamily"
+  scenario "Changing incertae sedis (with edit summary)" do
+    there_is_a_genus "Atta"
 
-    When I go to the activity feed
-    Then I should see "Archibald edited the genus Atta" within the activity feed
-    And I should see the edit summary "fix incertae sedis"
+    i_go_to 'the catalog page for "Atta"'
+    i_should_not_see "incertae sedis in subfamily"
 
-  Scenario: Changing gender of genus-group name
-    Given there is a genus "Atta"
+    i_go_to 'the edit page for "Atta"'
+    i_select "Subfamily", from: "taxon_incertae_sedis_in"
+    i_fill_in "edit_summary", with: "fix incertae sedis"
+    i_press "Save"
+    i_should_be_on 'the catalog page for "Atta"'
+    i_should_see "incertae sedis in subfamily"
 
-    When I go to the catalog page for "Atta"
-    Then I should not see "masculine"
+    i_go_to 'the activity feed'
+    i_should_see "Archibald edited the genus Atta", within: 'the activity feed'
+    i_should_see_the_edit_summary "fix incertae sedis"
+  end
 
-    When I go to the edit page for "Atta"
-    And I select "masculine" from "taxon_name_attributes_gender"
-    And I press "Save"
-    Then I should be on the catalog page for "Atta"
-    And I should see "masculine"
+  scenario "Changing gender of genus-group name" do
+    there_is_a_genus "Atta"
+
+    i_go_to 'the catalog page for "Atta"'
+    i_should_not_see "masculine"
+
+    i_go_to 'the edit page for "Atta"'
+    i_select "masculine", from: "taxon_name_attributes_gender"
+    i_press "Save"
+    i_should_be_on 'the catalog page for "Atta"'
+    i_should_see "masculine"
+  end
+end

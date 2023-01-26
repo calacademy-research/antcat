@@ -1,61 +1,63 @@
-Feature: Working with authors and their names
-  Scenario: Seeing references by author (going to the author's page)
-    Given this reference exists
-      | author     | title     |
-      | Bolton, B. | Cool Ants |
+# frozen_string_literal: true
 
-    When I go to the page of the most recent reference
-    And I follow the first "Bolton, B."
-    Then I should see "References by Bolton, B."
-    And I should see "Cool Ants"
+require 'rails_helper'
 
-  Scenario: Seeing all the authors with their names
-    Given the following names exist for an author
-      | Bolton, B.  |
-      | Bolton, Ba. |
-    And the following names exist for another author
-      | Fisher, B. |
+feature "Working with authors and their names" do
+  scenario "Seeing references by author (going to the author's page)" do
+    this_reference_exists author: 'Bolton, B.', title: 'Cool Ants'
 
-    When I go to the authors page
-    Then I should see "Bolton, B.; Bolton, Ba."
-    And I should see "Fisher, B."
+    i_go_to "the page of the most recent reference"
+    i_follow_the_first "Bolton, B."
+    i_should_see "References by Bolton, B."
+    i_should_see "Cool Ants"
+  end
 
-  Scenario: Adding an alternative spelling of an author name
-    Given the following names exist for an author
-      | Bolton, B. |
-    And I log in as a catalog editor
+  scenario "Seeing all the authors with their names" do
+    the_following_names_exist_for_an_author "Bolton, B.", "Bolton, Ba."
+    the_following_names_exist_for_an_author "Fisher, B."
 
-    When I go to the author page for "Bolton, B."
-    And I follow "Add alternative spelling"
-    And I fill in "author_name_name" with "Fisher, B."
-    And I press "Save"
-    Then I should see "Author name was successfully created"
+    i_go_to "the authors page"
+    i_should_see "Bolton, B.; Bolton, Ba."
+    i_should_see "Fisher, B."
+  end
 
-    When I follow "Authors" within the breadcrumbs
-    Then I should see "Bolton, B.; Fisher, B."
+  scenario "Adding an alternative spelling of an author name" do
+    the_following_names_exist_for_an_author "Bolton, B."
+    i_log_in_as_a_catalog_editor
 
-  Scenario: Entering an existing author name
-    Given the following names exist for an author
-      | Bolton, B. |
-    And I log in as a catalog editor
+    i_go_to 'the author page for "Bolton, B."'
+    i_follow "Add alternative spelling"
+    i_fill_in "author_name_name", with: "Fisher, B."
+    i_press "Save"
+    i_should_see "Author name was successfully created"
 
-    When I go to the author page for "Bolton, B."
-    And I follow "Add alternative spelling"
-    And I fill in "author_name_name" with "Bolton, B."
-    And I press "Save"
-    Then I should see "Name has already been taken"
+    i_follow "Authors", within: "the breadcrumbs"
+    i_should_see "Bolton, B.; Fisher, B."
+  end
 
-  Scenario: Updating an existing author name
-    Given the following names exist for an author
-      | Bolton, B. |
-    And I log in as a catalog editor
+  scenario "Entering an existing author name" do
+    the_following_names_exist_for_an_author "Bolton, B."
+    i_log_in_as_a_catalog_editor
 
-    When I go to the author page for "Bolton, B."
-    And I follow "Edit"
-    And I fill in "author_name_name" with "Bolton, Z."
-    And I press "Save"
-    Then I should see "Author name was successfully updated"
+    i_go_to 'the author page for "Bolton, B."'
+    i_follow "Add alternative spelling"
+    i_fill_in "author_name_name", with: "Bolton, B."
+    i_press "Save"
+    i_should_see "Name has already been taken"
+  end
 
-    When I follow "Authors" within the breadcrumbs
-    Then I should see "Bolton, Z."
-    And I should not see "Bolton, B."
+  scenario "Updating an existing author name" do
+    the_following_names_exist_for_an_author "Bolton, B."
+    i_log_in_as_a_catalog_editor
+
+    i_go_to 'the author page for "Bolton, B."'
+    i_follow "Edit"
+    i_fill_in "author_name_name", with: "Bolton, Z."
+    i_press "Save"
+    i_should_see "Author name was successfully updated"
+
+    i_follow "Authors", within: "the breadcrumbs"
+    i_should_see "Bolton, Z."
+    i_should_not_see "Bolton, B."
+  end
+end

@@ -1,35 +1,42 @@
-@papertrail
-Feature: Versions (filtering)
-  Background:
-    Given I log in as a catalog editor
+# frozen_string_literal: true
 
-  Scenario: Filtering versions by event
-    Given a journal exists with a name of "Psyche"
-    And I go to the references page
-    And I follow "Journals"
-    And I follow "Psyche"
-    And I follow "Delete"
+require 'rails_helper'
 
-    When I go to the versions page
-    Then I should see 3 versions
+feature "Versions (filtering)", :versioning do
+  background do
+    i_log_in_as_a_catalog_editor
+  end
 
-    When I select "destroy" from "event"
-    And I press "Filter"
-    Then I should see 1 version
+  scenario "Filtering versions by event" do
+    a_journal_exists_with_a_name_of "Psyche"
+    i_go_to 'the references page'
+    i_follow "Journals"
+    i_follow "Psyche"
+    i_follow "Delete"
 
-    When I follow "Clear"
-    Then I should see 3 versions
+    i_go_to 'the versions page'
+    i_should_see_number_of_versions 3
 
-  Scenario: Filtering versions by search query
-    Given a journal exists with a name of "Psyche"
+    i_select "destroy", from: "event"
+    i_press "Filter"
+    i_should_see_number_of_versions 1
 
-    When I go to the versions page
-    Then I should see 1 version
+    i_follow "Clear"
+    i_should_see_number_of_versions 3
+  end
 
-    When I fill in "q" with "Psyche"
-    And I press "Filter"
-    Then I should see 1 version
+  scenario "Scenario: Filtering versions by search query" do
+    a_journal_exists_with_a_name_of "Psyche"
 
-    When I fill in "q" with "asdasdasd"
-    And I press "Filter"
-    Then I should see 0 versions
+    i_go_to 'the versions page'
+    i_should_see_number_of_versions 1
+
+    i_fill_in "q", with: "Psyche"
+    i_press "Filter"
+    i_should_see_number_of_versions 1
+
+    i_fill_in "q", with: "asdasdasd"
+    i_press "Filter"
+    i_should_see_number_of_versions 0
+  end
+end

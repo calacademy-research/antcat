@@ -1,35 +1,41 @@
-Feature: Merging authors
-  As an editor of AntCat
-  I want to merge together author names
-  So that they are correct
+# frozen_string_literal: true
 
-  Background:
-    Given I log in as a catalog editor
-    And these references exist
-      | author      | title          |
-      | Bolton, B.  | Annals of Ants |
-      | Bolton, Ba. | More ants      |
+require 'rails_helper'
 
-  Scenario: Merging two authors
-    When I go to the author page for "Bolton, B."
-    Then I should see "Bolton, B."
-    And I should not see "Bolton, Ba."
+feature "Merging authors", %(
+As an editor of AntCat
+I want to merge together author names
+So that they are correct
+) do
+  background do
+    i_log_in_as_a_catalog_editor
+    this_reference_exists author: 'Bolton, B.', title: 'Annals of Ants'
+    this_reference_exists author: 'Bolton, Ba.', title: 'More ants'
+  end
 
-    When I follow "Merge"
-    And I set author_to_merge_id to the ID of "Bolton, Ba."
-    And I press "Next"
-    Then I should see "Annals of Ants"
-    And I should see "More ants"
+  scenario "Merging two authors" do
+    i_go_to 'the author page for "Bolton, B."'
+    i_should_see "Bolton, B."
+    i_should_not_see "Bolton, Ba."
 
-    When I press "Merge these authors"
-    Then I should see "Probably merged authors"
-    And I should be on the author page for "Bolton, B."
-    And I should see "Bolton, Ba."
-    And I should see "Bolton, B."
+    i_follow "Merge"
+    i_set_author_to_merge_id_to_the_id_of "Bolton, Ba."
+    i_press "Next"
+    i_should_see "Annals of Ants"
+    i_should_see "More ants"
 
-  Scenario: Searching for an author that isn't found
-    When I go to the author page for "Bolton, B."
-    And I follow "Merge"
-    And I fill in "author_to_merge_name" with "asdf"
-    And I press "Next"
-    Then I should see "Author to merge must be specified"
+    i_press "Merge these authors"
+    i_should_see "Probably merged authors"
+    i_should_be_on 'the author page for "Bolton, B."'
+    i_should_see "Bolton, Ba."
+    i_should_see "Bolton, B."
+  end
+
+  scenario "Searching for an author that isn't found" do
+    i_go_to 'the author page for "Bolton, B."'
+    i_follow "Merge"
+    i_fill_in "author_to_merge_name", with: "asdf"
+    i_press "Next"
+    i_should_see "Author to merge must be specified"
+  end
+end

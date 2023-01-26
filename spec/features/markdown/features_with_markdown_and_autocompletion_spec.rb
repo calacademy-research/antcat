@@ -1,18 +1,27 @@
-Feature: Features with markdown and autocompletion
-  Background:
-    Given I log in as a catalog editor
+# frozen_string_literal: true
 
-  Scenario: Site notices
-    When I go to the site notices page
-    And I follow "New"
-    Then there should be a textarea with markdown and autocompletion
+require 'rails_helper'
 
-  Scenario: Issues
-    When I go to the new issue page
-    Then there should be a textarea with markdown and autocompletion
+feature "Features with markdown and autocompletion" do
+  background do
+    i_log_in_as_a_catalog_editor
+  end
 
-  Scenario: Comments
-    Given there is an open feedback item
-    And I go to the most recent feedback item
+  scenario "Site notices" do
+    i_go_to 'the site notices page'
+    i_follow "New"
+    there_should_be_a_textarea_with_markdown_and_autocompletion
+  end
 
-    Then there should be a textarea with markdown and autocompletion
+  scenario "Issues" do
+    i_go_to 'the new issue page'
+    there_should_be_a_textarea_with_markdown_and_autocompletion
+  end
+
+  scenario "Comments" do
+    there_is_an_open_feedback_item
+    i_go_to 'the most recent feedback item'
+
+    there_should_be_a_textarea_with_markdown_and_autocompletion
+  end
+end

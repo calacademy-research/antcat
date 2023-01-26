@@ -1,33 +1,41 @@
-Feature: Managing user feedback
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+feature "Managing user feedback", %(
   As an AntCat editor
   I want to open/close user feedback items
   So that editors can track issues
+) do
+  background do
+    i_log_in_as_a_catalog_editor_named "Archibald"
+  end
 
-  Background:
-    Given I log in as a catalog editor named "Archibald"
+  scenario "Closing a feedback item (with feed)" do
+    there_is_an_open_feedback_item
 
-  Scenario: Closing a feedback item (with feed)
-    Given there is an open feedback item
+    i_go_to 'the most recent feedback item'
+    i_should_not_see "Re-open"
 
-    When I go to the most recent feedback item
-    Then I should not see "Re-open"
+    i_follow "Close"
+    i_should_see "Successfully closed feedback item."
+    i_should_see "Re-open"
+    i_should_not_see "Close"
 
-    When I follow "Close"
-    Then I should see "Successfully closed feedback item."
-    And I should see "Re-open"
-    And I should not see "Close"
+    i_go_to 'the activity feed'
+    i_should_see "Archibald closed the feedback item #"
+  end
 
-    When I go to the activity feed
-    Then I should see "Archibald closed the feedback item #"
+  scenario "Re-opening a closed feedback item (with feed)" do
+    there_is_a_closed_feedback_item
 
-  Scenario: Re-opening a closed feedback item (with feed)
-    Given there is a closed feedback item
+    i_go_to 'the most recent feedback item'
+    i_follow "Re-open"
+    i_should_see "Successfully re-opened feedback item."
+    i_should_see "Close"
+    i_should_not_see "Re-open"
 
-    When I go to the most recent feedback item
-    And I follow "Re-open"
-    Then I should see "Successfully re-opened feedback item."
-    And I should see "Close"
-    And I should not see "Re-open"
-
-    When I go to the activity feed
-    Then I should see "Archibald re-opened the feedback item #"
+    i_go_to 'the activity feed'
+    i_should_see "Archibald re-opened the feedback item #"
+  end
+end

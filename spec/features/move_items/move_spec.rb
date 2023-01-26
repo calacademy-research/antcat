@@ -1,62 +1,67 @@
-@javascript
-Feature: Move items
-  Background:
-    Given I log in as a catalog editor named "Archibald"
+# frozen_string_literal: true
 
-  @skip_ci
-  Scenario: Moving reference sections (with feed)
-    Given there is a subfamily "Antcatinae" with a reference section "Antcatinae section"
-    And there is a genus "Formica"
+require 'rails_helper'
 
-    When I go to the catalog page for "Antcatinae"
-    And I follow "Move items"
-    Then I should see "Move items › Select target"
+feature "Move items" do
+  background do
+    i_log_in_as_a_catalog_editor_named "Archibald"
+  end
 
-    When I press "Select..."
-    Then I should see "Target must be specified"
+  scenario "Moving reference sections (with feed)", :js do
+    there_is_a_subfamily_with_a_reference_section "Antcatinae", "Antcatinae section"
+    there_is_a_genus "Formica"
 
-    When I pick "Formica" from the "#to_taxon_id" taxon picker
-    And I press "Select..."
-    Then I should see "Move items › to Formica"
+    i_go_to 'the catalog page for "Antcatinae"'
+    i_follow "Move items"
+    i_should_see "Move items › Select target"
 
-    When I press "Move selected items"
-    Then I should see "At least one item must be selected"
+    i_press "Select..."
+    i_should_see "Target must be specified"
 
-    When I click css "span.btn-tiny" with text "Select/deselect all"
-    And I press "Move selected items"
-    Then I should see "Successfully moved items"
+    i_pick_from_the_taxon_picker "Formica", "#to_taxon_id"
+    i_press "Select..."
+    i_should_see "Move items › to Formica"
 
-    When I go to the catalog page for "Formica"
-    And I should see "Antcatinae section"
+    i_press "Move selected items"
+    i_should_see "At least one item must be selected"
 
-    When I go to the activity feed
-    Then I should see "Archibald moved items belonging to Antcatinae to Formica" within the activity feed
+    i_click_css_with_text "span.btn-tiny", "Select/deselect all"
+    i_press "Move selected items"
+    i_should_see "Successfully moved items"
 
-  @skip_ci
-  Scenario: Moving history items (with feed)
-    Given there is a subfamily protonym "Antcatinae" with a history item "Antcatinae history"
-    And there is a genus protonym "Formica"
+    i_go_to 'the catalog page for "Formica"'
+    i_should_see "Antcatinae section"
 
-    When I go to the protonym page for "Antcatinae"
-    And I follow "Move items"
-    Then I should see "Move items › Select target"
+    i_go_to 'the activity feed'
+    i_should_see "Archibald moved items belonging to Antcatinae to Formica", within: 'the activity feed'
+  end
 
-    When I press "Select..."
-    Then I should see "Target must be specified"
+  scenario "Moving history items (with feed)", :js do
+    there_is_a_subfamily_protonym_with_a_history_item "Antcatinae", "Antcatinae history"
+    there_is_a_genus_protonym "Formica"
 
-    When I pick "Formica" from the "#to_protonym_id" protonym picker
-    And I press "Select..."
-    Then I should see "Move items › to Formica"
+    i_go_to 'the protonym page for "Antcatinae"'
+    i_follow "Move items"
+    i_should_see "Move items › Select target"
 
-    When I press "Move selected items"
-    Then I should see "At least one item must be selected"
+    i_press "Select..."
+    i_should_see "Target must be specified"
 
-    When I click css "span.btn-tiny" with text "Select/deselect all"
-    And I press "Move selected items"
-    Then I should see "Successfully moved items"
+    i_pick_from_the_protonym_picker "Formica", "#to_protonym_id"
+    i_press "Select..."
+    i_should_see "Move items › to Formica"
 
-    When I go to the protonym page for "Formica"
-    And I should see "Antcatinae history"
+    i_press "Move selected items"
+    i_should_see "At least one item must be selected"
 
-    When I go to the activity feed
-    Then I should see "Archibald moved protonym items belonging to Antcatinae (no terminal taxon) to Formica" within the activity feed
+    i_click_css_with_text "span.btn-tiny", "Select/deselect all"
+    i_press "Move selected items"
+    i_should_see "Successfully moved items"
+
+    i_go_to 'the protonym page for "Formica"'
+    i_should_see "Antcatinae history"
+
+    i_go_to 'the activity feed'
+    i_should_see "Archibald moved protonym items belonging to Antcatinae (no terminal taxon) to Formica", within: 'the activity feed'
+  end
+end

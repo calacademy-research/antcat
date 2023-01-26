@@ -1,19 +1,26 @@
-Feature: Force-changing parent
-  Background:
-    Given I log in as a superadmin named "Archibald"
+# frozen_string_literal: true
 
-  Scenario: Changing a genus's subfamily (with feed)
-    Given the Formicidae family exists
-    And there is a subfamily "Attininae"
-    And there is a genus "Atta" in the subfamily "Attininae"
-    And there is a subfamily "Ecitoninae"
+require 'rails_helper'
 
-    When I go to the catalog page for "Atta"
-    And I follow "Force parent change"
-    And I pick "Ecitoninae" from the "#new_parent_id" taxon picker
-    And I press "Change parent"
-    Then I should be on the catalog page for "Atta"
-    And the "subfamily" of "Atta" should be "Ecitoninae"
+feature "Force-changing parent" do
+  background do
+    i_log_in_as_a_superadmin_named "Archibald"
+  end
 
-    When I go to the activity feed
-    Then I should see "Archibald force-changed the parent of Atta" within the activity feed
+  scenario "Changing a genus's subfamily (with feed)" do
+    the_formicidae_family_exists
+    there_is_a_subfamily "Attininae"
+    there_is_a_genus_in_the_subfamily "Atta", "Attininae"
+    there_is_a_subfamily "Ecitoninae"
+
+    i_go_to 'the catalog page for "Atta"'
+    i_follow "Force parent change"
+    i_pick_from_the_taxon_picker "Ecitoninae", "#new_parent_id"
+    i_press "Change parent"
+    i_should_be_on 'the catalog page for "Atta"'
+    the_association_of_taxon_should_be "subfamily", "Atta", "Ecitoninae"
+
+    i_go_to 'the activity feed'
+    i_should_see "Archibald force-changed the parent of Atta", within: 'the activity feed'
+  end
+end

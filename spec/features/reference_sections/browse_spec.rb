@@ -1,21 +1,28 @@
-Feature: Reference sections
-  Background:
-    Given I am logged in
+# frozen_string_literal: true
 
-  Scenario: Filtering reference sections by search query
-    Given there is a reference section with the references_taxt "typo of Forel"
-    And there is a reference section with the references_taxt "typo of August"
+require 'rails_helper'
 
-    When I go to the reference sections page
-    Then I should see "typo of Forel"
-    And I should see "typo of August"
+feature "Reference sections" do
+  background do
+    i_am_logged_in
+  end
 
-    When I fill in "q" with "Forel"
-    And I press "Search"
-    Then I should see "typo of Forel"
-    And I should not see "typo of August"
+  scenario "Filtering reference sections by search query" do
+    there_is_a_reference_section_with_the_references_taxt "typo of Forel"
+    there_is_a_reference_section_with_the_references_taxt "typo of August"
 
-    When I fill in "q" with "asdasdasd"
-    And I press "Search"
-    Then I should not see "typo of Forel"
-    And I should not see "typo of August"
+    i_go_to 'the reference sections page'
+    i_should_see "typo of Forel"
+    i_should_see "typo of August"
+
+    i_fill_in "q", with: "Forel"
+    i_press "Search"
+    i_should_see "typo of Forel"
+    i_should_not_see "typo of August"
+
+    i_fill_in "q", with: "asdasdasd"
+    i_press "Search"
+    i_should_not_see "typo of Forel"
+    i_should_not_see "typo of August"
+  end
+end

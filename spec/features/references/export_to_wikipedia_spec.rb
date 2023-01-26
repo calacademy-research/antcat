@@ -1,11 +1,17 @@
-Feature: Export references to Wikipedia
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+feature "Export references to Wikipedia", %(
   As an editor of Wikipedia
   I want generate wiki-formatted citation templates
   So that it's easier to add references to Wikipedia articles
+) do
+  scenario "Exporting an `ArticleReference`" do
+    there_is_an_article_reference
 
-  Scenario: Exporting an `ArticleReference`
-    Given there is an article reference
-
-    When I go to the page of the most recent reference
-    And I follow "Wikipedia"
-    Then I should see "{{cite journal"
+    i_go_to 'the page of the most recent reference'
+    i_follow "Wikipedia"
+    i_should_see "{{cite journal"
+  end
+end

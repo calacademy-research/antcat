@@ -1,30 +1,39 @@
-Feature: Latest Additions
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+feature "Latest Additions", %(
   As an editor of AntCat
   I want to see recently added references
   So I can keep up with the state of the literature
+) do
+  background do
+    there_is_a_reference
+    i_log_in_as_a_catalog_editor
+    i_go_to 'the latest reference additions page'
+  end
 
-  Background:
-    Given there is a reference
-    And I log in as a catalog editor
-    And I go to the latest reference additions page
+  scenario "Start reviewing" do
+    i_should_not_see "Being reviewed"
 
-  Scenario: Start reviewing
-    Then I should not see "Being reviewed"
+    i_follow "Start reviewing"
+    i_should_see "Being reviewed"
+  end
 
-    When I follow "Start reviewing"
-    Then I should see "Being reviewed"
+  scenario "Stop reviewing" do
+    i_should_not_see "Reviewed"
 
-  Scenario: Stop reviewing
-    Then I should not see "Reviewed"
+    i_follow "Start reviewing"
+    i_follow "Finish reviewing"
+    i_should_see "Reviewed"
+  end
 
-    When I follow "Start reviewing"
-    And I follow "Finish reviewing"
-    Then I should see "Reviewed"
+  scenario "Restart reviewing" do
+    i_should_not_see "Being reviewed"
 
-  Scenario: Restart reviewing
-    Then I should not see "Being reviewed"
-
-    When I follow "Start reviewing"
-    And I follow "Finish reviewing"
-    And I follow "Restart reviewing"
-    Then I should see "Being reviewed"
+    i_follow "Start reviewing"
+    i_follow "Finish reviewing"
+    i_follow "Restart reviewing"
+    i_should_see "Being reviewed"
+  end
+end

@@ -1,12 +1,19 @@
-Feature: Forgot password
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+feature "Forgot password", %(
   As a user of AntCat
   I want to be able to get onto the site even if I forget my password
+) do
+  background do
+    these_settings 'email: { enabled: true }'
+  end
 
-  Background:
-    Given these Settings: email: { enabled: true }
-
-  Scenario: Visiting the forgot password page
-    When I go to the main page
-    And I follow "Login" within the desktop menu
-    And I follow "Forgot password"
-    Then I should see "Send me reset password instructions"
+  scenario "Visiting the forgot password page" do
+    i_go_to 'the main page'
+    i_follow "Login", within: 'the desktop menu'
+    i_follow "Forgot password"
+    i_should_see "Send me reset password instructions"
+  end
+end

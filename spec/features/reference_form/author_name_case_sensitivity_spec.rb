@@ -1,21 +1,27 @@
-Feature: Author name case-sensitivity
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+feature "Author name case-sensitivity", %(
   As Marek
   I want to respect the case of an author's name in the source of a reference
   So that the bibliography is accurate
+) do
+  scenario "Using the name that was entered" do
+    i_log_in_as_a_helper_editor
+    there_is_a_reference
+    an_author_name_exists_with_a_name_of "Mackay"
+    an_author_name_exists_with_a_name_of "MACKAY"
+    an_author_name_exists_with_a_name_of "mackay"
 
-  Scenario: Using the name that was entered
-    Given I log in as a helper editor
-    And there is a reference
-    And an author name exists with a name of "Mackay"
-    And an author name exists with a name of "MACKAY"
-    And an author name exists with a name of "mackay"
+    i_go_to 'the edit page for the most recent reference'
+    i_fill_in "reference_author_names_string", with: "MACKAY"
+    i_press "Save"
+    i_should_see "MACKAY"
 
-    When I go to the edit page for the most recent reference
-    And I fill in "reference_author_names_string" with "MACKAY"
-    And I press "Save"
-    Then I should see "MACKAY"
-
-    When I go to the edit page for the most recent reference
-    And I fill in "reference_author_names_string" with "mackay"
-    And I press "Save"
-    Then I should see "mackay"
+    i_go_to 'the edit page for the most recent reference'
+    i_fill_in "reference_author_names_string", with: "mackay"
+    i_press "Save"
+    i_should_see "mackay"
+  end
+end

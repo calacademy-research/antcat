@@ -1,46 +1,53 @@
-Feature: Manage names
-  Background:
-    Given I log in as a catalog editor named "Archibald"
+# frozen_string_literal: true
 
-  Scenario: Editing a name (with edit summary)
-    Given there is a genus protonym "Formica"
+require 'rails_helper'
 
-    When I go to the protonym page for "Formica"
-    And I follow "Name record"
-    Then I should see "Name record: Formica"
+feature "Manage names" do
+  background do
+    i_log_in_as_a_catalog_editor_named "Archibald"
+  end
 
-    When I follow "Edit"
-    Then I should see "Formica"
-    And I should not see "Similar names"
-    And I should not see "Formicus"
+  scenario "Editing a name (with edit summary)" do
+    there_is_a_genus_protonym "Formica"
 
-    When I fill in "name_name_string" with "Lasius"
-    And I fill in "edit_summary" with "fix name"
-    And I press "Save"
-    Then I should see "Successfully updated name."
-    And I should see "Name record: Lasius"
+    i_go_to 'the protonym page for "Formica"'
+    i_follow "Name record"
+    i_should_see "Name record: Formica"
 
-    When I go to the activity feed
-    Then I should see "Archibald edited the name record Lasius" within the activity feed
-    And I should see the edit summary "fix name"
+    i_follow "Edit"
+    i_should_see "Formica"
+    i_should_not_see "Similar names"
+    i_should_not_see "Formicus"
 
-  @skip_ci @javascript
-  Scenario: Checking for name conflicts
-    Given there is a genus protonym "Formica"
-    And there is a genus protonym "Formica"
-    And there is a genus protonym "Formicus"
+    i_fill_in "name_name_string", with: "Lasius"
+    i_fill_in "edit_summary", with: "fix name"
+    i_press "Save"
+    i_should_see "Successfully updated name."
+    i_should_see "Name record: Lasius"
 
-    When I go to the protonym page for "Formica"
-    And I follow "Name record"
-    And I follow "Edit"
-    Then I should not see "Similar names"
-    And I should not see "Formica (protonym)"
-    And I should not see "Formicus (protonym)"
+    i_go_to 'the activity feed'
+    i_should_see "Archibald edited the name record Lasius", within: 'the activity feed'
+    i_should_see_the_edit_summary "fix name"
+  end
 
-    When I fill in "name_name_string" with "formi"
-    Then I should see "Similar names"
-    And I should see "Formica (protonym)"
-    And I should see "Formicus (protonym)"
+  scenario "Checking for name conflicts", :skip_ci, :js do
+    there_is_a_genus_protonym "Formica"
+    there_is_a_genus_protonym "Formica"
+    there_is_a_genus_protonym "Formicus"
 
-    When I fill in "name_name_string" with "formica"
-    Then I should see "Homonym Formica (protonym)"
+    i_go_to 'the protonym page for "Formica"'
+    i_follow "Name record"
+    i_follow "Edit"
+    i_should_not_see "Similar names"
+    i_should_not_see "Formica (protonym)"
+    i_should_not_see "Formicus (protonym)"
+
+    i_fill_in "name_name_string", with: "formi"
+    i_should_see "Similar names"
+    i_should_see "Formica (protonym)"
+    i_should_see "Formicus (protonym)"
+
+    i_fill_in "name_name_string", with: "formica"
+    i_should_see "Homonym Formica (protonym)"
+  end
+end

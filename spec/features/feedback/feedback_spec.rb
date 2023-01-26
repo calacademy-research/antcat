@@ -1,52 +1,62 @@
-Feature: Feedback
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+feature "Feedback", %(
   As an user or editor of AntCat
   I want to submit feedback and corrections
   So that we can improve the catalog
+) do
+  background do
+    i_go_to 'the catalog'
+  end
 
-  Background:
-    Given I go to the catalog
+  scenario "Nothing except a comment is required" do
+    i_follow "Suggest edit"
+    i_press "Send Feedback"
+    i_should_see "Comment can't be blank"
 
-  Scenario: Nothing except a comment is required
-    When I follow "Suggest edit"
-    And I press "Send Feedback"
-    Then I should see "Comment can't be blank"
+    i_fill_in "feedback_comment", with: "Great site!!!"
+    i_press "Send Feedback"
+    i_should_see "Message sent"
+  end
 
-    When I fill in "feedback_comment" with "Great site!!!"
-    And I press "Send Feedback"
-    Then I should see "Message sent"
+  scenario "Unregistered user submitting feedback (with feed)" do
+    i_follow "Suggest edit"
+    i_fill_in "feedback_comment", with: "Great site!!!"
+    i_press "Send Feedback"
 
-  Scenario: Unregistered user submitting feedback (with feed)
-    When I follow "Suggest edit"
-    And I fill in "feedback_comment" with "Great site!!!"
-    And I press "Send Feedback"
+    i_should_see "Message sent"
+    i_should_see "Thanks for helping us make AntCat better!"
 
-    Then I should see "Message sent"
-    And I should see "Thanks for helping us make AntCat better!"
+    i_log_in_as_a_catalog_editor
+    i_go_to 'the feedback page'
+    i_should_see "[no name] <[no email];"
 
-    When I log in as a catalog editor
-    And I go to the feedback page
-    Then I should see "[no name] <[no email];"
+    i_go_to 'the activity feed'
+    i_should_see "An unregistered user added the feedback item #", within: 'the activity feed'
+  end
 
-    When I go to the activity feed
-    Then I should see "An unregistered user added the feedback item #" within the activity feed
+  scenario "Registered user submitting feedback (with feed)" do
+    i_log_in_as_a_catalog_editor_named "Archibald"
 
-  Scenario: Registered user submitting feedback (with feed)
-    Given I log in as a catalog editor named "Archibald"
+    i_follow "Suggest edit"
+    i_fill_in "feedback_comment", with: "Great site!!!"
+    i_press "Send Feedback"
+    i_should_see "Message sent"
 
-    When I follow "Suggest edit"
-    And I fill in "feedback_comment" with "Great site!!!"
-    And I press "Send Feedback"
-    Then I should see "Message sent"
+    i_go_to 'the feedback page'
+    i_should_see "Archibald submitted"
 
-    When I go to the feedback page
-    Then I should see "Archibald submitted"
+    i_go_to 'the activity feed'
+    i_should_see "Archibald added the feedback item #", within: 'the activity feed'
+  end
 
-    When I go to the activity feed
-    Then I should see "Archibald added the feedback item #" within the activity feed
+  scenario "Page field defaults to the current URL" do
+    there_is_a_genus "Calyptites"
 
-  Scenario: Page field defaults to the current URL
-    Given there is a genus "Calyptites"
-
-    When I go to the catalog page for "Calyptites"
-    And I follow "Suggest edit"
-    Then the "feedback_page" field should contain "catalog/"
+    i_go_to 'the catalog page for "Calyptites"'
+    i_follow "Suggest edit"
+    the_field_should_contain "feedback_page", "catalog/"
+  end
+end

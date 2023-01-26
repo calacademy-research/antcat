@@ -1,74 +1,83 @@
-Feature: Activity feed
-  Scenario: Filtering activities by event
-    Given there is a "destroy" journal activity by "Batiatus"
-    And there is a "update" journal activity by "Batiatus"
+# frozen_string_literal: true
 
-    When I go to the activity feed
-    Then I should see 2 items in the activity feed
+require 'rails_helper'
 
-    When I select "Destroy" from "event"
-    And I press "Filter"
-    Then I should see 1 items in the activity feed
-    And I should see "Batiatus deleted the journal" within the activity feed
+feature "Activity feed" do
+  scenario "Filtering activities by event" do
+    there_is_a_journal_activity_by "destroy", "Batiatus"
+    there_is_a_journal_activity_by "update", "Batiatus"
 
-  Scenario: Showing/hiding automated edits
-    Given there is an activity with the edit summary "Not automated"
-    And there is an automated activity with the edit summary "Automated edit"
+    i_go_to 'the activity feed'
+    i_should_see_number_of_items_in_the_activity_feed 2
 
-    When I go to the activity feed
-    Then I should see "Not automated"
-    And I should not see "Automated edit"
+    i_select "Destroy", from: "event"
+    i_press "Filter"
+    i_should_see_number_of_items_in_the_activity_feed 1
+    i_should_see "Batiatus deleted the journal", within: 'the activity feed'
+  end
 
-    When I check "show_automated_edits"
-    And I press "Filter"
-    Then I should see "Not automated"
-    And I should see "Automated edit"
+  scenario "Showing/hiding automated edits" do
+    there_is_an_activity_with_the_edit_summary "Not automated"
+    there_is_an_automated_activity_with_the_edit_summary "Automated edit"
 
-  Scenario: Pagination with quirks
-    Given I log in as a developer
-    And activities are paginated with 2 per page
-    And there are 5 activity items
+    i_go_to 'the activity feed'
+    i_should_see "Not automated"
+    i_should_not_see "Automated edit"
+
+    i_check "show_automated_edits"
+    i_press "Filter"
+    i_should_see "Not automated"
+    i_should_see "Automated edit"
+  end
+
+  scenario "Pagination with quirks" do
+    i_log_in_as_a_developer
+    activities_are_paginated_with_per_page 2
+    there_are_number_of_activity_items 5
 
     # Using pagination as usual.
-    When I go to the activity feed
-    Then I should see 2 item in the activity feed
-    And the query string should not contain "page="
-    When I follow "3"
-    Then the query string should contain "page=3"
+    i_go_to 'the activity feed'
+    i_should_see_number_of_items_in_the_activity_feed 2
+    the_query_string_should_not_contain "page="
+    i_follow "3"
+    the_query_string_should_contain "page=3"
 
     # Deleting an activity items = return to the same page.
-    When I follow "2"
-    And I follow the first "Delete"
-    Then I should see "was successfully deleted"
-    And the query string should contain "page=2"
+    i_follow "2"
+    i_follow_the_first "Delete"
+    i_should_see "was successfully deleted"
+    the_query_string_should_contain "page=2"
 
     # Restore for future tests.
-    Given activities are paginated with 30 per page
+    activities_are_paginated_with_per_page 30
+  end
 
-  Scenario: Pagination with filtering quirks
-    Given activities are paginated with 2 per page
-    And there is an automated activity with the edit summary "[1] fix URL by script"
-    And there is an automated activity with the edit summary "[2] fix URL by script"
-    And there is an activity with the edit summary "[3] updated pagination"
-    And there is an activity with the edit summary "[4] updated pagination"
-    And there is an activity with the edit summary "[5] updated pagination"
-    And there is an activity with the edit summary "[6] updated pagination"
-    And there is an automated activity with the edit summary "[7] fix URL by script"
-    And there is an automated activity with the edit summary "[8] fix URL by script"
+  scenario "Pagination with filtering quirks" do
+    activities_are_paginated_with_per_page 2
+    there_is_an_automated_activity_with_the_edit_summary "[1] fix URL by script"
+    there_is_an_automated_activity_with_the_edit_summary "[2] fix URL by script"
+    there_is_an_activity_with_the_edit_summary "[3] updated pagination"
+    there_is_an_activity_with_the_edit_summary "[4] updated pagination"
+    there_is_an_activity_with_the_edit_summary "[5] updated pagination"
+    there_is_an_activity_with_the_edit_summary "[6] updated pagination"
+    there_is_an_automated_activity_with_the_edit_summary "[7] fix URL by script"
+    there_is_an_automated_activity_with_the_edit_summary "[8] fix URL by script"
 
-    When I go to the activity feed
-    Then I should see 2 item in the activity feed
-    And I should see "[6] updated pagination"
-    And I should see "[5] updated pagination"
+    i_go_to 'the activity feed'
+    i_should_see_number_of_items_in_the_activity_feed 2
+    i_should_see "[6] updated pagination"
+    i_should_see "[5] updated pagination"
 
-    When I follow "2"
-    Then I should see 2 item in the activity feed
-    And I should see "[4] updated pagination"
-    And I should see "[3] updated pagination"
+    i_follow "2"
+    i_should_see_number_of_items_in_the_activity_feed 2
+    i_should_see "[4] updated pagination"
+    i_should_see "[3] updated pagination"
 
-    When I follow the first "Link"
-    Then I should see 2 item in the activity feed
-    And I should see "[4] updated pagination"
-    And I should see "[3] updated pagination"
+    i_follow_the_first "Link"
+    i_should_see_number_of_items_in_the_activity_feed 2
+    i_should_see "[4] updated pagination"
+    i_should_see "[3] updated pagination"
 
-    Given activities are paginated with 30 per page
+    activities_are_paginated_with_per_page 30
+  end
+end

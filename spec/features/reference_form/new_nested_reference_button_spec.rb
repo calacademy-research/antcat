@@ -1,13 +1,17 @@
-Feature: Add new nested reference button
-  Scenario: Add new `NestedReference` using the button
-    Given this article reference exists
-      | year | stated_year |
-      | 2010 | 2011        |
-    And I log in as a helper editor
+# frozen_string_literal: true
 
-    When I go to the page of the most recent reference
-    And I follow "New Nested Reference"
-    Then the "reference_year" field should contain "2010"
-    And the "reference_stated_year" field should contain "2011"
-    And the "reference_pagination" field should contain "Pp. XX-XX in:"
-    And nesting_reference_id should contain a valid reference id
+require 'rails_helper'
+
+feature "Add new nested reference button" do
+  scenario "Add new `NestedReference` using the button" do
+    this_article_reference_exists year: 2010, stated_year: 2011
+    i_log_in_as_a_helper_editor
+
+    i_go_to 'the page of the most recent reference'
+    i_follow "New Nested Reference"
+    the_field_should_contain "reference_year", "2010"
+    the_field_should_contain "reference_stated_year", "2011"
+    the_field_should_contain "reference_pagination", "Pp. XX-XX in:"
+    nesting_reference_id_should_contain_a_valid_reference_id
+  end
+end

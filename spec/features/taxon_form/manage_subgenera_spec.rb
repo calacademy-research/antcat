@@ -1,31 +1,38 @@
-Feature: Manage subgenera
-  Background:
-    Given I log in as a catalog editor named "Archibald"
+# frozen_string_literal: true
 
-  Scenario: Setting and removing a subgenus of a species (with feed)
-    Given there is a subgenus "Camponotus (Myrmentoma)" in the genus "Camponotus"
-    And there is a species "Camponotus cornis" in the genus "Camponotus"
+require 'rails_helper'
 
-    When I go to the catalog page for "Camponotus cornis"
-    Then I should not see "Camponotus (Myrmentoma)" within the breadcrumbs
+feature "Manage subgenera" do
+  background do
+    i_log_in_as_a_catalog_editor_named "Archibald"
+  end
 
-    When I follow "Set subgenus" within the breadcrumbs
-    And I follow "Set"
-    Then I should see "Successfully updated subgenus of species"
+  scenario "Setting and removing a subgenus of a species (with feed)" do
+    there_is_a_subgenus_in_the_genus "Camponotus (Myrmentoma)", "Camponotus"
+    there_is_a_species_in_the_genus "Camponotus cornis", "Camponotus"
 
-    When I go to the catalog page for "Camponotus cornis"
-    Then I should see "Camponotus (Myrmentoma)" within the breadcrumbs
+    i_go_to 'the catalog page for "Camponotus cornis"'
+    i_should_not_see "Camponotus (Myrmentoma)", within: 'the breadcrumbs'
 
-    When I go to the activity feed
-    Then I should see "Archibald set the subgenus of Camponotus cornis to Camponotus (Myrmentoma)" within the activity feed
+    i_follow "Set subgenus", within: 'the breadcrumbs'
+    i_follow "Set"
+    i_should_see "Successfully updated subgenus of species"
 
-    When I go to the catalog page for "Camponotus cornis"
-    And I follow "Set subgenus" within the breadcrumbs
-    And I follow "Remove"
-    Then I should see "Successfully removed subgenus from species"
+    i_go_to 'the catalog page for "Camponotus cornis"'
+    i_should_see "Camponotus (Myrmentoma)", within: 'the breadcrumbs'
 
-    When I go to the catalog page for "Camponotus cornis"
-    Then I should not see "Camponotus (Myrmentoma)" within the breadcrumbs
+    i_go_to 'the activity feed'
+    i_should_see "Archibald set the subgenus of Camponotus cornis to Camponotus (Myrmentoma)", within: 'the activity feed'
 
-    When I go to the activity feed
-    Then I should see "Archibald removed the subgenus from Camponotus cornis (subgenus was Camponotus (Myrmentoma))" within the activity feed
+    i_go_to 'the catalog page for "Camponotus cornis"'
+    i_follow "Set subgenus", within: 'the breadcrumbs'
+    i_follow "Remove"
+    i_should_see "Successfully removed subgenus from species"
+
+    i_go_to 'the catalog page for "Camponotus cornis"'
+    i_should_not_see "Camponotus (Myrmentoma)", within: 'the breadcrumbs'
+
+    i_go_to 'the activity feed'
+    i_should_see "Archibald removed the subgenus from Camponotus cornis (subgenus was Camponotus (Myrmentoma))", within: 'the activity feed'
+  end
+end

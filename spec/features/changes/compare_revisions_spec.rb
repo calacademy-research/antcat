@@ -1,68 +1,75 @@
-@papertrail
-Feature: Compare revisions
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+feature "Compare revisions", %(
   As an editor of AntCat
   I want to browse previous revisions of items
   So I can see what has been changed
+), :versioning do
+  background do
+    i_log_in_as_a_catalog_editor
+  end
 
-  Background:
-    Given I log in as a catalog editor
-
-  Scenario: Comparing history item revisions
-    Given there is a genus protonym "Atta"
+  scenario "Comparing history item revisions" do
+    there_is_a_genus_protonym "Atta"
 
     # Added item.
-    When I go to the protonym page for "Atta"
-    And I add a history item "initial content"
-    And I go to the activity feed
-    And I follow the first linked history item
-    And I follow "History"
-    Then I should see "This item does not have any previous revisions"
+    i_go_to 'the protonym page for "Atta"'
+    i_add_a_history_item "initial content"
+    i_go_to 'the activity feed'
+    i_follow_the_first_linked_history_item
+    i_follow "History"
+    i_should_see "This item does not have any previous revisions"
 
     # Edited.
-    When I update the most recent history item to say "second revision content"
-    And I go to the activity feed
-    And I follow the first linked history item
-    And I follow "History"
-    Then I should see "Current version"
-    And I should see "second revision content"
-    And I should not see "initial content"
+    i_update_the_most_recent_history_item_to_say "second revision content"
+    i_go_to 'the activity feed'
+    i_follow_the_first_linked_history_item
+    i_follow "History"
+    i_should_see "Current version"
+    i_should_see "second revision content"
+    i_should_not_see "initial content"
 
-    When I follow "prev"
-    Then I should see "Difference between revisions"
-    And I should see "initial content"
+    i_follow "prev"
+    i_should_see "Difference between revisions"
+    i_should_see "initial content"
 
     # Deleted.
-    When I delete the most recent history item
-    And I go to the activity feed
-    And I follow the first "History"
-    Then I should see "Version before item was deleted"
-    And I should see "second revision content"
+    i_delete_the_most_recent_history_item
+    i_go_to 'the activity feed'
+    i_follow_the_first "History"
+    i_should_see "Version before item was deleted"
+    i_should_see "second revision content"
 
-    When I follow "cur"
-    Then I should see "Difference between revisions"
-    And I should see "initial content"
+    i_follow "cur"
+    i_should_see "Difference between revisions"
+    i_should_see "initial content"
+  end
 
-  Scenario: Comparing reference section revisions
-    Given there is a reference section with the references_taxt "test"
+  scenario "Comparing reference section revisions" do
+    there_is_a_reference_section_with_the_references_taxt "test"
 
-    When I go to the page of the most recent reference section
-    And I follow "History"
-    Then I should see "This item does not have any previous revisions"
+    i_go_to 'the page of the most recent reference section'
+    i_follow "History"
+    i_should_see "This item does not have any previous revisions"
+  end
 
-  @retry_ci @javascript
-  Scenario: Comparing revisions with intermediate revisions
-    Given there is a history item "initial version"
-    And I update the most recent history item to say "second version"
-    And I update the most recent history item to say "last version"
+  scenario "Comparing revisions with intermediate revisions", :js do
+    there_is_a_history_item "initial version"
+    i_update_the_most_recent_history_item_to_say "second version"
+    i_update_the_most_recent_history_item_to_say "last version"
 
-    When I go to the page of the most recent history item
-    And I follow "History"
-    And I press "Compare selected revisions"
-    Then I should see "second version" within the left side of the diff
-    And I should see "last version" within the right side of the diff
-    And I should not see "initial version"
+    i_go_to 'the page of the most recent history item'
+    i_follow "History"
+    i_press "Compare selected revisions"
+    i_should_see "second version", within: 'the left side of the diff'
+    i_should_see "last version", within: 'the right side of the diff'
+    i_should_not_see "initial version"
 
-    When I follow the second "cur"
-    Then I should see "initial version" within the left side of the diff
-    And I should see "last version" within the right side of the diff
-    And I should not see "second version"
+    i_follow_the_second "cur"
+    i_should_see "initial version", within: 'the left side of the diff'
+    i_should_see "last version", within: 'the right side of the diff'
+    i_should_not_see "second version"
+  end
+end

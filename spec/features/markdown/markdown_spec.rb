@@ -1,15 +1,20 @@
-Feature: Markdown
-  Background:
-    Given I log in as a catalog editor
+# frozen_string_literal: true
 
-  Scenario: Using markdown
-    Given there is an open issue "Merge 'Giovanni' authors"
-    Given this reference exists
-      | author       | year |
-      | Giovanni, S. | 1809 |
+require 'rails_helper'
 
-    When I go to the issue page for "Merge 'Giovanni' authors"
-    And I follow "Edit"
-    And I fill in "issue_description" with "See:" and a markdown link to "Giovanni, 1809"
-    And I press "Save"
-    Then I should see "See: Giovanni, 1809"
+feature "Markdown" do
+  background do
+    i_log_in_as_a_catalog_editor
+  end
+
+  scenario "Using markdown" do
+    there_is_an_open_issue "Merge 'Giovanni' authors"
+    this_reference_exists author: " Giovanni, S.", year: 1809
+    this_reference_exists author: "Giovanni, S.", year: 1809
+    i_go_to %(the issue page for "Merge 'Giovanni' authors")
+    i_follow "Edit"
+    i_fill_in_with_and_a_markdown_link_to "issue_description", "See:", "Giovanni, 1809"
+    i_press "Save"
+    i_should_see "See: Giovanni, 1809"
+  end
+end

@@ -1,94 +1,104 @@
-Feature: Add and edit open issues
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+feature "Add and edit open issues", %(
   As an AntCat editor
   I want to add, edit and browse open issues
   So that editors can help each other to improve the catalog
+) do
+  background do
+    i_log_in_as_a_catalog_editor_named "Archibald"
+  end
 
-  Background:
-    Given I log in as a catalog editor named "Archibald"
+  scenario "Adding an issue (with feed)" do
+    i_go_to 'the open issues page'
+    i_should_see "There are currently no open issues."
 
-  Scenario: Adding an issue (with feed)
-    When I go to the open issues page
-    Then I should see "There are currently no open issues."
+    i_follow "New"
+    i_fill_in "issue_title", with: "Resolve homonyms"
+    i_fill_in "issue_description", with: "Ids #999 and #777"
+    i_fill_in "edit_summary", with: "added question"
+    i_press "Save"
+    i_should_see "Successfully created issue"
 
-    When I follow "New"
-    And I fill in "issue_title" with "Resolve homonyms"
-    And I fill in "issue_description" with "Ids #999 and #777"
-    And I fill in "edit_summary" with "added question"
-    And I press "Save"
-    Then I should see "Successfully created issue"
+    i_go_to 'the open issues page'
+    i_should_see "Resolve homonyms"
 
-    When I go to the open issues page
-    Then I should see "Resolve homonyms"
+    i_go_to 'the activity feed'
+    i_should_see "Archibald added the issue Resolve homonyms", within: 'the activity feed'
+    i_should_see "added question"
+  end
 
-    And I go to the activity feed
-    Then I should see "Archibald added the issue Resolve homonyms" within the activity feed
-    And I should see "added question"
+  scenario "Editing an issue (with feed)" do
+    there_is_an_open_issue "Restore deleted species"
 
-  Scenario: Editing an issue (with feed)
-    Given there is an open issue "Restore deleted species"
+    i_go_to 'the open issues page'
+    i_should_see "Restore deleted species"
 
-    When I go to the open issues page
-    Then I should see "Restore deleted species"
+    i_follow "Restore deleted species"
+    i_follow "Edit"
+    i_fill_in "issue_title", with: "Restore deleted genera"
+    i_fill_in "issue_description", with: "The genera: #7554, #8863"
+    i_fill_in "edit_summary", with: "added info"
+    i_press "Save"
+    i_should_see "Successfully updated issue"
+    i_should_see "The genera: #7554, #8863"
 
-    When I follow "Restore deleted species"
-    And I follow "Edit"
-    And I fill in "issue_title" with "Restore deleted genera"
-    And I fill in "issue_description" with "The genera: #7554, #8863"
-    And I fill in "edit_summary" with "added info"
-    And I press "Save"
-    Then I should see "Successfully updated issue"
-    And I should see "The genera: #7554, #8863"
+    i_go_to 'the open issues page'
+    i_should_see "Restore deleted genera"
+    i_should_not_see "Restore deleted species"
 
-    When I go to the open issues page
-    Then I should see "Restore deleted genera"
-    And I should not see "Restore deleted species"
+    i_go_to 'the activity feed'
+    i_should_see "Archibald edited the issue Restore deleted genera", within: 'the activity feed'
+    i_should_see "added info"
+  end
 
-    When I go to the activity feed
-    Then I should see "Archibald edited the issue Restore deleted genera" within the activity feed
-    And I should see "added info"
+  scenario "Flagging an issue with 'Help wanted' and show notice in the nomen synopsis" do
+    there_is_an_open_issue "Important fix"
 
-  Scenario: Flagging an issue with "Help wanted" and show notice in the nomen synopsis
-    Given there is an open issue "Important fix"
+    i_go_to 'the catalog'
+    i_should_not_see "Help Wanted", within: 'the page header'
 
-    When I go to the catalog
-    Then I should not see "Help Wanted" within the page header
+    i_go_to 'the open issues page'
+    i_should_not_see "One or more open issues are tagged as 'Help wanted'"
+    i_should_not_see "Important fix Help wanted!"
 
-    When I go to the open issues page
-    Then I should not see "One or more open issues are tagged as 'Help wanted'"
-    And I should not see "Important fix Help wanted!"
+    i_follow "Important fix"
+    i_follow "Edit"
+    i_check "issue_help_wanted"
+    i_press "Save"
+    i_should_see "Successfully updated issue"
 
-    When I follow "Important fix"
-    And I follow "Edit"
-    And I check "issue_help_wanted"
-    And I press "Save"
-    Then I should see "Successfully updated issue"
+    i_go_to 'the catalog'
+    i_should_see "Help Wanted", within: 'the page header'
 
-    When I go to the catalog
-    Then I should see "Help Wanted" within the page header
+    i_go_to 'the open issues page'
+    i_should_see "One or more open issues are tagged as 'Help wanted'"
+    i_should_see "Important fix Help wanted!"
+  end
 
-    When I go to the open issues page
-    Then I should see "One or more open issues are tagged as 'Help wanted'"
-    And I should see "Important fix Help wanted!"
+  scenario "Closing and re-opening an issue (with feed)" do
+    there_is_an_open_issue "Add taxa from Aldous 2007"
 
-  Scenario: Closing and re-opening an issue (with feed)
-    Given there is an open issue "Add taxa from Aldous 2007"
+    i_go_to 'the open issues page'
+    i_follow "Add taxa from Aldous 2007"
+    i_follow "Close"
+    i_should_see "Successfully closed issue"
+    i_should_see "Closed issue: Add taxa from Aldous 2007"
 
-    When I go to the open issues page
-    And I follow "Add taxa from Aldous 2007"
-    And I follow "Close"
-    Then I should see "Successfully closed issue"
-    And I should see "Closed issue: Add taxa from Aldous 2007"
+    i_go_to 'the activity feed'
+    i_should_see "Archibald closed the issue Add taxa from Aldous 2007", within: 'the activity feed'
 
-    When I go to the activity feed
-    Then I should see "Archibald closed the issue Add taxa from Aldous 2007" within the activity feed
+    i_go_to 'the open issues page'
+    i_should_see "There are currently no open issues."
 
-    When I go to the open issues page
-    Then I should see "There are currently no open issues."
+    i_follow_the_first "Add taxa from Aldous 2007"
+    i_follow "Re-open"
+    i_should_see "Successfully re-opened issue"
+    i_should_see "Open issue: Add taxa from Aldous 2007"
 
-    When I follow the first "Add taxa from Aldous 2007"
-    And I follow "Re-open"
-    Then I should see "Successfully re-opened issue"
-    And I should see "Open issue: Add taxa from Aldous 2007"
-
-    When I go to the activity feed
-    Then I should see "Archibald re-opened the issue Add taxa from Aldous 2007" within the activity feed
+    i_go_to 'the activity feed'
+    i_should_see "Archibald re-opened the issue Add taxa from Aldous 2007", within: 'the activity feed'
+  end
+end

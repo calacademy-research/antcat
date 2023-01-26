@@ -1,43 +1,49 @@
-@javascript
-Feature: Markdown autocompletion
-  Background:
-    Given I log in as a catalog editor named "Archibald"
+# frozen_string_literal: true
 
-  @skip_ci @search
-  Scenario: References markdown autocompletion
-    Given these references exist
-      | author       | title                    | year |
-      | Giovanni, S. | Giovanni's Favorite Ants | 1810 |
-      | Joffre, J.   | Joffre's Favorite Ants   | 1810 |
-    And I am on a page with a textarea with markdown preview and autocompletion
+require 'rails_helper'
 
-    When I fill in "issue_description" with "{rfav"
-    Then I should see "Giovanni's Favorite Ants"
-    And I should see "Joffre's Favorite Ants"
+feature "Markdown autocompletion", :js do
+  background do
+    i_log_in_as_a_catalog_editor_named "Archibald"
+  end
 
-    When I clear the markdown textarea
-    Then I should not see "Favorite Ants"
+  scenario "References markdown autocompletion", :skip_ci, :search do
+    this_reference_exists author: "Giovanni, S.", title: "Giovanni's Favorite Ants", year: 1810
+    this_reference_exists author: "Joffre, J.", title: "Joffre's Favorite Ants", year: 1810
+    Sunspot.commit
 
-    When I fill in "issue_description" with "{rjof"
-    And I click the suggestion containing "Joffre's Favorite Ants"
-    Then the markdown textarea should contain a markdown link to "Joffre, 1810"
+    i_am_on_a_page_with_a_textarea_with_markdown_preview_and_autocompletion
 
-  @skip_ci @search
-  Scenario: Taxa markdown autocompletion
-    Given there is a genus "Eciton"
-    And there is a genus "Atta"
-    And I am on a page with a textarea with markdown preview and autocompletion
+    i_fill_in "issue_description", with: "{rfav"
+    i_should_see "Giovanni's Favorite Ants"
+    i_should_see "Joffre's Favorite Ants"
 
-    When I fill in "issue_description" with "{tec"
-    Then I should see "Eciton"
+    i_clear_the_markdown_textarea
+    i_should_not_see "Favorite Ants"
 
-    When I click the suggestion containing "Eciton"
-    Then the markdown textarea should contain a markdown link to Eciton
+    i_fill_in "issue_description", with: "{rjof"
+    i_click_the_suggestion_containing "Joffre's Favorite Ants"
+    the_markdown_textarea_should_contain_a_markdown_link_to "Joffre, 1810"
+  end
 
-  @skip_ci
-  Scenario: User markdown autocompletion
-    Given I am on a page with a textarea with markdown preview and autocompletion
+  scenario "Taxa markdown autocompletion", :skip_ci, :search do
+    there_is_a_genus "Eciton"
+    there_is_a_genus "Atta"
+    Sunspot.commit
+    i_am_on_a_page_with_a_textarea_with_markdown_preview_and_autocompletion
 
-    When I fill in "issue_description" with "@arch"
-    And I click the suggestion containing "Archibald"
-    Then the markdown textarea should contain a markdown link to Archibald's user page
+    i_fill_in "issue_description", with: "{tec"
+    i_should_see "Eciton"
+
+    i_click_the_suggestion_containing "Eciton"
+    the_markdown_textarea_should_contain_a_markdown_link_to_eciton
+  end
+
+  scenario "User markdown autocompletion", :skip_ci do
+    i_am_on_a_page_with_a_textarea_with_markdown_preview_and_autocompletion
+
+    i_fill_in "issue_description", with: "@arch"
+    i_click_the_suggestion_containing "Archibald"
+    the_markdown_textarea_should_contain_a_markdown_link_to_archibalds_user_page
+  end
+end

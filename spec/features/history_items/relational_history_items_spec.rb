@@ -1,67 +1,74 @@
-Feature: Editing a history item
-  Background:
-    Given I log in as a catalog editor named "Archibald"
+# frozen_string_literal: true
 
-  @skip_ci @javascript
-  Scenario: Adding a relational history item
-    Given there is a genus protonym "Atta"
-    And this reference exists
-      | author   | year |
-      | Batiatus | 2004 |
+require 'rails_helper'
 
-    When I go to the protonym page for "Atta"
-    Then the history should be empty
+feature "Editing a history item" do
+  background do
+    i_log_in_as_a_catalog_editor_named "Archibald"
+  end
 
-    When I click on the add history item button
-    And I select "Form descriptions (additional)" from "history_item_type"
-    And I fill in "history_item_text_value" with "w.q."
-    And I fill in "history_item_pages" with "123"
-    And I pick "Batiatus, 2004" from the "#history_item_reference_id" reference picker
-    And I press "Save"
-    Then I should see "Successfully added history item"
-    And I should see "Batiatus, 2004: 123 (w.q.)"
+  scenario "Adding a relational history item", :skip_ci, :js do
+    there_is_a_genus_protonym "Atta"
+    this_reference_exists author: "Batiatus", year: 2004
 
-  Scenario: Adding a relational history item with errors
-    Given there is a genus protonym "Atta"
+    i_go_to 'the protonym page for "Atta"'
+    the_history_should_be_empty
 
-    When I go to the protonym page for "Atta"
-    Then the history should be empty
+    i_click_on 'the add history item button'
+    i_select "Form descriptions (additional)", from: "history_item_type"
+    i_fill_in "history_item_text_value", with: "w.q."
+    i_fill_in "history_item_pages", with: "123"
+    i_pick_from_the_reference_picker "Batiatus, 2004", "#history_item_reference_id"
+    i_press "Save"
+    i_should_see "Successfully added history item"
+    i_should_see "Batiatus, 2004: 123 (w.q.)"
+  end
 
-    When I click on the add history item button
-    And I select "Form descriptions (additional)" from "history_item_type"
-    And I fill in "taxt" with "Pizza"
+  scenario "Adding a relational history item with errors" do
+    there_is_a_genus_protonym "Atta"
 
-    And I press "Save"
-    Then I should see "Taxt must be blank"
-    And I should see "Text value can't be blank"
-    And I should see "Reference can't be blank"
-    And I should see "Pages can't be blank"
+    i_go_to 'the protonym page for "Atta"'
+    the_history_should_be_empty
 
-  @retry_ci @javascript
-  Scenario: Editing a history item (via history item page)
-    Given Batiatus, 2004a: "77-78" has described the forms "q." for the protonym "Formica fusca"
+    i_click_on 'the add history item button'
+    i_select "Form descriptions (additional)", from: "history_item_type"
+    i_fill_in "taxt", with: "Pizza"
 
-    When I go to the protonym page for "Formica fusca"
-    Then I should see "Batiatus, 2004a: 77-78 (q.)"
+    i_press "Save"
+    i_should_see "Taxt must be blank"
+    i_should_see "Text value can't be blank"
+    i_should_see "Reference can't be blank"
+    i_should_see "Pages can't be blank"
+  end
 
-    When I go to the page of the most recent history item
-    And I follow "Edit"
-    And I fill in "history_item_text_value" with "w."
-    And I fill in "history_item_pages" with "99"
-    And I press "Save"
-    Then I should see "Successfully updated history item"
-    And I should see "Batiatus, 2004a: 99 (w.)"
+  # @retry_ci
+  scenario "Editing a history item (via history item page)", :js do
+    batiatus_2004a_has_described_the_forms_for_the_protonym "77-78", "q.", "Formica fusca"
 
-  @retry_ci @javascript
-  Scenario: Editing a history item (Quick edit)
-    Given Batiatus, 2004a: "77-78" has described the forms "q." for the protonym "Formica fusca"
+    i_go_to 'the protonym page for "Formica fusca"'
+    i_should_see "Batiatus, 2004a: 77-78 (q.)"
 
-    When I go to the protonym page for "Formica fusca"
-    Then I should see "Batiatus, 2004a: 77-78 (q.)"
+    i_go_to 'the page of the most recent history item'
+    i_follow "Edit"
+    i_fill_in "history_item_text_value", with: "w."
+    i_fill_in "history_item_pages", with: "99"
+    i_press "Save"
+    i_should_see "Successfully updated history item"
+    i_should_see "Batiatus, 2004a: 99 (w.)"
+  end
 
-    When I click on the edit history item button
-    And I fill in "text_value" with "w."
-    And I fill in "pages" with "99"
-    And I click on the save history item button
-    And I reload the page
-    Then I should see "Batiatus, 2004a: 99 (w.)"
+  # @retry_ci
+  scenario "Editing a history item (Quick edit)", :js do
+    batiatus_2004a_has_described_the_forms_for_the_protonym "77-78", "q.", "Formica fusca"
+
+    i_go_to 'the protonym page for "Formica fusca"'
+    i_should_see "Batiatus, 2004a: 77-78 (q.)"
+
+    i_click_on 'the edit history item button'
+    i_fill_in "text_value", with: "w."
+    i_fill_in "pages", with: "99"
+    i_click_on 'the save history item button'
+    i_reload_the_page
+    i_should_see "Batiatus, 2004a: 99 (w.)"
+  end
+end

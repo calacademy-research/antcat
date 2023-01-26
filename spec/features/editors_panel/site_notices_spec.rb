@@ -1,34 +1,43 @@
-Feature: Site notices
-  Background:
-    Given I log in as a catalog editor named "Batiatus"
+# frozen_string_literal: true
 
-  Scenario: Adding a site notice (with feed)
-    When I go to the site notices page
-    And I follow "New"
-    And I fill in "site_notice_title" with "New AntCat features"
-    And I fill in "site_notice_message" with "You would not believe it!"
-    And I press "Publish"
-    Then I should see "Successfully created site notice"
-    And I should see "Added by Batiatus"
+require 'rails_helper'
 
-  Scenario: Reading a notice marks it as read
-    Given there is a site notice "A Site Notice" I haven't read yet
+feature "Site notices" do
+  background do
+    i_log_in_as_a_catalog_editor_named "Batiatus"
+  end
 
-    When I go to the users page
-    Then I should see an unread site notice
+  scenario "Adding a site notice (with feed)" do
+    i_go_to 'the site notices page'
+    i_follow "New"
+    i_fill_in "site_notice_title", with: "New AntCat features"
+    i_fill_in "site_notice_message", with: "You would not believe it!"
+    i_press "Publish"
+    i_should_see "Successfully created site notice"
+    i_should_see "Added by Batiatus"
+  end
 
-    When I follow "new notice!" within the desktop menu
-    And I follow "A Site Notice"
-    Then I should see "A Site Notice"
-    And I should not see any unread site notices
+  scenario "Reading a notice marks it as read" do
+    there_is_a_site_notice_i_havent_read_yet "A Site Notice"
 
-  Scenario: Mark all as read from the site notices page
-    Given there is a site notice "A Site Notice" I haven't read yet
+    i_go_to 'the users page'
+    i_should_see_an_unread_site_notice
 
-    When I go to the site notices page
-    Then I should see an unread site notice
+    i_follow "new notice!", within: 'the desktop menu'
+    i_follow "A Site Notice"
+    i_should_see "A Site Notice"
+    i_should_not_see_any_unread_site_notices
+  end
 
-    When I follow "Mark all as read"
-    Then I should see "All site notices successfully marked as read."
-    And I should not see any unread site notices
-    And I should not see "Mark all as read"
+  scenario "Mark all as read from the site notices page" do
+    there_is_a_site_notice_i_havent_read_yet "A Site Notice"
+
+    i_go_to 'the site notices page'
+    i_should_see_an_unread_site_notice
+
+    i_follow "Mark all as read"
+    i_should_see "All site notices successfully marked as read."
+    i_should_not_see_any_unread_site_notices
+    i_should_not_see "Mark all as read"
+  end
+end

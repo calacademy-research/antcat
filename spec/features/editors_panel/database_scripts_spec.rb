@@ -1,34 +1,44 @@
-Feature: Database scripts
-  Background:
-    Given I am logged in
-    And I go to the database scripts page
+# frozen_string_literal: true
 
-  Scenario: Results when there are issues
-    Given there is an extant species Lasius niger in a fossil genus
-    And I go to the database scripts page
+require 'rails_helper'
 
-    When I follow "Extant taxa in fossil genera"
-    Then I should see "Lasius niger"
+feature "Database scripts" do
+  background do
+    i_am_logged_in
+    i_go_to 'the database scripts page'
+  end
 
-  Scenario: Displaying database script issues in catalog pages
-    Given these Settings: catalog: { show_failed_soft_validations: false }
-    And there is an extant species Lasius niger in a fossil genus
+  scenario "Results when there are issues" do
+    there_is_an_extant_species_lasius_niger_in_a_fossil_genus
+    i_go_to 'the database scripts page'
 
-    When I go to the catalog page for "Lasius niger"
-    Then I should not see "The parent of this taxon is fossil, but this taxon is extant"
+    i_follow "Extant taxa in fossil genera"
+    i_should_see "Lasius niger"
+  end
 
-    Given these Settings: catalog: { show_failed_soft_validations: true }
-    When I reload the page
-    Then I should see "The parent of this taxon is fossil, but this taxon is extant"
+  scenario "Displaying database script issues in catalog pages" do
+    these_settings "catalog: { show_failed_soft_validations: false }"
+    there_is_an_extant_species_lasius_niger_in_a_fossil_genus
 
-    When I follow the first "See more similar."
-    Then I should see "Extant taxa in fossil genera"
+    i_go_to 'the catalog page for "Lasius niger"'
+    i_should_not_see "The parent of this taxon is fossil, but this taxon is extant"
 
-  Scenario: Clicking on all scripts just to see if the page renders
-    Given I open all database scripts one by one
+    these_settings "catalog: { show_failed_soft_validations: true }"
+    i_reload_the_page
+    i_should_see "The parent of this taxon is fossil, but this taxon is extant"
 
-  Scenario: Checking 'empty' status
-    Then I should not see "Excluded (slow/list)"
+    i_follow_the_first "See more similar."
+    i_should_see "Extant taxa in fossil genera"
+  end
 
-    When I follow "Show empty"
-    Then I should see "Excluded (slow/list)"
+  scenario "Clicking on all scripts just to see if the page renders" do
+    i_open_all_database_scripts_one_by_one
+  end
+
+  scenario "Checking 'empty' status" do
+    i_should_not_see "Excluded (slow/list)"
+
+    i_follow "Show empty"
+    i_should_see "Excluded (slow/list)"
+  end
+end

@@ -1,68 +1,74 @@
-@skip_ci
-Feature: Editing a user
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+feature "Editing a user", %(
   As a user of AntCat
   I want to edit my password and email
+), :skip_ci do
+  background do
+    this_user_exists email: "quintus@antcat.org", name: "Batiatus", password: "secret"
+    i_log_in_as "Batiatus"
+  end
 
-  Background:
-    Given this user exists
-      | email              | name     | password |
-      | quintus@antcat.org | Batiatus | secret   |
-    Given I log in as "Batiatus"
-
-  Scenario: Changing password
-    When I go to the main page
-    And I follow "Batiatus" within the desktop menu
-    And I follow "My account"
-    And I fill in "user_password" with "new password"
-    And I fill in "user_password_confirmation" with "new password"
-    And I fill in "user_current_password" with "secret"
-    And I press "Save"
-    Then I should be on the main page
-    And I should see "Your account has been updated"
+  scenario "Changing password" do
+    i_go_to 'the main page'
+    i_follow "Batiatus", within: 'the desktop menu'
+    i_follow "My account"
+    i_fill_in "user_password", with: "new password"
+    i_fill_in "user_password_confirmation", with: "new password"
+    i_fill_in "user_current_password", with: "secret"
+    i_press "Save"
+    i_should_be_on 'the main page'
+    i_should_see "Your account has been updated"
 
     # Logging in with changed password.
-    When I follow "Logout" within the desktop menu
-    Then I should not see "Batiatus"
+    i_follow "Logout", within: 'the desktop menu'
+    i_should_not_see "Batiatus"
 
-    When I follow "Login" within the desktop menu
-    And I fill in "user_email" with "quintus@antcat.org"
-    And I fill in "user_password" with "new password"
-    And I press "Login"
-    Then I should be on the main page
-    And I should see "Batiatus"
+    i_follow "Login", within: 'the desktop menu'
+    i_fill_in "user_email", with: "quintus@antcat.org"
+    i_fill_in "user_password", with: "new password"
+    i_press "Login"
+    i_should_be_on 'the main page'
+    i_should_see "Batiatus"
+  end
 
-  Scenario: Updating user details
-    When I go to the main page
-    Then I should see "Batiatus"
-    And I should not see "Quintus, B."
+  scenario "Updating user details" do
+    i_go_to 'the main page'
+    i_should_see "Batiatus"
+    i_should_not_see "Quintus, B."
 
-    When I follow "Batiatus" within the desktop menu
-    And I follow "My account"
-    And I fill in "user_name" with "Quintus, B."
-    And I fill in "user_current_password" with "secret"
-    And I press "Save"
-    Then I should be on the main page
-    And I should see "Quintus, B."
-    And I should not see "Batiatus"
+    i_follow "Batiatus", within: 'the desktop menu'
+    i_follow "My account"
+    i_fill_in "user_name", with: "Quintus, B."
+    i_fill_in "user_current_password", with: "secret"
+    i_press "Save"
+    i_should_be_on 'the main page'
+    i_should_see "Quintus, B."
+    i_should_not_see "Batiatus"
+  end
 
-  Scenario: Updating user preferences
-    When I go to My account
-    Then I should see "#user_settings_editing_helpers_create_combination" unchecked
+  scenario "Updating user preferences" do
+    i_go_to 'My account'
+    i_should_see_unchecked "#user_settings_editing_helpers_create_combination"
 
     # Enable setting.
-    When I check "user_settings_editing_helpers_create_combination"
-    And I press "Save"
-    Then I should see "Your account has been updated"
+    i_check "user_settings_editing_helpers_create_combination"
+    i_press "Save"
+    i_should_see "Your account has been updated"
 
-    When I go to My account
-    Then I should see "#user_settings_editing_helpers_create_combination" checked
-    And Batiatus' editing_helpers settings for create_combination should be "true" [Boolean]
+    i_go_to 'My account'
+    i_should_see_checked "#user_settings_editing_helpers_create_combination"
+    batiatus_editing_helpers_settings_for_create_combination_should_be "true"
 
     # Disable setting.
-    When I uncheck "user_settings_editing_helpers_create_combination"
-    And I press "Save"
-    Then I should see "Your account has been updated"
+    i_uncheck "user_settings_editing_helpers_create_combination"
+    i_press "Save"
+    i_should_see "Your account has been updated"
 
-    When I go to My account
-    Then I should see "#user_settings_editing_helpers_create_combination" unchecked
-    And Batiatus' editing_helpers settings for create_combination should be "false" [Boolean]
+    i_go_to 'My account'
+    i_should_see_unchecked "#user_settings_editing_helpers_create_combination"
+    batiatus_editing_helpers_settings_for_create_combination_should_be "false"
+  end
+end

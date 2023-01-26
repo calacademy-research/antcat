@@ -1,46 +1,54 @@
-Feature: Add and edit wiki pages
-  Background:
-    Given I log in as a catalog editor named "Archibald"
+# frozen_string_literal: true
 
-  Scenario: Adding a wiki page (with edit summary)
-    When I go to the wiki pages index
-    Then I should see "There are currently no wiki pages"
+require 'rails_helper'
 
-    When I follow "New"
-    And I fill in "wiki_page_title" with "Bibliography guidelines"
-    And I fill in "wiki_page_content" with "In the title, use capitals only"
-    And I fill in "edit_summary" with "added help page"
-    And I press "Save"
-    Then I should see "Successfully created wiki page"
+feature "Add and edit wiki pages" do
+  background do
+    i_log_in_as_a_catalog_editor_named "Archibald"
+  end
 
-    When I go to the wiki pages index
-    Then I should see "Bibliography guidelines"
+  scenario "Adding a wiki page (with edit summary)" do
+    i_go_to 'the wiki pages index'
+    i_should_see "There are currently no wiki pages"
 
-    When I follow the first "Bibliography guidelines"
-    Then I should see "In the title, use capitals only"
+    i_follow "New"
+    i_fill_in "wiki_page_title", with: "Bibliography guidelines"
+    i_fill_in "wiki_page_content", with: "In the title, use capitals only"
+    i_fill_in "edit_summary", with: "added help page"
+    i_press "Save"
+    i_should_see "Successfully created wiki page"
 
-    When I go to the activity feed
-    Then I should see "Archibald added the wiki page Bibliography guidelines" within the activity feed
-    And I should see the edit summary "added help page"
+    i_go_to 'the wiki pages index'
+    i_should_see "Bibliography guidelines"
 
-  Scenario: Editing a wiki page (with edit summary)
-    Given there is a wiki page "Catalog guidelines"
+    i_follow_the_first "Bibliography guidelines"
+    i_should_see "In the title, use capitals only"
 
-    When I go to the wiki pages index
-    And I follow the first "Catalog guidelines"
-    And I follow "Edit"
-    And I fill in "wiki_page_title" with "Name guidelines"
-    And I fill in "wiki_page_content" with "Genus names must start with a capital letter"
-    And I fill in "edit_summary" with "updated info"
-    And I press "Save"
-    Then I should see "Successfully updated wiki page"
+    i_go_to 'the activity feed'
+    i_should_see "Archibald added the wiki page Bibliography guidelines", within: 'the activity feed'
+    i_should_see_the_edit_summary "added help page"
+  end
 
-    When I go to the wiki pages index
-    And I should see "Name guidelines"
+  scenario "Editing a wiki page (with edit summary)" do
+    there_is_a_wiki_page "Catalog guidelines"
 
-    When I follow the first "Name guidelines"
-    Then I should see "Genus names must start with a capital letter"
+    i_go_to 'the wiki pages index'
+    i_follow_the_first "Catalog guidelines"
+    i_follow "Edit"
+    i_fill_in "wiki_page_title", with: "Name guidelines"
+    i_fill_in "wiki_page_content", with: "Genus names must start with a capital letter"
+    i_fill_in "edit_summary", with: "updated info"
+    i_press "Save"
+    i_should_see "Successfully updated wiki page"
 
-    When I go to the activity feed
-    Then I should see "Archibald edited the wiki page Name guidelines" within the activity feed
-    And I should see the edit summary "updated info"
+    i_go_to 'the wiki pages index'
+    i_should_see "Name guidelines"
+
+    i_follow_the_first "Name guidelines"
+    i_should_see "Genus names must start with a capital letter"
+
+    i_go_to 'the activity feed'
+    i_should_see "Archibald edited the wiki page Name guidelines", within: 'the activity feed'
+    i_should_see_the_edit_summary "updated info"
+  end
+end

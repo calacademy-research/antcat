@@ -1,14 +1,21 @@
-Feature: Commenting
-  Background:
-    Given I log in as a catalog editor named "Batiatus"
-    And there is an open feedback item
-    And I go to the most recent feedback item
+# frozen_string_literal: true
 
-  Scenario: Leaving a comment (with feed)
-    When I write a new comment "Fixed, closing issue."
-    And I press "Post Comment"
-    Then I should see "Comment was successfully added"
-    And I should see "Fixed, closing issue."
+require 'rails_helper'
 
-    When I go to the activity feed
-    Then I should see "Batiatus commented on the feedback #"
+feature "Commenting" do
+  background do
+    i_log_in_as_a_catalog_editor_named "Batiatus"
+    there_is_an_open_feedback_item
+    i_go_to 'the most recent feedback item'
+  end
+
+  scenario "Leaving a comment (with feed)" do
+    i_write_a_new_comment "Fixed, closing issue."
+    i_press "Post Comment"
+    i_should_see "Comment was successfully added"
+    i_should_see "Fixed, closing issue."
+
+    i_go_to 'the activity feed'
+    i_should_see "Batiatus commented on the feedback #"
+  end
+end

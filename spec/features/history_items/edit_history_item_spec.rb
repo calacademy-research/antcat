@@ -1,120 +1,128 @@
-Feature: Editing a history item
-  Background:
-    Given I log in as a catalog editor named "Archibald"
+# frozen_string_literal: true
 
-  Scenario: Adding a history item (with edit summary)
-    Given there is a genus protonym "Atta"
+require 'rails_helper'
 
-    When I go to the protonym page for "Atta"
-    Then the history should be empty
+feature "Editing a history item" do
+  background do
+    i_log_in_as_a_catalog_editor_named "Archibald"
+  end
 
-    When I click on the add history item button
-    And I fill in "taxt" with "Abc"
-    And I fill in "edit_summary" with "added new stuff"
-    And I press "Save"
-    Then the history should be "Abc"
+  scenario "Adding a history item (with edit summary)" do
+    there_is_a_genus_protonym "Atta"
 
-    When I go to the activity feed
-    Then I should see "Archibald added the history item #" within the activity feed
-    And I should see "belonging to Atta"
-    And I should see the edit summary "added new stuff"
+    i_go_to 'the protonym page for "Atta"'
+    the_history_should_be_empty
 
-  Scenario: Adding a history item with blank taxt
-    Given there is a genus protonym "Atta"
+    i_click_on 'the add history item button'
+    i_fill_in "taxt", with: "Abc"
+    i_fill_in "edit_summary", with: "added new stuff"
+    i_press "Save"
+    the_history_should_be "Abc"
 
-    When I go to the protonym page for "Atta"
-    Then the history should be empty
+    i_go_to 'the activity feed'
+    i_should_see "Archibald added the history item #", within: 'the activity feed'
+    i_should_see "belonging to Atta"
+    i_should_see_the_edit_summary "added new stuff"
+  end
 
-    When I click on the add history item button
-    And I press "Save"
-    Then I should see "Taxt can't be blank"
+  scenario "Adding a history item with blank taxt" do
+    there_is_a_genus_protonym "Atta"
 
-  @retry_ci @javascript
-  Scenario: Editing a history item (with edit summary)
-    Given there is a subfamily protonym "Antcatinae" with a history item "Antcatinae as family"
+    i_go_to 'the protonym page for "Atta"'
+    the_history_should_be_empty
 
-    When I go to the protonym page for "Antcatinae"
-    Then the history should be "Antcatinae as family"
+    i_click_on 'the add history item button'
+    i_press "Save"
+    i_should_see "Taxt can't be blank"
+  end
 
-    When I click on the edit history item button
-    And I fill in "taxt" with "(none)"
-    And I fill in "edit_summary" with "fix typo" within "#history-items"
-    And I click on the save history item button
-    And I reload the page
-    Then I should not see "Antcatinae as family"
-    And the history should be "(none)"
+  # @retry_ci
+  scenario "Editing a history item (with edit summary)", :js do
+    there_is_a_subfamily_protonym_with_a_history_item "Antcatinae", "Antcatinae as family"
 
-    When I click on the edit history item button
-    Then the history item field should be "(none)"
+    i_go_to 'the protonym page for "Antcatinae"'
+    the_history_should_be "Antcatinae as family"
 
-    When I go to the activity feed
-    Then I should see "Archibald edited the history item #" within the activity feed
-    And I should see "belonging to Antcatinae"
-    And I should see the edit summary "fix typo"
+    i_click_on 'the edit history item button'
+    i_fill_in "taxt", with: "(none)"
+    i_fill_in "edit_summary", with: "fix typo", within: '"#history-items"'
+    i_click_on 'the save history item button'
+    i_reload_the_page
+    i_should_not_see "Antcatinae as family"
+    the_history_should_be "(none)"
 
-  Scenario: Editing a history item (without JavaScript)
-    Given there is a subfamily protonym "Antcatinae" with a history item "Antcatinae as family"
+    i_click_on 'the edit history item button'
+    the_history_item_field_should_be "(none)"
 
-    When I go to the page of the most recent history item
-    And I follow "Edit"
-    Then I should see "Antcatinae as family"
+    i_go_to 'the activity feed'
+    i_should_see "Archibald edited the history item #", within: 'the activity feed'
+    i_should_see "belonging to Antcatinae"
+    i_should_see_the_edit_summary "fix typo"
+  end
 
-    When I fill in "taxt" with "history item content"
-    And I press "Save"
-    Then I should see "Successfully updated history item #"
-    And I should see "history item content"
+  scenario "Editing a history item (without JavaScript)" do
+    there_is_a_subfamily_protonym_with_a_history_item "Antcatinae", "Antcatinae as family"
 
-  @skip_ci @javascript
-  Scenario: Editing a history item, but cancelling
-    Given there is a subfamily protonym "Antcatinae" with a history item "Antcatinae as family"
+    i_go_to 'the page of the most recent history item'
+    i_follow "Edit"
+    i_should_see "Antcatinae as family"
 
-    When I go to the protonym page for "Antcatinae"
-    And I click on the edit history item button
-    And I fill in "taxt" with "(none)"
-    And I click on the cancel history item button
-    Then the history should be "Antcatinae as family"
+    i_fill_in "taxt", with: "history item content"
+    i_press "Save"
+    i_should_see "Successfully updated history item #"
+    i_should_see "history item content"
+  end
 
-    When I click on the edit history item button
-    Then the history item field should be "Antcatinae as family"
+  scenario "Editing a history item, but cancelling", :skip_ci, :js do
+    there_is_a_subfamily_protonym_with_a_history_item "Antcatinae", "Antcatinae as family"
 
-  @javascript
-  Scenario: Deleting a history item (with feed)
-    Given there is a subfamily protonym "Antcatinae" with a history item "Antcatinae as family"
+    i_go_to 'the protonym page for "Antcatinae"'
+    i_click_on 'the edit history item button'
+    i_fill_in "taxt", with: "(none)"
+    i_click_on 'the cancel history item button'
+    the_history_should_be "Antcatinae as family"
 
-    When I go to the protonym page for "Antcatinae"
-    Then I should see "Antcatinae as family"
+    i_click_on 'the edit history item button'
+    the_history_item_field_should_be "Antcatinae as family"
+  end
 
-    When I click on the edit history item button
-    And I will confirm on the next step
-    And I click on the delete history item button
-    Then I should be on the protonym page for "Antcatinae"
+  scenario "Deleting a history item (with feed)", :js do
+    there_is_a_subfamily_protonym_with_a_history_item "Antcatinae", "Antcatinae as family"
 
-    When I reload the page
-    Then the history should be empty
+    i_go_to 'the protonym page for "Antcatinae"'
+    i_should_see "Antcatinae as family"
 
-    When I go to the activity feed
-    Then I should see "Archibald deleted the history item #" within the activity feed
-    And I should see "belonging to Antcatinae"
+    i_click_on 'the edit history item button'
+    i_will_confirm_on_the_next_step
+    i_click_on 'the delete history item button'
+    i_should_be_on 'the protonym page for "Antcatinae"'
 
-  @javascript
-  Scenario: Seeing the markdown preview (and cancelling)
-    Given this reference exists
-      | author       | year |
-      | Giovanni, S. | 1809 |
-    And there is a protonym "Antcatinae" with a history item "As family," and a markdown link to "Giovanni, 1809"
+    i_reload_the_page
+    the_history_should_be_empty
 
-    When I go to the protonym page for "Antcatinae"
-    Then I should see "As family, Giovanni, 1809"
-    And the history item field should not be visible
+    i_go_to 'the activity feed'
+    i_should_see "Archibald deleted the history item #", within: 'the activity feed'
+    i_should_see "belonging to Antcatinae"
+  end
 
-    When I click on the edit history item button
-    Then I should see "As family, Giovanni, 1809"
-    And the history item field should be visible
+  scenario "Seeing the markdown preview (and cancelling)", :js do
+    this_reference_exists author: "Giovanni, S.", year: 1809
+    there_is_a_protonym_with_a_history_item_and_a_markdown_link_to "Antcatinae", "As family,", "Giovanni, 1809"
 
-    When I fill in "taxt" with "Lasius history," and a markdown link to "Giovanni, 1809"
-    And I press "Rerender preview"
-    Then I should see "Lasius history, Giovanni, 1809"
+    i_go_to 'the protonym page for "Antcatinae"'
+    i_should_see "As family, Giovanni, 1809"
+    the_history_item_field_should_not_be_visible
 
-    When I click on the cancel history item button
-    Then I should see "As family, Giovanni, 1809"
-    And the history item field should not be visible
+    i_click_on 'the edit history item button'
+    i_should_see "As family, Giovanni, 1809"
+    the_history_item_field_should_be_visible
+
+    i_fill_in_with_and_a_markdown_link_to "taxt", "Lasius history,", "Giovanni, 1809"
+    i_press "Rerender preview"
+    i_should_see "Lasius history, Giovanni, 1809"
+
+    i_click_on 'the cancel history item button'
+    i_should_see "As family, Giovanni, 1809"
+    the_history_item_field_should_not_be_visible
+  end
+end

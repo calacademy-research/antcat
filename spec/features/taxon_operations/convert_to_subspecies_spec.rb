@@ -1,31 +1,39 @@
-Feature: Converting a species to a subspecies
-  Background:
-    Given I log in as a catalog editor named "Archibald"
+# frozen_string_literal: true
 
-  Scenario: Converting a species to a subspecies (with feed)
-    Given there is a species "Camponotus dallatorei" in the genus "Camponotus"
-    And there is a species "Camponotus alii" in the genus "Camponotus"
+require 'rails_helper'
 
-    When I go to the catalog page for "Camponotus dallatorei"
-    And I follow "Convert to subspecies"
-    Then I should see "Convert species"
-    And I should see "to be a subspecies of"
+feature "Converting a species to a subspecies" do
+  background do
+    i_log_in_as_a_catalog_editor_named "Archibald"
+  end
 
-    When I pick "Camponotus alii" from the "#new_species_id" taxon picker
-    And I press "Convert"
-    Then I should be on the catalog page for "Camponotus alii dallatorei"
-    And "Camponotus alii dallatorei" should be of the rank of "subspecies"
+  scenario "Converting a species to a subspecies (with feed)" do
+    there_is_a_species_in_the_genus "Camponotus dallatorei", "Camponotus"
+    there_is_a_species_in_the_genus "Camponotus alii", "Camponotus"
 
-    When I go to the activity feed
-    Then I should see "Archibald converted the species Camponotus dallatorei to a subspecies (now Camponotus alii dallatorei)" within the activity feed
+    i_go_to 'the catalog page for "Camponotus dallatorei"'
+    i_follow "Convert to subspecies"
+    i_should_see "Convert species"
+    i_should_see "to be a subspecies of"
 
-  Scenario: Converting a species to a subspecies when it already exists
-    Given there is a species "Camponotus alii" in the genus "Camponotus"
-    And there is a subspecies "Camponotus alii dallatorei" in the species "Camponotus alii"
-    And there is a species "Camponotus dallatorei" in the genus "Camponotus"
+    i_pick_from_the_taxon_picker "Camponotus alii", "#new_species_id"
+    i_press "Convert"
+    i_should_be_on 'the catalog page for "Camponotus alii dallatorei"'
+    taxon_should_be_of_the_rank_of "Camponotus alii dallatorei", "subspecies"
 
-    When I go to the catalog page for "Camponotus dallatorei"
-    And I follow "Convert to subspecies"
-    And I pick "Camponotus alii" from the "#new_species_id" taxon picker
-    And I press "Convert"
-    Then I should see "This name is in use by another taxon"
+    i_go_to 'the activity feed'
+    i_should_see "Archibald converted the species Camponotus dallatorei to a subspecies (now Camponotus alii dallatorei)", within: 'the activity feed'
+  end
+
+  scenario "Converting a species to a subspecies when it already exists" do
+    there_is_a_species_in_the_genus "Camponotus alii", "Camponotus"
+    there_is_a_subspecies_in_the_species "Camponotus alii dallatorei", "Camponotus alii"
+    there_is_a_species_in_the_genus "Camponotus dallatorei", "Camponotus"
+
+    i_go_to 'the catalog page for "Camponotus dallatorei"'
+    i_follow "Convert to subspecies"
+    i_pick_from_the_taxon_picker "Camponotus alii", "#new_species_id"
+    i_press "Convert"
+    i_should_see "This name is in use by another taxon"
+  end
+end

@@ -1,36 +1,40 @@
-Feature: Logging in
-  Scenario: Logging and returning to previous page
-    Given this user exists
-      | email              | name     | password |
-      | quintus@antcat.org | Batiatus | secret   |
+# frozen_string_literal: true
 
-    When I go to the references page
-    Then I should not see "Logout"
+require 'rails_helper'
 
-    When I follow "Login" within the desktop menu
-    And I fill in "user_email" with "quintus@antcat.org"
-    And I fill in "user_password" with "secret"
-    And I press "Login"
-    Then I should be on the references page
-    And I should see "Logout"
+feature "Logging in" do
+  scenario "Logging and returning to previous page" do
+    this_user_exists email: "quintus@antcat.org", name: "Batiatus", password: "secret"
 
-  Scenario: Logging in unsuccessfully
-    When I go to the main page
-    And I follow "Login" within the desktop menu
-    And I fill in "user_email" with "quintus@antcat.org"
-    And I fill in "user_password" with "asd;fljl;jsdfljsdfj"
-    And I press "Login"
-    Then I should be on the login page
+    i_go_to 'the references page'
+    i_should_not_see "Logout"
 
-  Scenario: Logging with a locked account
-    Given this user exists
-      | email              | name     | password | locked |
-      | quintus@antcat.org | Batiatus | secret   | true   |
+    i_follow "Login", within: 'the desktop menu'
+    i_fill_in "user_email", with: "quintus@antcat.org"
+    i_fill_in "user_password", with: "secret"
+    i_press "Login"
+    i_should_be_on 'the references page'
+    i_should_see "Logout"
+  end
 
-    When I go to the main page
-    And I follow "Login" within the desktop menu
-    And I fill in "user_email" with "quintus@antcat.org"
-    And I fill in "user_password" with "secret"
-    And I press "Login"
-    Then I should be on the login page
-    And I should see "Your account has not been activated yet, or it been deactivated"
+  scenario "Logging in unsuccessfully" do
+    i_go_to 'the main page'
+    i_follow "Login", within: 'the desktop menu'
+    i_fill_in "user_email", with: "quintus@antcat.org"
+    i_fill_in "user_password", with: "asd;fljl;jsdfljsdfj"
+    i_press "Login"
+    i_should_be_on 'the login page'
+  end
+
+  scenario "Logging with a locked account" do
+    this_user_exists email: "quintus@antcat.org", name: "Batiatus", password: "secret", locked: true
+
+    i_go_to 'the main page'
+    i_follow "Login", within: 'the desktop menu'
+    i_fill_in "user_email", with: "quintus@antcat.org"
+    i_fill_in "user_password", with: "secret"
+    i_press "Login"
+    i_should_be_on 'the login page'
+    i_should_see "Your account has not been activated yet, or it been deactivated"
+  end
+end

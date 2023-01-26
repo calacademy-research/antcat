@@ -1,94 +1,104 @@
-Feature: Manage protonyms
-  Background:
-    Given I log in as a helper editor
+# frozen_string_literal: true
 
-  Scenario: Adding a protonym with a type name
-    Given there is a genus "Atta"
-    And this reference exists
-      | author   | year |
-      | Batiatus | 2004 |
+require 'rails_helper'
 
-    When I go to the protonyms page
-    And I follow "New"
-    And I set the protonym name to "Dotta"
-    And I pick "Atta" from the "#protonym_type_name_attributes_taxon_id" taxon picker
-    And I pick "Batiatus, 2004" from the "#protonym_authorship_attributes_reference_id" reference picker
-    And I fill in "protonym_authorship_attributes_pages" with "page 35"
-    And I select "by monotypy" from "protonym_type_name_attributes_fixation_method"
-    And I press "Save"
-    Then I should see "Protonym was successfully created."
-    And I should see "Type-genus: Atta, by monotypy"
+feature "Manage protonyms" do
+  background do
+    i_log_in_as_a_helper_editor
+  end
 
-    When I follow "Edit"
-    And I select "by original designation" from "protonym_type_name_attributes_fixation_method"
-    And I press "Save"
-    Then I should see "Protonym was successfully updated"
-    And I should see "Type-genus: Atta, by original designation"
+  scenario "Adding a protonym with a type name" do
+    there_is_a_genus "Atta"
+    this_reference_exists author: "Batiatus", year: 2004
 
-  Scenario: Adding a protonym with errors
-    When I go to the protonyms page
-    And I follow "New"
-    And I select "by monotypy" from "protonym_type_name_attributes_fixation_method"
-    And I press "Save"
-    Then I should see "Name can't be blank"
-    And I should see "Authorship: Reference must exist"
-    And I should see "Authorship: Pages can't be blank"
-    And I should see "Type name: Taxon must exist"
+    i_go_to 'the protonyms page'
+    i_follow "New"
+    i_set_the_protonym_name_to "Dotta"
+    i_pick_from_the_taxon_picker "Atta", "#protonym_type_name_attributes_taxon_id"
+    i_pick_from_the_reference_picker "Batiatus, 2004", "#protonym_authorship_attributes_reference_id"
+    i_fill_in "protonym_authorship_attributes_pages", with: "page 35"
+    i_select "by monotypy", from: "protonym_type_name_attributes_fixation_method"
+    i_press "Save"
+    i_should_see "Protonym was successfully created."
+    i_should_see "Type-genus: Atta, by monotypy"
 
-  Scenario: Adding a protonym with unparsable name, and maintain entered fields
-    When I go to the protonyms page
-    And I follow "New"
-    And I set the protonym name to "Invalid a b c d e f protonym name"
-    And I press "Save"
-    Then I should see "Protonym name: Could not parse name Invalid a b c d e f protonym name"
-    And the "protonym_name_string" field should contain "Invalid a b c d e f protonym name"
+    i_follow "Edit"
+    i_select "by original designation", from: "protonym_type_name_attributes_fixation_method"
+    i_press "Save"
+    i_should_see "Protonym was successfully updated"
+    i_should_see "Type-genus: Atta, by original designation"
+  end
 
-  Scenario: Editing a protonym
-    Given there is a species protonym "Formica fusca" with pages and form 'page 9, dealate queen'
+  scenario "Adding a protonym with errors" do
+    i_go_to 'the protonyms page'
+    i_follow "New"
+    i_select "by monotypy", from: "protonym_type_name_attributes_fixation_method"
+    i_press "Save"
+    i_should_see "Name can't be blank"
+    i_should_see "Authorship: Reference must exist"
+    i_should_see "Authorship: Pages can't be blank"
+    i_should_see "Type name: Taxon must exist"
+  end
 
-    When I go to the protonyms page
-    And I follow "Formica fusca"
-    Then I should see "page 9"
-    And I should see "dealate queen"
+  scenario "Adding a protonym with unparsable name, and maintain entered fields" do
+    i_go_to 'the protonyms page'
+    i_follow "New"
+    i_set_the_protonym_name_to "Invalid a b c d e f protonym name"
+    i_press "Save"
+    i_should_see "Protonym name: Could not parse name Invalid a b c d e f protonym name"
+    the_field_should_contain "protonym_name_string", "Invalid a b c d e f protonym name"
+  end
 
-    When I follow "Edit"
-    And I fill in "protonym_authorship_attributes_pages" with "page 35"
-    And I fill in "protonym_forms" with "male"
-    And I fill in "protonym_locality" with "Lund"
-    And I select "Malagasy" from "protonym_bioregion"
-    And I press "Save"
-    Then I should see "Protonym was successfully updated"
-    And I should see "page 35"
-    And I should see "male"
-    And I should see "LUND"
-    And I should see "Malagasy"
+  scenario "Editing a protonym" do
+    there_is_a_species_protonym_with_pages_and_form_page_9_dealate_queen "Formica fusca"
 
-    When I follow "Edit"
-    Then I fill in "protonym_authorship_attributes_pages" with "page 35"
-    And I fill in "protonym_forms" with "male"
-    And the "protonym_locality" field should contain "Lund"
+    i_go_to 'the protonyms page'
+    i_follow "Formica fusca"
+    i_should_see "page 9"
+    i_should_see "dealate queen"
 
-  Scenario: Editing type fields
-    Given there is a genus protonym "Formica"
+    i_follow "Edit"
+    i_fill_in "protonym_authorship_attributes_pages", with: "page 35"
+    i_fill_in "protonym_forms", with: "male"
+    i_fill_in "protonym_locality", with: "Lund"
+    i_select "Malagasy", from: "protonym_bioregion"
+    i_press "Save"
+    i_should_see "Protonym was successfully updated"
+    i_should_see "page 35"
+    i_should_see "male"
+    i_should_see "LUND"
+    i_should_see "Malagasy"
 
-    When I go to the edit protonym page for "Formica"
-    And I fill in "protonym_primary_type_information_taxt" with "Madagascar: Prov. Tolliara"
-    And I fill in "protonym_secondary_type_information_taxt" with "A neotype had also been designated"
-    And I fill in "protonym_type_notes_taxt" with "Note: Typo in Toliara"
-    And I press "Save"
-    Then I should see "Protonym was successfully updated"
-    And I should see "Madagascar: Prov. Tolliara"
-    And I should see "A neotype had also been designated"
-    And I should see "Note: Typo in Toliara"
+    i_follow "Edit"
+    i_fill_in "protonym_authorship_attributes_pages", with: "page 35"
+    i_fill_in "protonym_forms", with: "male"
+    the_field_should_contain "protonym_locality", "Lund"
+  end
 
-  Scenario: Editing a protonym with errors
-    Given there is a genus protonym "Formica"
+  scenario "Editing type fields" do
+    there_is_a_genus_protonym "Formica"
 
-    When I go to the edit protonym page for "Formica"
-    And I fill in "protonym_authorship_attributes_pages" with ""
-    And I select "by subsequent designation of" from "protonym_type_name_attributes_fixation_method"
-    And I press "Save"
-    Then I should see "Authorship: Pages can't be blank"
-    And I should see "Type name: Taxon must exist"
-    And I should see "Type name: Reference must be set for 'by subsequent designation of'"
-    And I should see "Type name: Pages must be set for 'by subsequent designation of'"
+    i_go_to 'the edit protonym page for "Formica"'
+    i_fill_in "protonym_primary_type_information_taxt", with: "Madagascar: Prov. Tolliara"
+    i_fill_in "protonym_secondary_type_information_taxt", with: "A neotype had also been designated"
+    i_fill_in "protonym_type_notes_taxt", with: "Note: Typo in Toliara"
+    i_press "Save"
+    i_should_see "Protonym was successfully updated"
+    i_should_see "Madagascar: Prov. Tolliara"
+    i_should_see "A neotype had also been designated"
+    i_should_see "Note: Typo in Toliara"
+  end
+
+  scenario "Editing a protonym with errors" do
+    there_is_a_genus_protonym "Formica"
+
+    i_go_to 'the edit protonym page for "Formica"'
+    i_fill_in "protonym_authorship_attributes_pages", with: ""
+    i_select "by subsequent designation of", from: "protonym_type_name_attributes_fixation_method"
+    i_press "Save"
+    i_should_see "Authorship: Pages can't be blank"
+    i_should_see "Type name: Taxon must exist"
+    i_should_see "Type name: Reference must be set for 'by subsequent designation of'"
+    i_should_see "Type name: Pages must be set for 'by subsequent designation of'"
+  end
+end

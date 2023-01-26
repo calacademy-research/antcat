@@ -1,63 +1,74 @@
-Feature: Edit reference successfully
-  Background:
-    Given I log in as a helper editor
+# frozen_string_literal: true
 
-  Scenario: Blanking required fields (general fields)
-    Given there is an article reference
+require 'rails_helper'
 
-    When I go to the edit page for the most recent reference
-    And I fill in "reference_author_names_string" with ""
-    And I fill in "reference_title" with ""
-    And I fill in "reference_year" with ""
-    And I fill in "reference_pagination" with ""
-    And I press "Save"
-    Then I should see "Author names can't be blank"
-    And I should see "Title can't be blank"
-    And I should see "Year can't be blank"
-    And I should see "Pagination can't be blank"
+feature "Edit reference successfully" do
+  background do
+    i_log_in_as_a_helper_editor
+  end
 
-  Scenario: Blanking required fields (`ArticleReference`)
-    Given there is an article reference
+  scenario "Blanking required fields (general fields)" do
+    there_is_an_article_reference
 
-    When I go to the edit page for the most recent reference
-    And I fill in "reference_journal_name" with ""
-    And I fill in "reference_series_volume_issue" with ""
-    And I press "Save"
-    Then I should see "Journal: Name can't be blank"
-    And I should see "Series volume issue can't be blank"
+    i_go_to 'the edit page for the most recent reference'
+    i_fill_in "reference_author_names_string", with: ""
+    i_fill_in "reference_title", with: ""
+    i_fill_in "reference_year", with: ""
+    i_fill_in "reference_pagination", with: ""
+    i_press "Save"
+    i_should_see "Author names can't be blank"
+    i_should_see "Title can't be blank"
+    i_should_see "Year can't be blank"
+    i_should_see "Pagination can't be blank"
+  end
 
-  Scenario: Blanking required fields (`BookReference`)
-    Given there is a book reference
+  scenario "Blanking required fields (`ArticleReference`)" do
+    there_is_an_article_reference
 
-    When I go to the edit page for the most recent reference
-    And I fill in "reference_publisher_string" with ""
-    And I press "Save"
-    Then I should see "Publisher string couldn't be parsed."
+    i_go_to 'the edit page for the most recent reference'
+    i_fill_in "reference_journal_name", with: ""
+    i_fill_in "reference_series_volume_issue", with: ""
+    i_press "Save"
+    i_should_see "Journal: Name can't be blank"
+    i_should_see "Series volume issue can't be blank"
+  end
 
-  Scenario: Change a reference's type
-    Given this article reference exists
-      | author     | title | year |
-      | Fisher, B. | Ants  | 2010 |
+  scenario "Blanking required fields (`BookReference`)" do
+    there_is_a_book_reference
 
-    When I go to the edit page for the most recent reference
-    And I select the reference tab "#book-tab"
-    And I fill in "reference_publisher_string" with "New York: Wiley"
-    And I fill in "reference_pagination" with "22 pp."
-    And I press "Save"
-    Then I should see "Fisher, B. 2010. Ants. New York: Wiley, 22 pp."
+    i_go_to 'the edit page for the most recent reference'
+    i_fill_in "reference_publisher_string", with: ""
+    i_press "Save"
+    i_should_see "Publisher string couldn't be parsed."
+  end
 
-  Scenario: Edit a `NestedReference`
-    Given this article reference exists
-      | author     | year | title | journal | series_volume_issue | pagination |
-      | Ward, P.S. | 2001 | Ants  | Acta    | 4                   | 9          |
-    And the following entry nests it
-      | author     | title     | year | pagination |
-      | Bolton, B. | More ants | 2001 | In:        |
+  scenario "Change a reference's type" do
+    this_article_reference_exists author: "Fisher, B.", title: "Ants", year: 2010
 
-    When I go to the references page
-    Then I should see "Bolton, B. 2001. More ants. In: Ward, P.S. 2001. Ants. Acta 4:9"
+    i_go_to 'the edit page for the most recent reference'
+    i_select_the_reference_tab "#book-tab"
+    i_fill_in "reference_publisher_string", with: "New York: Wiley"
+    i_fill_in "reference_pagination", with: "22 pp."
+    i_press "Save"
+    i_should_see "Fisher, B. 2010. Ants. New York: Wiley, 22 pp."
+  end
 
-    When I go to the edit page for the most recent reference
-    And I fill in "reference_pagination" with "Pp. 32 in:"
-    And I press "Save"
-    Then I should see "Bolton, B. 2001. More ants. Pp. 32 in: Ward, P.S. 2001. Ants. Acta 4:9"
+  scenario "Edit a `NestedReference`" do
+    this_article_reference_exists author: "Ward, P.S.", title: "Ants", year: 2001, journal: 'Acta', series_volume_issue: "4", pagination: "9"
+
+    create :nested_reference,
+      title: "More ants",
+      author_string: "Bolton, B.",
+      year: 2001,
+      pagination: "In:",
+      nesting_reference: Reference.last
+
+    i_go_to 'the references page'
+    i_should_see "Bolton, B. 2001. More ants. In: Ward, P.S. 2001. Ants. Acta 4:9"
+
+    i_go_to 'the edit page for the most recent reference'
+    i_fill_in "reference_pagination", with: "Pp. 32 in:"
+    i_press "Save"
+    i_should_see "Bolton, B. 2001. More ants. Pp. 32 in: Ward, P.S. 2001. Ants. Acta 4:9"
+  end
+end

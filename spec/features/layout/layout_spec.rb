@@ -1,7 +1,14 @@
-Feature: Layout
-  Background:
-    Given I am logged in
+# frozen_string_literal: true
 
-  Scenario: Showing unescaped HTML characters in the title
-    When I go to the Editor's Panel
-    Then the page title be "Editor's Panel - AntCat"
+require 'rails_helper'
+
+feature "Layout" do
+  background do
+    i_am_logged_in
+  end
+
+  scenario "Showing unescaped HTML characters in the title" do
+    i_go_to "the Editor's Panel"
+    the_page_title_be "Editor's Panel - AntCat"
+  end
+end

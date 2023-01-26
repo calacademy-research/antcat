@@ -1,142 +1,152 @@
-Feature: User notifications
-  Background:
-    Given I log in as a catalog editor named "Archibald"
-    And this user exists
-      | name     |
-      | Batiatus |
+# frozen_string_literal: true
 
-  Scenario: No notifications
-    When I go to my notifications page
-    Then I should see "No notifications"
+require 'rails_helper'
 
-  Scenario: Opening the notifications page marks all notifications as seen
-    Given I have an unseen notification
+feature "User notifications" do
+  background do
+    i_log_in_as_a_catalog_editor_named "Archibald"
+    this_user_exists name: "Batiatus"
+  end
 
-    When I go to the references page
-    Then I should see "1 new notification!"
+  scenario "No notifications" do
+    i_go_to 'my notifications page'
+    i_should_see "No notifications"
+  end
 
-    When I go to my notifications page
-    Then I should see 1 unread notification
+  scenario "Opening the notifications page marks all notifications as seen" do
+    i_have_an_unseen_notification
 
-    Given I have another unseen notification
-    When I reload the page
-    Then I should see 1 unread notification
-    And I should see 2 notifications
+    i_go_to 'the references page'
+    i_should_see "1 new notification!"
 
-  Scenario: Mentioning users in comments
+    i_go_to 'my notifications page'
+    i_should_see_number_of_unread_notifications 1
+
+    i_have_another_unseen_notification
+    i_reload_the_page
+    i_should_see_number_of_unread_notifications 1
+    i_should_see_number_of_notification 2
+  end
+
+  scenario "Mentioning users in comments" do
     # Create issue by a third user.
-    And this user exists
-      | name          |
-      | Captain Flint |
-    And there is an open issue "Ghost Stories" created by "Captain Flint"
+    this_user_exists name: "Captain Flint"
+    there_is_an_open_issue_created_by "Ghost Stories", "Captain Flint"
 
     # Mention Batiatus in a comment.
-    When I go to the issue page for "Ghost Stories"
-    And I write a new comment <at Batiatus's id> "you must read Flint's ghost story!"
-    And I press "Post Comment"
-    And I wait for the "success" message
+    i_go_to 'the issue page for "Ghost Stories"'
+    i_write_a_new_comment_at_batiatus_id "you must read Flint's ghost story!"
+    i_press "Post Comment"
+    i_wait_for_the_success_message
 
     # Confirm Batiatus was notified.
-    When I log in as "Batiatus"
-    And I go to my notifications page
-    Then I should see "Archibald mentioned you in the comment on the issue Ghost Stories"
-    And I should see 1 notification
+    i_log_in_as "Batiatus"
+    i_go_to 'my notifications page'
+    i_should_see "Archibald mentioned you in the comment on the issue Ghost Stories"
+    i_should_see_number_of_notification 1
+  end
 
-  Scenario: Notifying creators, and replying to comments (without mentioning their names)
-    Given there is an open issue "My Favorite Ants" created by "Batiatus"
+  scenario "Notifying creators, and replying to comments (without mentioning their names)" do
+    there_is_an_open_issue_created_by "My Favorite Ants", "Batiatus"
 
     # Comment on an issue created by Batiatus.
-    When I go to the issue page for "My Favorite Ants"
-    And I write a new comment "Great list, Batiatus!"
-    And I press "Post Comment"
-    And I wait for the "success" message
+    i_go_to 'the issue page for "My Favorite Ants"'
+    i_write_a_new_comment "Great list, Batiatus!"
+    i_press "Post Comment"
+    i_wait_for_the_success_message
 
     # Confirm Batiatus was notified.
-    When I log in as "Batiatus"
-    And I go to my notifications page
-    Then I should see "Archibald commented on the issue My Favorite Ants which you created"
-    And I should see 1 notification
+    i_log_in_as "Batiatus"
+    i_go_to 'my notifications page'
+    i_should_see "Archibald commented on the issue My Favorite Ants which you created"
+    i_should_see_number_of_notification 1
 
     # Reply to Archibald's comment as Batiatus.
-    When I go to the issue page for "My Favorite Ants"
-    And I write a new comment "Thanks, Archibald!"
-    And I press "Post Comment"
-    And I wait for the "success" message
+    i_go_to 'the issue page for "My Favorite Ants"'
+    i_write_a_new_comment "Thanks, Archibald!"
+    i_press "Post Comment"
+    i_wait_for_the_success_message
 
     # Confirm Archibald was notified.
-    When I log in as "Archibald"
-    And I go to my notifications page
-    Then I should see "Batiatus commented on the issue My Favorite Ants which you also have commented"
-    And I should see 1 notification
+    i_log_in_as "Archibald"
+    i_go_to 'my notifications page'
+    i_should_see "Batiatus commented on the issue My Favorite Ants which you also have commented"
+    i_should_see_number_of_notification 1
+  end
 
-  Scenario: Send at most one notification to a user for the same comment
+  scenario "Send at most one notification to a user for the same comment" do
     # Make Batiatus the issue creator and a participant of the discussion.
-    Given there is an open issue "My Favorite Ants" created by "Batiatus"
-    When I log in as "Batiatus"
-    And I go to the issue page for "My Favorite Ants"
-    And I write a new comment "I'll add more later."
-    And I press "Post Comment"
-    And I wait for the "success" message
+    there_is_an_open_issue_created_by "My Favorite Ants", "Batiatus"
+    i_log_in_as "Batiatus"
+    i_go_to 'the issue page for "My Favorite Ants"'
+    i_write_a_new_comment "I'll add more later."
+    i_press "Post Comment"
+    i_wait_for_the_success_message
 
     # Comment on Batiatus' issue, mention him, reply to him in a discussion he is active in.
-    When I log in as "Archibald"
-    And I go to the issue page for "My Favorite Ants"
-    And I write a new comment <at Batiatus's id> "Great list already!"
-    And I press "Post Comment"
-    And I wait for the "success" message
+    i_log_in_as "Archibald"
+    i_go_to 'the issue page for "My Favorite Ants"'
+    i_write_a_new_comment_at_batiatus_id "Great list already!"
+    i_press "Post Comment"
+    i_wait_for_the_success_message
 
     # Confirm that Batiatus was only mentioned once.
-    When I log in as "Batiatus"
-    And I go to my notifications page
-    Then I should see "Archibald mentioned you in the comment on the issue My Favorite Ants"
-    And I should see 1 notification
+    i_log_in_as "Batiatus"
+    i_go_to 'my notifications page'
+    i_should_see "Archibald mentioned you in the comment on the issue My Favorite Ants"
+    i_should_see_number_of_notification 1
+  end
 
-  Scenario: Do not repeat notifications for any given attached/notifier combination
-    Given there is an open issue "My Favorite Ants" created by "Batiatus"
+  scenario "Do not repeat notifications for any given attached/notifier combination" do
+    there_is_an_open_issue_created_by "My Favorite Ants", "Batiatus"
 
     # Edit Batiatus' issue twice.
-    And I go to the issue page for "My Favorite Ants"
-    And I follow "Edit"
-    And I fill in "issue_description" with "Helo @user" followed by the user id of "Batiatus"
-    And I press "Save"
-    And I wait for the "success" message
+    i_go_to 'the issue page for "My Favorite Ants"'
+    i_follow "Edit"
+    i_fill_in_with_followed_by_the_user_id_of "issue_description", "Helo @user", "Batiatus"
+    i_press "Save"
+    i_wait_for_the_success_message
 
-    And I follow "Edit"
-    And I fill in "issue_description" with "Hello @user" followed by the user id of "Batiatus"
-    And I press "Save"
-    And I wait for the "success" message
+    i_follow "Edit"
+    i_fill_in_with_followed_by_the_user_id_of "issue_description", "Hello @user", "Batiatus"
+    i_press "Save"
+    i_wait_for_the_success_message
 
     # Confirm that Batiatus was only mentioned once.
-    When I log in as "Batiatus"
-    And I go to my notifications page
-    Then I should see "Archibald mentioned you in the issue My Favorite Ants"
-    And I should see 1 notification
+    i_log_in_as "Batiatus"
+    i_go_to 'my notifications page'
+    i_should_see "Archibald mentioned you in the issue My Favorite Ants"
+    i_should_see_number_of_notification 1
+  end
 
-  Scenario: Mentioning users in "things" (issue description)
+  scenario 'Mentioning users in "things" (issue description)' do
     # Mention Batiatus in the description of an issue.
-    When I go to the new issue page
-    And I fill in "issue_title" with "Resolve homonyms"
-    And I fill in "issue_description" with "@user" followed by the user id of "Batiatus"
-    And I press "Save"
-    And I wait for the "success" message
+    i_go_to 'the new issue page'
+    i_fill_in "issue_title", with: "Resolve homonyms"
+    i_fill_in_with_followed_by_the_user_id_of "issue_description", "@user", "Batiatus"
+    i_press "Save"
+    i_wait_for_the_success_message
 
     # Confirm Batiatus was notified.
-    When I log in as "Batiatus"
-    And I go to my notifications page
-    Then I should see "Archibald mentioned you in the issue Resolve homonyms"
-    And I should see 1 notification
+    i_log_in_as "Batiatus"
+    i_go_to 'my notifications page'
+    i_should_see "Archibald mentioned you in the issue Resolve homonyms"
+    i_should_see_number_of_notification 1
+  end
 
-  Scenario: Mentioning users in "things" (site notice messages)
+  scenario 'Mentioning users in "things" (site notice messages)' do
     # Mention Batiatus in the message of a site notice.
-    When I go to the site notices page
-    And I follow "New"
-    And I fill in "site_notice_title" with "New AntCat features"
-    And I fill in "site_notice_message" with "@user" followed by the user id of "Batiatus"
-    And I press "Publish"
-    And I wait for the "success" message
+    i_go_to 'the site notices page'
+    i_follow "New"
+    i_fill_in "site_notice_title", with: "New AntCat features"
+    i_fill_in_with_followed_by_the_user_id_of "site_notice_message", "@user", "Batiatus"
+    i_press "Publish"
+    i_wait_for_the_success_message
 
     # Confirm Batiatus was notified.
-    When I log in as "Batiatus"
-    And I go to my notifications page
-    Then I should see "Archibald mentioned you in the site notice New AntCat features"
-    And I should see 1 notification
+    i_log_in_as "Batiatus"
+    i_go_to 'my notifications page'
+    i_should_see "Archibald mentioned you in the site notice New AntCat features"
+    i_should_see_number_of_notification 1
+  end
+end
