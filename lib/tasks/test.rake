@@ -12,8 +12,6 @@ task :test do # rubocop:disable Rake/DuplicateTask
 
   puts "Running rspec...".blue
   system "rspec"
-  puts "Running cucumber...".blue
-  system "cucumber"
 
   puts "Running brakeman...".blue
   system "brakeman -q --no-pager --summary"

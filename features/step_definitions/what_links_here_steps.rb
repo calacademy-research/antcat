@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-Given("Eciton has a history item that references Atta and a Batiatus reference") do
-  eciton_has_a_history_item_that_references_atta_and_a_batiatus_reference
-end
 def eciton_has_a_history_item_that_references_atta_and_a_batiatus_reference
   eciton = Protonym.joins(:name).find_by!(names: { name: "Eciton" })
   atta = Taxon.find_by!(name_cache: "Atta")

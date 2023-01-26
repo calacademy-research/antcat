@@ -26,7 +26,7 @@ RUN apt-get update -qq && apt-get install -y \
   default-jre-headless
 
 # TODO: Do not use apt-get.
-# Install Chromedriver (for Cucumber).
+# Install Chromedriver (for RSpec Capybara specs).
 RUN apt-get -y update -qq && apt-get -y upgrade
 RUN curl \
   --url https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
