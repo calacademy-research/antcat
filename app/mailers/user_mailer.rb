@@ -8,7 +8,7 @@ class UserMailer < ApplicationMailer
     @notification = notification
 
     mail(
-      to: @user.decorate.angle_bracketed_email,
+      to: @user.decorate.email_address_with_name,
       subject: 'New notification - antcat.org'
     )
   end
