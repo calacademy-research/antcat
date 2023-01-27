@@ -9,17 +9,17 @@ feature "Editing a history item" do
 
   scenario "Adding a relational history item", :skip_ci, :js do
     there_is_a_genus_protonym "Atta"
-    this_reference_exists author: "Batiatus", year: 2004
+    create :any_reference, author_string: "Batiatus", year: 2004
 
     i_go_to 'the protonym page for "Atta"'
     the_history_should_be_empty
 
     i_click_on 'the add history item button'
-    i_select "Form descriptions (additional)", from: "history_item_type"
-    i_fill_in "history_item_text_value", with: "w.q."
-    i_fill_in "history_item_pages", with: "123"
+    select "Form descriptions (additional)", from: "history_item_type"
+    fill_in "history_item_text_value", with: "w.q."
+    fill_in "history_item_pages", with: "123"
     i_pick_from_the_reference_picker "Batiatus, 2004", "#history_item_reference_id"
-    i_press "Save"
+    click_button "Save"
     i_should_see "Successfully added history item"
     i_should_see "Batiatus, 2004: 123 (w.q.)"
   end
@@ -31,10 +31,10 @@ feature "Editing a history item" do
     the_history_should_be_empty
 
     i_click_on 'the add history item button'
-    i_select "Form descriptions (additional)", from: "history_item_type"
-    i_fill_in "taxt", with: "Pizza"
+    select "Form descriptions (additional)", from: "history_item_type"
+    fill_in "taxt", with: "Pizza"
 
-    i_press "Save"
+    click_button "Save"
     i_should_see "Taxt must be blank"
     i_should_see "Text value can't be blank"
     i_should_see "Reference can't be blank"
@@ -50,9 +50,9 @@ feature "Editing a history item" do
 
     i_go_to 'the page of the most recent history item'
     i_follow "Edit"
-    i_fill_in "history_item_text_value", with: "w."
-    i_fill_in "history_item_pages", with: "99"
-    i_press "Save"
+    fill_in "history_item_text_value", with: "w."
+    fill_in "history_item_pages", with: "99"
+    click_button "Save"
     i_should_see "Successfully updated history item"
     i_should_see "Batiatus, 2004a: 99 (w.)"
   end
@@ -65,8 +65,8 @@ feature "Editing a history item" do
     i_should_see "Batiatus, 2004a: 77-78 (q.)"
 
     i_click_on 'the edit history item button'
-    i_fill_in "text_value", with: "w."
-    i_fill_in "pages", with: "99"
+    fill_in "text_value", with: "w."
+    fill_in "pages", with: "99"
     i_click_on 'the save history item button'
     i_reload_the_page
     i_should_see "Batiatus, 2004a: 99 (w.)"

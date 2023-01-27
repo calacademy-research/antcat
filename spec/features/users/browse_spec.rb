@@ -8,7 +8,7 @@ feature "Browse" do
   end
 
   scenario "Visiting a user's page" do
-    this_user_exists email: "quintus@antcat.org", name: "Quintus"
+    create :user, email: "quintus@antcat.org", name: "Quintus"
 
     i_go_to 'the users page'
     i_follow "Quintus"

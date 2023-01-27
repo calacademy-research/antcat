@@ -9,6 +9,6 @@ feature "Layout" do
 
   scenario "Showing unescaped HTML characters in the title" do
     i_go_to "the Editor's Panel"
-    the_page_title_be "Editor's Panel - AntCat"
+    expect(page.title).to eq "Editor's Panel - AntCat"
   end
 end

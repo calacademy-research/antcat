@@ -9,19 +9,19 @@ feature "Author name case-sensitivity", %(
 ) do
   scenario "Using the name that was entered" do
     i_log_in_as_a_helper_editor
-    there_is_a_reference
-    an_author_name_exists_with_a_name_of "Mackay"
-    an_author_name_exists_with_a_name_of "MACKAY"
-    an_author_name_exists_with_a_name_of "mackay"
+    create :any_reference, :with_author_name
+    create :author_name, name: "Mackay"
+    create :author_name, name: "MACKAY"
+    create :author_name, name: "mackay"
 
     i_go_to 'the edit page for the most recent reference'
-    i_fill_in "reference_author_names_string", with: "MACKAY"
-    i_press "Save"
+    fill_in "reference_author_names_string", with: "MACKAY"
+    click_button "Save"
     i_should_see "MACKAY"
 
     i_go_to 'the edit page for the most recent reference'
-    i_fill_in "reference_author_names_string", with: "mackay"
-    i_press "Save"
+    fill_in "reference_author_names_string", with: "mackay"
+    click_button "Save"
     i_should_see "mackay"
   end
 end

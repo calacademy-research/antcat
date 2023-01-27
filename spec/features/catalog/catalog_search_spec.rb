@@ -4,7 +4,7 @@ require 'rails_helper'
 
 feature "Searching the catalog" do
   background do
-    there_is_a_species "Lasius niger"
+    create :species, name_string: "Lasius niger"
     i_go_to 'the catalog'
   end
 
@@ -15,7 +15,7 @@ feature "Searching the catalog" do
   end
 
   scenario "Searching with results" do
-    there_is_a_species "Formica niger"
+    create :species, name_string: "Formica niger"
 
     i_fill_in "qq", with: "niger", within: "the desktop menu"
     i_click_on "the catalog search button"

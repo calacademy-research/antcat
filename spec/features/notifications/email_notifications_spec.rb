@@ -6,7 +6,7 @@ require 'rails_helper'
 xfeature "Email notifications" do
   background do
     i_log_in_as_a_user_named "Quintus"
-    this_user_exists email: "batiatus@antcat.org", name: "Batiatus"
+    create :user, email: "batiatus@antcat.org", name: "Batiatus"
     these_settings 'email: { enabled: true }'
   end
 
@@ -17,7 +17,7 @@ xfeature "Email notifications" do
     # Mention Batiatus in a comment.
     i_go_to 'the issue page for "Ghost Stories"'
     i_write_a_new_comment_at_batiatus_id "nice ghost story!"
-    i_press "Post Comment"
+    click_button "Post Comment"
     i_wait_for_the_success_message
     i_follow "Logout", within: 'the desktop menu'
     i_should_not_see "Quintus"

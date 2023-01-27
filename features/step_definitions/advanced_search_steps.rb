@@ -12,10 +12,6 @@ def there_is_a_species_described_by_bolton
   taxon.protonym.authorship.update!(reference: reference)
 end
 
-def there_is_an_invalid_family
-  create :family, :excluded_from_formicidae
-end
-
 def there_is_a_species_with_locality locality
   protonym = create :protonym, :species_group, locality: locality
   create :species, protonym: protonym

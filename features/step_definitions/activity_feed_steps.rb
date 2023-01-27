@@ -25,14 +25,6 @@ def there_is_a_journal_activity_by event, name
   create :activity, event: event.to_sym, trackable: journal, user: user
 end
 
-def activities_are_paginated_with_per_page per_page
-  Activity.per_page = per_page.to_i
-end
-
-def there_are_number_of_activity_items number
-  number.to_i.times { create :activity }
-end
-
 def the_query_string_should_contain contain
   match = page.current_url[contain]
   expect(match).to be_truthy

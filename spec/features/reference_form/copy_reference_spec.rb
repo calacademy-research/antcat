@@ -13,7 +13,8 @@ feature "Copy reference", %(
   end
 
   scenario "Copy an `ArticleReference`" do
-    this_article_reference_exists author: "Ward, P.S.", title: "Ants", year: 1910, year_suffix: "b", stated_year: "1911", journal: 'Acta', series_volume_issue: "4", pagination: "9"
+    create :article_reference, author_string: "Ward, P.S.", title: "Ants", year: 1910, year_suffix: "b", stated_year: "1911",
+      journal: create(:journal, name: 'Acta'), series_volume_issue: "4", pagination: "9"
 
     i_go_to 'the page of the most recent reference'
 

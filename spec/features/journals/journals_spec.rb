@@ -5,7 +5,7 @@ require 'rails_helper'
 feature "Editing journals" do
   background do
     i_log_in_as_a_catalog_editor_named "Archibald"
-    a_journal_exists_with_a_name_of "Psyche"
+    create :journal, name: "Psyche"
     i_go_to 'the references page'
     i_follow "Journals"
     i_follow "Psyche"
@@ -13,8 +13,8 @@ feature "Editing journals" do
 
   scenario "Edit a journal's name (with feed)" do
     i_follow "Edit journal name"
-    i_fill_in "journal_name", with: "Science"
-    i_press "Save"
+    fill_in "journal_name", with: "Science"
+    click_button "Save"
     i_should_see "Successfully updated journal"
 
     i_go_to 'the references page'

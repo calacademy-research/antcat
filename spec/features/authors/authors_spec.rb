@@ -4,7 +4,7 @@ require 'rails_helper'
 
 feature "Working with authors and their names" do
   scenario "Seeing references by author (going to the author's page)" do
-    this_reference_exists author: 'Bolton, B.', title: 'Cool Ants'
+    create :any_reference, author_string: 'Bolton, B.', title: 'Cool Ants'
 
     i_go_to "the page of the most recent reference"
     i_follow_the_first "Bolton, B."
@@ -27,8 +27,8 @@ feature "Working with authors and their names" do
 
     i_go_to 'the author page for "Bolton, B."'
     i_follow "Add alternative spelling"
-    i_fill_in "author_name_name", with: "Fisher, B."
-    i_press "Save"
+    fill_in "author_name_name", with: "Fisher, B."
+    click_button "Save"
     i_should_see "Author name was successfully created"
 
     i_follow "Authors", within: "the breadcrumbs"
@@ -41,8 +41,8 @@ feature "Working with authors and their names" do
 
     i_go_to 'the author page for "Bolton, B."'
     i_follow "Add alternative spelling"
-    i_fill_in "author_name_name", with: "Bolton, B."
-    i_press "Save"
+    fill_in "author_name_name", with: "Bolton, B."
+    click_button "Save"
     i_should_see "Name has already been taken"
   end
 
@@ -52,8 +52,8 @@ feature "Working with authors and their names" do
 
     i_go_to 'the author page for "Bolton, B."'
     i_follow "Edit"
-    i_fill_in "author_name_name", with: "Bolton, Z."
-    i_press "Save"
+    fill_in "author_name_name", with: "Bolton, Z."
+    click_button "Save"
     i_should_see "Author name was successfully updated"
 
     i_follow "Authors", within: "the breadcrumbs"

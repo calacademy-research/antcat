@@ -14,9 +14,9 @@ feature "Editing a history item" do
     the_history_should_be_empty
 
     i_click_on 'the add history item button'
-    i_fill_in "taxt", with: "Abc"
-    i_fill_in "edit_summary", with: "added new stuff"
-    i_press "Save"
+    fill_in "taxt", with: "Abc"
+    fill_in "edit_summary", with: "added new stuff"
+    click_button "Save"
     the_history_should_be "Abc"
 
     i_go_to 'the activity feed'
@@ -32,7 +32,7 @@ feature "Editing a history item" do
     the_history_should_be_empty
 
     i_click_on 'the add history item button'
-    i_press "Save"
+    click_button "Save"
     i_should_see "Taxt can't be blank"
   end
 
@@ -44,7 +44,7 @@ feature "Editing a history item" do
     the_history_should_be "Antcatinae as family"
 
     i_click_on 'the edit history item button'
-    i_fill_in "taxt", with: "(none)"
+    fill_in "taxt", with: "(none)"
     i_fill_in "edit_summary", with: "fix typo", within: '"#history-items"'
     i_click_on 'the save history item button'
     i_reload_the_page
@@ -67,8 +67,8 @@ feature "Editing a history item" do
     i_follow "Edit"
     i_should_see "Antcatinae as family"
 
-    i_fill_in "taxt", with: "history item content"
-    i_press "Save"
+    fill_in "taxt", with: "history item content"
+    click_button "Save"
     i_should_see "Successfully updated history item #"
     i_should_see "history item content"
   end
@@ -78,7 +78,7 @@ feature "Editing a history item" do
 
     i_go_to 'the protonym page for "Antcatinae"'
     i_click_on 'the edit history item button'
-    i_fill_in "taxt", with: "(none)"
+    fill_in "taxt", with: "(none)"
     i_click_on 'the cancel history item button'
     the_history_should_be "Antcatinae as family"
 
@@ -106,7 +106,7 @@ feature "Editing a history item" do
   end
 
   scenario "Seeing the markdown preview (and cancelling)", :js do
-    this_reference_exists author: "Giovanni, S.", year: 1809
+    create :any_reference, author_string: "Giovanni, S.", year: 1809
     there_is_a_protonym_with_a_history_item_and_a_markdown_link_to "Antcatinae", "As family,", "Giovanni, 1809"
 
     i_go_to 'the protonym page for "Antcatinae"'
@@ -118,7 +118,7 @@ feature "Editing a history item" do
     the_history_item_field_should_be_visible
 
     i_fill_in_with_and_a_markdown_link_to "taxt", "Lasius history,", "Giovanni, 1809"
-    i_press "Rerender preview"
+    click_button "Rerender preview"
     i_should_see "Lasius history, Giovanni, 1809"
 
     i_click_on 'the cancel history item button'

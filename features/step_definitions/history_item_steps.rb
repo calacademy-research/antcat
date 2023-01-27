@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-def there_is_a_history_item taxt
-  create :history_item, :taxt, taxt: taxt
-end
-
 def there_is_a_subfamily_protonym_with_a_history_item name, taxt
   protonym = create :protonym, :family_group, name: create(:subfamily_name, name: name)
   create :history_item, :taxt, taxt: taxt, protonym: protonym
@@ -40,16 +36,8 @@ end
 
 def i_add_a_history_item content
   i_click_on 'the add history item button'
-  i_fill_in "taxt", with: content
-  i_press "Save"
-end
-
-def i_update_the_most_recent_history_item_to_say content
-  HistoryItem.last.update!(taxt: content)
-end
-
-def i_delete_the_most_recent_history_item
-  HistoryItem.last.destroy!
+  fill_in "taxt", with: content
+  click_button "Save"
 end
 
 # Relational history items.

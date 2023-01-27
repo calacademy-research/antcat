@@ -8,11 +8,11 @@ feature "Preview markdown", :skip_ci, :js do
   end
 
   scenario "Previewing references markdown" do
-    this_reference_exists author: "Giovanni, S. ", year: 1809
+    create :any_reference, author_string: "Giovanni, S. ", year: 1809
     i_am_on_a_page_with_a_textarea_with_markdown_preview_and_autocompletion
 
     i_fill_in_with_and_a_markdown_link_to "issue_description", "See:", "Giovanni, 1809"
-    i_press "Rerender preview"
+    click_button "Rerender preview"
     i_should_see "See: Giovanni, 1809"
   end
 end

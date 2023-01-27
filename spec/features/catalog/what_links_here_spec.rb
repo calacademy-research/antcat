@@ -8,7 +8,7 @@ feature "What links here", %(
 ) do
   background do
     i_am_logged_in
-    there_is_a_genus "Atta"
+    create :genus, name_string: "Atta"
     there_is_a_genus_protonym "Eciton"
 
     eciton_has_a_history_item_that_references_atta_and_a_batiatus_reference

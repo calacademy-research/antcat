@@ -9,8 +9,8 @@ feature "Showing/hiding invalid taxa", %(
 ) do
   background do
     the_formicidae_family_exists
-    there_is_a_subfamily "Availableinae"
-    there_is_an_invalid_subfamily_ivalidinae
+    create :subfamily, name_string: "Availableinae"
+    create :subfamily, :unidentifiable, name_string: "Invalidinae"
   end
 
   scenario "Invalid taxa are initially hidden" do

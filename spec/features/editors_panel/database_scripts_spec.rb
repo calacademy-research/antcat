@@ -31,7 +31,7 @@ feature "Database scripts" do
     i_should_see "Extant taxa in fossil genera"
   end
 
-  scenario "Clicking on all scripts just to see if the page renders" do
+  scenario "Opening all scripts just to see if the page renders" do
     i_open_all_database_scripts_one_by_one
   end
 

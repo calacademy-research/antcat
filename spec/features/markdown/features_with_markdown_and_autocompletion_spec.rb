@@ -19,7 +19,7 @@ feature "Features with markdown and autocompletion" do
   end
 
   scenario "Comments" do
-    there_is_an_open_feedback_item
+    create :feedback, user: nil
     i_go_to 'the most recent feedback item'
 
     there_should_be_a_textarea_with_markdown_and_autocompletion

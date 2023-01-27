@@ -12,10 +12,10 @@ feature "Institutions" do
     i_should_not_see "California Academy of Sciences"
 
     i_follow "New"
-    i_fill_in "institution_abbreviation", with: "CASC"
-    i_fill_in "institution_name", with: "California Academy of Sciences"
-    i_fill_in "edit_summary", with: "fix typo"
-    i_press "Save"
+    fill_in "institution_abbreviation", with: "CASC"
+    fill_in "institution_name", with: "California Academy of Sciences"
+    fill_in "edit_summary", with: "fix typo"
+    click_button "Save"
     i_should_see "Successfully created institution"
 
     i_go_to 'the institutions page'
@@ -28,16 +28,16 @@ feature "Institutions" do
   end
 
   scenario "Editing an institution (with edit summary)" do
-    there_is_an_institution "CASC", "California Academy of Sciences"
+    create :institution, abbreviation: "CASC", name: "California Academy of Sciences"
     i_log_in_as_a_catalog_editor_named "Archibald"
 
     i_go_to 'the institutions page'
     i_follow_the_first "California Academy of Sciences"
     i_follow "Edit"
-    i_fill_in "institution_abbreviation", with: "SASC"
-    i_fill_in "institution_name", with: "Sweden Academy of Sciences"
-    i_fill_in "edit_summary", with: "fix typo"
-    i_press "Save"
+    fill_in "institution_abbreviation", with: "SASC"
+    fill_in "institution_name", with: "Sweden Academy of Sciences"
+    fill_in "edit_summary", with: "fix typo"
+    click_button "Save"
     i_should_see "Successfully updated institution"
 
     i_go_to 'the institutions page'
@@ -50,7 +50,7 @@ feature "Institutions" do
   end
 
   scenario "Deleting an institution (with feed)" do
-    there_is_an_institution "CASC", "California Academy of Sciences"
+    create :institution, abbreviation: "CASC", name: "California Academy of Sciences"
     i_log_in_as_a_superadmin_named "Archibald"
 
     i_go_to 'the institutions page'

@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-def there_is_a_species name
-  create :species, name_string: name
-end
-
 def there_is_a_species_in_the_genus species_name, genus_name
   genus = Genus.find_by(name_cache: genus_name) || create(:genus, name_string: genus_name)
   create :species, name_string: species_name, genus: genus

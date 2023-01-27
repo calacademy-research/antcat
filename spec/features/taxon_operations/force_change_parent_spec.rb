@@ -9,16 +9,18 @@ feature "Force-changing parent" do
 
   scenario "Changing a genus's subfamily (with feed)" do
     the_formicidae_family_exists
-    there_is_a_subfamily "Attininae"
+    create :subfamily, name_string: "Attininae"
     there_is_a_genus_in_the_subfamily "Atta", "Attininae"
-    there_is_a_subfamily "Ecitoninae"
+    new_subfamily_parent = create :subfamily, name_string: "Ecitoninae"
 
     i_go_to 'the catalog page for "Atta"'
     i_follow "Force parent change"
     i_pick_from_the_taxon_picker "Ecitoninae", "#new_parent_id"
-    i_press "Change parent"
+    click_button "Change parent"
     i_should_be_on 'the catalog page for "Atta"'
-    the_association_of_taxon_should_be "subfamily", "Atta", "Ecitoninae"
+
+    atta = Taxon.find_by!(name_cache: "Atta")
+    expect(atta.subfamily).to eq new_subfamily_parent
 
     i_go_to 'the activity feed'
     i_should_see "Archibald force-changed the parent of Atta", within: 'the activity feed'

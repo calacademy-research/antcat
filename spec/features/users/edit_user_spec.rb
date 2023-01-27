@@ -7,7 +7,7 @@ feature "Editing a user", %(
   I want to edit my password and email
 ), :skip_ci do
   background do
-    this_user_exists email: "quintus@antcat.org", name: "Batiatus", password: "secret"
+    create :user, email: "quintus@antcat.org", name: "Batiatus", password: "secret"
     i_log_in_as "Batiatus"
   end
 
@@ -15,10 +15,10 @@ feature "Editing a user", %(
     i_go_to 'the main page'
     i_follow "Batiatus", within: 'the desktop menu'
     i_follow "My account"
-    i_fill_in "user_password", with: "new password"
-    i_fill_in "user_password_confirmation", with: "new password"
-    i_fill_in "user_current_password", with: "secret"
-    i_press "Save"
+    fill_in "user_password", with: "new password"
+    fill_in "user_password_confirmation", with: "new password"
+    fill_in "user_current_password", with: "secret"
+    click_button "Save"
     i_should_be_on 'the main page'
     i_should_see "Your account has been updated"
 
@@ -27,9 +27,9 @@ feature "Editing a user", %(
     i_should_not_see "Batiatus"
 
     i_follow "Login", within: 'the desktop menu'
-    i_fill_in "user_email", with: "quintus@antcat.org"
-    i_fill_in "user_password", with: "new password"
-    i_press "Login"
+    fill_in "user_email", with: "quintus@antcat.org"
+    fill_in "user_password", with: "new password"
+    click_button "Login"
     i_should_be_on 'the main page'
     i_should_see "Batiatus"
   end
@@ -41,9 +41,9 @@ feature "Editing a user", %(
 
     i_follow "Batiatus", within: 'the desktop menu'
     i_follow "My account"
-    i_fill_in "user_name", with: "Quintus, B."
-    i_fill_in "user_current_password", with: "secret"
-    i_press "Save"
+    fill_in "user_name", with: "Quintus, B."
+    fill_in "user_current_password", with: "secret"
+    click_button "Save"
     i_should_be_on 'the main page'
     i_should_see "Quintus, B."
     i_should_not_see "Batiatus"
@@ -54,21 +54,21 @@ feature "Editing a user", %(
     i_should_see_unchecked "#user_settings_editing_helpers_create_combination"
 
     # Enable setting.
-    i_check "user_settings_editing_helpers_create_combination"
-    i_press "Save"
+    check "user_settings_editing_helpers_create_combination"
+    click_button "Save"
     i_should_see "Your account has been updated"
 
     i_go_to 'My account'
     i_should_see_checked "#user_settings_editing_helpers_create_combination"
-    batiatus_editing_helpers_settings_for_create_combination_should_be "true"
+    expect(User.find_by!(name: 'Batiatus').settings(:editing_helpers).create_combination).to eq true
 
     # Disable setting.
-    i_uncheck "user_settings_editing_helpers_create_combination"
-    i_press "Save"
+    uncheck "user_settings_editing_helpers_create_combination"
+    click_button "Save"
     i_should_see "Your account has been updated"
 
     i_go_to 'My account'
     i_should_see_unchecked "#user_settings_editing_helpers_create_combination"
-    batiatus_editing_helpers_settings_for_create_combination_should_be "false"
+    expect(User.find_by!(name: 'Batiatus').settings(:editing_helpers).create_combination).to eq false
   end
 end

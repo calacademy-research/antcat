@@ -5,19 +5,19 @@ require 'rails_helper'
 feature "Adding a taxon successfully" do
   background do
     i_log_in_as_a_catalog_editor_named "Archibald"
-    this_reference_exists author: "Fisher", year: 2004
-    the_default_reference_is "Fisher, 2004"
+    default_reference = create :any_reference, author_string: "Fisher", year: 2004
+    References::DefaultReference.stub(:get).and_return(default_reference)
   end
 
   scenario "Adding a genus" do
-    there_is_a_subfamily "Formicinae"
+    create :subfamily, name_string: "Formicinae"
 
     i_go_to 'the catalog page for "Formicinae"'
     i_follow "Add genus"
-    i_set_the_name_to "Atta"
-    i_set_the_protonym_name_to "Eciton"
-    i_fill_in "taxon_protonym_attributes_authorship_attributes_pages", with: "page 35"
-    i_press "Save"
+    fill_in "taxon_name_string", with: "Atta"
+    fill_in "protonym_name_string", with: "Eciton"
+    fill_in "taxon_protonym_attributes_authorship_attributes_pages", with: "page 35"
+    click_button "Save"
     i_should_be_on 'the catalog page for "Atta"'
     i_should_see "Eciton", within: 'the protonym'
 
@@ -26,26 +26,26 @@ feature "Adding a taxon successfully" do
   end
 
   scenario "Adding a genus which has a tribe" do
-    there_is_a_tribe "Ecitonini"
+    create :tribe, name_string: "Ecitonini"
 
     i_go_to 'the catalog page for "Ecitonini"'
     i_follow "Add genus"
-    i_set_the_name_to "Eciton"
-    i_set_the_protonym_name_to "Eciton"
-    i_fill_in "taxon_protonym_attributes_authorship_attributes_pages", with: "page 35"
-    i_press "Save"
+    fill_in "taxon_name_string", with: "Eciton"
+    fill_in "protonym_name_string", with: "Eciton"
+    fill_in "taxon_protonym_attributes_authorship_attributes_pages", with: "page 35"
+    click_button "Save"
     i_should_be_on 'the catalog page for "Eciton"'
   end
 
   scenario "Adding a subgenus" do
-    there_is_a_genus "Camponotus"
+    create :genus, name_string: "Camponotus"
 
     i_go_to 'the catalog page for "Camponotus"'
     i_follow "Add subgenus"
-    i_set_the_name_to "Camponotus (Mayria)"
-    i_set_the_protonym_name_to "Mayria"
-    i_fill_in "taxon_protonym_attributes_authorship_attributes_pages", with: "page 35"
-    i_press "Save"
+    fill_in "taxon_name_string", with: "Camponotus (Mayria)"
+    fill_in "protonym_name_string", with: "Mayria"
+    fill_in "taxon_protonym_attributes_authorship_attributes_pages", with: "page 35"
+    click_button "Save"
     i_should_be_on 'the catalog page for "Camponotus (Mayria)"'
     i_should_see "Mayria", within: 'the protonym'
 
@@ -55,15 +55,15 @@ feature "Adding a taxon successfully" do
   end
 
   scenario "Adding a species (with edit summary)" do
-    there_is_a_genus "Eciton"
+    create :genus, name_string: "Eciton"
 
     i_go_to 'the catalog page for "Eciton"'
     i_follow "Add species"
-    i_set_the_name_to "Eciton major"
-    i_set_the_protonym_name_to "Eciton major"
-    i_fill_in "taxon_protonym_attributes_authorship_attributes_pages", with: "page 35"
-    i_fill_in "edit_summary", with: "cool new species"
-    i_press "Save"
+    fill_in "taxon_name_string", with: "Eciton major"
+    fill_in "protonym_name_string", with: "Eciton major"
+    fill_in "taxon_protonym_attributes_authorship_attributes_pages", with: "page 35"
+    fill_in "edit_summary", with: "cool new species"
+    click_button "Save"
     i_should_be_on 'the catalog page for "Eciton major"'
     i_should_see "Eciton major", within: 'the protonym'
     i_should_see "Add another"
@@ -78,10 +78,10 @@ feature "Adding a taxon successfully" do
 
     i_go_to 'the catalog page for "Dolichoderus (Subdolichoderus)"'
     i_follow "Add species"
-    i_set_the_name_to "Dolichoderus major"
-    i_set_the_protonym_name_to "Dolichoderus major"
-    i_fill_in "taxon_protonym_attributes_authorship_attributes_pages", with: "page 35"
-    i_press "Save"
+    fill_in "taxon_name_string", with: "Dolichoderus major"
+    fill_in "protonym_name_string", with: "Dolichoderus major"
+    fill_in "taxon_protonym_attributes_authorship_attributes_pages", with: "page 35"
+    click_button "Save"
     i_should_be_on 'the catalog page for "Dolichoderus major"'
     i_should_see "Dolichoderus major", within: 'the protonym'
   end
@@ -91,10 +91,10 @@ feature "Adding a taxon successfully" do
 
     i_go_to 'the catalog page for "Eciton major"'
     i_follow "Add subspecies"
-    i_set_the_name_to "Eciton major infra"
-    i_set_the_protonym_name_to "Eciton major infra"
-    i_fill_in "taxon_protonym_attributes_authorship_attributes_pages", with: "page 35"
-    i_press "Save"
+    fill_in "taxon_name_string", with: "Eciton major infra"
+    fill_in "protonym_name_string", with: "Eciton major infra"
+    fill_in "taxon_protonym_attributes_authorship_attributes_pages", with: "page 35"
+    click_button "Save"
     i_should_be_on 'the catalog page for "Eciton major infra"'
     i_should_see "infra", within: 'the taxon browser'
     i_should_see "Eciton major infra", within: 'the protonym'
@@ -105,24 +105,24 @@ feature "Adding a taxon successfully" do
 
     i_go_to 'the main page'
     i_follow "Add subfamily"
-    i_set_the_name_to "Dorylinae"
-    i_set_the_protonym_name_to "Dorylinae"
-    i_fill_in "taxon_protonym_attributes_authorship_attributes_pages", with: "page 35"
-    i_press "Save"
+    fill_in "taxon_name_string", with: "Dorylinae"
+    fill_in "protonym_name_string", with: "Dorylinae"
+    fill_in "taxon_protonym_attributes_authorship_attributes_pages", with: "page 35"
+    click_button "Save"
     i_should_be_on 'the catalog page for "Dorylinae"'
     i_should_see "Dorylinae", within: 'the protonym'
     i_should_see "Dorylinae", within: 'the taxon browser'
   end
 
   scenario "Adding a tribe (and copy name to protonym)", :skip_ci, :js do
-    there_is_a_subfamily "Formicinae"
+    create :subfamily, name_string: "Formicinae"
 
     i_go_to 'the catalog page for "Formicinae"'
     i_follow "Add tribe"
-    i_set_the_name_to "Dorylini"
+    fill_in "taxon_name_string", with: "Dorylini"
     i_click_css "#copy-name-to-protonym-js-hook"
-    i_fill_in "taxon_protonym_attributes_authorship_attributes_pages", with: "page 35"
-    i_press "Save"
+    fill_in "taxon_protonym_attributes_authorship_attributes_pages", with: "page 35"
+    click_button "Save"
     i_should_be_on 'the catalog page for "Dorylini"'
     i_should_see "Dorylini", within: 'the protonym'
 

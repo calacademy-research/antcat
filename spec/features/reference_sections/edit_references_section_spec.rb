@@ -8,15 +8,15 @@ feature "Editing references sections" do
   end
 
   scenario "Adding a reference section (with edit summary)" do
-    there_is_a_genus "Atta"
+    create :genus, name_string: "Atta"
 
     i_go_to 'the edit page for "Atta"'
     the_reference_section_should_be_empty
 
     i_click_on 'the add reference section button'
-    i_fill_in "references_taxt", with: "New reference"
-    i_fill_in "edit_summary", with: "added new stuff"
-    i_press "Save"
+    fill_in "references_taxt", with: "New reference"
+    fill_in "edit_summary", with: "added new stuff"
+    click_button "Save"
     the_reference_section_should_be "New reference"
 
     i_go_to 'the activity feed'
@@ -33,7 +33,7 @@ feature "Editing references sections" do
     the_reference_section_should_be "Original reference"
 
     i_click_on 'the edit reference section button'
-    i_fill_in "references_taxt", with: "(none)"
+    fill_in "references_taxt", with: "(none)"
     i_fill_in "edit_summary", with: "fix typo", within: '"#references-section"'
     i_click_on 'the save reference section button'
     i_should_not_see "Original reference"
@@ -46,14 +46,14 @@ feature "Editing references sections" do
   end
 
   scenario "Editing a reference section (without JavaScript)" do
-    there_is_a_reference_section_with_the_references_taxt "California checklist"
+    create :reference_section, references_taxt: "California checklist"
 
     i_go_to 'the page of the most recent reference section'
     i_should_see "California checklist"
 
     i_follow "Edit"
-    i_fill_in "references_taxt", with: "reference section content"
-    i_press "Save"
+    fill_in "references_taxt", with: "reference section content"
+    click_button "Save"
     i_should_see "Successfully updated reference section."
     i_should_see "reference section content"
   end
@@ -63,7 +63,7 @@ feature "Editing references sections" do
 
     i_go_to 'the edit page for "Dolichoderinae"'
     i_click_on 'the edit reference section button'
-    i_fill_in "references_taxt", with: "(none)"
+    fill_in "references_taxt", with: "(none)"
     i_click_on 'the cancel reference section button'
     the_reference_section_should_be "Original reference"
   end

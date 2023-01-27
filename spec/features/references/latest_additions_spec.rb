@@ -8,7 +8,7 @@ feature "Latest Additions", %(
   So I can keep up with the state of the literature
 ) do
   background do
-    there_is_a_reference
+    create :any_reference, :with_author_name
     i_log_in_as_a_catalog_editor
     i_go_to 'the latest reference additions page'
   end

@@ -5,7 +5,7 @@ require 'rails_helper'
 feature "Using the catalog" do
   background do
     the_formicidae_family_exists
-    there_is_a_subfamily "Dolichoderinae"
+    create :subfamily, name_string: "Dolichoderinae"
     there_is_a_tribe_in_the_subfamily "Dolichoderini", "Dolichoderinae"
     there_is_a_genus_in_the_tribe "Dolichoderus", "Dolichoderini"
     there_is_a_species_in_the_genus "Dolichoderus abruptus", "Dolichoderus"

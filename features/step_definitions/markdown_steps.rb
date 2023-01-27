@@ -11,7 +11,7 @@ end
 
 def i_fill_in_with_followed_by_the_user_id_of textarea, text, name
   user = User.find_by!(name: name)
-  i_fill_in textarea.to_s, with: "#{text}#{user.id}"
+  fill_in textarea, with: "#{text}#{user.id}"
 end
 
 # HACK: Because the below selects the wrong suggestion (which is hidden).
@@ -32,7 +32,7 @@ end
 
 def i_fill_in_with_and_a_markdown_link_to field_name, value, key_with_year
   reference = ReferenceStepsHelpers.find_reference_by_key(key_with_year)
-  i_fill_in field_name, with: "#{value} #{Taxt.ref(reference.id)}"
+  fill_in field_name, with: "#{value} #{Taxt.ref(reference.id)}"
 end
 
 def the_markdown_textarea_should_contain_a_markdown_link_to_eciton
@@ -41,7 +41,7 @@ def the_markdown_textarea_should_contain_a_markdown_link_to_eciton
 end
 
 def i_clear_the_markdown_textarea
-  i_fill_in "issue_description", with: "%rsomething_to_clear_the_suggestions"
+  fill_in "issue_description", with: "%rsomething_to_clear_the_suggestions"
   markdown_textarea.set ""
 end
 
