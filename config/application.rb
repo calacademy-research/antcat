@@ -26,7 +26,13 @@ module AntCat
     # 'app/views/activities/templates/_protonym.html.haml' raises
     # `Psych::DisallowedClass Tried to load unspecified class: Symbol`
     # See https://github.com/rails/rails/blob/7-0-stable/activerecord/CHANGELOG.md#rails-7031-july-12-2022
-    config.active_record.yaml_column_permitted_classes = [Symbol]
+    # and also https://github.com/paper-trail-gem/paper_trail/blob/master/doc/pt_13_yaml_safe_load.md
+    config.active_record.yaml_column_permitted_classes = [
+      ActiveSupport::TimeWithZone,
+      ActiveSupport::TimeZone,
+      Symbol,
+      Time
+    ]
 
     console do
       ARGV.push "-r", root.join("config/initializers/irb.rb")
