@@ -22,11 +22,11 @@ describe UserDecorator do
     end
   end
 
-  describe "#angle_bracketed_email" do
+  describe "#email_address_with_name" do
     let(:user) { build_stubbed :user }
 
     it "builds a string suitable for emails" do
-      expect(decorated.angle_bracketed_email).to eq %("#{user.name}" <#{user.email}>)
+      expect(decorated.email_address_with_name).to eq "#{user.name} <#{user.email}>"
     end
   end
 

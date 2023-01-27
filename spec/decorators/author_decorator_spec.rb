@@ -14,9 +14,9 @@ describe AuthorDecorator do
     end
 
     context "when there is a single year" do
-      let!(:reference_2000) { create :any_reference, author_names: [author_name], year: 2000 }
+      let!(:reference) { create :any_reference, author_names: [author_name], year: 2000 }
 
-      specify { expect(decorated.published_between).to eq reference_2000.year }
+      specify { expect(decorated.published_between).to eq "2000" }
     end
 
     context "when there are two different years" do
@@ -38,13 +38,13 @@ describe AuthorDecorator do
     end
 
     context "when there is a single year" do
-      let(:reference_2000) { create :any_reference, author_names: [author_name], year: 2000 }
+      let(:reference) { create :any_reference, author_names: [author_name], year: 2000 }
 
       before do
-        create :any_taxon, protonym: create(:protonym, authorship_reference: reference_2000)
+        create :any_taxon, protonym: create(:protonym, authorship_reference: reference)
       end
 
-      specify { expect(decorated.taxon_descriptions_between).to eq reference_2000.year }
+      specify { expect(decorated.taxon_descriptions_between).to eq "2000" }
     end
 
     context "when there are two different years" do

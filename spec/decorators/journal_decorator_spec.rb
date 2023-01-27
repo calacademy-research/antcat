@@ -10,7 +10,7 @@ describe JournalDecorator do
     let!(:reference) { create :article_reference, year: 2000, journal: journal }
 
     context "when start and end year are the same" do
-      specify { expect(decorated.publications_between).to eq reference.year }
+      specify { expect(decorated.publications_between).to eq "2000" }
     end
 
     context "when start and end year are not the same" do

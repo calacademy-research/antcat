@@ -11,8 +11,8 @@ class UserDecorator < Draper::Decorator
     h.link_to "@#{name}", user, class: 'user-mention'
   end
 
-  def angle_bracketed_email
-    %("#{name}" <#{email}>)
+  def email_address_with_name
+    ActionMailer::Base.email_address_with_name(email, name)
   end
 
   def user_badge

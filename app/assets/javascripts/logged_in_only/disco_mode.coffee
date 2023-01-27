@@ -13,7 +13,6 @@ class DiscoMode
   CONTAINER = "body"
 
   COLOR_CODED_CATALOG_LINKS_CLASS = "color-coded-catalog-links"
-  AFTER_LABELS_CLASS = "color-coded-catalog-links-after-labels"
   SHOW_FIREWORKS_CLASS = "show-fireworks"
 
   constructor: ->
@@ -45,8 +44,8 @@ class DiscoMode
     @_disableInCookies()
     @_hideFireworks()
 
-  _showLinkColors: -> $(CONTAINER).addClass([COLOR_CODED_CATALOG_LINKS_CLASS, AFTER_LABELS_CLASS])
-  _hideLinkColors: -> $(CONTAINER).removeClass([COLOR_CODED_CATALOG_LINKS_CLASS, AFTER_LABELS_CLASS])
+  _showLinkColors: -> $(CONTAINER).addClass(COLOR_CODED_CATALOG_LINKS_CLASS)
+  _hideLinkColors: -> $(CONTAINER).removeClass(COLOR_CODED_CATALOG_LINKS_CLASS)
 
   _showFireworks: -> $(CONTAINER).addClass(SHOW_FIREWORKS_CLASS)
   _hideFireworks: -> $(CONTAINER).removeClass(SHOW_FIREWORKS_CLASS)
