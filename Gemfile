@@ -36,7 +36,7 @@ gem 'jquery-ui-rails'
 gem 'ledermann-rails-settings'
 gem 'newrelic_rpm'
 gem 'paperclip'
-gem 'paper_trail', '~> 12.0'
+gem 'paper_trail', '~> 14.0'
 # WARNING: Both this and ruby-progressbar define `ProgressBar`; this one is for `rake sunspot:solr:reindex`.
 # progress_bar is hardcoded in sunspot_rails, and ruby-progressbar is a dependency of rubocop... hehe.
 gem 'progress_bar', require: false
