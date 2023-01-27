@@ -1,0 +1,56 @@
+@import "colors"
+
+// TODO: Add `ApplicationComponent#identifier` and use that for namespacing CSS.
+[data-controller='picker']
+  .picker-modal
+    height: 95vh
+    width: 95vw
+    position: fixed
+    top: 0
+    right: 0
+    bottom: 0
+    left: 0
+    margin: auto
+    padding: 1em
+    background-color: #fff
+    border: 1px solid #000
+    z-index: 2
+
+  .picker-modal-backdrop
+    position: fixed
+    top: 0
+    right: 0
+    bottom: 0
+    left: 0
+    background-color: rgba(0, 0, 0, 0.5)
+    z-index: 1
+
+  .picker-fake-input
+    border-radius: 4px
+    border: 1px solid #ccc
+    height: 2.2rem
+    padding-top: 0.2rem
+    padding-bottom: 0.2rem
+    padding-left: 0.4rem
+    padding-right: 0.4rem
+    min-width: 15rem
+    display: inline-block
+
+  .pickable-row
+    cursor: cell
+    &:hover
+      background-color: $color_light_gray
+
+  [data-picker-selected-pickable]
+    background-color: $color_medium_gray
+
+  .pickable-record-id
+    color: $color_dark_gray_text
+    font-size: 90%
+    margin-right: 1rem
+
+  .pickable-outline
+    border: 1px solid $color_gray_text
+    border-radius: 3px
+    padding: 3px
+    background-color: $color_pale
