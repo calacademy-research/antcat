@@ -4,7 +4,7 @@ require 'rails_helper'
 
 feature "Export references to EndNote" do
   scenario "Exporting an `ArticleReference`" do
-    there_is_an_article_reference
+    create :article_reference, :with_author_name
 
     i_go_to 'the page of the most recent reference'
     i_follow "EndNote"

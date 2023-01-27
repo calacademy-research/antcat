@@ -16,10 +16,10 @@ feature "Add and edit open issues", %(
     i_should_see "There are currently no open issues."
 
     i_follow "New"
-    i_fill_in "issue_title", with: "Resolve homonyms"
-    i_fill_in "issue_description", with: "Ids #999 and #777"
-    i_fill_in "edit_summary", with: "added question"
-    i_press "Save"
+    fill_in "issue_title", with: "Resolve homonyms"
+    fill_in "issue_description", with: "Ids #999 and #777"
+    fill_in "edit_summary", with: "added question"
+    click_button "Save"
     i_should_see "Successfully created issue"
 
     i_go_to 'the open issues page'
@@ -31,17 +31,17 @@ feature "Add and edit open issues", %(
   end
 
   scenario "Editing an issue (with feed)" do
-    there_is_an_open_issue "Restore deleted species"
+    create :issue, :open, title: "Restore deleted species"
 
     i_go_to 'the open issues page'
     i_should_see "Restore deleted species"
 
     i_follow "Restore deleted species"
     i_follow "Edit"
-    i_fill_in "issue_title", with: "Restore deleted genera"
-    i_fill_in "issue_description", with: "The genera: #7554, #8863"
-    i_fill_in "edit_summary", with: "added info"
-    i_press "Save"
+    fill_in "issue_title", with: "Restore deleted genera"
+    fill_in "issue_description", with: "The genera: #7554, #8863"
+    fill_in "edit_summary", with: "added info"
+    click_button "Save"
     i_should_see "Successfully updated issue"
     i_should_see "The genera: #7554, #8863"
 
@@ -55,7 +55,7 @@ feature "Add and edit open issues", %(
   end
 
   scenario "Flagging an issue with 'Help wanted' and show notice in the nomen synopsis" do
-    there_is_an_open_issue "Important fix"
+    create :issue, :open, title: "Important fix"
 
     i_go_to 'the catalog'
     i_should_not_see "Help Wanted", within: 'the page header'
@@ -66,8 +66,8 @@ feature "Add and edit open issues", %(
 
     i_follow "Important fix"
     i_follow "Edit"
-    i_check "issue_help_wanted"
-    i_press "Save"
+    check "issue_help_wanted"
+    click_button "Save"
     i_should_see "Successfully updated issue"
 
     i_go_to 'the catalog'
@@ -79,7 +79,7 @@ feature "Add and edit open issues", %(
   end
 
   scenario "Closing and re-opening an issue (with feed)" do
-    there_is_an_open_issue "Add taxa from Aldous 2007"
+    create :issue, :open, title: "Add taxa from Aldous 2007"
 
     i_go_to 'the open issues page'
     i_follow "Add taxa from Aldous 2007"

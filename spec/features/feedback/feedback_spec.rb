@@ -13,18 +13,18 @@ feature "Feedback", %(
 
   scenario "Nothing except a comment is required" do
     i_follow "Suggest edit"
-    i_press "Send Feedback"
+    click_button "Send Feedback"
     i_should_see "Comment can't be blank"
 
-    i_fill_in "feedback_comment", with: "Great site!!!"
-    i_press "Send Feedback"
+    fill_in "feedback_comment", with: "Great site!!!"
+    click_button "Send Feedback"
     i_should_see "Message sent"
   end
 
-  scenario "Unregistered user submitting feedback (with feed)" do
+  scenario "Unregistered user submitting feedback (with feed)", as: :visitor do
     i_follow "Suggest edit"
-    i_fill_in "feedback_comment", with: "Great site!!!"
-    i_press "Send Feedback"
+    fill_in "feedback_comment", with: "Great site!!!"
+    click_button "Send Feedback"
 
     i_should_see "Message sent"
     i_should_see "Thanks for helping us make AntCat better!"
@@ -41,8 +41,8 @@ feature "Feedback", %(
     i_log_in_as_a_catalog_editor_named "Archibald"
 
     i_follow "Suggest edit"
-    i_fill_in "feedback_comment", with: "Great site!!!"
-    i_press "Send Feedback"
+    fill_in "feedback_comment", with: "Great site!!!"
+    click_button "Send Feedback"
     i_should_see "Message sent"
 
     i_go_to 'the feedback page'
@@ -53,7 +53,7 @@ feature "Feedback", %(
   end
 
   scenario "Page field defaults to the current URL" do
-    there_is_a_genus "Calyptites"
+    create :genus, name_string: "Calyptites"
 
     i_go_to 'the catalog page for "Calyptites"'
     i_follow "Suggest edit"

@@ -8,7 +8,7 @@ feature "Delete reference" do
   end
 
   scenario "Delete a reference (with feed)" do
-    this_reference_exists author: "Fisher", year: 2004
+    create :any_reference, author_string: "Fisher", year: 2004
 
     i_go_to 'the page of the most recent reference'
     i_follow "Delete"
@@ -19,7 +19,8 @@ feature "Delete reference" do
   end
 
   scenario "Try to delete a reference when there are references to it" do
-    there_is_a_reference_referenced_in_a_history_item
+    reference = create :any_reference
+    create :history_item, :taxt, taxt: Taxt.ref(reference.id)
 
     i_go_to 'the page of the oldest reference'
     i_will_confirm_on_the_next_step

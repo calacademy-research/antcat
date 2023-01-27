@@ -12,10 +12,6 @@ def i_should_be_on page_name
   expect(current_path).to eq path_to(page_name)
 end
 
-def the_page_title_be title
-  expect(page.title).to eq title
-end
-
 def i_reload_the_page
   visit current_path
 end
@@ -32,10 +28,6 @@ end
 
 def i_click_css_with_text css_selector, text
   find(css_selector, text: text).click
-end
-
-def i_press button_text
-  click_button button_text
 end
 
 def i_follow_the_first link_text
@@ -57,28 +49,6 @@ def i_follow link_text, within: nil
 end
 
 # Interact with form elements.
-def i_fill_in field_name, with:, within: nil
-  if within
-    with_scope within do
-      fill_in field_name, with: with
-    end
-  else
-    fill_in field_name, with: with
-  end
-end
-
-def i_select value, from:
-  select value, from: from
-end
-
-def i_check field_name
-  check field_name
-end
-
-def i_uncheck field_name
-  uncheck field_name
-end
-
 def i_should_see_checked field_name
   expect(page.find(field_name).checked?).to eq true
 end
@@ -91,10 +61,10 @@ end
 def i_should_see content, within: nil
   if within
     with_scope within do
-      expect(page).to have_content content, normalize_ws: true
+      expect(page).to have_content content
     end
   else
-    expect(page).to have_content content, normalize_ws: true
+    expect(page).to have_content content
   end
 end
 
@@ -113,20 +83,7 @@ def the_field_should_contain field_name, value
   expect(field.value).to match value
 end
 
-def the_field_within_should_contain field_name, parent_css_selector, value
-  within parent_css_selector do
-    field = find_field field_name
-    expect(field.value).to match value
-  end
-end
-
 # JavaScript alerts and prompts.
-def i_should_see_an_alert message
-  accept_alert(message) do
-    # No-op.
-  end
-end
-
 def i_will_confirm_on_the_next_step
   evaluate_script "window.alert = function(msg) { return true; }"
   evaluate_script "window.confirm = function(msg) { return true; }"

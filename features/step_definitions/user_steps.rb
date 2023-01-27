@@ -4,27 +4,13 @@ def login_programmatically user
   login_as user, scope: :user, run_callbacks: false
 end
 
-def this_user_exists **hsh
-  create :user, hsh
-end
-
 def i_log_in_as name
   user = User.find_by!(name: name)
   login_programmatically user
 end
 
-def i_am_logged_in
-  user = create :user
-  login_programmatically user
-end
-
 def i_log_in_as_a_user_named name
   user = create :user, name: name
-  login_programmatically user
-end
-
-def i_log_in_as_a_helper_editor
-  user = create :user, :helper
   login_programmatically user
 end
 
@@ -38,23 +24,7 @@ def i_log_in_as_a_catalog_editor_named name
   login_programmatically user
 end
 
-def i_log_in_as_a_superadmin
-  user = create :user, :editor, :superadmin
-  login_programmatically user
-end
-
 def i_log_in_as_a_superadmin_named name
   user = create :user, :editor, :superadmin, name: name
   login_programmatically user
-end
-
-def i_log_in_as_a_developer
-  user = create :user, :editor, :developer
-  login_programmatically user
-end
-
-def batiatus_editing_helpers_settings_for_create_combination_should_be value
-  user = User.find_by!(name: 'Batiatus')
-  boolean_value = { 'true' => true, 'false' => false }.fetch(value)
-  expect(user.settings(:editing_helpers).create_combination).to eq boolean_value
 end

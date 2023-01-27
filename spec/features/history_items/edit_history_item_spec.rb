@@ -3,6 +3,11 @@
 require 'rails_helper'
 
 feature "Editing a history item" do
+  def there_is_a_subfamily_protonym_with_a_history_item name, taxt
+    protonym = create :protonym, :family_group, name: create(:subfamily_name, name: name)
+    create :history_item, :taxt, taxt: taxt, protonym: protonym
+  end
+
   background do
     i_log_in_as_a_catalog_editor_named "Archibald"
   end
@@ -14,9 +19,9 @@ feature "Editing a history item" do
     the_history_should_be_empty
 
     i_click_on 'the add history item button'
-    i_fill_in "taxt", with: "Abc"
-    i_fill_in "edit_summary", with: "added new stuff"
-    i_press "Save"
+    fill_in "taxt", with: "Abc"
+    fill_in "edit_summary", with: "added new stuff"
+    click_button "Save"
     the_history_should_be "Abc"
 
     i_go_to 'the activity feed'
@@ -32,7 +37,7 @@ feature "Editing a history item" do
     the_history_should_be_empty
 
     i_click_on 'the add history item button'
-    i_press "Save"
+    click_button "Save"
     i_should_see "Taxt can't be blank"
   end
 
@@ -44,8 +49,10 @@ feature "Editing a history item" do
     the_history_should_be "Antcatinae as family"
 
     i_click_on 'the edit history item button'
-    i_fill_in "taxt", with: "(none)"
-    i_fill_in "edit_summary", with: "fix typo", within: '"#history-items"'
+    fill_in "taxt", with: "(none)"
+    within "#history-items" do
+      fill_in "edit_summary", with: "fix typo"
+    end
     i_click_on 'the save history item button'
     i_reload_the_page
     i_should_not_see "Antcatinae as family"
@@ -67,8 +74,8 @@ feature "Editing a history item" do
     i_follow "Edit"
     i_should_see "Antcatinae as family"
 
-    i_fill_in "taxt", with: "history item content"
-    i_press "Save"
+    fill_in "taxt", with: "history item content"
+    click_button "Save"
     i_should_see "Successfully updated history item #"
     i_should_see "history item content"
   end
@@ -78,7 +85,7 @@ feature "Editing a history item" do
 
     i_go_to 'the protonym page for "Antcatinae"'
     i_click_on 'the edit history item button'
-    i_fill_in "taxt", with: "(none)"
+    fill_in "taxt", with: "(none)"
     i_click_on 'the cancel history item button'
     the_history_should_be "Antcatinae as family"
 
@@ -106,8 +113,8 @@ feature "Editing a history item" do
   end
 
   scenario "Seeing the markdown preview (and cancelling)", :js do
-    this_reference_exists author: "Giovanni, S.", year: 1809
-    there_is_a_protonym_with_a_history_item_and_a_markdown_link_to "Antcatinae", "As family,", "Giovanni, 1809"
+    giovanni_1809 = create :any_reference, author_string: "Giovanni, S.", year: 1809
+    there_is_a_subfamily_protonym_with_a_history_item "Antcatinae", "As family, #{Taxt.ref(giovanni_1809.id)}"
 
     i_go_to 'the protonym page for "Antcatinae"'
     i_should_see "As family, Giovanni, 1809"
@@ -117,8 +124,8 @@ feature "Editing a history item" do
     i_should_see "As family, Giovanni, 1809"
     the_history_item_field_should_be_visible
 
-    i_fill_in_with_and_a_markdown_link_to "taxt", "Lasius history,", "Giovanni, 1809"
-    i_press "Rerender preview"
+    fill_in "taxt", with: "Lasius history, #{Taxt.ref(giovanni_1809.id)}"
+    click_button "Rerender preview"
     i_should_see "Lasius history, Giovanni, 1809"
 
     i_click_on 'the cancel history item button'

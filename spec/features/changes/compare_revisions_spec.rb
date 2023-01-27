@@ -6,9 +6,15 @@ feature "Compare revisions", %(
   As an editor of AntCat
   I want to browse previous revisions of items
   So I can see what has been changed
-), :versioning do
-  background do
-    i_log_in_as_a_catalog_editor
+), as: :editor, versioning: true do
+  def i_follow_the_first_linked_history_item
+    first("a[href^='/history_items/']").click
+  end
+
+  def i_add_a_history_item content
+    i_click_on 'the add history item button'
+    fill_in "taxt", with: content
+    click_button "Save"
   end
 
   scenario "Comparing history item revisions" do
@@ -23,7 +29,7 @@ feature "Compare revisions", %(
     i_should_see "This item does not have any previous revisions"
 
     # Edited.
-    i_update_the_most_recent_history_item_to_say "second revision content"
+    HistoryItem.last.update!(taxt: "second revision content")
     i_go_to 'the activity feed'
     i_follow_the_first_linked_history_item
     i_follow "History"
@@ -36,7 +42,7 @@ feature "Compare revisions", %(
     i_should_see "initial content"
 
     # Deleted.
-    i_delete_the_most_recent_history_item
+    HistoryItem.last.destroy!
     i_go_to 'the activity feed'
     i_follow_the_first "History"
     i_should_see "Version before item was deleted"
@@ -48,7 +54,7 @@ feature "Compare revisions", %(
   end
 
   scenario "Comparing reference section revisions" do
-    there_is_a_reference_section_with_the_references_taxt "test"
+    create :reference_section, references_taxt: "test"
 
     i_go_to 'the page of the most recent reference section'
     i_follow "History"
@@ -56,13 +62,13 @@ feature "Compare revisions", %(
   end
 
   scenario "Comparing revisions with intermediate revisions", :js do
-    there_is_a_history_item "initial version"
-    i_update_the_most_recent_history_item_to_say "second version"
-    i_update_the_most_recent_history_item_to_say "last version"
+    create :history_item, :taxt, taxt: "initial version"
+    HistoryItem.last.update!(taxt: "second version")
+    HistoryItem.last.update!(taxt: "last version")
 
     i_go_to 'the page of the most recent history item'
     i_follow "History"
-    i_press "Compare selected revisions"
+    click_button "Compare selected revisions"
     i_should_see "second version", within: 'the left side of the diff'
     i_should_see "last version", within: 'the right side of the diff'
     i_should_not_see "initial version"

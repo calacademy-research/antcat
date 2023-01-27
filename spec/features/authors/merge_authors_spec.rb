@@ -6,11 +6,15 @@ feature "Merging authors", %(
 As an editor of AntCat
 I want to merge together author names
 So that they are correct
-) do
+), as: :editor do
+  def i_set_author_to_merge_id_to_the_id_of author_name
+    author = AuthorName.find_by!(name: author_name).author
+    find('#author_to_merge_id', visible: false).set author.id # HACK: For when JavaScript is disabled.
+  end
+
   background do
-    i_log_in_as_a_catalog_editor
-    this_reference_exists author: 'Bolton, B.', title: 'Annals of Ants'
-    this_reference_exists author: 'Bolton, Ba.', title: 'More ants'
+    create :any_reference, author_string: 'Bolton, B.', title: 'Annals of Ants'
+    create :any_reference, author_string: 'Bolton, Ba.', title: 'More ants'
   end
 
   scenario "Merging two authors" do
@@ -20,11 +24,11 @@ So that they are correct
 
     i_follow "Merge"
     i_set_author_to_merge_id_to_the_id_of "Bolton, Ba."
-    i_press "Next"
+    click_button "Next"
     i_should_see "Annals of Ants"
     i_should_see "More ants"
 
-    i_press "Merge these authors"
+    click_button "Merge these authors"
     i_should_see "Probably merged authors"
     i_should_be_on 'the author page for "Bolton, B."'
     i_should_see "Bolton, Ba."
@@ -34,8 +38,8 @@ So that they are correct
   scenario "Searching for an author that isn't found" do
     i_go_to 'the author page for "Bolton, B."'
     i_follow "Merge"
-    i_fill_in "author_to_merge_name", with: "asdf"
-    i_press "Next"
+    fill_in "author_to_merge_name", with: "asdf"
+    click_button "Next"
     i_should_see "Author to merge must be specified"
   end
 end

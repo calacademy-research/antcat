@@ -8,7 +8,7 @@ feature "Export references to Wikipedia", %(
   So that it's easier to add references to Wikipedia articles
 ) do
   scenario "Exporting an `ArticleReference`" do
-    there_is_an_article_reference
+    create :article_reference, :with_author_name
 
     i_go_to 'the page of the most recent reference'
     i_follow "Wikipedia"

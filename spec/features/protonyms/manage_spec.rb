@@ -2,29 +2,25 @@
 
 require 'rails_helper'
 
-feature "Manage protonyms" do
-  background do
-    i_log_in_as_a_helper_editor
-  end
-
+feature "Manage protonyms", as: :helper do
   scenario "Adding a protonym with a type name" do
-    there_is_a_genus "Atta"
-    this_reference_exists author: "Batiatus", year: 2004
+    create :genus, name_string: "Atta"
+    create :any_reference, author_string: "Batiatus", year: 2004
 
     i_go_to 'the protonyms page'
     i_follow "New"
-    i_set_the_protonym_name_to "Dotta"
+    fill_in "protonym_name_string", with: "Dotta"
     i_pick_from_the_taxon_picker "Atta", "#protonym_type_name_attributes_taxon_id"
     i_pick_from_the_reference_picker "Batiatus, 2004", "#protonym_authorship_attributes_reference_id"
-    i_fill_in "protonym_authorship_attributes_pages", with: "page 35"
-    i_select "by monotypy", from: "protonym_type_name_attributes_fixation_method"
-    i_press "Save"
+    fill_in "protonym_authorship_attributes_pages", with: "page 35"
+    select "by monotypy", from: "protonym_type_name_attributes_fixation_method"
+    click_button "Save"
     i_should_see "Protonym was successfully created."
     i_should_see "Type-genus: Atta, by monotypy"
 
     i_follow "Edit"
-    i_select "by original designation", from: "protonym_type_name_attributes_fixation_method"
-    i_press "Save"
+    select "by original designation", from: "protonym_type_name_attributes_fixation_method"
+    click_button "Save"
     i_should_see "Protonym was successfully updated"
     i_should_see "Type-genus: Atta, by original designation"
   end
@@ -32,8 +28,8 @@ feature "Manage protonyms" do
   scenario "Adding a protonym with errors" do
     i_go_to 'the protonyms page'
     i_follow "New"
-    i_select "by monotypy", from: "protonym_type_name_attributes_fixation_method"
-    i_press "Save"
+    select "by monotypy", from: "protonym_type_name_attributes_fixation_method"
+    click_button "Save"
     i_should_see "Name can't be blank"
     i_should_see "Authorship: Reference must exist"
     i_should_see "Authorship: Pages can't be blank"
@@ -43,8 +39,8 @@ feature "Manage protonyms" do
   scenario "Adding a protonym with unparsable name, and maintain entered fields" do
     i_go_to 'the protonyms page'
     i_follow "New"
-    i_set_the_protonym_name_to "Invalid a b c d e f protonym name"
-    i_press "Save"
+    fill_in "protonym_name_string", with: "Invalid a b c d e f protonym name"
+    click_button "Save"
     i_should_see "Protonym name: Could not parse name Invalid a b c d e f protonym name"
     the_field_should_contain "protonym_name_string", "Invalid a b c d e f protonym name"
   end
@@ -58,11 +54,11 @@ feature "Manage protonyms" do
     i_should_see "dealate queen"
 
     i_follow "Edit"
-    i_fill_in "protonym_authorship_attributes_pages", with: "page 35"
-    i_fill_in "protonym_forms", with: "male"
-    i_fill_in "protonym_locality", with: "Lund"
-    i_select "Malagasy", from: "protonym_bioregion"
-    i_press "Save"
+    fill_in "protonym_authorship_attributes_pages", with: "page 35"
+    fill_in "protonym_forms", with: "male"
+    fill_in "protonym_locality", with: "Lund"
+    select "Malagasy", from: "protonym_bioregion"
+    click_button "Save"
     i_should_see "Protonym was successfully updated"
     i_should_see "page 35"
     i_should_see "male"
@@ -70,8 +66,8 @@ feature "Manage protonyms" do
     i_should_see "Malagasy"
 
     i_follow "Edit"
-    i_fill_in "protonym_authorship_attributes_pages", with: "page 35"
-    i_fill_in "protonym_forms", with: "male"
+    fill_in "protonym_authorship_attributes_pages", with: "page 35"
+    fill_in "protonym_forms", with: "male"
     the_field_should_contain "protonym_locality", "Lund"
   end
 
@@ -79,10 +75,10 @@ feature "Manage protonyms" do
     there_is_a_genus_protonym "Formica"
 
     i_go_to 'the edit protonym page for "Formica"'
-    i_fill_in "protonym_primary_type_information_taxt", with: "Madagascar: Prov. Tolliara"
-    i_fill_in "protonym_secondary_type_information_taxt", with: "A neotype had also been designated"
-    i_fill_in "protonym_type_notes_taxt", with: "Note: Typo in Toliara"
-    i_press "Save"
+    fill_in "protonym_primary_type_information_taxt", with: "Madagascar: Prov. Tolliara"
+    fill_in "protonym_secondary_type_information_taxt", with: "A neotype had also been designated"
+    fill_in "protonym_type_notes_taxt", with: "Note: Typo in Toliara"
+    click_button "Save"
     i_should_see "Protonym was successfully updated"
     i_should_see "Madagascar: Prov. Tolliara"
     i_should_see "A neotype had also been designated"
@@ -93,9 +89,9 @@ feature "Manage protonyms" do
     there_is_a_genus_protonym "Formica"
 
     i_go_to 'the edit protonym page for "Formica"'
-    i_fill_in "protonym_authorship_attributes_pages", with: ""
-    i_select "by subsequent designation of", from: "protonym_type_name_attributes_fixation_method"
-    i_press "Save"
+    fill_in "protonym_authorship_attributes_pages", with: ""
+    select "by subsequent designation of", from: "protonym_type_name_attributes_fixation_method"
+    click_button "Save"
     i_should_see "Authorship: Pages can't be blank"
     i_should_see "Type name: Taxon must exist"
     i_should_see "Type name: Reference must be set for 'by subsequent designation of'"

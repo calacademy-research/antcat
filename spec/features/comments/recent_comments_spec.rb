@@ -12,7 +12,7 @@ feature "Browse recent comments" do
 
     i_go_to 'the issue page for "Test markdown"'
     i_write_a_new_comment_at_batiatus_id "your name should be linked."
-    i_press "Post Comment"
+    click_button "Post Comment"
     i_wait_for_the_success_message
 
     i_go_to 'the comments page'

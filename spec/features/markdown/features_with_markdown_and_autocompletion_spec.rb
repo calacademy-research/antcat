@@ -2,9 +2,11 @@
 
 require 'rails_helper'
 
-feature "Features with markdown and autocompletion" do
-  background do
-    i_log_in_as_a_catalog_editor
+feature "Features with markdown and autocompletion", as: :editor do
+  def there_should_be_a_textarea_with_markdown_and_autocompletion
+    find "textarea[data-previewable]"
+    find "textarea[data-has-mentionables]"
+    find "textarea[data-has-linkables]"
   end
 
   scenario "Site notices" do
@@ -19,7 +21,7 @@ feature "Features with markdown and autocompletion" do
   end
 
   scenario "Comments" do
-    there_is_an_open_feedback_item
+    create :feedback, user: nil
     i_go_to 'the most recent feedback item'
 
     there_should_be_a_textarea_with_markdown_and_autocompletion

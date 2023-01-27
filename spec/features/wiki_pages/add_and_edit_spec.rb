@@ -12,10 +12,10 @@ feature "Add and edit wiki pages" do
     i_should_see "There are currently no wiki pages"
 
     i_follow "New"
-    i_fill_in "wiki_page_title", with: "Bibliography guidelines"
-    i_fill_in "wiki_page_content", with: "In the title, use capitals only"
-    i_fill_in "edit_summary", with: "added help page"
-    i_press "Save"
+    fill_in "wiki_page_title", with: "Bibliography guidelines"
+    fill_in "wiki_page_content", with: "In the title, use capitals only"
+    fill_in "edit_summary", with: "added help page"
+    click_button "Save"
     i_should_see "Successfully created wiki page"
 
     i_go_to 'the wiki pages index'
@@ -30,15 +30,15 @@ feature "Add and edit wiki pages" do
   end
 
   scenario "Editing a wiki page (with edit summary)" do
-    there_is_a_wiki_page "Catalog guidelines"
+    create :wiki_page, title: "Catalog guidelines"
 
     i_go_to 'the wiki pages index'
     i_follow_the_first "Catalog guidelines"
     i_follow "Edit"
-    i_fill_in "wiki_page_title", with: "Name guidelines"
-    i_fill_in "wiki_page_content", with: "Genus names must start with a capital letter"
-    i_fill_in "edit_summary", with: "updated info"
-    i_press "Save"
+    fill_in "wiki_page_title", with: "Name guidelines"
+    fill_in "wiki_page_content", with: "Genus names must start with a capital letter"
+    fill_in "edit_summary", with: "updated info"
+    click_button "Save"
     i_should_see "Successfully updated wiki page"
 
     i_go_to 'the wiki pages index'

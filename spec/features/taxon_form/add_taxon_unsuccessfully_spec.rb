@@ -2,18 +2,17 @@
 
 require 'rails_helper'
 
-feature "Adding a taxon unsuccessfully" do
+feature "Adding a taxon unsuccessfully", as: :editor do
   background do
-    i_log_in_as_a_catalog_editor
-    there_is_a_subfamily "Formicinae"
+    create :subfamily, name_string: "Formicinae"
   end
 
   scenario "Having an errors, and maintain entered fields" do
     i_go_to 'the catalog page for "Formicinae"'
     i_follow "Add genus"
-    i_set_the_name_to "Atta prolasius"
-    i_select "homonym", from: "taxon_status"
-    i_press "Save"
+    fill_in "taxon_name_string", with: "Atta prolasius"
+    select "homonym", from: "taxon_status"
+    click_button "Save"
     i_should_see "Homonym replaced by must be set for homonyms"
     i_should_see "Rank (`Genus`) and name type (`SpeciesName`) must match."
     i_should_see "Protonym: Name can't be blank"
@@ -25,9 +24,9 @@ feature "Adding a taxon unsuccessfully" do
   scenario "Unparsable names, and maintain entered fields" do
     i_go_to 'the catalog page for "Formicinae"'
     i_follow "Add genus"
-    i_set_the_name_to "Invalid a b c d e f taxon name"
-    i_set_the_protonym_name_to "Invalid a b c d e f protonym name"
-    i_press "Save"
+    fill_in "taxon_name_string", with: "Invalid a b c d e f taxon name"
+    fill_in "protonym_name_string", with: "Invalid a b c d e f protonym name"
+    click_button "Save"
     i_should_see "Name: Could not parse name Invalid a b c d e f taxon name"
     i_should_see "Protonym: Protonym name: Could not parse name Invalid a b c d e f protonym name"
     the_field_should_contain "taxon_name_string", "Invalid a b c d e f taxon name"

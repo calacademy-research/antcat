@@ -3,36 +3,61 @@
 require 'rails_helper'
 
 feature "Markdown autocompletion", :js do
+  # HACK: Because the below selects the wrong suggestion (which is hidden).
+  #   `first(".atwho-view-ul li.cur", visible: true).click`
+  def i_click_the_suggestion_containing text
+    find(".atwho-view-ul li", text: text).click
+  end
+
+  def the_markdown_textarea_should_contain_a_markdown_link_to_archibalds_user_page
+    archibald = User.find_by!(name: "Archibald")
+    expect(markdown_textarea.value).to include "@user#{archibald.id}"
+  end
+
+  def the_markdown_textarea_should_contain_a_markdown_link_to reference
+    expect(markdown_textarea.value).to include Taxt.ref(reference.id)
+  end
+
+  def i_clear_the_markdown_textarea
+    fill_in "issue_description", with: "%rsomething_to_clear_the_suggestions"
+    markdown_textarea.set ""
+  end
+
+  def the_markdown_textarea_should_contain_a_markdown_link_to_eciton
+    eciton = Taxon.find_by!(name_cache: "Eciton")
+    expect(markdown_textarea.value).to include Taxt.tax(eciton.id)
+  end
+
   background do
     i_log_in_as_a_catalog_editor_named "Archibald"
   end
 
   scenario "References markdown autocompletion", :skip_ci, :search do
-    this_reference_exists author: "Giovanni, S.", title: "Giovanni's Favorite Ants", year: 1810
-    this_reference_exists author: "Joffre, J.", title: "Joffre's Favorite Ants", year: 1810
+    create :any_reference, author_string: "Giovanni, S.", title: "Giovanni's Favorite Ants", year: 1810
+    joffre_1810 = create :any_reference, author_string: "Joffre, J.", title: "Joffre's Favorite Ants", year: 1810
     Sunspot.commit
 
     i_am_on_a_page_with_a_textarea_with_markdown_preview_and_autocompletion
 
-    i_fill_in "issue_description", with: "{rfav"
+    fill_in "issue_description", with: "{rfav"
     i_should_see "Giovanni's Favorite Ants"
     i_should_see "Joffre's Favorite Ants"
 
     i_clear_the_markdown_textarea
     i_should_not_see "Favorite Ants"
 
-    i_fill_in "issue_description", with: "{rjof"
+    fill_in "issue_description", with: "{rjof"
     i_click_the_suggestion_containing "Joffre's Favorite Ants"
-    the_markdown_textarea_should_contain_a_markdown_link_to "Joffre, 1810"
+    the_markdown_textarea_should_contain_a_markdown_link_to joffre_1810
   end
 
   scenario "Taxa markdown autocompletion", :skip_ci, :search do
-    there_is_a_genus "Eciton"
-    there_is_a_genus "Atta"
+    create :genus, name_string: "Eciton"
+    create :genus, name_string: "Atta"
     Sunspot.commit
     i_am_on_a_page_with_a_textarea_with_markdown_preview_and_autocompletion
 
-    i_fill_in "issue_description", with: "{tec"
+    fill_in "issue_description", with: "{tec"
     i_should_see "Eciton"
 
     i_click_the_suggestion_containing "Eciton"
@@ -42,7 +67,7 @@ feature "Markdown autocompletion", :js do
   scenario "User markdown autocompletion", :skip_ci do
     i_am_on_a_page_with_a_textarea_with_markdown_preview_and_autocompletion
 
-    i_fill_in "issue_description", with: "@arch"
+    fill_in "issue_description", with: "@arch"
     i_click_the_suggestion_containing "Archibald"
     the_markdown_textarea_should_contain_a_markdown_link_to_archibalds_user_page
   end

@@ -8,15 +8,17 @@ feature "Create obsolete combination" do
   end
 
   scenario "Creating a missing obsolete combination (with feed)" do
-    there_is_a_genus "Pyramica"
-    there_is_a_species "Strumigenys ravidura"
+    genus = create :genus, name_string: "Pyramica"
+    create :species, name_string: "Strumigenys ravidura"
 
     i_go_to 'the catalog page for "Strumigenys ravidura"'
     i_follow "Create obsolete combination"
     i_pick_from_the_taxon_picker "Pyramica", "#obsolete_genus_id"
-    i_press "Create!"
+    click_button "Create!"
     i_should_be_on 'the catalog page for "Pyramica ravidura"'
-    the_association_of_taxon_should_be "genus", "Pyramica ravidura", "Pyramica"
+
+    created_taxon = Taxon.find_by!(name_cache: "Pyramica ravidura")
+    expect(created_taxon.genus).to eq genus
 
     i_go_to 'the activity feed'
     i_should_see "Archibald created the obsolete combination Pyramica ravidura", within: 'the activity feed'
