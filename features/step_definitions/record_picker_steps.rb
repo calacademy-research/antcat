@@ -22,7 +22,8 @@ def i_pick_from_the_protonym_picker name, input_css_selector
 end
 
 def i_pick_from_the_reference_picker key_with_year, input_css_selector
-  reference_id = ReferenceStepsHelpers.find_reference_by_key(key_with_year).id
+  last_name, year = key_with_year.split(',')
+  reference = Reference.where("author_names_string_cache LIKE ?", "#{last_name}%").find_by!(year: year)
 
-  set_record_picker reference_id, input_css_selector
+  set_record_picker reference.id, input_css_selector
 end

@@ -8,12 +8,6 @@ feature "Editing a history item" do
     create :history_item, :taxt, taxt: taxt, protonym: protonym
   end
 
-  def there_is_a_protonym_with_a_history_item_and_a_markdown_link_to name, content, key_with_year
-    reference = ReferenceStepsHelpers.find_reference_by_key(key_with_year)
-    taxt = "#{content} #{Taxt.ref(reference.id)}"
-    there_is_a_subfamily_protonym_with_a_history_item name, taxt
-  end
-
   background do
     i_log_in_as_a_catalog_editor_named "Archibald"
   end
@@ -119,8 +113,8 @@ feature "Editing a history item" do
   end
 
   scenario "Seeing the markdown preview (and cancelling)", :js do
-    create :any_reference, author_string: "Giovanni, S.", year: 1809
-    there_is_a_protonym_with_a_history_item_and_a_markdown_link_to "Antcatinae", "As family,", "Giovanni, 1809"
+    giovanni_1809 = create :any_reference, author_string: "Giovanni, S.", year: 1809
+    there_is_a_subfamily_protonym_with_a_history_item "Antcatinae", "As family, #{Taxt.ref(giovanni_1809.id)}"
 
     i_go_to 'the protonym page for "Antcatinae"'
     i_should_see "As family, Giovanni, 1809"
@@ -130,7 +124,7 @@ feature "Editing a history item" do
     i_should_see "As family, Giovanni, 1809"
     the_history_item_field_should_be_visible
 
-    i_fill_in_with_and_a_markdown_link_to "taxt", "Lasius history,", "Giovanni, 1809"
+    fill_in "taxt", with: "Lasius history, #{Taxt.ref(giovanni_1809.id)}"
     click_button "Rerender preview"
     i_should_see "Lasius history, Giovanni, 1809"
 
