@@ -9,7 +9,9 @@ feature "Searching the catalog" do
   end
 
   scenario "Searching when no results" do
-    i_fill_in "qq", with: "zxxz", within: "the desktop menu"
+    within "#desktop-only-header" do
+      fill_in "qq", with: "zxxz"
+    end
     i_click_on "the catalog search button"
     i_should_see "No results found"
   end
@@ -17,14 +19,18 @@ feature "Searching the catalog" do
   scenario "Searching with results" do
     create :species, name_string: "Formica niger"
 
-    i_fill_in "qq", with: "niger", within: "the desktop menu"
+    within "#desktop-only-header" do
+      fill_in "qq", with: "niger"
+    end
     i_click_on "the catalog search button"
     i_should_see "Formica niger", within: "the search results"
     i_should_see "Lasius niger", within: "the search results"
   end
 
   scenario "Searching for an exact match" do
-    i_fill_in "qq", with: "Lasius niger", within: "the desktop menu"
+    within "#desktop-only-header" do
+      fill_in "qq", with: "Lasius niger"
+    end
     i_click_on "the catalog search button"
     i_should_be_on 'the catalog page for "Lasius niger"'
     i_should_see "You were redirected to an exact match"

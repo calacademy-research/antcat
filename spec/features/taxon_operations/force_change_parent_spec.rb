@@ -8,7 +8,7 @@ feature "Force-changing parent" do
   end
 
   scenario "Changing a genus's subfamily (with feed)" do
-    the_formicidae_family_exists
+    create :family, :formicidae
     create :subfamily, name_string: "Attininae"
     there_is_a_genus_in_the_subfamily "Atta", "Attininae"
     new_subfamily_parent = create :subfamily, name_string: "Ecitoninae"

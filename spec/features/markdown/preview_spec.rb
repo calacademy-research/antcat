@@ -2,11 +2,7 @@
 
 require 'rails_helper'
 
-feature "Preview markdown", :skip_ci, :js do
-  background do
-    i_log_in_as_a_catalog_editor_named "Archibald"
-  end
-
+feature "Preview markdown", as: :editor, skip_ci: true, js: true do
   scenario "Previewing references markdown" do
     create :any_reference, author_string: "Giovanni, S. ", year: 1809
     i_am_on_a_page_with_a_textarea_with_markdown_preview_and_autocompletion

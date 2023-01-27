@@ -21,6 +21,10 @@ FactoryBot.define do
       association :name, factory: :family_name
 
       genus_group_protonym
+
+      trait :formicidae do
+        name_string { "Formicidae" }
+      end
     end
 
     factory :subfamily, class: Rank::SUBFAMILY.to_s do

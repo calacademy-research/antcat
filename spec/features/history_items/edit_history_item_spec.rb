@@ -56,7 +56,9 @@ feature "Editing a history item" do
 
     i_click_on 'the edit history item button'
     fill_in "taxt", with: "(none)"
-    i_fill_in "edit_summary", with: "fix typo", within: '"#history-items"'
+    within "#history-items" do
+      fill_in "edit_summary", with: "fix typo"
+    end
     i_click_on 'the save history item button'
     i_reload_the_page
     i_should_not_see "Antcatinae as family"

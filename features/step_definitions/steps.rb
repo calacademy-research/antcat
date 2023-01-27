@@ -49,16 +49,6 @@ def i_follow link_text, within: nil
 end
 
 # Interact with form elements.
-def i_fill_in field_name, with:, within: nil
-  if within
-    with_scope within do
-      fill_in field_name, with: with
-    end
-  else
-    fill_in field_name, with: with
-  end
-end
-
 def i_should_see_checked field_name
   expect(page.find(field_name).checked?).to eq true
 end
@@ -71,10 +61,10 @@ end
 def i_should_see content, within: nil
   if within
     with_scope within do
-      expect(page).to have_content content, normalize_ws: true
+      expect(page).to have_content content
     end
   else
-    expect(page).to have_content content, normalize_ws: true
+    expect(page).to have_content content
   end
 end
 

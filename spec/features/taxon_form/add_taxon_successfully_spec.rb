@@ -101,7 +101,7 @@ feature "Adding a taxon successfully" do
   end
 
   scenario "Adding a subfamily" do
-    the_formicidae_family_exists
+    create :family, :formicidae
 
     i_go_to 'the main page'
     i_follow "Add subfamily"

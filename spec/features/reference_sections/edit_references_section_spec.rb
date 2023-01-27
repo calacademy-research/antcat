@@ -48,7 +48,9 @@ feature "Editing references sections" do
 
     i_click_on 'the edit reference section button'
     fill_in "references_taxt", with: "(none)"
-    i_fill_in "edit_summary", with: "fix typo", within: '"#references-section"'
+    within "#references-section" do
+      fill_in "edit_summary", with: "fix typo"
+    end
     i_click_on 'the save reference section button'
     i_should_not_see "Original reference"
     the_reference_section_should_be "(none)"

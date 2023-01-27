@@ -15,7 +15,7 @@ feature "Using the catalog" do
   end
 
   background do
-    the_formicidae_family_exists
+    create :family, :formicidae
     create :subfamily, name_string: "Dolichoderinae"
     there_is_a_tribe_in_the_subfamily "Dolichoderini", "Dolichoderinae"
     there_is_a_genus_in_the_tribe "Dolichoderus", "Dolichoderini"
