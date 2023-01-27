@@ -3,6 +3,10 @@
 require 'rails_helper'
 
 feature "Versions (filtering)", :versioning do
+  def i_should_see_number_of_versions count
+    all "table tbody tr", count: count
+  end
+
   background do
     i_log_in_as_a_catalog_editor
   end

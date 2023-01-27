@@ -7,6 +7,16 @@ feature "Compare revisions", %(
   I want to browse previous revisions of items
   So I can see what has been changed
 ), :versioning do
+  def i_follow_the_first_linked_history_item
+    first("a[href^='/history_items/']").click
+  end
+
+  def i_add_a_history_item content
+    i_click_on 'the add history item button'
+    fill_in "taxt", with: content
+    click_button "Save"
+  end
+
   background do
     i_log_in_as_a_catalog_editor
   end

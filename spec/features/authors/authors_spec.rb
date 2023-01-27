@@ -3,6 +3,13 @@
 require 'rails_helper'
 
 feature "Working with authors and their names" do
+  def the_following_names_exist_for_an_author *author_name_strings
+    author = create :author
+    Array.wrap(author_name_strings).each do |author_name_string|
+      author.names.create!(name: author_name_string)
+    end
+  end
+
   scenario "Seeing references by author (going to the author's page)" do
     create :any_reference, author_string: 'Bolton, B.', title: 'Cool Ants'
 

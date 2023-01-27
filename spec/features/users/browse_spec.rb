@@ -3,6 +3,12 @@
 require 'rails_helper'
 
 feature "Browse" do
+  def batiatus_has_commented_cool_on_an_issue_with_the_title_typos
+    issue = create :issue, title: "Typos"
+    user = User.find_by!(name: "Batiatus")
+    Comment.build_comment(issue, user, body: "Cool").save!
+  end
+
   background do
     i_log_in_as_a_catalog_editor_named "Batiatus"
   end

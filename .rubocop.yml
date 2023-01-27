@@ -17,6 +17,12 @@ AllCops:
     - 'tmp/**/*'
     - 'vendor/**/*'
 
+### Capybara.
+
+# TODO: See if we can enable this after cleaning up old Cucumber steps.
+Capybara/SpecificFinders:
+  Enabled: false
+
 ### Layout.
 
 Layout/ArgumentAlignment:

@@ -4,6 +4,18 @@ require 'rails_helper'
 
 # TODO: Skipped due to "NoMethodError: undefined method `unread_emails_for' for #<RSpec...".
 xfeature "Email notifications" do
+  def email_should_have_number_of_unread_emails address, amount
+    expect(unread_emails_for(address).size).to eq parse_email_count(amount)
+  end
+
+  def email_should_see_in_the_email_body _address, text
+    expect(current_email.default_part_body.to_s).to include(text)
+  end
+
+  def email_opens_the_email_with_subject address, subject
+    open_email(address, with_subject: subject)
+  end
+
   background do
     i_log_in_as_a_user_named "Quintus"
     create :user, email: "batiatus@antcat.org", name: "Batiatus"

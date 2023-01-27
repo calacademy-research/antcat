@@ -3,6 +3,32 @@
 require 'rails_helper'
 
 feature "Markdown autocompletion", :js do
+  # HACK: Because the below selects the wrong suggestion (which is hidden).
+  #   `first(".atwho-view-ul li.cur", visible: true).click`
+  def i_click_the_suggestion_containing text
+    find(".atwho-view-ul li", text: text).click
+  end
+
+  def the_markdown_textarea_should_contain_a_markdown_link_to_archibalds_user_page
+    archibald = User.find_by!(name: "Archibald")
+    expect(markdown_textarea.value).to include "@user#{archibald.id}"
+  end
+
+  def the_markdown_textarea_should_contain_a_markdown_link_to key_with_year
+    reference = ReferenceStepsHelpers.find_reference_by_key(key_with_year)
+    expect(markdown_textarea.value).to include Taxt.ref(reference.id)
+  end
+
+  def i_clear_the_markdown_textarea
+    fill_in "issue_description", with: "%rsomething_to_clear_the_suggestions"
+    markdown_textarea.set ""
+  end
+
+  def the_markdown_textarea_should_contain_a_markdown_link_to_eciton
+    eciton = Taxon.find_by!(name_cache: "Eciton")
+    expect(markdown_textarea.value).to include Taxt.tax(eciton.id)
+  end
+
   background do
     i_log_in_as_a_catalog_editor_named "Archibald"
   end

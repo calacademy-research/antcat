@@ -3,6 +3,20 @@
 require 'rails_helper'
 
 feature "Editing references sections" do
+  def there_is_a_subfamily_with_a_reference_section name, references_taxt
+    taxon = create :subfamily, name_string: name
+    create :reference_section, references_taxt: references_taxt, taxon: taxon
+  end
+
+  def the_reference_section_should_be_empty
+    expect(page).not_to have_css '#reference-sections .reference_section'
+  end
+
+  def the_reference_section_should_be content
+    element = first('#references-section').find('.taxt-presenter')
+    expect(element.text).to match(/#{content}/)
+  end
+
   background do
     i_log_in_as_a_catalog_editor_named "Archibald"
   end

@@ -3,6 +3,27 @@
 require 'rails_helper'
 
 feature "User notifications" do
+  def i_fill_in_with_followed_by_the_user_id_of textarea, text, name
+    user = User.find_by!(name: name)
+    fill_in textarea, with: "#{text}#{user.id}"
+  end
+
+  def i_have_an_unseen_notification
+    create :notification, user: User.find_by!(name: "Archibald")
+  end
+
+  def i_have_another_unseen_notification
+    i_have_an_unseen_notification
+  end
+
+  def i_should_see_number_of_notification expected_count
+    all "table.notifications > tbody tr", count: expected_count.to_i
+  end
+
+  def i_should_see_number_of_unread_notifications expected_count
+    all "table.notifications .antcat_icon.unseen", count: expected_count.to_i
+  end
+
   background do
     i_log_in_as_a_catalog_editor_named "Archibald"
     create :user, name: "Batiatus"

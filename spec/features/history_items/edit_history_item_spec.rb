@@ -3,6 +3,17 @@
 require 'rails_helper'
 
 feature "Editing a history item" do
+  def there_is_a_subfamily_protonym_with_a_history_item name, taxt
+    protonym = create :protonym, :family_group, name: create(:subfamily_name, name: name)
+    create :history_item, :taxt, taxt: taxt, protonym: protonym
+  end
+
+  def there_is_a_protonym_with_a_history_item_and_a_markdown_link_to name, content, key_with_year
+    reference = ReferenceStepsHelpers.find_reference_by_key(key_with_year)
+    taxt = "#{content} #{Taxt.ref(reference.id)}"
+    there_is_a_subfamily_protonym_with_a_history_item name, taxt
+  end
+
   background do
     i_log_in_as_a_catalog_editor_named "Archibald"
   end
