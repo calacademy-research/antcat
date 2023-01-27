@@ -10,12 +10,12 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
-  "ignorePatterns": ["app/javascript/controllers/*_controller.js"],
+  "parser": "@babel/eslint-parser",
   "rules": {
     "consistent-return": "off",
+    "class-methods-use-this": "off",
     "dot-location": ["error", "object"],
     "func-names": "off",
-    "import/newline-after-import": "off",
     "import/no-unresolved": "off",
     "key-spacing": "off",
     "max-len": ["warn", { "code": 120 }],
@@ -26,7 +26,6 @@
     "no-underscore-dangle": "off",
     "no-unused-expressions": ["error", { "allowShortCircuit": true }],
     "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
-    "no-useless-return": "off",
     "operator-linebreak": "off",
     "quotes": "off",
     "semi": ["error", "never"],

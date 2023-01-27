@@ -3,9 +3,10 @@ import { useDebounce, useHover } from 'stimulus-use'
 
 export default class extends Controller {
   static values = { url: String }
+
   static debounces = [
     { name: 'show', wait: 250 },
-    { name: 'hide', wait: 100 }
+    { name: 'hide', wait: 100 },
   ]
 
   connect() {

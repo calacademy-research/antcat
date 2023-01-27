@@ -15,8 +15,8 @@ Stimulus.load(definitionsFromContext(context)) // eslint-disable-line no-undef
 Turbo.setProgressBarDelay(50)
 
 Turbo.session.drive = false
-let DEV_LOG_TURBO_EVENTS = false // eslint-disable-line prefer-const
-// DEV_LOG_TURBO_EVENTS = true // Uncomment for debugging.
+const DEV_LOG_TURBO_EVENTS = false
+// const DEV_LOG_TURBO_EVENTS = true // Uncomment for debugging.
 
 if (DEV_LOG_TURBO_EVENTS) {
   [
