@@ -6,9 +6,8 @@ feature "Checking for duplicates during data entry", %(
   As an AntCat editor
   I want duplicate references to be rejected
   So that there are no duplicate references
-) do
+), as: :helper do
   background do
-    i_log_in_as_a_helper_editor
     create :article_reference, author_string: "Ward, P.", title: "Ants", year: 2010, series_volume_issue: "4", pagination: "9"
   end
 

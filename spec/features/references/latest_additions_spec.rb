@@ -6,10 +6,9 @@ feature "Latest Additions", %(
   As an editor of AntCat
   I want to see recently added references
   So I can keep up with the state of the literature
-) do
+), as: :editor do
   background do
     create :any_reference, :with_author_name
-    i_log_in_as_a_catalog_editor
     i_go_to 'the latest reference additions page'
   end
 

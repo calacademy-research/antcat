@@ -28,9 +28,8 @@ feature "Working with authors and their names" do
     i_should_see "Fisher, B."
   end
 
-  scenario "Adding an alternative spelling of an author name" do
+  scenario "Adding an alternative spelling of an author name", as: :editor do
     the_following_names_exist_for_an_author "Bolton, B."
-    i_log_in_as_a_catalog_editor
 
     i_go_to 'the author page for "Bolton, B."'
     i_follow "Add alternative spelling"
@@ -42,9 +41,8 @@ feature "Working with authors and their names" do
     i_should_see "Bolton, B.; Fisher, B."
   end
 
-  scenario "Entering an existing author name" do
+  scenario "Entering an existing author name", as: :editor do
     the_following_names_exist_for_an_author "Bolton, B."
-    i_log_in_as_a_catalog_editor
 
     i_go_to 'the author page for "Bolton, B."'
     i_follow "Add alternative spelling"
@@ -53,9 +51,8 @@ feature "Working with authors and their names" do
     i_should_see "Name has already been taken"
   end
 
-  scenario "Updating an existing author name" do
+  scenario "Updating an existing author name", as: :editor do
     the_following_names_exist_for_an_author "Bolton, B."
-    i_log_in_as_a_catalog_editor
 
     i_go_to 'the author page for "Bolton, B."'
     i_follow "Edit"

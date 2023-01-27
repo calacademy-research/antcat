@@ -2,11 +2,7 @@
 
 require 'rails_helper'
 
-feature "Markdown" do
-  background do
-    i_log_in_as_a_catalog_editor
-  end
-
+feature "Markdown", as: :editor do
   scenario "Using markdown" do
     create :issue, :open, title: "Merge 'Giovanni' authors"
     create :any_reference, author_string: " Giovanni, S.", year: 1809

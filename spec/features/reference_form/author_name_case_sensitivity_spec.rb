@@ -6,9 +6,8 @@ feature "Author name case-sensitivity", %(
   As Marek
   I want to respect the case of an author's name in the source of a reference
   So that the bibliography is accurate
-) do
+), as: :helper do
   scenario "Using the name that was entered" do
-    i_log_in_as_a_helper_editor
     create :any_reference, :with_author_name
     create :author_name, name: "Mackay"
     create :author_name, name: "MACKAY"

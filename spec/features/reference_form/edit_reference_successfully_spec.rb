@@ -2,11 +2,7 @@
 
 require 'rails_helper'
 
-feature "Edit reference successfully" do
-  background do
-    i_log_in_as_a_helper_editor
-  end
-
+feature "Edit reference successfully", as: :helper do
   scenario "Blanking required fields (general fields)" do
     create :article_reference, :with_author_name
 

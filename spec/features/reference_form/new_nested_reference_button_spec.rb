@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-feature "Add new nested reference button" do
+feature "Add new nested reference button", as: :helper do
   def nesting_reference_id_should_contain_a_valid_reference_id
     id = find("#reference_nesting_reference_id").value
     expect(Reference.exists?(id)).to eq true
@@ -10,7 +10,6 @@ feature "Add new nested reference button" do
 
   scenario "Add new `NestedReference` using the button" do
     create :article_reference, year: 2010, stated_year: 2011
-    i_log_in_as_a_helper_editor
 
     i_go_to 'the page of the most recent reference'
     i_follow "New Nested Reference"

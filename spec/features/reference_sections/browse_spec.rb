@@ -2,11 +2,7 @@
 
 require 'rails_helper'
 
-feature "Reference sections" do
-  background do
-    i_am_logged_in
-  end
-
+feature "Reference sections", as: :user do
   scenario "Filtering reference sections by search query" do
     create :reference_section, references_taxt: "typo of Forel"
     create :reference_section, references_taxt: "typo of August"

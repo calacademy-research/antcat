@@ -2,9 +2,8 @@
 
 require 'rails_helper'
 
-feature "Adding a taxon unsuccessfully" do
+feature "Adding a taxon unsuccessfully", as: :editor do
   background do
-    i_log_in_as_a_catalog_editor
     create :subfamily, name_string: "Formicinae"
   end
 

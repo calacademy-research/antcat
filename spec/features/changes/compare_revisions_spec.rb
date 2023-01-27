@@ -6,7 +6,7 @@ feature "Compare revisions", %(
   As an editor of AntCat
   I want to browse previous revisions of items
   So I can see what has been changed
-), :versioning do
+), as: :editor, versioning: true do
   def i_follow_the_first_linked_history_item
     first("a[href^='/history_items/']").click
   end
@@ -15,10 +15,6 @@ feature "Compare revisions", %(
     i_click_on 'the add history item button'
     fill_in "taxt", with: content
     click_button "Save"
-  end
-
-  background do
-    i_log_in_as_a_catalog_editor
   end
 
   scenario "Comparing history item revisions" do

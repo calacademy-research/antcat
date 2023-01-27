@@ -2,11 +2,7 @@
 
 require 'rails_helper'
 
-feature "History items" do
-  background do
-    i_am_logged_in
-  end
-
+feature "History items", as: :user do
   scenario "Filtering history items by search query" do
     create :history_item, :taxt, taxt: "typo of Forel"
     create :history_item, :taxt, taxt: "typo of August"

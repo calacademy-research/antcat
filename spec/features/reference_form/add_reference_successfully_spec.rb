@@ -2,9 +2,8 @@
 
 require 'rails_helper'
 
-feature "Add reference" do
+feature "Add reference", as: :helper do
   background do
-    i_log_in_as_a_helper_editor
     i_go_to 'the references page'
     i_follow "New"
   end

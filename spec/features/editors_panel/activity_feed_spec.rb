@@ -53,8 +53,7 @@ feature "Activity feed" do
     i_should_see "Automated edit"
   end
 
-  scenario "Pagination with quirks" do
-    i_log_in_as_a_developer
+  scenario "Pagination with quirks", as: :developer do
     Activity.per_page = 2
     5.times { create :activity }
 

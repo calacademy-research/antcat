@@ -21,7 +21,7 @@ feature "Feedback", %(
     i_should_see "Message sent"
   end
 
-  scenario "Unregistered user submitting feedback (with feed)" do
+  scenario "Unregistered user submitting feedback (with feed)", as: :visitor do
     i_follow "Suggest edit"
     fill_in "feedback_comment", with: "Great site!!!"
     click_button "Send Feedback"
