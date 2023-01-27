@@ -9,6 +9,6 @@ export default class extends Controller {
 
     document.
       querySelectorAll(`[data-toggler-name="${target}"]`).
-      forEach((target) => target.classList.toggle(onClass))
+      forEach((element) => element.classList.toggle(onClass))
   }
 }
