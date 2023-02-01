@@ -2,6 +2,10 @@
 
 # General steps, not specific to AntCat.
 
+def with_scope locator, &block
+  within(*selector_for(locator), &block)
+end
+
 # Browser/navigation.
 def i_go_to page_name
   visit path_to(page_name)
