@@ -33,8 +33,7 @@ feature "Editing references sections" do
     click_button "Save"
     the_reference_section_should_be "New reference"
 
-    there_should_be_an_activity "Archibald added the reference section #\\d+ belonging to Atta"
-    i_should_see_the_edit_summary "added new stuff"
+    there_should_be_an_activity "Archibald added the reference section #\\d+ belonging to Atta", edit_summary: "added new stuff"
   end
 
   # @retry_ci
@@ -53,8 +52,7 @@ feature "Editing references sections" do
     i_should_not_see "Original reference"
     the_reference_section_should_be "(none)"
 
-    there_should_be_an_activity "Archibald edited the reference section #\\d+ belonging to Dolichoderinae"
-    i_should_see_the_edit_summary "fix typo"
+    there_should_be_an_activity "Archibald edited the reference section #\\d+ belonging to Dolichoderinae", edit_summary: "fix typo"
   end
 
   scenario "Editing a reference section (without JavaScript)" do

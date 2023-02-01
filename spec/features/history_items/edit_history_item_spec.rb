@@ -24,8 +24,7 @@ feature "Editing a history item" do
     click_button "Save"
     the_history_should_be "Abc"
 
-    there_should_be_an_activity "Archibald added the history item #\\d+ belonging to Atta"
-    i_should_see_the_edit_summary "added new stuff"
+    there_should_be_an_activity "Archibald added the history item #\\d+ belonging to Atta", edit_summary: "added new stuff"
   end
 
   scenario "Adding a history item with blank taxt" do
@@ -59,8 +58,7 @@ feature "Editing a history item" do
     i_click_on 'the edit history item button'
     the_history_item_field_should_be "(none)"
 
-    there_should_be_an_activity "Archibald edited the history item #\\d+ belonging to Antcatinae"
-    i_should_see_the_edit_summary "fix typo"
+    there_should_be_an_activity "Archibald edited the history item #\\d+ belonging to Antcatinae", edit_summary: "fix typo"
   end
 
   scenario "Editing a history item (without JavaScript)" do

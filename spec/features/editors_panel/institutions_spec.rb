@@ -22,8 +22,7 @@ feature "Institutions" do
     i_should_see "CASC"
     i_should_see "California Academy of Sciences"
 
-    there_should_be_an_activity "Archibald added the institution CASC"
-    i_should_see_the_edit_summary "fix typo"
+    there_should_be_an_activity "Archibald added the institution CASC", edit_summary: "fix typo"
   end
 
   scenario "Editing an institution (with edit summary)" do
@@ -43,8 +42,7 @@ feature "Institutions" do
     i_should_see "SASC"
     i_should_see "Sweden Academy of Sciences"
 
-    there_should_be_an_activity "Archibald edited the institution SASC"
-    i_should_see_the_edit_summary "fix typo"
+    there_should_be_an_activity "Archibald edited the institution SASC", edit_summary: "fix typo"
   end
 
   scenario "Deleting an institution (with feed)" do

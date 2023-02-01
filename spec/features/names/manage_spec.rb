@@ -25,8 +25,7 @@ feature "Manage names" do
     i_should_see "Successfully updated name."
     i_should_see "Name record: Lasius"
 
-    there_should_be_an_activity "Archibald edited the name record Lasius"
-    i_should_see_the_edit_summary "fix name"
+    there_should_be_an_activity "Archibald edited the name record Lasius", edit_summary: "fix name"
   end
 
   scenario "Checking for name conflicts", :skip_ci, :js do

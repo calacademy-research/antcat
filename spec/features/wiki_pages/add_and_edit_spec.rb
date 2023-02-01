@@ -24,8 +24,7 @@ feature "Add and edit wiki pages" do
     i_follow_the_first "Bibliography guidelines"
     i_should_see "In the title, use capitals only"
 
-    there_should_be_an_activity "Archibald added the wiki page Bibliography guidelines"
-    i_should_see_the_edit_summary "added help page"
+    there_should_be_an_activity "Archibald added the wiki page Bibliography guidelines", edit_summary: "added help page"
   end
 
   scenario "Editing a wiki page (with edit summary)" do
@@ -46,7 +45,6 @@ feature "Add and edit wiki pages" do
     i_follow_the_first "Name guidelines"
     i_should_see "Genus names must start with a capital letter"
 
-    there_should_be_an_activity "Archibald edited the wiki page Name guidelines"
-    i_should_see_the_edit_summary "updated info"
+    there_should_be_an_activity "Archibald edited the wiki page Name guidelines", edit_summary: "updated info"
   end
 end
