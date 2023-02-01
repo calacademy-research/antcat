@@ -72,7 +72,8 @@ feature "Adding a taxon successfully" do
   end
 
   scenario "Adding a species to a subgenus" do
-    there_is_a_subgenus_in_the_genus "Dolichoderus (Subdolichoderus)", "Dolichoderus"
+    genus = create(:genus, name_string: "Dolichoderus")
+    create :subgenus, name_string: "Dolichoderus (Subdolichoderus)", genus: genus
 
     i_go_to 'the catalog page for "Dolichoderus (Subdolichoderus)"'
     i_follow "Add species"
@@ -85,7 +86,8 @@ feature "Adding a taxon successfully" do
   end
 
   scenario "Adding a subspecies" do
-    there_is_a_species_in_the_genus "Eciton major", "Eciton"
+    genus = create(:genus, name_string: "Eciton")
+    create :species, name_string: "Eciton major", genus: genus
 
     i_go_to 'the catalog page for "Eciton major"'
     i_follow "Add subspecies"

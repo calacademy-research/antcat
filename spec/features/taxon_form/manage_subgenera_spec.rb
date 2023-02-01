@@ -8,8 +8,9 @@ feature "Manage subgenera" do
   end
 
   scenario "Setting and removing a subgenus of a species (with feed)" do
-    there_is_a_subgenus_in_the_genus "Camponotus (Myrmentoma)", "Camponotus"
-    there_is_a_species_in_the_genus "Camponotus cornis", "Camponotus"
+    genus = create(:genus, name_string: "Camponotus")
+    create :subgenus, name_string: "Camponotus (Myrmentoma)", genus: genus
+    create :species, name_string: "Camponotus cornis", genus: genus
 
     i_go_to 'the catalog page for "Camponotus cornis"'
     i_should_not_see "Camponotus (Myrmentoma)", within: 'the breadcrumbs'

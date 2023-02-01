@@ -8,8 +8,9 @@ feature "Converting a species to a subspecies" do
   end
 
   scenario "Converting a species to a subspecies (with feed)" do
-    there_is_a_species_in_the_genus "Camponotus dallatorei", "Camponotus"
-    there_is_a_species_in_the_genus "Camponotus alii", "Camponotus"
+    genus = create(:genus, name_string: "Camponotus")
+    create :species, name_string: "Camponotus dallatorei", genus: genus
+    create :species, name_string: "Camponotus alii", genus: genus
 
     i_go_to 'the catalog page for "Camponotus dallatorei"'
     i_follow "Convert to subspecies"
@@ -27,9 +28,10 @@ feature "Converting a species to a subspecies" do
   end
 
   scenario "Converting a species to a subspecies when it already exists" do
-    there_is_a_species_in_the_genus "Camponotus alii", "Camponotus"
-    there_is_a_subspecies_in_the_species "Camponotus alii dallatorei", "Camponotus alii"
-    there_is_a_species_in_the_genus "Camponotus dallatorei", "Camponotus"
+    genus = create(:genus, name_string: "Camponotus")
+    species = create :species, name_string: "Camponotus alii", genus: genus
+    create :subspecies, name_string: "Camponotus alii dallatorei", species: species, genus: species.genus
+    create :species, name_string: "Camponotus dallatorei", genus: genus
 
     i_go_to 'the catalog page for "Camponotus dallatorei"'
     i_follow "Convert to subspecies"

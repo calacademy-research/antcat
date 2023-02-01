@@ -76,7 +76,8 @@ feature "Searching the catalog" do
   end
 
   scenario "Finding a genus" do
-    there_is_a_species_in_the_genus "Atta major", "Atta"
+    genus = create(:genus, name_string: "Atta")
+    create :species, name_string: "Atta major", genus: genus
 
     fill_in "genus", with: "Atta"
     click_button "Search"

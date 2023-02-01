@@ -9,8 +9,8 @@ feature "Force-changing parent" do
 
   scenario "Changing a genus's subfamily (with feed)" do
     create :family, :formicidae
-    create :subfamily, name_string: "Attininae"
-    there_is_a_genus_in_the_subfamily "Atta", "Attininae"
+    subfamily = create :subfamily, name_string: "Attininae"
+    create :genus, name_string: "Atta", subfamily: subfamily, tribe: nil
     new_subfamily_parent = create :subfamily, name_string: "Ecitoninae"
 
     i_go_to 'the catalog page for "Atta"'

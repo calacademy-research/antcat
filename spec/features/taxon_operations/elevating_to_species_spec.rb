@@ -5,8 +5,9 @@ require 'rails_helper'
 feature "Elevating subspecies to species" do
   background do
     i_log_in_as_a_catalog_editor_named "Archibald"
-    there_is_a_species_in_the_genus "Solenopsis speccus", "Solenopsis"
-    there_is_a_subspecies_in_the_species "Solenopsis speccus subbus", "Solenopsis speccus"
+    genus = create(:genus, name_string: "Solenopsis")
+    species = create :species, name_string: "Solenopsis speccus", genus: genus
+    create :subspecies, name_string: "Solenopsis speccus subbus", species: species, genus: species.genus
   end
 
   scenario "Elevating subspecies to species (with feed)" do
