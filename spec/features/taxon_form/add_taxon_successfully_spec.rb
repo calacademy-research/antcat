@@ -118,7 +118,7 @@ feature "Adding a taxon successfully" do
     i_go_to 'the catalog page for "Formicinae"'
     i_follow "Add tribe"
     fill_in "taxon_name_string", with: "Dorylini"
-    i_click_css "#copy-name-to-protonym-js-hook"
+    find("#copy-name-to-protonym-js-hook").click
     fill_in "taxon_protonym_attributes_authorship_attributes_pages", with: "page 35"
     click_button "Save"
     i_should_be_on 'the catalog page for "Dorylini"'

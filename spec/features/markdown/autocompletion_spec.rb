@@ -3,6 +3,10 @@
 require 'rails_helper'
 
 feature "Markdown autocompletion", :js do
+  def markdown_textarea
+    find(".preview-area textarea")
+  end
+
   # HACK: Because the below selects the wrong suggestion (which is hidden).
   #   `first(".atwho-view-ul li.cur", visible: true).click`
   def i_click_the_suggestion_containing text

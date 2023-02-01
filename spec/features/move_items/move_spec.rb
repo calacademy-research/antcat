@@ -3,6 +3,11 @@
 require 'rails_helper'
 
 feature "Move items" do
+  # TODO: Use testid.
+  def i_click_select_deselect_all
+    find("span.btn-tiny", text: "Select/deselect all").click
+  end
+
   background do
     i_log_in_as_a_catalog_editor_named "Archibald"
   end
@@ -27,7 +32,7 @@ feature "Move items" do
     click_button "Move selected items"
     i_should_see "At least one item must be selected"
 
-    i_click_css_with_text "span.btn-tiny", "Select/deselect all"
+    i_click_select_deselect_all
     click_button "Move selected items"
     i_should_see "Successfully moved items"
 
@@ -57,7 +62,7 @@ feature "Move items" do
     click_button "Move selected items"
     i_should_see "At least one item must be selected"
 
-    i_click_css_with_text "span.btn-tiny", "Select/deselect all"
+    i_click_select_deselect_all
     click_button "Move selected items"
     i_should_see "Successfully moved items"
 

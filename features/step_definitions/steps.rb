@@ -26,14 +26,6 @@ def i_click_on location
   find(css_selector).click
 end
 
-def i_click_css css_selector
-  find(css_selector).click
-end
-
-def i_click_css_with_text css_selector, text
-  find(css_selector, text: text).click
-end
-
 def i_follow_the_first link_text
   first(:link, link_text, exact: true).click
 end
@@ -50,15 +42,6 @@ def i_follow link_text, within: nil
   else
     click_link link_text
   end
-end
-
-# Interact with form elements.
-def i_should_see_checked field_name
-  expect(page.find(field_name).checked?).to eq true
-end
-
-def i_should_see_unchecked field_name
-  expect(page.find(field_name).checked?).to eq false
 end
 
 # "I should see / should contain".

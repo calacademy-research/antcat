@@ -51,7 +51,7 @@ feature "Editing a user", %(
 
   scenario "Updating user preferences" do
     i_go_to 'My account'
-    i_should_see_unchecked "#user_settings_editing_helpers_create_combination"
+    expect(page).to have_unchecked_field("user_settings_editing_helpers_create_combination")
 
     # Enable setting.
     check "user_settings_editing_helpers_create_combination"
@@ -59,7 +59,7 @@ feature "Editing a user", %(
     i_should_see "Your account has been updated"
 
     i_go_to 'My account'
-    i_should_see_checked "#user_settings_editing_helpers_create_combination"
+    expect(page).to have_checked_field("user_settings_editing_helpers_create_combination")
     expect(User.find_by!(name: 'Batiatus').settings(:editing_helpers).create_combination).to eq true
 
     # Disable setting.
@@ -68,7 +68,7 @@ feature "Editing a user", %(
     i_should_see "Your account has been updated"
 
     i_go_to 'My account'
-    i_should_see_unchecked "#user_settings_editing_helpers_create_combination"
+    expect(page).to have_unchecked_field("user_settings_editing_helpers_create_combination")
     expect(User.find_by!(name: 'Batiatus').settings(:editing_helpers).create_combination).to eq false
   end
 end
