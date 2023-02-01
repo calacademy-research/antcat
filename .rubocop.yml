@@ -468,7 +468,7 @@ Style/NumericLiterals:
     - 'spec/**/*'
 
 # "This cop checks for redundant assignment before returning."
-# Disabled because redundant assignment before returning are most often adde on purpose (more explicit).
+# Disabled because redundant assignment before returning are most often added on purpose (more explicit).
 Style/RedundantAssignment:
   Enabled: false
 
