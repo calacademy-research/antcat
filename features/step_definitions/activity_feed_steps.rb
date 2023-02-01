@@ -13,9 +13,3 @@ def there_should_be_an_activity content, edit_summary: nil
     end
   end
 end
-
-def there_is_a_journal_activity_by event, name
-  journal = create :journal
-  user = User.find_by(name: name) || create(:user, name: name)
-  create :activity, event: event.to_sym, trackable: journal, user: user
-end
