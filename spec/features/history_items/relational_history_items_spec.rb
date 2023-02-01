@@ -16,7 +16,7 @@ feature "Editing a history item" do
   end
 
   scenario "Adding a relational history item", :skip_ci, :js do
-    there_is_a_genus_protonym "Atta"
+    create :protonym, :genus_group, name: create(:genus_name, name: "Atta")
     create :any_reference, author_string: "Batiatus", year: 2004
 
     i_go_to 'the protonym page for "Atta"'
@@ -33,7 +33,7 @@ feature "Editing a history item" do
   end
 
   scenario "Adding a relational history item with errors" do
-    there_is_a_genus_protonym "Atta"
+    create :protonym, :genus_group, name: create(:genus_name, name: "Atta")
 
     i_go_to 'the protonym page for "Atta"'
     the_history_should_be_empty

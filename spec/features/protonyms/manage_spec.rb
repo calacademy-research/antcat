@@ -46,7 +46,8 @@ feature "Manage protonyms", as: :helper do
   end
 
   scenario "Editing a protonym" do
-    there_is_a_species_protonym_with_pages_and_form_page_9_dealate_queen "Formica fusca"
+    create :protonym, :species_group, name: create(:species_name, name: "Formica fusca"),
+      authorship: create(:citation, pages: 'page 9'), forms: 'dealate queen'
 
     i_go_to 'the protonyms page'
     i_follow "Formica fusca"
@@ -72,7 +73,7 @@ feature "Manage protonyms", as: :helper do
   end
 
   scenario "Editing type fields" do
-    there_is_a_genus_protonym "Formica"
+    create :protonym, :genus_group, name: create(:genus_name, name: "Formica")
 
     i_go_to 'the edit protonym page for "Formica"'
     fill_in "protonym_primary_type_information_taxt", with: "Madagascar: Prov. Tolliara"
@@ -86,7 +87,7 @@ feature "Manage protonyms", as: :helper do
   end
 
   scenario "Editing a protonym with errors" do
-    there_is_a_genus_protonym "Formica"
+    create :protonym, :genus_group, name: create(:genus_name, name: "Formica")
 
     i_go_to 'the edit protonym page for "Formica"'
     fill_in "protonym_authorship_attributes_pages", with: ""

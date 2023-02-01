@@ -46,7 +46,7 @@ feature "Move items" do
     subfamily_protonym_with_history_item = create :protonym, :family_group, name: create(:subfamily_name, name: "Antcatinae")
     create :history_item, :taxt, taxt: "Antcatinae history", protonym: subfamily_protonym_with_history_item
 
-    there_is_a_genus_protonym "Formica"
+    create :protonym, :genus_group, name: create(:genus_name, name: "Formica")
 
     i_go_to 'the protonym page for "Antcatinae"'
     i_follow "Move items"

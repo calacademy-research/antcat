@@ -13,18 +13,17 @@ feature "Editing a taxon" do
   end
 
   scenario "Changing protonym" do
-    create :species, name_string: "Eciton fusca"
-    there_is_a_species_protonym_with_pages_and_form_page_9_dealate_queen "Formica fusca"
+    taxon = create :species, name_string: "Eciton fusca"
+    protonym = create :protonym, :species_group, name: create(:species_name, name: "Formica fusca")
 
     i_go_to 'the catalog page for "Eciton fusca"'
-    i_should_not_see "Formica"
+    expect(taxon.reload.protonym).not_to eq protonym
 
     i_go_to 'the edit page for "Eciton fusca"'
     i_pick_from_the_protonym_picker "Formica fusca", "#taxon_protonym_id"
     click_button "Save"
     i_should_see "Taxon was successfully updated"
-    i_should_see "Formica fusca", within: '"#protonym-synopsis"'
-    i_should_see "page 9 (dealate queen)", within: '"#protonym-synopsis"'
+    expect(taxon.reload.protonym).to eq protonym
   end
 
   scenario "Changing current taxon" do

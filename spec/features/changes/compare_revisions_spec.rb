@@ -14,7 +14,7 @@ feature "Compare revisions", as: :editor, versioning: true do
   end
 
   scenario "Comparing history item revisions" do
-    there_is_a_genus_protonym "Atta"
+    create :protonym, :genus_group, name: create(:genus_name, name: "Atta")
 
     # Added item.
     i_go_to 'the protonym page for "Atta"'

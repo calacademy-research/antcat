@@ -13,7 +13,7 @@ feature "Editing a history item" do
   end
 
   scenario "Adding a history item (with edit summary)" do
-    there_is_a_genus_protonym "Atta"
+    create :protonym, :genus_group, name: create(:genus_name, name: "Atta")
 
     i_go_to 'the protonym page for "Atta"'
     the_history_should_be_empty
@@ -28,7 +28,7 @@ feature "Editing a history item" do
   end
 
   scenario "Adding a history item with blank taxt" do
-    there_is_a_genus_protonym "Atta"
+    create :protonym, :genus_group, name: create(:genus_name, name: "Atta")
 
     i_go_to 'the protonym page for "Atta"'
     the_history_should_be_empty

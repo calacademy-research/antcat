@@ -13,7 +13,7 @@ feature "What links here", as: :user do
 
   background do
     create :genus, name_string: "Atta"
-    there_is_a_genus_protonym "Eciton"
+    create :protonym, :genus_group, name: create(:genus_name, name: "Eciton")
 
     eciton_has_a_history_item_that_references_atta_and_a_batiatus_reference
   end
