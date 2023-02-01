@@ -2,11 +2,7 @@
 
 require 'rails_helper'
 
-feature "Showing/hiding invalid taxa", %(
-  As a user of AntCat
-  I want choose whether or not to take up screen space with invalid taxa
-  So I can see more useful information
-) do
+feature "Showing/hiding invalid taxa" do
   background do
     create :family, :formicidae
     create :subfamily, name_string: "Availableinae"

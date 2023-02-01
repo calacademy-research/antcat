@@ -2,11 +2,7 @@
 
 require 'rails_helper'
 
-feature "Export references to Wikipedia", %(
-  As an editor of Wikipedia
-  I want generate wiki-formatted citation templates
-  So that it's easier to add references to Wikipedia articles
-) do
+feature "Export references to Wikipedia" do
   scenario "Exporting an `ArticleReference`" do
     create :article_reference, :with_author_name
 

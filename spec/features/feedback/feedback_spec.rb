@@ -2,11 +2,7 @@
 
 require 'rails_helper'
 
-feature "Feedback", %(
-  As an user or editor of AntCat
-  I want to submit feedback and corrections
-  So that we can improve the catalog
-) do
+feature "Feedback" do
   background do
     i_go_to 'the catalog'
   end

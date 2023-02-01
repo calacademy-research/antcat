@@ -2,11 +2,7 @@
 
 require 'rails_helper'
 
-feature "Managing user feedback", %(
-  As an AntCat editor
-  I want to open/close user feedback items
-  So that editors can track issues
-) do
+feature "Managing user feedback" do
   background do
     i_log_in_as_a_catalog_editor_named "Archibald"
   end

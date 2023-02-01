@@ -2,11 +2,7 @@
 
 require 'rails_helper'
 
-feature "Add and edit open issues", %(
-  As an AntCat editor
-  I want to add, edit and browse open issues
-  So that editors can help each other to improve the catalog
-) do
+feature "Add and edit open issues" do
   background do
     i_log_in_as_a_catalog_editor_named "Archibald"
   end

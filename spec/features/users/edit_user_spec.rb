@@ -2,10 +2,7 @@
 
 require 'rails_helper'
 
-feature "Editing a user", %(
-  As a user of AntCat
-  I want to edit my password and email
-), :skip_ci do
+feature "Editing a user", :skip_ci do
   background do
     create :user, email: "quintus@antcat.org", name: "Batiatus", password: "secret"
     i_log_in_as "Batiatus"

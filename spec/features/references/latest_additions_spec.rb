@@ -2,11 +2,7 @@
 
 require 'rails_helper'
 
-feature "Latest Additions", %(
-  As an editor of AntCat
-  I want to see recently added references
-  So I can keep up with the state of the literature
-), as: :editor do
+feature "Latest Additions", as: :editor do
   background do
     create :any_reference, :with_author_name
     i_go_to 'the latest reference additions page'
