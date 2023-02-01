@@ -14,8 +14,7 @@ feature "Delete reference" do
     i_follow "Delete"
     i_should_see "Reference was successfully deleted"
 
-    i_go_to 'the activity feed'
-    i_should_see "Archibald deleted the reference Fisher, 2004", within: 'the activity feed'
+    there_should_be_an_activity "Archibald deleted the reference Fisher, 2004"
   end
 
   scenario "Try to delete a reference when there are references to it" do

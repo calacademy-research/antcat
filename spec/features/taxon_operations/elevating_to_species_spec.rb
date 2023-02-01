@@ -18,8 +18,7 @@ feature "Elevating subspecies to species" do
     created_taxon = Taxon.find_by!(name_cache: "Solenopsis subbus")
     expect(created_taxon).to be_a(Species)
 
-    i_go_to 'the activity feed'
-    i_should_see "Archibald elevated the subspecies Solenopsis speccus subbus to the rank of species (now Solenopsis subbus)", within: 'the activity feed'
+    there_should_be_an_activity "Archibald elevated the subspecies Solenopsis speccus subbus to the rank of species \\(now Solenopsis subbus\\)"
   end
 
   scenario "Elevating to species when the species name exists" do

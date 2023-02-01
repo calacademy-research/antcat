@@ -68,8 +68,7 @@ feature "Adding a taxon successfully" do
     i_should_see "Eciton major", within: 'the protonym'
     i_should_see "Add another"
 
-    i_go_to 'the activity feed'
-    i_should_see "Archibald added the species Eciton major to the genus Eciton", within: 'the activity feed'
+    there_should_be_an_activity "Archibald added the species Eciton major to the genus Eciton"
     i_should_see_the_edit_summary "cool new species"
   end
 

@@ -22,8 +22,7 @@ feature "Managing user feedback", %(
     i_should_see "Re-open"
     i_should_not_see "Close"
 
-    i_go_to 'the activity feed'
-    i_should_see "Archibald closed the feedback item #"
+    there_should_be_an_activity "Archibald closed the feedback item #"
   end
 
   scenario "Re-opening a closed feedback item (with feed)" do
@@ -35,7 +34,6 @@ feature "Managing user feedback", %(
     i_should_see "Close"
     i_should_not_see "Re-open"
 
-    i_go_to 'the activity feed'
-    i_should_see "Archibald re-opened the feedback item #"
+    there_should_be_an_activity "Archibald re-opened the feedback item #"
   end
 end

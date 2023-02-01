@@ -25,8 +25,7 @@ feature "Add and edit open issues", %(
     i_go_to 'the open issues page'
     i_should_see "Resolve homonyms"
 
-    i_go_to 'the activity feed'
-    i_should_see "Archibald added the issue Resolve homonyms", within: 'the activity feed'
+    there_should_be_an_activity "Archibald added the issue Resolve homonyms"
     i_should_see "added question"
   end
 
@@ -49,8 +48,7 @@ feature "Add and edit open issues", %(
     i_should_see "Restore deleted genera"
     i_should_not_see "Restore deleted species"
 
-    i_go_to 'the activity feed'
-    i_should_see "Archibald edited the issue Restore deleted genera", within: 'the activity feed'
+    there_should_be_an_activity "Archibald edited the issue Restore deleted genera"
     i_should_see "added info"
   end
 
@@ -87,8 +85,7 @@ feature "Add and edit open issues", %(
     i_should_see "Successfully closed issue"
     i_should_see "Closed issue: Add taxa from Aldous 2007"
 
-    i_go_to 'the activity feed'
-    i_should_see "Archibald closed the issue Add taxa from Aldous 2007", within: 'the activity feed'
+    there_should_be_an_activity "Archibald closed the issue Add taxa from Aldous 2007"
 
     i_go_to 'the open issues page'
     i_should_see "There are currently no open issues."
@@ -98,7 +95,6 @@ feature "Add and edit open issues", %(
     i_should_see "Successfully re-opened issue"
     i_should_see "Open issue: Add taxa from Aldous 2007"
 
-    i_go_to 'the activity feed'
-    i_should_see "Archibald re-opened the issue Add taxa from Aldous 2007", within: 'the activity feed'
+    there_should_be_an_activity "Archibald re-opened the issue Add taxa from Aldous 2007"
   end
 end

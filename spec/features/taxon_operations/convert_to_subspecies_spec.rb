@@ -23,8 +23,7 @@ feature "Converting a species to a subspecies" do
     created_taxon = Taxon.find_by!(name_cache: "Camponotus alii dallatorei")
     expect(created_taxon).to be_a(Subspecies)
 
-    i_go_to 'the activity feed'
-    i_should_see "Archibald converted the species Camponotus dallatorei to a subspecies (now Camponotus alii dallatorei)", within: 'the activity feed'
+    there_should_be_an_activity "Archibald converted the species Camponotus dallatorei to a subspecies \\(now Camponotus alii dallatorei\\)"
   end
 
   scenario "Converting a species to a subspecies when it already exists" do

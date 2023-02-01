@@ -49,8 +49,7 @@ feature "Editing a taxon" do
     i_should_be_on 'the catalog page for "Atta"'
     i_should_see "incertae sedis in subfamily"
 
-    i_go_to 'the activity feed'
-    i_should_see "Archibald edited the genus Atta", within: 'the activity feed'
+    there_should_be_an_activity "Archibald edited the genus Atta"
     i_should_see_the_edit_summary "fix incertae sedis"
   end
 

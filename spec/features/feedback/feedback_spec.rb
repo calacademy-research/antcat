@@ -33,8 +33,7 @@ feature "Feedback", %(
     i_go_to 'the feedback page'
     i_should_see "[no name] <[no email];"
 
-    i_go_to 'the activity feed'
-    i_should_see "An unregistered user added the feedback item #", within: 'the activity feed'
+    there_should_be_an_activity "An unregistered user added the feedback item #"
   end
 
   scenario "Registered user submitting feedback (with feed)" do
@@ -48,8 +47,7 @@ feature "Feedback", %(
     i_go_to 'the feedback page'
     i_should_see "Archibald submitted"
 
-    i_go_to 'the activity feed'
-    i_should_see "Archibald added the feedback item #", within: 'the activity feed'
+    there_should_be_an_activity "Archibald added the feedback item #"
   end
 
   scenario "Page field defaults to the current URL" do

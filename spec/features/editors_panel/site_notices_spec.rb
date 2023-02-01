@@ -12,7 +12,7 @@ feature "Site notices" do
     i_log_in_as_a_catalog_editor_named "Batiatus"
   end
 
-  scenario "Adding a site notice (with feed)" do
+  scenario "Adding a site notice" do
     i_go_to 'the site notices page'
     i_follow "New"
     fill_in "site_notice_title", with: "New AntCat features"

@@ -22,7 +22,6 @@ feature "Force-changing parent" do
     atta = Taxon.find_by!(name_cache: "Atta")
     expect(atta.subfamily).to eq new_subfamily_parent
 
-    i_go_to 'the activity feed'
-    i_should_see "Archibald force-changed the parent of Atta", within: 'the activity feed'
+    there_should_be_an_activity "Archibald force-changed the parent of Atta"
   end
 end

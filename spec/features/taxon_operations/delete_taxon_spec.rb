@@ -17,8 +17,7 @@ feature "Deleting a taxon" do
     i_follow "Delete"
     i_should_see "Taxon was successfully deleted."
 
-    i_go_to 'the activity feed'
-    i_should_see "Archibald deleted the subfamily Antcatinae", within: 'the activity feed'
+    there_should_be_an_activity "Archibald deleted the subfamily Antcatinae"
   end
 
   scenario "If taxon has only references from others taxt, still show the Delete button, but disallow deleting it" do

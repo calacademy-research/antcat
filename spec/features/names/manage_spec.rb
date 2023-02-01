@@ -25,8 +25,7 @@ feature "Manage names" do
     i_should_see "Successfully updated name."
     i_should_see "Name record: Lasius"
 
-    i_go_to 'the activity feed'
-    i_should_see "Archibald edited the name record Lasius", within: 'the activity feed'
+    there_should_be_an_activity "Archibald edited the name record Lasius"
     i_should_see_the_edit_summary "fix name"
   end
 

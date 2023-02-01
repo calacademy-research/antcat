@@ -14,7 +14,6 @@ feature "Signing up" do
     i_should_be_on 'the main page'
     i_should_see "Welcome! You have signed up successfully."
 
-    i_go_to 'the activity feed'
-    i_should_see "Quintus Batiatus registered an account, welcome to antcat.org!", within: 'the activity feed'
+    there_should_be_an_activity "Quintus Batiatus registered an account, welcome to antcat.org!"
   end
 end

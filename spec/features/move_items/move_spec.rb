@@ -34,8 +34,7 @@ feature "Move items" do
     i_go_to 'the catalog page for "Formica"'
     i_should_see "Antcatinae section"
 
-    i_go_to 'the activity feed'
-    i_should_see "Archibald moved items belonging to Antcatinae to Formica", within: 'the activity feed'
+    there_should_be_an_activity "Archibald moved items belonging to Antcatinae to Formica"
   end
 
   scenario "Moving history items (with feed)", :js do
@@ -65,7 +64,6 @@ feature "Move items" do
     i_go_to 'the protonym page for "Formica"'
     i_should_see "Antcatinae history"
 
-    i_go_to 'the activity feed'
-    i_should_see "Archibald moved protonym items belonging to Antcatinae (no terminal taxon) to Formica", within: 'the activity feed'
+    there_should_be_an_activity "Archibald moved protonym items belonging to Antcatinae \\(no terminal taxon\\) to Formica"
   end
 end

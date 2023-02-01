@@ -21,8 +21,7 @@ feature "Manage subgenera" do
     i_go_to 'the catalog page for "Camponotus cornis"'
     i_should_see "Camponotus (Myrmentoma)", within: 'the breadcrumbs'
 
-    i_go_to 'the activity feed'
-    i_should_see "Archibald set the subgenus of Camponotus cornis to Camponotus (Myrmentoma)", within: 'the activity feed'
+    there_should_be_an_activity "Archibald set the subgenus of Camponotus cornis to Camponotus \\(Myrmentoma\\)"
 
     i_go_to 'the catalog page for "Camponotus cornis"'
     i_follow "Set subgenus", within: 'the breadcrumbs'
@@ -32,7 +31,6 @@ feature "Manage subgenera" do
     i_go_to 'the catalog page for "Camponotus cornis"'
     i_should_not_see "Camponotus (Myrmentoma)", within: 'the breadcrumbs'
 
-    i_go_to 'the activity feed'
-    i_should_see "Archibald removed the subgenus from Camponotus cornis (subgenus was Camponotus (Myrmentoma))", within: 'the activity feed'
+    there_should_be_an_activity "Archibald removed the subgenus from Camponotus cornis \\(subgenus was Camponotus \\(Myrmentoma\\)\\)"
   end
 end
