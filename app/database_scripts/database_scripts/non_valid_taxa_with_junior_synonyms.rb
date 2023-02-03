@@ -16,7 +16,7 @@ module DatabaseScripts
             taxon_link(taxon),
             taxon.status,
             taxon_link(current_taxon),
-            current_taxon.status
+            current_taxon&.status
           ]
         end
       end

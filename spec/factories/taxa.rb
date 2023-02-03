@@ -20,7 +20,7 @@ FactoryBot.define do
     factory :family, class: Rank::FAMILY.to_s, aliases: [:any_taxon] do
       association :name, factory: :family_name
 
-      genus_group_protonym
+      family_group_protonym
 
       trait :formicidae do
         name_string { "Formicidae" }
@@ -30,7 +30,7 @@ FactoryBot.define do
     factory :subfamily, class: Rank::SUBFAMILY.to_s do
       association :name, factory: :subfamily_name
 
-      genus_group_protonym
+      family_group_protonym
       without_family
 
       trait :with_family do
@@ -46,14 +46,14 @@ FactoryBot.define do
       association :name, factory: :tribe_name
       subfamily
 
-      genus_group_protonym
+      family_group_protonym
     end
 
     factory :subtribe, class: Rank::SUBTRIBE.to_s do
       association :name, factory: :subtribe_name
       tribe
 
-      genus_group_protonym
+      family_group_protonym
     end
 
     factory :genus, class: Rank::GENUS.to_s do
@@ -170,6 +170,10 @@ FactoryBot.define do
       after :create do |taxon|
         create :history_item, :taxt, protonym: taxon.protonym
       end
+    end
+
+    trait :family_group_protonym do
+      association :protonym, :family_group
     end
 
     trait :genus_group_protonym do
