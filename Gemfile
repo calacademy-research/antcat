@@ -15,7 +15,7 @@ gem 'rake'
 gem 'sassc-rails'
 gem 'sprockets-rails', require: 'sprockets/railtie'
 gem 'uglifier'
-gem 'webpacker', '5.1.1'
+gem 'webpacker', '6.0.0.rc.6'
 
 gem 'acts_as_list'
 gem 'attr_extras'

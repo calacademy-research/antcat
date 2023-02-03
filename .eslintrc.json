@@ -10,7 +10,7 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
-  "parser": "@babel/eslint-parser",
+  "parser": "babel-eslint",
   "rules": {
     "consistent-return": "off",
     "class-methods-use-this": "off",
