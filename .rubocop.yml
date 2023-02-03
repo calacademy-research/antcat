@@ -154,7 +154,8 @@ Metrics/CyclomaticComplexity:
   Enabled: false
   Exclude:
     - 'app/database_scripts/database_scripts/**/*'
-    - 'features/support/cucumber_helpers/**/*'
+    - 'spec/support/feature_helpers/paths.rb'
+    - 'spec/support/feature_helpers/selectors.rb'
 
 Metrics/MethodLength:
   Enabled: false
@@ -163,8 +164,9 @@ Metrics/MethodLength:
   Exclude:
     - 'app/database_scripts/database_scripts/**/*'
     - 'db/migrate/**/*'
-    - 'features/support/cucumber_helpers/**/*'
     - 'lib/tasks/**/*'
+    - 'spec/support/feature_helpers/paths.rb'
+    - 'spec/support/feature_helpers/selectors.rb'
 
 Metrics/ModuleLength:
   Max: 100
