@@ -1,13 +1,15 @@
 # frozen_string_literal: true
 
-def i_should_see_the_edit_summary content
-  within "table.activities" do
-    i_should_see content
-  end
-end
+# TODO: Check without visiting the activity page.
+# TODO: Check that the edit summary belongs to the activity.
+def there_should_be_an_activity content, edit_summary: nil
+  i_go_to 'the activity feed'
 
-def there_is_a_journal_activity_by event, name
-  journal = create :journal
-  user = User.find_by(name: name) || create(:user, name: name)
-  create :activity, event: event.to_sym, trackable: journal, user: user
+  within "table.activities" do
+    expect(page.text).to match(content)
+
+    if edit_summary
+      expect(page).to have_content edit_summary
+    end
+  end
 end

@@ -13,7 +13,7 @@ feature "Editing a history item" do
   end
 
   scenario "Adding a history item (with edit summary)" do
-    there_is_a_genus_protonym "Atta"
+    create :protonym, :genus_group, name: create(:genus_name, name: "Atta")
 
     i_go_to 'the protonym page for "Atta"'
     the_history_should_be_empty
@@ -24,14 +24,11 @@ feature "Editing a history item" do
     click_button "Save"
     the_history_should_be "Abc"
 
-    i_go_to 'the activity feed'
-    i_should_see "Archibald added the history item #", within: 'the activity feed'
-    i_should_see "belonging to Atta"
-    i_should_see_the_edit_summary "added new stuff"
+    there_should_be_an_activity "Archibald added the history item #\\d+ belonging to Atta", edit_summary: "added new stuff"
   end
 
   scenario "Adding a history item with blank taxt" do
-    there_is_a_genus_protonym "Atta"
+    create :protonym, :genus_group, name: create(:genus_name, name: "Atta")
 
     i_go_to 'the protonym page for "Atta"'
     the_history_should_be_empty
@@ -61,10 +58,7 @@ feature "Editing a history item" do
     i_click_on 'the edit history item button'
     the_history_item_field_should_be "(none)"
 
-    i_go_to 'the activity feed'
-    i_should_see "Archibald edited the history item #", within: 'the activity feed'
-    i_should_see "belonging to Antcatinae"
-    i_should_see_the_edit_summary "fix typo"
+    there_should_be_an_activity "Archibald edited the history item #\\d+ belonging to Antcatinae", edit_summary: "fix typo"
   end
 
   scenario "Editing a history item (without JavaScript)" do
@@ -107,9 +101,7 @@ feature "Editing a history item" do
     i_reload_the_page
     the_history_should_be_empty
 
-    i_go_to 'the activity feed'
-    i_should_see "Archibald deleted the history item #", within: 'the activity feed'
-    i_should_see "belonging to Antcatinae"
+    there_should_be_an_activity "Archibald deleted the history item #\\d+ belonging to Antcatinae"
   end
 
   scenario "Seeing the markdown preview (and cancelling)", :js do

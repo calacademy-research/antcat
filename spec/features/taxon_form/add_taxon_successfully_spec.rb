@@ -68,13 +68,12 @@ feature "Adding a taxon successfully" do
     i_should_see "Eciton major", within: 'the protonym'
     i_should_see "Add another"
 
-    i_go_to 'the activity feed'
-    i_should_see "Archibald added the species Eciton major to the genus Eciton", within: 'the activity feed'
-    i_should_see_the_edit_summary "cool new species"
+    there_should_be_an_activity "Archibald added the species Eciton major to the genus Eciton", edit_summary: "cool new species"
   end
 
   scenario "Adding a species to a subgenus" do
-    there_is_a_subgenus_in_the_genus "Dolichoderus (Subdolichoderus)", "Dolichoderus"
+    genus = create(:genus, name_string: "Dolichoderus")
+    create :subgenus, name_string: "Dolichoderus (Subdolichoderus)", genus: genus
 
     i_go_to 'the catalog page for "Dolichoderus (Subdolichoderus)"'
     i_follow "Add species"
@@ -87,7 +86,8 @@ feature "Adding a taxon successfully" do
   end
 
   scenario "Adding a subspecies" do
-    there_is_a_species_in_the_genus "Eciton major", "Eciton"
+    genus = create(:genus, name_string: "Eciton")
+    create :species, name_string: "Eciton major", genus: genus
 
     i_go_to 'the catalog page for "Eciton major"'
     i_follow "Add subspecies"
@@ -120,7 +120,7 @@ feature "Adding a taxon successfully" do
     i_go_to 'the catalog page for "Formicinae"'
     i_follow "Add tribe"
     fill_in "taxon_name_string", with: "Dorylini"
-    i_click_css "#copy-name-to-protonym-js-hook"
+    find("#copy-name-to-protonym-js-hook").click
     fill_in "taxon_protonym_attributes_authorship_attributes_pages", with: "page 35"
     click_button "Save"
     i_should_be_on 'the catalog page for "Dorylini"'

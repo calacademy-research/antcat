@@ -33,10 +33,7 @@ feature "Editing references sections" do
     click_button "Save"
     the_reference_section_should_be "New reference"
 
-    i_go_to 'the activity feed'
-    i_should_see "Archibald added the reference section #", within: 'the activity feed'
-    i_should_see "belonging to Atta"
-    i_should_see_the_edit_summary "added new stuff"
+    there_should_be_an_activity "Archibald added the reference section #\\d+ belonging to Atta", edit_summary: "added new stuff"
   end
 
   # @retry_ci
@@ -55,10 +52,7 @@ feature "Editing references sections" do
     i_should_not_see "Original reference"
     the_reference_section_should_be "(none)"
 
-    i_go_to 'the activity feed'
-    i_should_see "Archibald edited the reference section #", within: 'the activity feed'
-    i_should_see "belonging to Dolichoderinae"
-    i_should_see_the_edit_summary "fix typo"
+    there_should_be_an_activity "Archibald edited the reference section #\\d+ belonging to Dolichoderinae", edit_summary: "fix typo"
   end
 
   scenario "Editing a reference section (without JavaScript)" do
@@ -93,8 +87,6 @@ feature "Editing references sections" do
     i_click_on 'the delete reference section button'
     the_reference_section_should_be_empty
 
-    i_go_to 'the activity feed'
-    i_should_see "Archibald deleted the reference section #", within: 'the activity feed'
-    i_should_see "belonging to Dolichoderinae"
+    there_should_be_an_activity "Archibald deleted the reference section #\\d+ belonging to Dolichoderinae"
   end
 end

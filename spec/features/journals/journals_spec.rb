@@ -21,7 +21,6 @@ feature "Editing journals" do
     i_follow "Journals"
     i_should_see "Science"
 
-    i_go_to 'the activity feed'
-    i_should_see "Archibald edited the journal Science (changed journal name from Psyche)", within: 'the activity feed'
+    there_should_be_an_activity "Archibald edited the journal Science \\(changed journal name from Psyche\\)"
   end
 end

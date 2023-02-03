@@ -20,7 +20,6 @@ feature "Create obsolete combination" do
     created_taxon = Taxon.find_by!(name_cache: "Pyramica ravidura")
     expect(created_taxon.genus).to eq genus
 
-    i_go_to 'the activity feed'
-    i_should_see "Archibald created the obsolete combination Pyramica ravidura", within: 'the activity feed'
+    there_should_be_an_activity "Archibald created the obsolete combination Pyramica ravidura"
   end
 end

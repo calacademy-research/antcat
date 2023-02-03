@@ -2,11 +2,7 @@
 
 require 'rails_helper'
 
-feature "Checking for duplicates during data entry", %(
-  As an AntCat editor
-  I want duplicate references to be rejected
-  So that there are no duplicate references
-), as: :helper do
+feature "Checking for duplicates during data entry", as: :helper do
   background do
     create :article_reference, author_string: "Ward, P.", title: "Ants", year: 2010, series_volume_issue: "4", pagination: "9"
   end

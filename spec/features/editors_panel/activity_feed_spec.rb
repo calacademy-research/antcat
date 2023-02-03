@@ -27,8 +27,10 @@ feature "Activity feed" do
   end
 
   scenario "Filtering activities by event" do
-    there_is_a_journal_activity_by "destroy", "Batiatus"
-    there_is_a_journal_activity_by "update", "Batiatus"
+    user = create(:user, name: "Batiatus")
+    journal = create :journal
+    create :activity, event: :update, trackable: journal, user: user
+    create :activity, event: :destroy, trackable: journal, user: user
 
     i_go_to 'the activity feed'
     i_should_see_number_of_items_in_the_activity_feed 2

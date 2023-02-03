@@ -3,23 +3,27 @@
 require 'rails_helper'
 
 feature "Editing a taxon" do
+  def there_is_a_species_which_is_a_junior_synonym_of species_name, senior_name
+    senior = create :species, name_string: senior_name
+    create :species, :synonym, name_string: species_name, current_taxon: senior
+  end
+
   background do
     i_log_in_as_a_catalog_editor_named "Archibald"
   end
 
   scenario "Changing protonym" do
-    create :species, name_string: "Eciton fusca"
-    there_is_a_species_protonym_with_pages_and_form_page_9_dealate_queen "Formica fusca"
+    taxon = create :species, name_string: "Eciton fusca"
+    protonym = create :protonym, :species_group, name: create(:species_name, name: "Formica fusca")
 
     i_go_to 'the catalog page for "Eciton fusca"'
-    i_should_not_see "Formica"
+    expect(taxon.reload.protonym).not_to eq protonym
 
     i_go_to 'the edit page for "Eciton fusca"'
     i_pick_from_the_protonym_picker "Formica fusca", "#taxon_protonym_id"
     click_button "Save"
     i_should_see "Taxon was successfully updated"
-    i_should_see "Formica fusca", within: '"#protonym-synopsis"'
-    i_should_see "page 9 (dealate queen)", within: '"#protonym-synopsis"'
+    expect(taxon.reload.protonym).to eq protonym
   end
 
   scenario "Changing current taxon" do
@@ -49,9 +53,7 @@ feature "Editing a taxon" do
     i_should_be_on 'the catalog page for "Atta"'
     i_should_see "incertae sedis in subfamily"
 
-    i_go_to 'the activity feed'
-    i_should_see "Archibald edited the genus Atta", within: 'the activity feed'
-    i_should_see_the_edit_summary "fix incertae sedis"
+    there_should_be_an_activity "Archibald edited the genus Atta", edit_summary: "fix incertae sedis"
   end
 
   scenario "Changing gender of genus-group name" do

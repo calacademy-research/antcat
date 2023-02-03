@@ -16,11 +16,12 @@ feature "Using the catalog" do
 
   background do
     create :family, :formicidae
-    create :subfamily, name_string: "Dolichoderinae"
-    there_is_a_tribe_in_the_subfamily "Dolichoderini", "Dolichoderinae"
-    there_is_a_genus_in_the_tribe "Dolichoderus", "Dolichoderini"
-    there_is_a_species_in_the_genus "Dolichoderus abruptus", "Dolichoderus"
-    there_is_a_subspecies_in_the_species "Dolichoderus abruptus minor", "Dolichoderus abruptus"
+    subfamily = create :subfamily, name_string: "Dolichoderinae"
+    tribe = create :tribe, name_string: "Dolichoderini", subfamily: subfamily
+    genus = create :genus, name_string: "Dolichoderus", subfamily: tribe.subfamily, tribe: tribe
+    species = create :species, name_string: "Dolichoderus abruptus", genus: genus
+    create :subspecies, name_string: "Dolichoderus abruptus minor", species: species, genus: species.genus
+
     i_go_to 'the catalog'
   end
 

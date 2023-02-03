@@ -3,6 +3,11 @@
 require 'rails_helper'
 
 feature "Move items" do
+  # TODO: Use testid.
+  def i_click_select_deselect_all
+    find("span.btn-tiny", text: "Select/deselect all").click
+  end
+
   background do
     i_log_in_as_a_catalog_editor_named "Archibald"
   end
@@ -27,22 +32,21 @@ feature "Move items" do
     click_button "Move selected items"
     i_should_see "At least one item must be selected"
 
-    i_click_css_with_text "span.btn-tiny", "Select/deselect all"
+    i_click_select_deselect_all
     click_button "Move selected items"
     i_should_see "Successfully moved items"
 
     i_go_to 'the catalog page for "Formica"'
     i_should_see "Antcatinae section"
 
-    i_go_to 'the activity feed'
-    i_should_see "Archibald moved items belonging to Antcatinae to Formica", within: 'the activity feed'
+    there_should_be_an_activity "Archibald moved items belonging to Antcatinae to Formica"
   end
 
   scenario "Moving history items (with feed)", :js do
     subfamily_protonym_with_history_item = create :protonym, :family_group, name: create(:subfamily_name, name: "Antcatinae")
     create :history_item, :taxt, taxt: "Antcatinae history", protonym: subfamily_protonym_with_history_item
 
-    there_is_a_genus_protonym "Formica"
+    create :protonym, :genus_group, name: create(:genus_name, name: "Formica")
 
     i_go_to 'the protonym page for "Antcatinae"'
     i_follow "Move items"
@@ -58,14 +62,13 @@ feature "Move items" do
     click_button "Move selected items"
     i_should_see "At least one item must be selected"
 
-    i_click_css_with_text "span.btn-tiny", "Select/deselect all"
+    i_click_select_deselect_all
     click_button "Move selected items"
     i_should_see "Successfully moved items"
 
     i_go_to 'the protonym page for "Formica"'
     i_should_see "Antcatinae history"
 
-    i_go_to 'the activity feed'
-    i_should_see "Archibald moved protonym items belonging to Antcatinae (no terminal taxon) to Formica", within: 'the activity feed'
+    there_should_be_an_activity "Archibald moved protonym items belonging to Antcatinae \\(no terminal taxon\\) to Formica"
   end
 end

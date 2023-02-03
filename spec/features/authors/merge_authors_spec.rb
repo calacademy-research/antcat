@@ -2,11 +2,7 @@
 
 require 'rails_helper'
 
-feature "Merging authors", %(
-As an editor of AntCat
-I want to merge together author names
-So that they are correct
-), as: :editor do
+feature "Merging authors", as: :editor do
   def i_set_author_to_merge_id_to_the_id_of author_name
     author = AuthorName.find_by!(name: author_name).author
     find('#author_to_merge_id', visible: false).set author.id # HACK: For when JavaScript is disabled.

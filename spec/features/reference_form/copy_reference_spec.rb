@@ -2,12 +2,7 @@
 
 require 'rails_helper'
 
-feature "Copy reference", %(
-  As Phil Ward
-  I want to add new references using existing reference data
-  So that I can reduce copy and pasting between references
-  And so that the bibliography continues to be up-to-date
-), as: :helper do
+feature "Copy reference", as: :helper do
   scenario "Copy an `ArticleReference`" do
     create :article_reference, author_string: "Ward, P.S.", title: "Ants", year: 1910, year_suffix: "b", stated_year: "1911",
       journal: create(:journal, name: 'Acta'), series_volume_issue: "4", pagination: "9"

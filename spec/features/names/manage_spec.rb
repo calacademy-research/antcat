@@ -8,7 +8,7 @@ feature "Manage names" do
   end
 
   scenario "Editing a name (with edit summary)" do
-    there_is_a_genus_protonym "Formica"
+    create :protonym, :genus_group, name: create(:genus_name, name: "Formica")
 
     i_go_to 'the protonym page for "Formica"'
     i_follow "Name record"
@@ -25,15 +25,13 @@ feature "Manage names" do
     i_should_see "Successfully updated name."
     i_should_see "Name record: Lasius"
 
-    i_go_to 'the activity feed'
-    i_should_see "Archibald edited the name record Lasius", within: 'the activity feed'
-    i_should_see_the_edit_summary "fix name"
+    there_should_be_an_activity "Archibald edited the name record Lasius", edit_summary: "fix name"
   end
 
   scenario "Checking for name conflicts", :skip_ci, :js do
-    there_is_a_genus_protonym "Formica"
-    there_is_a_genus_protonym "Formica"
-    there_is_a_genus_protonym "Formicus"
+    create :protonym, :genus_group, name: create(:genus_name, name: "Formica")
+    create :protonym, :genus_group, name: create(:genus_name, name: "Formica")
+    create :protonym, :genus_group, name: create(:genus_name, name: "Formicus")
 
     i_go_to 'the protonym page for "Formica"'
     i_follow "Name record"

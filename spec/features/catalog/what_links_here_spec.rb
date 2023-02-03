@@ -2,10 +2,7 @@
 
 require 'rails_helper'
 
-feature "What links here", %(
-  As an editor of AntCat
-  I want to see items linked to a taxon or reference
-), as: :user do
+feature "What links here", as: :user do
   def eciton_has_a_history_item_that_references_atta_and_a_batiatus_reference
     eciton = Protonym.joins(:name).find_by!(names: { name: "Eciton" })
     atta = Taxon.find_by!(name_cache: "Atta")
@@ -16,7 +13,7 @@ feature "What links here", %(
 
   background do
     create :genus, name_string: "Atta"
-    there_is_a_genus_protonym "Eciton"
+    create :protonym, :genus_group, name: create(:genus_name, name: "Eciton")
 
     eciton_has_a_history_item_that_references_atta_and_a_batiatus_reference
   end

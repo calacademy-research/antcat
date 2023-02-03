@@ -2,11 +2,7 @@
 
 require 'rails_helper'
 
-feature "Compare revisions", %(
-  As an editor of AntCat
-  I want to browse previous revisions of items
-  So I can see what has been changed
-), as: :editor, versioning: true do
+feature "Compare revisions", as: :editor, versioning: true do
   def i_follow_the_first_linked_history_item
     first("a[href^='/history_items/']").click
   end
@@ -18,7 +14,7 @@ feature "Compare revisions", %(
   end
 
   scenario "Comparing history item revisions" do
-    there_is_a_genus_protonym "Atta"
+    create :protonym, :genus_group, name: create(:genus_name, name: "Atta")
 
     # Added item.
     i_go_to 'the protonym page for "Atta"'

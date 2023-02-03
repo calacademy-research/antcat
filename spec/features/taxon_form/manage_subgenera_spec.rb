@@ -8,8 +8,9 @@ feature "Manage subgenera" do
   end
 
   scenario "Setting and removing a subgenus of a species (with feed)" do
-    there_is_a_subgenus_in_the_genus "Camponotus (Myrmentoma)", "Camponotus"
-    there_is_a_species_in_the_genus "Camponotus cornis", "Camponotus"
+    genus = create(:genus, name_string: "Camponotus")
+    create :subgenus, name_string: "Camponotus (Myrmentoma)", genus: genus
+    create :species, name_string: "Camponotus cornis", genus: genus
 
     i_go_to 'the catalog page for "Camponotus cornis"'
     i_should_not_see "Camponotus (Myrmentoma)", within: 'the breadcrumbs'
@@ -21,8 +22,7 @@ feature "Manage subgenera" do
     i_go_to 'the catalog page for "Camponotus cornis"'
     i_should_see "Camponotus (Myrmentoma)", within: 'the breadcrumbs'
 
-    i_go_to 'the activity feed'
-    i_should_see "Archibald set the subgenus of Camponotus cornis to Camponotus (Myrmentoma)", within: 'the activity feed'
+    there_should_be_an_activity "Archibald set the subgenus of Camponotus cornis to Camponotus \\(Myrmentoma\\)"
 
     i_go_to 'the catalog page for "Camponotus cornis"'
     i_follow "Set subgenus", within: 'the breadcrumbs'
@@ -32,7 +32,6 @@ feature "Manage subgenera" do
     i_go_to 'the catalog page for "Camponotus cornis"'
     i_should_not_see "Camponotus (Myrmentoma)", within: 'the breadcrumbs'
 
-    i_go_to 'the activity feed'
-    i_should_see "Archibald removed the subgenus from Camponotus cornis (subgenus was Camponotus (Myrmentoma))", within: 'the activity feed'
+    there_should_be_an_activity "Archibald removed the subgenus from Camponotus cornis \\(subgenus was Camponotus \\(Myrmentoma\\)\\)"
   end
 end

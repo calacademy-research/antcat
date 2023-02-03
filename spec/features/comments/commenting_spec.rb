@@ -15,7 +15,6 @@ feature "Commenting" do
     i_should_see "Comment was successfully added"
     i_should_see "Fixed, closing issue."
 
-    i_go_to 'the activity feed'
-    i_should_see "Batiatus commented on the feedback #"
+    there_should_be_an_activity "Batiatus commented on the feedback #"
   end
 end

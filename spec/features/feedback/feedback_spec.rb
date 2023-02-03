@@ -2,11 +2,7 @@
 
 require 'rails_helper'
 
-feature "Feedback", %(
-  As an user or editor of AntCat
-  I want to submit feedback and corrections
-  So that we can improve the catalog
-) do
+feature "Feedback" do
   background do
     i_go_to 'the catalog'
   end
@@ -33,8 +29,7 @@ feature "Feedback", %(
     i_go_to 'the feedback page'
     i_should_see "[no name] <[no email];"
 
-    i_go_to 'the activity feed'
-    i_should_see "An unregistered user added the feedback item #", within: 'the activity feed'
+    there_should_be_an_activity "An unregistered user added the feedback item #"
   end
 
   scenario "Registered user submitting feedback (with feed)" do
@@ -48,8 +43,7 @@ feature "Feedback", %(
     i_go_to 'the feedback page'
     i_should_see "Archibald submitted"
 
-    i_go_to 'the activity feed'
-    i_should_see "Archibald added the feedback item #", within: 'the activity feed'
+    there_should_be_an_activity "Archibald added the feedback item #"
   end
 
   scenario "Page field defaults to the current URL" do
