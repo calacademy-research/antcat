@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module CucumberHelpers
+module FeatureHelpers
   module Selectors
     def selector_for locator
       case locator
