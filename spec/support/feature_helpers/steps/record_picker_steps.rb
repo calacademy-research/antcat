@@ -3,7 +3,8 @@
 module FeatureHelpers
   module Steps
     def set_record_picker record_id, css_selector
-      if @current_example && @current_example.metadata[:js] # For RSpec.
+      if javascript_driver?
+        # TODO: Check if still needed.
         expect(page).to have_content "Pick" # HACK: Wait for page to load.
         page.execute_script("$('#{css_selector}').val(#{record_id})")
       else

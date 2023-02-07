@@ -7,6 +7,10 @@ module FeatureHelpers
       within(*selector_for(locator), &block)
     end
 
+    def javascript_driver?
+      Capybara.current_driver == Capybara.javascript_driver
+    end
+
     # Browser/navigation.
     def i_go_to page_name
       visit path_to(page_name)
@@ -31,14 +35,10 @@ module FeatureHelpers
       first(:link, link_text, exact: true).click
     end
 
-    def i_follow_the_second link_text
-      all(:link, link_text, exact: true)[1].click
-    end
-
     def i_follow link_text, within: nil
       if within
         with_scope within do
-          i_follow link_text
+          click_link link_text
         end
       else
         click_link link_text
@@ -59,7 +59,7 @@ module FeatureHelpers
     def i_should_not_see content, within: nil
       if within
         with_scope within do
-          i_should_not_see content
+          expect(page).to have_no_content content
         end
       else
         expect(page).to have_no_content content

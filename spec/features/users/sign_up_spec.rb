@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-feature "Signing up" do
+feature "Signing up", as: :visitor do
   scenario "Sign up (with feed)" do
     i_go_to 'the main page'
     i_follow "Sign up", within: 'the desktop menu'

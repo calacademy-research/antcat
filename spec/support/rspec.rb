@@ -27,8 +27,10 @@ RSpec.configure do |config|
   # See https://github.com/drapergem/draper#view-context-leakage
   config.before { Draper::ViewContext.clear! }
 
-  config.define_derived_metadata do |metadata|
-    metadata[:aggregate_failures] = true
+  if ENV['AGGREGATE_FAILURES']
+    config.define_derived_metadata do |metadata|
+      metadata[:aggregate_failures] = true
+    end
   end
 
   if ENV["CI"]
@@ -48,13 +50,6 @@ RSpec.configure do |config|
     DatabaseCleaner.cleaning do
       example.run
     end
-  end
-
-  # TODO: Fix hack used for checking metadata from the current example.
-  config.around do |example|
-    @current_example = example
-    example.run
-    @current_example = nil
   end
 
   # Login as controller helpers.

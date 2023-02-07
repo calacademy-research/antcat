@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-feature "Export references to Wikipedia" do
+feature "Export references to Wikipedia", as: :visitor do
   scenario "Exporting an `ArticleReference`" do
     create :article_reference, :with_author_name
 

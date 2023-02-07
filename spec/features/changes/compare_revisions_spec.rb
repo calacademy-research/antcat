@@ -13,6 +13,10 @@ feature "Compare revisions", as: :editor, versioning: true do
     click_button "Save"
   end
 
+  def i_follow_the_second_cur
+    all(:link, "cur", exact: true)[1].click
+  end
+
   scenario "Comparing history item revisions" do
     create :protonym, :genus_group, name: create(:genus_name, name: "Atta")
 
@@ -58,18 +62,19 @@ feature "Compare revisions", as: :editor, versioning: true do
   end
 
   scenario "Comparing revisions with intermediate revisions", :js do
-    create :history_item, :taxt, taxt: "initial version"
-    HistoryItem.last.update!(taxt: "second version")
-    HistoryItem.last.update!(taxt: "last version")
+    history_item = create :history_item, :taxt, taxt: "initial version"
+    history_item.update!(taxt: "second version")
+    history_item.update!(taxt: "last version")
 
-    i_go_to 'the page of the most recent history item'
+    visit history_item_path(history_item)
     i_follow "History"
+    sleep 1 # TODO: Remove.
     click_button "Compare selected revisions"
     i_should_see "second version", within: 'the left side of the diff'
     i_should_see "last version", within: 'the right side of the diff'
     i_should_not_see "initial version"
 
-    i_follow_the_second "cur"
+    i_follow_the_second_cur
     i_should_see "initial version", within: 'the left side of the diff'
     i_should_see "last version", within: 'the right side of the diff'
     i_should_not_see "second version"

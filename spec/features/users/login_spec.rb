@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-feature "Logging in" do
+feature "Logging in", as: :visitor do
   scenario "Logging and returning to previous page" do
     create :user, email: "quintus@antcat.org", name: "Batiatus", password: "secret"
 

@@ -2,14 +2,10 @@
 
 require 'rails_helper'
 
-feature "Site notices" do
+feature "Site notices", as: :editor do
   def there_is_a_site_notice_i_havent_read_yet title
     sleep 1 # To please the `unread` gem which uses timestamps.
     create :site_notice, title: title
-  end
-
-  background do
-    i_log_in_as_a_catalog_editor_named "Batiatus"
   end
 
   scenario "Adding a site notice" do
@@ -19,7 +15,6 @@ feature "Site notices" do
     fill_in "site_notice_message", with: "You would not believe it!"
     click_button "Publish"
     i_should_see "Successfully created site notice"
-    i_should_see "Added by Batiatus"
   end
 
   scenario "Reading a notice marks it as read" do

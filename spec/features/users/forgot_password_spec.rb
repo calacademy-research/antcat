@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-feature "Forgot password" do
+feature "Forgot password", as: :visitor do
   background do
     these_settings 'email: { enabled: true }'
   end

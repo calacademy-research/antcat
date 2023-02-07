@@ -26,6 +26,8 @@ window.setupTaxtEditors = ->
   setupDeleteButton()
   setupCancelButtons()
 
+  document.body.setAttribute('data-test-taxt-editors-loaded', "true") # HACK.
+
 unbindAllButtons = ->
   $(EDIT_BUTTONS).unbind('click')
   $(HISTORY_ITEM_SAVE_BUTTONS).unbind('click')

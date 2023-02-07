@@ -38,13 +38,13 @@ feature "Editing a history item" do
     i_should_see "Taxt can't be blank"
   end
 
-  # @retry_ci
   scenario "Editing a history item (with edit summary)", :js do
     there_is_a_subfamily_protonym_with_a_history_item "Antcatinae", "Antcatinae as family"
 
     i_go_to 'the protonym page for "Antcatinae"'
     the_history_should_be "Antcatinae as family"
 
+    wait_for_taxt_editors_to_load
     i_click_on 'the edit history item button'
     fill_in "taxt", with: "(none)"
     within "#history-items" do
@@ -55,6 +55,7 @@ feature "Editing a history item" do
     i_should_not_see "Antcatinae as family"
     the_history_should_be "(none)"
 
+    wait_for_taxt_editors_to_load
     i_click_on 'the edit history item button'
     the_history_item_field_should_be "(none)"
 
@@ -74,10 +75,11 @@ feature "Editing a history item" do
     i_should_see "history item content"
   end
 
-  scenario "Editing a history item, but cancelling", :skip_ci, :js do
+  scenario "Editing a history item, but cancelling", :js do
     there_is_a_subfamily_protonym_with_a_history_item "Antcatinae", "Antcatinae as family"
 
     i_go_to 'the protonym page for "Antcatinae"'
+    wait_for_taxt_editors_to_load
     i_click_on 'the edit history item button'
     fill_in "taxt", with: "(none)"
     i_click_on 'the cancel history item button'
@@ -93,6 +95,7 @@ feature "Editing a history item" do
     i_go_to 'the protonym page for "Antcatinae"'
     i_should_see "Antcatinae as family"
 
+    wait_for_taxt_editors_to_load
     i_click_on 'the edit history item button'
     i_will_confirm_on_the_next_step
     i_click_on 'the delete history item button'
@@ -112,6 +115,7 @@ feature "Editing a history item" do
     i_should_see "As family, Giovanni, 1809"
     the_history_item_field_should_not_be_visible
 
+    wait_for_taxt_editors_to_load
     i_click_on 'the edit history item button'
     i_should_see "As family, Giovanni, 1809"
     the_history_item_field_should_be_visible

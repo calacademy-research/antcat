@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-feature "Searching the catalog" do
+feature "Searching the catalog", as: :visitor do
   def there_is_a_species_described_in year
     reference = create :any_reference, year: year
     taxon = create :species
@@ -35,10 +35,9 @@ feature "Searching the catalog" do
     create :species, protonym: protonym
   end
 
-  def i_should_get_a_download_with_the_filename_and_todays_date filename
-    date = Time.current.strftime("%Y-%m-%d")
+  def i_should_get_a_download_with_the_filename filename
     content_disposition = page.response_headers['Content-Disposition']
-    expect(content_disposition).to include %(filename="#{filename}#{date}__)
+    expect(content_disposition).to include %(filename="#{filename}__)
   end
 
   background do
@@ -152,6 +151,6 @@ feature "Searching the catalog" do
     fill_in "year", with: "2010"
     click_button "Search"
     i_follow "Download"
-    i_should_get_a_download_with_the_filename_and_todays_date "antcat_search_results__"
+    i_should_get_a_download_with_the_filename "antcat_search_results__#{Time.current.strftime('%Y-%m-%d')}"
   end
 end

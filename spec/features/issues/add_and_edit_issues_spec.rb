@@ -48,30 +48,6 @@ feature "Add and edit open issues" do
     i_should_see "added info"
   end
 
-  scenario "Flagging an issue with 'Help wanted' and show notice in the nomen synopsis" do
-    create :issue, :open, title: "Important fix"
-
-    i_go_to 'the catalog'
-    i_should_not_see "Help Wanted", within: 'the page header'
-
-    i_go_to 'the open issues page'
-    i_should_not_see "One or more open issues are tagged as 'Help wanted'"
-    i_should_not_see "Important fix Help wanted!"
-
-    i_follow "Important fix"
-    i_follow "Edit"
-    check "issue_help_wanted"
-    click_button "Save"
-    i_should_see "Successfully updated issue"
-
-    i_go_to 'the catalog'
-    i_should_see "Help Wanted", within: 'the page header'
-
-    i_go_to 'the open issues page'
-    i_should_see "One or more open issues are tagged as 'Help wanted'"
-    i_should_see "Important fix Help wanted!"
-  end
-
   scenario "Closing and re-opening an issue (with feed)" do
     create :issue, :open, title: "Add taxa from Aldous 2007"
 

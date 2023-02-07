@@ -25,17 +25,17 @@ module FeatureHelpers
 
       # Catalog search.
       when 'the catalog search button'
-        "*[data-testid=testid-header-catalog-search-button]"
+        "*[data-testid=header-catalog-search-button]"
       when 'the search results'
         "table"
 
       # Reference search.
       when 'the reference search button'
-        "*[data-testid=testid-header-reference-search-button]"
+        "*[data-testid=header-reference-search-button]"
 
       # Edit reference sections.
       when 'the add reference section button'
-        "*[data-testid=testid-add-reference-section-button]"
+        "*[data-testid=add-reference-section-button]"
       when 'the edit reference section button'
         "#references-section a.taxt-editor-edit-button"
       when 'the cancel reference section button'
@@ -47,7 +47,7 @@ module FeatureHelpers
 
       # Edit history items.
       when 'the add history item button'
-        "*[data-testid=testid-add-history-item-button]"
+        "*[data-testid=add-history-item-button]"
       when 'the edit history item button'
         '#history-items .history-item a.taxt-editor-edit-button'
       when 'the cancel history item button'

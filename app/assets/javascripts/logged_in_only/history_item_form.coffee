@@ -33,6 +33,8 @@ $ ->
     selectedType = $(this).val()
     onSelectType(selectedType)
 
+  document.body.setAttribute('data-test-taxt-editors-loaded', "true") # HACK.
+
 setupSelect = (identifier, options) ->
   selectElement = $(identifier)
   currentValue = selectElement.val()

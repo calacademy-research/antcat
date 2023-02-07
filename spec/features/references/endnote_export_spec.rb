@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-feature "Export references to EndNote" do
+feature "Export references to EndNote", as: :visitor do
   scenario "Exporting an `ArticleReference`" do
     create :article_reference, :with_author_name
 
