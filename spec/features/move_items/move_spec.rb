@@ -26,7 +26,7 @@ feature "Move items" do
     click_button "Move selected items"
     i_should_see "At least one item must be selected"
 
-    find("*[data-testid=select-deselect-all-button]").click
+    find(:testid, 'select-deselect-all-button').click
     click_button "Move selected items"
     i_should_see "Successfully moved items"
 
@@ -56,7 +56,7 @@ feature "Move items" do
     click_button "Move selected items"
     i_should_see "At least one item must be selected"
 
-    find("*[data-testid=select-deselect-all-button]").click
+    find(:testid, 'select-deselect-all-button').click
     click_button "Move selected items"
     i_should_see "Successfully moved items"
 
