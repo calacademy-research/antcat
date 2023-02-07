@@ -5,12 +5,12 @@ module FeatureHelpers
     # Editing.
     def the_history_should_be content
       element = first('#history-items').find('.taxt-presenter')
-      expect(element.text).to match(/#{content}/)
+      expect(element).to have_content(content)
     end
 
     def the_history_item_field_should_be content
       element = first('#history-items').find('textarea')
-      expect(element.text).to match(/#{content}/)
+      expect(element).to have_content(content)
     end
 
     def the_history_item_field_should_not_be_visible

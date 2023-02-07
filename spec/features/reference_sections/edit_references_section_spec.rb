@@ -14,7 +14,7 @@ feature "Editing references sections" do
 
   def the_reference_section_should_be content
     element = first('#references-section').find('.taxt-presenter')
-    expect(element.text).to match(/#{content}/)
+    expect(element).to have_content(content)
   end
 
   background do
