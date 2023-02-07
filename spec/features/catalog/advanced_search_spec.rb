@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-feature "Searching the catalog" do
+feature "Searching the catalog", as: :visitor do
   def there_is_a_species_described_in year
     reference = create :any_reference, year: year
     taxon = create :species

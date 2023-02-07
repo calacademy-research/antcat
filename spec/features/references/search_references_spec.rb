@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-feature "Searching references" do
+feature "Searching references", as: :visitor do
   scenario "Searching for an author name with diacritics, using the diacritics in the query", :search do
     create :any_reference, author_string: "Hölldobler, B."
     create :any_reference, author_string: "Fisher, B."

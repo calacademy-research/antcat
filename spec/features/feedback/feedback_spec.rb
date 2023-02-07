@@ -7,7 +7,7 @@ feature "Feedback" do
     i_go_to 'the catalog'
   end
 
-  scenario "Nothing except a comment is required" do
+  scenario "Nothing except a comment is required", as: :visitor do
     i_follow "Suggest edit"
     click_button "Send Feedback"
     i_should_see "Comment can't be blank"
@@ -46,7 +46,7 @@ feature "Feedback" do
     there_should_be_an_activity "Archibald added the feedback item #"
   end
 
-  scenario "Page field defaults to the current URL" do
+  scenario "Page field defaults to the current URL", as: :visitor do
     create :genus, name_string: "Calyptites"
 
     i_go_to 'the catalog page for "Calyptites"'

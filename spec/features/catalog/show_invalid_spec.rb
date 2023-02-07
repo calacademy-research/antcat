@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-feature "Showing/hiding invalid taxa" do
+feature "Showing/hiding invalid taxa", as: :visitor do
   background do
     create :family, :formicidae
     create :subfamily, name_string: "Availableinae"

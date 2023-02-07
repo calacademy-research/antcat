@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-feature "Searching the catalog" do
+feature "Searching the catalog", as: :visitor do
   background do
     create :species, name_string: "Lasius niger"
     i_go_to 'the catalog'

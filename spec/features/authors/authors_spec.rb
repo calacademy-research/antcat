@@ -10,7 +10,7 @@ feature "Working with authors and their names" do
     end
   end
 
-  scenario "Seeing references by author (going to the author's page)" do
+  scenario "Seeing references by author (going to the author's page)", as: :visitor do
     create :any_reference, author_string: 'Bolton, B.', title: 'Cool Ants'
 
     i_go_to "the page of the most recent reference"
@@ -19,7 +19,7 @@ feature "Working with authors and their names" do
     i_should_see "Cool Ants"
   end
 
-  scenario "Seeing all the authors with their names" do
+  scenario "Seeing all the authors with their names", as: :visitor do
     the_following_names_exist_for_an_author "Bolton, B.", "Bolton, Ba."
     the_following_names_exist_for_an_author "Fisher, B."
 
