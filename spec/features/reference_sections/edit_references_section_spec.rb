@@ -36,7 +36,6 @@ feature "Editing references sections" do
     there_should_be_an_activity "Archibald added the reference section #\\d+ belonging to Atta", edit_summary: "added new stuff"
   end
 
-  # @retry_ci
   scenario "Editing a reference section (with edit summary)", :js do
     there_is_a_subfamily_with_a_reference_section "Dolichoderinae", "Original reference"
 

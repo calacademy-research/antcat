@@ -38,7 +38,6 @@ feature "Editing a history item" do
     i_should_see "Taxt can't be blank"
   end
 
-  # @retry_ci
   scenario "Editing a history item (with edit summary)", :js do
     there_is_a_subfamily_protonym_with_a_history_item "Antcatinae", "Antcatinae as family"
 
@@ -76,7 +75,7 @@ feature "Editing a history item" do
     i_should_see "history item content"
   end
 
-  scenario "Editing a history item, but cancelling", :skip_ci, :js do
+  scenario "Editing a history item, but cancelling", :js do
     there_is_a_subfamily_protonym_with_a_history_item "Antcatinae", "Antcatinae as family"
 
     i_go_to 'the protonym page for "Antcatinae"'

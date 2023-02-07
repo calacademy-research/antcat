@@ -11,7 +11,7 @@ feature "Editing a history item", as: :editor do
       text_value: forms, reference: reference, pages: pages
   end
 
-  scenario "Adding a relational history item", :skip_ci, :js do
+  scenario "Adding a relational history item", :js do
     create :protonym, :genus_group, name: create(:genus_name, name: "Atta")
     create :any_reference, author_string: "Batiatus", year: 2004
 
@@ -46,7 +46,6 @@ feature "Editing a history item", as: :editor do
     i_should_see "Pages can't be blank"
   end
 
-  # @retry_ci
   scenario "Editing a history item (via history item page)", :js do
     batiatus_2004a_has_described_the_forms_for_the_protonym "77-78", "q.", "Formica fusca"
 
@@ -63,7 +62,6 @@ feature "Editing a history item", as: :editor do
     i_should_see "Batiatus, 2004a: 99 (w.)"
   end
 
-  # @retry_ci
   scenario "Editing a history item (Quick edit)", :js do
     batiatus_2004a_has_described_the_forms_for_the_protonym "77-78", "q.", "Formica fusca"
 
