@@ -3,11 +3,6 @@
 require 'rails_helper'
 
 feature "Move items" do
-  # TODO: Use testid.
-  def i_click_select_deselect_all
-    find("span.btn-tiny", text: "Select/deselect all").click
-  end
-
   background do
     i_log_in_as_a_catalog_editor_named "Archibald"
   end
@@ -15,7 +10,6 @@ feature "Move items" do
   scenario "Moving reference sections (with feed)", :js do
     subfamily_with_reference_section = create :subfamily, name_string: "Antcatinae"
     create :reference_section, references_taxt: "Antcatinae section", taxon: subfamily_with_reference_section
-
     create :genus, name_string: "Formica"
 
     i_go_to 'the catalog page for "Antcatinae"'
@@ -32,7 +26,7 @@ feature "Move items" do
     click_button "Move selected items"
     i_should_see "At least one item must be selected"
 
-    i_click_select_deselect_all
+    find("*[data-testid=select-deselect-all-button]").click
     click_button "Move selected items"
     i_should_see "Successfully moved items"
 
@@ -62,7 +56,7 @@ feature "Move items" do
     click_button "Move selected items"
     i_should_see "At least one item must be selected"
 
-    i_click_select_deselect_all
+    find("*[data-testid=select-deselect-all-button]").click
     click_button "Move selected items"
     i_should_see "Successfully moved items"
 
