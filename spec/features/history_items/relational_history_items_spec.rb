@@ -19,6 +19,7 @@ feature "Editing a history item", as: :editor do
     the_history_should_be_empty
 
     i_click_on 'the add history item button'
+    wait_for_taxt_editors_to_load
     select "Form descriptions (additional)", from: "history_item_type"
     fill_in "history_item_text_value", with: "w.q."
     fill_in "history_item_pages", with: "123"
@@ -54,6 +55,7 @@ feature "Editing a history item", as: :editor do
 
     i_go_to 'the page of the most recent history item'
     i_follow "Edit"
+    wait_for_taxt_editors_to_load
     fill_in "history_item_text_value", with: "w."
     fill_in "history_item_pages", with: "99"
     click_button "Save"
@@ -68,6 +70,7 @@ feature "Editing a history item", as: :editor do
     i_go_to 'the protonym page for "Formica fusca"'
     i_should_see "Batiatus, 2004a: 77-78 (q.)"
 
+    wait_for_taxt_editors_to_load
     i_click_on 'the edit history item button'
     fill_in "text_value", with: "w."
     fill_in "pages", with: "99"

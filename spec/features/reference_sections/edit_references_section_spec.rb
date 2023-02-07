@@ -43,6 +43,7 @@ feature "Editing references sections" do
     i_go_to 'the edit page for "Dolichoderinae"'
     the_reference_section_should_be "Original reference"
 
+    wait_for_taxt_editors_to_load
     i_click_on 'the edit reference section button'
     fill_in "references_taxt", with: "(none)"
     within "#references-section" do
@@ -72,6 +73,7 @@ feature "Editing references sections" do
     there_is_a_subfamily_with_a_reference_section "Dolichoderinae", "Original reference"
 
     i_go_to 'the edit page for "Dolichoderinae"'
+    wait_for_taxt_editors_to_load
     i_click_on 'the edit reference section button'
     fill_in "references_taxt", with: "(none)"
     i_click_on 'the cancel reference section button'
@@ -82,6 +84,7 @@ feature "Editing references sections" do
     there_is_a_subfamily_with_a_reference_section "Dolichoderinae", "Original reference"
 
     i_go_to 'the edit page for "Dolichoderinae"'
+    wait_for_taxt_editors_to_load
     i_click_on 'the edit reference section button'
     i_will_confirm_on_the_next_step
     i_click_on 'the delete reference section button'
