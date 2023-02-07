@@ -8,7 +8,7 @@ feature "Managing user feedback" do
   end
 
   scenario "Closing a feedback item (with feed)" do
-    create :feedback, user: nil
+    create :feedback
 
     i_go_to 'the most recent feedback item'
     i_should_not_see "Re-open"

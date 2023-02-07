@@ -48,7 +48,7 @@ feature "Add and edit open issues" do
     i_should_see "added info"
   end
 
-  scenario "Flagging an issue with 'Help wanted' and show notice in the nomen synopsis" do
+  scenario "Flagging an issue with 'Help wanted' and show notice in the header" do
     create :issue, :open, title: "Important fix"
 
     i_go_to 'the catalog'

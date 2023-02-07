@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-feature "Markdown autocompletion", :js do
+feature "Markdown autocompletion", as: :editor, js: true do
   def markdown_textarea
     find(".preview-area textarea")
   end
@@ -30,10 +30,6 @@ feature "Markdown autocompletion", :js do
   def the_markdown_textarea_should_contain_a_markdown_link_to_eciton
     eciton = Taxon.find_by!(name_cache: "Eciton")
     expect(markdown_textarea.value).to include Taxt.tax(eciton.id)
-  end
-
-  background do
-    i_log_in_as_a_catalog_editor_named "Archibald"
   end
 
   scenario "References markdown autocompletion", :skip_ci, :search do
@@ -69,6 +65,7 @@ feature "Markdown autocompletion", :js do
   end
 
   scenario "User markdown autocompletion", :skip_ci do
+    create :user, name: "Archibald"
     i_am_on_a_page_with_a_textarea_with_markdown_preview_and_autocompletion
 
     fill_in "issue_description", with: "@arch"

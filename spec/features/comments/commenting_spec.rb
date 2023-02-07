@@ -5,7 +5,7 @@ require 'rails_helper'
 feature "Commenting" do
   background do
     i_log_in_as_a_catalog_editor_named "Batiatus"
-    create :feedback, user: nil
+    create :feedback
     i_go_to 'the most recent feedback item'
   end
 

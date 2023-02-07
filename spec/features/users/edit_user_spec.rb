@@ -5,7 +5,7 @@ require 'rails_helper'
 feature "Editing a user", :skip_ci do
   background do
     batiatus = create :user, email: "quintus@antcat.org", name: "Batiatus", password: "secret"
-    login_programmatically batiatus
+    login_as batiatus
   end
 
   scenario "Changing password" do
