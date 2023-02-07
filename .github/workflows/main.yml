@@ -18,7 +18,7 @@ env:
 jobs:
   rubocop:
     name: RuboCop
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
 
     steps:
       - name: Checkout
@@ -47,7 +47,7 @@ jobs:
 
   rspec:
     name: RSpec
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
 
     services:
       mysql:
@@ -79,7 +79,7 @@ jobs:
           cp config/database.github-actions.yml config/database.yml
           cp config/server.yml.example config/server.yml
 
-          sudo /etc/init.d/mysql start
+          sudo systemctl start mysql
 
           bundle exec rails db:create db:schema:load
 
@@ -90,7 +90,7 @@ jobs:
 
   migrations:
     name: Migrations
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
 
     services:
       mysql:
@@ -118,7 +118,7 @@ jobs:
           cp config/database.github-actions.yml config/database.yml
           cp config/server.yml.example config/server.yml
 
-          sudo /etc/init.d/mysql start
+          sudo systemctl start mysql
 
       - name: Run migrations (up)
         run: |
