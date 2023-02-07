@@ -7,6 +7,10 @@ module FeatureHelpers
       within(*selector_for(locator), &block)
     end
 
+    def javascript_driver?
+      Capybara.current_driver == Capybara.javascript_driver
+    end
+
     # Browser/navigation.
     def i_go_to page_name
       visit path_to(page_name)

@@ -52,13 +52,6 @@ RSpec.configure do |config|
     end
   end
 
-  # TODO: Fix hack used for checking metadata from the current example.
-  config.around do |example|
-    @current_example = example
-    example.run
-    @current_example = nil
-  end
-
   # Login as controller helpers.
   config.before(:each, :as, type: :controller) do |example|
     as = example.metadata[:as]
