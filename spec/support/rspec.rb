@@ -27,8 +27,10 @@ RSpec.configure do |config|
   # See https://github.com/drapergem/draper#view-context-leakage
   config.before { Draper::ViewContext.clear! }
 
-  config.define_derived_metadata do |metadata|
-    metadata[:aggregate_failures] = true
+  if ENV['AGGREGATE_FAILURES']
+    config.define_derived_metadata do |metadata|
+      metadata[:aggregate_failures] = true
+    end
   end
 
   if ENV["CI"]
