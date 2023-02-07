@@ -68,6 +68,7 @@ feature "Compare revisions", as: :editor, versioning: true do
 
     visit history_item_path(history_item)
     i_follow "History"
+    sleep 1 # TODO: Remove.
     click_button "Compare selected revisions"
     i_should_see "second version", within: 'the left side of the diff'
     i_should_see "last version", within: 'the right side of the diff'
