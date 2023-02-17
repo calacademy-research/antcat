@@ -11,7 +11,7 @@
   =render "shared/errors_for", resource: history_item
   =hidden_field_tag :redirect_back_url, params[:redirect_back_url]
 
-  .row{class: ("is-hidden" if collapse_history_item_taxt_textarea?(history_item)), data: { toggler_name: "taxt_textarea" }}
+  .row{class: ("hidden" if collapse_history_item_taxt_textarea?(history_item)), data: { toggler_name: "taxt_textarea" }}
     .medium-12.columns
       =text_area_tag :taxt, history_item.taxt, rows: 5, name: 'history_item[taxt]', data: { has_linkables: true, previewable: true, previewable_title: "Taxt (freeform text) #{tooltip_icon('Required for taxt items; must it be blank for almost all other types of items. This textarea is always visible in order to make it easier to convert taxt item to relational items (or the other way around).')}", use_extras: true }
 

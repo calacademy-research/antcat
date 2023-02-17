@@ -5,7 +5,7 @@ export default class extends Controller {
     event.preventDefault()
 
     const target = event.currentTarget.dataset.togglerTarget
-    const onClass = event.currentTarget.dataset.togglerOnClass || "is-hidden"
+    const onClass = event.currentTarget.dataset.togglerOnClass || "hidden"
 
     document.
       querySelectorAll(`[data-toggler-name="${target}"]`).

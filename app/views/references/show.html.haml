@@ -16,7 +16,7 @@
         %button.btn-normal{"data-action" => "toggler#toggle", "data-toggler-target" => "export_dropdown"}
           Export
           %i.arrow-down.ml-2
-        .is-hidden.callout.dropdown-content{data: { toggler_name: "export_dropdown" }}
+        .hidden.callout.dropdown-content{data: { toggler_name: "export_dropdown" }}
           %ul.no-bullet
             -if decorated.exportable_to_endnote?
               %li=link_to "EndNote", endnote_export_references_path(id: @reference.id)
@@ -28,7 +28,7 @@
         %button.btn-normal{"data-action" => "toggler#toggle", "data-toggler-target" => "more_dropdown"}
           More
           %i.arrow-down.ml-2
-        .is-hidden.callout.dropdown-content{data: { toggler_name: "more_dropdown" }}
+        .hidden.callout.dropdown-content{data: { toggler_name: "more_dropdown" }}
           %ul.no-bullet
             -if @reference.is_a?(ArticleReference) || @reference.is_a?(BookReference)
               %li=link_to "New Nested Reference", new_reference_path(nesting_reference_id: @reference.id, year: @reference.year, stated_year: @reference.stated_year), class: "btn-normal"
