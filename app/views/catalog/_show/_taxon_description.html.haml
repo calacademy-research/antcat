@@ -4,13 +4,13 @@
   =render "shared/default_reference"
 
 #nomen-synopsis
-  %span.name=Taxa::LinkEachEpithet[taxon]
+  %span.name.font-bold=Taxa::LinkEachEpithet[taxon]
   =taxon.author_citation
   =taxon.decorate.expanded_status
   =taxon.name.gender
 
 #protonym-synopsis
-  %span.name
+  %span.name.font-bold
     =protonym.decorate.link_to_protonym
   -if protonym.sic?
     [sic]
@@ -37,7 +37,7 @@
             of
             =as_type_name.protonym.decorate.link_to_protonym_with_author_citation + Detax[as_type_name_decorated.format_fixation_method]
 
-#type-fields
+#type-fields.mb-4
   -if protonym.primary_type_information_taxt?
     %strong Primary type information:
     =::Types::FormatTypeField[protonym.primary_type_information_taxt]

@@ -20,7 +20,7 @@
   .small-12.columns
     %h5 Author citation
     =preserve do
-      %pre.wrapped
+      %pre.pre-wrapped
         authority = #{@taxon.author_citation}
         =Wikipedia::ReferenceExporter[@taxon.authorship_reference]
 

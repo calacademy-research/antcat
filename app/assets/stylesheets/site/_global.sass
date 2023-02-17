@@ -18,11 +18,17 @@
 .pb-0
   padding-bottom: 0
 
+.p-2
+  padding: 0.5rem
+
 .pb-4
   padding-bottom: 1rem
 
 .pl-4
   padding-left: 1rem
+
+.pb-8
+  padding-bottom: 2rem
 
 .pl-8
   padding-left: 2rem
@@ -98,17 +104,8 @@ span.discreet-author-citation
   a
     color: $color_foundation_black !important
 
-button
-  white-space: nowrap
-
-caption
-  text-align: left
-
-.pre-wrapped
+pre.pre-wrapped
   white-space: pre-wrap
-  white-space: -moz-pre-wrap
-  white-space: -pre-wrap
-  white-space: -o-pre-wrap
   word-wrap: break-word
 
 .truncate
@@ -158,10 +155,6 @@ tr.logged-in-only-background
   max-width: 40rem
   white-space: normal
 
-pre.wrapped
-  white-space: pre-wrap
-  word-wrap: break-word
-
 ul.compact-list
   font-size: 95%
   line-height: 1.2
@@ -195,10 +188,6 @@ a.gray
 .show-on-hover
   display: none
 
-.pale-table
-  td, th
-    background-color: $color_pale
-
 table td.shrink
   max-width: 100%
   white-space: nowrap
@@ -224,9 +213,6 @@ table td.shrink
   color: $color_primary
   cursor: pointer
   width: 0
-
-fieldset
-  border-radius: 5px
 
 // To make tables sortable.
 .hidden-sort

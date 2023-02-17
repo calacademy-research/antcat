@@ -3,11 +3,6 @@
 @import "normalize";
 @import "colors";
 
-body {
-  line-height: 1.5;
-  color: $color_foundation_black;
-}
-
 img {
   display: inline-block;
   vertical-align: middle;
@@ -23,6 +18,7 @@ button {
   background: transparent;
   line-height: 1;
   cursor: auto;
+  white-space: nowrap
 }
 
 pre {
@@ -52,11 +48,8 @@ pre {
   padding-left: 0;
 }
 
-.row:not(.expanded) .row {
-  max-width: none;
-}
-
 .row .row {
+  max-width: none;
   margin-right: -0.625rem;
   margin-left: -0.625rem;
 }
@@ -367,17 +360,13 @@ hr {
 ul,
 ol {
   margin-bottom: 1rem;
+  margin-left: 1.25rem;
   list-style-position: outside;
   line-height: 1.6;
 }
 
 ul {
-  margin-left: 1.25rem;
   list-style-type: disc;
-}
-
-ol {
-  margin-left: 1.25rem;
 }
 
 ul ul, ul ol, ol ul, ol ol {
@@ -394,6 +383,7 @@ ul.no-bullet, ol.no-bullet {
 textarea {
   height: auto;
   min-height: 50px;
+  max-width: 100%;
 }
 
 [type='text'], [type='password'], [type='date'], [type='datetime'], [type='datetime-local'], [type='month'], [type='week'], [type='email'], [type='number'], [type='search'], [type='tel'], [type='time'], [type='url'], [type='color'],
@@ -422,10 +412,6 @@ textarea:focus {
   background-color: #fefefe;
   box-shadow: 0 0 5px $color_medium_gray;
   transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
-}
-
-textarea {
-  max-width: 100%;
 }
 
 textarea[rows] {
@@ -513,16 +499,11 @@ label {
   border-left: 0;
 }
 
-.input-group-field {
-  border-radius: 0;
-  flex: 1 1 0px;
-  min-width: 0;
-}
-
 .fieldset {
   margin: 1.125rem 0;
   padding: 1.25rem;
   border: 1px solid $color_medium_gray;
+  border-radius: 5px;
 }
 
 .fieldset legend {
@@ -533,9 +514,6 @@ label {
 /////////// Forms: Select ///////////
 select {
   width: 100%;
-}
-
-select {
   height: 2.4375rem;
   margin: 0 0 1rem;
   padding: 0.5rem;
@@ -590,8 +568,7 @@ table {
 }
 
 thead,
-tbody,
-tfoot {
+tbody {
   border: 1px solid #f1f1f1;
   background-color: #fefefe;
 }
@@ -599,6 +576,7 @@ tfoot {
 caption {
   padding: 0.5rem 0.625rem 0.625rem;
   font-weight: bold;
+  text-align: left;
 }
 
 thead {
@@ -606,28 +584,23 @@ thead {
   color: $color_foundation_black;
 }
 
-tfoot {
-  background: #f1f1f1;
-  color: $color_foundation_black;
+table th,
+table td {
+  padding: 0.5rem 0.625rem 0.625rem;
 }
 
-thead tr,
-tfoot tr {
+table th {
+  text-align: left;
+}
+
+thead tr {
   background: transparent;
 }
 
 thead th,
-thead td,
-tfoot th,
-tfoot td {
-  padding: 0.5rem 0.625rem 0.625rem;
+thead td {
   font-weight: bold;
   text-align: left;
-}
-
-tbody th,
-tbody td {
-  padding: 0.5rem 0.625rem 0.625rem;
 }
 
 tbody tr:nth-child(even) {
@@ -648,9 +621,6 @@ table.unstriped tbody tr {
   table.stack thead {
     display: none;
   }
-  table.stack tfoot {
-    display: none;
-  }
   table.stack tr,
   table.stack th,
   table.stack td {
@@ -663,9 +633,6 @@ table.unstriped tbody tr {
 
 table.hover thead tr:hover {
   background-color: #f3f3f3;
-}
-table.hover tfoot tr:hover {
-  background-color: #ececec;
 }
 table.hover tbody tr:hover {
   background-color: #f9f9f9;

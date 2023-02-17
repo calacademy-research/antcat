@@ -47,7 +47,7 @@ class MakePreviewable
 
   createPreviewArea: (title) ->
     $ """
-    <div class="preview-area">
+    <div class="preview-area mb-4">
       <div class="row">
         <div class="medium-6 columns">#{title}</div>
         <div class="medium-6 columns">
@@ -57,7 +57,7 @@ class MakePreviewable
       </div>
       <div class="row">
         <div class="medium-6 columns preview-editable is-already-previewable"></div>
-        <div class="medium-6 columns preview-previewable"></div>
+        <div class="medium-6 columns preview-previewable p-2"></div>
       </div>
     </div>
     """
