@@ -8,11 +8,11 @@
 
   .picker-modal-backdrop.is-hidden{"data-picker-target" => "modalWrapper", "data-action" => 'click->picker#backdropClickClose'}
     .picker-modal
-      %p.left
+      %p.float-left
         %span.pickable-outline Pickable type: #{pickable_type}
         -if ranks.present?
           %span Pickable ranks: #{ranks.join(', ')} (only works for taxa)
-      %p.right
+      %p.float-right
         %button.btn-tiny.btn-nodanger{"data-action" => 'click->picker#close'} Close
 
       %input{"autocomplete" => "off", "spellcheck" => "false", "data-picker-target" => "searchInput", type: "text"}

@@ -2,7 +2,7 @@
   #references-section.callout.mb-8
     %h6
       Reference sections
-      .right
+      .float-right
         =link_to 'Add', new_taxon_reference_section_path(taxon), data: { testid: 'add-reference-section-button' }, class: 'btn-normal btn-tiny'
         -if taxon.reference_sections.present?
           =link_to "Reorder", taxon_reorder_reference_sections_path(taxon), class: "btn-normal btn-tiny"

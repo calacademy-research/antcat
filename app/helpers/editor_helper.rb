@@ -2,7 +2,7 @@
 
 module EditorHelper
   def hide_editing_helper_link
-    tag.div class: 'show-editing-helper small-text right show-on-hover' do
+    tag.div class: 'show-editing-helper small-text float-right show-on-hover' do
       link_to "Hide editing helper", edit_user_registration_path
     end
   end

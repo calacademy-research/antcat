@@ -26,7 +26,7 @@
               =time_ago_in_words site_notice.created_at
               ago
           %td.no-wrap
-            .right
+            .float-right
               =CommentableDecorator.new(site_notice).link_existing_comments_section
 
 =will_paginate @site_notices

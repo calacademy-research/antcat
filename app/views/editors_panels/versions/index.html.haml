@@ -65,6 +65,6 @@
     %h6=@last_version.created_at
 
 %p
-  %small.right Total versions: #{@total_versions_count} (#{Time.current})
+  %small.float-right Total versions: #{@total_versions_count} (#{Time.current})
 
 =will_paginate @versions
