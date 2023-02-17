@@ -3,7 +3,7 @@
 -decorated_protonym = protonym.decorate
 
 -if current_user
-  .tiny-margin-bottom
+  .mb-2
     -if user_is_editor?
       =link_to "Edit taxon", edit_taxon_path(taxon), class: "btn-tiny btn-normal"
     =copy_to_clipboard_button Taxt.tax(taxon.id), "tax #{taxon.id}"
@@ -22,7 +22,7 @@
 %br
 
 -if current_user
-  .tiny-margin-bottom
+  .mb-2
     -if user_is_editor?
       =link_to "Edit protonym", edit_protonym_path(protonym), class: "btn-tiny btn-normal"
     =copy_to_clipboard_button Taxt.pro(protonym.id), "pro #{protonym.id}"

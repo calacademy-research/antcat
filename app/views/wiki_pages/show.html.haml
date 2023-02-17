@@ -8,7 +8,7 @@
   -if user_is_superadmin?
     =link_to append_superadmin_icon("Delete"), @wiki_page, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-warning"
 
-.row.small-margin-bottom
+.row.mb-4
   .medium-12.columns
     %h5=@wiki_page.title
     %small.gray-text

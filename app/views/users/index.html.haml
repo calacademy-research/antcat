@@ -7,13 +7,13 @@
 
 -if user_is_at_least_helper?
   %p
-    %span.margin-bottom.logged-in-only-background
+    %span.mb-8.logged-in-only-background
       Emails are only visible to logged in helpers and editors.
       =logged_in_only_tooltip_icon user_group: 'helpers/editors'
 
 -if user_is_superadmin?
   %p
-    %span.margin-bottom.logged-in-only-background
+    %span.mb-8.logged-in-only-background
       Activity and PaperTrail version counts are only visible to superadmins.
       =logged_in_only_tooltip_icon user_group: 'superadmins'
 
@@ -37,7 +37,7 @@
         %td Reg. #{user.created_at.year}
 
 -if @hidden_users
-  %h5.huge-margin-top
+  %h5.mt-20
     Hidden users
     =logged_in_only_tooltip_icon user_group: 'helpers/editors'
   %table.stack
@@ -60,7 +60,7 @@
         %td Reg. #{user.created_at.year}
 
 -if @deleted_or_locked_users
-  %h5.huge-margin-top
+  %h5.mt-20
     Deleted or locked users
     %small This section is only visible to superadmins.
     =logged_in_only_tooltip_icon user_group: 'superadmins'

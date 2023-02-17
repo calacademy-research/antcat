@@ -1,4 +1,4 @@
-.right
+.float-right
   -if user_is_editor?
     =editors_catalog_presenter.edit_taxon_button
   =link_to "History", taxon_history_path(taxon), class: "btn-normal"
@@ -7,8 +7,8 @@
   .dropdown-container
     %button.btn-normal{"data-action" => "toggler#toggle", "data-toggler-target" => "more_dropdown"}
       More
-      %i.arrow-down.small-left-margin
-    .is-hidden.callout.dropdown-content{data: { toggler_name: "more_dropdown" }}
+      %i.arrow-down.ml-2
+    .hidden.callout.dropdown-content{data: { toggler_name: "more_dropdown" }}
       %ul.no-bullet
         -if user_is_editor?
           %li=editors_catalog_presenter.add_child_button

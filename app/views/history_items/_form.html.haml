@@ -11,11 +11,11 @@
   =render "shared/errors_for", resource: history_item
   =hidden_field_tag :redirect_back_url, params[:redirect_back_url]
 
-  .row{class: ("is-hidden" if collapse_history_item_taxt_textarea?(history_item)), data: { toggler_name: "taxt_textarea" }}
+  .row{class: ("hidden" if collapse_history_item_taxt_textarea?(history_item)), data: { toggler_name: "taxt_textarea" }}
     .medium-12.columns
       =text_area_tag :taxt, history_item.taxt, rows: 5, name: 'history_item[taxt]', data: { has_linkables: true, previewable: true, previewable_title: "Taxt (freeform text) #{tooltip_icon('Required for taxt items; must it be blank for almost all other types of items. This textarea is always visible in order to make it easier to convert taxt item to relational items (or the other way around).')}", use_extras: true }
 
-  .row.margin-top
+  .row.mt-8
     .large-12.columns
       .callout
         %h6
@@ -143,7 +143,7 @@
               %td
                 %code force_author_citation
 
-  .row.margin-top
+  .row.mt-8
     .medium-3.columns
       =edit_summary_text_field_tag
     .medium-6.columns
@@ -155,13 +155,13 @@
       =f.number_field :position, placeholder: ('Leave blank for default' if history_item.new_record?)
       =f.select :rank, Rank::AntCatSpecific::TYPE_SPECIFIC_HISTORY_ITEM_TYPES, include_blank: 'Show for all ranks (default)'
 
-%h5.huge-margin-top.small-margin-bottom Related records
+%h5.mt-20.mb-4 Related records
 
 -# TODO: DRY w.r.t. 'history_items/show.html.haml'.
 -if protonym.taxa.present?
-  .row.margin-bottom
+  .row.mb-8
     .small-12.columns
-      %h6.bold Taxa belonging to this history item's protonym
+      %h6.font-bold Taxa belonging to this history item's protonym
       %table
         -TaxonQuery.new(protonym.taxa.order_by_name).with_common_includes_and_current_taxon_includes.each do |taxon|
           %tr
@@ -173,7 +173,7 @@
                 %br
                 %small=taxon.decorate.expanded_status
 
-%h6.bold.small-margin-bottom Other history items belonging to #{protonym.name.name_html}
+%h6.font-bold.mb-4 Other history items belonging to #{protonym.name.name_html}
 %table
   %tbody
     -if protonym.history_items.persisted.empty?

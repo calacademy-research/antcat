@@ -18,7 +18,7 @@
                 =db_tooltip_icon :connecting_terms, scope: :protonyms
             %td
               -if protonym.name&.persisted?
-                %span.right=link_to "Name record ##{protonym.name.id}", name_path(protonym.name), class: 'btn-normal btn-tiny'
+                %span.float-right=link_to "Name record ##{protonym.name.id}", name_path(protonym.name), class: 'btn-normal btn-tiny'
                 =protonym.decorate.name_with_fossil
               -else
                 =text_field_tag :protonym_name_string, protonym&.name&.name
@@ -84,7 +84,7 @@
             %td
               =f.text_field :locality, data: { use_locality_autocomplete: true }
 
-      %h6.bold.margin-top Nomen attributes
+      %h6.font-bold.mt-8 Nomen attributes
       %ul.no-bullet
         %li
           =f.check_box :nomen_nudum
@@ -92,9 +92,9 @@
             %i Nomen nudum
 
     .large-5.columns
-      .callout.margin-bottom
+      .callout.mb-8
         %table.unstriped
-          %h6.bold
+          %h6.font-bold
             Type name
             =db_tooltip_icon :type_name_reference, scope: :protonyms
           =f.fields_for :type_name, (protonym.type_name || TypeName.new) do |type_name_fields|
@@ -135,7 +135,7 @@
                   -# TODO: Improve "(don't blank taxon)".
                   =label_tag :destroy_type_name, "Clear type name on save (don't blank taxon)"
 
-    .large-12.columns.margin-bottom
+    .large-12.columns.mb-8
       %hr
 
       %p
@@ -195,9 +195,9 @@
             =f.button "Save", class: "btn-saves"
 
 -if protonym.taxa.present?
-  %h5.huge-margin-top.small-margin-bottom Related records
+  %h5.mt-20.mb-4 Related records
 
-  %h6.bold Taxa belonging to this protonym
+  %h6.font-bold Taxa belonging to this protonym
   %table
     -TaxonQuery.new(protonym.taxa.order_by_name).with_common_includes.each do |taxon|
       %tr

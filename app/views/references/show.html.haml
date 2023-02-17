@@ -4,7 +4,7 @@
 -decorated = @reference.decorate
 
 -content_for :breadcrumbs_right do
-  .right
+  .float-right
     -if user_is_at_least_helper?
       =link_to "Edit", edit_reference_path(@reference), class: "btn-normal"
     -if current_user
@@ -15,8 +15,8 @@
       .dropdown-container
         %button.btn-normal{"data-action" => "toggler#toggle", "data-toggler-target" => "export_dropdown"}
           Export
-          %i.arrow-down.small-left-margin
-        .is-hidden.callout.dropdown-content{data: { toggler_name: "export_dropdown" }}
+          %i.arrow-down.ml-2
+        .hidden.callout.dropdown-content{data: { toggler_name: "export_dropdown" }}
           %ul.no-bullet
             -if decorated.exportable_to_endnote?
               %li=link_to "EndNote", endnote_export_references_path(id: @reference.id)
@@ -27,8 +27,8 @@
       .dropdown-container
         %button.btn-normal{"data-action" => "toggler#toggle", "data-toggler-target" => "more_dropdown"}
           More
-          %i.arrow-down.small-left-margin
-        .is-hidden.callout.dropdown-content{data: { toggler_name: "more_dropdown" }}
+          %i.arrow-down.ml-2
+        .hidden.callout.dropdown-content{data: { toggler_name: "more_dropdown" }}
           %ul.no-bullet
             -if @reference.is_a?(ArticleReference) || @reference.is_a?(BookReference)
               %li=link_to "New Nested Reference", new_reference_path(nesting_reference_id: @reference.id, year: @reference.year, stated_year: @reference.stated_year), class: "btn-normal"
@@ -37,7 +37,7 @@
               %li=link_to "Delete", reference_path(@reference), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-warning"
             =activities_link_for_trackable @reference
 
-.row.margin-bottom
+.row.mb-8
   .medium-9.columns
     %h5 Reference
     =decorated.expanded_reference
@@ -50,16 +50,16 @@
           Reference:
           =@reference.key_with_suffixed_year
 
-        .small-margin-bottom
+        .mb-4
           =copy_to_clipboard_button Taxt.ref(@reference.id), "ref #{@reference.id}"
           =copy_to_clipboard_button @reference.id
 
-        .tiny-margin-bottom
+        .mb-2
           =link_to "Add to Recently Used", my_recently_used_references_path(id: @reference.id), method: :post, remote: true, class: "btn-tiny add-to-recently-used-references-js-hook btn-saves"
-        .tiny-margin-bottom
+        .mb-2
           =@editors_reference_presenter.set_as_default_reference_button
 
-.row.margin-bottom
+.row.mb-8
   .small-12.columns
     %h5 Details
     %table.table.unstriped
@@ -148,7 +148,7 @@
 
 -if current_user
   -if @citations_presenter.any_citations?
-    .row.margin-bottom
+    .row.mb-8
       .small-12.columns
         .callout.no-border-callout.logged-in-only-background
           %h5 Citations
@@ -166,7 +166,7 @@
                 %td=citation.pages
 
   -if @history_citations.present?
-    .row.margin-bottom
+    .row.mb-8
       .small-12.columns
         .callout.no-border-callout.logged-in-only-background
           -# Anchor for the pagination.
@@ -192,7 +192,7 @@
           =will_paginate @history_citations, param_name: "history_citations_page", params: { anchor: "history_citations" }
 
 -if decorated.described_taxa.exists?
-  .row.margin-bottom
+  .row.mb-8
     .small-12.columns
       %h5 Taxa originally described in this reference (including combinations)
       %small Note: taxa described in nested references of this reference are not included here.
@@ -217,7 +217,7 @@
                 =antcat_icon 'check'
 
 -if user_is_editor?
-  .row.margin-bottom
+  .row.mb-8
     .small-12.columns
       %h5 Review
       %table

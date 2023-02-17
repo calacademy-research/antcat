@@ -6,8 +6,8 @@
   .dropdown-container
     %button.btn-normal{"data-action" => "toggler#toggle", "data-toggler-target" => "more_dropdown"}
       Other Search forms
-      %i.arrow-down.small-left-margin
-    .is-hidden.callout.dropdown-content{data: { toggler_name: "more_dropdown" }}
+      %i.arrow-down.ml-2
+    .hidden.callout.dropdown-content{data: { toggler_name: "more_dropdown" }}
       %ul.no-bullet
         %li=link_to "Search History Items form", history_items_path, class: 'btn-normal'
 
@@ -54,5 +54,5 @@
 
 =will_paginate @reference_sections
 
-.callout.margin-top
+.callout.mt-8
   =render "shared/note_on_taxt_references"

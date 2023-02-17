@@ -7,7 +7,7 @@
 -content_for :breadcrumbs_right do
   =link_to "Show source code", @decorated_database_script.github_url, class: "btn-normal"
 
-.row.collapse.margin-bottom
+.row.collapse.mb-8
   .medium-8.columns
     %h5
       =@database_script.title
@@ -20,7 +20,7 @@
         %p=markdown @database_script.issue_description
 
     -if @database_script.related_scripts.present?
-      %h6.margin-top
+      %h6.mt-8
         %strong Related scripts
       %ul
         -@database_script.related_scripts.each do |related_script|
@@ -40,7 +40,7 @@
 -if @database_script.paginate?
   =will_paginate @database_script.paginated_results(page: params[:page])
 
-%small.left
+%small.float-left
   Soft-validated
   =antcat_icon(@decorated_database_script.soft_validated? ? "check" : "nope")
 
@@ -48,7 +48,7 @@
   %code
     ="%dbscript:#{@database_script.class.name.demodulize}"
 
-%small.right
+%small.float-right
   Script runtime: #{@render_duration.round(4)} seconds
   -if @database_script.results_runtime
     (results #{@database_script.results_runtime.round(4)} seconds)

@@ -1,7 +1,7 @@
 .callout.no-border-callout.logged-in-only-background
   %h6 Species and subspecies in subgenus
 
-  %ul.compact-list.small-margin-bottom
+  %ul.compact-list.mb-4
     -TaxonQuery.new(taxon.species.order_by_name).with_common_includes.each do |species|
       %li
         =CatalogFormatter.link_to_taxon(species)

@@ -14,7 +14,7 @@
         %legend to
         =@to_taxon.decorate.id_and_name_and_author_citation
 
-  .row.margin-bottom
+  .row.mb-8
     -# Move from.
     .medium-6.columns
       -if @taxon.reference_sections.empty?
@@ -23,8 +23,8 @@
         %table.reference-sections
           %caption
             Reference sections
-            %label.right
-              %input.is-hidden{"data-checkbox-select-all-target" => "parentCheckbox", 'data-action' => "change->checkbox-select-all#toggle", type: "checkbox"}
+            %label.float-right
+              %input.hidden{"data-checkbox-select-all-target" => "parentCheckbox", 'data-action' => "change->checkbox-select-all#toggle", type: "checkbox"}
               %span.btn-nodanger.btn-tiny{data: { testid: 'select-deselect-all-button' }} Select/deselect all
           %tbody
             -@taxon.reference_sections.each do |reference_section|
@@ -46,7 +46,7 @@
                 %td
                   =render 'reference_section', reference_section: reference_section
 
-  .row.margin-bottom
+  .row.mb-8
     .medium-12.columns
-      .center-text
+      .text-center
         =f.button "Move selected items", class: "btn-saves"

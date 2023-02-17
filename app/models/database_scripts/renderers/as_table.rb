@@ -14,7 +14,7 @@ module DatabaseScripts
 
       def render
         <<-HTML.html_safe
-          <table class="tablesorter hover margin-top">
+          <table class="tablesorter hover mt-8">
             #{"<caption>#{caption_content}</caption>" if caption_content}
             #{"<caption>#{info_content}</caption>" if info_content}
             <thead>

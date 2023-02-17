@@ -16,7 +16,7 @@ export default class extends Controller {
 
     this.previewWrapper = document.createElement('span')
     this.previewWrapper.classList.add('stimulus-hover-preview')
-    this.previewWrapper.classList.add('is-hidden')
+    this.previewWrapper.classList.add('hidden')
     this.element.appendChild(this.previewWrapper)
     this.previewContent = null
   }
@@ -40,7 +40,7 @@ export default class extends Controller {
   show() {
     if (this.previewContent) {
       if (this.isVisible) {
-        this.previewWrapper.classList.remove("is-hidden")
+        this.previewWrapper.classList.remove("hidden")
       }
     } else {
       fetch(this.urlValue).
@@ -58,13 +58,13 @@ export default class extends Controller {
           this.previewWrapper.appendChild(this.previewContent)
 
           if (this.isVisible) {
-            this.previewWrapper.classList.remove("is-hidden")
+            this.previewWrapper.classList.remove("hidden")
           }
         })
     }
   }
 
   hide() {
-    this.previewWrapper.classList.add("is-hidden")
+    this.previewWrapper.classList.add("hidden")
   }
 }

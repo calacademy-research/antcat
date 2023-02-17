@@ -9,11 +9,11 @@
       =form_with url: taxon_convert_to_subspecies_path(@taxon) do |f|
         =render 'shared/errors_for', resource: @taxon
         .row
-          .medium-12.columns.margin-bottom
+          .medium-12.columns.mb-8
             %h6 Convert species
             %p=@taxon.decorate.id_and_name_and_author_citation
 
-          .medium-12.columns.margin-bottom
+          .medium-12.columns.mb-8
             %h6 to be a subspecies of
             =taxon_picker @new_species, name: 'new_species_id', ranks: Rank::SPECIES
 

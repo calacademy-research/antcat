@@ -1,5 +1,5 @@
 #breadcrumbs
-  .left
+  .float-left
     -breadcrumbs(display_single_fragment: true, link_current: true).tap do |links|
       -if links.any?
         -links.each do |link|
@@ -8,9 +8,9 @@
             &rsaquo;
 
   -if content_for? :breadcrumbs_right
-    .right=yield :breadcrumbs_right
+    .float-right=yield :breadcrumbs_right
 
   .clearfix
 
   -if content_for? :breadcrumbs_left
-    .left=yield :breadcrumbs_left
+    .float-left=yield :breadcrumbs_left

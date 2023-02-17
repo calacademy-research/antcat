@@ -12,7 +12,7 @@
     =link_to "Non-empty regression tests", database_scripts_path(view: DatabaseScriptsController::NON_EMPTY_REGRESSION_TESTS), class: "btn-normal"
 
 -if params[:tag]
-  .row.margin-bottom
+  .row.mb-8
     .small-12.columns
       %p
         Showing:
@@ -24,39 +24,39 @@
     -if @grouped_database_scripts.empty?
       Found no database scripts.
     -@grouped_database_scripts.each do |section, database_scripts|
-      %h5.right
+      %h5.float-right
         %small
           =database_scripts.size
           scripts in section
       -case section
       -when DatabaseScripts::Tagging::DISAGREEING_HISTORY_SECTION
-        %h5.left History items and taxa not agreeing
+        %h5.float-left History items and taxa not agreeing
       -when DatabaseScripts::Tagging::MISSING_TAGS_SECTION
-        %h5.left History items with hardcoded names or <code>missing</code> tags
+        %h5.float-left History items with hardcoded names or <code>missing</code> tags
       -when DatabaseScripts::Tagging::CODE_CHANGES_REQUIRED_SECTION
-        %h5.left Code changes required
+        %h5.float-left Code changes required
         =info_tooltip_icon 'For issues which may not be completely fixable without making changes to the code.'
       -when DatabaseScripts::Tagging::PENDING_AUTOMATION_ACTION_REQUIRED_SECTION
-        %h5.left Pending automation, editor action required
+        %h5.float-left Pending automation, editor action required
         =info_tooltip_icon 'For issues that require manual editing before they can be fixed by script.'
       -when DatabaseScripts::Tagging::PENDING_AUTOMATION_NO_ACTION_REQUIRED_SECTION
-        %h5.left Pending automation, no editor action required
+        %h5.float-left Pending automation, no editor action required
         =info_tooltip_icon 'For issues that can be fixed by script once agreed upon, but require little to no manual editing.'
       -when DatabaseScripts::Tagging::REVERSED_SECTION
-        %h5.left Reversed scripts
+        %h5.float-left Reversed scripts
         =info_tooltip_icon 'Some scripts have "reversed" scripts, for finding the same issue from the other side of the relation. This section was added to make other sections less populated.'
       -when DatabaseScripts::Tagging::REGRESSION_TEST_SECTION
-        %h5.left Regression tests
+        %h5.float-left Regression tests
         =info_tooltip_icon 'For issues that have been mostly fixed, but we want to make sure do not re-appear. Only needs to be checked periodically.'
       -when DatabaseScripts::Tagging::RESEARCH_SECTION
-        %h5.left Research scripts
+        %h5.float-left Research scripts
         =info_tooltip_icon 'Scripts that were added to get an overview of our current data.'
       -when *DatabaseScripts::Tagging::SECTIONS
-        %h5.left="#{section.capitalize} scripts"
+        %h5.float-left="#{section.capitalize} scripts"
       -else
-        %h5.left Unknown section. What???
+        %h5.float-left Unknown section. What???
 
-      %table.tablesorter.huge-margin-bottom
+      %table.tablesorter.mb-16
         %thead
           %tr
             %th Script
@@ -85,14 +85,14 @@
                   =decorated.empty_status
 
 .row
-  .small-12.columns.huge-margin-bottom
-    %small.right
+  .small-12.columns.mb-16
+    %small.float-right
       Total number of scripts:
       =@total_number_of_database_scripts
 
 .row
-  .small-12.columns.margin-bottom
+  .small-12.columns.mb-8
     %h5 Filter by tags
     -@database_scripts_presenter.tallied_tags.each do |tag, count|
       =DatabaseScriptDecorator.format_linked_tags([tag])
-      %small.right-margin=count
+      %small.mr-4=count

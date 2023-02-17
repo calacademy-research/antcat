@@ -1,7 +1,7 @@
 -decorated_protonym = protonym.decorate
 
 -if current_user
-  .tiny-margin-bottom
+  .mb-2
     -if user_is_at_least_helper?
       =link_to "Edit protonym", edit_protonym_path(protonym), class: "btn-tiny btn-normal"
     =copy_to_clipboard_button Taxt.pro(protonym.id), "pro #{protonym.id}"
@@ -11,7 +11,7 @@
   %strong Protonym:
   =decorated_protonym.link_to_protonym
 
-.margin-bottom
+.mb-8
   %strong Authorship:
   =protonym.authorship_reference.decorate.link_to_reference + ': ' + protonym.authorship_pages
 

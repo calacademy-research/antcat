@@ -4,15 +4,15 @@
   %button.btn-tiny.btn-nodanger{"data-action" => 'click->picker#open'} Pick
   -# TODO: Only show 'Clear' button when nothing is selected.
   %button.btn-tiny.btn-nodanger{"data-action" => 'click->picker#clear'} Clear
-  %input.is-hidden{"data-picker-target" => "hiddenInput", name: name, id: id, type: "text", value: record&.id, data: { visible_in_test_env: true }}
+  %input.hidden{"data-picker-target" => "hiddenInput", name: name, id: id, type: "text", value: record&.id, data: { visible_in_test_env: true }}
 
-  .picker-modal-backdrop.is-hidden{"data-picker-target" => "modalWrapper", "data-action" => 'click->picker#backdropClickClose'}
+  .picker-modal-backdrop.hidden{"data-picker-target" => "modalWrapper", "data-action" => 'click->picker#backdropClickClose'}
     .picker-modal
-      %p.left
+      %p.float-left
         %span.pickable-outline Pickable type: #{pickable_type}
         -if ranks.present?
           %span Pickable ranks: #{ranks.join(', ')} (only works for taxa)
-      %p.right
+      %p.float-right
         %button.btn-tiny.btn-nodanger{"data-action" => 'click->picker#close'} Close
 
       %input{"autocomplete" => "off", "spellcheck" => "false", "data-picker-target" => "searchInput", type: "text"}

@@ -41,7 +41,7 @@ export default class Picker extends Controller {
     event.preventDefault()
     event.stopPropagation()
 
-    this.modalWrapperTarget.classList.remove('is-hidden')
+    this.modalWrapperTarget.classList.remove('hidden')
 
     this.searchInputTarget.focus()
     this._onSearch()
@@ -51,7 +51,7 @@ export default class Picker extends Controller {
     if (event) {
       event.preventDefault()
     }
-    this.modalWrapperTarget.classList.add('is-hidden')
+    this.modalWrapperTarget.classList.add('hidden')
   }
 
   backdropClickClose(event) {

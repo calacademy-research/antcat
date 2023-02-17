@@ -23,7 +23,7 @@
 -elsif @user.hidden?
   .callout.alert.small-6 This user is hidden from the users list. Edit user to show it.
 
-.row.margin-bottom
+.row.mb-8
   .small-6.columns
     %p
       %strong Name:
@@ -57,14 +57,14 @@
         =tooltip_icon "Use link in the breadcrumbs to see PaperTrail versions created by this user. The number in this infobox may be higher than the number of search results, since 'User' versions are excluded from the versions search page."
         =logged_in_only_tooltip_icon user_group: "superadmins"
 
-.row.margin-top
+.row.mt-8
   .large-12.columns
     %h5
       #{@user.name}'s most
       =link_to "recent activity", activities_path(user_id: @user.id)
     =render "activities/table", activities: @recent_user_activities
 
-.row.margin-top
+.row.mt-8
   .large-12.columns
     %h5
       #{@user.name}'s most

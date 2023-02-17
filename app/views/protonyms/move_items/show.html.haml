@@ -23,8 +23,8 @@
         %table.history-items
           %caption
             History items
-            %label.right
-              %input.is-hidden{"data-checkbox-select-all-target" => "parentCheckbox", 'data-action' => "change->checkbox-select-all#toggle", type: "checkbox"}
+            %label.float-right
+              %input.hidden{"data-checkbox-select-all-target" => "parentCheckbox", 'data-action' => "change->checkbox-select-all#toggle", type: "checkbox"}
               %span.btn-nodanger.btn-tiny{data: { testid: 'select-deselect-all-button' }} Select/deselect all
           %tbody
             -@protonym.history_items.each do |history_item|
@@ -46,7 +46,7 @@
                 %td
                   %small=Detax[history_item.to_taxt]
 
-  .row.margin-bottom
+  .row.mb-8
     .medium-12.columns
-      .center-text
+      .text-center
         =f.submit "Move selected items", class: "btn-saves"
