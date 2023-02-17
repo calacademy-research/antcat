@@ -15,7 +15,7 @@ module FeatureHelpers
 
       # Catalog.
       when 'the taxon browser'
-        "#taxon-browser-new"
+        "#taxon-browser"
       when 'the protonym'
         "#taxon-description #protonym-synopsis > span.name"
       when 'the nomen synopsis'

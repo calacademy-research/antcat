@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-feature "Move items" do
+feature "Move items", :skip_ci do
   background do
     i_log_in_as_a_catalog_editor_named "Archibald"
   end

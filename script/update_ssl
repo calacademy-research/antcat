@@ -1,15 +1,22 @@
 #!/bin/bash
 
-# See also https://github.com/calacademy-research/antcat-issues/wiki/Setup-SSL-certificate-(for-HTTPS)
-# To run on production:
+# Manually add this to cron (it copied the cert and reloads nginx every Wednesday):
+#   sudo crontab -e
+#   1 18 * * Wed bash /data/antcat/current/script/update_ssl
+
+# To manually run script on production:
 #   /data/antcat/current/script/update_ssl
 # Or trigger from local:
 #   ssh deploy@antcat.org "bash --login -c /data/antcat/current/script/update_ssl"
 
-echo "Running certbot renew..."
-sudo certbot renew
+# A cron job for renewing the cert was installed by certbot (see 'cat cron.d/certbot').
+# In case it has not been renewed run: sudo certbot renew
 
-echo "Backuping..."
+# See also https://github.com/calacademy-research/antcat-issues/wiki/Setup-SSL-certificate-(for-HTTPS)
+
+# ---
+
+echo "Backing up..."
 timestamp=$(date +"%Y_%m_%d__%H%M%S")
 sudo cp /etc/nginx/ssl/antcat/antcat.crt "/etc/nginx/ssl/antcat/antcat.crt.old_${timestamp}"
 sudo cp /etc/nginx/ssl/antcat/antcat.key "/etc/nginx/ssl/antcat/antcat.key.old_${timestamp}"
@@ -18,7 +25,7 @@ echo "Copying..."
 sudo cp /etc/letsencrypt/live/antcat.org/fullchain.pem /etc/nginx/ssl/antcat/antcat.crt
 sudo cp /etc/letsencrypt/live/antcat.org/privkey.pem /etc/nginx/ssl/antcat/antcat.key
 
-echo "Restarting nginx..."
-sudo service nginx restart
+echo "Reloading nginx..."
+sudo service nginx reload
 
 echo "Done"

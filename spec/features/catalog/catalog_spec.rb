@@ -4,7 +4,7 @@ require 'rails_helper'
 
 feature "Using the catalog", as: :visitor do
   def should_be_selected_in_the_taxon_browser name
-    within '#taxon-browser-new' do
+    within '#taxon-browser' do
       expect(page).to have_css ".selected", text: name
     end
   end

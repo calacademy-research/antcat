@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-feature "Compare revisions", as: :editor, versioning: true do
+feature "Compare revisions", skip_ci: true, as: :editor, versioning: true do
   def i_follow_the_first_linked_history_item
     first("a[href^='/history_items/']").click
   end

@@ -12,9 +12,9 @@ describe ApplicationHelper do
     end
   end
 
-  describe "#foundation_class_for" do
-    specify { expect(helper.foundation_class_for("notice")).to eq "primary" }
-    specify { expect(helper.foundation_class_for("alert")).to eq "alert" }
-    specify { expect(helper.foundation_class_for("error")).to eq "alert" }
+  describe "#flash_message_class" do
+    specify { expect(helper.flash_message_class("notice")).to eq "primary" }
+    specify { expect(helper.flash_message_class("alert")).to eq "alert" }
+    specify { expect(helper.flash_message_class("error")).to eq "alert" }
   end
 end
