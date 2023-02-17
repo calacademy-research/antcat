@@ -196,3 +196,31 @@ table.activities
 
 a.rounded-badge
   cursor: pointer
+
+/////////// Pagination ///////////
+.pagination
+  .current
+    border-radius: 3px
+    font-style: normal
+    padding: 0.1875rem 0.625rem
+    background: $color_primary
+    color: #fff
+
+  .disabled
+    line-height: 1.5
+    padding: 0.1875rem 0.625rem
+    color: $color_medium_gray
+    cursor: not-allowed
+
+  em
+    font-style: normal
+
+.pagination a, .pagination button
+  display: inline
+  text-decoration: none
+  cursor: pointer
+  padding: 0.1875rem 0.625rem
+  border-radius: 3px
+  color: $color_foundation_black
+  display: inline
+  background: $color_light_gray
