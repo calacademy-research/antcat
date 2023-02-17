@@ -23,6 +23,7 @@ button {
   background: transparent;
   line-height: 1;
   cursor: auto;
+  white-space: nowrap
 }
 
 pre {
@@ -517,6 +518,7 @@ label {
   margin: 1.125rem 0;
   padding: 1.25rem;
   border: 1px solid $color_medium_gray;
+  border-radius: 5px;
 }
 
 .fieldset legend {
@@ -527,9 +529,6 @@ label {
 /////////// Forms: Select ///////////
 select {
   width: 100%;
-}
-
-select {
   height: 2.4375rem;
   margin: 0 0 1rem;
   padding: 0.5rem;
@@ -593,6 +592,7 @@ tfoot {
 caption {
   padding: 0.5rem 0.625rem 0.625rem;
   font-weight: bold;
+  text-align: left;
 }
 
 thead {
@@ -608,6 +608,10 @@ tfoot {
 thead tr,
 tfoot tr {
   background: transparent;
+}
+
+table th {
+  text-align: left;
 }
 
 thead th,
