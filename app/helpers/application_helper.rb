@@ -43,7 +43,7 @@ module ApplicationHelper
     tag.span "new!", class: "rounded-badge"
   end
 
-  def foundation_class_for flash_type
+  def flash_message_class flash_type
     case flash_type.to_sym
     when :notice then "primary"
     when :alert  then "alert"
