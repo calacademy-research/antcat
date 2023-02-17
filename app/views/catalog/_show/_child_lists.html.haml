@@ -1,6 +1,6 @@
 -Taxa::ChildList[taxon].each do |child_list|
   %div
-    %span.caption
+    %span.caption.font-bold
       =succeed ':' do
         =child_list[:label]
     =child_list[:children].map { |child| CatalogFormatter.link_to_taxon(child) }.join(', ').html_safe
