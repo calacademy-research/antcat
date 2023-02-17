@@ -3,7 +3,7 @@
 =form.fields_for :name do |name_form|
   .row.mb-8
     .large-8.columns
-      %h6.bold Required fields
+      %h6.font-bold Required fields
       %table.unstriped.mb-8.get-rid-of-margins-and-paddings-from-inputs
         %tr
           %td=form.label :parent, 'Parent'
@@ -52,7 +52,7 @@
           %td
             =protonym_picker (form.object.protonym if form.object.protonym&.persisted?), id: 'taxon_protonym_id', name: 'taxon[protonym_id]'
 
-      %h6.bold Status-specific fields
+      %h6.font-bold Status-specific fields
       %table.unstriped
         %tr
           %td.shrink
@@ -68,7 +68,7 @@
 
     .large-4.columns
       .callout
-        %h6.bold Fossil-only fields
+        %h6.font-bold Fossil-only fields
         %table.unstriped
           %tr
             %td.py-0
@@ -77,7 +77,7 @@
                   =form.check_box :collective_group_name
                   =form.label :collective_group_name
 
-        %h6.bold.mt-2 Misc. fields
+        %h6.font-bold.mt-2 Misc. fields
         %table.unstriped.pb-4.get-rid-of-margins-and-paddings-from-inputs
           %tr
             %td.py-0{colspan: 2}

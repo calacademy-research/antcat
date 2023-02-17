@@ -17,7 +17,7 @@
     =Detax[history_item.to_taxt]
 
   .taxt-editor-editor
-    %h6.bold.mb-4=history_item.type_label
+    %h6.font-bold.mb-4=history_item.type_label
     -# [grep:history_type].
     =render partial: "history_items/edit_templates/#{history_item.underscored_type}", locals: { history_item: history_item }
 

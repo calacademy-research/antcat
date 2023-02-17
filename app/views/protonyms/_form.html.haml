@@ -84,7 +84,7 @@
             %td
               =f.text_field :locality, data: { use_locality_autocomplete: true }
 
-      %h6.bold.mt-8 Nomen attributes
+      %h6.font-bold.mt-8 Nomen attributes
       %ul.no-bullet
         %li
           =f.check_box :nomen_nudum
@@ -94,7 +94,7 @@
     .large-5.columns
       .callout.mb-8
         %table.unstriped
-          %h6.bold
+          %h6.font-bold
             Type name
             =db_tooltip_icon :type_name_reference, scope: :protonyms
           =f.fields_for :type_name, (protonym.type_name || TypeName.new) do |type_name_fields|
@@ -197,7 +197,7 @@
 -if protonym.taxa.present?
   %h5.mt-20.mb-4 Related records
 
-  %h6.bold Taxa belonging to this protonym
+  %h6.font-bold Taxa belonging to this protonym
   %table
     -TaxonQuery.new(protonym.taxa.order_by_name).with_common_includes.each do |taxon|
       %tr

@@ -161,7 +161,7 @@
 -if protonym.taxa.present?
   .row.mb-8
     .small-12.columns
-      %h6.bold Taxa belonging to this history item's protonym
+      %h6.font-bold Taxa belonging to this history item's protonym
       %table
         -TaxonQuery.new(protonym.taxa.order_by_name).with_common_includes_and_current_taxon_includes.each do |taxon|
           %tr
@@ -173,7 +173,7 @@
                 %br
                 %small=taxon.decorate.expanded_status
 
-%h6.bold.mb-4 Other history items belonging to #{protonym.name.name_html}
+%h6.font-bold.mb-4 Other history items belonging to #{protonym.name.name_html}
 %table
   %tbody
     -if protonym.history_items.persisted.empty?

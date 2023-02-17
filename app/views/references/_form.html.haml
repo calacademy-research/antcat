@@ -81,7 +81,7 @@
 
       .row.mt-8.mb-4
         .medium-12.columns
-          %h6.bold Notes
+          %h6.font-bold Notes
         .medium-12.columns
           =f.label :reference_public_notes, 'Public notes'
           =f.text_area :public_notes, rows: 2
@@ -100,7 +100,7 @@
       .callout
         .row
           .medium-12.columns
-            %h6.bold Misc. fields
+            %h6.font-bold Misc. fields
           .medium-12.columns
             =f.label :reference_bolton_key do
               Bolton key
@@ -137,7 +137,7 @@
 
     .medium-4.columns.end.mt-4
       .callout
-        %h6.bold Reference document
+        %h6.font-bold Reference document
         =f.fields_for :document, (reference.document || ReferenceDocument.new) do |document_form|
           .row
             .medium-12.columns
