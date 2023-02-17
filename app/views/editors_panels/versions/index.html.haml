@@ -25,7 +25,7 @@
       =link_to "Clear", request.path, class: "btn-nodanger"
 
 -if @first_version
-  .center-text
+  .text-center
     %h5=time_ago_in_words @first_version.created_at
     %h6=@first_version.created_at
 
@@ -60,7 +60,7 @@
             %pre.pre-wrapped.small-text=version_decorated.format_compact_changeset
 
 -if @last_version
-  .center-text
+  .text-center
     %h5=time_ago_in_words @last_version.created_at
     %h6=@last_version.created_at
 
