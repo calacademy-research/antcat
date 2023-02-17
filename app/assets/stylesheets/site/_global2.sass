@@ -1,0 +1,244 @@
+// TODO: Cleanup and reorganize.
+
+@import colors
+
+/////////// Buttons ///////////
+@mixin base-button($background, $color: #fff)
+  background-color: $background
+  color: $color
+  cursor: pointer
+
+  &:hover, &:focus
+    background-color: scale-color($background, $lightness: -20%)
+
+.btn-normal, .btn-saves, .btn-warning, .btn-nodanger, .btn-lower-nav, #btn-lower-nav-help-wanted
+  display: inline-block
+  padding: 0.5rem 0.7rem
+  font-size: 0.8125rem
+  line-height: 0.75rem
+  border-radius: 3px !important
+
+.btn-normal
+  @include base-button($color_primary)
+  color: #fff !important
+
+.btn-saves
+  @include base-button($color_save)
+  border: 1px $color_save solid
+
+.btn-warning
+  @include base-button($color_danger)
+  &:disabled
+    border: 1px $color_danger_pale solid
+    cursor: not-allowed
+    @include base-button($color_danger_pale)
+
+.btn-nodanger
+  @include base-button(#fff, #000)
+  border: 1px solid #000 !important
+
+.btn-lower-nav
+  @include base-button($color_primary)
+  border: 1px $color_pale solid
+
+.btn-lower-nav-no-danger
+  @include base-button(#fff, #000)
+  color: #000 !important
+
+#btn-lower-nav-help-wanted
+  @include base-button($color_high_priority)
+  border: 1px $color_high_priority solid
+  font-weight: bold
+
+a.btn-normal, a.btn-saves, a.btn-nodanger
+  padding: 0.55rem 0.75rem
+
+a.btn-warning
+  &:hover
+    color: #fff
+
+a.btn-nodanger
+  color: #000 !important
+
+.btn-tiny
+  padding: 0.30rem 0.5rem !important
+  white-space: nowrap
+
+#desktop-only-header
+  .desktop-upper-menu-link
+    font-size: 14px
+    margin-left: 1rem
+    &:hover, &.very-active
+      font-weight: 900
+    &.very-active
+      @extend .btn-normal
+      @extend .btn-tiny
+
+      // Override `extends`.
+      margin-left: 1rem
+      border: 2px #000 solid
+      background-color: #000 !important
+
+#breadcrumbs
+  .btn-normal, .btn-warning, .btn-nodanger, .btn-saves
+    @extend .btn-tiny
+
+// For inline "show on hover" buttons to avoid making the layout jump.
+.btn-very-tiny
+  padding: 0.15rem 0.2rem !important
+  margin-bottom: 0
+  white-space: nowrap
+  display: inline
+
+table.activities
+  .filter-activities-link
+    @extend .btn-very-tiny
+
+/////////// Callouts ///////////
+.callout
+  line-height: 1.5
+  position: relative
+  margin: 0 0 1rem 0
+  padding: 1rem
+  border: 1px solid rgba(10, 10, 10, 0.25)
+  border-radius: 5px
+
+  &> :first-child
+    margin-top: 0
+  &> :last-child
+    margin-bottom: 0
+
+.callout-primary
+  @extend .callout
+  background-color: scale-color($color_primary, $lightness: 85%)
+
+.callout-alert
+  @extend .callout
+  background-color: scale-color($color_danger, $lightness: 85%)
+
+.callout-warning
+  @extend .callout
+  background-color: scale-color(#ffae00, $lightness: 85%)
+
+.no-border-callout
+  border: 0
+
+/////////// Labels ///////////
+.label
+  border-collapse: collapse
+  border-spacing: 0
+  display: inline-block
+  padding: 0.33rem 0.5rem
+  padding-top: 0.33rem
+  padding-bottom: 0.33rem
+  font-size: 0.8rem
+  line-height: 1
+  white-space: nowrap
+  background: $color_primary
+  color: #fff
+  border-radius: 3px
+
+#taxon-browser
+  .selected
+    @extend .label
+    a, a.valid.subspecies
+      color: #fff !important
+    background-color: $color_primary !important
+    // Becomes too large without this and skips rows.
+    padding-top: 0.15rem
+    padding-bottom: 0.15rem
+  .smaller-white-label
+    @extend .label
+    background-color: #fff
+    border: 1px solid #000
+    a
+      color: #000 !important
+    // Becomes too large without this and skips rows.
+    padding-top: 0.2rem
+    padding-bottom: 0.1rem
+  .white-label.selected
+    a, a.valid.subspecies
+      color: #fff !important
+
+.label-secondary
+  @extend .label
+  background: #767676
+  color: #fefefe
+
+.white-label
+  @extend .label
+  background-color: #fff
+  border: 1px solid #000
+  color: #000 !important
+  a
+    color: #000 !important
+
+.pretty-label
+  @extend .label
+  background-color: $color_primary
+
+.high-priority-label
+  @extend .label
+  background-color: $color_high_priority
+
+.green-label
+  @extend .label
+  background-color: $color_scream_green
+  color: $almost_black
+
+.warning-label
+  @extend .label
+  background-color: $color_danger
+
+.rounded-badge
+  @extend .label
+  border-radius: 10px
+
+a.rounded-badge
+  cursor: pointer
+
+/////////// Pagination ///////////
+.pagination
+  .current
+    border-radius: 3px
+    font-style: normal
+    padding: 0.1875rem 0.625rem
+    background: $color_primary
+    color: #fff
+
+  .disabled
+    line-height: 1.5
+    padding: 0.1875rem 0.625rem
+    color: $color_medium_gray
+    cursor: not-allowed
+
+  em
+    font-style: normal
+
+.pagination a, .pagination button
+  display: inline
+  text-decoration: none
+  cursor: pointer
+  padding: 0.1875rem 0.625rem
+  border-radius: 3px
+  color: $color_foundation_black
+  display: inline
+  background: $color_light_gray
+
+/////////// Visibility ///////////
+@media (max-width: 999px)
+  .show-for-large
+    display: none !important
+
+@media (max-width: 640px)
+  .hide-for-small-only
+    display: none !important
+
+.clearfix::before, .clearfix::after
+  display: table
+  content: ' '
+  flex-basis: 0
+  order: 1
+
+.clearfix::after
+  clear: both

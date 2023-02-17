@@ -18,13 +18,13 @@
 //+foundation-flex-classes
 +foundation-typography
 +foundation-forms
-+foundation-button
+//+foundation-button
 //+foundation-accordion
 //+foundation-accordion-menu
 //+foundation-badge
 //+foundation-breadcrumbs
-+foundation-button-group
-+foundation-callout
+//+foundation-button-group
+//+foundation-callout
 //+foundation-card
 //+foundation-close-button
 //+foundation-menu
@@ -33,11 +33,11 @@
 //+foundation-dropdown
 //+foundation-dropdown-menu
 //+foundation-responsive-embed
-+foundation-label
+//+foundation-label
 //+foundation-media-object
 //+foundation-off-canvas
 //+foundation-orbit
-+foundation-pagination
+//+foundation-pagination
 //+foundation-progress-bar
 //+foundation-slider
 //+foundation-sticky
@@ -49,193 +49,13 @@
 //+foundation-title-bar
 //+foundation-tooltip
 //+foundation-top-bar
-+foundation-visibility-classes
-+foundation-float-classes
+//+foundation-visibility-classes
+//+foundation-float-classes
 
 // If you'd like to include motion-ui the foundation-rails gem comes prepackaged with it, uncomment the 3 @imports, if you are not using the gem you need to install the motion-ui sass package.
 //
 //+motion-ui-transitions
 //+motion-ui-animations
-
-.pagination a, .pagination button
-  display: inline
-
-#taxon-browser
-  .selected
-    @extend .label
-    a, a.valid.subspecies
-      color: #fff !important
-    background-color: $color_primary !important
-    // Becomes too large without this and skips rows.
-    padding-top: 0.15rem
-    padding-bottom: 0.15rem
-  .smaller-white-label
-    @extend .label
-    background-color: #fff
-    border: 1px solid #000
-    a
-      color: #000 !important
-    // Becomes too large without this and skips rows.
-    padding-top: 0.1rem
-    padding-bottom: 0.1rem
-  .white-label.selected
-    a, a.valid.subspecies
-      color: #fff !important
-
-@mixin normal-sized-button
-  @include button-style($color_primary, auto, #fff)
-  @include button-expand(false)
-  padding: 0.5rem 0.7rem
-  font-size: rem-calc(14)
-  line-height: rem-calc(12)
-  margin-bottom: 0
-  border: 1px $primary-color solid
-  color: #fff
-  &:active, &:hover, &:focus
-    color: #fff
-  border: 1px $color_primary solid
-  border-radius: 3px !important
-
-// Button colors
-//  ---------------------------------------------------------------------------
-// | Color | What for                         | Class
-// | ------|----------------------------------|--------------------------------
-// | Blue  | Save, publish, etc (hits the db) | .btn-saves
-// | Red   | Dangerous!                       | .btn-warning
-// | White | Cancel, help                     | .btn-nodanger
-// | Green | Everything else, "ok whatever"   | .btn-normal
-//  ---------------------------------------------------------------------------
-
-.btn-normal, .btn-saves, .btn-warning, .btn-nodanger, .btn-lower-nav, #btn-lower-nav-help-wanted
-  @include normal-sized-button
-
-.btn-saves
-  @include button-style($color_save, auto, auto)
-  border: 1px $color_save solid
-  color: #fff
-  &:active, &:hover, &:focus
-    color: #fff
-
-.btn-warning
-  @include button-style($alert-color, auto, auto)
-  color: #fff !important
-  &:active, &:hover, &:focus
-    color: #fff
-  border: 1px $alert-color solid
-  &:disabled
-    border: 1px $color_danger_pale solid
-    cursor: not-allowed
-    @include button-style($color_danger_pale, auto, auto)
-
-.btn-nodanger
-  @include button-style(#fff, auto, #000)
-  border: 1px solid #000 !important
-  cursor: pointer
-
-.btn-lower-nav
-  @include button-style($color_primary, auto, #fff)
-  border: 1px $color_pale solid
-  color: #fff
-
-  &:active, &:hover, &:focus
-    color: #fff
-
-.btn-lower-nav-no-danger
-  @include button-style(#fff, auto, auto)
-  color: #000 !important
-
-#btn-lower-nav-help-wanted
-  @include button-style($color_high_priority, auto, auto)
-  border: 1px $color_high_priority solid
-  color: #fff
-  font-weight: bold
-
-  &:active, &:hover, &:focus
-    color: #fff
-
-// Make button styles work for links too.
-// ".button" is also required to make ".disabled" work.
-a.btn-normal, a.btn-saves, a.btn-nodanger
-  padding: 0.55rem 0.75rem
-  color: #fff !important
-
-a.btn-nodanger
-  color: #000 !important
-
-.btn-tiny
-  padding: 0.30rem 0.5rem !important
-  font-size: rem-calc(13) !important
-  white-space: nowrap
-
-#desktop-only-header
-  .desktop-upper-menu-link
-    font-size: 14px
-    margin-left: 1rem
-    &:hover, &.very-active
-      font-weight: 900
-    &.very-active
-      @extend .btn-normal
-      @extend .btn-tiny
-
-      // Override `extends`.
-      margin-left: 1rem
-      color: #fff !important
-      border: 2px #000 solid
-      background-color: #000 !important
-
-#breadcrumbs
-  .btn-normal, .btn-warning, .btn-nodanger, .btn-saves
-    @extend .btn-tiny
-
-// For inline "show on hover" buttons to avoid making the layout jump.
-.btn-very-tiny
-  padding: 0.15rem 0.2rem !important
-  font-size: rem-calc(12) !important
-  margin-bottom: 0
-  white-space: nowrap
-  display: inline
-
-table.activities
-  .filter-activities-link
-    @extend .btn-very-tiny
-
-button
-  cursor: pointer
-
-table th
-  text-align: left
-
-.white-label
-  @extend .label
-  background-color: #fff
-  border: 1px solid #000
-  color: #000 !important
-  a
-    color: #000 !important
-
-.pretty-label
-  @extend .label
-  background-color: $color_primary
-
-.high-priority-label
-  @extend .label
-  background-color: $color_high_priority
-
-.green-label
-  @extend .label
-  background-color: $color_scream_green
-  color: $almost_black
-
-.warning-label
-  @extend .label
-  background-color: $color_danger
-
-.rounded-badge
-  @extend .label
-  border-radius: 10px
-
-a.rounded-badge
-  cursor: pointer
 
 table
   border-spacing: 0
@@ -243,17 +63,11 @@ table
 button.radius, .button.radius
   border-radius: 3px !important
 
+button
+  cursor: pointer
+
+table th
+  text-align: left
+
 .input-group-field
   border-radius: 3px
-
-.pagination
-  .current
-    border-radius: 3px
-  em
-    font-style: normal
-
-.callout
-  border-radius: 5px
-
-.no-border-callout
-  border: 0
