@@ -2,5 +2,5 @@
   .row
     .small-12.columns
       -flash.each do |type, message|
-        .callout.small-12.medium-6{class: flash_message_class(type)}
+        .small-12.medium-6{class: flash_message_class(type)}
           =sanitize message, tags: %w[strong em a i span p br], attributes: %w[href data-method class title]

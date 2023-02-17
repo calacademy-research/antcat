@@ -93,3 +93,32 @@ a.btn-nodanger
 table.activities
   .filter-activities-link
     @extend .btn-very-tiny
+
+/////////// Callouts ///////////
+.callout
+  line-height: 1.5
+  position: relative
+  margin: 0 0 1rem 0
+  padding: 1rem
+  border: 1px solid rgba(10, 10, 10, 0.25)
+  border-radius: 5px
+
+  &> :first-child
+    margin-top: 0
+  &> :last-child
+    margin-bottom: 0
+
+.callout-primary
+  @extend .callout
+  background-color: scale-color($color_primary, $lightness: 85%)
+
+.callout-alert
+  @extend .callout
+  background-color: scale-color($color_danger, $lightness: 85%)
+
+.callout-warning
+  @extend .callout
+  background-color: scale-color(#ffae00, $lightness: 85%)
+
+.no-border-callout
+  border: 0
