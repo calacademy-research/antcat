@@ -26,7 +26,6 @@ gem 'devise'
 gem 'diffy'
 gem 'draper'
 gem 'ey_config' # Required for accessing service configurations through `EY::Config` on EngineYard.
-gem 'foundation-rails', '6.6.2.0'
 gem 'grape-swagger-rails'
 gem 'gretel'
 gem 'high_voltage'
