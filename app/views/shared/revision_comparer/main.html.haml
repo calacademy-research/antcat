@@ -6,14 +6,14 @@
   %button.btn-nodanger{"data-action" => "toggler#toggle", "data-toggler-target" => "revision_comparer_help"} Show/hide help
 
 .is-hidden{data: { toggler_name: "revision_comparer_help" }}
-  .callout.medium-9.margin-bottom
+  .callout.medium-9.mb-8
     =render "shared/revision_comparer/help"
 
 .row#revision-comparer
   .medium-12.columns
     -if comparer.diff_with
       %h5 Difference between revisions
-      .callout.margin-bottom
+      .callout.mb-8
         .row
           .medium-6.columns=revision_presenter.left_side_diff.html_safe
           .medium-6.columns=revision_presenter.right_side_diff.html_safe
@@ -33,7 +33,7 @@
         =preserve do
           =revision_presenter.render_revision(comparer.selected || comparer.most_recent, view_context: self)
 
-  .medium-12.columns.margin-bottom.margin-top
+  .medium-12.columns.mb-8.mt-8
     =render "shared/revision_comparer/revision_history_table",
       comparer: comparer,
       revision_presenter: revision_presenter,

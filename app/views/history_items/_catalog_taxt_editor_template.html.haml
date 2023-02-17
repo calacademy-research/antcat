@@ -5,7 +5,7 @@
     %br
 
   .taxt-editor-editor.callout
-    %h6.bold.small-margin-bottom=history_item.type_label
+    %h6.bold.mb-4=history_item.type_label
     -# [grep:history_type].
     =render partial: "history_items/edit_templates/#{history_item.underscored_type}", locals: { history_item: history_item }
 
@@ -18,10 +18,10 @@
     %span.spacer-1rem
     %a.taxt-editor-delete-button.btn-warning Delete
 
-  .taxt-presenter.tiny-margin-top
-    %a.taxt-editor-edit-button.btn-nodanger.btn-tiny.right-margin Quick edit
+  .taxt-presenter.mt-2
+    %a.taxt-editor-edit-button.btn-nodanger.btn-tiny.mr-4 Quick edit
 
-    %small.logged-in-only-gray-bold-notice.right-margin=history_item.underscored_type
+    %small.logged-in-only-gray-bold-notice.mr-4=history_item.underscored_type
 
     %span.show-on-hover
       =link_to "Show", history_item_path(history_item), class: "btn-normal btn-very-tiny"

@@ -18,7 +18,7 @@ describe Protonyms::HoverPreviewsController do
           <strong>Protonym:</strong>
           #{protonym_link(protonym)}
         </div>
-        <div class='margin-bottom'>
+        <div class='mb-8'>
           <strong>Authorship:</strong>
           #{reference_link(protonym.authorship_reference)}: #{protonym.authorship_pages}
         </div>

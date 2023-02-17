@@ -14,7 +14,7 @@
         %legend to
         =@to_taxon.decorate.id_and_name_and_author_citation
 
-  .row.margin-bottom
+  .row.mb-8
     -# Move from.
     .medium-6.columns
       -if @taxon.reference_sections.empty?
@@ -46,7 +46,7 @@
                 %td
                   =render 'reference_section', reference_section: reference_section
 
-  .row.margin-bottom
+  .row.mb-8
     .medium-12.columns
       .center-text
         =f.button "Move selected items", class: "btn-saves"

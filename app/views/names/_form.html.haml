@@ -2,7 +2,7 @@
   =javascript_include_tag 'check_name_conflicts'
 
 
-.callout.alert.medium-9.margin-bottom
+.callout.alert.medium-9.mb-8
   %h6
     =antcat_icon 'warning-icon'
     %strong Consider this an advanced feature
@@ -26,7 +26,7 @@
         %tbody
           %tr
             %th.no-wrap
-              =f.label :name, class: 'small-margin-bottom' do
+              =f.label :name, class: 'mb-4' do
                 Name
                 =db_wiki_page_icon WikiPage::SPECIES_GROUP_NAMES_CONNECTING_TERMS
             %td.grow=f.text_field :name, id: 'name_name_string', data: { name_id: name.id }

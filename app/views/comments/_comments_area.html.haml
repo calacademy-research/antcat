@@ -7,9 +7,9 @@
 -# Anchor link so we can scroll down to the comments section via links.
 %a{name: "comments"}
 
-%h6.margin-top=CommentableDecorator.new(commentable).comments_count_in_words
+%h6.mt-8=CommentableDecorator.new(commentable).comments_count_in_words
 =render "comments/form", new_comment: new_comment
 
-.comments-section.margin-top.margin-bottom
+.comments-section.mt-8.mb-8
   -commentable.comments.include_associations.each do |comment|
     =render "comments/comment", comment: comment

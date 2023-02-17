@@ -1,7 +1,7 @@
-.callout.margin-bottom
+.callout.mb-8
   %h6
     Create new protonym
-    %small.blue-help-text.padding-left-1rem leave blank if you have selected an existing protonym
+    %small.blue-help-text.pl-4 leave blank if you have selected an existing protonym
     =tooltip_icon "This will be ignored if an existing protonym is selected"
 
   -if taxon.protonym.persisted?
@@ -18,7 +18,7 @@
                 =db_tooltip_icon :connecting_terms, scope: :protonyms
             %td
               =text_field_tag :protonym_name_string, taxon.protonym.name.name
-              %span#copy-name-to-protonym-js-hook.btn-nodanger.btn-tiny.left-margin Same as name (copy)
+              %span#copy-name-to-protonym-js-hook.btn-nodanger.btn-tiny.ml-4 Same as name (copy)
           %tr
             %td
             %td

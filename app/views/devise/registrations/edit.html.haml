@@ -25,13 +25,13 @@
 
       =f.password_field :current_password
 
-  .row.margin-top
+  .row.mt-8
     .medium-6.columns
       %h5 Preferences
       =f.check_box :enable_email_notifications
       =f.label :enable_email_notifications
 
-  .row.margin-top
+  .row.mt-8
     .medium-6.columns
       %h6 Enabled editing helpers
       =f.fields_for :settings do |settings_fields|
@@ -40,6 +40,6 @@
           =editing_helpers_fields.check_box :create_combination
           =editing_helpers_fields.label :create_combination, "Show 'Can be combined?' blue box on species pages"
 
-  .row.margin-top
+  .row.mt-8
     .medium-6.columns
       =f.button 'Save', class: "btn-saves"

@@ -41,7 +41,7 @@
             =db_tooltip_icon :title, scope: :references
           =f.text_area :title, rows: 1
 
-      .row.small-margin-top
+      .row.mt-4
         .medium-12.columns
           .css-tabs
             %input#article-tab.tab-input{checked: ("checked" if reference.is_a?(ArticleReference)), name: "reference_type", type: "radio", value: 'ArticleReference'}
@@ -79,7 +79,7 @@
                     =db_tooltip_icon :nesting_reference_id, scope: :references
                   =f.text_field :nesting_reference_id
 
-      .row.margin-top.small-margin-bottom
+      .row.mt-8.mb-4
         .medium-12.columns
           %h6.bold Notes
         .medium-12.columns
@@ -135,7 +135,7 @@
               =f.check_box :online_early
               Online early
 
-    .medium-4.columns.end.small-margin-top
+    .medium-4.columns.end.mt-4
       .callout
         %h6.bold Reference document
         =f.fields_for :document, (reference.document || ReferenceDocument.new) do |document_form|

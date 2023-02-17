@@ -3,20 +3,20 @@
 
 -wikipedia_link = "https://en.wikipedia.org/wiki/#{@taxon.name_cache}"
 
-.row.margin-bottom
+.row.mb-8
   .small-12.columns
     %p
       For
       =link_to wikipedia_link, wikipedia_link
     %h5=link_to "AntCat citation template", "https://en.wikipedia.org/wiki/Template:AntCat"
     =preserve do
-      %pre.margin-bottom
+      %pre.mb-8
         =Wikipedia::CiteTemplate[@taxon]
     %p
       Journal and book references can be exported from the reference's details
       page (click on the linked ID number on catalog page to get there).
 
-.row.margin-bottom
+.row.mb-8
   .small-12.columns
     %h5 Author citation
     =preserve do
@@ -25,7 +25,7 @@
         =Wikipedia::ReferenceExporter[@taxon.authorship_reference]
 
 -if @taxon.class.in?([Family, Subfamily, Tribe, Genus])
-  .row.margin-bottom
+  .row.mb-8
     .small-12.columns
       %h5 List of children
       =preserve do

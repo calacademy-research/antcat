@@ -28,7 +28,7 @@
 
 -if current_user
   -if taxon.type_names.present?
-    .callout.no-border-callout.logged-in-only-background.margin-top.margin-bottom
+    .callout.no-border-callout.logged-in-only-background.mt-8.mb-8
       %ul.no-bullet
         -taxon.type_names.each do |as_type_name|
           %li
@@ -63,9 +63,9 @@
   -if taxon.history_items_as_object_for_taxon.present?
     -history_presenter = HistoryPresenter.new(taxon.history_items_as_object_for_taxon, :object)
 
-    .callout.no-border-callout.logged-in-only-background.margin-top.margin-bottom
+    .callout.no-border-callout.logged-in-only-background.mt-8.mb-8
       %strong History items as object (mirrored items)
-      %ul#history.small-margin-bottom
+      %ul#history.mb-4
         -history_presenter.grouped_items.each do |grouped_item|
           %li
             =Detax[grouped_item.taxt(:object)]
@@ -75,11 +75,11 @@
   -history_presenter = HistoryPresenter.new(taxon.history_items_for_taxon)
 
   -if current_user
-    %h6.margin-top
+    %h6.mt-8
       Taxonomic history
       =info_tooltip_icon 'Automatically sorted and grouped items, logged-in version.'
 
-    %table#history-table.table.huge-margin-bottom
+    %table#history-table.table.mb-16
       %tbody
         -history_presenter.grouped_items.each do |grouped_item|
           %tr
@@ -92,14 +92,14 @@
                   %button.btn-tiny.btn-nodanger{"data-action" => "toggler#toggle", "data-toggler-target" => "grouped-#{grouped_item.group_key.join('_')}"} Show/hide grouped
 
                   %span.spacer-1rem
-                  %small.logged-in-only-gray-bold-notice.right-margin #{grouped_item.underscored_type} x #{grouped_item.number_of_items}
+                  %small.logged-in-only-gray-bold-notice.mr-4 #{grouped_item.underscored_type} x #{grouped_item.number_of_items}
 
                   -if grouped_item.relational?
                     %span.show-on-hover=link_to "Add another", new_protonym_history_item_path(grouped_item.protonym, **grouped_item.params_for_add_another_of_same_type, **current_page_redirect_back_url), class: "btn-normal btn-very-tiny"
 
-                %ul.compact-list.no-bullet.margin-bottom.is-hidden{data: { toggler_name: "grouped-#{grouped_item.group_key.join('_')}" }}
+                %ul.compact-list.no-bullet.mb-8.is-hidden{data: { toggler_name: "grouped-#{grouped_item.group_key.join('_')}" }}
                   -grouped_item.items.each do |history_item|
-                    %li.padding-left-2rem
+                    %li.pl-8
                       =history_item.decorate.rank_specific_badge if history_item.rank?
 
                       -if user_is_at_least_helper?
@@ -117,14 +117,14 @@
                   %p=Detax[history_item.to_taxt]
 
   -else
-    %ul#history.small-margin-bottom
+    %ul#history.mb-4
       -history_presenter.grouped_items.each do |grouped_item|
         %li
           =Detax[grouped_item.taxt]
 
 -if current_user && !Status.display_history_items?(taxon.status)
   -if taxon.history_items_for_taxon_including_hidden.present?
-    .additional-editor-data.callout.no-border-callout.logged-in-only-background.margin-top.margin-bottom
+    .additional-editor-data.callout.no-border-callout.logged-in-only-background.mt-8.mb-8
       %h6 Protonym history items not shown on this page
 
       %p
@@ -132,7 +132,7 @@
         -taxon.protonym.terminal_taxa.each do |terminal_taxon|
           =CatalogFormatter.link_to_taxon(terminal_taxon)
 
-      %ul#history.small-margin-bottom
+      %ul#history.mb-4
         -taxon.history_items_for_taxon_including_hidden.each do |history_item|
           %li
             =history_item.decorate.rank_specific_badge if history_item.rank?
@@ -144,25 +144,25 @@
 
 -if taxon.junior_synonyms.exists?
   -name_of_obsoletes = taxon.decorate.name_of_obsoletes
-  %h6.margin-top Junior synonyms
-  %ul.compact-list.no-bullet.margin-bottom
+  %h6.mt-8 Junior synonyms
+  %ul.compact-list.no-bullet.mb-8
     -TaxonQuery.new(taxon.junior_synonyms.order_by_name).with_common_includes.each do |synonym|
       %li
         =CatalogFormatter.link_to_taxon(synonym)
         =synonym.author_citation
         -if synonym.obsolete_combinations.present?
-          .padding-left-2rem
+          .pl-8
             Obsolete #{name_of_obsoletes}(s):
             =safe_join synonym.obsolete_combinations.map { |obsolete| CatalogFormatter.link_to_taxon(obsolete) }, ', '
 
 -if taxon.obsolete_combinations.exists?
-  %h6.margin-top="Obsolete #{taxon.decorate.name_of_obsoletes}s"
-  %ul.compact-list.no-bullet.margin-bottom
+  %h6.mt-8="Obsolete #{taxon.decorate.name_of_obsoletes}s"
+  %ul.compact-list.no-bullet.mb-8
     -taxon.obsolete_combinations.order_by_name.includes(:name).each do |obsolete_combination|
       %li
         =CatalogFormatter.link_to_taxon(obsolete_combination)
 
-#child-lists.small-margin-bottom
+#child-lists.mb-4
   =render 'catalog/_show/child_lists', taxon: taxon
   -if taxon.is_a?(Genus)
     =render 'catalog/_show/rank_specific/genus', taxon: taxon
@@ -181,7 +181,7 @@
   -if taxon.reference_sections.present?
     #reference-sections
       -taxon.reference_sections.each do |reference_section|
-        .section.small-margin-bottom
+        .section.mb-4
           -if reference_section.title_taxt?
             %h6=Detax[reference_section.title_taxt]
 
@@ -199,7 +199,7 @@
               =link_to "History", reference_section_history_path(reference_section), class: "btn-normal btn-very-tiny"
 
 -unless catalog_presenter.formicidae_landing_page?
-  %h6.huge-margin-top Citations
+  %h6.mt-20 Citations
   %ul#citations.compact-list
     -catalog_presenter.collected_references.each do |reference|
       -decorated_reference = reference.decorate

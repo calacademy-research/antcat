@@ -7,7 +7,7 @@
 -content_for :breadcrumbs_right do
   =link_to "Show source code", @decorated_database_script.github_url, class: "btn-normal"
 
-.row.collapse.margin-bottom
+.row.collapse.mb-8
   .medium-8.columns
     %h5
       =@database_script.title
@@ -20,7 +20,7 @@
         %p=markdown @database_script.issue_description
 
     -if @database_script.related_scripts.present?
-      %h6.margin-top
+      %h6.mt-8
         %strong Related scripts
       %ul
         -@database_script.related_scripts.each do |related_script|

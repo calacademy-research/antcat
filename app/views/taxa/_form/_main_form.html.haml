@@ -1,10 +1,10 @@
 -# TODO: Use proper form layout without tables and random CSS classes,
 
 =form.fields_for :name do |name_form|
-  .row.margin-bottom
+  .row.mb-8
     .large-8.columns
       %h6.bold Required fields
-      %table.unstriped.margin-bottom.get-rid-of-margins-and-paddings-from-inputs
+      %table.unstriped.mb-8.get-rid-of-margins-and-paddings-from-inputs
         %tr
           %td=form.label :parent, 'Parent'
           %td
@@ -14,7 +14,7 @@
               (none)
 
         %tr
-          %td.padding-right-4rem
+          %td.pr-16
             =form.label :name do
               Name
               =db_tooltip_icon :name, scope: :taxa
@@ -31,8 +31,8 @@
                   Subgenus name format:
                   %i Genus (Subgenus)
         %tr
-          %td.no-padding-bottom
-          %td.no-padding-bottom
+          %td.pb-0
+          %td.pb-0
             #taxon_name_string-possible-conflicts-js-hook.possible-name-conflicts
 
         %tr
@@ -71,17 +71,17 @@
         %h6.bold Fossil-only fields
         %table.unstriped
           %tr
-            %td.no-padding-top-bottom
+            %td.py-0
               %ul.no-bullet.compact-list
                 %li
                   =form.check_box :collective_group_name
                   =form.label :collective_group_name
 
-        %h6.bold.margin-top.tiny-margin-top Misc. fields
-        %table.unstriped.small-padding-bottom.get-rid-of-margins-and-paddings-from-inputs
+        %h6.bold.mt-2 Misc. fields
+        %table.unstriped.pb-4.get-rid-of-margins-and-paddings-from-inputs
           %tr
-            %td.no-padding-top-bottom{colspan: 2}
-              %ul.no-bullet.compact-list.tiny-margin-bottom
+            %td.py-0{colspan: 2}
+              %ul.no-bullet.compact-list.mb-2
                 %li
                   =form.check_box :unresolved_homonym
                   =form.label :unresolved_homonym, 'Unresolved junior homonym?'

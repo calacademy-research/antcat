@@ -7,7 +7,7 @@
   .dropdown-container
     %button.btn-normal{"data-action" => "toggler#toggle", "data-toggler-target" => "more_dropdown"}
       More
-      %i.arrow-down.small-left-margin
+      %i.arrow-down.ml-2
     .is-hidden.callout.dropdown-content{data: { toggler_name: "more_dropdown" }}
       %ul.no-bullet
         -if user_is_editor?

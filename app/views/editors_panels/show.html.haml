@@ -50,25 +50,25 @@
         -else
           %li There are no featured wiki pages
         -if @editors_panel_presenter.see_more_wiki_pages?
-          %li.small-margin-top
+          %li.mt-4
             %small=link_to "See all #{@editors_panel_presenter.total_wiki_pages_count} wiki pages...", wiki_pages_path
 
-.row.margin-top
+.row.mt-8
   .large-12.columns
     %h5 Most recent activity (#{link_to("see more", activities_path)})
     =render "activities/table", activities: @editors_panel_presenter.recent_activities
 
-.row.margin-top
+.row.mt-8
   .large-12.columns
     %h5 Most recent comments (#{link_to("see more", comments_path)})
     =render "comments/comments_table", comments: @editors_panel_presenter.recent_comments
 
-.row.margin-top
+.row.mt-8
   .large-12.columns
     %h5 Most recent unconfirmed edits (#{link_to("see more", unconfirmed_activities_path)})
     =render "activities/table", activities: @editors_panel_presenter.recent_unconfirmed_activities
 
-.row.margin-top
+.row.mt-8
   .medium-12.columns
     %h5 Misc. less frequently used pages
     %ul
@@ -77,7 +77,7 @@
       -if user_is_superadmin?
         %li=link_to append_superadmin_icon('Restart and reindex Solr'), restart_and_reindex_solrs_path, method: :post, data: { confirm: "Are you sure?" }, class: 'btn-warning btn-tiny'
 
-.row.margin-top
+.row.mt-8
   .medium-12.columns
     %h5 External links
     %ul

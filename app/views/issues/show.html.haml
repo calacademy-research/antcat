@@ -12,7 +12,7 @@
   -if user_is_superadmin? && user_is_developer?
     =link_to append_superadmin_icon("Delete"), @feedback, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-warning"
 
-.left.small-margin-bottom
+.left.mb-4
   %h5
     #{@issue.open? ? 'Open' : 'Closed'} issue: #{@issue.title}
     =@issue.decorate.help_wanted_badge

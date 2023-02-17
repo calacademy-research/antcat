@@ -27,7 +27,7 @@
 
 =will_paginate @wiki_pages
 
-.row.huge-margin-top
+.row.mt-20
   .large-12.columns
     %h5 Most recent activity (#{link_to "see more", activities_path(trackable_type: 'WikiPage')})
     =render "activities/table", activities: @recent_activities

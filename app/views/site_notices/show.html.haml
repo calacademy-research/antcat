@@ -7,7 +7,7 @@
     -if user_is_superadmin?
       =link_to append_superadmin_icon("Delete"), @site_notice, method: :delete, data: { confirm: "Delete? This removes the site notice from the archive." }, class: "btn-warning"
 
-.row.small-margin-bottom
+.row.mb-4
   .medium-12.columns
     %h5=@site_notice.title
     %small.gray-text

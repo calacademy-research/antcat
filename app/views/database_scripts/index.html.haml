@@ -12,7 +12,7 @@
     =link_to "Non-empty regression tests", database_scripts_path(view: DatabaseScriptsController::NON_EMPTY_REGRESSION_TESTS), class: "btn-normal"
 
 -if params[:tag]
-  .row.margin-bottom
+  .row.mb-8
     .small-12.columns
       %p
         Showing:
@@ -56,7 +56,7 @@
       -else
         %h5.left Unknown section. What???
 
-      %table.tablesorter.huge-margin-bottom
+      %table.tablesorter.mb-16
         %thead
           %tr
             %th Script
@@ -85,14 +85,14 @@
                   =decorated.empty_status
 
 .row
-  .small-12.columns.huge-margin-bottom
+  .small-12.columns.mb-16
     %small.right
       Total number of scripts:
       =@total_number_of_database_scripts
 
 .row
-  .small-12.columns.margin-bottom
+  .small-12.columns.mb-8
     %h5 Filter by tags
     -@database_scripts_presenter.tallied_tags.each do |tag, count|
       =DatabaseScriptDecorator.format_linked_tags([tag])
-      %small.right-margin=count
+      %small.mr-4=count

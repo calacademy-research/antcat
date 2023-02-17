@@ -4,7 +4,7 @@
 -content_for :javascripts do
   =javascript_include_tag 'jquery-ui/widgets/draggable', 'jquery-ui/widgets/sortable', 'reorder_items'
 
-%p.margin-bottom Drag and drop history items to reorder them.
+%p.mb-8 Drag and drop history items to reorder them.
 
 -if @protonym.history_items.blank?
   %p This protonym does not have any history items.

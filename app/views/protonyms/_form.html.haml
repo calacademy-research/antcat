@@ -84,7 +84,7 @@
             %td
               =f.text_field :locality, data: { use_locality_autocomplete: true }
 
-      %h6.bold.margin-top Nomen attributes
+      %h6.bold.mt-8 Nomen attributes
       %ul.no-bullet
         %li
           =f.check_box :nomen_nudum
@@ -92,7 +92,7 @@
             %i Nomen nudum
 
     .large-5.columns
-      .callout.margin-bottom
+      .callout.mb-8
         %table.unstriped
           %h6.bold
             Type name
@@ -135,7 +135,7 @@
                   -# TODO: Improve "(don't blank taxon)".
                   =label_tag :destroy_type_name, "Clear type name on save (don't blank taxon)"
 
-    .large-12.columns.margin-bottom
+    .large-12.columns.mb-8
       %hr
 
       %p
@@ -195,7 +195,7 @@
             =f.button "Save", class: "btn-saves"
 
 -if protonym.taxa.present?
-  %h5.huge-margin-top.small-margin-bottom Related records
+  %h5.mt-20.mb-4 Related records
 
   %h6.bold Taxa belonging to this protonym
   %table

@@ -25,7 +25,7 @@
       =image_tag 'logos/antcat_white_174x37.png', alt: 'AntCat', id: "desktop-logo-image"
 
   #desktop-lower-menu
-    %ul.no-bullet.horizontal.no-margin-bottom
+    %ul.no-bullet.horizontal.mb-0
       %li=link_to 'References', references_latest_additions_path, class: "big-screaming-orange-button #{'very-active' if menu_active?(:references)}"
       %li=link_to 'Catalog', root_path, class: "big-screaming-green-button #{'very-active' if menu_active?(:catalog)}"
       %li

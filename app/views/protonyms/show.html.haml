@@ -15,7 +15,7 @@
     .dropdown-container
       %button.btn-normal{"data-action" => "toggler#toggle", "data-toggler-target" => "more_dropdown"}
         More
-        %i.arrow-down.small-left-margin
+        %i.arrow-down.ml-2
       .is-hidden.callout.dropdown-content{data: { toggler_name: "more_dropdown" }}
         %ul.no-bullet
           -if user_is_at_least_helper?
@@ -25,13 +25,13 @@
 
 -if Settings.catalog.show_failed_soft_validations
   -if current_user && @protonym.soft_validations.failed?
-    .row.margin-bottom
+    .row.mb-8
       .medium-9.columns
         .soft-validations-callout.callout.warning
           %h6 Issues (#{link_to("see more", protonym_soft_validations_path(@protonym))})
           =render 'shared/failed_soft_validations', soft_validations: @protonym.soft_validations
 
-.row.margin-bottom
+.row.mb-8
   .small-9.columns
     %h5
       Protonym:
@@ -109,7 +109,7 @@
           Protonym:
           =@protonym.name.epithet_html
 
-        .tiny-margin-bottom
+        .mb-2
           =copy_to_clipboard_button Taxt.pro(@protonym.id), "pro #{@protonym.id}"
           =copy_to_clipboard_button @protonym.id
 
@@ -117,9 +117,9 @@
 
         %ul.no-bullet
           -if user_is_at_least_helper?
-            %li.tiny-margin-bottom=link_to "Add history item", new_protonym_history_item_path(@protonym, **current_page_redirect_back_url), class: "btn-normal btn-tiny"
+            %li.mb-2=link_to "Add history item", new_protonym_history_item_path(@protonym, **current_page_redirect_back_url), class: "btn-normal btn-tiny"
             -if @protonym.history_items.size > 1
-              %li.tiny-margin-bottom=link_to "Reorder history items", protonym_reorder_history_items_path(@protonym), class: "btn-normal btn-tiny"
+              %li.mb-2=link_to "Reorder history items", protonym_reorder_history_items_path(@protonym), class: "btn-normal btn-tiny"
 
         %ul.no-bullet.small-text
           %li Created at: #{l @protonym.created_at, format: :ymd}
@@ -129,7 +129,7 @@
       =render 'protonyms/shared/etymology_and_gender', protonym: @protonym, taxon: nil
 
 -if @protonym.taxa.present?
-  .row.margin-bottom
+  .row.mb-8
     .small-12.columns
       %h5 Taxa belonging to this protonym
       %table
@@ -160,9 +160,9 @@
 
 -if current_user
   -if @protonym.history_items_as_object.present?
-    .row.margin-top.margin-bottom
+    .row.mt-8.mb-8
       .small-12.columns
-        .callout.no-border-callout.logged-in-only-background.huge-margin-bottom
+        .callout.no-border-callout.logged-in-only-background.mb-16
           %h5 History items as object protonym
 
           %table.table.stack
