@@ -20,7 +20,7 @@
   %tbody
     -@issues.each do |issue|
       %tr.issue{class: ('closed' if issue.closed?)}
-        %td.icon.vertical-align-top=issue.decorate.icon
+        %td.icon.align-top=issue.decorate.icon
         %td.grow
           =link_to issue.title, issue
           =issue.decorate.help_wanted_badge

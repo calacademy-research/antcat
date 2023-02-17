@@ -14,7 +14,7 @@
     %tbody
       -@site_notices.each do |site_notice|
         %tr
-          %td.icon.vertical-align-top
+          %td.icon.align-top
             -read_status = site_notice.unread?(current_user) ? "unread" : "read"
             =antcat_icon read_status
             =read_status
