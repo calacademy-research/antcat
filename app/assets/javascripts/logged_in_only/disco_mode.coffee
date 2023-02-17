@@ -2,7 +2,7 @@ TOGGLE_BUTTON = "#toggle-disco-mode-js-hook"
 
 $ ->
   discoMode = new DiscoMode()
-  $(TOGGLE_BUTTON).css('display', 'inline-block') # Hidden initially due to FoUC link text.
+  $(TOGGLE_BUTTON).removeClass('is-hidden') # Hidden initially due to FoUC link text.
 
   $(TOGGLE_BUTTON).click (event) ->
     event.preventDefault()
