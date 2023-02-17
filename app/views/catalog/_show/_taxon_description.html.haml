@@ -91,7 +91,7 @@
                   -# `group_key` = `["JuniorSynonymOf", "object_protonym_id", 156572]`.
                   %button.btn-tiny.btn-nodanger{"data-action" => "toggler#toggle", "data-toggler-target" => "grouped-#{grouped_item.group_key.join('_')}"} Show/hide grouped
 
-                  %span.spacer-1rem
+                  %span.ml-4
                   %small.logged-in-only-gray-bold-notice.mr-4 #{grouped_item.underscored_type} x #{grouped_item.number_of_items}
 
                   -if grouped_item.relational?
