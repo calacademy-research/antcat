@@ -122,3 +122,77 @@ table.activities
 
 .no-border-callout
   border: 0
+
+/////////// Labels ///////////
+.label
+  border-collapse: collapse
+  border-spacing: 0
+  display: inline-block
+  padding: 0.33rem 0.5rem
+  padding-top: 0.33rem
+  padding-bottom: 0.33rem
+  font-size: 0.8rem
+  line-height: 1
+  white-space: nowrap
+  background: $color_primary
+  color: #fff
+  border-radius: 3px
+
+#taxon-browser
+  .selected
+    @extend .label
+    a, a.valid.subspecies
+      color: #fff !important
+    background-color: $color_primary !important
+    // Becomes too large without this and skips rows.
+    padding-top: 0.15rem
+    padding-bottom: 0.15rem
+  .smaller-white-label
+    @extend .label
+    background-color: #fff
+    border: 1px solid #000
+    a
+      color: #000 !important
+    // Becomes too large without this and skips rows.
+    padding-top: 0.2rem
+    padding-bottom: 0.1rem
+  .white-label.selected
+    a, a.valid.subspecies
+      color: #fff !important
+
+.label-secondary
+  @extend .label
+  background: #767676
+  color: #fefefe
+
+.white-label
+  @extend .label
+  background-color: #fff
+  border: 1px solid #000
+  color: #000 !important
+  a
+    color: #000 !important
+
+.pretty-label
+  @extend .label
+  background-color: $color_primary
+
+.high-priority-label
+  @extend .label
+  background-color: $color_high_priority
+
+.green-label
+  @extend .label
+  background-color: $color_scream_green
+  color: $almost_black
+
+.warning-label
+  @extend .label
+  background-color: $color_danger
+
+.rounded-badge
+  @extend .label
+  border-radius: 10px
+
+a.rounded-badge
+  cursor: pointer

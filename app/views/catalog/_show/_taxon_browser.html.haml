@@ -17,7 +17,7 @@
 
       .right-side-buttons.hide-for-small-only
         %button.btn-tiny.btn-nodanger{"data-action" => "toggler#toggle", "data-toggler-target" => "taxon_key"} toggle legend
-        %span.label.secondary
+        %span.label-secondary
           =taxon_browser_presenter.toggle_invalid_or_valid_only_link
 
       -taxon_browser.tabs.each.with_index do |tab, index|

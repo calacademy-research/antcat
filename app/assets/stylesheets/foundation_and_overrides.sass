@@ -33,7 +33,7 @@
 //+foundation-dropdown
 //+foundation-dropdown-menu
 //+foundation-responsive-embed
-+foundation-label
+//+foundation-label
 //+foundation-media-object
 //+foundation-off-canvas
 //+foundation-orbit
@@ -57,74 +57,17 @@
 //+motion-ui-transitions
 //+motion-ui-animations
 
-.pagination a, .pagination button
-  display: inline
+table
+  border-spacing: 0
 
-#taxon-browser
-  .selected
-    @extend .label
-    a, a.valid.subspecies
-      color: #fff !important
-    background-color: $color_primary !important
-    // Becomes too large without this and skips rows.
-    padding-top: 0.15rem
-    padding-bottom: 0.15rem
-  .smaller-white-label
-    @extend .label
-    background-color: #fff
-    border: 1px solid #000
-    a
-      color: #000 !important
-    // Becomes too large without this and skips rows.
-    padding-top: 0.1rem
-    padding-bottom: 0.1rem
-  .white-label.selected
-    a, a.valid.subspecies
-      color: #fff !important
+button.radius, .button.radius
+  border-radius: 3px !important
 
 button
   cursor: pointer
 
 table th
   text-align: left
-
-.white-label
-  @extend .label
-  background-color: #fff
-  border: 1px solid #000
-  color: #000 !important
-  a
-    color: #000 !important
-
-.pretty-label
-  @extend .label
-  background-color: $color_primary
-
-.high-priority-label
-  @extend .label
-  background-color: $color_high_priority
-
-.green-label
-  @extend .label
-  background-color: $color_scream_green
-  color: $almost_black
-
-.warning-label
-  @extend .label
-  background-color: $color_danger
-
-.rounded-badge
-  @extend .label
-  border-radius: 10px
-
-a.rounded-badge
-  cursor: pointer
-
-table
-  border-spacing: 0
-
-button.radius, .button.radius
-  border-radius: 3px !important
 
 .input-group-field
   border-radius: 3px
@@ -134,3 +77,6 @@ button.radius, .button.radius
     border-radius: 3px
   em
     font-style: normal
+
+.pagination a, .pagination button
+  display: inline
