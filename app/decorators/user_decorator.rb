@@ -23,7 +23,7 @@ class UserDecorator < Draper::Decorator
       h.tag.span label, class: "label rounded-badge"
     else
       label = "helper ".html_safe << h.antcat_icon("black-star")
-      h.tag.span label, class: "white-label rounded-badge"
+      h.tag.span label, class: "label-white rounded-badge"
     end
   end
 end

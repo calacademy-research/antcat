@@ -3,13 +3,27 @@
 /////////// Start Tailwind ///////////
 // Imitate Tailwind CSS naming conventions. Same order as on https://tailwindcss.com/docs.
 
+// Layout: Columns
+.columns-2
+  columns: 2
+
 // Layout: Display
 .flex
   display: flex
 
 // Flexbox & Grid: Justify Content
+.justify-center
+  justify-content: center
+
 .justify-between
   justify-content: space-between
+
+// Flexbox & Grid: Align Items
+.items-center
+  align-items: center
+
+.items-baseline
+  align-items: baseline
 
 // Layout: Floats
 .float-right
@@ -71,6 +85,15 @@
 // Spacing: Margin
 .mb-0
   margin-bottom: 0
+
+.mr-1
+  margin-right: 0.25rem
+
+.mb-1
+  margin-bottom: 0.25rem
+
+.ml-1
+  margin-left: 0.25rem
 
 .mt-2
   margin-top: 0.5rem
@@ -168,7 +191,7 @@
 .bg-light-gray
   background-color: $color_light_gray !important
 
-// TODO: Fix specificity (w.r.t 'table.striped/unstriped') and remove `!important`.
+// TODO: Fix specificity (w.r.t 'table.table-striped/table-unstriped') and remove `!important`.
 .bg-pale-alert
   background-color: $color_danger_pale !important
 
@@ -187,12 +210,8 @@
 
 /////////// End Tailwind ///////////
 
-span.discreet-author-citation
-  border-bottom: dotted 1px $color_gray_text
-  padding-bottom: 3px
-  font-size: 93%
-  a
-    color: $color_foundation_black !important
+pre
+  overflow: auto
 
 pre.pre-wrapped
   white-space: pre-wrap
@@ -215,8 +234,10 @@ th.no-wrap, td.no-wrap
 tr.pale-background
   background-color: $color_pale !important
 
-tr.space-under > td
-  padding-bottom: 3em
+table td.shrink
+  max-width: 100%
+  white-space: nowrap
+  width: 1px
 
 .blue-help-text
   color: blue
@@ -241,10 +262,6 @@ tr.logged-in-only-background
 ul.compact-list
   font-size: 95%
   line-height: 1.2
-
-ul.spaced-lis
-  > li
-    margin-top: 0.7rem
 
 .gray
   color: darkgray
@@ -271,21 +288,6 @@ a.gray
 .show-on-hover
   display: none
 
-table td.shrink
-  max-width: 100%
-  white-space: nowrap
-  width: 1px
-
-.external-link:after
-  font-family: 'fontello'
-  content: "\a0\f08e"
-  font-size: 90%
-
-.pdf-link:after
-  font-family: 'fontello'
-  content: "\a0\e801"
-  font-size: 80%
-
 // To make tables sortable.
 .hidden-sort
   display: none
@@ -299,39 +301,3 @@ table td.shrink
 
 .small-max-width
   max-width: 15rem
-
-// TODO: Fix.
-.get-rid-of-margins-and-paddings-from-inputs
-  input, select, .twitter-typeahead44
-    margin-bottom: 0.3rem
-  .twitter-typeahead, .tt-input
-    margin-bottom: 0.2rem
-
-// TODO: Fix.
-.get-rid-of-margins-and-paddings-from-tds
-  td
-    padding-top: 0.3rem
-    padding-bottom: 0.3rem
-
-ul.horizontal > li
-  display: inline-block
-
-i.arrow-down
-  display: inline-block
-  height: 0
-  width: 0
-  border-style: solid
-  border-color: transparent
-  cursor: pointer
-
-  border-width: 6px 5px 0
-  border-top-color: white
-
-.dropdown-container
-  position: relative
-  display: inline-block
-
-.dropdown-content
-  position: absolute !important
-  background-color: #fff
-  z-index: 200

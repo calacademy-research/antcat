@@ -20,7 +20,7 @@
     -if @protonym.history_items.empty?
       No history items.
     -else
-      %table
+      %table.table-striped
         %caption History items
         %tbody
           -@protonym.history_items.each do |history_item|

@@ -20,7 +20,7 @@
       -if @protonym.history_items.empty?
         No history items.
       -else
-        %table.history-items
+        %table.table-striped.history-items
           %caption
             History items
             %label.float-right
@@ -38,7 +38,7 @@
       -if @to_protonym.history_items.empty?
         No history items.
       -else
-        %table
+        %table.table-striped
           %caption History items
           %tbody
             -@to_protonym.history_items.each do |history_item|

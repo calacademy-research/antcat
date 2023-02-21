@@ -17,9 +17,9 @@ module FeatureHelpers
       when 'the taxon browser'
         "#taxon-browser"
       when 'the protonym'
-        "#taxon-description #protonym-synopsis > span.name"
+        "*[data-testid=catalog-protonym-name]"
       when 'the nomen synopsis'
-        "div#nomen-synopsis"
+        "*[data-testid=catalog-nomen-synopsis]"
       when 'the citations section'
         '#citations'
 

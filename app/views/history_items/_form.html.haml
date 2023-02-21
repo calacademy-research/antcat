@@ -24,7 +24,7 @@
           =tooltip_icon 'Still in beta. This section can be ignored for taxt items.'
         .row
           .medium-5.columns.end
-            %table.unstriped
+            %table.table-unstriped
               %tr
                 %td
                   =f.label :type do
@@ -33,7 +33,7 @@
 
         .row
           .medium-12.columns
-            %table.unstriped
+            %table.table-unstriped
               %tr
                 %td.type-specific-section.type-specific-help-Taxt
                   %p
@@ -73,7 +73,7 @@
                     must be added.
 
         -# [grep:history_type].
-        %table.table.unstriped
+        %table.table-unstriped
           %tbody
             %tr#type-specific-subtype.type-specific-section
               %th
@@ -162,7 +162,7 @@
   .row.mb-8
     .small-12.columns
       %h6.font-bold Taxa belonging to this history item's protonym
-      %table
+      %table.table-striped
         -TaxonQuery.new(protonym.taxa.order_by_name).with_common_includes_and_current_taxon_includes.each do |taxon|
           %tr
             %td=CatalogFormatter.link_to_taxon(taxon)
@@ -174,7 +174,7 @@
                 %small=taxon.decorate.expanded_status
 
 %h6.font-bold.mb-4 Other history items belonging to #{protonym.name.name_html}
-%table
+%table.table-striped
   %tbody
     -if protonym.history_items.persisted.empty?
       %tr

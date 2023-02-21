@@ -62,7 +62,7 @@
 .row.mb-8
   .small-12.columns
     %h5 Details
-    %table.table.unstriped
+    %table.table-unstriped
       %tbody
         %tr
           %th Authors
@@ -154,7 +154,7 @@
           %h5 Citations
           %small Note: nested references of this reference are not included here.
 
-          %table
+          %table.table-striped
             %thead
               %th Citation object
               %th Citation for
@@ -173,7 +173,7 @@
           %a{name: 'history_citations'}
           %h5 Citations (via relational history items)
 
-          %table
+          %table.table-striped
             %thead
               %th History item
               %th Item type
@@ -196,7 +196,7 @@
     .small-12.columns
       %h5 Taxa originally described in this reference (including combinations)
       %small Note: taxa described in nested references of this reference are not included here.
-      %table
+      %table.table-striped
         %thead
           %th Taxon
           %th Authorship
@@ -220,7 +220,7 @@
   .row.mb-8
     .small-12.columns
       %h5 Review
-      %table
+      %table.table-striped
         %thead
           %th Created
           %th Changed

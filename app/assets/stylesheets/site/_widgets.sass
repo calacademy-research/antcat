@@ -51,8 +51,44 @@
   z-index: 1
   // HACK: Margin/padding to make it look acceptable in both Chrome and Firefox.
   margin-left: -35px
-  top: -0.5rem
   padding-right: 10px
   color: $color_primary
   cursor: pointer
   width: 0
+
+span.discreet-author-citation
+  border-bottom: dotted 1px $color_gray_text
+  padding-bottom: 3px
+  font-size: 93%
+  a
+    color: $color_foundation_black !important
+
+.external-link:after
+  font-family: 'fontello'
+  content: "\a0\f08e"
+  font-size: 90%
+
+.pdf-link:after
+  font-family: 'fontello'
+  content: "\a0\e801"
+  font-size: 80%
+
+i.arrow-down
+  display: inline-block
+  height: 0
+  width: 0
+  border-style: solid
+  border-color: transparent
+  cursor: pointer
+
+  border-width: 6px 5px 0
+  border-top-color: white
+
+.dropdown-container
+  position: relative
+  display: inline-block
+
+.dropdown-content
+  position: absolute
+  background-color: #fff
+  z-index: 200

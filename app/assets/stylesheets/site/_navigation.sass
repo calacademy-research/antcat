@@ -18,6 +18,12 @@
     color: #fff
 
   #desktop-only-header
+    // Show "on antcat.org/localhost" on hover.
+    a.dev-link
+      display: none
+    &:hover .show-on-hover
+      display: inline
+
     #desktop-upper-menu
       ul
         li
@@ -32,7 +38,6 @@
           display: inline-block
           font-size: 0.8125rem
           line-height: 0.75rem
-          color: #fff
           padding: 0.30rem 0.5rem
           white-space: nowrap
           margin-left: 1rem
@@ -40,14 +45,13 @@
           border: 2px #000 solid
           background-color: #000
 
-    #desktop-logo
-      color: $almost_white !important
-
     #desktop-lower-menu
       .expandable-catalog-search
         width: 155px
+        margin-bottom: 0
       .expandable-reference-search
         width: 180px
+        margin-bottom: 0
       .expandable-catalog-search, .expandable-reference-search
         transition: all .5s
         height: 2.6rem !important
@@ -91,23 +95,9 @@
         li
           padding-top: 0.25rem
           padding-bottom: 0.25rem
-      .mobile-menu-search-button
-        border: 2px #fff solid
       // Restore width after Typeahead.
       .twitter-typeahead
         width: 100%
-
-  #tagline
-    @media screen and (max-width: 640px)
-      font-size: 85%
-
-// Show "on antcat.org/localhost" on hover.
-#header
-  #desktop-only-header
-    a.dev-link
-      display: none
-    &:hover .show-on-hover
-      display: inline
 
 #header
   .big-screaming-button

@@ -11,6 +11,10 @@
   &:hover, &:focus
     background-color: scale-color($background, $lightness: -20%)
 
+button
+  padding: 0
+  border: 0
+
 .btn-normal, .btn-saves, .btn-warning, .btn-nodanger
   display: inline-block
   padding: 0.5rem 0.7rem
@@ -123,7 +127,7 @@ a.btn-nodanger
   background: #767676
   color: #fefefe
 
-.white-label
+.label-white
   @extend .label
   background-color: #fff
   border: 1px solid #000
@@ -131,20 +135,20 @@ a.btn-nodanger
   a
     color: #000 !important
 
-.pretty-label
+.label-pretty
   @extend .label
   background-color: $color_primary
 
-.high-priority-label
+.label-high-priority
   @extend .label
   background-color: $color_high_priority
 
-.green-label
+.label-green
   @extend .label
   background-color: $color_scream_green
   color: $almost_black
 
-.warning-label
+.label-warning
   @extend .label
   background-color: $color_danger
 

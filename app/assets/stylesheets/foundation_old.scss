@@ -3,28 +3,6 @@
 @import "normalize";
 @import "colors";
 
-img {
-  display: inline-block;
-  vertical-align: middle;
-  max-width: 100%;
-  height: auto;
-}
-
-button {
-  padding: 0;
-  appearance: none;
-  border: 0;
-  border-radius: 3px;
-  background: transparent;
-  line-height: 1;
-  cursor: auto;
-  white-space: nowrap
-}
-
-pre {
-  overflow: auto;
-}
-
 /////////// Grid ///////////
 .row {
   max-width: 75rem;
@@ -282,16 +260,6 @@ h1, h2, h3, h4, h5, h6 {
   text-rendering: optimizeLegibility;
 }
 
-h1 small,
-h2 small,
-h3 small,
-h4 small,
-h5 small,
-h6 small {
-  line-height: 0;
-  color: $color_medium_gray;
-}
-
 h1 {
   font-size: 1.5rem;
 }
@@ -484,19 +452,10 @@ label {
   border: 1px solid $color_medium_gray;
   background: $color_light_gray;
   color: $color_foundation_black;
-  text-align: center;
-  white-space: nowrap;
   display: flex;
   flex: 0 0 auto;
   align-items: center;
   margin: 0 0 1rem;
-}
-
-.input-group-label:first-child {
-  border-right: 0;
-}
-.input-group-label:last-child {
-  border-left: 0;
 }
 
 .fieldset {
@@ -565,80 +524,56 @@ table {
   width: 100%;
   margin-bottom: 1rem;
   border-radius: 3px;
-}
 
-thead,
-tbody {
-  border: 1px solid #f1f1f1;
-  background-color: #fefefe;
-}
-
-caption {
-  padding: 0.5rem 0.625rem 0.625rem;
-  font-weight: bold;
-  text-align: left;
-}
-
-thead {
-  background: $almost_white;
-  color: $color_foundation_black;
-}
-
-table th,
-table td {
-  padding: 0.5rem 0.625rem 0.625rem;
-}
-
-table th {
-  text-align: left;
-}
-
-thead tr {
-  background: transparent;
-}
-
-thead th,
-thead td {
-  font-weight: bold;
-  text-align: left;
-}
-
-tbody tr:nth-child(even) {
-  border-bottom: 0;
-  background-color: $color_light_gray;
-}
-
-table.unstriped tbody {
-  background-color: #fefefe;
-}
-table.unstriped tbody tr {
-  border-bottom: 0;
-  border-bottom: 1px solid #f1f1f1;
-  background-color: #fefefe;
-}
-
-@media (max-width: 62.43625em) {
-  table.stack thead {
-    display: none;
+  caption {
+    padding: 0.5rem 0.625rem 0.625rem;
+    font-weight: bold;
+    text-align: left;
   }
-  table.stack tr,
-  table.stack th,
-  table.stack td {
-    display: block;
-  }
-  table.stack td {
-    border-top: 0;
-  }
-}
 
-table.hover thead tr:hover {
-  background-color: #f3f3f3;
-}
-table.hover tbody tr:hover {
-  background-color: #f9f9f9;
-}
-table.hover:not(.unstriped) tr:nth-of-type(even):hover {
-  background-color: #ececec;
+  thead,
+  tbody {
+    border: 1px solid #f1f1f1;
+    background-color: #fefefe;
+  }
+
+  thead {
+    background: $almost_white;
+    color: $color_foundation_black;
+  }
+
+  th,
+  td {
+    padding: 0.5rem 0.625rem 0.625rem;
+  }
+
+  th {
+    text-align: left;
+  }
+
+  thead tr {
+    background: transparent;
+  }
+
+  thead th,
+  thead td {
+    font-weight: bold;
+    text-align: left;
+  }
+
+  &.table-striped tbody tr:nth-child(even) {
+    border-bottom: 0;
+    background-color: $color_light_gray;
+  }
+
+  &.table-unstriped tbody {
+    background-color: #fefefe;
+  }
+
+  &.table-unstriped tbody tr {
+    border-bottom: 1px solid #f1f1f1;
+    background-color: #fefefe;
+  }
 }
 
 /////////// Misc. ///////////

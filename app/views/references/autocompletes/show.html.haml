@@ -1,7 +1,7 @@
 -if @references.blank?
   %p No results
 -else
-  %table.table.unstriped
+  %table.table-unstriped
     %tbody
       -@references.each do |reference|
         -label = reference.decorate.link_to_reference

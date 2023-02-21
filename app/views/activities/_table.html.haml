@@ -4,7 +4,7 @@
 -if activities.empty?
   No activities.
 -else
-  %table.activities.stack
+  %table.table-striped.table-stack.activities
     %tbody
       -activities.each do |activity|
         -decorated = activity.decorate
@@ -14,7 +14,7 @@
             -if activity.user&.unconfirmed?
               %span.rounded-badge unconfirmed user
             -if decorated.locked_or_deleted_user_registration?
-              %span.warning-label.rounded-badge locked or deleted user
+              %span.label-warning.rounded-badge locked or deleted user
             =decorated.link_user
             =decorated.did_something
             -if activity.edit_summary?

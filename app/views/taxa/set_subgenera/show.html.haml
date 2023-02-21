@@ -16,7 +16,7 @@
       %p The genus of this species does not have any subgenera.
       %p=link_to "Add #{@taxon.genus.name.name_html} subgenus".html_safe, new_taxon_path(rank_to_create: Rank::SUBGENUS, parent_id: @taxon.genus.id), class: "btn-normal btn-tiny"
     -else
-      %table
+      %table.table-striped
         %caption
           Subgenera of
           =CatalogFormatter.link_to_taxon(@taxon.genus)

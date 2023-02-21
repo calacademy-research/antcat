@@ -1,6 +1,6 @@
 #desktop-only-header
   #desktop-upper-menu.float-right.pt-2
-    %ul.no-bullet.horizontal
+    %ul.no-bullet.flex
       -if user_is_developer?
         %li
           %small=link_to_current_page_on_live_site_or_localhost
@@ -24,8 +24,8 @@
     =link_to root_path do
       =image_tag 'logos/antcat_white_174x37.png', alt: 'AntCat'
 
-  #desktop-lower-menu.float-right
-    %ul.no-bullet.horizontal.mb-0
+  #desktop-lower-menu.float-right.mb-4
+    %ul.no-bullet.flex.items-center.mb-0
       %li.uppercase=link_to 'References', references_latest_additions_path, class: "big-screaming-orange-button #{'very-active' if menu_active?(:references)}"
       %li.uppercase=link_to 'Catalog', root_path, class: "big-screaming-green-button #{'very-active' if menu_active?(:catalog)}"
       %li
@@ -64,20 +64,18 @@
     %ul.no-bullet
       %li
         =form_with url: references_search_index_path, method: :get do |f|
-          .row
-            .small-9.columns
-              =f.text_field 'reference_q', value: params[:reference_q], placeholder: "Search References", "aria-label" => "Search References", id: nil, class: "typeahead-references-js"
-            .small-3.columns
-              =button_tag search_icon, type: "submit", name: nil, class: "button expanded mobile-menu-search-button"
+          .input-group
+            =f.text_field "reference_q", value: params[:reference_q], placeholder: "Search References", "aria-label" => "Search References", id: nil, class: "typeahead-references-js"
+            =button_tag search_icon, type: "submit", name: nil do
+              %i.inline-search-icon.icon-search
 
       %li
         =form_with url: catalog_search_path, method: :get do |f|
-          .row
-            .small-9.columns
-              =f.text_field 'qq', value: params[:qq], placeholder: "Search Catalog", "aria-label" => "Search Catalog", id: nil, class: "typeahead-taxa-js-hook"
-              =hidden_field_tag Catalog::SearchesController::SEARCHING_FROM_HEADER, true, id: nil
-            .small-3.columns
-              =button_tag search_icon, type: "submit", name: nil, class: "button expanded mobile-menu-search-button"
+          .input-group
+            =f.text_field 'qq', value: params[:qq], placeholder: "Search Catalog", "aria-label" => "Search Catalog", id: nil, class: "typeahead-taxa-js-hook"
+            =hidden_field_tag Catalog::SearchesController::SEARCHING_FROM_HEADER, true, id: nil
+            =button_tag search_icon, type: "submit", name: nil do
+              %i.inline-search-icon.icon-search
 
     %ul.mobile-menu-ul.no-bullet
       %li=link_to 'References', references_latest_additions_path
@@ -96,15 +94,13 @@
 
 .float-left
   -if menu_active?(:catalog)
-    #tagline
-      An Online Catalog of the Ants of the World
-      %small by Barry Bolton
+    An Online Catalog of the Ants of the World
+    %small by Barry Bolton
   -if menu_active?(:references)
-    #tagline
-      ANTBIB: A Bibliography of Ant Systematics
-      %small
-        by Philip S. Ward,
-        %i et al.
+    ANTBIB: A Bibliography of Ant Systematics
+    %small
+      by Philip S. Ward,
+      %i et al.
 
 -if current_user
   .float-right.show-for-large

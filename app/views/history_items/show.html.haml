@@ -66,7 +66,7 @@
         .row.mb-8
           .small-12.columns
             %h6.font-bold Taxa belonging to this history item's protonym
-            %table
+            %table.table-striped
               -TaxonQuery.new(@protonym.taxa.order_by_name).with_common_includes_and_current_taxon_includes.each do |taxon|
                 %tr
                   %td=CatalogFormatter.link_to_taxon(taxon)
@@ -79,7 +79,7 @@
 
       -if has_more_than_a_single_history_item
         %h6.font-bold.mt-12.mb-4 This history item highlighted in context with other history items belonging to #{@protonym.name.name_html}
-        %table
+        %table.table-striped
           %tbody
             -@protonym.history_items.each do |protonym_history_item|
               %tr{class: ('pale-background' if protonym_history_item == @history_item)}

@@ -9,7 +9,7 @@
 
   .row
     .large-7.columns
-      %table.unstriped
+      %table.table-unstriped
         =f.fields_for :name do |_name_fields|
           %tr
             %td
@@ -93,7 +93,7 @@
 
     .large-5.columns
       .callout.mb-8
-        %table.unstriped
+        %table.table-unstriped
           %h6.font-bold
             Type name
             =db_tooltip_icon :type_name_reference, scope: :protonyms
@@ -142,7 +142,7 @@
         See also related wiki page
         =link_to_wiki_page_or_missing WikiPage::TYPE_INFORMATION
 
-      %table.unstriped
+      %table.table-unstriped
         -# TODO: `protonym.gender_agreement_type?` for same reason as for forms/bioregion/locality.
         -if protonym.species_group_name? || protonym.gender_agreement_type?
           %tr
@@ -188,7 +188,7 @@
 
   .row
     .large-6.columns
-      %table.unstriped
+      %table.table-unstriped
         %tr
           %td
             =edit_summary_text_field_tag
@@ -198,7 +198,7 @@
   %h5.mt-20.mb-4 Related records
 
   %h6.font-bold Taxa belonging to this protonym
-  %table
+  %table.table-striped
     -TaxonQuery.new(protonym.taxa.order_by_name).with_common_includes.each do |taxon|
       %tr
         %td=CatalogFormatter.link_to_taxon(taxon)

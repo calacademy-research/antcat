@@ -20,7 +20,7 @@
       -if @taxon.reference_sections.empty?
         No reference sections.
       -else
-        %table.reference-sections
+        %table.table-striped.reference-sections
           %caption
             Reference sections
             %label.float-right
@@ -38,7 +38,7 @@
       -if @to_taxon.reference_sections.empty?
         No reference sections.
       -else
-        %table
+        %table.table-striped
           %caption Reference sections
           %tbody
             -@to_taxon.reference_sections.each do |reference_section|
