@@ -10,7 +10,7 @@
   -if user_is_superadmin?
     =link_to append_superadmin_icon("Approve all"), approve_all_reviewing_references_path, method: :put, data: { confirm: "Mark all citations as reviewed? This operation cannot be undone!" }, class: "btn-warning"
 
-%table.table-striped.stack.references
+%table.table-striped.table-stack.references
   %tbody
   -@references.each do |reference|
     %tr

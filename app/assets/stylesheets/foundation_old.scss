@@ -618,15 +618,15 @@ table.unstriped tbody tr {
 }
 
 @media (max-width: 62.43625em) {
-  table.stack thead {
+  table.table-stack thead {
     display: none;
   }
-  table.stack tr,
-  table.stack th,
-  table.stack td {
+  table.table-stack tr,
+  table.table-stack th,
+  table.table-stack td {
     display: block;
   }
-  table.stack td {
+  table.table-stack td {
     border-top: 0;
   }
 }

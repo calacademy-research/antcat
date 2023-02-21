@@ -4,7 +4,7 @@
 -if activities.empty?
   No activities.
 -else
-  %table.table-striped.activities.stack
+  %table.table-striped.table-stack.activities
     %tbody
       -activities.each do |activity|
         -decorated = activity.decorate
