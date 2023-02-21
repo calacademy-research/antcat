@@ -32,7 +32,6 @@
       overflow-y: auto
       max-height: 24vh
       padding-top: 0 !important
-      font-size: 90%
       a.genus, a.subgenus, a.species, a.subspecies, a.infrasubspecies
         font-style: italic
       a.subspecies::before
@@ -55,6 +54,21 @@
     left: 0
     background-color: #fff
 
+    .selected, .smaller-white-label
+      display: inline-block
+      font-size: 0.8rem
+      border-radius: 3px
+      padding: 0 0.4rem
+    .selected
+      background-color: $color_primary !important
+      a, a.valid.subspecies
+        color: #fff !important
+    .smaller-white-label
+      background-color: #fff
+      border: 1px solid #000
+      a
+        color: #000 !important
+
     .snaked
       padding-top: 0.8rem
       padding-bottom: 0.8rem
@@ -63,17 +77,7 @@
       -moz-column-width: 9rem
       column-width: 9rem
 
-    .mr-scrollbary
-      height: 100%
-
-    .upcase
-      text-transform: uppercase
-
-    li
-      box-sizing: border-box
-
     .right-side-buttons
-      float: right
       margin-bottom: 3px
       a
         color: #fff
@@ -82,13 +86,7 @@
         margin-top: 0.5rem
 
     #taxon-key
-      font-size: 90%
       background: #fff
-
-      padding-left: 1rem
-      padding-right: 1rem
-      padding-bottom: 0.3rem
-
       .equally-space-out
         display: flex
         justify-content: space-between

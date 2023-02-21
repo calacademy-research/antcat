@@ -1,7 +1,7 @@
 -if current_user
   -count = current_user.unseen_notifications.count
   -unless count.zero?
-    %li.unseen-notifications
+    %li.text-sm.font-bold
       =link_to notifications_path do
-        %span.label=count
+        .white-label.border-0=count
         new notification#{"s" unless count == 1}!

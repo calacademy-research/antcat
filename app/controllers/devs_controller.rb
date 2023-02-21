@@ -10,6 +10,9 @@ class DevsController < ApplicationController
     @_visible_pickers = params[:p]&.split(',')
   end
 
+  def styles
+  end
+
   private
 
     def show_picker? picker_name

@@ -108,7 +108,7 @@ describe ActivityDecorator do
           it 'includes the old and new names' do
             expect(decorated.did_something.squish).to eq <<~STR.squish
               edited the name record <a href="/names/#{trackable.id}">#{trackable.name_html}</a>
-              <div class='small-text bold-warning'> Name changed from Lasius to Atta </div>
+              <div class='text-sm bold-warning'> Name changed from Lasius to Atta </div>
             STR
           end
         end

@@ -1,4 +1,4 @@
-.callout.no-border-callout.logged-in-only-background
+.callout.border-0.logged-in-only-background
   %h6 Species and subspecies in subgenus
 
   %ul.compact-list.mb-4
@@ -6,7 +6,7 @@
       %li
         =CatalogFormatter.link_to_taxon(species)
         =species.author_citation
-        %span.small-text=species.decorate.expanded_status
+        %span.text-sm=species.decorate.expanded_status
         -# TODO: N+1 query.
         -if species.subspecies.present?
           %ul.compact-list
@@ -14,4 +14,4 @@
               %li
                 =CatalogFormatter.link_to_taxon(subspecies)
                 =subspecies.author_citation
-                %span.small-text=subspecies.decorate.expanded_status
+                %span.text-sm=subspecies.decorate.expanded_status

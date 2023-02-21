@@ -104,7 +104,7 @@
 
   -if current_user
     .medium-3.columns
-      .additional-editor-data.callout.no-border-callout.logged-in-only-background
+      .additional-editor-data.callout.border-0.logged-in-only-background
         %h6
           Protonym:
           =@protonym.name.epithet_html
@@ -121,7 +121,7 @@
             -if @protonym.history_items.size > 1
               %li.mb-2=link_to "Reorder history items", protonym_reorder_history_items_path(@protonym), class: "btn-normal btn-tiny"
 
-        %ul.no-bullet.small-text
+        %ul.no-bullet.text-sm
           %li Created at: #{l @protonym.created_at, format: :ymd}
           %li Updated at: #{l @protonym.updated_at, format: :ymd}
 
@@ -162,7 +162,7 @@
   -if @protonym.history_items_as_object.present?
     .row.mt-8.mb-8
       .small-12.columns
-        .callout.no-border-callout.logged-in-only-background.mb-16
+        .callout.border-0.logged-in-only-background.mb-16
           %h5 History items as object protonym
 
           %table.table.stack

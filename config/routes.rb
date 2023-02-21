@@ -261,6 +261,7 @@ Rails.application.routes.draw do
   if Rails.env.development?
     resource :dev, only: :show do
       get 'pickers'
+      get 'styles'
     end
   end
 end

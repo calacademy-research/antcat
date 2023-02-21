@@ -1,7 +1,7 @@
 -if current_user
   -count = current_user.unread_site_notices.count
   -unless count.zero?
-    %li.unseen-notifications
+    %li.text-sm.font-bold
       =link_to site_notices_path do
-        %span.label=count
+        .white-label.border-0=count
         new notice#{"s" unless count == 1}!

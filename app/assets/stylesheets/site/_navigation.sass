@@ -17,37 +17,33 @@
   a
     color: #fff
 
-  ul.unseen-notifications-ul
-    margin-left: 0
-    margin-top: -1rem
-
-  li.unseen-notifications
-    font-size: 90%
-    list-style: none
-    > a
-      font-weight: bold
-      > span
-        cursor: pointer
-        color: $color_primary
-        background-color: #fff
-
   #desktop-only-header
     #desktop-upper-menu
-      padding-top: 0.7rem
-      float: right
       ul
         li
           padding-left: 1rem
           padding-right: 1rem
+      .desktop-upper-menu-link
+        font-size: 14px
+        margin-left: 1rem
+        &:hover, &.very-active
+          font-weight: 900
+        &.very-active
+          display: inline-block
+          font-size: 0.8125rem
+          line-height: 0.75rem
+          color: #fff
+          padding: 0.30rem 0.5rem
+          white-space: nowrap
+          margin-left: 1rem
+          border-radius: 3px
+          border: 2px #000 solid
+          background-color: #000
 
     #desktop-logo
-      float: left
       color: $almost_white !important
 
     #desktop-lower-menu
-      float: right
-      .reference-search-form
-        margin-right: 1rem
       .expandable-catalog-search
         width: 155px
       .expandable-reference-search
@@ -62,8 +58,6 @@
           width: 250px
 
   #mobile-only-header
-    font-size: 90%
-
     #mobile-hamburger-input
       display: none
     #mobile-hamburger-input:checked ~ #mobile-menu-content
@@ -91,20 +85,12 @@
       &::after
         top: -5px
 
-    #mobile-logo
-      padding-top: 1rem
-
     #mobile-menu-content
       display: none
-      padding-left: 1.1rem
-      padding-right: 1.1rem
-      #mobile-menu-ul
+      .mobile-menu-ul
         li
-          padding-top: 0.4rem
-          padding-bottom: 0.4rem
-        li.mobile-menu-search-li
-          padding-top: 0
-          padding-bottom: 0
+          padding-top: 0.25rem
+          padding-bottom: 0.25rem
       .mobile-menu-search-button
         border: 2px #fff solid
       // Restore width after Typeahead.
@@ -127,18 +113,12 @@
   .big-screaming-button
     background-color: $color_primary
     border: 3px #fff
-
     border-radius: 3px !important
     font-weight: 900
     font-size: 12px
     margin-right: 28px
-    text-transform: uppercase
     font-family: 'Montserrat', sans-serif
-
-    padding-left: 1rem
-    padding-right: 1rem
-    padding-top: 0.6rem
-    padding-bottom: 0.6rem
+    padding: 0.6rem 1rem
 
   .big-screaming-green-button
     @extend .big-screaming-button
@@ -175,11 +155,9 @@
       color: $color_scream_orange !important
 
 #breadcrumbs
-  margin-bottom: 2rem
-
-  #subnavigation
-    margin-top: 1rem
-    margin-bottom: 1rem
+  .btn-normal, .btn-warning, .btn-nodanger, .btn-saves
+    padding: 0.30rem 0.5rem !important
+    white-space: nowrap
 
 // Responsive-related.
 // Small screens.

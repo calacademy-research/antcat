@@ -1,7 +1,7 @@
 .taxon-browser-sticky
   %div
     #taxon-browser.taxon-browser-css-tabs
-      #taxon-key.color-coded-catalog-links.hidden{data: { toggler_name: "taxon_key" }}
+      #taxon-key.color-coded-catalog-links.hidden.text-sm.py-4{data: { toggler_name: "taxon_key" }}
         .equally-space-out
           %div &dagger;fossil
           .valid valid
@@ -15,16 +15,16 @@
         %input.taxon-browser-tab-input{id: tab.id, class: "taxon-browser-tab-#{index}", checked: ("checked" if tab.open?), name: "taxon_browser_tab", type: "radio", value: 'selected tab'}
         %label{for: tab.id}=tab.title
 
-      .right-side-buttons.hide-for-small-only
+      .right-side-buttons.float-right.hide-for-small-only
         %button.btn-tiny.btn-nodanger{"data-action" => "toggler#toggle", "data-toggler-target" => "taxon_key"} toggle legend
         %span.label-secondary
           =taxon_browser_presenter.toggle_invalid_or_valid_only_link
 
       -taxon_browser.tabs.each.with_index do |tab, index|
-        .taxon-browser-tab.taxon-browser-tab-content{class: "taxon-browser-tab-content-#{index}"}
-          %ul.snaked.no-bullet.mr-scrollbary.color-coded-catalog-links
+        .taxon-browser-tab.taxon-browser-tab-content.text-sm{class: "taxon-browser-tab-content-#{index}"}
+          %ul.snaked.no-bullet.color-coded-catalog-links
             -TaxonBrowser::LinksToExtraTabs[tab.tab_taxon].each do |link|
-              %li.upcase=taxon_browser_presenter.extra_tab_link tab.tab_taxon, link[:label], link[:view]
+              %li.uppercase=taxon_browser_presenter.extra_tab_link tab.tab_taxon, link[:label], link[:view]
 
             -tab.each_taxon do |taxon, is_selected|
               %li{class: ("selected" if is_selected)}

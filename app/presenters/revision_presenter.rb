@@ -35,7 +35,7 @@ class RevisionPresenter
     if template
       render_revision_with_template(item, view_context: view_context)
     else
-      "<pre class='small-text'>#{revision_as_json(item)}</pre>".html_safe
+      "<pre class='text-sm'>#{revision_as_json(item)}</pre>".html_safe
     end
   end
 

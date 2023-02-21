@@ -4,12 +4,11 @@
 -if @notifications.empty?
   No notifications.
 -else
-  %table.notifications
+  %table
     %tbody
       -@notifications.each do |notification|
-        %tr{class: ('unseen' if notification.unseen?)}
-          -# There is no "unseen" icon, but it's used in tests.
-          %td.icon=antcat_icon(notification.seen? ? "seen" : "unseen")
+        %tr{class: ('font-bold' if notification.unseen?)}
+          %td.icon=antcat_icon("read") if notification.seen?
           %td.no-wrap
             =notification.notifier.decorate.user_page_link
             =render partial: "notifications/notification_templates/#{notification.reason}", locals: { notification: notification }
