@@ -11,7 +11,7 @@
   &:hover, &:focus
     background-color: scale-color($background, $lightness: -20%)
 
-.btn-normal, .btn-saves, .btn-warning, .btn-nodanger, .btn-lower-nav, #btn-lower-nav-help-wanted
+.btn-normal, .btn-saves, .btn-warning, .btn-nodanger
   display: inline-block
   padding: 0.5rem 0.7rem
   font-size: 0.8125rem
@@ -38,6 +38,13 @@
   border: 1px solid #000 !important
 
 .btn-lower-nav
+  display: inline-block
+  font-size: 0.8125rem
+  line-height: 0.75rem
+  border-radius: 3px !important
+  padding: 0.30rem 0.5rem
+
+.btn-lower-nav
   @include base-button($color_primary)
   border: 1px $color_pale solid
 
@@ -45,10 +52,9 @@
   @include base-button(#fff, #000)
   color: #000 !important
 
-#btn-lower-nav-help-wanted
+.btn-lower-nav-high-priority
   @include base-button($color_high_priority)
   border: 1px $color_high_priority solid
-  font-weight: bold
 
 a.btn-normal, a.btn-saves, a.btn-nodanger
   padding: 0.55rem 0.75rem
@@ -64,20 +70,12 @@ a.btn-nodanger
   padding: 0.30rem 0.5rem !important
   white-space: nowrap
 
-#breadcrumbs
-  .btn-normal, .btn-warning, .btn-nodanger, .btn-saves
-    @extend .btn-tiny
-
 // For inline "show on hover" buttons to avoid making the layout jump.
 .btn-very-tiny
   padding: 0.15rem 0.2rem !important
   margin-bottom: 0
   white-space: nowrap
   display: inline
-
-table.activities
-  .filter-activities-link
-    @extend .btn-very-tiny
 
 /////////// Callouts ///////////
 .callout
