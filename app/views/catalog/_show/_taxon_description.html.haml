@@ -75,7 +75,7 @@
   -history_presenter = HistoryPresenter.new(taxon.history_items_for_taxon)
 
   -if current_user
-    %h6.mt-8
+    %h6.font-bold.mt-8
       Taxonomic history
       =info_tooltip_icon 'Automatically sorted and grouped items, logged-in version.'
 
@@ -125,7 +125,7 @@
 -if current_user && !Status.display_history_items?(taxon.status)
   -if taxon.history_items_for_taxon_including_hidden.present?
     .additional-editor-data.callout.border-0.logged-in-only-background.mt-8.mb-8
-      %h6 Protonym history items not shown on this page
+      %h6.font-bold Protonym history items not shown on this page
 
       %p
         History items in this bluebox are shown on catalog pages for the protonym's terminal taxon:
@@ -144,7 +144,7 @@
 
 -if taxon.junior_synonyms.exists?
   -name_of_obsoletes = taxon.decorate.name_of_obsoletes
-  %h6.mt-8 Junior synonyms
+  %h6.font-bold.mt-8 Junior synonyms
   %ul.compact-list.no-bullet.mb-8
     -TaxonQuery.new(taxon.junior_synonyms.order_by_name).with_common_includes.each do |synonym|
       %li
@@ -156,7 +156,7 @@
             =safe_join synonym.obsolete_combinations.map { |obsolete| CatalogFormatter.link_to_taxon(obsolete) }, ', '
 
 -if taxon.obsolete_combinations.exists?
-  %h6.mt-8="Obsolete #{taxon.decorate.name_of_obsoletes}s"
+  %h6.font-bold.mt-8="Obsolete #{taxon.decorate.name_of_obsoletes}s"
   %ul.compact-list.no-bullet.mb-8
     -taxon.obsolete_combinations.order_by_name.includes(:name).each do |obsolete_combination|
       %li
@@ -183,13 +183,13 @@
       -taxon.reference_sections.each do |reference_section|
         .section.mb-4
           -if reference_section.title_taxt?
-            %h6=Detax[reference_section.title_taxt]
+            %h6.font-bold=Detax[reference_section.title_taxt]
 
           -if reference_section.subtitle_taxt?
-            %h6=Detax[reference_section.subtitle_taxt]
+            %h6.font-bold=Detax[reference_section.subtitle_taxt]
 
           -if reference_section.references_taxt?
-            %p=Detax[reference_section.references_taxt]
+            %p.font-bold=Detax[reference_section.references_taxt]
 
           -if current_user
             %span.show-on-hover
@@ -199,7 +199,7 @@
               =link_to "History", reference_section_history_path(reference_section), class: "btn-normal btn-very-tiny"
 
 -unless catalog_presenter.formicidae_landing_page?
-  %h6.mt-20 Citations
+  %h6.font-bold.mt-20 Citations
   %ul#citations.compact-list
     -catalog_presenter.collected_references.each do |reference|
       -decorated_reference = reference.decorate
