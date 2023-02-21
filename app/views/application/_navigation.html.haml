@@ -24,8 +24,8 @@
     =link_to root_path do
       =image_tag 'logos/antcat_white_174x37.png', alt: 'AntCat'
 
-  #desktop-lower-menu.float-right
-    %ul.no-bullet.flex.items-baseline.mb-0
+  #desktop-lower-menu.float-right.mb-4
+    %ul.no-bullet.flex.items-center.mb-0
       %li.uppercase=link_to 'References', references_latest_additions_path, class: "big-screaming-orange-button #{'very-active' if menu_active?(:references)}"
       %li.uppercase=link_to 'Catalog', root_path, class: "big-screaming-green-button #{'very-active' if menu_active?(:catalog)}"
       %li
