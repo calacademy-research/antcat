@@ -1,6 +1,6 @@
 #desktop-only-header
   #desktop-upper-menu.float-right.pt-2
-    %ul.no-bullet.horizontal
+    %ul.no-bullet.flex
       -if user_is_developer?
         %li
           %small=link_to_current_page_on_live_site_or_localhost
@@ -25,7 +25,7 @@
       =image_tag 'logos/antcat_white_174x37.png', alt: 'AntCat'
 
   #desktop-lower-menu.float-right
-    %ul.no-bullet.horizontal.mb-0
+    %ul.no-bullet.flex.items-baseline.mb-0
       %li.uppercase=link_to 'References', references_latest_additions_path, class: "big-screaming-orange-button #{'very-active' if menu_active?(:references)}"
       %li.uppercase=link_to 'Catalog', root_path, class: "big-screaming-green-button #{'very-active' if menu_active?(:catalog)}"
       %li
