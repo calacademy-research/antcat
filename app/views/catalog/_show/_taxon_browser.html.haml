@@ -24,7 +24,7 @@
         .taxon-browser-tab.taxon-browser-tab-content{class: "taxon-browser-tab-content-#{index}"}
           %ul.snaked.no-bullet.mr-scrollbary.color-coded-catalog-links
             -TaxonBrowser::LinksToExtraTabs[tab.tab_taxon].each do |link|
-              %li.upcase=taxon_browser_presenter.extra_tab_link tab.tab_taxon, link[:label], link[:view]
+              %li.uppercase=taxon_browser_presenter.extra_tab_link tab.tab_taxon, link[:label], link[:view]
 
             -tab.each_taxon do |taxon, is_selected|
               %li{class: ("selected" if is_selected)}
