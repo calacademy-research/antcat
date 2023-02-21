@@ -28,7 +28,7 @@ describe DatabaseScripts::Renderers::AsTable do
           end
 
         expect(rendered.squish).to eq <<~HTML.squish
-          <table class="tablesorter hover mt-8">
+          <table class="table-striped tablesorter mt-8">
             <thead>
               <tr>
                 <th>Taxon</th>
@@ -56,7 +56,7 @@ describe DatabaseScripts::Renderers::AsTable do
           end
 
         expect(rendered.squish).to eq <<~HTML.squish
-          <table class="tablesorter hover mt-8">
+          <table class="table-striped tablesorter mt-8">
             <caption>caption field</caption>
             <caption>info field</caption>
             <thead>
@@ -88,7 +88,7 @@ describe DatabaseScripts::Renderers::AsTable do
           end
 
         expect(rendered.squish).to eq <<~HTML.squish
-          <table class="tablesorter hover mt-8">
+          <table class="table-striped tablesorter mt-8">
             <thead>
               <tr>
                 <th>Taxon</th>

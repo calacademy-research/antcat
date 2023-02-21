@@ -20,7 +20,7 @@
     -if @taxon.reference_sections.empty?
       No reference sections.
     -else
-      %table
+      %table.table-striped
         %caption Reference sections
         %tbody
           -@taxon.reference_sections.each do |reference_section|

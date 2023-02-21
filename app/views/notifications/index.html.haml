@@ -4,7 +4,7 @@
 -if @notifications.empty?
   No notifications.
 -else
-  %table
+  %table.table-striped
     %tbody
       -@notifications.each do |notification|
         %tr{class: ('font-bold' if notification.unseen?)}

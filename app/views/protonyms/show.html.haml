@@ -44,7 +44,7 @@
           nomen nudum
       -if current_user
         .float-right=link_to "Name record ##{@protonym.name.id}", name_path(@protonym.name), class: 'btn-normal btn-tiny'
-    %table.table.unstriped
+    %table.unstriped
       %tbody
         %tr
           %th Authorship
@@ -132,7 +132,7 @@
   .row.mb-8
     .small-12.columns
       %h5 Taxa belonging to this protonym
-      %table
+      %table.table-striped
         -TaxonQuery.new(@protonym.taxa.order_by_name).with_common_includes_and_current_taxon_includes.each do |taxon|
           %tr
             %td=CatalogFormatter.link_to_taxon(taxon)
@@ -165,7 +165,7 @@
         .callout.border-0.logged-in-only-background.mb-16
           %h5 History items as object protonym
 
-          %table.table.stack
+          %table.table-striped.stack
             %thead
               %th History item
               %th Protonym owner / terminal taxa

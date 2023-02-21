@@ -603,7 +603,7 @@ thead td {
   text-align: left;
 }
 
-tbody tr:nth-child(even) {
+table.table-striped tbody tr:nth-child(even) {
   border-bottom: 0;
   background-color: $color_light_gray;
 }

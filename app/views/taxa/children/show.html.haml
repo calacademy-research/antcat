@@ -6,7 +6,7 @@
     -content_for :breadcrumbs_right do
       =link_to "Check 'What Links Here's (slow)", taxon_children_path(@taxon, check_what_links_heres: 'yes'), class: "btn-normal"
 
-%table
+%table.table-striped
   %caption
     Immediate children of
     =@taxon.decorate.link_to_taxon_with_author_citation

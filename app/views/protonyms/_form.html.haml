@@ -198,7 +198,7 @@
   %h5.mt-20.mb-4 Related records
 
   %h6.font-bold Taxa belonging to this protonym
-  %table
+  %table.table-striped
     -TaxonQuery.new(protonym.taxa.order_by_name).with_common_includes.each do |taxon|
       %tr
         %td=CatalogFormatter.link_to_taxon(taxon)
