@@ -3,28 +3,6 @@
 @import "normalize";
 @import "colors";
 
-img {
-  display: inline-block;
-  vertical-align: middle;
-  max-width: 100%;
-  height: auto;
-}
-
-button {
-  padding: 0;
-  appearance: none;
-  border: 0;
-  border-radius: 3px;
-  background: transparent;
-  line-height: 1;
-  cursor: auto;
-  white-space: nowrap
-}
-
-pre {
-  overflow: auto;
-}
-
 /////////// Grid ///////////
 .row {
   max-width: 75rem;
