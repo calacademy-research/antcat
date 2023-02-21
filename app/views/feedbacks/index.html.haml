@@ -2,20 +2,16 @@
 -breadcrumb :feedbacks
 
 -if @feedbacks.blank?
-  %p
-    There are currently no pending feedbacks.
+  %p There are currently no pending feedbacks.
 -else
-  %table.feedbacks.unstriped.stack
+  %table.unstriped.stack
     %tbody
-    -@feedbacks.each do |feedback|
-      %tr.align-top{class: ("closed" if feedback.closed?)}
-        %td=link_to "##{feedback.id}", feedback
-        -if feedback.open?
-          %td Open
-        -else
-          %td.gray Closed
-        %td=render "feedback", feedback: feedback
-        %td.text-center.no-wrap=CommentableDecorator.new(feedback).link_existing_comments_section
-        %td=link_to "Details", feedback, class: "btn-normal btn-tiny"
+      -@feedbacks.each do |feedback|
+        %tr.align-top{class: ("bg-light-gray text-dark-gray" if feedback.closed?)}
+          %td=link_to "##{feedback.id}", feedback
+          %td=feedback.open? ? "Open" : "Closed"
+          %td=render "feedback", feedback: feedback
+          %td.text-center.no-wrap=CommentableDecorator.new(feedback).link_existing_comments_section
+          %td=link_to "Details", feedback, class: "btn-normal btn-tiny"
 
 =will_paginate @feedbacks

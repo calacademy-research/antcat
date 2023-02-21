@@ -16,10 +16,10 @@
     %p These issues were deemed important for one or another reason, in many cases because they are blocking improvements we want to make to the code.
     %p Any help fixing these is much appreciated. Resolved issues can be closed, and then this notice will disappear from this page and the header.
 
-%table.issues.unstriped.stack
+%table.unstriped.stack
   %tbody
     -@issues.each do |issue|
-      %tr.issue{class: ('closed' if issue.closed?)}
+      %tr{class: ('bg-light-gray' if issue.closed?)}
         %td.icon.align-top=issue.decorate.icon
         %td.grow
           =link_to issue.title, issue
