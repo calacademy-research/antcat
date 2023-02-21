@@ -150,12 +150,12 @@
                   Source URL (legacy)
                 =document_form.text_field :url
 
-          .row.small-text
+          .row.text-sm
             .medium-12.columns
               =succeed ":" do
                 %code reference_documents.id
               =document_form.object.id || '(none)'
-          .row.small-text
+          .row.text-sm
             .medium-12.columns
               =succeed ":" do
                 %code file_file_name

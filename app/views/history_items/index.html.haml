@@ -42,7 +42,7 @@
       =link_to "Clear", request.path, class: "btn-nodanger"
 
 -if current_user && @history_items.present?
-  .callout.border-0.logged-in-only-background.small-text
+  .callout.border-0.logged-in-only-background.text-sm
     %h6 Counts (rank/status of terminal taxa + protonym name types)
 
     .row
@@ -78,7 +78,7 @@
       %td=link_to "##{history_item.id}", history_item_path(history_item)
       %td=history_item.position
       %td
-        .small-text.logged-in-only-gray-bold-notice=history_item.underscored_type
+        .text-sm.logged-in-only-gray-bold-notice=history_item.underscored_type
       %td
         =CatalogFormatter.link_to_protonym(history_item.protonym)
         %br

@@ -19,7 +19,7 @@ describe References::HoverPreviewsController do
         <br>
         <br>
 
-        <div class='small-text'>
+        <div class='text-sm'>
           #{reference.decorate.expanded_reference}
           #{reference.decorate.format_document_links}
         </div>

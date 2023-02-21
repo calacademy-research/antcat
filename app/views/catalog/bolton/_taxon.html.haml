@@ -12,17 +12,17 @@
 .indented
   %ul.no-bullet.mb-4
     -if protonym.primary_type_information_taxt?
-      %li.small-text
+      %li.text-sm
         %span Primary type information:
         =::Types::FormatTypeField[protonym.primary_type_information_taxt]
 
     -if protonym.secondary_type_information_taxt?
-      %li.small-text
+      %li.text-sm
         %span Secondary type information:
         =::Types::FormatTypeField[protonym.secondary_type_information_taxt]
 
     -if protonym.type_notes_taxt?
-      %li.small-text
+      %li.text-sm
         %span Type notes:
         =::Types::FormatTypeField[protonym.type_notes_taxt]
 

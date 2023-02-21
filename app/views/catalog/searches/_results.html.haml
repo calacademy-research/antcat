@@ -17,11 +17,11 @@
         %td
           =CatalogFormatter.link_to_taxon(taxon)
           %br
-          .small-text=taxon.decorate.expanded_status
+          .text-sm=taxon.decorate.expanded_status
         %td=taxon.authorship_reference.decorate.link_to_reference
         %td
           =decorated_protonym.link_to_protonym
-          .small-text
+          .text-sm
             -if taxon.protonym.forms
               =surround "(", ")" do
                 =taxon.protonym.forms

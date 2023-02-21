@@ -121,7 +121,7 @@
             -if @protonym.history_items.size > 1
               %li.mb-2=link_to "Reorder history items", protonym_reorder_history_items_path(@protonym), class: "btn-normal btn-tiny"
 
-        %ul.no-bullet.small-text
+        %ul.no-bullet.text-sm
           %li Created at: #{l @protonym.created_at, format: :ymd}
           %li Updated at: #{l @protonym.updated_at, format: :ymd}
 
