@@ -8,7 +8,7 @@
   %table.feedbacks.unstriped.stack
     %tbody
     -@feedbacks.each do |feedback|
-      %tr{class: ("closed" if feedback.closed?)}
+      %tr.align-top{class: ("closed" if feedback.closed?)}
         %td=link_to "##{feedback.id}", feedback
         -if feedback.open?
           %td Open
