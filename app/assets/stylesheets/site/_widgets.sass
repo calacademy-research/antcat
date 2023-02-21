@@ -1,0 +1,58 @@
+.possible-name-conflicts
+  max-height: 10rem
+  overflow-y: scroll
+  overflow-x: auto
+
+#feedback-button
+  height: 40px
+  background: #333
+  width: 130px
+  line-height: 32px
+  font-weight: 600
+  color: white
+  transform: rotate(-90deg)
+  -webkit-transform: rotate(-90deg)
+  -ms-transform: rotate(-90deg)
+  -moz-transform: rotate(-90deg)
+  font-size: 17px
+  position: fixed
+  right: -50px
+  top: 35%
+  font-family: Montserrat, helvetica, arial, sans-serif
+  z-index: 999
+  border-top-left-radius: 5px
+  a
+    color: #fff !important
+
+// Used by `ApplicationHelper#inline_expandable`.
+.expandable
+  margin-left: 0.5rem
+  &:hover
+    cursor: pointer
+  .hide-when-expaned
+    font-style: italic
+    a.gray
+      color: darkgray
+  .show-when-expanded
+    background: $color_pale
+
+#soft-validations-table
+  td
+    &:hover .show-on-hover
+      display: inline
+.soft-validations-callout
+  font-size: 90%
+
+.btn-copy-to-clipboard
+  font-family: courier, courier new, serif
+
+.inline-search-icon
+  position: relative
+  z-index: 1
+  // HACK: Margin/padding to make it look acceptable in both Chrome and Firefox.
+  margin-left: -35px
+  top: -0.5rem
+  padding-right: 10px
+  color: $color_primary
+  cursor: pointer
+  width: 0
