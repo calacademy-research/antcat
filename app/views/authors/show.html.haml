@@ -57,7 +57,7 @@
 .row
   .small-12.medium-6.columns.mt-8.end
     %h5 Statistics
-    %table.unstriped
+    %table.table-unstriped
       %tbody
         %tr
           %th Published between
@@ -84,7 +84,7 @@
       Names belonging to author
       -if user_is_editor?
         =link_to 'Add alternative spelling', new_author_author_name_path(@author), class: 'btn-normal btn-tiny'
-    %table.unstriped.mb-8
+    %table.table-unstriped.mb-8
       %thead
         %tr
           %th Author name

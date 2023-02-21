@@ -4,7 +4,7 @@
 -if @taxa.blank?
   %p No results
 -else
-  %table.unstriped
+  %table.table-unstriped
     %tbody
       -@taxa.each do |taxon|
         -if pickable_type == 'taxon'
@@ -36,7 +36,7 @@
 -if @protonyms.blank?
   %p No results
 -else
-  %table.unstriped
+  %table.table-unstriped
     %tbody
       -@protonyms.each do |protonym|
         -terminal_taxon = protonym.terminal_taxon

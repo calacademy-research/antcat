@@ -608,10 +608,10 @@ table.table-striped tbody tr:nth-child(even) {
   background-color: $color_light_gray;
 }
 
-table.unstriped tbody {
+table.table-unstriped tbody {
   background-color: #fefefe;
 }
-table.unstriped tbody tr {
+table.table-unstriped tbody tr {
   border-bottom: 0;
   border-bottom: 1px solid #f1f1f1;
   background-color: #fefefe;

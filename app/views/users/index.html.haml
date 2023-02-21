@@ -64,7 +64,7 @@
     Deleted or locked users
     %small This section is only visible to superadmins.
     =logged_in_only_tooltip_icon user_group: 'superadmins'
-  %table.unstriped.table-stack
+  %table.table-unstriped.table-stack
     %tbody
     -@deleted_or_locked_users.each do |user|
       %tr{class: ('bg-pale-alert' if (user.locked? || user.deleted?))}
