@@ -1,7 +1,7 @@
 .taxon-browser-sticky
   %div
     #taxon-browser.taxon-browser-css-tabs
-      #taxon-key.color-coded-catalog-links.hidden{data: { toggler_name: "taxon_key" }}
+      #taxon-key.color-coded-catalog-links.hidden.text-sm.py-4{data: { toggler_name: "taxon_key" }}
         .equally-space-out
           %div &dagger;fossil
           .valid valid
@@ -21,7 +21,7 @@
           =taxon_browser_presenter.toggle_invalid_or_valid_only_link
 
       -taxon_browser.tabs.each.with_index do |tab, index|
-        .taxon-browser-tab.taxon-browser-tab-content{class: "taxon-browser-tab-content-#{index}"}
+        .taxon-browser-tab.taxon-browser-tab-content.text-sm{class: "taxon-browser-tab-content-#{index}"}
           %ul.snaked.no-bullet.color-coded-catalog-links
             -TaxonBrowser::LinksToExtraTabs[tab.tab_taxon].each do |link|
               %li.uppercase=taxon_browser_presenter.extra_tab_link tab.tab_taxon, link[:label], link[:view]

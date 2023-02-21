@@ -8,7 +8,7 @@
           =link_to "Reorder", taxon_reorder_reference_sections_path(taxon), class: "btn-normal btn-tiny"
 
     -if taxon.reference_sections.present?
-      #reference-sections
+      #reference-sections.text-sm
         -taxon.reference_sections.each do |reference_section|
           .reference-section
             =render 'reference_sections/taxt_editor_template', reference_section: reference_section
