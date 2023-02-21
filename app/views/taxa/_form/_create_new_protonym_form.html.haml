@@ -8,7 +8,7 @@
     %p This section is not shown, because an existing protonym was selected.
   -else
     =form.fields_for :protonym_attributes, taxon.protonym do |protonym_form|
-      %table.unstriped.get-rid-of-margins-and-paddings-from-tds.get-rid-of-margins-and-paddings-from-inputs
+      %table.unstriped
         %tr
           =protonym_form.fields_for :name do |name_form|
             %td
@@ -42,7 +42,7 @@
                 Authorship
                 =db_tooltip_icon :authorship, scope: :protonyms
             %td=reference_picker authorship_form.object.reference, name: 'taxon[protonym_attributes][authorship_attributes][reference_id]', id: 'taxon_protonym_attributes_authorship_attributes_reference_id'
-          %tr.space-under
+          %tr
             %td
               =authorship_form.label :pages do
                 Pages
@@ -67,7 +67,7 @@
               %td
                 .small-max-width
                   =protonym_form.select :bioregion, Protonym::BIOREGIONS, include_blank: true
-            %tr.space-under
+            %tr
               %td
                 =protonym_form.label :locality do
                   Locality
@@ -80,7 +80,7 @@
               %td=authorship_form.label :type_name
               %td.text-sm Can be set after creating the new protonym
 
-          %tr.space-under
+          %tr
             %td
               =protonym_form.label :nomen_nudum do
                 %i Nomen nudum
