@@ -6,12 +6,12 @@
   .medium-4.columns
     %h5 Content from Bolton
     =form_with url: bolton_keys_to_ref_tags_path do |f|
-      =f.text_area :bolton_content, value: params[:bolton_content]
+      =f.text_area :bolton_content, value: params[:bolton_content], class: "min-h-[20rem]"
       =f.button "Convert", class: "btn-normal"
 
   .medium-4.columns
     %h5 With AntCat ref tags
-    =text_area_tag :with_ref_tags, @with_ref_tags
+    =text_area_tag :with_ref_tags, @with_ref_tags, class: "min-h-[20rem]"
 
   .medium-4.columns
     %h5 Rendered
