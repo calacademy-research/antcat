@@ -24,8 +24,8 @@ describe DatabaseScriptDecorator do
 
       specify do
         expect(decorated.format_tags).to eq <<~HTML.squish
-          <span class="white-label rounded-badge">protonyms</span>
-          <span class="warning-label rounded-badge">slow-render</span>
+          <span class="label-white rounded-badge">protonyms</span>
+          <span class="label-warning rounded-badge">slow-render</span>
         HTML
       end
     end

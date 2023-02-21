@@ -25,7 +25,7 @@
       %td
         =user.decorate.user_badge
         -if user.superadmin? && user_is_at_least_helper?
-          %span.high-priority-label.rounded-badge superadmin
+          %span.label-high-priority.rounded-badge superadmin
       -if user_is_superadmin?
         %td=link_to "#{user.activities.count}&nbsp;activities".html_safe, activities_path(user_id: user.id)
         %td=link_to "#{user.created_paper_trail_versions.count}&nbsp;PTVs".html_safe, versions_path(whodunnit: user.id)
@@ -51,11 +51,11 @@
           %td=link_to "#{user.created_paper_trail_versions.count}&nbsp;PTVs".html_safe, versions_path(whodunnit: user.id)
         %td
           -if user.locked?
-            %span.warning-label.rounded-badge locked
+            %span.label-warning.rounded-badge locked
           -if user.deleted?
-            %span.warning-label.rounded-badge soft-deleted
+            %span.label-warning.rounded-badge soft-deleted
           -if user.hidden?
-            %span.warning-label.rounded-badge hidden
+            %span.label-warning.rounded-badge hidden
         %td=user.email
         %td Reg. #{user.created_at.year}
 
@@ -75,10 +75,10 @@
           %td=link_to "#{user.created_paper_trail_versions.count}&nbsp;PTVs".html_safe, versions_path(whodunnit: user.id)
         %td
           -if user.locked?
-            %span.warning-label.rounded-badge locked
+            %span.label-warning.rounded-badge locked
           -if user.deleted?
-            %span.warning-label.rounded-badge soft-deleted
+            %span.label-warning.rounded-badge soft-deleted
           -if user.hidden?
-            %span.warning-label.rounded-badge hidden
+            %span.label-warning.rounded-badge hidden
         %td=user.email
         %td Reg. #{user.created_at.year}

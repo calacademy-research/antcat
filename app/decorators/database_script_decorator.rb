@@ -3,28 +3,28 @@
 class DatabaseScriptDecorator < Draper::Decorator
   GITHUB_MASTER_BASE_URL = "#{Settings.github.repo_url}/blob/master"
   TAG_CSS_CLASSES = {
-    DatabaseScripts::Tagging::SLOW_TAG          => "warning-label",
-    DatabaseScripts::Tagging::VERY_SLOW_TAG     => "warning-label",
-    DatabaseScripts::Tagging::SLOW_RENDER_TAG   => "warning-label",
+    DatabaseScripts::Tagging::SLOW_TAG          => "label-warning",
+    DatabaseScripts::Tagging::VERY_SLOW_TAG     => "label-warning",
+    DatabaseScripts::Tagging::SLOW_RENDER_TAG   => "label-warning",
     DatabaseScripts::Tagging::NEW_TAG           => "label",
     DatabaseScripts::Tagging::UPDATED_TAG       => "label",
-    DatabaseScripts::Tagging::HAS_QUICK_FIX_TAG => "green-label",
-    DatabaseScripts::Tagging::HAS_SCRIPT_TAG    => "green-label",
-    DatabaseScripts::Tagging::HIGH_PRIORITY_TAG => "high-priority-label"
+    DatabaseScripts::Tagging::HAS_QUICK_FIX_TAG => "label-green",
+    DatabaseScripts::Tagging::HAS_SCRIPT_TAG    => "label-green",
+    DatabaseScripts::Tagging::HIGH_PRIORITY_TAG => "label-high-priority"
   }
 
   delegate :section, :tags, :basename
 
   def self.format_tags tags
     html_spans = tags.map do |tag|
-      h.tag.span tag, class: [TAG_CSS_CLASSES[tag] || "white-label"] + ["rounded-badge"]
+      h.tag.span tag, class: [TAG_CSS_CLASSES[tag] || "label-white"] + ["rounded-badge"]
     end
     h.safe_join(html_spans, " ")
   end
 
   def self.format_linked_tags tags
     html_spans = tags.map do |tag|
-      h.link_to tag, h.database_scripts_path(tag: tag), class: [TAG_CSS_CLASSES[tag] || "white-label"] + ["rounded-badge"]
+      h.link_to tag, h.database_scripts_path(tag: tag), class: [TAG_CSS_CLASSES[tag] || "label-white"] + ["rounded-badge"]
     end
     h.safe_join(html_spans, " ")
   end
