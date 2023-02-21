@@ -64,21 +64,6 @@ a.btn-nodanger
   padding: 0.30rem 0.5rem !important
   white-space: nowrap
 
-#desktop-only-header
-  .desktop-upper-menu-link
-    font-size: 14px
-    margin-left: 1rem
-    &:hover, &.very-active
-      font-weight: 900
-    &.very-active
-      @extend .btn-normal
-      @extend .btn-tiny
-
-      // Override `extends`.
-      margin-left: 1rem
-      border: 2px #000 solid
-      background-color: #000 !important
-
 #breadcrumbs
   .btn-normal, .btn-warning, .btn-nodanger, .btn-saves
     @extend .btn-tiny
@@ -137,28 +122,6 @@ table.activities
   background: $color_primary
   color: #fff
   border-radius: 3px
-
-#taxon-browser
-  .selected
-    @extend .label
-    a, a.valid.subspecies
-      color: #fff !important
-    background-color: $color_primary !important
-    // Becomes too large without this and skips rows.
-    padding-top: 0.15rem
-    padding-bottom: 0.15rem
-  .smaller-white-label
-    @extend .label
-    background-color: #fff
-    border: 1px solid #000
-    a
-      color: #000 !important
-    // Becomes too large without this and skips rows.
-    padding-top: 0.2rem
-    padding-bottom: 0.1rem
-  .white-label.selected
-    a, a.valid.subspecies
-      color: #fff !important
 
 .label-secondary
   @extend .label
