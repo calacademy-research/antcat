@@ -462,19 +462,10 @@ label {
   border: 1px solid $color_medium_gray;
   background: $color_light_gray;
   color: $color_foundation_black;
-  text-align: center;
-  white-space: nowrap;
   display: flex;
   flex: 0 0 auto;
   align-items: center;
   margin: 0 0 1rem;
-}
-
-.input-group-label:first-child {
-  border-right: 0;
-}
-.input-group-label:last-child {
-  border-left: 0;
 }
 
 .fieldset {
