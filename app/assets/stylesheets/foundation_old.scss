@@ -631,16 +631,6 @@ table.unstriped tbody tr {
   }
 }
 
-table.hover thead tr:hover {
-  background-color: #f3f3f3;
-}
-table.hover tbody tr:hover {
-  background-color: #f9f9f9;
-}
-table.hover:not(.unstriped) tr:nth-of-type(even):hover {
-  background-color: #ececec;
-}
-
 /////////// Misc. ///////////
 code {
   border: 1px solid $color_medium_gray;
