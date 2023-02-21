@@ -203,13 +203,6 @@
 
 /////////// End Tailwind ///////////
 
-span.discreet-author-citation
-  border-bottom: dotted 1px $color_gray_text
-  padding-bottom: 3px
-  font-size: 93%
-  a
-    color: $color_foundation_black !important
-
 pre.pre-wrapped
   white-space: pre-wrap
   word-wrap: break-word
@@ -233,6 +226,11 @@ tr.pale-background
 
 tr.space-under > td
   padding-bottom: 3em
+
+table td.shrink
+  max-width: 100%
+  white-space: nowrap
+  width: 1px
 
 .blue-help-text
   color: blue
@@ -283,21 +281,6 @@ a.gray
 .show-on-hover
   display: none
 
-table td.shrink
-  max-width: 100%
-  white-space: nowrap
-  width: 1px
-
-.external-link:after
-  font-family: 'fontello'
-  content: "\a0\f08e"
-  font-size: 90%
-
-.pdf-link:after
-  font-family: 'fontello'
-  content: "\a0\e801"
-  font-size: 80%
-
 // To make tables sortable.
 .hidden-sort
   display: none
@@ -324,23 +307,3 @@ table td.shrink
   td
     padding-top: 0.3rem
     padding-bottom: 0.3rem
-
-i.arrow-down
-  display: inline-block
-  height: 0
-  width: 0
-  border-style: solid
-  border-color: transparent
-  cursor: pointer
-
-  border-width: 6px 5px 0
-  border-top-color: white
-
-.dropdown-container
-  position: relative
-  display: inline-block
-
-.dropdown-content
-  position: absolute !important
-  background-color: #fff
-  z-index: 200
