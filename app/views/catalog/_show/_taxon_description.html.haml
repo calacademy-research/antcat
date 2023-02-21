@@ -3,13 +3,13 @@
     =javascript_include_tag 'markdown_and_friends', 'taxt_editor'
   =render "shared/default_reference"
 
-#nomen-synopsis.text-sm
-  %span.name.text-lg.font-bold.mr-1=Taxa::LinkEachEpithet[taxon]
+.text-sm{data: { testid: 'catalog-nomen-synopsis' }}
+  %span.text-lg.font-bold.mr-1=Taxa::LinkEachEpithet[taxon]
   =taxon.author_citation
   =taxon.decorate.expanded_status
   =taxon.name.gender
 
-#protonym-synopsis
+%div
   %span.font-bold.mr-1{data: { testid: 'catalog-protonym-name' }}
     =protonym.decorate.link_to_protonym
   -if protonym.sic?
@@ -162,7 +162,7 @@
       %li
         =CatalogFormatter.link_to_taxon(obsolete_combination)
 
-#child-lists.mb-4
+.mb-4
   =render 'catalog/_show/child_lists', taxon: taxon
   -if taxon.is_a?(Genus)
     =render 'catalog/_show/rank_specific/genus', taxon: taxon

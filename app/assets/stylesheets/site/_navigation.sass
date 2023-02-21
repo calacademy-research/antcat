@@ -18,6 +18,12 @@
     color: #fff
 
   #desktop-only-header
+    // Show "on antcat.org/localhost" on hover.
+    a.dev-link
+      display: none
+    &:hover .show-on-hover
+      display: inline
+
     #desktop-upper-menu
       ul
         li
@@ -90,14 +96,6 @@
       // Restore width after Typeahead.
       .twitter-typeahead
         width: 100%
-
-// Show "on antcat.org/localhost" on hover.
-#header
-  #desktop-only-header
-    a.dev-link
-      display: none
-    &:hover .show-on-hover
-      display: inline
 
 #header
   .big-screaming-button

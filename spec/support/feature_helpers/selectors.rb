@@ -19,7 +19,7 @@ module FeatureHelpers
       when 'the protonym'
         "*[data-testid=catalog-protonym-name]"
       when 'the nomen synopsis'
-        "div#nomen-synopsis"
+        "*[data-testid=catalog-nomen-synopsis]"
       when 'the citations section'
         '#citations'
 

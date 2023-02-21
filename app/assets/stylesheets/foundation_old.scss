@@ -260,16 +260,6 @@ h1, h2, h3, h4, h5, h6 {
   text-rendering: optimizeLegibility;
 }
 
-h1 small,
-h2 small,
-h3 small,
-h4 small,
-h5 small,
-h6 small {
-  line-height: 0;
-  color: $color_medium_gray;
-}
-
 h1 {
   font-size: 1.5rem;
 }
@@ -581,7 +571,6 @@ table {
   }
 
   &.table-unstriped tbody tr {
-    border-bottom: 0;
     border-bottom: 1px solid #f1f1f1;
     background-color: #fefefe;
   }
