@@ -6,7 +6,7 @@ feature "Searching references", as: :visitor do
   scenario "Searching for an author name with diacritics, using the diacritics in the query", :search do
     create :any_reference, author_string: "Hölldobler, B."
     create :any_reference, author_string: "Fisher, B."
-    i_go_to 'the references page'
+    visit references_path
 
     find(:testid, 'header-reference-search-input').fill_in with: "Hölldobler"
     i_click_on 'the reference search button'
@@ -15,7 +15,7 @@ feature "Searching references", as: :visitor do
   end
 
   scenario "Finding nothing" do
-    i_go_to 'the references page'
+    visit references_path
 
     find(:testid, 'header-reference-search-input').fill_in with: "zzzzzz"
     i_click_on 'the reference search button'
@@ -23,7 +23,7 @@ feature "Searching references", as: :visitor do
   end
 
   scenario "Maintaining search box contents" do
-    i_go_to 'the references page'
+    visit references_path
 
     find(:testid, 'header-reference-search-input').fill_in with: "zzzzzz year:1972-1980"
     i_click_on 'the reference search button'

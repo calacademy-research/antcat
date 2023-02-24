@@ -22,9 +22,9 @@ feature "Editing references sections" do
   end
 
   scenario "Adding a reference section (with edit summary)" do
-    create :genus, name_string: "Atta"
+    taxon = create :genus, name_string: "Atta"
 
-    i_go_to 'the edit page for "Atta"'
+    visit edit_taxon_path(taxon)
     the_reference_section_should_be_empty
 
     i_click_on 'the add reference section button'

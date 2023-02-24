@@ -4,7 +4,7 @@ require 'rails_helper'
 
 feature "Feedback" do
   background do
-    i_go_to 'the main page'
+    visit root_path
   end
 
   scenario "Nothing except a comment is required", as: :visitor do
@@ -47,9 +47,9 @@ feature "Feedback" do
   end
 
   scenario "Page field defaults to the current URL", as: :visitor do
-    taxon = create :genus, name_string: "Calyptites"
+    taxon = create :genus
 
-    i_go_to 'the catalog page for "Calyptites"'
+    visit catalog_path(taxon)
     i_follow "Suggest edit"
     the_field_should_contain "feedback_page", "catalog/#{taxon.id}"
   end

@@ -103,7 +103,7 @@ feature "Adding a taxon successfully" do
   scenario "Adding a subfamily" do
     create :family, :formicidae
 
-    i_go_to 'the main page'
+    visit root_path
     i_follow "Add subfamily"
     fill_in "taxon_name_string", with: "Dorylinae"
     fill_in "protonym_name_string", with: "Dorylinae"

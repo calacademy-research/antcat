@@ -6,7 +6,7 @@ feature "Browse", as: :helper do
   scenario "Visiting a user's page" do
     create :user, email: "quintus@antcat.org", name: "Quintus"
 
-    i_go_to 'the users page'
+    visit users_path
     i_follow "Quintus"
     i_should_see "Name: Quintus"
     i_should_see "Email: quintus@antcat.org"

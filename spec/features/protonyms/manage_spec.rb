@@ -7,7 +7,7 @@ feature "Manage protonyms", as: :helper do
     create :genus, name_string: "Atta"
     create :any_reference, author_string: "Batiatus", year: 2004
 
-    i_go_to 'the protonyms page'
+    visit protonyms_path
     i_follow "New"
     fill_in "protonym_name_string", with: "Dotta"
     i_pick_from_the_taxon_picker "Atta", "#protonym_type_name_attributes_taxon_id"
@@ -26,7 +26,7 @@ feature "Manage protonyms", as: :helper do
   end
 
   scenario "Adding a protonym with errors" do
-    i_go_to 'the protonyms page'
+    visit protonyms_path
     i_follow "New"
     select "by monotypy", from: "protonym_type_name_attributes_fixation_method"
     click_button "Save"
@@ -37,7 +37,7 @@ feature "Manage protonyms", as: :helper do
   end
 
   scenario "Adding a protonym with unparsable name, and maintain entered fields" do
-    i_go_to 'the protonyms page'
+    visit protonyms_path
     i_follow "New"
     fill_in "protonym_name_string", with: "Invalid a b c d e f protonym name"
     click_button "Save"
@@ -49,7 +49,7 @@ feature "Manage protonyms", as: :helper do
     create :protonym, :species_group, name: create(:species_name, name: "Formica fusca"),
       authorship: create(:citation, pages: 'page 9'), forms: 'dealate queen'
 
-    i_go_to 'the protonyms page'
+    visit protonyms_path
     i_follow "Formica fusca"
     i_should_see "page 9"
     i_should_see "dealate queen"

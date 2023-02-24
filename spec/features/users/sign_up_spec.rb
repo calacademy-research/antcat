@@ -4,7 +4,7 @@ require 'rails_helper'
 
 feature "Signing up", as: :visitor do
   scenario "Sign up (with feed)" do
-    i_go_to 'the main page'
+    visit root_path
     i_follow "Sign up", within: 'the desktop menu'
     fill_in "user_email", with: "pizza@example.com"
     fill_in "user_name", with: "Quintus Batiatus"

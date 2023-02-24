@@ -8,7 +8,7 @@ feature "Forgot password", as: :visitor do
   end
 
   scenario "Visiting the forgot password page" do
-    i_go_to 'the main page'
+    visit root_path
     i_follow "Login", within: 'the desktop menu'
     i_follow "Forgot password"
     i_should_see "Send me reset password instructions"

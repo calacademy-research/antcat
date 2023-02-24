@@ -22,7 +22,7 @@ feature "Using the catalog", as: :visitor do
     species = create :species, name_string: "Dolichoderus abruptus", genus: genus
     create :subspecies, name_string: "Dolichoderus abruptus minor", species: species, genus: species.genus
 
-    i_go_to 'the main page'
+    visit root_path
   end
 
   scenario "Going to the main page" do

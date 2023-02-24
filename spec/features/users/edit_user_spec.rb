@@ -9,7 +9,7 @@ feature "Editing a user", :skip_ci do
   end
 
   scenario "Changing password" do
-    i_go_to 'the main page'
+    visit root_path
     i_follow "Batiatus", within: 'the desktop menu'
     i_follow "My account"
     fill_in "user_password", with: "new password"
@@ -32,7 +32,7 @@ feature "Editing a user", :skip_ci do
   end
 
   scenario "Updating user details" do
-    i_go_to 'the main page'
+    visit root_path
     i_should_see "Batiatus"
     i_should_not_see "Quintus, B."
 
@@ -47,7 +47,7 @@ feature "Editing a user", :skip_ci do
   end
 
   scenario "Updating user preferences" do
-    i_go_to 'My account'
+    visit edit_user_registration_path
     expect(page).to have_unchecked_field("user_settings_editing_helpers_create_combination")
 
     # Enable setting.
@@ -55,7 +55,7 @@ feature "Editing a user", :skip_ci do
     click_button "Save"
     i_should_see "Your account has been updated"
 
-    i_go_to 'My account'
+    visit edit_user_registration_path
     expect(page).to have_checked_field("user_settings_editing_helpers_create_combination")
     expect(User.find_by!(name: 'Batiatus').settings(:editing_helpers).create_combination).to eq true
 
@@ -64,7 +64,7 @@ feature "Editing a user", :skip_ci do
     click_button "Save"
     i_should_see "Your account has been updated"
 
-    i_go_to 'My account'
+    visit edit_user_registration_path
     expect(page).to have_unchecked_field("user_settings_editing_helpers_create_combination")
     expect(User.find_by!(name: 'Batiatus').settings(:editing_helpers).create_combination).to eq false
   end

@@ -22,7 +22,7 @@ feature "Activity feed" do
     create :activity, event: :update, trackable: journal, user: user
     create :activity, event: :destroy, trackable: journal, user: user
 
-    i_go_to 'the activity feed'
+    visit activities_path
     i_should_see_number_of_items_in_the_activity_feed 2
 
     select "Destroy", from: "event"
@@ -35,7 +35,7 @@ feature "Activity feed" do
     there_is_an_activity_with_the_edit_summary "Not automated"
     there_is_an_automated_activity_with_the_edit_summary "Automated edit"
 
-    i_go_to 'the activity feed'
+    visit activities_path
     i_should_see "Not automated"
     i_should_not_see "Automated edit"
 
@@ -50,7 +50,7 @@ feature "Activity feed" do
     5.times { create :activity }
 
     # Using pagination as usual.
-    i_go_to 'the activity feed'
+    visit activities_path
     i_should_see_number_of_items_in_the_activity_feed 2
     expect(page.current_url.include?("page=")).to eq false
     i_follow "3"
@@ -77,7 +77,7 @@ feature "Activity feed" do
     there_is_an_automated_activity_with_the_edit_summary "[7] fix URL by script"
     there_is_an_automated_activity_with_the_edit_summary "[8] fix URL by script"
 
-    i_go_to 'the activity feed'
+    visit activities_path
     i_should_see_number_of_items_in_the_activity_feed 2
     i_should_see "[6] updated pagination"
     i_should_see "[5] updated pagination"

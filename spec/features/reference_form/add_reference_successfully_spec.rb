@@ -4,8 +4,7 @@ require 'rails_helper'
 
 feature "Add reference", as: :helper do
   background do
-    i_go_to 'the references page'
-    i_follow "New"
+    visit new_reference_path
   end
 
   scenario "Adding an `ArticleReference`" do

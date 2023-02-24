@@ -60,7 +60,7 @@ feature "Edit reference successfully", as: :helper do
       pagination: "In:",
       nesting_reference: Reference.last
 
-    i_go_to 'the references page'
+    visit references_path
     i_should_see "Bolton, B. 2001. More ants. In: Ward, P.S. 2001. Ants. Acta 4:9"
 
     visit edit_reference_path(reference)

@@ -20,7 +20,7 @@ feature "Site notices", as: :editor do
   scenario "Reading a notice marks it as read" do
     there_is_a_site_notice_i_havent_read_yet "A Site Notice"
 
-    i_go_to 'the users page'
+    visit users_path
     i_should_see "new notice"
 
     i_follow "new notice!", within: 'the desktop menu'

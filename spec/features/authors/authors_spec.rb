@@ -23,7 +23,7 @@ feature "Working with authors and their names" do
     the_following_names_exist_for_an_author "Bolton, B.", "Bolton, Ba."
     the_following_names_exist_for_an_author "Fisher, B."
 
-    i_go_to "the authors page"
+    visit authors_path
     i_should_see "Bolton, B.; Bolton, Ba."
     i_should_see "Fisher, B."
   end

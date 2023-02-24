@@ -23,14 +23,13 @@ feature "Compare revisions", skip_ci: true, as: :editor, versioning: true do
     # Added item.
     visit protonym_path(protonym)
     i_add_a_history_item "initial content"
-    i_go_to 'the activity feed'
+    visit activities_path
     i_follow_the_first_linked_history_item
     i_follow "History"
     i_should_see "This item does not have any previous revisions"
 
     # Edited.
     HistoryItem.last.update!(taxt: "second revision content")
-    i_go_to 'the activity feed'
     i_follow_the_first_linked_history_item
     i_follow "History"
     i_should_see "Current version"
@@ -43,7 +42,7 @@ feature "Compare revisions", skip_ci: true, as: :editor, versioning: true do
 
     # Deleted.
     HistoryItem.last.destroy!
-    i_go_to 'the activity feed'
+    visit activities_path
     i_follow_the_first "History"
     i_should_see "Version before item was deleted"
     i_should_see "second revision content"

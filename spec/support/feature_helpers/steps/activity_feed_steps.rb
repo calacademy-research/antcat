@@ -5,7 +5,7 @@ module FeatureHelpers
     # TODO: Check without visiting the activity page.
     # TODO: Check that the edit summary belongs to the activity.
     def there_should_be_an_activity content, edit_summary: nil
-      i_go_to 'the activity feed'
+      visit activities_path
 
       within "table.activities" do
         expect(page.text).to match(content)

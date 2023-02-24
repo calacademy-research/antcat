@@ -8,8 +8,7 @@ feature "Checking for duplicates during data entry", as: :helper do
   end
 
   scenario "Adding a duplicate reference, but saving it anyway" do
-    i_go_to 'the references page'
-    i_follow "New"
+    visit new_reference_path
     fill_in "reference_author_names_string", with: "Ward, P."
     fill_in "reference_year", with: "2010"
     fill_in "reference_title", with: "Ants"

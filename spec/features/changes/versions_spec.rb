@@ -9,7 +9,7 @@ feature "Versions (filtering)", as: :editor, versioning: true do
 
   scenario "Filtering versions by event" do
     create :journal, name: "Psyche"
-    i_go_to 'the references page'
+    visit references_path
     i_follow "Journals"
     i_follow "Psyche"
     i_follow "Delete"
