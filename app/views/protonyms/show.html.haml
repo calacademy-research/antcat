@@ -27,7 +27,7 @@
   -if current_user && @protonym.soft_validations.failed?
     .row.mb-8
       .medium-9.columns
-        .soft-validations-callout.callout-warning
+        .callout-warning.text-sm
           %h6 Issues (#{link_to("see more", protonym_soft_validations_path(@protonym))})
           =render 'shared/failed_soft_validations', soft_validations: @protonym.soft_validations
 
