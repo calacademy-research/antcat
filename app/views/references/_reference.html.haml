@@ -13,18 +13,16 @@
 
   -if reference.public_notes?
     %p.notes
-      %span.note Notes:
+      %strong Notes:
       =decorated.format_public_notes
   -if current_user
     -if reference.editor_notes?
-      %p.notes.logged-in-only-background
-        %span.note
-          Editor notes:
-          =logged_in_only_tooltip_icon
+      %p.notes.bg-logged-in-only
+        %strong Editor notes:
+        =logged_in_only_tooltip_icon
         =decorated.format_editor_notes
     -if reference.taxonomic_notes?
-      %p.notes.logged-in-only-background
-        %span.note
-          Taxonomic notes:
-          =logged_in_only_tooltip_icon
+      %p.notes.bg-logged-in-only
+        %strong Taxonomic notes:
+        =logged_in_only_tooltip_icon
         =decorated.format_taxonomic_notes

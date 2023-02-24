@@ -6,16 +6,16 @@
     .medium-8.columns
       .row
         .medium-6.columns
-          %fieldset.fieldset
-            %legend Create missing obsolete combination for current valid name
+          .callout
+            %h6.font-bold Create missing obsolete combination for current valid name
             %p=@taxon.decorate.id_and_name_and_author_citation
             %p
               Current parent:
               =@taxon.parent.decorate.id_and_name_and_author_citation
 
         .medium-6.columns
-          %fieldset.fieldset
-            %legend obsolete genus
+          .callout
+            %h6.font-bold Pick obsolete genus
             %p=taxon_picker @obsolete_genus, name: 'obsolete_genus_id', ranks: @valid_parent_ranks
             %p
               Possible parent ranks:

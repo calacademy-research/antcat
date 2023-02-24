@@ -14,7 +14,7 @@
     =render 'shared/errors_for', resource: taxon
 
   -if taxon.persisted? && taxon.soft_validations.failed?
-    .soft-validations-callout.callout-warning.small-12.medium-6
+    .callout-warning.small-12.medium-6.text-sm
       %h6 Issues (#{link_to("see more", taxon_soft_validations_path(taxon))})
       %p These issues will not prevent you from saving the form. Just so you know :)
       =render 'shared/failed_soft_validations', soft_validations: taxon.soft_validations
@@ -28,7 +28,7 @@
       =edit_summary_text_field_tag
 
     .medium-3.columns.end
-      =form.submit 'Save', id: "save-taxon-form", class: 'btn-saves'
+      =form.submit 'Save', class: 'btn-saves'
       &nbsp;
       -cancel_link = taxon.new_record? ? catalog_path(params[:parent_id]) : catalog_path(taxon)
       =link_to 'Cancel', cancel_link, class: 'btn-nodanger'

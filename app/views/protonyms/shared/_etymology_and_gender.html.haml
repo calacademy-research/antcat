@@ -1,7 +1,7 @@
 -show_agreement_in_gender = taxon.is_a?(SpeciesGroupTaxon)
 
 -if protonym.etymology_taxt? || show_agreement_in_gender || protonym.gender_agreement_type?
-  .additional-editor-data.callout.border-0.logged-in-only-background
+  .bg-logged-in-only.callout.border-0.text-sm
     -if protonym.etymology_taxt?
       %p
         %strong Etymology:

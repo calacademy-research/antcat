@@ -441,33 +441,14 @@ label {
   color: $color_foundation_black;
 }
 
-.input-group {
-  display: flex;
-  width: 100%;
-  align-items: stretch;
-}
-
 .input-group-label {
   padding: 0 1rem;
   border: 1px solid $color_medium_gray;
   background: $color_light_gray;
-  color: $color_foundation_black;
   display: flex;
   flex: 0 0 auto;
   align-items: center;
-  margin: 0 0 1rem;
-}
-
-.fieldset {
-  margin: 1.125rem 0;
-  padding: 1.25rem;
-  border: 1px solid $color_medium_gray;
-  border-radius: 5px;
-}
-
-.fieldset legend {
-  margin-left: -0.1875rem;
-  padding: 0 0.1875rem;
+  margin-bottom: 1rem;
 }
 
 /////////// Forms: Select ///////////
@@ -566,13 +547,8 @@ table {
     background-color: $color_light_gray;
   }
 
-  &.table-unstriped tbody {
-    background-color: #fefefe;
-  }
-
   &.table-unstriped tbody tr {
     border-bottom: 1px solid #f1f1f1;
-    background-color: #fefefe;
   }
 }
 

@@ -43,7 +43,7 @@
           =@history_item.to_taxt
 
   .small-3.columns
-    .additional-editor-data.callout.border-0.logged-in-only-background
+    .bg-logged-in-only.callout.border-0.text-sm
       %ul.no-bullet
         %li
           Item type:
@@ -82,7 +82,7 @@
         %table.table-striped
           %tbody
             -@protonym.history_items.each do |protonym_history_item|
-              %tr{class: ('pale-background' if protonym_history_item == @history_item)}
+              %tr{class: ('bg-logged-in-only' if protonym_history_item == @history_item)}
                 %td
                   =link_to "##{protonym_history_item.id}", history_item_path(protonym_history_item)
                   -if protonym_history_item == @history_item

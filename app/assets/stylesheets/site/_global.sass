@@ -11,6 +11,14 @@
 .flex
   display: flex
 
+// Flexbox & Grid: Flex Wrap
+.flex-wrap
+  flex-wrap: wrap
+
+// Flexbox & Grid: Gap
+.gap-1
+  gap: 0.25rem
+
 // Flexbox & Grid: Justify Content
 .justify-center
   justify-content: center
@@ -40,6 +48,9 @@
 .pb-0
   padding-bottom: 0
 
+.p-1
+  padding: 0.25rem
+
 .pb-1
   padding-bottom: 0.25rem
 
@@ -57,12 +68,12 @@
   padding-bottom: 0.5rem
 
 .px-4
-  padding-top: 1rem
-  padding-bottom: 1rem
-
-.py-4
   padding-right: 1rem
   padding-left: 1rem
+
+.py-4
+  padding-top: 1rem
+  padding-bottom: 1rem
 
 .pt-4
   padding-top: 1rem
@@ -78,6 +89,9 @@
 
 .pl-8
   padding-left: 2rem
+
+.pt-12
+  padding-top: 3rem
 
 .pr-16
   padding-right: 4rem
@@ -120,6 +134,15 @@
 .ml-4
   margin-left: 1rem
 
+.mt-6
+  margin-top: 1.5rem
+
+.mr-6
+  margin-right: 1.5rem
+
+.mb-6
+  margin-bottom: 1.5rem
+
 .mt-8
   margin-top: 2rem
 
@@ -139,6 +162,12 @@
   margin-top: 5rem
 
 // Sizing: Min-Height
+.min-h-\[2\.5rem\]
+  min-height: 2.5rem
+
+.min-h-\[4rem\]
+  min-height: 4rem
+
 .min-h-\[20rem\]
   min-height: 20rem
 
@@ -188,6 +217,9 @@
   vertical-align: top
 
 // Backgrounds: Background Color
+.bg-white
+  background-color: #fff
+
 .bg-light-gray
   background-color: $color_light_gray !important
 
@@ -195,14 +227,29 @@
 .bg-pale-alert
   background-color: $color_danger_pale !important
 
+.bg-logged-in-only
+  background-color: $color_pale
+
 // Layout: Display
 .hidden
   display: none
 
 // Borders: Border Width
+.border
+  border-width: 1px
+
+// Borders: Border Color
+.border-medium-gray
+  border-color: $color_medium_gray
+
+// Borders: Border Width
 // TODO: Fix specificity (CSS layers or import order) and remove `!important`.
 .border-0
   border-width: 0px !important
+
+// Borders: Border Style
+.border-solid
+  border-style: solid
 
 // Interactivity: Cursor
 .cursor-pointer
@@ -231,7 +278,8 @@ td.grow
 th.no-wrap, td.no-wrap
   white-space: nowrap
 
-tr.pale-background
+// Override background color from '.table-striped'.
+tr.bg-logged-in-only
   background-color: $color_pale !important
 
 table td.shrink
@@ -249,12 +297,6 @@ table td.shrink
   a
     color: $color_dark_gray_text !important
     text-decoration: underline $color_gray_text dotted
-
-.logged-in-only-background
-  background-color: $color_pale
-
-tr.logged-in-only-background
-  background-color: $color_pale !important
 
 .highlight
   background-color: $color_highlight !important

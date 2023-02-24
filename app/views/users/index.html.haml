@@ -7,13 +7,13 @@
 
 -if user_is_at_least_helper?
   %p
-    %span.mb-8.logged-in-only-background
+    %span.bg-logged-in-only.mb-8
       Emails are only visible to logged in helpers and editors.
       =logged_in_only_tooltip_icon user_group: 'helpers/editors'
 
 -if user_is_superadmin?
   %p
-    %span.mb-8.logged-in-only-background
+    %span.bg-logged-in-only.mb-8
       Activity and PaperTrail version counts are only visible to superadmins.
       =logged_in_only_tooltip_icon user_group: 'superadmins'
 

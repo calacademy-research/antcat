@@ -17,7 +17,7 @@ describe HistoryItemDecorator, :relational_hi do
 
       specify do
         expect(decorated.rank_specific_badge).to eq <<~HTML.strip
-          <span class="logged-in-only-background"><small class="bold-notice">Family-only item</small></span>
+          <span class="bg-logged-in-only"><small class="bold-notice">Family-only item</small></span>
         HTML
       end
     end

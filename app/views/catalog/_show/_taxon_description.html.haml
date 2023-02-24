@@ -28,7 +28,7 @@
 
 -if current_user
   -if taxon.type_names.present?
-    .callout.border-0.logged-in-only-background.mt-8.mb-8
+    .bg-logged-in-only.callout.border-0.mt-8.mb-8
       %ul.no-bullet
         -taxon.type_names.each do |as_type_name|
           %li
@@ -51,7 +51,7 @@
     =::Types::FormatTypeField[protonym.type_notes_taxt]
 
 -if current_user && taxon.replacement_name_for.present?
-  .callout.border-0.logged-in-only-background
+  .bg-logged-in-only.callout.border-0
     %strong Replacement name for
     -taxon.replacement_name_for.each do |replaced_name|
       =CatalogFormatter.link_to_taxon(replaced_name)
@@ -63,7 +63,7 @@
   -if taxon.history_items_as_object_for_taxon.present?
     -history_presenter = HistoryPresenter.new(taxon.history_items_as_object_for_taxon, :object)
 
-    .callout.border-0.logged-in-only-background.mt-8.mb-8
+    .bg-logged-in-only.callout.border-0.mt-8.mb-8
       %strong History items as object (mirrored items)
       %ul#history.mb-4
         -history_presenter.grouped_items.each do |grouped_item|
@@ -124,7 +124,7 @@
 
 -if current_user && !Status.display_history_items?(taxon.status)
   -if taxon.history_items_for_taxon_including_hidden.present?
-    .additional-editor-data.callout.border-0.logged-in-only-background.mt-8.mb-8
+    .bg-logged-in-only.callout.border-0.text-sm.mt-8.mb-8
       %h6.font-bold Protonym history items not shown on this page
 
       %p
@@ -189,7 +189,7 @@
             %h6.font-bold=Detax[reference_section.subtitle_taxt]
 
           -if reference_section.references_taxt?
-            %p.font-bold=Detax[reference_section.references_taxt]
+            %p=Detax[reference_section.references_taxt]
 
           -if current_user
             %span.show-on-hover
