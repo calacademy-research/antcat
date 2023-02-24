@@ -8,7 +8,7 @@ module Autocomplete
       {
         id: protonym.id,
         plaintext_name: protonym.name.name,
-        name_with_fossil: protonym.decorate.name_with_fossil,
+        name_with_fossil: protonym.name_with_fossil,
         author_citation: protonym.author_citation,
         css_classes: 'protonym',
         url: "/protonyms/#{protonym.id}"

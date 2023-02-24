@@ -68,7 +68,7 @@ class Protonym < ApplicationRecord
     :notes_taxt, :etymology_taxt
   ], replace_newlines: true
   strip_attributes only: [:primary_type_information_taxt, :secondary_type_information_taxt, :type_notes_taxt]
-  trackable parameters: proc { { name: decorate.name_with_fossil } }
+  trackable parameters: proc { { name: name_with_fossil } }
 
   searchable do
     text(:name) { name.name }
@@ -100,6 +100,10 @@ class Protonym < ApplicationRecord
   def species_group_name?
     return false unless name
     Rank.species_group_name?(rank_from_name)
+  end
+
+  def name_with_fossil
+    name.name_with_fossil_html(fossil?)
   end
 
   def rank_from_name

@@ -4,7 +4,7 @@ class ProtonymDecorator < Draper::Decorator
   delegate :locality, :forms, :authorship
 
   def link_to_protonym
-    link_to_protonym_with_label name_with_fossil
+    link_to_protonym_with_label protonym.name_with_fossil
   end
 
   def link_to_protonym_with_author_citation
@@ -30,10 +30,6 @@ class ProtonymDecorator < Draper::Decorator
         ),
         class: 'discreet-author-citation'
       )
-  end
-
-  def name_with_fossil
-    protonym.name.name_with_fossil_html protonym.fossil?
   end
 
   def format_locality
