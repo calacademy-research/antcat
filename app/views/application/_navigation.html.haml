@@ -31,7 +31,7 @@
       %li
         =form_with url: references_search_index_path, method: :get, class: "mr-4" do |f|
           .flex
-            =f.text_field "reference_q", value: params[:reference_q], placeholder: "Search References", "aria-label" => "Search References", id: nil, class: "typeahead-references-js expandable-reference-search"
+            =f.text_field "reference_q", value: params[:reference_q], placeholder: "Search References", "aria-label" => "Search References", id: nil, class: "typeahead-references-js expandable-reference-search", data: { testid: 'header-reference-search-input' }
             =button_tag type: 'submit', name: nil, "aria-label" => 'Search References', data: { testid: 'header-reference-search-button' } do
               %i.inline-search-icon.icon-search
 
