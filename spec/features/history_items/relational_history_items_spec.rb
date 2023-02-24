@@ -12,10 +12,10 @@ feature "Editing a history item", as: :editor do
   end
 
   scenario "Adding a relational history item", :js do
-    create :protonym, :genus_group, name: create(:genus_name, name: "Atta")
+    protonym = create :protonym, :genus_group, name: create(:genus_name, name: "Atta")
     create :any_reference, author_string: "Batiatus", year: 2004
 
-    i_go_to 'the protonym page for "Atta"'
+    visit protonym_path(protonym)
     the_history_should_be_empty
 
     i_click_on 'the add history item button'
@@ -30,9 +30,9 @@ feature "Editing a history item", as: :editor do
   end
 
   scenario "Adding a relational history item with errors" do
-    create :protonym, :genus_group, name: create(:genus_name, name: "Atta")
+    protonym = create :protonym, :genus_group, name: create(:genus_name, name: "Atta")
 
-    i_go_to 'the protonym page for "Atta"'
+    visit protonym_path(protonym)
     the_history_should_be_empty
 
     i_click_on 'the add history item button'

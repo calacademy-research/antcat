@@ -13,9 +13,9 @@ feature "Editing a history item" do
   end
 
   scenario "Adding a history item (with edit summary)" do
-    create :protonym, :genus_group, name: create(:genus_name, name: "Atta")
+    protonym = create :protonym, :genus_group, name: create(:genus_name, name: "Atta")
 
-    i_go_to 'the protonym page for "Atta"'
+    visit protonym_path(protonym)
     the_history_should_be_empty
 
     i_click_on 'the add history item button'
@@ -28,9 +28,9 @@ feature "Editing a history item" do
   end
 
   scenario "Adding a history item with blank taxt" do
-    create :protonym, :genus_group, name: create(:genus_name, name: "Atta")
+    protonym = create :protonym, :genus_group, name: create(:genus_name, name: "Atta")
 
-    i_go_to 'the protonym page for "Atta"'
+    visit protonym_path(protonym)
     the_history_should_be_empty
 
     i_click_on 'the add history item button'

@@ -18,10 +18,10 @@ feature "Compare revisions", skip_ci: true, as: :editor, versioning: true do
   end
 
   scenario "Comparing history item revisions" do
-    create :protonym, :genus_group, name: create(:genus_name, name: "Atta")
+    protonym = create :protonym, :genus_group, name: create(:genus_name, name: "Atta")
 
     # Added item.
-    i_go_to 'the protonym page for "Atta"'
+    visit protonym_path(protonym)
     i_add_a_history_item "initial content"
     i_go_to 'the activity feed'
     i_follow_the_first_linked_history_item

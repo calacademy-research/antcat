@@ -73,9 +73,9 @@ feature "Manage protonyms", as: :helper do
   end
 
   scenario "Editing type fields" do
-    create :protonym, :genus_group, name: create(:genus_name, name: "Formica")
+    protonym = create :protonym, :genus_group, name: create(:genus_name, name: "Formica")
 
-    i_go_to 'the edit protonym page for "Formica"'
+    visit edit_protonym_path(protonym)
     fill_in "protonym_primary_type_information_taxt", with: "Madagascar: Prov. Tolliara"
     fill_in "protonym_secondary_type_information_taxt", with: "A neotype had also been designated"
     fill_in "protonym_type_notes_taxt", with: "Note: Typo in Toliara"
@@ -87,9 +87,9 @@ feature "Manage protonyms", as: :helper do
   end
 
   scenario "Editing a protonym with errors" do
-    create :protonym, :genus_group, name: create(:genus_name, name: "Formica")
+    protonym = create :protonym, :genus_group, name: create(:genus_name, name: "Formica")
 
-    i_go_to 'the edit protonym page for "Formica"'
+    visit edit_protonym_path(protonym)
     fill_in "protonym_authorship_attributes_pages", with: ""
     select "by subsequent designation of", from: "protonym_type_name_attributes_fixation_method"
     click_button "Save"

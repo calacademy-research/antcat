@@ -8,11 +8,12 @@ feature "Move items", :skip_ci do
   end
 
   scenario "Moving reference sections (with feed)", :js do
-    subfamily_with_reference_section = create :subfamily, name_string: "Antcatinae"
-    create :reference_section, references_taxt: "Antcatinae section", taxon: subfamily_with_reference_section
-    create :genus, name_string: "Formica"
+    move_from_taxon = create :subfamily, name_string: "Antcatinae"
+    create :reference_section, references_taxt: "Antcatinae section", taxon: move_from_taxon
 
-    i_go_to 'the catalog page for "Antcatinae"'
+    move_to_taxon = create :genus, name_string: "Formica"
+
+    visit catalog_path(move_from_taxon)
     i_follow "Move items"
     i_should_see "Move items › Select target"
 
@@ -30,19 +31,19 @@ feature "Move items", :skip_ci do
     click_button "Move selected items"
     i_should_see "Successfully moved items"
 
-    i_go_to 'the catalog page for "Formica"'
+    visit catalog_path(move_to_taxon)
     i_should_see "Antcatinae section"
 
     there_should_be_an_activity "Archibald moved items belonging to Antcatinae to Formica"
   end
 
   scenario "Moving history items (with feed)", :js do
-    subfamily_protonym_with_history_item = create :protonym, :family_group, name: create(:subfamily_name, name: "Antcatinae")
-    create :history_item, :taxt, taxt: "Antcatinae history", protonym: subfamily_protonym_with_history_item
+    move_from_protonym = create :protonym, :family_group, name: create(:subfamily_name, name: "Antcatinae")
+    create :history_item, :taxt, taxt: "Antcatinae history", protonym: move_from_protonym
 
-    create :protonym, :genus_group, name: create(:genus_name, name: "Formica")
+    move_to_protonym = create :protonym, :genus_group, name: create(:genus_name, name: "Formica")
 
-    i_go_to 'the protonym page for "Antcatinae"'
+    visit protonym_path(move_from_protonym)
     i_follow "Move items"
     i_should_see "Move items › Select target"
 
@@ -60,7 +61,7 @@ feature "Move items", :skip_ci do
     click_button "Move selected items"
     i_should_see "Successfully moved items"
 
-    i_go_to 'the protonym page for "Formica"'
+    visit protonym_path(move_to_protonym)
     i_should_see "Antcatinae history"
 
     there_should_be_an_activity "Archibald moved protonym items belonging to Antcatinae \\(no terminal taxon\\) to Formica"
