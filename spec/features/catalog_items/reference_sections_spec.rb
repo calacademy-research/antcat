@@ -50,12 +50,12 @@ feature "Reference sections" do
       click_button "Save"
       the_reference_section_should_be "New reference"
 
-      there_should_be_an_activity "Archibald added the reference section #\\d+ belonging to Atta", edit_summary: "added new stuff"
+      there_should_be_an_activity "Archibald added the reference section ##{ReferenceSection.last.id} belonging to Atta", edit_summary: "added new stuff"
     end
 
     scenario "Editing a reference section (with edit summary)", :js do
       taxon = create :subfamily, name_string: "Dolichoderinae"
-      create :reference_section, references_taxt: "Original reference", taxon: taxon
+      reference_section = create :reference_section, references_taxt: "Original reference", taxon: taxon
 
       visit edit_taxon_path(taxon)
       the_reference_section_should_be "Original reference"
@@ -70,7 +70,7 @@ feature "Reference sections" do
       i_should_not_see "Original reference"
       the_reference_section_should_be "(none)"
 
-      there_should_be_an_activity "Archibald edited the reference section #\\d+ belonging to Dolichoderinae", edit_summary: "fix typo"
+      there_should_be_an_activity "Archibald edited the reference section ##{reference_section.id} belonging to Dolichoderinae", edit_summary: "fix typo"
     end
 
     scenario "Editing a reference section (without JavaScript)" do
@@ -100,7 +100,7 @@ feature "Reference sections" do
 
     scenario "Deleting a reference section (with feed)", :js do
       taxon = create :subfamily, name_string: "Dolichoderinae"
-      create :reference_section, taxon: taxon
+      reference_section = create :reference_section, taxon: taxon
 
       visit edit_taxon_path(taxon)
       wait_for_taxt_editors_to_load
@@ -109,7 +109,7 @@ feature "Reference sections" do
       i_click_on 'the delete reference section button'
       the_reference_section_should_be_empty
 
-      there_should_be_an_activity "Archibald deleted the reference section #\\d+ belonging to Dolichoderinae"
+      there_should_be_an_activity "Archibald deleted the reference section ##{reference_section.id} belonging to Dolichoderinae"
     end
   end
 end

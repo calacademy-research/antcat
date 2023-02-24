@@ -25,12 +25,6 @@ feature "History items" do
   end
 
   feature "Editing history items" do
-    def there_is_a_subfamily_protonym_with_a_history_item name, taxt
-      protonym = create :protonym, :family_group, name: create(:subfamily_name, name: name)
-      create :history_item, :taxt, taxt: taxt, protonym: protonym
-      protonym
-    end
-
     background do
       i_log_in_as_a_catalog_editor_named "Archibald"
     end
@@ -47,7 +41,7 @@ feature "History items" do
       click_button "Save"
       the_history_should_be "Abc"
 
-      there_should_be_an_activity "Archibald added the history item #\\d+ belonging to Atta", edit_summary: "added new stuff"
+      there_should_be_an_activity "Archibald added the history item ##{HistoryItem.last.id} belonging to Atta", edit_summary: "added new stuff"
     end
 
     scenario "Adding a history item with blank taxt" do
@@ -62,7 +56,8 @@ feature "History items" do
     end
 
     scenario "Editing a history item (with edit summary)", :js do
-      protonym = there_is_a_subfamily_protonym_with_a_history_item "Antcatinae", "Antcatinae as family"
+      protonym = create :protonym, :family_group, name: create(:subfamily_name, name: "Antcatinae")
+      history_item = create :history_item, :taxt, taxt: "Antcatinae as family", protonym: protonym
 
       visit protonym_path(protonym)
       the_history_should_be "Antcatinae as family"
@@ -82,13 +77,13 @@ feature "History items" do
       i_click_on 'the edit history item button'
       the_history_item_field_should_be "(none)"
 
-      there_should_be_an_activity "Archibald edited the history item #\\d+ belonging to Antcatinae", edit_summary: "fix typo"
+      there_should_be_an_activity "Archibald edited the history item ##{history_item.id} belonging to Antcatinae", edit_summary: "fix typo"
     end
 
     scenario "Editing a history item (without JavaScript)" do
-      there_is_a_subfamily_protonym_with_a_history_item "Antcatinae", "Antcatinae as family"
+      history_item = create :history_item, :taxt, taxt: "Antcatinae as family"
 
-      visit history_item_path(HistoryItem.last)
+      visit history_item_path(history_item)
       i_follow "Edit"
       i_should_see "Antcatinae as family"
 
@@ -99,7 +94,8 @@ feature "History items" do
     end
 
     scenario "Editing a history item, but cancelling", :js do
-      protonym = there_is_a_subfamily_protonym_with_a_history_item "Antcatinae", "Antcatinae as family"
+      protonym = create :protonym
+      create :history_item, :taxt, taxt: "Antcatinae as family", protonym: protonym
 
       visit protonym_path(protonym)
       wait_for_taxt_editors_to_load
@@ -113,7 +109,8 @@ feature "History items" do
     end
 
     scenario "Deleting a history item (with feed)", :js do
-      protonym = there_is_a_subfamily_protonym_with_a_history_item "Antcatinae", "Antcatinae as family"
+      protonym = create :protonym, :family_group, name: create(:subfamily_name, name: "Antcatinae")
+      history_item = create :history_item, :taxt, taxt: "Antcatinae as family", protonym: protonym
 
       visit protonym_path(protonym)
       i_should_see "Antcatinae as family"
@@ -127,7 +124,7 @@ feature "History items" do
       i_reload_the_page
       the_history_should_be_empty
 
-      there_should_be_an_activity "Archibald deleted the history item #\\d+ belonging to Antcatinae"
+      there_should_be_an_activity "Archibald deleted the history item ##{history_item.id} belonging to Antcatinae"
     end
   end
 end
