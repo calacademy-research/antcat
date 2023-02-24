@@ -43,7 +43,7 @@ feature "Editing a taxon" do
     visit catalog_path(taxon)
     i_should_not_see "incertae sedis in subfamily"
 
-    edit_taxon_path(taxon)
+    visit edit_taxon_path(taxon)
     select "Subfamily", from: "taxon_incertae_sedis_in"
     fill_in "edit_summary", with: "fix incertae sedis"
     click_button "Save"
@@ -59,7 +59,7 @@ feature "Editing a taxon" do
     visit catalog_path(taxon)
     i_should_not_see "masculine"
 
-    edit_taxon_path(taxon)
+    visit edit_taxon_path(taxon)
     select "masculine", from: "taxon_name_attributes_gender"
     click_button "Save"
     i_should_be_on 'the catalog page for "Atta"'

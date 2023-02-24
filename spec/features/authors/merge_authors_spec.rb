@@ -9,7 +9,9 @@ feature "Merging authors", as: :editor do
   end
 
   scenario "Merging two authors" do
-    i_go_to 'the author page for "Bolton, B."'
+    author = AuthorName.find_by!(name: "Bolton, B.").author
+
+    visit author_path(author)
     i_should_see "Bolton, B."
     i_should_not_see "Bolton, Ba."
 
@@ -28,7 +30,9 @@ feature "Merging authors", as: :editor do
   end
 
   scenario "Searching for an author that isn't found" do
-    i_go_to 'the author page for "Bolton, B."'
+    author = AuthorName.find_by!(name: "Bolton, B.").author
+
+    visit author_path(author)
     i_follow "Merge"
     fill_in "author_to_merge_name", with: "asdf"
     click_button "Next"

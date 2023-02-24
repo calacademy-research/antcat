@@ -8,6 +8,7 @@ feature "Working with authors and their names" do
     Array.wrap(author_name_strings).each do |author_name_string|
       author.names.create!(name: author_name_string)
     end
+    author
   end
 
   scenario "Seeing references by author (going to the author's page)", as: :visitor do
@@ -29,9 +30,9 @@ feature "Working with authors and their names" do
   end
 
   scenario "Adding an alternative spelling of an author name", as: :editor do
-    the_following_names_exist_for_an_author "Bolton, B."
+    author = the_following_names_exist_for_an_author "Bolton, B."
 
-    i_go_to 'the author page for "Bolton, B."'
+    visit author_path(author)
     i_follow "Add alternative spelling"
     fill_in "author_name_name", with: "Fisher, B."
     click_button "Save"
@@ -42,9 +43,9 @@ feature "Working with authors and their names" do
   end
 
   scenario "Entering an existing author name", as: :editor do
-    the_following_names_exist_for_an_author "Bolton, B."
+    author = the_following_names_exist_for_an_author "Bolton, B."
 
-    i_go_to 'the author page for "Bolton, B."'
+    visit author_path(author)
     i_follow "Add alternative spelling"
     fill_in "author_name_name", with: "Bolton, B."
     click_button "Save"
@@ -52,9 +53,9 @@ feature "Working with authors and their names" do
   end
 
   scenario "Updating an existing author name", as: :editor do
-    the_following_names_exist_for_an_author "Bolton, B."
+    author = the_following_names_exist_for_an_author "Bolton, B."
 
-    i_go_to 'the author page for "Bolton, B."'
+    visit author_path(author)
     i_follow "Edit"
     fill_in "author_name_name", with: "Bolton, Z."
     click_button "Save"

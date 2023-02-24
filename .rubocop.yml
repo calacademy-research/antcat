@@ -350,6 +350,11 @@ RSpec/ImplicitSubject:
   Enabled: false
   EnforcedStyle: single_statement_only
 
+RSpec/InstanceVariable:
+  # TODO: Excluded for now while cleaning up old Cucumber steps.
+  Exclude:
+    - 'spec/features/**/*'
+
 # Disabled because `let!` makes it easier to separate the Arrange step from the Act/Assert steps.
 RSpec/LetSetup:
   Enabled: false

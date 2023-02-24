@@ -4,7 +4,7 @@ require 'rails_helper'
 
 feature "What links here", as: :user do
   background do
-    atta = create :genus, name_string: "Atta"
+    @taxon = atta = create :genus, name_string: "Atta"
     eciton = create :protonym, :genus_group, name: create(:genus_name, name: "Eciton")
 
     # Eciton has a history item referencing Atta and a Batiatus reference.
@@ -13,7 +13,7 @@ feature "What links here", as: :user do
   end
 
   scenario "See related items (taxa, with detaxed taxt item)" do
-    i_go_to 'the catalog page for "Atta"'
+    visit catalog_path(@taxon)
 
     i_follow "What Links Here"
     i_should_see "history_items"

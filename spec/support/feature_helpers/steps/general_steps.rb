@@ -12,10 +12,6 @@ module FeatureHelpers
     end
 
     # Browser/navigation.
-    def i_go_to page_name
-      visit path_to(page_name)
-    end
-
     def i_should_be_on page_name
       current_path = URI.parse(current_url).path
       expect(current_path).to eq path_to(page_name)

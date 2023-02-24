@@ -18,9 +18,9 @@ feature "Database scripts", as: :user do
 
   scenario "Displaying database script issues in catalog pages" do
     these_settings "catalog: { show_failed_soft_validations: false }"
-    there_is_an_extant_species_lasius_niger_in_a_fossil_genus
+    taxon = there_is_an_extant_species_lasius_niger_in_a_fossil_genus
 
-    i_go_to 'the catalog page for "Lasius niger"'
+    visit catalog_path(taxon)
     i_should_not_see "The parent of this taxon is fossil, but this taxon is extant"
 
     these_settings "catalog: { show_failed_soft_validations: true }"

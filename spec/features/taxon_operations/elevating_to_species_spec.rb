@@ -7,11 +7,11 @@ feature "Elevating subspecies to species" do
     i_log_in_as_a_catalog_editor_named "Archibald"
     genus = create(:genus, name_string: "Solenopsis")
     species = create :species, name_string: "Solenopsis speccus", genus: genus
-    create :subspecies, name_string: "Solenopsis speccus subbus", species: species, genus: species.genus
+    @taxon = create :subspecies, name_string: "Solenopsis speccus subbus", species: species, genus: species.genus
   end
 
   scenario "Elevating subspecies to species (with feed)" do
-    i_go_to 'the catalog page for "Solenopsis speccus subbus"'
+    visit catalog_path(@taxon)
     i_will_confirm_on_the_next_step
     i_follow "Elevate to species"
     i_should_see "Subspecies was successfully elevated to a species."
@@ -25,7 +25,7 @@ feature "Elevating subspecies to species" do
   scenario "Elevating to species when the species name exists" do
     create :species, name_string: "Solenopsis subbus"
 
-    i_go_to 'the catalog page for "Solenopsis speccus subbus"'
+    visit catalog_path(@taxon)
     i_will_confirm_on_the_next_step
     i_follow "Elevate to species"
     i_should_see "This name is in use by another taxon"

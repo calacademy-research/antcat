@@ -32,7 +32,7 @@ feature "Editing references sections" do
   end
 
   scenario "Editing a reference section (with edit summary)", :js do
-    taxon = create :subfamily, "Dolichoderinae"
+    taxon = create :subfamily, name_string: "Dolichoderinae"
     create :reference_section, references_taxt: "Original reference", taxon: taxon
 
     visit edit_taxon_path(taxon)
@@ -65,7 +65,7 @@ feature "Editing references sections" do
   end
 
   scenario "Editing a reference section, but cancelling", :js do
-    taxon = create :subfamily, "Dolichoderinae"
+    taxon = create :subfamily, name_string: "Dolichoderinae"
     create :reference_section, references_taxt: "Original reference", taxon: taxon
 
     visit edit_taxon_path(taxon)
@@ -77,7 +77,7 @@ feature "Editing references sections" do
   end
 
   scenario "Deleting a reference section (with feed)", :js do
-    taxon = create :subfamily, "Dolichoderinae"
+    taxon = create :subfamily, name_string: "Dolichoderinae"
     create :reference_section, references_taxt: "Original reference", taxon: taxon
 
     visit edit_taxon_path(taxon)
