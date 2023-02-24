@@ -9,14 +9,11 @@ feature "Showing/hiding invalid taxa", as: :visitor do
     create :subfamily, :unidentifiable, name_string: "Invalidinae"
   end
 
-  scenario "Invalid taxa are initially hidden" do
+  scenario "Showing invalid taxa" do
     visit root_path
     i_should_see "Availableinae"
     i_should_not_see "Invalidinae"
-  end
 
-  scenario "Showing invalid taxa" do
-    visit root_path
     i_follow "show invalid"
     i_should_see "Invalidinae"
     i_should_see "Availableinae"

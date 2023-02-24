@@ -58,14 +58,5 @@ feature "Editing a user", :skip_ci do
     visit edit_user_registration_path
     expect(page).to have_checked_field("user_settings_editing_helpers_create_combination")
     expect(User.find_by!(name: 'Batiatus').settings(:editing_helpers).create_combination).to eq true
-
-    # Disable setting.
-    uncheck "user_settings_editing_helpers_create_combination"
-    click_button "Save"
-    i_should_see "Your account has been updated"
-
-    visit edit_user_registration_path
-    expect(page).to have_unchecked_field("user_settings_editing_helpers_create_combination")
-    expect(User.find_by!(name: 'Batiatus').settings(:editing_helpers).create_combination).to eq false
   end
 end

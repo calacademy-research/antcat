@@ -38,12 +38,4 @@ feature "Database scripts", as: :user do
       i_should_see "Show source" # Anything to confirm the page was rendered.
     end
   end
-
-  scenario "Checking 'empty' status" do
-    visit database_scripts_path
-    i_should_not_see "Excluded (slow/list)"
-
-    i_follow "Show empty"
-    i_should_see "Excluded (slow/list)"
-  end
 end

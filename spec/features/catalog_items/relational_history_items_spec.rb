@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-feature "Editing a history item", as: :editor do
+feature "Editing relational history items", as: :editor do
   scenario "Adding a relational history item", :js do
     protonym = create :protonym, :genus_group, name: create(:genus_name, name: "Atta")
     create :any_reference, author_string: "Batiatus", year: 2004
