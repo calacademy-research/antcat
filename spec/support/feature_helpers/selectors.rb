@@ -45,12 +45,6 @@ module FeatureHelpers
       when 'the delete history item button'
         '#history-items .history-item a.taxt-editor-delete-button'
 
-      # Editor's Panel.
-      when 'the left side of the diff'
-        all(".callout .diff")[0]
-      when 'the right side of the diff'
-        all(".callout .diff")[1]
-
       when /"(.+)"/
         Regexp.last_match(1)
 
