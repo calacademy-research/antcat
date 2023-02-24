@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-feature "Working with authors and their names" do
+feature "Authors" do
   def the_following_names_exist_for_an_author *author_name_strings
     author = create :author
     Array.wrap(author_name_strings).each do |author_name_string|

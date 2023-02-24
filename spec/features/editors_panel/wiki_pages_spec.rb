@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-feature "Add and edit wiki pages" do
+feature "Wiki pages" do
   background do
     i_log_in_as_a_catalog_editor_named "Archibald"
   end

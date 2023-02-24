@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-feature "Manage protonyms", as: :helper do
+feature "Protonyms", as: :helper do
   scenario "Adding a protonym with a type name" do
     create :genus, name_string: "Atta"
     create :any_reference, author_string: "Batiatus", year: 2004
