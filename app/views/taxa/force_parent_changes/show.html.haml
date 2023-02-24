@@ -18,16 +18,16 @@
 =form_with url: taxon_force_parent_change_path do |f|
   .row
     .medium-4.columns
-      %fieldset.fieldset
-        %legend Change parent of
+      .callout
+        %h6.font-bold Change parent of...
         %p=@taxon.decorate.id_and_name_and_author_citation
         %p
           Current parent:
           =@taxon.parent.decorate.id_and_name_and_author_citation
 
     .medium-4.columns
-      %fieldset.fieldset
-        %legend to
+      .callout
+        %h6.font-bold ...to
         %p=taxon_picker @new_parent, name: 'new_parent_id', ranks: @valid_parent_ranks
         %p
           Possible parent ranks:

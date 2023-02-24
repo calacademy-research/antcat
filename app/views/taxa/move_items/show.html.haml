@@ -5,13 +5,13 @@
   =hidden_field_tag :to_taxon_id, @to_taxon.id
   .row
     .medium-6.columns
-      %fieldset.fieldset
-        %legend Move items from
+      .callout
+        %h6.font-bold Move items from...
         =@taxon.decorate.id_and_name_and_author_citation
 
     .medium-6.columns
-      %fieldset.fieldset
-        %legend to
+      .callout
+        %h6.font-bold ...to
         =@to_taxon.decorate.id_and_name_and_author_citation
 
   .row.mb-8
