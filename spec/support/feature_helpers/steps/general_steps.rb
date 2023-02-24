@@ -67,8 +67,8 @@ module FeatureHelpers
     end
 
     def the_field_should_contain field_name, value
-      field = find_field field_name
-      expect(field.value).to match value
+      field = find_field(field_name)
+      expect(field.value).to eq value
     end
 
     # JavaScript alerts and prompts.

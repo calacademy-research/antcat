@@ -47,10 +47,10 @@ feature "Feedback" do
   end
 
   scenario "Page field defaults to the current URL", as: :visitor do
-    create :genus, name_string: "Calyptites"
+    taxon = create :genus, name_string: "Calyptites"
 
     i_go_to 'the catalog page for "Calyptites"'
     i_follow "Suggest edit"
-    the_field_should_contain "feedback_page", "catalog/"
+    the_field_should_contain "feedback_page", "catalog/#{taxon.id}"
   end
 end
