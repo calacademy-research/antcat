@@ -40,7 +40,7 @@ describe ProtonymDecorator do
         let(:protonym) { build_stubbed :protonym, locality: 'Indonesia (Timor)' }
 
         it 'does not capitalize words wrapped in parentheses' do
-          expect(decorated.format_locality).to eq "INDONESIA (Timor)."
+          expect(decorated.format_locality).to eq "INDONESIA (Timor)"
         end
       end
 
@@ -48,7 +48,7 @@ describe ProtonymDecorator do
         let(:protonym) { build_stubbed :protonym, locality: 'São Tomé & Príncipe (São Tomé I.)' }
 
         it 'capitalizes properly' do
-          expect(decorated.format_locality).to eq "SÃO TOMÉ & PRÍNCIPE (São Tomé I.)."
+          expect(decorated.format_locality).to eq "SÃO TOMÉ & PRÍNCIPE (São Tomé I.)"
         end
       end
     end
