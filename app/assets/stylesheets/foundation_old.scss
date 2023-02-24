@@ -566,13 +566,8 @@ table {
     background-color: $color_light_gray;
   }
 
-  &.table-unstriped tbody {
-    background-color: #fefefe;
-  }
-
   &.table-unstriped tbody tr {
     border-bottom: 1px solid #f1f1f1;
-    background-color: #fefefe;
   }
 }
 

@@ -246,7 +246,8 @@ td.grow
 th.no-wrap, td.no-wrap
   white-space: nowrap
 
-tr.pale-background
+// Override background color from '.table-striped'.
+tr.bg-logged-in-only
   background-color: $color_pale !important
 
 table td.shrink
@@ -267,9 +268,6 @@ table td.shrink
 
 .logged-in-only-background
   background-color: $color_pale
-
-tr.logged-in-only-background
-  background-color: $color_pale !important
 
 .highlight
   background-color: $color_highlight !important
