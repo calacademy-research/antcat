@@ -8,7 +8,8 @@
     %tbody
       -activities.each do |activity|
         -decorated = activity.decorate
-        %tr{id: ('highlighted-activity' if activity == highlighted_activity)}
+        -highlight = activity == highlighted_activity
+        %tr{id: ('highlighted-activity' if highlight), class: ('bg-pale' if highlight)}
           %td.icon=decorated.icon
           %td
             -if activity.user&.unconfirmed?
