@@ -2,11 +2,7 @@
 
 require 'rails_helper'
 
-feature "Deleting a taxon" do
-  background do
-    i_log_in_as_a_catalog_editor_named "Archibald"
-  end
-
+feature "Deleting a taxon", as: :editor do
   scenario "Deleted taxon (with feed)" do
     # Create Formicidae to make sure the deleted taxon has a parent.
     create :family, :formicidae

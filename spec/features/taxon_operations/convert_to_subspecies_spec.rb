@@ -2,11 +2,7 @@
 
 require 'rails_helper'
 
-feature "Converting a species to a subspecies" do
-  background do
-    i_log_in_as_a_catalog_editor_named "Archibald"
-  end
-
+feature "Converting a species to a subspecies", as: :editor do
   scenario "Converting a species to a subspecies (with feed)" do
     genus = create(:genus, name_string: "Camponotus")
     taxon = create :species, name_string: "Camponotus dallatorei", genus: genus

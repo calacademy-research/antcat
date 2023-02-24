@@ -2,11 +2,7 @@
 
 require 'rails_helper'
 
-feature "Force-changing parent" do
-  background do
-    i_log_in_as_a_superadmin_named "Archibald"
-  end
-
+feature "Force-changing parent", as: :superadmin do
   scenario "Changing a genus's subfamily (with feed)" do
     create :family, :formicidae
     subfamily = create :subfamily, name_string: "Attininae"

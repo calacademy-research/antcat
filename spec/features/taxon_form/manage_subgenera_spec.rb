@@ -2,11 +2,7 @@
 
 require 'rails_helper'
 
-feature "Manage subgenera" do
-  background do
-    i_log_in_as_a_catalog_editor_named "Archibald"
-  end
-
+feature "Manage subgenera", as: :editor do
   scenario "Setting and removing a subgenus of a species (with feed)" do
     genus = create(:genus, name_string: "Camponotus")
     create :subgenus, name_string: "Camponotus (Myrmentoma)", genus: genus

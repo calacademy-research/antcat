@@ -3,9 +3,7 @@
 require 'rails_helper'
 
 feature "Institutions" do
-  scenario "Adding an institution (with edit summary)" do
-    i_log_in_as_a_catalog_editor_named "Archibald"
-
+  scenario "Adding an institution (with edit summary)", as: :editor do
     visit editors_panel_path
     i_follow "Edit institutions"
     i_should_not_see "CASC"
@@ -25,9 +23,8 @@ feature "Institutions" do
     there_should_be_an_activity "Archibald added the institution CASC", edit_summary: "fix typo"
   end
 
-  scenario "Editing an institution (with edit summary)" do
+  scenario "Editing an institution (with edit summary)", as: :editor do
     create :institution, abbreviation: "CASC", name: "California Academy of Sciences"
-    i_log_in_as_a_catalog_editor_named "Archibald"
 
     visit institutions_path
     i_follow_the_first "California Academy of Sciences"
@@ -45,9 +42,8 @@ feature "Institutions" do
     there_should_be_an_activity "Archibald edited the institution SASC", edit_summary: "fix typo"
   end
 
-  scenario "Deleting an institution (with feed)" do
+  scenario "Deleting an institution (with feed)", as: :superadmin do
     create :institution, abbreviation: "CASC", name: "California Academy of Sciences"
-    i_log_in_as_a_superadmin_named "Archibald"
 
     visit institutions_path
     i_follow_the_first "California Academy of Sciences"

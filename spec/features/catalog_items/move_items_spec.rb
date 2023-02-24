@@ -2,11 +2,7 @@
 
 require 'rails_helper'
 
-feature "Move items" do
-  background do
-    i_log_in_as_a_catalog_editor_named "Archibald"
-  end
-
+feature "Move items", as: :editor do
   scenario "Moving reference sections (with feed)", :js do
     move_from_taxon = create :subfamily, name_string: "Antcatinae"
     create :reference_section, references_taxt: "Antcatinae section", taxon: move_from_taxon

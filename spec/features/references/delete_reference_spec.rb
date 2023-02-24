@@ -2,11 +2,7 @@
 
 require 'rails_helper'
 
-feature "Delete reference" do
-  background do
-    i_log_in_as_a_catalog_editor_named "Archibald"
-  end
-
+feature "Delete reference", as: :editor do
   scenario "Delete a reference (with feed)" do
     reference = create :any_reference, author_string: "Fisher", year: 2004
 

@@ -24,7 +24,7 @@ feature "Reference sections" do
     end
   end
 
-  feature "Editing references sections" do
+  feature "Editing references sections", as: :editor do
     def the_reference_section_should_be_empty
       expect(page).not_to have_css '#reference-sections .reference_section'
     end
@@ -32,10 +32,6 @@ feature "Reference sections" do
     def the_reference_section_should_be content
       element = first('#references-section').find('.taxt-presenter')
       expect(element).to have_content(content)
-    end
-
-    background do
-      i_log_in_as_a_catalog_editor_named "Archibald"
     end
 
     scenario "Adding a reference section (with edit summary)" do

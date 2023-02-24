@@ -2,11 +2,7 @@
 
 require 'rails_helper'
 
-feature "Issues" do
-  background do
-    i_log_in_as_a_catalog_editor_named "Archibald"
-  end
-
+feature "Issues", as: :editor do
   scenario "Adding an issue (with feed)" do
     visit issues_path
     i_should_see "There are currently no open issues."

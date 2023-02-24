@@ -2,9 +2,8 @@
 
 require 'rails_helper'
 
-feature "Elevating subspecies to species" do
+feature "Elevating subspecies to species", as: :editor do
   background do
-    i_log_in_as_a_catalog_editor_named "Archibald"
     genus = create(:genus, name_string: "Solenopsis")
     species = create :species, name_string: "Solenopsis speccus", genus: genus
     @taxon = create :subspecies, name_string: "Solenopsis speccus subbus", species: species, genus: species.genus

@@ -2,11 +2,7 @@
 
 require 'rails_helper'
 
-feature "Names" do
-  background do
-    i_log_in_as_a_catalog_editor_named "Archibald"
-  end
-
+feature "Names", as: :editor do
   scenario "Editing a name (with edit summary)" do
     protonym = create :protonym, :genus_group, protonym_name_string: "Formica"
 

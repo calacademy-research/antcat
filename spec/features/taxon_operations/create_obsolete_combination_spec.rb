@@ -2,11 +2,7 @@
 
 require 'rails_helper'
 
-feature "Create obsolete combination" do
-  background do
-    i_log_in_as_a_catalog_editor_named "Archibald"
-  end
-
+feature "Create obsolete combination", as: :editor do
   scenario "Creating a missing obsolete combination (with feed)" do
     genus = create :genus, name_string: "Pyramica"
     taxon = create :species, name_string: "Strumigenys ravidura"

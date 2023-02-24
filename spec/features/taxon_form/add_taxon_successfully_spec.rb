@@ -2,9 +2,8 @@
 
 require 'rails_helper'
 
-feature "Adding a taxon successfully" do
+feature "Adding a taxon successfully", as: :editor do
   background do
-    i_log_in_as_a_catalog_editor_named "Archibald"
     default_reference = create :any_reference
     References::DefaultReference.stub(:get).and_return(default_reference)
   end

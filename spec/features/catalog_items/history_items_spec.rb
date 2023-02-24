@@ -24,11 +24,7 @@ feature "History items" do
     end
   end
 
-  feature "Editing history items" do
-    background do
-      i_log_in_as_a_catalog_editor_named "Archibald"
-    end
-
+  feature "Editing history items", as: :editor do
     scenario "Adding a history item (with edit summary)" do
       protonym = create :protonym, :genus_group, protonym_name_string: "Atta"
 
