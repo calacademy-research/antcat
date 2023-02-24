@@ -73,7 +73,7 @@ feature "Protonyms", as: :helper do
   end
 
   scenario "Editing type fields" do
-    protonym = create :protonym, :genus_group, name: create(:genus_name, name: "Formica")
+    protonym = create :protonym, :genus_group
 
     visit edit_protonym_path(protonym)
     fill_in "protonym_primary_type_information_taxt", with: "Madagascar: Prov. Tolliara"
@@ -87,7 +87,7 @@ feature "Protonyms", as: :helper do
   end
 
   scenario "Editing a protonym with errors" do
-    protonym = create :protonym, :genus_group, name: create(:genus_name, name: "Formica")
+    protonym = create :protonym, :genus_group
 
     visit edit_protonym_path(protonym)
     fill_in "protonym_authorship_attributes_pages", with: ""

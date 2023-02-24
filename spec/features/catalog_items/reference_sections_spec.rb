@@ -87,7 +87,7 @@ feature "Reference sections" do
     end
 
     scenario "Editing a reference section, but cancelling", :js do
-      taxon = create :subfamily, name_string: "Dolichoderinae"
+      taxon = create :subfamily
       create :reference_section, references_taxt: "Original reference", taxon: taxon
 
       visit edit_taxon_path(taxon)
@@ -100,7 +100,7 @@ feature "Reference sections" do
 
     scenario "Deleting a reference section (with feed)", :js do
       taxon = create :subfamily, name_string: "Dolichoderinae"
-      create :reference_section, references_taxt: "Original reference", taxon: taxon
+      create :reference_section, taxon: taxon
 
       visit edit_taxon_path(taxon)
       wait_for_taxt_editors_to_load

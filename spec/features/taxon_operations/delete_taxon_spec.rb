@@ -21,7 +21,7 @@ feature "Deleting a taxon" do
   end
 
   scenario "If taxon has only references from others taxt, still show the Delete button, but disallow deleting it" do
-    referenced_taxon = create :genus, name_string: "Atta"
+    referenced_taxon = create :genus
     create :reference_section, references_taxt: Taxt.tax(referenced_taxon.id)
 
     visit catalog_path(referenced_taxon)

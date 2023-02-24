@@ -3,12 +3,9 @@
 require 'rails_helper'
 
 feature "Adding a taxon unsuccessfully", as: :editor do
-  background do
-    create :subfamily, name_string: "Formicinae"
-  end
-
   scenario "Having an errors, and maintain entered fields" do
-    taxon = create :subfamily, name_string: "Formicinae"
+    taxon = create :subfamily
+
     visit catalog_path(taxon)
     i_follow "Add genus"
     fill_in "taxon_name_string", with: "Atta prolasius"
@@ -23,7 +20,8 @@ feature "Adding a taxon unsuccessfully", as: :editor do
   end
 
   scenario "Unparsable names, and maintain entered fields" do
-    taxon = create :subfamily, name_string: "Formicinae"
+    taxon = create :subfamily
+
     visit catalog_path(taxon)
     i_follow "Add genus"
     fill_in "taxon_name_string", with: "Invalid a b c d e f taxon name"

@@ -4,7 +4,7 @@ require 'rails_helper'
 
 feature "Markdown", as: :editor do
   scenario "Using markdown" do
-    issue = create :issue, :open, title: "Merge 'Giovanni' authors"
+    issue = create :issue, :open
     giovanni_1809 = create :any_reference, author_string: "Giovanni, S.", year: 1809
 
     visit issue_path(issue)

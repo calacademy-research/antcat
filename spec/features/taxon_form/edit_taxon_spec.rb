@@ -8,7 +8,7 @@ feature "Editing a taxon" do
   end
 
   scenario "Changing protonym" do
-    taxon = create :species, name_string: "Eciton fusca"
+    taxon = create :species
     protonym = create :protonym, :species_group, name: create(:species_name, name: "Formica fusca")
 
     expect(taxon.reload.protonym).not_to eq protonym

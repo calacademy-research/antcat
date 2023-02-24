@@ -21,8 +21,7 @@ feature "Issues" do
     visit issues_path
     i_should_see "Resolve homonyms"
 
-    there_should_be_an_activity "Archibald added the issue Resolve homonyms"
-    i_should_see "added question"
+    there_should_be_an_activity "Archibald added the issue Resolve homonyms", edit_summary: "added question"
   end
 
   scenario "Editing an issue (with feed)" do
@@ -44,8 +43,7 @@ feature "Issues" do
     i_should_see "Restore deleted genera"
     i_should_not_see "Restore deleted species"
 
-    there_should_be_an_activity "Archibald edited the issue Restore deleted genera"
-    i_should_see "added info"
+    there_should_be_an_activity "Archibald edited the issue Restore deleted genera", edit_summary: "added info"
   end
 
   scenario "Closing and re-opening an issue (with feed)" do

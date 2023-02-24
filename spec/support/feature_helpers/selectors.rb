@@ -6,8 +6,6 @@ module FeatureHelpers
       case locator
 
       # Navigation.
-      when 'the page header'
-        "#header"
       when 'the desktop menu'
         "#desktop-only-header"
       when 'the breadcrumbs'
@@ -16,12 +14,8 @@ module FeatureHelpers
       # Catalog.
       when 'the taxon browser'
         "#taxon-browser"
-      when 'the protonym'
+      when 'the protonym synopsis'
         "*[data-testid=catalog-protonym-name]"
-      when 'the nomen synopsis'
-        "*[data-testid=catalog-nomen-synopsis]"
-      when 'the citations section'
-        '#citations'
 
       # Catalog search.
       when 'the catalog search button'
