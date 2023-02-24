@@ -5,7 +5,7 @@ require 'rails_helper'
 describe Autocomplete::ProtonymSerializer do
   describe "#as_json" do
     let!(:protonym) do
-      create :protonym, :species_group, :fossil, name: create(:species_name, name: 'Lasius var. niger')
+      create :protonym, :species_group, :fossil, protonym_name_string: 'Lasius var. niger'
     end
 
     specify do

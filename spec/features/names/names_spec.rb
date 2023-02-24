@@ -8,7 +8,7 @@ feature "Names" do
   end
 
   scenario "Editing a name (with edit summary)" do
-    protonym = create :protonym, :genus_group, name: create(:genus_name, name: "Formica")
+    protonym = create :protonym, :genus_group, protonym_name_string: "Formica"
 
     visit protonym_path(protonym)
     i_follow "Name record"
@@ -29,9 +29,9 @@ feature "Names" do
   end
 
   scenario "Checking for name conflicts", :skip_ci, :js do
-    protonym = create :protonym, :genus_group, name: create(:genus_name, name: "Formica")
-    create :protonym, :genus_group, name: create(:genus_name, name: "Formica")
-    create :protonym, :genus_group, name: create(:genus_name, name: "Formicus")
+    protonym = create :protonym, :genus_group, protonym_name_string: "Formica"
+    create :protonym, :genus_group, protonym_name_string: "Formica"
+    create :protonym, :genus_group, protonym_name_string: "Formicus"
 
     visit protonym_path(protonym)
     i_follow "Name record"

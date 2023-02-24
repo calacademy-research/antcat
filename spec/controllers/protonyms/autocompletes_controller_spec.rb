@@ -5,7 +5,7 @@ require 'rails_helper'
 describe Protonyms::AutocompletesController, :search do
   describe "GET show", as: :visitor do
     describe 'fulltext search' do
-      let!(:protonym) { create :protonym, name: create(:genus_name, name: 'Lasius') }
+      let!(:protonym) { create :protonym, :genus_group, protonym_name_string: 'Lasius' }
 
       specify do
         Sunspot.commit

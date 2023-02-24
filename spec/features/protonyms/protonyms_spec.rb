@@ -46,7 +46,7 @@ feature "Protonyms", as: :helper do
   end
 
   scenario "Editing a protonym" do
-    create :protonym, :species_group, name: create(:species_name, name: "Formica fusca"),
+    create :protonym, :species_group, protonym_name_string: "Formica fusca",
       authorship: create(:citation, pages: 'page 9'), forms: 'dealate queen'
 
     visit protonyms_path

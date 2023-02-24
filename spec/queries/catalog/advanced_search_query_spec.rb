@@ -50,7 +50,7 @@ describe Catalog::AdvancedSearchQuery do
     end
 
     describe "searching by protonym" do
-      let!(:protonym) { create :protonym, name: create(:species_name, name: 'Formica fusca') }
+      let!(:protonym) { create :protonym, :species_group, protonym_name_string: 'Formica fusca' }
       let!(:taxon) { create :species, name_string: 'Lasius niger', protonym: protonym }
 
       specify do

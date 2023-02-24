@@ -30,7 +30,7 @@ feature "History items" do
     end
 
     scenario "Adding a history item (with edit summary)" do
-      protonym = create :protonym, :genus_group, name: create(:genus_name, name: "Atta")
+      protonym = create :protonym, :genus_group, protonym_name_string: "Atta"
 
       visit protonym_path(protonym)
       the_history_should_be_empty
@@ -56,7 +56,7 @@ feature "History items" do
     end
 
     scenario "Editing a history item (with edit summary)", :js do
-      protonym = create :protonym, :family_group, name: create(:subfamily_name, name: "Antcatinae")
+      protonym = create :protonym, :family_group_subfamily_name, protonym_name_string: "Antcatinae"
       history_item = create :history_item, :taxt, taxt: "Antcatinae as family", protonym: protonym
 
       visit protonym_path(protonym)
@@ -109,7 +109,7 @@ feature "History items" do
     end
 
     scenario "Deleting a history item (with feed)", :js do
-      protonym = create :protonym, :family_group, name: create(:subfamily_name, name: "Antcatinae")
+      protonym = create :protonym, :family_group_subfamily_name, protonym_name_string: "Antcatinae"
       history_item = create :history_item, :taxt, taxt: "Antcatinae as family", protonym: protonym
 
       visit protonym_path(protonym)

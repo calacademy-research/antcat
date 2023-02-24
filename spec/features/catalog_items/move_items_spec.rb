@@ -39,10 +39,10 @@ feature "Move items" do
   end
 
   scenario "Moving history items (with feed)", :js do
-    move_from_protonym = create :protonym, :family_group, name: create(:subfamily_name, name: "Antcatinae")
+    move_from_protonym = create :protonym, :family_group_subfamily_name, protonym_name_string: "Antcatinae"
     create :history_item, :taxt, taxt: "Antcatinae history", protonym: move_from_protonym
 
-    move_to_protonym = create :protonym, :genus_group, name: create(:genus_name, name: "Formica")
+    move_to_protonym = create :protonym, :genus_group, protonym_name_string: "Formica"
 
     visit protonym_path(move_from_protonym)
     i_follow "Move items"

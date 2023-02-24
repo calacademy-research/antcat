@@ -3,8 +3,15 @@
 FactoryBot.define do
   factory :protonym do
     transient do
-      taxt_tag {}
       authorship_reference {}
+      protonym_name_string {}
+      taxt_tag {}
+    end
+
+    before(:create) do |protonym, evaluator|
+      if evaluator.protonym_name_string
+        protonym.name = protonym.name.class.new(name: evaluator.protonym_name_string)
+      end
     end
 
     authorship do
@@ -20,6 +27,11 @@ FactoryBot.define do
     # Rank-related.
     trait :family_group do
       association :name, factory: :family_name
+    end
+
+    # NOTE: Subfamily protonyms are 'family-group names' per ICZN (but they have subfamily names).
+    trait :family_group_subfamily_name do
+      association :name, factory: :subfamily_name
     end
 
     trait :genus_group do
