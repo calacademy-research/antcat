@@ -56,9 +56,9 @@ feature "Editing references sections" do
   end
 
   scenario "Editing a reference section (without JavaScript)" do
-    create :reference_section, references_taxt: "California checklist"
+    reference_section = create :reference_section, references_taxt: "California checklist"
 
-    i_go_to 'the page of the most recent reference section'
+    visit reference_section_path(reference_section)
     i_should_see "California checklist"
 
     i_follow "Edit"

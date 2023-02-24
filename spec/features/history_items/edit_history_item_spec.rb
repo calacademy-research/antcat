@@ -65,7 +65,7 @@ feature "Editing a history item" do
   scenario "Editing a history item (without JavaScript)" do
     there_is_a_subfamily_protonym_with_a_history_item "Antcatinae", "Antcatinae as family"
 
-    i_go_to 'the page of the most recent history item'
+    visit history_item_path(HistoryItem.last)
     i_follow "Edit"
     i_should_see "Antcatinae as family"
 

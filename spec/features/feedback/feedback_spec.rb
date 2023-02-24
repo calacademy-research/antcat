@@ -4,7 +4,7 @@ require 'rails_helper'
 
 feature "Feedback" do
   background do
-    i_go_to 'the catalog'
+    i_go_to 'the main page'
   end
 
   scenario "Nothing except a comment is required", as: :visitor do

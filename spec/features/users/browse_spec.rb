@@ -26,16 +26,16 @@ feature "Browse", as: :helper do
     user = create(:user, name: "Batiatus")
     create :activity, event: :destroy, trackable: create(:journal), user: user
 
-    i_go_to 'the user page for "Batiatus"'
+    visit user_path(user)
     i_should_see "Batiatus's most recent activity"
     i_should_see "Batiatus deleted the journal", within: 'the activity feed'
   end
 
   scenario "See user's most recent comments" do
-    create(:user, name: "Batiatus")
+    user = create(:user, name: "Batiatus")
     batiatus_has_commented_cool_on_an_issue_with_the_title_typos
 
-    i_go_to 'the user page for "Batiatus"'
+    visit user_path(user)
     i_should_see "Batiatus's most recent comments"
     i_should_see "Batiatus commented on the issue Typos:"
   end

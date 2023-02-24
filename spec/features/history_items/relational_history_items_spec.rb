@@ -52,7 +52,7 @@ feature "Editing a history item", as: :editor do
     i_go_to 'the protonym page for "Formica fusca"'
     i_should_see "Batiatus, 2004a: 77-78 (q.)"
 
-    i_go_to 'the page of the most recent history item'
+    visit history_item_path(HistoryItem.last)
     i_follow "Edit"
     wait_for_taxt_editors_to_load
     fill_in "history_item_text_value", with: "w."

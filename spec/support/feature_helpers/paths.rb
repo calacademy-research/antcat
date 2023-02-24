@@ -9,14 +9,9 @@ module FeatureHelpers
         root_path
 
       # Catalog.
-      when 'the advanced search page'
-        catalog_search_path
-
       when /^the catalog page for "([^"]*)"$/
         taxon = Taxon.find_by!(name_cache: Regexp.last_match(1))
         catalog_path(taxon)
-      when 'the catalog'
-        root_path
 
       # Editing (catalog).
       when /^the edit page for "(.*)"$/
@@ -77,9 +72,6 @@ module FeatureHelpers
 
       when 'the open issues page'
         issues_path
-      when /^the issue page for "([^"]*)"$/
-        issue = Issue.find_by!(title: Regexp.last_match(1))
-        issue_path(issue)
       when 'the new issue page'
         new_issue_path
 
@@ -94,19 +86,12 @@ module FeatureHelpers
       # Reference sections and history items.
       when 'the reference sections page'
         reference_sections_path
-      when 'the page of the most recent reference section'
-        reference_section_path(ReferenceSection.last)
       when 'the history items page'
         history_items_path
-      when 'the page of the most recent history item'
-        history_item_path(HistoryItem.last)
 
       # Users.
       when 'My account'
         edit_user_registration_path
-      when /^the user page for "([^"]*)"$/
-        user = User.find_by!(name: Regexp.last_match(1))
-        user_path(user)
       when 'the login page'
         new_user_session_path
       when 'the users page'

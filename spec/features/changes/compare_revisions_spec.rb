@@ -54,9 +54,9 @@ feature "Compare revisions", skip_ci: true, as: :editor, versioning: true do
   end
 
   scenario "Comparing reference section revisions" do
-    create :reference_section, references_taxt: "test"
+    reference_section = create :reference_section, references_taxt: "test"
 
-    i_go_to 'the page of the most recent reference section'
+    visit reference_section_path(reference_section)
     i_follow "History"
     i_should_see "This item does not have any previous revisions"
   end
