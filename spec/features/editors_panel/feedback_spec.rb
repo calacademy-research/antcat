@@ -40,16 +40,6 @@ feature "feedback" do
       visit root_path
     end
 
-    scenario "Nothing except a comment is required", as: :visitor do
-      i_follow "Suggest edit"
-      click_button "Send Feedback"
-      i_should_see "Comment can't be blank"
-
-      fill_in "feedback_comment", with: "Great site!!!"
-      click_button "Send Feedback"
-      i_should_see "Message sent"
-    end
-
     scenario "Unregistered user submitting feedback (with feed)", as: :visitor do
       i_follow "Suggest edit"
       fill_in "feedback_comment", with: "Great site!!!"

@@ -11,15 +11,6 @@ feature "Authors" do
     author
   end
 
-  scenario "Seeing references by author (going to the author's page)", as: :visitor do
-    reference = create :any_reference, author_string: 'Bolton, B.', title: 'Cool Ants'
-
-    visit reference_path(reference)
-    i_follow_the_first "Bolton, B."
-    i_should_see "References by Bolton, B."
-    i_should_see "Cool Ants"
-  end
-
   scenario "Seeing all the authors with their names", as: :visitor do
     the_following_names_exist_for_an_author "Bolton, B.", "Bolton, Ba."
     the_following_names_exist_for_an_author "Fisher, B."

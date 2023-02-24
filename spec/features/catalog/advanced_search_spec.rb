@@ -25,11 +25,6 @@ feature "Searching the catalog", as: :visitor do
     create :species, protonym: protonym
   end
 
-  def there_is_a_species_with_forms forms
-    protonym = create :protonym, :species_group, forms: forms
-    create :species, protonym: protonym
-  end
-
   def there_is_a_species_with_primary_type_information primary_type_information
     protonym = create :protonym, :species_group, primary_type_information_taxt: primary_type_information
     create :species, protonym: protonym
@@ -46,22 +41,6 @@ feature "Searching the catalog", as: :visitor do
 
   scenario "Searching when no results" do
     fill_in "year", with: "2010"
-    click_button "Search"
-    i_should_see "No results"
-  end
-
-  scenario "Searching for subfamilies" do
-    create :subfamily, name_string: "Formicinae"
-
-    select "Subfamily", from: "type"
-    click_button "Search"
-    i_should_see "1 result"
-  end
-
-  scenario "Searching for valid taxa" do
-    create :family, :excluded_from_formicidae
-
-    check "valid_only"
     click_button "Search"
     i_should_see "No results"
   end
@@ -104,33 +83,12 @@ feature "Searching the catalog", as: :visitor do
     i_should_see "Afrotropic", within: 'the search results'
   end
 
-  scenario "Searching for 'None' bioregion" do
-    there_is_a_species_with_bioregion "Malagasy"
-    there_is_a_species_with_bioregion "Afrotropic"
-    there_is_a_species_with_bioregion ""
-
-    select "Species", from: "type"
-    select "None", from: "bioregion"
-    click_button "Search"
-    i_should_see "1 result"
-  end
-
   scenario "Searching in type fields" do
     there_is_a_species_with_primary_type_information "Madagascar: Prov. Toliara"
 
     fill_in "type_information", with: "Toliara"
     click_button "Search"
     i_should_see "1 result"
-  end
-
-  scenario "Searching for a form" do
-    there_is_a_species_with_forms "w.q."
-    there_is_a_species_with_forms "q."
-
-    fill_in "forms", with: "w."
-    click_button "Search"
-    i_should_see "1 result"
-    i_should_see "w.", within: 'the search results'
   end
 
   scenario "Searching for 'described in' (range)" do

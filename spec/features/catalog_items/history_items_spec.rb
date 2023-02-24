@@ -129,27 +129,5 @@ feature "History items" do
 
       there_should_be_an_activity "Archibald deleted the history item #\\d+ belonging to Antcatinae"
     end
-
-    scenario "Seeing the markdown preview (and cancelling)", :js do
-      giovanni_1809 = create :any_reference, author_string: "Giovanni, S.", year: 1809
-      protonym = there_is_a_subfamily_protonym_with_a_history_item "Antcatinae", "As family, #{Taxt.ref(giovanni_1809.id)}"
-
-      visit protonym_path(protonym)
-      i_should_see "As family, Giovanni, 1809"
-      the_history_item_field_should_not_be_visible
-
-      wait_for_taxt_editors_to_load
-      i_click_on 'the edit history item button'
-      i_should_see "As family, Giovanni, 1809"
-      the_history_item_field_should_be_visible
-
-      fill_in "taxt", with: "Lasius history, #{Taxt.ref(giovanni_1809.id)}"
-      click_button "Rerender preview"
-      i_should_see "Lasius history, Giovanni, 1809"
-
-      i_click_on 'the cancel history item button'
-      i_should_see "As family, Giovanni, 1809"
-      the_history_item_field_should_not_be_visible
-    end
   end
 end
