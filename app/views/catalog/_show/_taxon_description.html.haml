@@ -189,7 +189,7 @@
             %h6.font-bold=Detax[reference_section.subtitle_taxt]
 
           -if reference_section.references_taxt?
-            %p.font-bold=Detax[reference_section.references_taxt]
+            %p=Detax[reference_section.references_taxt]
 
           -if current_user
             %span.show-on-hover
