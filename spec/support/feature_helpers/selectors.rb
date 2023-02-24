@@ -58,9 +58,6 @@ module FeatureHelpers
         '#history-items .history-item a.taxt-editor-delete-button'
 
       # Editor's Panel.
-      when 'the activity feed'
-        'table.activities'
-
       when 'the left side of the diff'
         all(".callout .diff")[0]
       when 'the right side of the diff'

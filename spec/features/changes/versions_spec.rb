@@ -9,12 +9,12 @@ feature "Versions (filtering)", as: :editor, versioning: true do
 
   scenario "Filtering versions by event" do
     create :journal, name: "Psyche"
-    i_go_to 'the references page'
+    visit references_path
     i_follow "Journals"
     i_follow "Psyche"
     i_follow "Delete"
 
-    i_go_to 'the versions page'
+    visit versions_path
     i_should_see_number_of_versions 3
 
     select "destroy", from: "event"
@@ -28,7 +28,7 @@ feature "Versions (filtering)", as: :editor, versioning: true do
   scenario "Scenario: Filtering versions by search query" do
     create :journal, name: "Psyche"
 
-    i_go_to 'the versions page'
+    visit versions_path
     i_should_see_number_of_versions 1
 
     fill_in "q", with: "Psyche"

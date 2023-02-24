@@ -18,19 +18,18 @@ feature "Compare revisions", skip_ci: true, as: :editor, versioning: true do
   end
 
   scenario "Comparing history item revisions" do
-    create :protonym, :genus_group, name: create(:genus_name, name: "Atta")
+    protonym = create :protonym
 
     # Added item.
-    i_go_to 'the protonym page for "Atta"'
+    visit protonym_path(protonym)
     i_add_a_history_item "initial content"
-    i_go_to 'the activity feed'
+    visit activities_path
     i_follow_the_first_linked_history_item
     i_follow "History"
     i_should_see "This item does not have any previous revisions"
 
     # Edited.
     HistoryItem.last.update!(taxt: "second revision content")
-    i_go_to 'the activity feed'
     i_follow_the_first_linked_history_item
     i_follow "History"
     i_should_see "Current version"
@@ -43,7 +42,7 @@ feature "Compare revisions", skip_ci: true, as: :editor, versioning: true do
 
     # Deleted.
     HistoryItem.last.destroy!
-    i_go_to 'the activity feed'
+    visit activities_path
     i_follow_the_first "History"
     i_should_see "Version before item was deleted"
     i_should_see "second revision content"
@@ -54,9 +53,9 @@ feature "Compare revisions", skip_ci: true, as: :editor, versioning: true do
   end
 
   scenario "Comparing reference section revisions" do
-    create :reference_section, references_taxt: "test"
+    reference_section = create :reference_section
 
-    i_go_to 'the page of the most recent reference section'
+    visit reference_section_path(reference_section)
     i_follow "History"
     i_should_see "This item does not have any previous revisions"
   end

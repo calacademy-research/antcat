@@ -6,7 +6,7 @@ feature "Editing journals" do
   background do
     i_log_in_as_a_catalog_editor_named "Archibald"
     create :journal, name: "Psyche"
-    i_go_to 'the references page'
+    visit references_path
     i_follow "Journals"
     i_follow "Psyche"
   end
@@ -17,7 +17,7 @@ feature "Editing journals" do
     click_button "Save"
     i_should_see "Successfully updated journal"
 
-    i_go_to 'the references page'
+    visit references_path
     i_follow "Journals"
     i_should_see "Science"
 

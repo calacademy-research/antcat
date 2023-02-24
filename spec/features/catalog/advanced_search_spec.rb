@@ -41,7 +41,7 @@ feature "Searching the catalog", as: :visitor do
   end
 
   background do
-    i_go_to "the advanced search page"
+    visit catalog_search_path
   end
 
   scenario "Searching when no results" do

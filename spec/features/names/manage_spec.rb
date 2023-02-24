@@ -8,9 +8,9 @@ feature "Manage names" do
   end
 
   scenario "Editing a name (with edit summary)" do
-    create :protonym, :genus_group, name: create(:genus_name, name: "Formica")
+    protonym = create :protonym, :genus_group, name: create(:genus_name, name: "Formica")
 
-    i_go_to 'the protonym page for "Formica"'
+    visit protonym_path(protonym)
     i_follow "Name record"
     i_should_see "Name record: Formica"
 
@@ -29,11 +29,11 @@ feature "Manage names" do
   end
 
   scenario "Checking for name conflicts", :skip_ci, :js do
-    create :protonym, :genus_group, name: create(:genus_name, name: "Formica")
+    protonym = create :protonym, :genus_group, name: create(:genus_name, name: "Formica")
     create :protonym, :genus_group, name: create(:genus_name, name: "Formica")
     create :protonym, :genus_group, name: create(:genus_name, name: "Formicus")
 
-    i_go_to 'the protonym page for "Formica"'
+    visit protonym_path(protonym)
     i_follow "Name record"
     i_follow "Edit"
     i_should_not_see "Similar names"

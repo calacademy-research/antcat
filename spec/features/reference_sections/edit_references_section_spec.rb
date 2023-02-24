@@ -3,11 +3,6 @@
 require 'rails_helper'
 
 feature "Editing references sections" do
-  def there_is_a_subfamily_with_a_reference_section name, references_taxt
-    taxon = create :subfamily, name_string: name
-    create :reference_section, references_taxt: references_taxt, taxon: taxon
-  end
-
   def the_reference_section_should_be_empty
     expect(page).not_to have_css '#reference-sections .reference_section'
   end
@@ -22,9 +17,9 @@ feature "Editing references sections" do
   end
 
   scenario "Adding a reference section (with edit summary)" do
-    create :genus, name_string: "Atta"
+    taxon = create :genus, name_string: "Atta"
 
-    i_go_to 'the edit page for "Atta"'
+    visit edit_taxon_path(taxon)
     the_reference_section_should_be_empty
 
     i_click_on 'the add reference section button'
@@ -37,9 +32,10 @@ feature "Editing references sections" do
   end
 
   scenario "Editing a reference section (with edit summary)", :js do
-    there_is_a_subfamily_with_a_reference_section "Dolichoderinae", "Original reference"
+    taxon = create :subfamily, name_string: "Dolichoderinae"
+    create :reference_section, references_taxt: "Original reference", taxon: taxon
 
-    i_go_to 'the edit page for "Dolichoderinae"'
+    visit edit_taxon_path(taxon)
     the_reference_section_should_be "Original reference"
 
     wait_for_taxt_editors_to_load
@@ -56,9 +52,9 @@ feature "Editing references sections" do
   end
 
   scenario "Editing a reference section (without JavaScript)" do
-    create :reference_section, references_taxt: "California checklist"
+    reference_section = create :reference_section, references_taxt: "California checklist"
 
-    i_go_to 'the page of the most recent reference section'
+    visit reference_section_path(reference_section)
     i_should_see "California checklist"
 
     i_follow "Edit"
@@ -69,9 +65,10 @@ feature "Editing references sections" do
   end
 
   scenario "Editing a reference section, but cancelling", :js do
-    there_is_a_subfamily_with_a_reference_section "Dolichoderinae", "Original reference"
+    taxon = create :subfamily, name_string: "Dolichoderinae"
+    create :reference_section, references_taxt: "Original reference", taxon: taxon
 
-    i_go_to 'the edit page for "Dolichoderinae"'
+    visit edit_taxon_path(taxon)
     wait_for_taxt_editors_to_load
     i_click_on 'the edit reference section button'
     fill_in "references_taxt", with: "(none)"
@@ -80,9 +77,10 @@ feature "Editing references sections" do
   end
 
   scenario "Deleting a reference section (with feed)", :js do
-    there_is_a_subfamily_with_a_reference_section "Dolichoderinae", "Original reference"
+    taxon = create :subfamily, name_string: "Dolichoderinae"
+    create :reference_section, references_taxt: "Original reference", taxon: taxon
 
-    i_go_to 'the edit page for "Dolichoderinae"'
+    visit edit_taxon_path(taxon)
     wait_for_taxt_editors_to_load
     i_click_on 'the edit reference section button'
     i_will_confirm_on_the_next_step

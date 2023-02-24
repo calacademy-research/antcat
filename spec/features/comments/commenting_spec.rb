@@ -5,12 +5,12 @@ require 'rails_helper'
 feature "Commenting" do
   background do
     i_log_in_as_a_catalog_editor_named "Batiatus"
-    create :feedback
-    i_go_to 'the most recent feedback item'
+    feedback = create :feedback
+    visit feedback_path(feedback)
   end
 
   scenario "Leaving a comment (with feed)" do
-    i_write_a_new_comment "Fixed, closing issue."
+    first("#comment_body").set("Fixed, closing issue.")
     click_button "Post Comment"
     i_should_see "Comment was successfully added"
     i_should_see "Fixed, closing issue."

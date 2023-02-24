@@ -12,10 +12,6 @@ module FeatureHelpers
     end
 
     # Browser/navigation.
-    def i_go_to page_name
-      visit path_to(page_name)
-    end
-
     def i_should_be_on page_name
       current_path = URI.parse(current_url).path
       expect(current_path).to eq path_to(page_name)
@@ -67,8 +63,8 @@ module FeatureHelpers
     end
 
     def the_field_should_contain field_name, value
-      field = find_field field_name
-      expect(field.value).to match value
+      field = find_field(field_name)
+      expect(field.value).to eq value
     end
 
     # JavaScript alerts and prompts.

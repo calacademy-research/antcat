@@ -9,9 +9,9 @@ feature "Create obsolete combination" do
 
   scenario "Creating a missing obsolete combination (with feed)" do
     genus = create :genus, name_string: "Pyramica"
-    create :species, name_string: "Strumigenys ravidura"
+    taxon = create :species, name_string: "Strumigenys ravidura"
 
-    i_go_to 'the catalog page for "Strumigenys ravidura"'
+    visit catalog_path(taxon)
     i_follow "Create obsolete combination"
     i_pick_from_the_taxon_picker "Pyramica", "#obsolete_genus_id"
     click_button "Create!"

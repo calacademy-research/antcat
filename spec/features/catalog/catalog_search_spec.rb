@@ -5,7 +5,7 @@ require 'rails_helper'
 feature "Searching the catalog", as: :visitor do
   background do
     create :species, name_string: "Lasius niger"
-    i_go_to 'the catalog'
+    visit root_path
   end
 
   scenario "Searching when no results" do

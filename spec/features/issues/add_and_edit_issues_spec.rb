@@ -8,7 +8,7 @@ feature "Add and edit open issues" do
   end
 
   scenario "Adding an issue (with feed)" do
-    i_go_to 'the open issues page'
+    visit issues_path
     i_should_see "There are currently no open issues."
 
     i_follow "New"
@@ -18,7 +18,7 @@ feature "Add and edit open issues" do
     click_button "Save"
     i_should_see "Successfully created issue"
 
-    i_go_to 'the open issues page'
+    visit issues_path
     i_should_see "Resolve homonyms"
 
     there_should_be_an_activity "Archibald added the issue Resolve homonyms"
@@ -28,7 +28,7 @@ feature "Add and edit open issues" do
   scenario "Editing an issue (with feed)" do
     create :issue, :open, title: "Restore deleted species"
 
-    i_go_to 'the open issues page'
+    visit issues_path
     i_should_see "Restore deleted species"
 
     i_follow "Restore deleted species"
@@ -40,7 +40,7 @@ feature "Add and edit open issues" do
     i_should_see "Successfully updated issue"
     i_should_see "The genera: #7554, #8863"
 
-    i_go_to 'the open issues page'
+    visit issues_path
     i_should_see "Restore deleted genera"
     i_should_not_see "Restore deleted species"
 
@@ -51,7 +51,7 @@ feature "Add and edit open issues" do
   scenario "Closing and re-opening an issue (with feed)" do
     create :issue, :open, title: "Add taxa from Aldous 2007"
 
-    i_go_to 'the open issues page'
+    visit issues_path
     i_follow "Add taxa from Aldous 2007"
     i_follow "Close"
     i_should_see "Successfully closed issue"
@@ -59,7 +59,7 @@ feature "Add and edit open issues" do
 
     there_should_be_an_activity "Archibald closed the issue Add taxa from Aldous 2007"
 
-    i_go_to 'the open issues page'
+    visit issues_path
     i_should_see "There are currently no open issues."
 
     i_follow_the_first "Add taxa from Aldous 2007"

@@ -6,7 +6,7 @@ feature "Logging in", as: :visitor do
   scenario "Logging and returning to previous page" do
     create :user, email: "quintus@antcat.org", name: "Batiatus", password: "secret"
 
-    i_go_to 'the references page'
+    visit references_path
     i_should_not_see "Logout"
 
     i_follow "Login", within: 'the desktop menu'
@@ -18,7 +18,7 @@ feature "Logging in", as: :visitor do
   end
 
   scenario "Logging in unsuccessfully" do
-    i_go_to 'the main page'
+    visit root_path
     i_follow "Login", within: 'the desktop menu'
     fill_in "user_email", with: "quintus@antcat.org"
     fill_in "user_password", with: "asd;fljl;jsdfljsdfj"
@@ -29,7 +29,7 @@ feature "Logging in", as: :visitor do
   scenario "Logging with a locked account" do
     create :user, email: "quintus@antcat.org", name: "Batiatus", password: "secret", locked: true
 
-    i_go_to 'the main page'
+    visit root_path
     i_follow "Login", within: 'the desktop menu'
     fill_in "user_email", with: "quintus@antcat.org"
     fill_in "user_password", with: "secret"

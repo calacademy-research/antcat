@@ -9,10 +9,10 @@ feature "Converting a species to a subspecies" do
 
   scenario "Converting a species to a subspecies (with feed)" do
     genus = create(:genus, name_string: "Camponotus")
-    create :species, name_string: "Camponotus dallatorei", genus: genus
+    taxon = create :species, name_string: "Camponotus dallatorei", genus: genus
     create :species, name_string: "Camponotus alii", genus: genus
 
-    i_go_to 'the catalog page for "Camponotus dallatorei"'
+    visit catalog_path(taxon)
     i_follow "Convert to subspecies"
     i_should_see "Convert species"
     i_should_see "to be a subspecies of"
@@ -31,9 +31,9 @@ feature "Converting a species to a subspecies" do
     genus = create(:genus, name_string: "Camponotus")
     species = create :species, name_string: "Camponotus alii", genus: genus
     create :subspecies, name_string: "Camponotus alii dallatorei", species: species, genus: species.genus
-    create :species, name_string: "Camponotus dallatorei", genus: genus
+    taxon = create :species, name_string: "Camponotus dallatorei", genus: genus
 
-    i_go_to 'the catalog page for "Camponotus dallatorei"'
+    visit catalog_path(taxon)
     i_follow "Convert to subspecies"
     i_pick_from_the_taxon_picker "Camponotus alii", "#new_species_id"
     click_button "Convert"

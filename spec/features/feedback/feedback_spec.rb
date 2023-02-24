@@ -4,7 +4,7 @@ require 'rails_helper'
 
 feature "Feedback" do
   background do
-    i_go_to 'the catalog'
+    visit root_path
   end
 
   scenario "Nothing except a comment is required", as: :visitor do
@@ -26,7 +26,7 @@ feature "Feedback" do
     i_should_see "Thanks for helping us make AntCat better!"
 
     i_log_in_as_a_catalog_editor
-    i_go_to 'the feedback page'
+    visit feedbacks_path
     i_should_see "[no name] <[no email];"
 
     there_should_be_an_activity "An unregistered user added the feedback item #"
@@ -40,17 +40,17 @@ feature "Feedback" do
     click_button "Send Feedback"
     i_should_see "Message sent"
 
-    i_go_to 'the feedback page'
+    visit feedbacks_path
     i_should_see "Archibald submitted"
 
     there_should_be_an_activity "Archibald added the feedback item #"
   end
 
   scenario "Page field defaults to the current URL", as: :visitor do
-    create :genus, name_string: "Calyptites"
+    taxon = create :genus
 
-    i_go_to 'the catalog page for "Calyptites"'
+    visit catalog_path(taxon)
     i_follow "Suggest edit"
-    the_field_should_contain "feedback_page", "catalog/"
+    the_field_should_contain "feedback_page", "catalog/#{taxon.id}"
   end
 end

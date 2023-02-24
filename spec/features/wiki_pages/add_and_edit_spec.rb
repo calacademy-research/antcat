@@ -8,7 +8,7 @@ feature "Add and edit wiki pages" do
   end
 
   scenario "Adding a wiki page (with edit summary)" do
-    i_go_to 'the wiki pages index'
+    visit wiki_pages_path
     i_should_see "There are currently no wiki pages"
 
     i_follow "New"
@@ -18,7 +18,7 @@ feature "Add and edit wiki pages" do
     click_button "Save"
     i_should_see "Successfully created wiki page"
 
-    i_go_to 'the wiki pages index'
+    visit wiki_pages_path
     i_should_see "Bibliography guidelines"
 
     i_follow_the_first "Bibliography guidelines"
@@ -30,7 +30,7 @@ feature "Add and edit wiki pages" do
   scenario "Editing a wiki page (with edit summary)" do
     create :wiki_page, title: "Catalog guidelines"
 
-    i_go_to 'the wiki pages index'
+    visit wiki_pages_path
     i_follow_the_first "Catalog guidelines"
     i_follow "Edit"
     fill_in "wiki_page_title", with: "Name guidelines"
@@ -39,7 +39,7 @@ feature "Add and edit wiki pages" do
     click_button "Save"
     i_should_see "Successfully updated wiki page"
 
-    i_go_to 'the wiki pages index'
+    visit wiki_pages_path
     i_should_see "Name guidelines"
 
     i_follow_the_first "Name guidelines"

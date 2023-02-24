@@ -4,9 +4,9 @@ require 'rails_helper'
 
 feature "Editing a taxon with authorization constraints" do
   scenario "Trying to edit without being logged in", as: :visitor do
-    create :genus, name_string: "Calyptites"
+    taxon = create :genus
 
-    i_go_to 'the edit page for "Calyptites"'
+    visit edit_taxon_path(taxon)
     i_should_be_on 'the login page'
   end
 end

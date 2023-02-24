@@ -4,17 +4,17 @@ require 'rails_helper'
 
 feature "Author name case-sensitivity", as: :helper do
   scenario "Using the name that was entered" do
-    create :any_reference, :with_author_name
+    reference = create :any_reference, :with_author_name
     create :author_name, name: "Mackay"
     create :author_name, name: "MACKAY"
     create :author_name, name: "mackay"
 
-    i_go_to 'the edit page for the most recent reference'
+    visit edit_reference_path(reference)
     fill_in "reference_author_names_string", with: "MACKAY"
     click_button "Save"
     i_should_see "MACKAY"
 
-    i_go_to 'the edit page for the most recent reference'
+    visit edit_reference_path(reference)
     fill_in "reference_author_names_string", with: "mackay"
     click_button "Save"
     i_should_see "mackay"

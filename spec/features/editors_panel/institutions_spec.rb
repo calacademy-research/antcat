@@ -6,7 +6,7 @@ feature "Institutions" do
   scenario "Adding an institution (with edit summary)" do
     i_log_in_as_a_catalog_editor_named "Archibald"
 
-    i_go_to "the Editor's Panel"
+    visit editors_panel_path
     i_follow "Edit institutions"
     i_should_not_see "CASC"
     i_should_not_see "California Academy of Sciences"
@@ -18,7 +18,7 @@ feature "Institutions" do
     click_button "Save"
     i_should_see "Successfully created institution"
 
-    i_go_to 'the institutions page'
+    visit institutions_path
     i_should_see "CASC"
     i_should_see "California Academy of Sciences"
 
@@ -29,7 +29,7 @@ feature "Institutions" do
     create :institution, abbreviation: "CASC", name: "California Academy of Sciences"
     i_log_in_as_a_catalog_editor_named "Archibald"
 
-    i_go_to 'the institutions page'
+    visit institutions_path
     i_follow_the_first "California Academy of Sciences"
     i_follow "Edit"
     fill_in "institution_abbreviation", with: "SASC"
@@ -38,7 +38,7 @@ feature "Institutions" do
     click_button "Save"
     i_should_see "Successfully updated institution"
 
-    i_go_to 'the institutions page'
+    visit institutions_path
     i_should_see "SASC"
     i_should_see "Sweden Academy of Sciences"
 
@@ -49,7 +49,7 @@ feature "Institutions" do
     create :institution, abbreviation: "CASC", name: "California Academy of Sciences"
     i_log_in_as_a_superadmin_named "Archibald"
 
-    i_go_to 'the institutions page'
+    visit institutions_path
     i_follow_the_first "California Academy of Sciences"
     i_follow "Delete"
     i_should_be_on 'the institutions page'

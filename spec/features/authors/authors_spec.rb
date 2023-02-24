@@ -8,12 +8,13 @@ feature "Working with authors and their names" do
     Array.wrap(author_name_strings).each do |author_name_string|
       author.names.create!(name: author_name_string)
     end
+    author
   end
 
   scenario "Seeing references by author (going to the author's page)", as: :visitor do
-    create :any_reference, author_string: 'Bolton, B.', title: 'Cool Ants'
+    reference = create :any_reference, author_string: 'Bolton, B.', title: 'Cool Ants'
 
-    i_go_to "the page of the most recent reference"
+    visit reference_path(reference)
     i_follow_the_first "Bolton, B."
     i_should_see "References by Bolton, B."
     i_should_see "Cool Ants"
@@ -23,15 +24,15 @@ feature "Working with authors and their names" do
     the_following_names_exist_for_an_author "Bolton, B.", "Bolton, Ba."
     the_following_names_exist_for_an_author "Fisher, B."
 
-    i_go_to "the authors page"
+    visit authors_path
     i_should_see "Bolton, B.; Bolton, Ba."
     i_should_see "Fisher, B."
   end
 
   scenario "Adding an alternative spelling of an author name", as: :editor do
-    the_following_names_exist_for_an_author "Bolton, B."
+    author = the_following_names_exist_for_an_author "Bolton, B."
 
-    i_go_to 'the author page for "Bolton, B."'
+    visit author_path(author)
     i_follow "Add alternative spelling"
     fill_in "author_name_name", with: "Fisher, B."
     click_button "Save"
@@ -42,9 +43,9 @@ feature "Working with authors and their names" do
   end
 
   scenario "Entering an existing author name", as: :editor do
-    the_following_names_exist_for_an_author "Bolton, B."
+    author = the_following_names_exist_for_an_author "Bolton, B."
 
-    i_go_to 'the author page for "Bolton, B."'
+    visit author_path(author)
     i_follow "Add alternative spelling"
     fill_in "author_name_name", with: "Bolton, B."
     click_button "Save"
@@ -52,9 +53,9 @@ feature "Working with authors and their names" do
   end
 
   scenario "Updating an existing author name", as: :editor do
-    the_following_names_exist_for_an_author "Bolton, B."
+    author = the_following_names_exist_for_an_author "Bolton, B."
 
-    i_go_to 'the author page for "Bolton, B."'
+    visit author_path(author)
     i_follow "Edit"
     fill_in "author_name_name", with: "Bolton, Z."
     click_button "Save"
