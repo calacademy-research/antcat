@@ -11,9 +11,9 @@ feature "Working with authors and their names" do
   end
 
   scenario "Seeing references by author (going to the author's page)", as: :visitor do
-    create :any_reference, author_string: 'Bolton, B.', title: 'Cool Ants'
+    reference = create :any_reference, author_string: 'Bolton, B.', title: 'Cool Ants'
 
-    i_go_to "the page of the most recent reference"
+    visit reference_path(reference)
     i_follow_the_first "Bolton, B."
     i_should_see "References by Bolton, B."
     i_should_see "Cool Ants"

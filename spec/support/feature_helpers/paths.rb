@@ -32,8 +32,6 @@ module FeatureHelpers
         references_path
       when 'the latest reference additions page'
         references_latest_additions_path
-      when 'the page of the most recent reference'
-        reference_path(Reference.last)
       when 'the page of the oldest reference'
         reference_path(Reference.first)
       when 'the edit page for the most recent reference'

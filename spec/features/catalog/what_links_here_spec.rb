@@ -9,22 +9,23 @@ feature "What links here", as: :user do
 
     # Eciton has a history item referencing Atta and a Batiatus reference.
     reference = create :any_reference, author_string: 'Batiatus'
-    create :history_item, :taxt, taxt: "#{Taxt.tax(atta.id)}: #{Taxt.ref(reference.id)}", protonym: eciton
+    create :history_item, :taxt, taxt: "#{Taxt.tax(atta.id)} book by #{Taxt.ref(reference.id)}", protonym: eciton
   end
 
   scenario "See related items (taxa, with detaxed taxt item)" do
     i_go_to 'the catalog page for "Atta"'
+
     i_follow "What Links Here"
     i_should_see "history_items"
     i_should_see "Protonym: Eciton"
-    i_should_see "Atta: Batiatus"
+    i_should_see "Atta book by Batiatus"
   end
 
   scenario "See related items (references, with detaxed taxt item)" do
-    i_go_to "the page of the most recent reference"
+    visit reference_path(Reference.last)
     i_follow "What Links Here"
     i_should_see "history_items"
     i_should_see "Protonym: Eciton"
-    i_should_see "Atta: Batiatus"
+    i_should_see "Atta book by Batiatus"
   end
 end

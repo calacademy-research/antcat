@@ -8,9 +8,9 @@ feature "Delete reference" do
   end
 
   scenario "Delete a reference (with feed)" do
-    create :any_reference, author_string: "Fisher", year: 2004
+    reference = create :any_reference, author_string: "Fisher", year: 2004
 
-    i_go_to 'the page of the most recent reference'
+    visit reference_path(reference)
     i_follow "Delete"
     i_should_see "Reference was successfully deleted"
 
