@@ -9,7 +9,7 @@ feature "Site notices", as: :editor do
   end
 
   scenario "Adding a site notice" do
-    i_go_to 'the site notices page'
+    visit site_notices_path
     i_follow "New"
     fill_in "site_notice_title", with: "New AntCat features"
     fill_in "site_notice_message", with: "You would not believe it!"
@@ -32,7 +32,7 @@ feature "Site notices", as: :editor do
   scenario "Mark all as read from the site notices page" do
     there_is_a_site_notice_i_havent_read_yet "A Site Notice"
 
-    i_go_to 'the site notices page'
+    visit site_notices_path
     i_should_see "new notice"
 
     i_follow "Mark all as read"

@@ -7,7 +7,7 @@ feature "Reference sections", as: :user do
     create :reference_section, references_taxt: "typo of Forel"
     create :reference_section, references_taxt: "typo of August"
 
-    i_go_to 'the reference sections page'
+    visit reference_sections_path
     i_should_see "typo of Forel"
     i_should_see "typo of August"
 

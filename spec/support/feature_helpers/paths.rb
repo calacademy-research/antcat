@@ -27,8 +27,6 @@ module FeatureHelpers
       # References, authors, etc.
       when 'the references page'
         references_path
-      when 'the latest reference additions page'
-        references_latest_additions_path
 
       when 'the authors page'
         authors_path
@@ -49,34 +47,8 @@ module FeatureHelpers
       when 'my notifications page'
         notifications_path
 
-      when 'the database scripts page'
-        database_scripts_path
-
-      when 'the site notices page'
-        site_notices_path
-
       when 'the activity feed'
         activities_path
-
-      when 'the versions page'
-        versions_path
-
-      when 'the open issues page'
-        issues_path
-      when 'the new issue page'
-        new_issue_path
-
-      when 'the feedback page'
-        feedbacks_path
-
-      when 'the wiki pages index'
-        wiki_pages_path
-
-      # Reference sections and history items.
-      when 'the reference sections page'
-        reference_sections_path
-      when 'the history items page'
-        history_items_path
 
       # Users.
       when 'My account'

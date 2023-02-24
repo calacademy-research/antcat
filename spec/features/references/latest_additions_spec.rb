@@ -5,7 +5,7 @@ require 'rails_helper'
 feature "Latest Additions", as: :editor do
   background do
     create :any_reference, :with_author_name
-    i_go_to 'the latest reference additions page'
+    visit references_latest_additions_path
   end
 
   scenario "Start reviewing" do

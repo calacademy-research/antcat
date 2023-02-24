@@ -26,7 +26,7 @@ feature "Feedback" do
     i_should_see "Thanks for helping us make AntCat better!"
 
     i_log_in_as_a_catalog_editor
-    i_go_to 'the feedback page'
+    visit feedbacks_path
     i_should_see "[no name] <[no email];"
 
     there_should_be_an_activity "An unregistered user added the feedback item #"
@@ -40,7 +40,7 @@ feature "Feedback" do
     click_button "Send Feedback"
     i_should_see "Message sent"
 
-    i_go_to 'the feedback page'
+    visit feedbacks_path
     i_should_see "Archibald submitted"
 
     there_should_be_an_activity "Archibald added the feedback item #"

@@ -11,10 +11,9 @@ feature "Editing a taxon" do
     taxon = create :species, name_string: "Eciton fusca"
     protonym = create :protonym, :species_group, name: create(:species_name, name: "Formica fusca")
 
-    i_go_to 'the catalog page for "Eciton fusca"'
     expect(taxon.reload.protonym).not_to eq protonym
 
-    i_go_to 'the edit page for "Eciton fusca"'
+    visit edit_taxon_path(taxon)
     i_pick_from_the_protonym_picker "Formica fusca", "#taxon_protonym_id"
     click_button "Save"
     i_should_see "Taxon was successfully updated"

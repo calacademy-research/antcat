@@ -7,7 +7,7 @@ feature "History items", as: :user do
     create :history_item, :taxt, taxt: "typo of Forel"
     create :history_item, :taxt, taxt: "typo of August"
 
-    i_go_to 'the history items page'
+    visit history_items_path
     i_should_see "typo of Forel"
     i_should_see "typo of August"
 

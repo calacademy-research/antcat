@@ -8,13 +8,9 @@ feature "Database scripts", as: :user do
     create :species, name_string: "Lasius niger", genus: genus
   end
 
-  background do
-    i_go_to 'the database scripts page'
-  end
-
   scenario "Results when there are issues" do
     there_is_an_extant_species_lasius_niger_in_a_fossil_genus
-    i_go_to 'the database scripts page'
+    visit database_scripts_path
 
     i_follow "Extant taxa in fossil genera"
     i_should_see "Lasius niger"
@@ -44,6 +40,7 @@ feature "Database scripts", as: :user do
   end
 
   scenario "Checking 'empty' status" do
+    visit database_scripts_path
     i_should_not_see "Excluded (slow/list)"
 
     i_follow "Show empty"
