@@ -3,19 +3,13 @@
 require 'rails_helper'
 
 feature "What links here", as: :user do
-  def eciton_has_a_history_item_that_references_atta_and_a_batiatus_reference
-    eciton = Protonym.joins(:name).find_by!(names: { name: "Eciton" })
-    atta = Taxon.find_by!(name_cache: "Atta")
-    reference = create :any_reference, author_string: 'Batiatus'
-
-    create :history_item, :taxt, taxt: "#{Taxt.tax(atta.id)}: #{Taxt.ref(reference.id)}", protonym: eciton
-  end
-
   background do
-    create :genus, name_string: "Atta"
-    create :protonym, :genus_group, name: create(:genus_name, name: "Eciton")
+    atta = create :genus, name_string: "Atta"
+    eciton = create :protonym, :genus_group, name: create(:genus_name, name: "Eciton")
 
-    eciton_has_a_history_item_that_references_atta_and_a_batiatus_reference
+    # Eciton has a history item referencing Atta and a Batiatus reference.
+    reference = create :any_reference, author_string: 'Batiatus'
+    create :history_item, :taxt, taxt: "#{Taxt.tax(atta.id)}: #{Taxt.ref(reference.id)}", protonym: eciton
   end
 
   scenario "See related items (taxa, with detaxed taxt item)" do
