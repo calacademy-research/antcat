@@ -40,7 +40,7 @@ describe Genus do
     end
 
     describe ".without_tribe" do
-      let!(:genus) { create :genus, tribe: nil }
+      let!(:genus) { create :genus, :without_tribe }
 
       before do
         create :genus, tribe: create(:tribe)

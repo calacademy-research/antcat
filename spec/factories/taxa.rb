@@ -71,6 +71,10 @@ FactoryBot.define do
       trait :incertae_sedis_in_subfamily do
         incertae_sedis_in { Rank::SUBFAMILY }
       end
+
+      trait :without_tribe do
+        tribe { nil }
+      end
     end
 
     factory :subgenus, class: Rank::SUBGENUS.to_s do

@@ -104,7 +104,7 @@ class ReferencesController < ApplicationController
     end
 
     def reference_type_from_params
-      reference_class = Reference::CONCRETE_SUBCLASS_NAMES.find { |class_name| class_name == params[:reference_type] }
-      reference_class.constantize || raise("reference type is not supported")
+      raise("reference type is not supported") unless params[:reference_type].in?(Reference::CONCRETE_SUBCLASS_NAMES)
+      params[:reference_type].constantize
     end
 end
