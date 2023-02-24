@@ -10,9 +10,9 @@ feature "Adding a taxon successfully" do
   end
 
   scenario "Adding a genus" do
-    create :subfamily, name_string: "Formicinae"
+    taxon = create :subfamily, name_string: "Formicinae"
 
-    i_go_to 'the catalog page for "Formicinae"'
+    visit catalog_path(taxon)
     i_follow "Add genus"
     fill_in "taxon_name_string", with: "Atta"
     fill_in "protonym_name_string", with: "Eciton"
@@ -21,14 +21,14 @@ feature "Adding a taxon successfully" do
     i_should_be_on 'the catalog page for "Atta"'
     i_should_see "Eciton", within: 'the protonym'
 
-    i_go_to 'the catalog page for "Formicinae"'
+    visit catalog_path(taxon)
     i_should_see "Atta", within: 'the taxon browser'
   end
 
   scenario "Adding a genus which has a tribe" do
-    create :tribe, name_string: "Ecitonini"
+    taxon = create :tribe, name_string: "Ecitonini"
 
-    i_go_to 'the catalog page for "Ecitonini"'
+    visit catalog_path(taxon)
     i_follow "Add genus"
     fill_in "taxon_name_string", with: "Eciton"
     fill_in "protonym_name_string", with: "Eciton"
@@ -38,9 +38,9 @@ feature "Adding a taxon successfully" do
   end
 
   scenario "Adding a subgenus" do
-    create :genus, name_string: "Camponotus"
+    taxon = create :genus, name_string: "Camponotus"
 
-    i_go_to 'the catalog page for "Camponotus"'
+    visit catalog_path(taxon)
     i_follow "Add subgenus"
     fill_in "taxon_name_string", with: "Camponotus (Mayria)"
     fill_in "protonym_name_string", with: "Mayria"
@@ -49,15 +49,15 @@ feature "Adding a taxon successfully" do
     i_should_be_on 'the catalog page for "Camponotus (Mayria)"'
     i_should_see "Mayria", within: 'the protonym'
 
-    i_go_to 'the catalog page for "Camponotus"'
+    visit catalog_path(taxon)
     i_follow "Subgenera"
     i_should_see "Mayria", within: 'the taxon browser'
   end
 
   scenario "Adding a species (with edit summary)" do
-    create :genus, name_string: "Eciton"
+    taxon = create :genus, name_string: "Eciton"
 
-    i_go_to 'the catalog page for "Eciton"'
+    visit catalog_path(taxon)
     i_follow "Add species"
     fill_in "taxon_name_string", with: "Eciton major"
     fill_in "protonym_name_string", with: "Eciton major"
@@ -73,9 +73,9 @@ feature "Adding a taxon successfully" do
 
   scenario "Adding a species to a subgenus" do
     genus = create(:genus, name_string: "Dolichoderus")
-    create :subgenus, name_string: "Dolichoderus (Subdolichoderus)", genus: genus
+    taxon = create :subgenus, name_string: "Dolichoderus (Subdolichoderus)", genus: genus
 
-    i_go_to 'the catalog page for "Dolichoderus (Subdolichoderus)"'
+    visit catalog_path(taxon)
     i_follow "Add species"
     fill_in "taxon_name_string", with: "Dolichoderus major"
     fill_in "protonym_name_string", with: "Dolichoderus major"
@@ -87,9 +87,9 @@ feature "Adding a taxon successfully" do
 
   scenario "Adding a subspecies" do
     genus = create(:genus, name_string: "Eciton")
-    create :species, name_string: "Eciton major", genus: genus
+    taxon = create :species, name_string: "Eciton major", genus: genus
 
-    i_go_to 'the catalog page for "Eciton major"'
+    visit catalog_path(taxon)
     i_follow "Add subspecies"
     fill_in "taxon_name_string", with: "Eciton major infra"
     fill_in "protonym_name_string", with: "Eciton major infra"
@@ -115,9 +115,9 @@ feature "Adding a taxon successfully" do
   end
 
   scenario "Adding a tribe (and copy name to protonym)", :skip_ci, :js do
-    create :subfamily, name_string: "Formicinae"
+    taxon = create :subfamily, name_string: "Formicinae"
 
-    i_go_to 'the catalog page for "Formicinae"'
+    visit catalog_path(taxon)
     i_follow "Add tribe"
     fill_in "taxon_name_string", with: "Dorylini"
     find("#copy-name-to-protonym-js-hook").click
@@ -126,7 +126,7 @@ feature "Adding a taxon successfully" do
     i_should_be_on 'the catalog page for "Dorylini"'
     i_should_see "Dorylini", within: 'the protonym'
 
-    i_go_to 'the catalog page for "Formicinae"'
+    visit catalog_path(taxon)
     i_should_see "Tribes of Formicinae: Dorylini"
   end
 end

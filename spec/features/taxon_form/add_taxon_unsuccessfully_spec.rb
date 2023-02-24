@@ -8,7 +8,8 @@ feature "Adding a taxon unsuccessfully", as: :editor do
   end
 
   scenario "Having an errors, and maintain entered fields" do
-    i_go_to 'the catalog page for "Formicinae"'
+    taxon = create :subfamily, name_string: "Formicinae"
+    visit catalog_path(taxon)
     i_follow "Add genus"
     fill_in "taxon_name_string", with: "Atta prolasius"
     select "homonym", from: "taxon_status"
@@ -22,7 +23,8 @@ feature "Adding a taxon unsuccessfully", as: :editor do
   end
 
   scenario "Unparsable names, and maintain entered fields" do
-    i_go_to 'the catalog page for "Formicinae"'
+    taxon = create :subfamily, name_string: "Formicinae"
+    visit catalog_path(taxon)
     i_follow "Add genus"
     fill_in "taxon_name_string", with: "Invalid a b c d e f taxon name"
     fill_in "protonym_name_string", with: "Invalid a b c d e f protonym name"

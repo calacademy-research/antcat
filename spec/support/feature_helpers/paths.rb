@@ -12,12 +12,6 @@ module FeatureHelpers
       when /^the catalog page for "([^"]*)"$/
         taxon = Taxon.find_by!(name_cache: Regexp.last_match(1))
         catalog_path(taxon)
-
-      # Editing (catalog).
-      when /^the edit page for "(.*)"$/
-        taxon = Taxon.find_by!(name_cache: Regexp.last_match(1))
-        edit_taxon_path(taxon)
-
       when /^the protonym page for "(.*)"$/
         protonym = Protonym.joins(:name).find_by!(names: { name: Regexp.last_match(1) })
         protonym_path(protonym)

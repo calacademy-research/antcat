@@ -10,26 +10,26 @@ feature "Manage subgenera" do
   scenario "Setting and removing a subgenus of a species (with feed)" do
     genus = create(:genus, name_string: "Camponotus")
     create :subgenus, name_string: "Camponotus (Myrmentoma)", genus: genus
-    create :species, name_string: "Camponotus cornis", genus: genus
+    taxon = create :species, name_string: "Camponotus cornis", genus: genus
 
-    i_go_to 'the catalog page for "Camponotus cornis"'
+    visit catalog_path(taxon)
     i_should_not_see "Camponotus (Myrmentoma)", within: 'the breadcrumbs'
 
     i_follow "Set subgenus", within: 'the breadcrumbs'
     i_follow "Set"
     i_should_see "Successfully updated subgenus of species"
 
-    i_go_to 'the catalog page for "Camponotus cornis"'
+    visit catalog_path(taxon)
     i_should_see "Camponotus (Myrmentoma)", within: 'the breadcrumbs'
 
     there_should_be_an_activity "Archibald set the subgenus of Camponotus cornis to Camponotus \\(Myrmentoma\\)"
 
-    i_go_to 'the catalog page for "Camponotus cornis"'
+    visit catalog_path(taxon)
     i_follow "Set subgenus", within: 'the breadcrumbs'
     i_follow "Remove"
     i_should_see "Successfully removed subgenus from species"
 
-    i_go_to 'the catalog page for "Camponotus cornis"'
+    visit catalog_path(taxon)
     i_should_not_see "Camponotus (Myrmentoma)", within: 'the breadcrumbs'
 
     there_should_be_an_activity "Archibald removed the subgenus from Camponotus cornis \\(subgenus was Camponotus \\(Myrmentoma\\)\\)"

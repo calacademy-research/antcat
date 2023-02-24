@@ -10,9 +10,9 @@ feature "Deleting a taxon" do
   scenario "Deleted taxon (with feed)" do
     # Create Formicidae to make sure the deleted taxon has a parent.
     create :family, :formicidae
-    create :subfamily, name_string: "Antcatinae"
+    taxon = create :subfamily, name_string: "Antcatinae"
 
-    i_go_to 'the catalog page for "Antcatinae"'
+    visit catalog_path(taxon)
     i_will_confirm_on_the_next_step
     i_follow "Delete"
     i_should_see "Taxon was successfully deleted."
@@ -24,7 +24,7 @@ feature "Deleting a taxon" do
     referenced_taxon = create :genus, name_string: "Atta"
     create :reference_section, references_taxt: Taxt.tax(referenced_taxon.id)
 
-    i_go_to 'the catalog page for "Atta"'
+    visit catalog_path(referenced_taxon)
     i_will_confirm_on_the_next_step
     i_follow "Delete"
     i_should_see "Other records refer to this taxon, so it can't be deleted."

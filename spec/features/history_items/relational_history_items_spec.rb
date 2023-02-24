@@ -3,14 +3,6 @@
 require 'rails_helper'
 
 feature "Editing a history item", as: :editor do
-  def batiatus_2004a_has_described_the_forms_for_the_protonym pages, forms, protonym_name
-    protonym = create :protonym, :species_group, name: create(:species_name, name: protonym_name)
-    reference = create :any_reference, author_string: 'Batiatus', year: 2004, year_suffix: 'a'
-
-    create :history_item, :form_descriptions, protonym: protonym,
-      text_value: forms, reference: reference, pages: pages
-  end
-
   scenario "Adding a relational history item", :js do
     protonym = create :protonym, :genus_group, name: create(:genus_name, name: "Atta")
     create :any_reference, author_string: "Batiatus", year: 2004
@@ -47,9 +39,11 @@ feature "Editing a history item", as: :editor do
   end
 
   scenario "Editing a history item (via history item page)", :js do
-    batiatus_2004a_has_described_the_forms_for_the_protonym "77-78", "q.", "Formica fusca"
+    protonym = create :protonym, :species_group, name: create(:species_name, name: "Formica fusca")
+    reference = create :any_reference, author_string: 'Batiatus', year: 2004, year_suffix: 'a'
+    create :history_item, :form_descriptions, protonym: protonym, text_value: "q.", reference: reference, pages: "77-78"
 
-    i_go_to 'the protonym page for "Formica fusca"'
+    visit protonym_path(protonym)
     i_should_see "Batiatus, 2004a: 77-78 (q.)"
 
     visit history_item_path(HistoryItem.last)
@@ -63,9 +57,11 @@ feature "Editing a history item", as: :editor do
   end
 
   scenario "Editing a history item (Quick edit)", :js do
-    batiatus_2004a_has_described_the_forms_for_the_protonym "77-78", "q.", "Formica fusca"
+    protonym = create :protonym, :species_group, name: create(:species_name, name: "Formica fusca")
+    reference = create :any_reference, author_string: 'Batiatus', year: 2004, year_suffix: 'a'
+    create :history_item, :form_descriptions, protonym: protonym, text_value: "q.", reference: reference, pages: "77-78"
 
-    i_go_to 'the protonym page for "Formica fusca"'
+    visit protonym_path(protonym)
     i_should_see "Batiatus, 2004a: 77-78 (q.)"
 
     wait_for_taxt_editors_to_load

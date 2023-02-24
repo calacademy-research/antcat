@@ -6,6 +6,7 @@ feature "Editing a history item" do
   def there_is_a_subfamily_protonym_with_a_history_item name, taxt
     protonym = create :protonym, :family_group, name: create(:subfamily_name, name: name)
     create :history_item, :taxt, taxt: taxt, protonym: protonym
+    protonym
   end
 
   background do
@@ -39,9 +40,9 @@ feature "Editing a history item" do
   end
 
   scenario "Editing a history item (with edit summary)", :js do
-    there_is_a_subfamily_protonym_with_a_history_item "Antcatinae", "Antcatinae as family"
+    protonym = there_is_a_subfamily_protonym_with_a_history_item "Antcatinae", "Antcatinae as family"
 
-    i_go_to 'the protonym page for "Antcatinae"'
+    visit protonym_path(protonym)
     the_history_should_be "Antcatinae as family"
 
     wait_for_taxt_editors_to_load
@@ -76,9 +77,9 @@ feature "Editing a history item" do
   end
 
   scenario "Editing a history item, but cancelling", :js do
-    there_is_a_subfamily_protonym_with_a_history_item "Antcatinae", "Antcatinae as family"
+    protonym = there_is_a_subfamily_protonym_with_a_history_item "Antcatinae", "Antcatinae as family"
 
-    i_go_to 'the protonym page for "Antcatinae"'
+    visit protonym_path(protonym)
     wait_for_taxt_editors_to_load
     i_click_on 'the edit history item button'
     fill_in "taxt", with: "(none)"
@@ -90,9 +91,9 @@ feature "Editing a history item" do
   end
 
   scenario "Deleting a history item (with feed)", :js do
-    there_is_a_subfamily_protonym_with_a_history_item "Antcatinae", "Antcatinae as family"
+    protonym = there_is_a_subfamily_protonym_with_a_history_item "Antcatinae", "Antcatinae as family"
 
-    i_go_to 'the protonym page for "Antcatinae"'
+    visit protonym_path(protonym)
     i_should_see "Antcatinae as family"
 
     wait_for_taxt_editors_to_load
@@ -109,9 +110,9 @@ feature "Editing a history item" do
 
   scenario "Seeing the markdown preview (and cancelling)", :js do
     giovanni_1809 = create :any_reference, author_string: "Giovanni, S.", year: 1809
-    there_is_a_subfamily_protonym_with_a_history_item "Antcatinae", "As family, #{Taxt.ref(giovanni_1809.id)}"
+    protonym = there_is_a_subfamily_protonym_with_a_history_item "Antcatinae", "As family, #{Taxt.ref(giovanni_1809.id)}"
 
-    i_go_to 'the protonym page for "Antcatinae"'
+    visit protonym_path(protonym)
     i_should_see "As family, Giovanni, 1809"
     the_history_item_field_should_not_be_visible
 
