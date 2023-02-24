@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-feature "Move items", :skip_ci do
+feature "Move items" do
   background do
     i_log_in_as_a_catalog_editor_named "Archibald"
   end
@@ -27,6 +27,7 @@ feature "Move items", :skip_ci do
     click_button "Move selected items"
     i_should_see "At least one item must be selected"
 
+    sleep 1 # TODO: Fix.
     find(:testid, 'select-deselect-all-button').click
     click_button "Move selected items"
     i_should_see "Successfully moved items"
@@ -57,6 +58,7 @@ feature "Move items", :skip_ci do
     click_button "Move selected items"
     i_should_see "At least one item must be selected"
 
+    sleep 1 # TODO: Fix.
     find(:testid, 'select-deselect-all-button').click
     click_button "Move selected items"
     i_should_see "Successfully moved items"
