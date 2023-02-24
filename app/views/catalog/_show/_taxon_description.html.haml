@@ -124,7 +124,7 @@
 
 -if current_user && !Status.display_history_items?(taxon.status)
   -if taxon.history_items_for_taxon_including_hidden.present?
-    .additional-editor-data.callout.border-0.logged-in-only-background.mt-8.mb-8
+    .additional-editor-data.callout.border-0.logged-in-only-background.text-sm.mt-8.mb-8
       %h6.font-bold Protonym history items not shown on this page
 
       %p

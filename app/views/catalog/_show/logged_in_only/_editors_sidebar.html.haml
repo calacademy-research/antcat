@@ -1,4 +1,4 @@
-.additional-editor-data.callout.border-0.logged-in-only-background
+.additional-editor-data.callout.border-0.text-sm.logged-in-only-background
   %h6
     Taxon:
     =taxon.name.epithet_html
@@ -7,7 +7,7 @@
     =copy_to_clipboard_button Taxt.tax(taxon.id), "tax #{taxon.id}"
     =copy_to_clipboard_button taxon.id
 
-.additional-editor-data.callout.border-0.logged-in-only-background
+.additional-editor-data.callout.border-0.text-sm.logged-in-only-background
   %h6
     Protonym:
     =protonym.decorate.link_to_protonym_epithet
@@ -50,7 +50,7 @@
 =render 'protonyms/shared/etymology_and_gender', protonym: protonym, taxon: taxon
 
 -if editors_catalog_presenter.taxa_with_same_name.present?
-  .additional-editor-data.callout.border-0.logged-in-only-background
+  .additional-editor-data.callout.border-0.text-sm.logged-in-only-background
     %h6 Taxa with same name
     %ul.compact-list.mb-4
       -editors_catalog_presenter.taxa_with_same_name.includes(:name, protonym: [{ authorship: :reference }]).each do |homonym|
@@ -60,7 +60,7 @@
           %span.text-sm=homonym.decorate.compact_status
 
 -if taxon.policy.show_create_combination_button?
-  #can-be-combined-editing-helper.additional-editor-data.callout.border-0.logged-in-only-background
+  #can-be-combined-editing-helper.additional-editor-data.text-sm.callout.border-0.logged-in-only-background
     %h6 Can be combined?
 
     -if current_user.settings(:editing_helpers).create_combination
@@ -80,7 +80,7 @@
     -else
       =enable_editing_helper_link
 
-.additional-editor-data.callout.border-0.logged-in-only-background
+.additional-editor-data.callout.border-0.text-sm.logged-in-only-background
   %h6 Additional data
 
   %ul.no-bullet
