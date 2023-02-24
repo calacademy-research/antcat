@@ -90,6 +90,6 @@
       %li=external_link_to 'AntWeb import log', "https://www.antweb.org/query.do?name=worldantsUploads"
       -if user_is_superadmin?
         %li
-          %span.logged-in-only-background
+          %span.bg-logged-in-only
             =external_link_to 'AntCat issues-only GitHub repo', 'https://github.com/calacademy-research/antcat-issues'
             =logged_in_only_tooltip_icon user_group: 'superadmins'

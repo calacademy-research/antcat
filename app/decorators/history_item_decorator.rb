@@ -4,7 +4,7 @@ class HistoryItemDecorator < Draper::Decorator
   def rank_specific_badge
     return unless history_item.rank?
 
-    h.tag.span(class: 'logged-in-only-background') do
+    h.tag.span(class: 'bg-logged-in-only') do
       h.tag.small "#{history_item.rank}-only item", class: 'bold-notice'
     end
   end

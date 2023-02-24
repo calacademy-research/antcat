@@ -45,7 +45,7 @@
 
   .medium-3.columns
     -if current_user
-      .additional-editor-data.callout.border-0.text-sm.logged-in-only-background
+      .bg-logged-in-only.callout.border-0.text-sm
         %h6
           Reference:
           =@reference.key_with_suffixed_year
@@ -134,13 +134,13 @@
             %td=decorated.format_public_notes
         -if current_user
           -if @reference.editor_notes?
-            %tr.logged-in-only-background
+            %tr.bg-logged-in-only
               %th
                 Editor notes
                 =logged_in_only_tooltip_icon
               %td=decorated.format_editor_notes
           -if @reference.taxonomic_notes?
-            %tr.logged-in-only-background
+            %tr.bg-logged-in-only
               %th
                 Taxonomic notes
                 =logged_in_only_tooltip_icon
@@ -150,7 +150,7 @@
   -if @citations_presenter.any_citations?
     .row.mb-8
       .small-12.columns
-        .callout.border-0.logged-in-only-background
+        .bg-logged-in-only.callout.border-0
           %h5 Citations
           %small Note: nested references of this reference are not included here.
 
@@ -168,7 +168,7 @@
   -if @history_citations.present?
     .row.mb-8
       .small-12.columns
-        .callout.border-0.logged-in-only-background
+        .bg-logged-in-only.callout.border-0
           -# Anchor for the pagination.
           %a{name: 'history_citations'}
           %h5 Citations (via relational history items)

@@ -104,7 +104,7 @@
 
   -if current_user
     .medium-3.columns
-      .additional-editor-data.callout.border-0.text-sm.logged-in-only-background
+      .bg-logged-in-only.callout.border-0.text-sm
         %h6
           Protonym:
           =@protonym.name.epithet_html
@@ -162,7 +162,7 @@
   -if @protonym.history_items_as_object.present?
     .row.mt-8.mb-8
       .small-12.columns
-        .callout.border-0.logged-in-only-background.mb-16
+        .bg-logged-in-only.callout.border-0.mb-16
           %h5 History items as object protonym
 
           %table.table-striped.table-stack
