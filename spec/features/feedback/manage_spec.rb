@@ -8,9 +8,9 @@ feature "Managing user feedback" do
   end
 
   scenario "Closing a feedback item (with feed)" do
-    create :feedback
+    feedback = create :feedback
 
-    i_go_to 'the most recent feedback item'
+    visit feedback_path(feedback)
     i_should_not_see "Re-open"
 
     i_follow "Close"
@@ -22,9 +22,9 @@ feature "Managing user feedback" do
   end
 
   scenario "Re-opening a closed feedback item (with feed)" do
-    create :feedback, :closed
+    feedback = create :feedback, :closed
 
-    i_go_to 'the most recent feedback item'
+    visit feedback_path(feedback)
     i_follow "Re-open"
     i_should_see "Successfully re-opened feedback item."
     i_should_see "Close"

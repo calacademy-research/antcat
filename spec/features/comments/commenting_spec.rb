@@ -5,8 +5,8 @@ require 'rails_helper'
 feature "Commenting" do
   background do
     i_log_in_as_a_catalog_editor_named "Batiatus"
-    create :feedback
-    i_go_to 'the most recent feedback item'
+    feedback = create :feedback
+    visit feedback_path(feedback)
   end
 
   scenario "Leaving a comment (with feed)" do

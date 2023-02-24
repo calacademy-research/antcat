@@ -21,7 +21,7 @@ feature "Delete reference" do
     reference = create :any_reference
     create :history_item, :taxt, taxt: Taxt.ref(reference.id)
 
-    i_go_to 'the page of the oldest reference'
+    visit reference_path(reference)
     i_will_confirm_on_the_next_step
     i_follow "Delete"
     i_should_see "Other records refer to this reference, so it can't be deleted."

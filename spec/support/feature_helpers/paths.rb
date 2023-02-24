@@ -32,10 +32,6 @@ module FeatureHelpers
         references_path
       when 'the latest reference additions page'
         references_latest_additions_path
-      when 'the page of the oldest reference'
-        reference_path(Reference.first)
-      when 'the edit page for the most recent reference'
-        edit_reference_path(Reference.last)
 
       when 'the authors page'
         authors_path
@@ -75,8 +71,6 @@ module FeatureHelpers
 
       when 'the feedback page'
         feedbacks_path
-      when 'the most recent feedback item'
-        feedback_path(Feedback.last)
 
       when 'the wiki pages index'
         wiki_pages_path
