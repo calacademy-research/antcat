@@ -57,7 +57,7 @@ class MakePreviewable
       </div>
       <div class="row">
         <div class="medium-6 columns preview-editable is-already-previewable"></div>
-        <div class="medium-6 columns preview-previewable p-2 border border-solid border-medium-gray"></div>
+        <div class="medium-6 columns preview-previewable p-2 border border-solid border-medium-gray min-h-[4rem]"></div>
       </div>
     </div>
     """

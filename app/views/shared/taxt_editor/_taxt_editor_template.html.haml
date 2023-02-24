@@ -3,7 +3,7 @@
 .taxt-editor
   .taxt-presenter
     %a.float-left.taxt-editor-edit-button.btn-nodanger.btn-tiny{style: 'margin-top: 0.8rem; margin-right: 0.8rem; margin-left: 0.8rem;'} Edit
-    .fake-input.taxt-editor-content
+    .taxt-editor-content.border.border-solid.border-medium-gray.p-1{class: "min-h-[2.5rem]"}
       -if format_type_fields
         =::Types::FormatTypeField[content]
       -else
