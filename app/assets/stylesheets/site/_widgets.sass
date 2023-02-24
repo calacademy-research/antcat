@@ -24,8 +24,11 @@
   a
     color: #fff !important
 
-// Used by `ApplicationHelper#inline_expandable`.
-.expandable
+// TODO: Fix hack.
+.activity-link-wrapper .btn-normal
+  @extend .btn-very-tiny
+
+.inline-expandable
   margin-left: 0.5rem
   &:hover
     cursor: pointer

@@ -6,7 +6,7 @@ module AntwebTestLinksHelpers
   end
 
   def antweb_protonym_link protonym
-    %(<a href="https://www.antcat.org/protonyms/#{protonym.id}">#{protonym.decorate.name_with_fossil}</a>)
+    %(<a href="https://www.antcat.org/protonyms/#{protonym.id}">#{protonym.name_with_fossil}</a>)
   end
 
   def antweb_reference_link reference

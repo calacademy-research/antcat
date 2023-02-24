@@ -1,11 +1,11 @@
 -page_title "PaperTrail Version ##{@version.id}"
 -breadcrumb :version, @version
 
--version_decorated = @version.decorate
+-decorated_version = @version.decorate
 
 -content_for :breadcrumbs_right do
-  =version_decorated.revision_history_link
-  =version_decorated.activity_link
+  =decorated_version.revision_history_link
+  =decorated_version.activity_link
 
 %pre.pre-wrapped.text-sm
   =inline_expandable @version.inspect do
@@ -13,4 +13,4 @@
 
 %hr.discreet
 
-%pre.pre-wrapped.text-sm=version_decorated.format_changeset
+%pre.pre-wrapped.text-sm=decorated_version.format_changeset

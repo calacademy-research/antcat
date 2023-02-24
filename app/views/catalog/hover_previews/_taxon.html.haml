@@ -1,6 +1,4 @@
--decorated_taxon = taxon.decorate
 -protonym = taxon.protonym
--decorated_protonym = protonym.decorate
 
 -if current_user
   .mb-2
@@ -9,7 +7,7 @@
     =copy_to_clipboard_button Taxt.tax(taxon.id), "tax #{taxon.id}"
     =copy_to_clipboard_button taxon.id
 %strong Taxon:
-=decorated_taxon.link_to_taxon_with_author_citation
+=taxon.decorate.link_to_taxon_with_author_citation
 %br
 
 %strong Rank:
@@ -28,7 +26,7 @@
     =copy_to_clipboard_button Taxt.pro(protonym.id), "pro #{protonym.id}"
     =copy_to_clipboard_button protonym.id
 %strong Protonym:
-=decorated_protonym.link_to_protonym
+=protonym.decorate.link_to_protonym
 %br
 
 %strong Authorship:

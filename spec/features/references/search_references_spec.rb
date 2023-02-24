@@ -8,9 +8,7 @@ feature "Searching references", as: :visitor do
     create :any_reference, author_string: "Fisher, B."
     i_go_to 'the references page'
 
-    within "#desktop-only-header" do
-      fill_in "reference_q", with: "Hölldobler"
-    end
+    find(:testid, 'header-reference-search-input').fill_in with: "Hölldobler"
     i_click_on 'the reference search button'
     i_should_see "Hölldobler, B."
     i_should_not_see "Fisher, B."
@@ -18,23 +16,18 @@ feature "Searching references", as: :visitor do
 
   scenario "Finding nothing" do
     i_go_to 'the references page'
-    within "#desktop-only-header" do
-      fill_in "reference_q", with: "zzzzzz"
-    end
+
+    find(:testid, 'header-reference-search-input').fill_in with: "zzzzzz"
     i_click_on 'the reference search button'
     i_should_see "No results found"
   end
 
   scenario "Maintaining search box contents" do
     i_go_to 'the references page'
-    within "#desktop-only-header" do
-      fill_in "reference_q", with: "zzzzzz year:1972-1980"
-    end
+
+    find(:testid, 'header-reference-search-input').fill_in with: "zzzzzz year:1972-1980"
     i_click_on 'the reference search button'
     i_should_see "No results found"
-
-    within "#desktop-only-header" do
-      the_field_should_contain "reference_q", "zzzzzz year:1972-1980"
-    end
+    expect(find(:testid, 'header-reference-search-input').value).to eq "zzzzzz year:1972-1980"
   end
 end

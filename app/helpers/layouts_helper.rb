@@ -10,10 +10,8 @@ module LayoutsHelper
   end
 
   def title_tag
-    title = content_for :title_tag
-
     string = ''.html_safe
-    if title
+    if (title = content_for(:title_tag))
       string << title
       string << " - "
     end

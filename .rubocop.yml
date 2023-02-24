@@ -135,6 +135,7 @@ Metrics/BlockLength:
   AllowedMethods:
     - solr_search
   Exclude:
+    - '.simplecov'
     - 'app/database_scripts/database_scripts/**/*'
     - 'config/environments/**/*'
     - 'config/routes.rb'

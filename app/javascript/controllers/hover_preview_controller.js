@@ -44,7 +44,7 @@ export default class extends Controller {
       }
     } else {
       fetch(this.urlValue).
-        then((r) => r.text()).
+        then((response) => response.text()).
         then((html) => {
           this.previewContent = document.createElement('span')
           this.previewContent.innerHTML = JSON.parse(html).preview

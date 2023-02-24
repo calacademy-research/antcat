@@ -56,8 +56,7 @@ class ReferencesController < ApplicationController
     reference = find_reference
 
     if References::WhatLinksHere.new(reference).any?
-      redirect_to reference_what_links_here_path(reference),
-        alert: "Other records refer to this reference, so it can't be deleted."
+      redirect_to reference_what_links_here_path(reference), alert: "Other records refer to this reference, so it can't be deleted."
       return
     end
 
@@ -105,7 +104,7 @@ class ReferencesController < ApplicationController
     end
 
     def reference_type_from_params
-      reference_class = Reference::CONCRETE_SUBCLASS_NAMES.find { |class_name| class_name == params[:reference_type] }
-      reference_class.constantize || raise("reference type is not supported")
+      raise("reference type is not supported") unless params[:reference_type].in?(Reference::CONCRETE_SUBCLASS_NAMES)
+      params[:reference_type].constantize
     end
 end

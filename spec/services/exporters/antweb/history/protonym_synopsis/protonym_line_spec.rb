@@ -18,7 +18,7 @@ describe Exporters::Antweb::History::ProtonymSynopsis::ProtonymLine do
         "#{antweb_reference_link(protonym.authorship_reference)}: " \
         "#{protonym.decorate.format_pages_and_forms} " \
         "see #{antweb_taxon_link(taxt_taxon)} " \
-        "#{protonym.decorate.format_locality}"
+        "#{protonym.decorate.format_locality}."
       )
     end
   end

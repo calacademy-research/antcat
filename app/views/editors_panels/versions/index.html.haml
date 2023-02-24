@@ -53,11 +53,11 @@
           %td=version.item_id
           %td.no-wrap=version.created_at
           %td
-            -version_decorated = version.decorate
-            =version_decorated.revision_history_link
-            =version_decorated.activity_link
+            -decorated_version = version.decorate
+            =decorated_version.revision_history_link
+            =decorated_version.activity_link
           %td
-            %pre.pre-wrapped.text-sm=version_decorated.format_compact_changeset
+            %pre.pre-wrapped.text-sm=decorated_version.format_compact_changeset
 
 -if @last_version
   .text-center

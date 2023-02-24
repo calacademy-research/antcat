@@ -53,7 +53,7 @@ class TaxonDecorator < Draper::Decorator
   def link_to_antweb
     return if taxon.class.in?([Family, Tribe, Subtribe, Subgenus, Infrasubspecies])
 
-    # Rails' `Hash#to_param` sorts the params, this one doesn't
+    # Rails' `Hash#to_param` sorts the params, this one doesn't.
     query_string = antweb_params.map { |key, value| value.to_query(key) }.compact * '&'
     h.external_link_to 'AntWeb', (ANTWEB_BASE_URL + query_string).downcase.html_safe
   end

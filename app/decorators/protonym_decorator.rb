@@ -4,7 +4,7 @@ class ProtonymDecorator < Draper::Decorator
   delegate :locality, :forms, :authorship
 
   def link_to_protonym
-    link_to_protonym_with_label name_with_fossil
+    link_to_protonym_with_label protonym.name_with_fossil
   end
 
   def link_to_protonym_with_author_citation
@@ -32,24 +32,17 @@ class ProtonymDecorator < Draper::Decorator
       )
   end
 
-  def name_with_fossil
-    protonym.name.name_with_fossil_html protonym.fossil?
-  end
-
   def format_locality
     return unless locality
 
-    first_parenthesis = locality.index("(")
-    capitalized =
-      if first_parenthesis
-        before = locality[0...first_parenthesis]
-        rest = locality[first_parenthesis..]
-        before.mb_chars.upcase + rest
-      else
-        locality.mb_chars.upcase
-      end
-
-    h.add_period_if_necessary capitalized
+    # Only capitalize up until the first parenthesis.
+    if (first_parenthesis = locality.index("("))
+      before = locality[0...first_parenthesis]
+      rest = locality[first_parenthesis..]
+      before.mb_chars.upcase + rest
+    else
+      locality.mb_chars.upcase
+    end
   end
 
   def format_pages_and_forms

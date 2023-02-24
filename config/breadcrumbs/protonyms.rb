@@ -9,7 +9,7 @@ crumb :protonym do |protonym, fallback_link|
   if protonym.nil?
     link fallback_link
   elsif protonym.persisted?
-    link protonym.decorate.name_with_fossil, protonym
+    link protonym.name_with_fossil, protonym
   else
     link "##{protonym.id} [deleted]"
   end
@@ -52,7 +52,7 @@ crumb :move_protonym_items_select_target do |protonym|
 end
 
 crumb :move_protonym_items_to do |protonym, to_protonym|
-  link "to #{to_protonym.decorate.name_with_fossil}".html_safe,
+  link "to #{to_protonym.name_with_fossil}".html_safe,
     protonym_move_items_path(protonym, to_protonym_id: to_protonym.id)
   parent :move_protonym_items, protonym
 end

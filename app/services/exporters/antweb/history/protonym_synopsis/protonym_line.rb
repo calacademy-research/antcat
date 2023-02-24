@@ -28,7 +28,7 @@ module Exporters
             end
 
             def protonym_name
-              tag.b protonym.decorate.name_with_fossil
+              tag.b protonym.name_with_fossil
             end
 
             def format_authorship

@@ -2,7 +2,7 @@
 
 class CommentDecorator < Draper::Decorator
   def link_comment label
-    return "commented" unless comment.try :commentable
+    return "commented" unless comment.try(:commentable)
     h.link_to label, commentable_anchor_link
   end
 
