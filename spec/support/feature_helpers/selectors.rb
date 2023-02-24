@@ -18,14 +18,8 @@ module FeatureHelpers
         "*[data-testid=catalog-protonym-name]"
 
       # Catalog search.
-      when 'the catalog search button'
-        "*[data-testid=header-catalog-search-button]"
       when 'the search results'
         "table"
-
-      # Reference search.
-      when 'the reference search button'
-        "*[data-testid=header-reference-search-button]"
 
       # Edit reference sections.
       when 'the add reference section button'

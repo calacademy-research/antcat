@@ -12,7 +12,7 @@ feature "Searching the catalog", as: :visitor do
     within "#desktop-only-header" do
       fill_in "qq", with: "Lasius niger"
     end
-    i_click_on "the catalog search button"
+    find(:testid, 'header-catalog-search-button').click
     i_should_be_on 'the catalog page for "Lasius niger"'
     i_should_see "You were redirected to an exact match"
     i_should_see "Show more results"
