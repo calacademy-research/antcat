@@ -46,9 +46,7 @@ class FeedbacksController < ApplicationController
 
     if @feedback.save
       @feedback.create_activity Activity::CREATE, current_user
-      redirect_to root_path, notice: <<~MSG
-        Message sent (feedback id #{@feedback.id}). Thanks for helping us make AntCat better!
-      MSG
+      redirect_to root_path, notice: "Message sent (feedback id #{@feedback.id}). Thanks for helping us make AntCat better!"
     else
       render :new, status: :unprocessable_entity
     end

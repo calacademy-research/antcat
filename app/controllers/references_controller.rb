@@ -56,8 +56,7 @@ class ReferencesController < ApplicationController
     reference = find_reference
 
     if References::WhatLinksHere.new(reference).any?
-      redirect_to reference_what_links_here_path(reference),
-        alert: "Other records refer to this reference, so it can't be deleted."
+      redirect_to reference_what_links_here_path(reference), alert: "Other records refer to this reference, so it can't be deleted."
       return
     end
 

@@ -52,8 +52,7 @@ class ProtonymsController < ApplicationController
     protonym = find_protonym
 
     if Protonyms::WhatLinksHere.new(protonym).any?
-      redirect_to protonym_what_links_here_path(protonym),
-        alert: "Other records refer to this protonym, so it can't be deleted."
+      redirect_to protonym_what_links_here_path(protonym), alert: "Other records refer to this protonym, so it can't be deleted."
       return
     end
 

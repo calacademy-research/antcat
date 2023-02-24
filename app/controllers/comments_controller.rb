@@ -20,9 +20,7 @@ class CommentsController < ApplicationController
       @comment.create_activity Activity::CREATE, current_user
       Notifications::NotifyUsersForComment[@comment]
       highlighted_comment_url = "#{request.referer}#comment-#{@comment.id}"
-      redirect_to highlighted_comment_url, notice: <<-MSG
-        <a href="#comment-#{@comment.id}">Comment</a> was successfully added.
-      MSG
+      redirect_to highlighted_comment_url, notice: %(<a href="#comment-#{@comment.id}">Comment</a> was successfully added.)
     else
       redirect_back fallback_location: root_path, notice: "Something went wrong. Email us?"
     end
@@ -37,9 +35,7 @@ class CommentsController < ApplicationController
 
     if @comment.update(body: comment_params[:body], edited: true)
       Notifications::NotifyUsersForComment[@comment]
-      redirect_to @comment.commentable, notice: <<-MSG
-        <a href="#comment-#{@comment.id}">Comment</a> was successfully updated.
-      MSG
+      redirect_to @comment.commentable, notice: %(<a href="#comment-#{@comment.id}">Comment</a> was successfully updated.)
     else
       render :edit, status: :unprocessable_entity
     end

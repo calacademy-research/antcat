@@ -45,8 +45,7 @@ class Taxon < ApplicationRecord
   validates :homonym_replaced_by, absence: { message: "can't be set for non-homonyms" }, unless: -> { homonym? }
   validates :homonym_replaced_by, presence: { message: "must be set for homonyms" }, if: -> { homonym? }
   validates :unresolved_homonym, absence: { message: "can't be set for homonyms" }, if: -> { homonym? }
-  validates :collective_group_name, absence: { message: "can only be set for fossil taxa" },
-    unless: -> { protonym&.fossil? }
+  validates :collective_group_name, absence: { message: "can only be set for fossil taxa" }, unless: -> { protonym&.fossil? }
   validate :current_taxon_validation, :ensure_correct_name_type
 
   before_save :set_name_cache
@@ -110,7 +109,7 @@ class Taxon < ApplicationRecord
   end
 
   def name_with_fossil
-    name.name_with_fossil_html protonym.fossil?
+    name.name_with_fossil_html(protonym.fossil?)
   end
 
   def author_citation

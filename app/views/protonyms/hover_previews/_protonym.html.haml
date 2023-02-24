@@ -1,5 +1,3 @@
--decorated_protonym = protonym.decorate
-
 -if current_user
   .mb-2
     -if user_is_at_least_helper?
@@ -9,7 +7,7 @@
 
 .div
   %strong Protonym:
-  =decorated_protonym.link_to_protonym
+  =protonym.decorate.link_to_protonym
 
 .mb-8
   %strong Authorship:

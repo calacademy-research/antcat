@@ -47,7 +47,7 @@ class ReferenceDecorator < Draper::Decorator
   # TODO: `sanitize(reference.title)` converts ampersands to "&amp;" (only an issue in `Exporters::TaxaAsTxt`).
   # Example: "Brandão &amp; Martins-Neto" from `Taxon.find(429023).authorship.reference.decorate.send(:format_title)`.
   def format_title
-    format_italics h.add_period_if_necessary h.sanitize(reference.title)
+    format_italics(AddPeriodIfNecessary[h.sanitize(reference.title)])
   end
 
   def described_taxa

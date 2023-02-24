@@ -4,7 +4,7 @@ module Api
   module V1
     class TaxaController < Api::ApiController
       def index
-        render json: with_limit(Taxon.includes(:name)).map { |item| Api::V1::TaxonSerializer.new(item) }
+        render json: with_limit(Taxon.includes(:name)).map { Api::V1::TaxonSerializer.new(_1) }
       end
 
       def show
