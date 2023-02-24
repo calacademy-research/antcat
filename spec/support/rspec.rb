@@ -77,11 +77,14 @@ RSpec.configure do |config|
     end
   end
 
+  # TODO: DRY w.r.t. "Login as controller helpers".
   # Login as feature helpers.
   config.before(:each, :as, type: :feature) do |example|
     as = example.metadata[:as]
 
     case as
+    when :current_user
+      sign_in current_user
     when :visitor
       nil # No-op.
     when :user, :helper, :editor, :superadmin, :developer
@@ -89,6 +92,14 @@ RSpec.configure do |config|
     else
       location = example.metadata[:example_group][:location]
       $stdout.puts "#{location} sign in `:as` meta tag not supported".red
+    end
+  end
+  config.before(:each, type: :feature) do |example|
+    as = example.metadata[:as]
+
+    if as.nil?
+      location = example.metadata[:example_group][:location]
+      $stdout.puts "#{location} does not specify any sign in `:as` meta tag".red
     end
   end
 
