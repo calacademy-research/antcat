@@ -2,7 +2,6 @@
 
 module FeatureHelpers
   module Steps
-    # Editing.
     def the_history_should_be content
       element = first('#history-items').find('.taxt-presenter')
       expect(element).to have_content(content)

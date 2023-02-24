@@ -8,18 +8,6 @@ feature "Database scripts", as: :user do
     create :species, name_string: "Lasius niger", genus: genus
   end
 
-  def i_open_all_database_scripts_one_by_one
-    script_names = DatabaseScript.all.map(&:to_param)
-    script_names.each do |script_name|
-      i_open_the_database_script script_name.to_s
-    end
-  end
-
-  def i_open_the_database_script database_script_name
-    visit "/database_scripts/#{database_script_name}"
-    i_should_see "Show source" # Anything to confirm the page was rendered.
-  end
-
   background do
     i_go_to 'the database scripts page'
   end
@@ -48,7 +36,11 @@ feature "Database scripts", as: :user do
   end
 
   scenario "Opening all scripts just to see if the page renders" do
-    i_open_all_database_scripts_one_by_one
+    script_names = DatabaseScript.all.map(&:to_param)
+    script_names.each do |script_name|
+      visit "/database_scripts/#{script_name}"
+      i_should_see "Show source" # Anything to confirm the page was rendered.
+    end
   end
 
   scenario "Checking 'empty' status" do

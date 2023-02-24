@@ -3,12 +3,6 @@
 require 'rails_helper'
 
 feature "Browse", as: :helper do
-  def batiatus_has_commented_cool_on_an_issue_with_the_title_typos
-    issue = create :issue, title: "Typos"
-    user = User.find_by!(name: "Batiatus")
-    Comment.build_comment(issue, user, body: "Cool").save!
-  end
-
   scenario "Visiting a user's page" do
     create :user, email: "quintus@antcat.org", name: "Quintus"
 
@@ -28,12 +22,13 @@ feature "Browse", as: :helper do
 
     visit user_path(user)
     i_should_see "Batiatus's most recent activity"
-    i_should_see "Batiatus deleted the journal", within: 'the activity feed'
+    i_should_see "Batiatus deleted the journal"
   end
 
   scenario "See user's most recent comments" do
+    # User commented on an issue.
     user = create(:user, name: "Batiatus")
-    batiatus_has_commented_cool_on_an_issue_with_the_title_typos
+    Comment.build_comment(create(:issue, title: "Typos"), user, body: "Cool").save!
 
     visit user_path(user)
     i_should_see "Batiatus's most recent comments"

@@ -16,16 +16,6 @@ feature "Activity feed" do
     expect(feed_items_count).to eq expected_count.to_i
   end
 
-  def the_query_string_should_contain contain
-    match = page.current_url[contain]
-    expect(match).to be_truthy
-  end
-
-  def the_query_string_should_not_contain contain
-    match = page.current_url[contain]
-    expect(match).to eq nil
-  end
-
   scenario "Filtering activities by event" do
     user = create(:user, name: "Batiatus")
     journal = create :journal
@@ -38,7 +28,7 @@ feature "Activity feed" do
     select "Destroy", from: "event"
     click_button "Filter"
     i_should_see_number_of_items_in_the_activity_feed 1
-    i_should_see "Batiatus deleted the journal", within: 'the activity feed'
+    i_should_see "Batiatus deleted the journal"
   end
 
   scenario "Showing/hiding automated edits" do
@@ -62,15 +52,15 @@ feature "Activity feed" do
     # Using pagination as usual.
     i_go_to 'the activity feed'
     i_should_see_number_of_items_in_the_activity_feed 2
-    the_query_string_should_not_contain "page="
+    expect(page.current_url.include?("page=")).to eq false
     i_follow "3"
-    the_query_string_should_contain "page=3"
+    expect(page.current_url.include?("page=3")).to eq true
 
     # Deleting an activity items = return to the same page.
     i_follow "2"
     i_follow_the_first "Delete"
     i_should_see "was successfully deleted"
-    the_query_string_should_contain "page=2"
+    expect(page.current_url.include?("page=2")).to eq true
 
     # Restore for future tests.
     Activity.per_page = 30

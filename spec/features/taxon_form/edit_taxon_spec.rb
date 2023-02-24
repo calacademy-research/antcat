@@ -3,11 +3,6 @@
 require 'rails_helper'
 
 feature "Editing a taxon" do
-  def there_is_a_species_which_is_a_junior_synonym_of species_name, senior_name
-    senior = create :species, name_string: senior_name
-    create :species, :synonym, name_string: species_name, current_taxon: senior
-  end
-
   background do
     i_log_in_as_a_catalog_editor_named "Archibald"
   end
@@ -27,7 +22,10 @@ feature "Editing a taxon" do
   end
 
   scenario "Changing current taxon" do
-    there_is_a_species_which_is_a_junior_synonym_of "Atta major", "Lasius niger"
+    # Species with a junior synonym.
+    senior = create :species, name_string: "Lasius niger"
+    create :species, :synonym, name_string: "Atta major", current_taxon: senior
+
     create :species, name_string: "Eciton minor"
 
     i_go_to 'the catalog page for "Atta major"'

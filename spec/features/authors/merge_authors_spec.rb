@@ -3,11 +3,6 @@
 require 'rails_helper'
 
 feature "Merging authors", as: :editor do
-  def i_set_author_to_merge_id_to_the_id_of author_name
-    author = AuthorName.find_by!(name: author_name).author
-    find('#author_to_merge_id', visible: false).set author.id # HACK: For when JavaScript is disabled.
-  end
-
   background do
     create :any_reference, author_string: 'Bolton, B.', title: 'Annals of Ants'
     create :any_reference, author_string: 'Bolton, Ba.', title: 'More ants'
@@ -19,7 +14,8 @@ feature "Merging authors", as: :editor do
     i_should_not_see "Bolton, Ba."
 
     i_follow "Merge"
-    i_set_author_to_merge_id_to_the_id_of "Bolton, Ba."
+    author = AuthorName.find_by!(name: "Bolton, Ba.").author
+    find('#author_to_merge_id', visible: false).set(author.id) # HACK: For when JavaScript is disabled.
     click_button "Next"
     i_should_see "Annals of Ants"
     i_should_see "More ants"

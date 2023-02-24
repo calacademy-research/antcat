@@ -18,23 +18,9 @@ feature "Markdown autocompletion", as: :editor, js: true do
     find(".atwho-view-ul li", text: text).click
   end
 
-  def the_markdown_textarea_should_contain_a_markdown_link_to_archibalds_user_page
-    archibald = User.find_by!(name: "Archibald")
-    expect(markdown_textarea.value).to include "@user#{archibald.id}"
-  end
-
-  def the_markdown_textarea_should_contain_a_markdown_link_to reference
-    expect(markdown_textarea.value).to include Taxt.ref(reference.id)
-  end
-
   def i_clear_the_markdown_textarea
     fill_in "issue_description", with: "%rsomething_to_clear_the_suggestions"
     markdown_textarea.set ""
-  end
-
-  def the_markdown_textarea_should_contain_a_markdown_link_to_eciton
-    eciton = Taxon.find_by!(name_cache: "Eciton")
-    expect(markdown_textarea.value).to include Taxt.tax(eciton.id)
   end
 
   scenario "References markdown autocompletion", :skip_ci, :search do
@@ -53,11 +39,11 @@ feature "Markdown autocompletion", as: :editor, js: true do
 
     fill_in "issue_description", with: "{rjof"
     i_click_the_suggestion_containing "Joffre's Favorite Ants"
-    the_markdown_textarea_should_contain_a_markdown_link_to joffre_1810
+    expect(markdown_textarea.value).to include Taxt.ref(joffre_1810.id)
   end
 
   scenario "Taxa markdown autocompletion", :skip_ci, :search do
-    create :genus, name_string: "Eciton"
+    eciton = create :genus, name_string: "Eciton"
     create :genus, name_string: "Atta"
     Sunspot.commit
     i_am_on_a_page_with_a_textarea_with_markdown_preview_and_autocompletion
@@ -66,15 +52,15 @@ feature "Markdown autocompletion", as: :editor, js: true do
     i_should_see "Eciton"
 
     i_click_the_suggestion_containing "Eciton"
-    the_markdown_textarea_should_contain_a_markdown_link_to_eciton
+    expect(markdown_textarea.value).to include Taxt.tax(eciton.id)
   end
 
   scenario "User markdown autocompletion", :skip_ci do
-    create :user, name: "Archibald"
+    user = create :user, name: "Archibald"
     i_am_on_a_page_with_a_textarea_with_markdown_preview_and_autocompletion
 
     fill_in "issue_description", with: "@arch"
     i_click_the_suggestion_containing "Archibald"
-    the_markdown_textarea_should_contain_a_markdown_link_to_archibalds_user_page
+    expect(markdown_textarea.value).to include "@user#{user.id}"
   end
 end

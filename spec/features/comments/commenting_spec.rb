@@ -3,10 +3,6 @@
 require 'rails_helper'
 
 feature "Commenting" do
-  def i_write_a_new_comment body
-    first("#comment_body").set body
-  end
-
   background do
     i_log_in_as_a_catalog_editor_named "Batiatus"
     create :feedback
@@ -14,7 +10,7 @@ feature "Commenting" do
   end
 
   scenario "Leaving a comment (with feed)" do
-    i_write_a_new_comment "Fixed, closing issue."
+    first("#comment_body").set("Fixed, closing issue.")
     click_button "Post Comment"
     i_should_see "Comment was successfully added"
     i_should_see "Fixed, closing issue."
