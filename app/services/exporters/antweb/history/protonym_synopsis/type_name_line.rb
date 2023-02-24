@@ -25,12 +25,12 @@ module Exporters
             def type_name_and_taxt
               return ''.html_safe unless (type_name = protonym.type_name)
 
-              type_name_decorated = type_name.decorate
+              decorated_type_name = type_name.decorate
 
-              string = type_name_decorated.format_rank
+              string = decorated_type_name.format_rank
               string << AntwebFormatter.link_to_taxon(type_name.taxon)
 
-              if (formatted_fixation_method = type_name_decorated.format_fixation_method)
+              if (formatted_fixation_method = decorated_type_name.format_fixation_method)
                 string << AntwebFormatter.detax(formatted_fixation_method)
               end
 

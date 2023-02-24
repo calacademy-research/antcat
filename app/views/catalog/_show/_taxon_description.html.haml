@@ -22,9 +22,9 @@
   =add_period_if_necessary(protonym.bioregion)
 
   -if (protonym_type_name = protonym.type_name)
-    -protonym_type_name_decorated = protonym_type_name.decorate
-    =protonym_type_name_decorated.format_rank
-    =CatalogFormatter.link_to_taxon(protonym_type_name.taxon) + protonym_type_name_decorated.compact_taxon_status + Detax[protonym_type_name_decorated.format_fixation_method]
+    -decorated_protonym_type_name = protonym_type_name.decorate
+    =decorated_protonym_type_name.format_rank
+    =CatalogFormatter.link_to_taxon(protonym_type_name.taxon) + decorated_protonym_type_name.compact_taxon_status + Detax[decorated_protonym_type_name.format_fixation_method]
 
 -if current_user
   -if taxon.type_names.present?
@@ -32,10 +32,10 @@
       %ul.no-bullet
         -taxon.type_names.each do |as_type_name|
           %li
-            -as_type_name_decorated = as_type_name.decorate
-            =as_type_name_decorated.format_just_rank
+            -decorated_as_type_name = as_type_name.decorate
+            =decorated_as_type_name.format_just_rank
             of
-            =as_type_name.protonym.decorate.link_to_protonym_with_author_citation + Detax[as_type_name_decorated.format_fixation_method]
+            =as_type_name.protonym.decorate.link_to_protonym_with_author_citation + Detax[decorated_as_type_name.format_fixation_method]
 
 .text-sm.mb-4
   -if protonym.primary_type_information_taxt?
