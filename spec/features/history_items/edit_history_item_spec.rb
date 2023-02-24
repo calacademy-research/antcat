@@ -28,7 +28,7 @@ feature "Editing a history item" do
   end
 
   scenario "Adding a history item with blank taxt" do
-    protonym = create :protonym, :genus_group, name: create(:genus_name, name: "Atta")
+    protonym = create :protonym
 
     visit protonym_path(protonym)
     the_history_should_be_empty

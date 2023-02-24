@@ -18,7 +18,7 @@ feature "Compare revisions", skip_ci: true, as: :editor, versioning: true do
   end
 
   scenario "Comparing history item revisions" do
-    protonym = create :protonym, :genus_group, name: create(:genus_name, name: "Atta")
+    protonym = create :protonym
 
     # Added item.
     visit protonym_path(protonym)
@@ -54,7 +54,7 @@ feature "Compare revisions", skip_ci: true, as: :editor, versioning: true do
   end
 
   scenario "Comparing reference section revisions" do
-    reference_section = create :reference_section, references_taxt: "test"
+    reference_section = create :reference_section
 
     visit reference_section_path(reference_section)
     i_follow "History"
