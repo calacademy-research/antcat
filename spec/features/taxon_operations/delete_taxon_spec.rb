@@ -2,11 +2,7 @@
 
 require 'rails_helper'
 
-feature "Deleting a taxon" do
-  background do
-    i_log_in_as_a_catalog_editor_named "Archibald"
-  end
-
+feature "Deleting a taxon", as: :editor do
   scenario "Deleted taxon (with feed)" do
     # Create Formicidae to make sure the deleted taxon has a parent.
     create :family, :formicidae
@@ -21,7 +17,7 @@ feature "Deleting a taxon" do
   end
 
   scenario "If taxon has only references from others taxt, still show the Delete button, but disallow deleting it" do
-    referenced_taxon = create :genus, name_string: "Atta"
+    referenced_taxon = create :genus
     create :reference_section, references_taxt: Taxt.tax(referenced_taxon.id)
 
     visit catalog_path(referenced_taxon)

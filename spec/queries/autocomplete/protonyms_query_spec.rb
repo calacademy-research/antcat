@@ -13,7 +13,7 @@ describe Autocomplete::ProtonymsQuery, :search do
     end
 
     describe 'searching by protonym name' do
-      let!(:protonym) { create :protonym, :species_group, name: create(:species_name, name: 'Lasius niger') }
+      let!(:protonym) { create :protonym, :species_group, protonym_name_string: 'Lasius niger' }
 
       before do
         create :protonym # Non-match.
@@ -58,7 +58,7 @@ describe Autocomplete::ProtonymsQuery, :search do
     describe 'searching in different fields at the same time' do
       let!(:reference) { create :any_reference, author_string: 'Batiatus', year: 2005 }
       let!(:protonym) do
-        create :protonym, authorship_reference: reference, name: create(:genus_name, name: 'Formica')
+        create :protonym, :genus_group, protonym_name_string: 'Formica', authorship_reference: reference
       end
 
       before do

@@ -3,7 +3,7 @@
     =javascript_include_tag 'markdown_and_friends', 'taxt_editor'
   =render "shared/default_reference"
 
-.text-sm{data: { testid: 'catalog-nomen-synopsis' }}
+.text-sm
   %span.text-lg.font-bold.mr-1=Taxa::LinkEachEpithet[taxon]
   =taxon.author_citation
   =taxon.decorate.expanded_status

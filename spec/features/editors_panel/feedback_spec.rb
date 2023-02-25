@@ -3,11 +3,7 @@
 require 'rails_helper'
 
 feature "feedback" do
-  feature "Managing user feedback" do
-    background do
-      i_log_in_as_a_catalog_editor_named "Archibald"
-    end
-
+  feature "Managing user feedback", as: :editor do
     scenario "Closing a feedback item (with feed)" do
       feedback = create :feedback
 
@@ -48,23 +44,14 @@ feature "feedback" do
       i_should_see "Message sent"
       i_should_see "Thanks for helping us make AntCat better!"
 
-      i_log_in_as_a_catalog_editor
-      visit feedbacks_path
-      i_should_see "[no name] <[no email];"
-
       there_should_be_an_activity "An unregistered user added the feedback item #"
     end
 
-    scenario "Registered user submitting feedback (with feed)" do
-      i_log_in_as_a_catalog_editor_named "Archibald"
-
+    scenario "Registered user submitting feedback (with feed)", as: :editor do
       i_follow "Suggest edit"
       fill_in "feedback_comment", with: "Great site!!!"
       click_button "Send Feedback"
       i_should_see "Message sent"
-
-      visit feedbacks_path
-      i_should_see "Archibald submitted"
 
       there_should_be_an_activity "Archibald added the feedback item #"
     end

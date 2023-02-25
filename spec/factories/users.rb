@@ -18,6 +18,8 @@ FactoryBot.define do
 
     trait :superadmin do
       superadmin { true }
+
+      editor
     end
 
     trait :developer do

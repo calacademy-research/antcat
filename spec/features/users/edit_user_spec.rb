@@ -2,11 +2,8 @@
 
 require 'rails_helper'
 
-feature "Editing a user", :skip_ci do
-  background do
-    batiatus = create :user, email: "quintus@antcat.org", name: "Batiatus", password: "secret"
-    login_as batiatus
-  end
+feature "Editing a user", as: :current_user, skip_ci: true do
+  let(:current_user) { create :user, email: "quintus@antcat.org", name: "Batiatus", password: "secret" }
 
   scenario "Changing password" do
     visit root_path

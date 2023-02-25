@@ -2,14 +2,10 @@
 
 require 'rails_helper'
 
-feature "Editing a taxon" do
-  background do
-    i_log_in_as_a_catalog_editor_named "Archibald"
-  end
-
+feature "Editing a taxon", as: :editor do
   scenario "Changing protonym" do
-    taxon = create :species, name_string: "Eciton fusca"
-    protonym = create :protonym, :species_group, name: create(:species_name, name: "Formica fusca")
+    taxon = create :species
+    protonym = create :protonym, :species_group, protonym_name_string: "Formica fusca"
 
     expect(taxon.reload.protonym).not_to eq protonym
 

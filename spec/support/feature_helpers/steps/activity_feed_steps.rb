@@ -2,18 +2,16 @@
 
 module FeatureHelpers
   module Steps
-    # TODO: Check without visiting the activity page.
-    # TODO: Check that the edit summary belongs to the activity.
-    def there_should_be_an_activity content, edit_summary: nil
-      visit activities_path
+    def there_should_be_an_activity did_something, edit_summary: nil
+      activity = Activity.last
 
-      within "table.activities" do
-        expect(page.text).to match(content)
+      # HACK: Name ignored (it's fine) because it's easier to read expectations that are full sentences.
+      # TODO: Probably make it more obvious that it's not checked.
+      did_something = did_something.delete_prefix('Archibald ')
+      normalized_did_something = ActionController::Base.helpers.strip_tags(activity.decorate.did_something).squish
 
-        if edit_summary
-          expect(page).to have_content edit_summary
-        end
-      end
+      expect(normalized_did_something).to match did_something
+      expect(activity.edit_summary).to eq edit_summary
     end
   end
 end

@@ -5,7 +5,7 @@ require 'rails_helper'
 feature "What links here", as: :user do
   background do
     @taxon = atta = create :genus, name_string: "Atta"
-    eciton = create :protonym, :genus_group, name: create(:genus_name, name: "Eciton")
+    eciton = create :protonym, :genus_group, protonym_name_string: "Eciton"
 
     # Eciton has a history item referencing Atta and a Batiatus reference.
     reference = create :any_reference, author_string: 'Batiatus'

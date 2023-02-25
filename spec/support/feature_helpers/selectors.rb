@@ -6,8 +6,6 @@ module FeatureHelpers
       case locator
 
       # Navigation.
-      when 'the page header'
-        "#header"
       when 'the desktop menu'
         "#desktop-only-header"
       when 'the breadcrumbs'
@@ -16,22 +14,12 @@ module FeatureHelpers
       # Catalog.
       when 'the taxon browser'
         "#taxon-browser"
-      when 'the protonym'
+      when 'the protonym synopsis'
         "*[data-testid=catalog-protonym-name]"
-      when 'the nomen synopsis'
-        "*[data-testid=catalog-nomen-synopsis]"
-      when 'the citations section'
-        '#citations'
 
       # Catalog search.
-      when 'the catalog search button'
-        "*[data-testid=header-catalog-search-button]"
       when 'the search results'
         "table"
-
-      # Reference search.
-      when 'the reference search button'
-        "*[data-testid=header-reference-search-button]"
 
       # Edit reference sections.
       when 'the add reference section button'
@@ -56,12 +44,6 @@ module FeatureHelpers
         '#history-items .history-item a.taxt-editor-history-item-save-button'
       when 'the delete history item button'
         '#history-items .history-item a.taxt-editor-delete-button'
-
-      # Editor's Panel.
-      when 'the left side of the diff'
-        all(".callout .diff")[0]
-      when 'the right side of the diff'
-        all(".callout .diff")[1]
 
       when /"(.+)"/
         Regexp.last_match(1)

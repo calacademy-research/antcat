@@ -16,7 +16,7 @@ feature "Activity feed" do
     expect(feed_items_count).to eq expected_count.to_i
   end
 
-  scenario "Filtering activities by event" do
+  scenario "Filtering activities by event", as: :visitor do
     user = create(:user, name: "Batiatus")
     journal = create :journal
     create :activity, event: :update, trackable: journal, user: user
@@ -31,7 +31,7 @@ feature "Activity feed" do
     i_should_see "Batiatus deleted the journal"
   end
 
-  scenario "Showing/hiding automated edits" do
+  scenario "Showing/hiding automated edits", as: :visitor do
     there_is_an_activity_with_the_edit_summary "Not automated"
     there_is_an_automated_activity_with_the_edit_summary "Automated edit"
 
@@ -66,7 +66,7 @@ feature "Activity feed" do
     Activity.per_page = 30
   end
 
-  scenario "Pagination with filtering quirks" do
+  scenario "Pagination with filtering quirks", as: :visitor do
     Activity.per_page = 2
     there_is_an_automated_activity_with_the_edit_summary "[1] fix URL by script"
     there_is_an_automated_activity_with_the_edit_summary "[2] fix URL by script"

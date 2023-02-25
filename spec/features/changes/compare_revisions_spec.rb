@@ -17,6 +17,14 @@ feature "Compare revisions", skip_ci: true, as: :editor, versioning: true do
     all(:link, "cur", exact: true)[1].click
   end
 
+  def left_side_of_the_diff
+    all(".callout .diff")[0]
+  end
+
+  def right_side_of_the_diff
+    all(".callout .diff")[1]
+  end
+
   scenario "Comparing history item revisions" do
     protonym = create :protonym
 
@@ -69,13 +77,13 @@ feature "Compare revisions", skip_ci: true, as: :editor, versioning: true do
     i_follow "History"
     sleep 1 # TODO: Remove.
     click_button "Compare selected revisions"
-    i_should_see "second version", within: 'the left side of the diff'
-    i_should_see "last version", within: 'the right side of the diff'
+    expect(left_side_of_the_diff).to have_content "second version"
+    expect(right_side_of_the_diff).to have_content "last version"
     i_should_not_see "initial version"
 
     i_follow_the_second_cur
-    i_should_see "initial version", within: 'the left side of the diff'
-    i_should_see "last version", within: 'the right side of the diff'
+    expect(left_side_of_the_diff).to have_content "initial version"
+    expect(right_side_of_the_diff).to have_content "last version"
     i_should_not_see "second version"
   end
 end

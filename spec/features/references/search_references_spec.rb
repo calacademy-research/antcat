@@ -9,7 +9,7 @@ feature "Searching references", as: :visitor do
     visit references_path
 
     find(:testid, 'header-reference-search-input').fill_in with: "Hölldobler"
-    i_click_on 'the reference search button'
+    find(:testid, 'header-reference-search-button').click
     i_should_see "Hölldobler, B."
     i_should_not_see "Fisher, B."
   end
@@ -18,7 +18,7 @@ feature "Searching references", as: :visitor do
     visit references_path
 
     find(:testid, 'header-reference-search-input').fill_in with: "zzzzzz"
-    i_click_on 'the reference search button'
+    find(:testid, 'header-reference-search-button').click
     i_should_see "No results found"
   end
 
@@ -26,7 +26,7 @@ feature "Searching references", as: :visitor do
     visit references_path
 
     find(:testid, 'header-reference-search-input').fill_in with: "zzzzzz year:1972-1980"
-    i_click_on 'the reference search button'
+    find(:testid, 'header-reference-search-button').click
     i_should_see "No results found"
     expect(find(:testid, 'header-reference-search-input').value).to eq "zzzzzz year:1972-1980"
   end

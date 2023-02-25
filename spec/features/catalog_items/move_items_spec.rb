@@ -2,11 +2,7 @@
 
 require 'rails_helper'
 
-feature "Move items", :skip_ci do
-  background do
-    i_log_in_as_a_catalog_editor_named "Archibald"
-  end
-
+feature "Move items", as: :editor do
   scenario "Moving reference sections (with feed)", :js do
     move_from_taxon = create :subfamily, name_string: "Antcatinae"
     create :reference_section, references_taxt: "Antcatinae section", taxon: move_from_taxon
@@ -27,6 +23,7 @@ feature "Move items", :skip_ci do
     click_button "Move selected items"
     i_should_see "At least one item must be selected"
 
+    sleep 1 # TODO: Fix.
     find(:testid, 'select-deselect-all-button').click
     click_button "Move selected items"
     i_should_see "Successfully moved items"
@@ -38,10 +35,10 @@ feature "Move items", :skip_ci do
   end
 
   scenario "Moving history items (with feed)", :js do
-    move_from_protonym = create :protonym, :family_group, name: create(:subfamily_name, name: "Antcatinae")
+    move_from_protonym = create :protonym, :family_group_subfamily_name, protonym_name_string: "Antcatinae"
     create :history_item, :taxt, taxt: "Antcatinae history", protonym: move_from_protonym
 
-    move_to_protonym = create :protonym, :genus_group, name: create(:genus_name, name: "Formica")
+    move_to_protonym = create :protonym, :genus_group, protonym_name_string: "Formica"
 
     visit protonym_path(move_from_protonym)
     i_follow "Move items"
@@ -57,6 +54,7 @@ feature "Move items", :skip_ci do
     click_button "Move selected items"
     i_should_see "At least one item must be selected"
 
+    sleep 1 # TODO: Fix.
     find(:testid, 'select-deselect-all-button').click
     click_button "Move selected items"
     i_should_see "Successfully moved items"

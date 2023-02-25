@@ -2,11 +2,7 @@
 
 require 'rails_helper'
 
-feature "Wiki pages" do
-  background do
-    i_log_in_as_a_catalog_editor_named "Archibald"
-  end
-
+feature "Wiki pages", as: :editor do
   scenario "Adding a wiki page (with edit summary)" do
     visit wiki_pages_path
     i_should_see "There are currently no wiki pages"
