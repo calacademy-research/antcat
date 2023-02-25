@@ -4,23 +4,6 @@ module FeatureHelpers
   module Selectors
     def selector_for locator
       case locator
-
-      # Navigation.
-      when 'the desktop menu'
-        "#desktop-only-header"
-      when 'the breadcrumbs'
-        "#breadcrumbs"
-
-      # Catalog.
-      when 'the taxon browser'
-        "#taxon-browser"
-      when 'the protonym synopsis'
-        "*[data-testid=catalog-protonym-name]"
-
-      # Catalog search.
-      when 'the search results'
-        "table"
-
       # Edit reference sections.
       when 'the add reference section button'
         "*[data-testid=add-reference-section-button]"

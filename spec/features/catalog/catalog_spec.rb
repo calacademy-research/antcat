@@ -24,12 +24,12 @@ feature "Using the catalog", as: :visitor do
   end
 
   scenario "Selecting a subfamily" do
-    i_follow "Dolichoderinae", within: 'the taxon browser'
+    i_follow "Dolichoderinae", within_scope: "#taxon-browser"
     should_be_selected_in_the_taxon_browser "Dolichoderinae"
   end
 
   scenario "Selecting a genus" do
-    i_follow "Dolichoderinae", within: 'the taxon browser'
+    i_follow "Dolichoderinae", within_scope: "#taxon-browser"
     i_select_the_taxon_browser_tab ".taxon-browser-tab-0"
     i_follow "Dolichoderus"
     should_be_selected_in_the_taxon_browser "Dolichoderinae"

@@ -3,10 +3,6 @@
 # General steps, not specific to AntCat.
 module FeatureHelpers
   module Steps
-    def with_scope locator, &block
-      within(*selector_for(locator), &block)
-    end
-
     def javascript_driver?
       Capybara.current_driver == Capybara.javascript_driver
     end
@@ -31,9 +27,9 @@ module FeatureHelpers
       first(:link, link_text, exact: true).click
     end
 
-    def i_follow link_text, within: nil
-      if within
-        with_scope within do
+    def i_follow link_text, within_scope: nil
+      if within_scope
+        within within_scope do
           click_link link_text
         end
       else
@@ -42,9 +38,9 @@ module FeatureHelpers
     end
 
     # "I should see / should contain".
-    def i_should_see content, within: nil
-      if within
-        with_scope within do
+    def i_should_see content, within_scope: nil
+      if within_scope
+        within within_scope do
           expect(page).to have_content content
         end
       else
@@ -52,9 +48,9 @@ module FeatureHelpers
       end
     end
 
-    def i_should_not_see content, within: nil
-      if within
-        with_scope within do
+    def i_should_not_see content, within_scope: nil
+      if within_scope
+        within within_scope do
           expect(page).to have_no_content content
         end
       else

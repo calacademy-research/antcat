@@ -7,7 +7,7 @@ feature "Editing a user", as: :current_user, skip_ci: true do
 
   scenario "Changing password" do
     visit root_path
-    i_follow "Batiatus", within: 'the desktop menu'
+    i_follow "Batiatus", within_scope: "#desktop-only-header"
     i_follow "My account"
     fill_in "user_password", with: "new password"
     fill_in "user_password_confirmation", with: "new password"
@@ -16,10 +16,10 @@ feature "Editing a user", as: :current_user, skip_ci: true do
     i_should_see "Your account has been updated"
 
     # Logging in with changed password.
-    i_follow "Logout", within: 'the desktop menu'
+    i_follow "Logout", within_scope: "#desktop-only-header"
     i_should_not_see "Batiatus"
 
-    i_follow "Login", within: 'the desktop menu'
+    i_follow "Login", within_scope: "#desktop-only-header"
     fill_in "user_email", with: "quintus@antcat.org"
     fill_in "user_password", with: "new password"
     click_button "Login"
@@ -32,7 +32,7 @@ feature "Editing a user", as: :current_user, skip_ci: true do
     i_should_see "Batiatus"
     i_should_not_see "Quintus, B."
 
-    i_follow "Batiatus", within: 'the desktop menu'
+    i_follow "Batiatus", within_scope: "#desktop-only-header"
     i_follow "My account"
     fill_in "user_name", with: "Quintus, B."
     fill_in "user_current_password", with: "secret"

@@ -69,7 +69,7 @@ feature "Searching the catalog", as: :visitor do
     fill_in "locality", with: "Mexico"
     click_button "Search"
     i_should_see "1 result"
-    i_should_see "MEXICO", within: 'the search results'
+    i_should_see "MEXICO", within_scope: "table"
   end
 
   scenario "Searching for bioregion" do
@@ -80,7 +80,7 @@ feature "Searching the catalog", as: :visitor do
     select "Afrotropic", from: "bioregion"
     click_button "Search"
     i_should_see "2 result(s)"
-    i_should_see "Afrotropic", within: 'the search results'
+    i_should_see "Afrotropic", within_scope: "table"
   end
 
   scenario "Searching in type fields" do
@@ -99,8 +99,8 @@ feature "Searching the catalog", as: :visitor do
     fill_in "year", with: "2010-2011"
     click_button "Search"
     i_should_see "2 result"
-    i_should_see "2010", within: 'the search results'
-    i_should_see "2011", within: 'the search results'
+    i_should_see "2010", within_scope: "table"
+    i_should_see "2011", within_scope: "table"
   end
 
   scenario "Download search results" do
