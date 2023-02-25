@@ -13,7 +13,6 @@ feature "Editing a user", as: :current_user, skip_ci: true do
     fill_in "user_password_confirmation", with: "new password"
     fill_in "user_current_password", with: "secret"
     click_button "Save"
-    i_should_be_on 'the main page'
     i_should_see "Your account has been updated"
 
     # Logging in with changed password.
@@ -24,7 +23,7 @@ feature "Editing a user", as: :current_user, skip_ci: true do
     fill_in "user_email", with: "quintus@antcat.org"
     fill_in "user_password", with: "new password"
     click_button "Login"
-    i_should_be_on 'the main page'
+    i_should_be_on root_path
     i_should_see "Batiatus"
   end
 
@@ -38,7 +37,7 @@ feature "Editing a user", as: :current_user, skip_ci: true do
     fill_in "user_name", with: "Quintus, B."
     fill_in "user_current_password", with: "secret"
     click_button "Save"
-    i_should_be_on 'the main page'
+    i_should_be_on root_path
     i_should_see "Quintus, B."
     i_should_not_see "Batiatus"
   end

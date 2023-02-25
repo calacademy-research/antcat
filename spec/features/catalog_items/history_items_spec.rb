@@ -115,7 +115,7 @@ feature "History items" do
       i_click_on 'the edit history item button'
       i_will_confirm_on_the_next_step
       i_click_on 'the delete history item button'
-      i_should_be_on 'the protonym page for "Antcatinae"'
+      i_should_be_on protonym_path(protonym)
 
       i_reload_the_page
       the_history_should_be_empty

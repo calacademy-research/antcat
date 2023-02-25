@@ -14,7 +14,7 @@ module FeatureHelpers
     # Browser/navigation.
     def i_should_be_on page_name
       current_path = URI.parse(current_url).path
-      expect(current_path).to eq path_to(page_name)
+      expect(current_path).to eq page_name
     end
 
     def i_reload_the_page
