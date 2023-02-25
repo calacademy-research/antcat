@@ -15,6 +15,10 @@
     $border-color: $background-color
   border: 1px solid $border-color
 
+  &.disabled
+    opacity: 0.50
+    cursor: not-allowed
+
 button
   padding: 0
   border: 0
@@ -35,10 +39,6 @@ button
 
 .btn-warning
   @include base-button($color_danger)
-  &:disabled
-    border: 1px $color_danger_pale solid
-    cursor: not-allowed
-    @include base-button($color_danger_pale)
 
 .btn-nodanger
   @include base-button(#fff, #000, #000)
