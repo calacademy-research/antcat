@@ -1,8 +1,5 @@
 -noindex_meta_tag
 
--content_for :javascripts do
-  =javascript_include_tag 'controllers/activities/scroll_to_highlighted_activity'
-
 -if params[:id]
   -page_title "Activity Item ##{@activity.id}"
   -breadcrumb :activity_item, @activity.id

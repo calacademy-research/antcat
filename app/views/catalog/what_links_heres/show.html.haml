@@ -2,9 +2,6 @@
 -breadcrumb :taxon_what_links_here, @taxon
 -noindex_meta_tag
 
--content_for :javascripts do
-  =javascript_include_tag "highlight_text"
-
-=render "shared/what_links_here", what_links_here_items: @what_links_here_items, highlight_text: @taxon.name_cache
+=render "shared/what_links_here", what_links_here_items: @what_links_here_items, highlight_href: catalog_path(@taxon)
 
 =will_paginate @what_links_here_items

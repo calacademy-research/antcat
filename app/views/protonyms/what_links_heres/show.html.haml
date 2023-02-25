@@ -2,6 +2,6 @@
 -breadcrumb :protonym_what_links_here, @protonym
 -noindex_meta_tag
 
-=render "shared/what_links_here", what_links_here_items: @what_links_here_items
+=render "shared/what_links_here", what_links_here_items: @what_links_here_items, highlight_href: protonym_path(@protonym)
 
 =will_paginate @what_links_here_items
