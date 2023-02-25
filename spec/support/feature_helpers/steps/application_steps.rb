@@ -3,11 +3,6 @@
 # General steps, specific to AntCat.
 module FeatureHelpers
   module Steps
-    # HACK: To prevent the driver from navigating away from the page before completing the request.
-    def i_wait_for_the_success_message
-      expect(page).to have_content "uccess" # "[Ss]uccess(fully)?"
-    end
-
     def wait_for_taxt_editors_to_load
       if javascript_driver?
         find('body[data-test-taxt-editors-loaded="true"]')

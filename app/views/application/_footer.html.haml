@@ -2,7 +2,12 @@
   .small-12.medium-6.columns
     .row
       .small-4.columns
-        %h6=image_tag 'logos/antcat_head_white_27x89.png', alt: 'AntCat'
+        -if Rails.env.development?
+          %h6
+            =link_to dev_path do
+              =image_tag 'logos/antcat_head_white_27x89.png', alt: 'AntCat'
+        -else
+          %h6=image_tag 'logos/antcat_head_white_27x89.png', alt: 'AntCat'
         %ul.no-bullet
           %li=link_to 'About', page_path('about')
           %li=link_to 'List of users', users_path

@@ -86,7 +86,7 @@
       %td=history_item.terminal_taxa.map(&:rank).join(', ')
       %td=history_item.terminal_taxa.map(&:status).join(', ')
       %td=Detax[history_item.to_taxt]
-      -# TODO: Secret option for investigating items.s
+      -# TODO: Secret option for investigating items.
       -if params[:standard]
         %td
           -if history_item.standard_format?
@@ -98,5 +98,6 @@
 
 =will_paginate @history_items
 
-.callout.mt-8
-  =render "shared/note_on_taxt_references"
+.mt-8
+  .callout
+    =render "shared/note_on_taxt_references"

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-feature "feedback" do
+feature "Feedback" do
   feature "Managing user feedback", as: :editor do
     scenario "Closing a feedback item (with feed)" do
       feedback = create :feedback
