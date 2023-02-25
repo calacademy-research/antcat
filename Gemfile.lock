@@ -520,6 +520,8 @@ GEM
     tabulo (2.8.2)
       tty-screen (= 0.8.1)
       unicode-display_width (~> 2.2)
+    tailwindcss-rails (2.0.23)
+      railties (>= 6.0.0)
     temple (0.10.0)
     terrapin (0.6.0)
       climate_control (>= 0.0.3, < 1.0)
@@ -639,6 +641,7 @@ DEPENDENCIES
   sunspot_solr (= 2.2.0)
   sunspot_test
   tabulo
+  tailwindcss-rails
   turbo-rails
   twitter-typeahead-rails
   uglifier
