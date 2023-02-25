@@ -89,7 +89,7 @@ RSpec.configure do |config|
   config.include JsonResponseHelper, type: :controller
   config.include Devise::Test::IntegrationHelpers, type: :request
   config.include Devise::Test::IntegrationHelpers, type: :feature
-  config.include FeatureHelpers::All, type: :feature
+  config.include FeatureHelpers, type: :feature
   config.include StripAttributes::Matchers, type: :model
 
   RSpec::Matchers.define_negated_matcher :not_change, :change

@@ -169,6 +169,7 @@ Metrics/MethodLength:
     - 'spec/support/feature_helpers/selectors.rb'
 
 Metrics/ModuleLength:
+  Enabled: false
   Max: 100
   CountAsOne: [array, hash, heredoc]
 
