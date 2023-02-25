@@ -43,11 +43,11 @@ linters:
       - Style/ConditionalAssignment
       - Style/DoubleNegation
       - Style/FrozenStringLiteralComment
+      - Style/HashSyntax
       - Style/IfInsideElse
       - Style/NegatedIf
       - Style/Next
       - Style/ParenthesesAroundCondition
-
       # Disabled because it flags `::Types::FormatTypeField` which in views raises
       # `uninitialized constant ActionView::Template::Types::FormatTypeField` without double colons.
       - Style/RedundantConstantBase
