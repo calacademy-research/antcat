@@ -46,7 +46,13 @@ module Types
       end
 
       def antweb_specimen_link identifier
-        "<a href='#{ANTWEB_SPECIMEN_BASE_URL}#{identifier}'>#{identifier}</a>"
+        <<~HTML.gsub(/\n +/, '').delete("\n")
+          <span data-controller="external-preview">
+            <a data-external-preview-target="link" href="#{ANTWEB_SPECIMEN_BASE_URL}#{identifier}">
+              #{identifier}
+            </a>
+          </span>
+        HTML
       end
   end
 end
