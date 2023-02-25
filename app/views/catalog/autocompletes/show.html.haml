@@ -16,9 +16,9 @@
         -protonym_label = CatalogFormatter.link_to_protonym_with_linked_author_citation(taxon.protonym)
 
         %tr.pickable-row{"data-picker-value" => "#{pickable.id}", "data-picker-pickable" => "true"}
-          %td.shrink
+          %td.shrink-tw-conflict
             %span.pickable-record-id=taxon.id
-          %td.shrink
+          %td.shrink-tw-conflict
             %span{class: ('pickable-outline' if pickable_type == 'taxon')}
               =taxon_label
           %td
@@ -50,9 +50,9 @@
         -protonym_label = CatalogFormatter.link_to_protonym_with_linked_author_citation(protonym)
 
         %tr.pickable-row{"data-picker-value" => "#{pickable&.id}", "data-picker-pickable" => "true"}
-          %td.shrink
+          %td.shrink-tw-conflict
             %span.pickable-record-id=protonym.id
-          %td.shrink
+          %td.shrink-tw-conflict
             %span{class: ('pickable-outline' if pickable_type == 'protonym')}
               =protonym_label
           %td

@@ -27,11 +27,11 @@
           %td=CatalogFormatter.link_to_taxon(child)
           %td=child.rank.capitalize
           %td=child.decorate.expanded_status
-          %td.shrink
+          %td.shrink-tw-conflict
             -unless Taxon.is_a?(Infrasubspecies)
               -if child.immediate_children.exists?
                 =link_to "Children", taxon_children_path(child), class: 'btn-normal btn-tiny'
-          %td.shrink
+          %td.shrink-tw-conflict
             =link_to 'What Links Here', taxon_what_links_here_path(child), class: 'btn-normal btn-tiny'
             -if @check_what_links_heres
               -unless child.what_links_here.any?

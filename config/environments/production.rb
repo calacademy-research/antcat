@@ -31,7 +31,8 @@ Rails.application.configure do
   config.assets.js_compressor = Uglifier.new(harmony: true)
 
   # Compress CSS using a preprocessor.
-  # config.assets.css_compressor = :sass
+  # TODO: Disabled `:sass` because it conflicts with Tailwind, see https://github.com/rails/tailwindcss-rails#conflict-with-sassc-rails
+  config.assets.css_compressor = nil
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
   config.assets.compile = false

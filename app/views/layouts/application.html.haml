@@ -20,6 +20,7 @@
 
     =javascript_pack_tag 'hotwire_app'
 
+    =stylesheet_link_tag 'tailwind', 'inter-font'
     =stylesheet_link_tag 'application'
     =stylesheet_link_tag 'logged_in_only' if current_user
     =stylesheet_link_tag "env_specific/#{Rails.env}" if Rails.env.in?(['staging', 'development', 'test'])
@@ -35,16 +36,16 @@
 
       %div
         %header#header
-          .row.collapse
+          .row.collapse-tw-conflict
             .small-12.columns
               =render "navigation"
 
         %section#content
           #fireworks
-          .row.collapse
+          .row.collapse-tw-conflict
             =render "breadcrumbs"
             =render "flash_messages"
-            .small-12.columns.collapse
+            .small-12.columns.collapse-tw-conflict
               =yield
 
         =yield :after_content

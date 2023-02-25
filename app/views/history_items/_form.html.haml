@@ -79,7 +79,7 @@
               %th
                 =f.label :subtype, id: 'type-label-subtype' do
                   subtype [???]
-              %td.grow
+              %td.grow-tw-conflict
                 .small-max-width=f.select :subtype, [history_item.subtype, '???']
               %td
                 %code subtype
@@ -88,7 +88,7 @@
               %th
                 =f.label :picked_value, id: 'type-label-picked-value' do
                   picked_value [???]
-              %td.grow=f.select :picked_value, [history_item.picked_value, '???']
+              %td.grow-tw-conflict=f.select :picked_value, [history_item.picked_value, '???']
               %td
                 %code picked_value
 
@@ -96,7 +96,7 @@
               %th.no-wrap
                 =f.label :text_value, id: 'type-label-text-value' do
                   text_value [???]
-              %td.grow
+              %td.grow-tw-conflict
                 .small-max-width=f.text_field :text_value
               %td
                 %code text_value
@@ -105,7 +105,7 @@
               %th.no-wrap
                 =f.label :object_protonym, id: 'type-label-object-protonym' do
                   object_protonym_id [???]
-              %td.grow=protonym_picker f.object.object_protonym, name: 'history_item[object_protonym_id]', id: 'history_item_object_protonym_id'
+              %td.grow-tw-conflict=protonym_picker f.object.object_protonym, name: 'history_item[object_protonym_id]', id: 'history_item_object_protonym_id'
               %td
                 %code object_protonym
 
@@ -113,7 +113,7 @@
               %th.no-wrap
                 =f.label :object_taxon, id: 'type-label-object-taxon' do
                   object_taxon_id [???]
-              %td.grow=taxon_picker f.object.object_taxon, name: 'history_item[object_taxon_id]', id: 'history_item_object_taxon_id'
+              %td.grow-tw-conflict=taxon_picker f.object.object_taxon, name: 'history_item[object_taxon_id]', id: 'history_item_object_taxon_id'
               %td
                 %code object_taxon
 
@@ -121,7 +121,7 @@
               %th.no-wrap
                 =f.label :reference, id: 'type-label-reference' do
                   Reference
-              %td.grow=reference_picker f.object.reference, name: 'history_item[reference_id]', id: 'history_item_reference_id'
+              %td.grow-tw-conflict=reference_picker f.object.reference, name: 'history_item[reference_id]', id: 'history_item_reference_id'
               %td
                 %code reference_id
 
@@ -129,7 +129,7 @@
               %th.no-wrap
                 =f.label :pages, id: 'type-label-pages' do
                   Pages
-              %td.grow
+              %td.grow-tw-conflict
                 .small-max-width=f.text_field :pages
               %td
                 %code pages
@@ -138,7 +138,7 @@
               %th.no-wrap
                 =f.label :pages, id: 'type-label-force-author-citation' do
                   Force author citation
-              %td.grow
+              %td.grow-tw-conflict
                 .small-max-width=f.check_box :force_author_citation
               %td
                 %code force_author_citation
@@ -186,5 +186,5 @@
             =link_to "##{protonym_history_item.id}", history_item_path(protonym_history_item)
             -if protonym_history_item == history_item
               %strong (selected)
-          %td.grow
+          %td.grow-tw-conflict
             %small=Detax[protonym_history_item.to_taxt]

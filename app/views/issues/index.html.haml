@@ -21,7 +21,7 @@
     -@issues.each do |issue|
       %tr{class: ('bg-light-gray' if issue.closed?)}
         %td.icon.align-top=issue.decorate.icon
-        %td.grow
+        %td.grow-tw-conflict
           =link_to issue.title, issue
           =issue.decorate.help_wanted_badge
           %br

@@ -30,4 +30,4 @@
                   =link_to 'Set', taxon_set_subgenus_path(@taxon, subgenus_id: subgenus.id), method: :post, class: 'btn-saves btn-tiny'
               %td=CatalogFormatter.link_to_taxon(subgenus)
               %td=subgenus.author_citation
-              %td.shrink=subgenus.decorate.expanded_status
+              %td.shrink-tw-conflict=subgenus.decorate.expanded_status

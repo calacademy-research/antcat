@@ -86,6 +86,7 @@ jobs:
       - name: Run rspec
         run: |
           ./bin/yarn install
+          ./bin/rails test:prepare
           bundle exec rspec spec --tag ~pending --order rand
 
   migrations:
