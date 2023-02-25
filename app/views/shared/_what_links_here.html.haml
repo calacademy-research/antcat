@@ -1,9 +1,7 @@
--highlight_text ||= nil
-
 -content_for :javascripts do
   =javascript_include_tag "sortable_tables"
 
-%table.table-striped.table-stack.tablesorter.mt-8
+%table.table-striped.table-stack.tablesorter.mt-8{"data-controller" => "highlight", "data-highlight-href-value" => highlight_href}
   %thead
     %tr
       %th.no-wrap Id
@@ -25,5 +23,5 @@
           %td
             %code=item.field
           %td=decorated.owner_link
-          %td.grow.text-sm{data: { highlight_text: highlight_text }}
+          %td.grow.small-text
             =item.detax || ndash
