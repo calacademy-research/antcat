@@ -29,7 +29,7 @@ feature "Authors" do
     click_button "Save"
     i_should_see "Author name was successfully created"
 
-    i_follow "Authors", within: "the breadcrumbs"
+    i_follow "Authors", within_scope: "#breadcrumbs"
     i_should_see "Bolton, B.; Fisher, B."
   end
 
@@ -52,7 +52,7 @@ feature "Authors" do
     click_button "Save"
     i_should_see "Author name was successfully updated"
 
-    i_follow "Authors", within: "the breadcrumbs"
+    i_follow "Authors", within_scope: "#breadcrumbs"
     i_should_see "Bolton, Z."
     i_should_not_see "Bolton, B."
   end

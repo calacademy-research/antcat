@@ -19,7 +19,6 @@ AllCops:
 
 ### Capybara.
 
-# TODO: See if we can enable this after cleaning up old Cucumber steps.
 Capybara/SpecificFinders:
   Enabled: false
 
@@ -170,6 +169,7 @@ Metrics/MethodLength:
     - 'spec/support/feature_helpers/selectors.rb'
 
 Metrics/ModuleLength:
+  Enabled: false
   Max: 100
   CountAsOne: [array, hash, heredoc]
 
@@ -349,11 +349,6 @@ RSpec/FilePath:
 RSpec/ImplicitSubject:
   Enabled: false
   EnforcedStyle: single_statement_only
-
-RSpec/InstanceVariable:
-  # TODO: Excluded for now while cleaning up old Cucumber steps.
-  Exclude:
-    - 'spec/features/**/*'
 
 # Disabled because `let!` makes it easier to separate the Arrange step from the Act/Assert steps.
 RSpec/LetSetup:

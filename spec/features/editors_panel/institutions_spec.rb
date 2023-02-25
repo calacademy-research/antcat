@@ -48,7 +48,7 @@ feature "Institutions" do
     visit institutions_path
     i_follow_the_first "California Academy of Sciences"
     i_follow "Delete"
-    i_should_be_on 'the institutions page'
+    i_should_be_on institutions_path
     i_should_see "Institution was successfully deleted"
     i_should_not_see "CASC"
 

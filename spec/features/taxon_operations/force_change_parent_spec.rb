@@ -13,10 +13,10 @@ feature "Force-changing parent", as: :superadmin do
     i_follow "Force parent change"
     i_pick_from_the_taxon_picker "Ecitoninae", "#new_parent_id"
     click_button "Change parent"
-    i_should_be_on 'the catalog page for "Atta"'
 
     atta = Taxon.find_by!(name_cache: "Atta")
     expect(atta.subfamily).to eq new_subfamily_parent
+    i_should_be_on catalog_path(taxon)
 
     there_should_be_an_activity "Archibald force-changed the parent of Atta"
   end

@@ -43,7 +43,7 @@ feature "Editing a taxon", as: :editor do
     select "Subfamily", from: "taxon_incertae_sedis_in"
     fill_in "edit_summary", with: "fix incertae sedis"
     click_button "Save"
-    i_should_be_on 'the catalog page for "Atta"'
+    i_should_be_on catalog_path(taxon)
     i_should_see "incertae sedis in subfamily"
 
     there_should_be_an_activity "Archibald edited the genus Atta", edit_summary: "fix incertae sedis"
@@ -58,7 +58,7 @@ feature "Editing a taxon", as: :editor do
     visit edit_taxon_path(taxon)
     select "masculine", from: "taxon_name_attributes_gender"
     click_button "Save"
-    i_should_be_on 'the catalog page for "Atta"'
+    i_should_be_on catalog_path(taxon)
     i_should_see "masculine"
   end
 end

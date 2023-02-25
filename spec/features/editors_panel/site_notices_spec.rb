@@ -23,7 +23,7 @@ feature "Site notices", as: :editor do
     visit users_path
     i_should_see "new notice"
 
-    i_follow "new notice!", within: 'the desktop menu'
+    i_follow "new notice!", within_scope: "#desktop-only-header"
     i_follow "A Site Notice"
     i_should_see "A Site Notice"
     i_should_not_see "new notice"

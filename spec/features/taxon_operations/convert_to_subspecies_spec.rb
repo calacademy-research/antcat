@@ -15,10 +15,10 @@ feature "Converting a species to a subspecies", as: :editor do
 
     i_pick_from_the_taxon_picker "Camponotus alii", "#new_species_id"
     click_button "Convert"
-    i_should_be_on 'the catalog page for "Camponotus alii dallatorei"'
 
     created_taxon = Taxon.find_by!(name_cache: "Camponotus alii dallatorei")
     expect(created_taxon).to be_a(Subspecies)
+    i_should_be_on catalog_path(created_taxon)
 
     there_should_be_an_activity "Archibald converted the species Camponotus dallatorei to a subspecies \\(now Camponotus alii dallatorei\\)"
   end
