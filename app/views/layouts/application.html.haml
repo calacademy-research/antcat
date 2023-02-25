@@ -35,16 +35,16 @@
 
       %div
         %header#header
-          .row.collapse
+          .row.collapse-tw-conflict
             .small-12.columns
               =render "navigation"
 
         %section#content
           #fireworks
-          .row.collapse
+          .row.collapse-tw-conflict
             =render "breadcrumbs"
             =render "flash_messages"
-            .small-12.columns.collapse
+            .small-12.columns.collapse-tw-conflict
               =yield
 
         =yield :after_content

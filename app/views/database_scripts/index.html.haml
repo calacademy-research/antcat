@@ -76,12 +76,12 @@
                       Issue description:
                       =database_script.issue_description
               %td=decorated.format_linked_tags
-              %td.shrink
+              %td.shrink-tw-conflict
                 -if decorated.soft_validated?
                   %span.hidden-sort Yes
                   =antcat_icon("check")
               -if @check_if_empty
-                %td.shrink{class: decorated.empty_status_css}
+                %td.shrink-tw-conflict{class: decorated.empty_status_css}
                   =decorated.empty_status
 
 .row

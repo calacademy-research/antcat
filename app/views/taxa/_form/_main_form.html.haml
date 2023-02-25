@@ -42,7 +42,7 @@
               =form.select :status, Status::STATUSES
 
         %tr
-          %td.shrinks
+          %td.shrink-tw-conflict
             =form.label :protonym
             -unless taxon.persisted?
               %small.blue-help-text
@@ -55,7 +55,7 @@
       %h6.font-bold Status-specific fields
       %table.table-unstriped
         %tr
-          %td.shrink
+          %td.shrink-tw-conflict
             =form.label :current_taxon do
               Current taxon
               =db_tooltip_icon :current_taxon, scope: :taxa

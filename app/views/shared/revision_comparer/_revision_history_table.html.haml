@@ -23,11 +23,11 @@
         -# It will be either the current object, or a reified instance of
         -# what it looked like before it was deleted.
         %tr{class: ("make-green" if comparer.looking_at_most_recent?)}
-          %td.shrink cur
-          %td.shrink=link_to "prev", diff_with_id: revisions.first.id
-          %td.shrink
-          %td.shrink=radio_button_tag :selected_id, "", comparer.looking_at_most_recent?, data: { radio_button_index: -1 }
-          %td.shrink=render "shared/revision_comparer/revision_info_date", revision: most_recent
+          %td.shrink-tw-conflict cur
+          %td.shrink-tw-conflict=link_to "prev", diff_with_id: revisions.first.id
+          %td.shrink-tw-conflict
+          %td.shrink-tw-conflict=radio_button_tag :selected_id, "", comparer.looking_at_most_recent?, data: { radio_button_index: -1 }
+          %td.shrink-tw-conflict=render "shared/revision_comparer/revision_info_date", revision: most_recent
           %td=render "shared/revision_comparer/revision_info_user", revision: most_recent
           %td
           %td

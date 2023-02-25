@@ -20,7 +20,7 @@
   clear: both;
 }
 
-.row.collapse > .column, .row.collapse > .columns {
+.row.collapse-tw-conflict > .column, .row.collapse-tw-conflict > .columns {
   padding-right: 0;
   padding-left: 0;
 }
@@ -45,7 +45,7 @@
   }
 }
 
-.row .row.collapse {
+.row .row.collapse-tw-conflict {
   margin-right: 0;
   margin-left: 0;
 }
