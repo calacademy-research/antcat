@@ -15,7 +15,7 @@
         %input.taxon-browser-tab-input{id: tab.id, class: "taxon-browser-tab-#{index}", checked: ("checked" if tab.open?), name: "taxon_browser_tab", type: "radio", value: 'selected tab'}
         %label{for: tab.id}=tab.title
 
-      .right-side-buttons.float-right.hide-for-small-only
+      .right-side-buttons.float-right{class: "hidden sm:block"}
         %button.btn-tiny.btn-nodanger{"data-action" => "toggler#toggle", "data-toggler-target" => "taxon_key"} toggle legend
         %span.label-secondary
           =taxon_browser_presenter.toggle_invalid_or_valid_only_link
