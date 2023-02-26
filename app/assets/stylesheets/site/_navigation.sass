@@ -10,13 +10,7 @@
 
   #desktop-only-header
     #desktop-upper-menu
-      ul
-        li
-          padding-left: 1rem
-          padding-right: 1rem
       .desktop-upper-menu-link
-        font-size: 14px
-        margin-left: 1rem
         &:hover, &.very-active
           font-weight: 900
         &.very-active
@@ -24,38 +18,29 @@
           font-size: 0.8125rem
           line-height: 0.75rem
           padding: 0.30rem 0.5rem
-          white-space: nowrap
-          margin-left: 1rem
           border-radius: 3px
           border: 2px #000 solid
           background-color: #000
 
-    #desktop-lower-menu
-      .expandable-catalog-search
-        width: 155px
-      .expandable-reference-search
-        width: 180px
-      .expandable-catalog-search, .expandable-reference-search
-        margin-bottom: 0
-        transition: all .5s
-        height: 2.6rem !important
-        margin-right: 0rem
-        // Fix background after typeahead.
-        background-color: #fff !important
-        border: 0
-        color: #000
-        &:focus
-          width: 250px
+  .expandable-catalog-search
+    width: 155px
+  .expandable-reference-search
+    width: 180px
+  .expandable-catalog-search, .expandable-reference-search
+    transition: all .5s
+    margin-right: 0rem
+    // Fix background after typeahead.
+    background-color: #fff !important
+    border: 0
+    color: #000
+    &:focus
+      width: 250px
 
   #mobile-only-header
     #mobile-hamburger-input
       display: none
     #mobile-hamburger-input:checked ~ #mobile-menu-content
       display: block
-    #mobile-hamburger-label
-      cursor: pointer
-      float: right
-      padding: 40px 20px
     #mobile-hamburger-lines
       background: #f9f9f9
       display: block
@@ -77,13 +62,6 @@
 
     #mobile-menu-content
       display: none
-      .mobile-menu-ul
-        li
-          padding-top: 0.25rem
-          padding-bottom: 0.25rem
-      // Restore width after Typeahead.
-      .twitter-typeahead
-        width: 100%
 
 #header
   .big-screaming-button
