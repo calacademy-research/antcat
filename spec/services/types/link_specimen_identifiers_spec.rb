@@ -3,6 +3,14 @@
 require 'rails_helper'
 
 describe Types::LinkSpecimenIdentifiers do
+  describe 'constant SPECIMEN_IDENTIFIER_PREFIXES' do
+    subject(:prefixes) { described_class::SPECIMEN_IDENTIFIER_PREFIXES }
+
+    it 'does not contain clashing prefixes' do
+      expect(prefixes.any? { |prefix| prefixes.excluding(prefix).any? { _1.starts_with?(prefix) } }).to eq false
+    end
+  end
+
   describe '#call' do
     it 'converts plain-text specimen identifiers to links with extra markup' do
       expect(described_class['CASENT123']).to eq <<~HTML.gsub(/\n +/, '').delete("\n")

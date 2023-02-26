@@ -15,14 +15,14 @@
         %input.taxon-browser-tab-input{id: tab.id, class: "taxon-browser-tab-#{index}", checked: ("checked" if tab.open?), name: "taxon_browser_tab", type: "radio", value: 'selected tab'}
         %label{for: tab.id}=tab.title
 
-      .right-side-buttons.float-right.hide-for-small-only
+      .float-right{class: "hidden sm:block"}
         %button.btn-tiny.btn-nodanger{"data-action" => "toggler#toggle", "data-toggler-target" => "taxon_key"} toggle legend
         %span.label-secondary
           =taxon_browser_presenter.toggle_invalid_or_valid_only_link
 
       -taxon_browser.tabs.each.with_index do |tab, index|
         .taxon-browser-tab.taxon-browser-tab-content.text-sm{class: "taxon-browser-tab-content-#{index}"}
-          %ul.snaked.no-bullet.color-coded-catalog-links
+          %ul.snaked.no-bullet.color-coded-catalog-links.py-2
             -TaxonBrowser::LinksToExtraTabs[tab.tab_taxon].each do |link|
               %li.uppercase=taxon_browser_presenter.extra_tab_link tab.tab_taxon, link[:label], link[:view]
 

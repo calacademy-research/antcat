@@ -6,14 +6,14 @@ module DevHelper
     path = current_path_without_blank_params
 
     if Rails.env.development?
-      link_to "on antcat.org", "#{Settings.production_url}#{path}", class: "show-on-hover dev-link"
+      link_to "pr", "#{Settings.production_url}#{path}"
     else
-      link_to "on localhost", "http://localhost:3000#{path}", class: "show-on-hover dev-link"
+      link_to "lo", "http://localhost:3000#{path}"
     end
   end
 
   def link_to_current_page_on_live_site_from_staging
-    link_to "on antcat.org", "#{Settings.production_url}#{current_path_without_blank_params}"
+    link_to "pr", "#{Settings.production_url}#{current_path_without_blank_params}"
   end
 
   private

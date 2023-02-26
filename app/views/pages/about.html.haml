@@ -18,7 +18,7 @@
   %li=link_to 'List of users', users_path
   %li=link_to 'Contribute', page_path('contribute')
   %li=external_link_to 'Source code', Settings.github.repo_url
-  %li=link_to 'Contact us ', "mailto:#{Settings.contact_us_email_address}"
+  %li=mail_to Settings.contact_us_email_address, 'Contact us ', subject: 'AntCat'
   %li
     =link_to 'API docs', grape_swagger_rails_path
     =surround "(", ")" do
@@ -31,19 +31,18 @@
   =external_link_to('#0642321', 'https://www.nsf.gov/awardsearch/showAward?AWD_ID=0642321') + '.'
   Any opinions, findings, and conclusions or recommendations are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.
 
-.flex.justify-between.mt-20.px-4
-  %div
-    =link_to 'https://www.calacademy.org/', target: '_blank', rel: 'noopener' do
-      =image_tag 'logos/california_academy_of_sciences.png', alt: 'California Academy of Sciences', style: "height: 40px"
-  %div
-    =link_to 'https://www.nsf.gov/', target: '_blank', rel: 'noopener' do
-      =image_tag 'logos/nsf1.png', alt: 'NSF', style: "height: 50px", title: "Supported in part by NSF Award DBI-0642321"
-  %div
-    =link_to 'https://antweb.org', target: '_blank', rel: 'noopener' do
-      =image_tag 'logos/antweb_tiny.png', alt: 'AntWeb', style: "height: 20px"
-  %div
-    =link_to 'http://hol.osu.edu/', target: '_blank', rel: 'noopener' do
-      =image_tag 'logos/hol.png', alt: 'HOL', style: "height: 20px"
-  %div
-    =link_to 'http://antbase.org/', target: '_blank', rel: 'noopener' do
-      =image_tag 'logos/antbase.png', alt: 'Antbase', style: "height: 20px"
+.flex.flex-wrap.justify-around.items-center.mt-20
+  =link_to 'https://www.calacademy.org/', target: '_blank', rel: 'noopener' do
+    =image_tag 'logos/california_academy_of_sciences.png', alt: 'California Academy of Sciences (CASC)', class: 'max-h-16'
+
+  =link_to 'https://www.nsf.gov/', target: '_blank', rel: 'noopener' do
+    =image_tag 'logos/nsf1.png', alt: 'National Science Foundation (NSF)', class: 'max-h-16'
+
+  =link_to 'https://antweb.org', target: '_blank', rel: 'noopener' do
+    =image_tag 'logos/antweb_tiny.png', alt: 'AntWeb', class: 'max-h-16'
+
+  =link_to 'http://hol.osu.edu/', target: '_blank', rel: 'noopener' do
+    =image_tag 'logos/hol.png', alt: 'HOL', class: 'max-h-16'
+
+  =link_to 'http://antbase.org/', target: '_blank', rel: 'noopener' do
+    =image_tag 'logos/antbase.png', alt: 'Antbase', class: 'max-h-16'

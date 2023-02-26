@@ -1,15 +1,6 @@
 @import "colors"
 
 #header
-  ::-webkit-input-placeholder
-    font-size: 90%
-  ::-moz-placeholder
-    font-size: 90%
-  ::-ms-input-placeholder
-    font-size: 90%
-  ::placeholder
-    font-size: 90%
-
   font-family: Montserrat, Roboto, "Helvetica Neue", Arial, sans-serif
   color: #fff
   background-color: $color_primary
@@ -18,12 +9,6 @@
     color: #fff
 
   #desktop-only-header
-    // Show "on antcat.org/localhost" on hover.
-    a.dev-link
-      display: none
-    &:hover .show-on-hover
-      display: inline
-
     #desktop-upper-menu
       ul
         li
@@ -146,28 +131,3 @@
   .btn-normal, .btn-warning, .btn-nodanger, .btn-saves
     padding: 0.30rem 0.5rem !important
     white-space: nowrap
-
-// Responsive-related.
-// Small screens.
-@media (max-width: 900px)
-  #header
-    padding-top: 0.7rem
-    padding-bottom: 1rem
-
-  #desktop-only-header
-    display: none
-  #mobile-only-header
-    display: block
-
-// Big screens.
-@media (min-width: 900px)
-  #header
-    padding-top: 1rem
-    padding-bottom: 2rem
-
-  #desktop-only-header
-    display: block
-  #mobile-only-header
-    display: none
-  #mobile-hamburger-label
-    display: none
