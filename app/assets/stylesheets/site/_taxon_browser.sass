@@ -2,8 +2,6 @@
 
 .catalog-controller
   .taxon-browser-sticky
-    position: -webkit-sticky
-    position: sticky
     @media screen and (min-height: 640px) and (min-width: 640px)
       bottom: 0
       margin-top: 2rem
@@ -20,18 +18,12 @@
         position: relative
       & ~ .taxon-browser-tab
         display: none
-        padding: 1rem
       &:checked
         & + label
           background: #fff
           color: #000
 
     .taxon-browser-tab-content
-      clear: right
-      min-height: 10rem
-      overflow-y: auto
-      max-height: 24vh
-      padding-top: 0 !important
       a.genus, a.subgenus, a.species, a.subspecies, a.infrasubspecies
         font-style: italic
       a.subspecies::before
@@ -49,16 +41,11 @@
       display: block
 
   #taxon-browser
-    overflow: hidden
-    height: auto
-    left: 0
-
     .selected, .label-white-smaller
       display: inline-block
       font-size: 0.8rem
       border-radius: 3px
       padding: 0 0.4rem
-      white-space: nowrap
     .selected
       background-color: $color_primary !important
       a, a.valid.subspecies
@@ -68,8 +55,3 @@
       border: 1px solid #000
       a
         color: #000 !important
-
-    .snaked
-      -webkit-column-width: 9rem
-      -moz-column-width: 9rem
-      column-width: 9rem

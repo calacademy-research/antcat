@@ -1,7 +1,7 @@
-.taxon-browser-sticky
+.taxon-browser-sticky.sticky
   %div
-    #taxon-browser.taxon-browser-css-tabs.bg-white
-      #taxon-key.color-coded-catalog-links.hidden.text-sm.px-4{data: { toggler_name: "taxon_key" }}
+    #taxon-browser.taxon-browser-css-tabs.bg-white.overflow-hidden.h-auto
+      .color-coded-catalog-links.hidden.text-sm.px-4{data: { toggler_name: "taxon_key" }}
         .flex.justify-between.gap-1.flex-wrap
           %div &dagger;fossil
           .valid valid
@@ -21,13 +21,13 @@
           =taxon_browser_presenter.toggle_invalid_or_valid_only_link
 
       -taxon_browser.tabs.each.with_index do |tab, index|
-        .taxon-browser-tab.taxon-browser-tab-content.text-sm{class: "taxon-browser-tab-content-#{index}"}
-          %ul.snaked.no-bullet.color-coded-catalog-links.py-2
+        .taxon-browser-tab.taxon-browser-tab-content.overflow-y-auto.clear-right.text-sm.p-4.pt-0{class: "taxon-browser-tab-content-#{index} min-h-[10rem] max-h-[24vh]"}
+          %ul.no-bullet.color-coded-catalog-links.py-2{class: "columns-[9rem]"}
             -TaxonBrowser::LinksToExtraTabs[tab.tab_taxon].each do |link|
-              %li.uppercase=taxon_browser_presenter.extra_tab_link tab.tab_taxon, link[:label], link[:view]
+              %li.uppercase.whitespace-nowrap=taxon_browser_presenter.extra_tab_link tab.tab_taxon, link[:label], link[:view]
 
             -tab.each_taxon do |taxon, is_selected|
-              %li{class: ("selected" if is_selected)}
+              %li.whitespace-nowrap{class: ("selected" if is_selected)}
                 =taxon_browser_presenter.taxon_browser_taxon_link taxon
 
             -# It's possible that `taxa` is empty at this point. Most likely
