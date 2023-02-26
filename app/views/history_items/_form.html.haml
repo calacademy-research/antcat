@@ -80,7 +80,7 @@
                 =f.label :subtype, id: 'type-label-subtype' do
                   subtype [???]
               %td.grow-tw-conflict
-                .small-max-width=f.select :subtype, [history_item.subtype, '???']
+                .max-w-xs=f.select :subtype, [history_item.subtype, '???']
               %td
                 %code subtype
 
@@ -97,7 +97,7 @@
                 =f.label :text_value, id: 'type-label-text-value' do
                   text_value [???]
               %td.grow-tw-conflict
-                .small-max-width=f.text_field :text_value
+                .max-w-xs=f.text_field :text_value
               %td
                 %code text_value
 
@@ -130,7 +130,7 @@
                 =f.label :pages, id: 'type-label-pages' do
                   Pages
               %td.grow-tw-conflict
-                .small-max-width=f.text_field :pages
+                .max-w-xs=f.text_field :pages
               %td
                 %code pages
 
@@ -139,7 +139,7 @@
                 =f.label :pages, id: 'type-label-force-author-citation' do
                   Force author citation
               %td.grow-tw-conflict
-                .small-max-width=f.check_box :force_author_citation
+                .max-w-xsh=f.check_box :force_author_citation
               %td
                 %code force_author_citation
 

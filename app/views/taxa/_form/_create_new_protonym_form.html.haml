@@ -48,7 +48,7 @@
                 Pages
                 =db_tooltip_icon :pages, scope: :protonyms
             %td
-              .small-max-width=authorship_form.text_field :pages
+              .max-w-xs=authorship_form.text_field :pages
 
           -if taxon.is_a?(SpeciesGroupTaxon)
             %tr
@@ -58,14 +58,14 @@
                   =db_tooltip_icon :forms, scope: :protonyms
                   =db_wiki_page_icon WikiPage::FORMS
               %td
-                .small-max-width=protonym_form.text_field :forms
+                .max-w-xs=protonym_form.text_field :forms
             %tr
               %td
                 =protonym_form.label :bioregion do
                   Bioregion
                   =db_tooltip_icon :bioregion, scope: :protonyms
               %td
-                .small-max-width
+                .max-w-xs
                   =protonym_form.select :bioregion, Protonym::BIOREGIONS, include_blank: true
             %tr
               %td
@@ -94,7 +94,7 @@
                   Gender agreement type (only for species-group names)
                   =db_tooltip_icon :gender_agreement_type, scope: :protonyms
               %td
-                .small-max-width
+                .max-w-xs
                   =protonym_form.select :gender_agreement_type, Protonym::GENDER_AGREEMENT_TYPES, include_blank: '(blank)'
 
           %tr
