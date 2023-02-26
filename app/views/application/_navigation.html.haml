@@ -1,6 +1,6 @@
 #desktop-only-header{class: "hidden lg:block pt-4 pb-8"}
   #desktop-upper-menu.float-right.pt-2
-    %ul.no-bullet.flex
+    %ul.no-bullet.flex.text-sm{class: "[&>*]:px-4 [&>*]:ml-4"}
       -if user_signed_in?
         =unseen_notifications_badge = capture { render "unseen_notifications_badge" }
         =unread_site_notices_badge = capture { render "unread_site_notices_badge" }
@@ -18,7 +18,7 @@
     =link_to root_path do
       =image_tag 'logos/antcat_white_174x37.png', alt: 'AntCat'
 
-  #desktop-lower-menu.float-right.mb-2
+  .float-right.mb-2
     %ul.no-bullet.flex.items-center
       %li.uppercase.mr-6=link_to 'References', references_latest_additions_path, class: "big-screaming-orange-button #{'very-active' if menu_active?(:references)}"
       %li.uppercase.mr-6=link_to 'Catalog', root_path, class: "big-screaming-green-button #{'very-active' if menu_active?(:catalog)}"
@@ -39,7 +39,7 @@
 
 #mobile-only-header.text-sm{class: "block lg:hidden pt-2"}
   %input#mobile-hamburger-input{type: "checkbox", checked: false}
-  %label#mobile-hamburger-label{for: "mobile-hamburger-input"}
+  %label.float-right.py-10.px-5{for: "mobile-hamburger-input"}
     %span#mobile-hamburger-lines
 
   .pt-4
@@ -56,14 +56,14 @@
 
   #mobile-menu-content
     %ul.no-bullet
-      %li
+      %li.text-black.mb-2
         =form_with url: references_search_index_path, method: :get do |f|
           .flex
             =f.text_field "reference_q", value: params[:reference_q], placeholder: "Search References", "aria-label" => "Search References", id: nil, class: "typeahead-references-js placeholder:text-sm"
             =button_tag search_icon, type: "submit", name: nil do
               %i.inline-search-icon.icon-search
 
-      %li
+      %li.text-black
         =form_with url: catalog_search_path, method: :get do |f|
           .flex
             =f.text_field 'qq', value: params[:qq], placeholder: "Search Catalog", "aria-label" => "Search Catalog", id: nil, class: "typeahead-taxa-js-hook placeholder:text-sm"
@@ -71,7 +71,7 @@
             =button_tag search_icon, type: "submit", name: nil do
               %i.inline-search-icon.icon-search
 
-    %ul.mobile-menu-ul.no-bullet
+    %ul.no-bullet{class: "[&>*]:py-1"}
       %li=link_to 'References', references_latest_additions_path
       %li=link_to "Catalog", root_path
       -if user_signed_in?

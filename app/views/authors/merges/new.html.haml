@@ -13,6 +13,9 @@
   .medium-6.columns
     %h6 Author to merge into target
     =text_field_tag :author_to_merge_name, params[:author_to_merge_name]
+
+    .mb-4
+
     =form_with url: author_merges_path, method: :get do |f|
       =hidden_field_tag :author_to_merge_id, params[:author_to_merge_id]
       =f.button "Next", class: "btn-normal"

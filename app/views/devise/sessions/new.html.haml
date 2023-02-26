@@ -2,17 +2,22 @@
 -breadcrumb :login
 
 =form_with model: resource, url: session_path(resource_name) do |f|
-  .row
+  .row.mb-4
     .medium-6.columns
       =f.label :email
       =f.text_field :email
 
+      .mb-4
+
       =f.label :password
       =f.password_field :password
+
+      .mb-4
+
       =f.check_box :remember_me, checked: true
       =f.label :remember_me
 
-  .row.mb-8
+  .row.mb-6
     .medium-6.columns
       =f.button "Login", class: "btn-normal"
       -if Settings.email.enabled

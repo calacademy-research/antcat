@@ -13,12 +13,13 @@
   .medium-12.columns
     =form_with model: wiki_page do |f|
       =render "shared/errors_for", resource: wiki_page
-      .row
+
+      .row.mb-4
         .medium-8.columns.end
           =f.label :title
           =f.text_field :title, maxlength: WikiPage::TITLE_MAX_LENGTH
 
-      .row
+      .row.mb-4
         .medium-12.columns
           =f.check_box :featured
           =f.label :featured do
@@ -28,7 +29,7 @@
         .medium-12.columns
           =f.text_area :content, rows: 20, data: { has_mentionables: true, has_linkables: true, previewable: true, previewable_title: "Content" }
 
-      .row
+      .row.mb-4
         .medium-12.columns
           =edit_summary_text_field_tag
 

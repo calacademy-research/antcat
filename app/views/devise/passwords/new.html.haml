@@ -4,7 +4,8 @@
 -if Settings.email.enabled
   =form_with model: resource, url: password_path(resource_name) do |f|
     =render 'shared/errors_for', resource: resource
-    .row
+
+    .row.mb-4
       .medium-6.columns
         =f.label :email
         =f.text_field :email

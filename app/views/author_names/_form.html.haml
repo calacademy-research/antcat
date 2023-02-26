@@ -1,11 +1,11 @@
 =form_with model: author_name, url: url do |f|
   =render "shared/errors_for", resource: author_name
-  .row
+  .row.mb-4
     .medium-6.columns.end
       =f.label :name
       =f.text_field :name
 
-  .row
+  .row.mb-4
     .medium-3.columns.end
       =edit_summary_text_field_tag
 

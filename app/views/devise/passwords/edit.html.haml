@@ -5,13 +5,16 @@
   =render 'shared/errors_for', resource: resource
 
   =f.hidden_field :reset_password_token
-  .row
+  .row.mb-4
     .medium-6.columns
       =f.label :password
       =f.password_field :password
 
+      .mb-4
+
       =f.label :password_confirmation
       =f.password_field :password_confirmation
+
   .row
     .medium-6.columns
       =f.button "Change my password", class: "btn-saves"

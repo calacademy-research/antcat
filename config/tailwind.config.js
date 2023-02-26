@@ -14,6 +14,9 @@ module.exports = {
       fontFamily: {
         sans: ['Inter var', ...defaultTheme.fontFamily.sans],
       },
+      screens: {
+        'nottiny': { 'raw': '(min-height: 640px) and (min-width: 640px)' },
+      }
     },
   },
   plugins: [

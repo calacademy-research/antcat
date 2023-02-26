@@ -2,7 +2,11 @@
   .medium-6.columns
     =form_with model: journal do |f|
       =render 'shared/errors_for', resource: journal
+
       %p
         =f.label :name, 'Journal name'
         =f.text_field :name
+
+        .mb-4
+
         =f.button 'Save', class: "btn-saves"

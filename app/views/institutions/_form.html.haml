@@ -4,23 +4,26 @@
       =render "shared/errors_for", resource: institution
 
       .row
-        .medium-4.columns.end
+        .medium-4.columns.end.mb-4
           =f.label :abbreviation
           =f.text_field :abbreviation, maxlength: Institution::ABBREVIATION_MAX_LENGTH
+
       .row
-        .medium-12.columns
+        .medium-12.columns.mb-4
           =f.label :name
           =f.text_field :name, maxlength: Institution::NAME_MAX_LENGTH
-      .row
+
+      .row.mb-4
         .medium-12.columns
           =f.label :grscicoll_identifier do
             GRSciColl identifier (optional)
             =db_tooltip_icon :grscicoll_identifier, scope: :institutions
           =f.text_field :grscicoll_identifier, placeholder: "Format: <institution or collection>/e6e9d21b-faf8-4698-95e6-bacc55860a95"
 
-      .row.mt-8
+      .row.mt-8.mb-4
         .medium-4.columns.end
           =edit_summary_text_field_tag
+
       .row
         .small-12.columns.end
           =f.button 'Save', class: 'btn-saves'

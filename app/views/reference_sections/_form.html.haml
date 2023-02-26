@@ -5,7 +5,8 @@
 
 =form_with model: reference_section, url: url do |f|
   =render "shared/errors_for", resource: reference_section
-  .row
+
+  .row.mb-4
     .medium-12.columns
       =text_area_tag :title_taxt, reference_section.title_taxt, rows: 1, name: 'reference_section[title_taxt]',
         data: { has_linkables: true, previewable: true, previewable_title: "Title", use_extras: true }
@@ -14,7 +15,7 @@
       =text_area_tag :references_taxt, reference_section.references_taxt, rows: 5, name: 'reference_section[references_taxt]',
         data: { has_linkables: true, previewable: true, previewable_title: "References", use_extras: true }
 
-  .row
+  .row.mb-4
     .medium-3.columns.end
       =edit_summary_text_field_tag
 

@@ -3,13 +3,18 @@
 
 =form_with model: resource, url: registration_path(resource_name), method: :put, data: { turbo: false } do |f|
   =render 'shared/errors_for', resource: resource
-  .row
+
+  .row.mb-4
     .medium-6.columns
       =f.label :email
       =f.text_field :email
 
+      .mb-4
+
       =f.label :name
       =f.text_field :name
+
+      .mb-4
 
       =f.label :author_id, "AntCat Author ID"
       =f.number_field :author_id
@@ -18,11 +23,14 @@
       =f.label :password, "Password (leave blank if you don't want to change it)"
       =f.password_field :password, autocomplete: 'new-password'
 
+      .mb-4
+
       =f.label :password_confirmation
       =f.password_field :password_confirmation
 
-      =f.label :current_password, "Current password (required when changing password)"
+      .mb-4
 
+      =f.label :current_password, "Current password (required when changing password)"
       =f.password_field :current_password
 
   .row.mt-8

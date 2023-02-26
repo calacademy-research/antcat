@@ -6,20 +6,24 @@
 =form_with model: resource, url: registration_path(resource_name), data: { turbo: false } do |f|
   =render 'shared/errors_for', resource: resource
   .row
-    .medium-6.columns
+    .medium-6.columns.mb-4
       =f.label :email do
         Email (public)
       =f.email_field :email, autofocus: true
+
+      .mb-4
 
       =f.label :name do
         Name (full name, public)
         =tooltip_icon "Please use your real name, or your account may be deactivated."
       =f.text_field :name
 
-  .row
+  .row.mb-4
     .medium-6.columns
       =f.label :password, "Password (#{@minimum_password_length} characters minimum)"
       =f.password_field :password, autocomplete: "off"
+
+      .mb-4
 
       =f.label :password_confirmation
       =f.password_field :password_confirmation, autocomplete: "off"
