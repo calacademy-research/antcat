@@ -1,12 +1,6 @@
 #desktop-only-header
   #desktop-upper-menu.float-right.pt-2
     %ul.no-bullet.flex
-      -if user_is_developer?
-        %li
-          %small=link_to_current_page_on_live_site_or_localhost
-      -if Rails.env.staging?
-        %li
-          %small=link_to_current_page_on_live_site_from_staging
       -if user_signed_in?
         =unseen_notifications_badge = capture { render "unseen_notifications_badge" }
         =unread_site_notices_badge = capture { render "unread_site_notices_badge" }

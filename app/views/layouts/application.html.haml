@@ -43,6 +43,13 @@
           .hidden{class: "sm:hidden md:hidden lg:block xl:hidden"} lg
           .hidden{class: "sm:hidden md:hidden lg:hidden xl:block"} xl
 
+      -if user_is_developer?
+        .fixed.top-14.right-4.flex.h-8.w-8.items-center.justify-center.text-sm.text-black.font-mono.rounded-full.bg-blue-300
+          =link_to_current_page_on_live_site_or_localhost
+      -if Rails.env.staging?
+        .fixed.top-24.right-4.flex.h-8.w-8.items-center.justify-center.text-sm.text-black.font-mono.rounded-full.bg-blue-300
+          =link_to_current_page_on_live_site_from_staging
+
       %div
         %header#header
           .row.collapse-tw-conflict
