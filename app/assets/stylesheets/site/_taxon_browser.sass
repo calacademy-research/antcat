@@ -6,23 +6,11 @@
       display: none
       & + label
         color: $color_primary
-        display: inline-block
-        padding: 4px 1rem
-        margin: 0
-        position: relative
       & ~ .taxon-browser-tab
         display: none
       &:checked
         & + label
-          background: #fff
           color: #000
-
-    .taxon-browser-tab-content
-      a.genus, a.subgenus, a.species, a.subspecies, a.infrasubspecies
-        font-style: italic
-      a.subspecies::before
-        content: "ssp. "
-        font-style: normal
 
     .taxon-browser-tab-0:checked ~ .taxon-browser-tab.taxon-browser-tab-content-0,
     .taxon-browser-tab-1:checked ~ .taxon-browser-tab.taxon-browser-tab-content-1,
@@ -35,6 +23,12 @@
       display: block
 
   #taxon-browser
+    a.genus, a.subgenus, a.species, a.subspecies, a.infrasubspecies
+      font-style: italic
+    a.subspecies::before
+      content: "ssp. "
+      font-style: normal
+
     .selected, .label-white-smaller
       display: inline-block
       font-size: 0.8rem
