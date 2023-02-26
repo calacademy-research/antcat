@@ -56,14 +56,14 @@
 
   #mobile-menu-content
     %ul.no-bullet
-      %li
+      %li.text-black
         =form_with url: references_search_index_path, method: :get do |f|
           .flex
             =f.text_field "reference_q", value: params[:reference_q], placeholder: "Search References", "aria-label" => "Search References", id: nil, class: "typeahead-references-js placeholder:text-sm"
             =button_tag search_icon, type: "submit", name: nil do
               %i.inline-search-icon.icon-search
 
-      %li
+      %li.text-black
         =form_with url: catalog_search_path, method: :get do |f|
           .flex
             =f.text_field 'qq', value: params[:qq], placeholder: "Search Catalog", "aria-label" => "Search Catalog", id: nil, class: "typeahead-taxa-js-hook placeholder:text-sm"

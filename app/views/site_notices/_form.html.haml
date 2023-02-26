@@ -14,7 +14,8 @@
   .medium-12.columns
     =form_with model: site_notice do |f|
       =render "shared/errors_for", resource: site_notice
-      .row
+
+      .row.mb-4
         .medium-8.columns.end
           =f.label :title
           =f.text_field :title, maxlength: SiteNotice::TITLE_MAX_LENGTH
@@ -24,7 +25,7 @@
           =f.text_area :message, rows: 10,
             data: { has_mentionables: true, has_linkables: true, previewable: true, previewable_title: "Message" }
 
-      .row
+      .row.mb-4
         .medium-12.columns
           =edit_summary_text_field_tag
 

@@ -153,6 +153,9 @@
         Position
         =tooltip_icon 'Leave blank to add new items last. Only relevant for items of Taxt type'
       =f.number_field :position, placeholder: ('Leave blank for default' if history_item.new_record?)
+
+      .mb-4
+
       =f.select :rank, Rank::AntCatSpecific::TYPE_SPECIFIC_HISTORY_ITEM_TYPES, include_blank: 'Show for all ranks (default)'
 
 %h5.mt-20.mb-4 Related records
