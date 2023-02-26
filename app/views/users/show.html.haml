@@ -41,7 +41,7 @@
       %p
         %span.bg-logged-in-only
           %strong Email:
-          =link_to @user.email, "mailto:#{@user.email}"
+          =mail_to @user.email, subject: 'AntCat'
           =logged_in_only_tooltip_icon user_group: 'helpers/editors'
 
     -if @user.author

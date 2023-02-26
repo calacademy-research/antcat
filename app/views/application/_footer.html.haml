@@ -11,7 +11,8 @@
         %ul.no-bullet
           %li=link_to 'About', page_path('about')
           %li=link_to 'List of users', users_path
-          %li=link_to 'Contact us ', "mailto:#{Settings.contact_us_email_address}"
+          %li=mail_to Settings.contact_us_email_address, 'Contact us ', subject: 'AntCat'
+
       .small-4.columns.mt-4
         %ul.no-bullet
           %li=link_to 'Activity feed', activities_path
