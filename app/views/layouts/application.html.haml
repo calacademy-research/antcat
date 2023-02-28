@@ -37,7 +37,7 @@
       =render "dev_helpers"
 
       %div
-        %header#header.px-4
+        %header#header.bg-ac-blue.px-4
           .row.collapse-tw-conflict
             .small-12.columns
               =render "navigation"
@@ -52,7 +52,7 @@
 
         =yield :after_content
 
-        %footer
+        %footer.bg-ac-blue
           =render "footer"
 
       -if Settings.google_analytics.enabled
