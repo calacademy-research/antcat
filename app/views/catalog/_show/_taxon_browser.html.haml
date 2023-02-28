@@ -15,7 +15,7 @@
       %label.py-1.px-4{for: tab.id, class: "!m-0"}=tab.title
 
     .float-right{class: "hidden sm:block"}
-      %button.btn-tiny.btn-nodanger{"data-action" => "toggler#toggle", "data-toggler-target" => "taxon_key"} toggle legend
+      %button.btn-neutral.btn-tiny{"data-action" => "toggler#toggle", "data-toggler-target" => "taxon_key"} toggle legend
       %span.label-secondary
         =taxon_browser_presenter.toggle_invalid_or_valid_only_link
 

@@ -25,7 +25,7 @@
             History items
             %label.float-right
               %input.hidden{"data-checkbox-select-all-target" => "parentCheckbox", 'data-action' => "change->checkbox-select-all#toggle", type: "checkbox"}
-              %span.btn-nodanger.btn-tiny{data: { testid: 'select-deselect-all-button' }} Select/deselect all
+              %span.btn-neutral.btn-tiny{data: { testid: 'select-deselect-all-button' }} Select/deselect all
           %tbody
             -@protonym.history_items.each do |history_item|
               %tr

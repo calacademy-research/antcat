@@ -14,12 +14,12 @@
         =text_field_tag :edit_summary, nil, placeholder: "Edit summary (optional)", maxlength: Activity::EDIT_SUMMARY_MAX_LENGTH, class: 'edit-summary-js-hook'
 
     %a.taxt-editor-history-item-save-button.btn-saves Save
-    %a.taxt-editor-cancel-button.btn-nodanger Cancel
+    %a.taxt-editor-cancel-button.btn-neutral Cancel
     %span.ml-4
     %a.taxt-editor-delete-button.btn-warning Delete
 
   .taxt-presenter.mt-2
-    %a.taxt-editor-edit-button.btn-nodanger.btn-tiny.mr-4 Quick edit
+    %a.taxt-editor-edit-button.btn-neutral.btn-tiny.mr-4 Quick edit
 
     %small.logged-in-only-gray-bold-notice.mr-4=history_item.underscored_type
 

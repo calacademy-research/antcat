@@ -62,7 +62,7 @@ module ApplicationHelper
 
   def submenu_css submenu
     if submenu_active? submenu
-      'btn-nodanger'
+      'btn-neutral'
     else
       'btn-normal'
     end

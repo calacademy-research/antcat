@@ -98,7 +98,7 @@
 
 -if current_user
   .float-right{class: "hidden lg:block"}
-    =link_to "[disco button]", "#", id: 'toggle-disco-mode-js-hook', class: 'btn-lower-nav btn-lower-nav-no-danger hidden'
+    =link_to "[disco button]", "#", id: 'toggle-disco-mode-js-hook', class: 'btn-lower-nav btn-lower-nav-neutral hidden'
     =link_to "Issues (#{Issue.open.count})", issues_path, class: 'btn-lower-nav'
     -if Issue.any_help_wanted_open?
       =link_to "Help Wanted (#{Issue.open_help_wanted.count})", issues_path, class: 'btn-lower-nav btn-lower-nav-high-priority font-bold'

@@ -52,7 +52,7 @@ class MakePreviewable
         <div class="medium-6 columns">#{title}</div>
         <div class="medium-6 columns">
           Preview
-          <button class="btn-nodanger btn-tiny preview-link">Rerender preview</button>
+          <button class="btn-neutral btn-tiny preview-link">Rerender preview</button>
         </div>
       </div>
       <div class="row">

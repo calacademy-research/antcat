@@ -23,7 +23,7 @@ button
   padding: 0
   border: 0
 
-.btn-normal, .btn-saves, .btn-warning, .btn-nodanger
+.btn-normal, .btn-saves, .btn-warning, .btn-neutral
   display: inline-block
   padding: 0.5rem 0.7rem
   font-size: 0.8125rem
@@ -40,7 +40,7 @@ button
 .btn-warning
   @include base-button($color_danger)
 
-.btn-nodanger
+.btn-neutral
   @include base-button(#fff, #000, #000)
 
 .btn-lower-nav
@@ -52,7 +52,7 @@ button
   padding: 0.30rem 0.5rem
 
 
-.btn-lower-nav-no-danger
+.btn-lower-nav-neutral
   @include base-button(#fff, #000)
   color: #000 !important
 
@@ -63,7 +63,7 @@ a.btn-warning
   &:hover
     color: #fff
 
-a.btn-nodanger
+a.btn-neutral
   color: #000 !important
 
 .btn-tiny
