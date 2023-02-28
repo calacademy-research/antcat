@@ -38,7 +38,7 @@
               %i.inline-search-icon.icon-search
 
 #mobile-only-header.text-sm{class: "block lg:hidden pt-2"}
-  %input#mobile-hamburger-input{type: "checkbox", checked: false}
+  %input#mobile-hamburger-input.hidden{type: "checkbox", checked: false}
   %label.float-right.py-10.px-5{for: "mobile-hamburger-input"}
     %span#mobile-hamburger-lines
 
@@ -54,7 +54,7 @@
 
   .clearfix
 
-  #mobile-menu-content
+  #mobile-menu-content.hidden
     %ul.no-bullet
       %li.text-black.mb-2
         =form_with url: references_search_index_path, method: :get do |f|

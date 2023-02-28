@@ -35,13 +35,13 @@
           .medium-12.columns
             %table.table-unstriped
               %tr
-                %td.type-specific-section.type-specific-help-Taxt
+                %td.type-specific-section.hidden.type-specific-help-Taxt
                   %p
                     Fields in this box are not relevant for
                     %code Taxt
                     items.
 
-                %td.type-specific-section.type-specific-help-JuniorSynonymOf.type-specific-help-SeniorSynonymOf
+                %td.type-specific-section.hidden.type-specific-help-JuniorSynonymOf.type-specific-help-SeniorSynonymOf
                   %p
                     Protonym-based. Currently only for species-group names, because the terminal taxon of the
                     %code object_protonym
@@ -56,12 +56,12 @@
                       %code SeniorSynonymOf
                     must be added.
 
-                %td.type-specific-section.type-specific-help-FormDescriptions
+                %td.type-specific-section.hidden.type-specific-help-FormDescriptions
                   %p
                     See also related wiki page
                     =link_to_wiki_page_or_missing WikiPage::FORMS
 
-                %td.type-specific-section.type-specific-help-HomonymReplacedBy.type-specific-help-ReplacementNameFor
+                %td.type-specific-section.hidden.type-specific-help-HomonymReplacedBy.type-specific-help-ReplacementNameFor
                   %p
                     Like with
                     %code Taxt
@@ -75,7 +75,7 @@
         -# [grep:history_type].
         %table.table-unstriped
           %tbody
-            %tr#type-specific-subtype.type-specific-section
+            %tr#type-specific-subtype.type-specific-section.hidden
               %th
                 =f.label :subtype, id: 'type-label-subtype' do
                   subtype [???]
@@ -84,7 +84,7 @@
               %td
                 %code subtype
 
-            %tr#type-specific-picked-value.type-specific-section
+            %tr#type-specific-picked-value.type-specific-section.hidden
               %th
                 =f.label :picked_value, id: 'type-label-picked-value' do
                   picked_value [???]
@@ -92,7 +92,7 @@
               %td
                 %code picked_value
 
-            %tr#type-specific-text-value.type-specific-section
+            %tr#type-specific-text-value.type-specific-section.hidden
               %th.no-wrap
                 =f.label :text_value, id: 'type-label-text-value' do
                   text_value [???]
@@ -101,7 +101,7 @@
               %td
                 %code text_value
 
-            %tr#type-specific-object-protonym.type-specific-section
+            %tr#type-specific-object-protonym.type-specific-section.hidden
               %th.no-wrap
                 =f.label :object_protonym, id: 'type-label-object-protonym' do
                   object_protonym_id [???]
@@ -109,7 +109,7 @@
               %td
                 %code object_protonym
 
-            %tr#type-specific-object-taxon.type-specific-section
+            %tr#type-specific-object-taxon.type-specific-section.hidden
               %th.no-wrap
                 =f.label :object_taxon, id: 'type-label-object-taxon' do
                   object_taxon_id [???]
@@ -117,7 +117,7 @@
               %td
                 %code object_taxon
 
-            %tr#type-specific-reference.type-specific-section
+            %tr#type-specific-reference.type-specific-section.hidden
               %th.no-wrap
                 =f.label :reference, id: 'type-label-reference' do
                   Reference
@@ -125,7 +125,7 @@
               %td
                 %code reference_id
 
-            %tr#type-specific-pages.type-specific-section
+            %tr#type-specific-pages.type-specific-section.hidden
               %th.no-wrap
                 =f.label :pages, id: 'type-label-pages' do
                   Pages
@@ -134,7 +134,7 @@
               %td
                 %code pages
 
-            %tr#type-specific-force-author-citation.type-specific-section
+            %tr#type-specific-force-author-citation.type-specific-section.hidden
               %th.no-wrap
                 =f.label :pages, id: 'type-label-force-author-citation' do
                   Force author citation

@@ -9,7 +9,7 @@
       -else
         =Detax[content]
 
-  .taxt-editor-editor{data: { visible_in_test_env: true }}
+  .taxt-editor-editor.hidden{data: { visible_in_test_env: true }}
     =text_area_tag name, content, rows: 5, data: { has_linkables: true, previewable: true, use_extras: true, format_type_fields: format_type_fields }
 
     %a.taxt-editor-ok-button.btn-saves OK
