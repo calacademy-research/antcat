@@ -21,4 +21,12 @@ class Notification < ApplicationRecord
   def unseen?
     !seen?
   end
+
+  def template_name
+    "notifications/templates/#{reason}"
+  end
+
+  def email_template_name
+    "mailers/user_mailer/notifications/templates/#{reason}"
+  end
 end
