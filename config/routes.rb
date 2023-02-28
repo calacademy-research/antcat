@@ -240,15 +240,12 @@ Rails.application.routes.draw do
   resources :database_scripts, only: [:index, :show]
 
   scope :quick_and_dirty_fixes do
-    post 'convert_bolton_tags_quick_and_dirty_fix', to: 'quick_and_dirty_fixes#convert_bolton_tags'
     post 'convert_to_taxac_tags_quick_and_dirty_fix', to: 'quick_and_dirty_fixes#convert_to_taxac_tags'
     post 'delete_history_item_quick_and_dirty_fix', to: 'quick_and_dirty_fixes#delete_history_item'
     post 'flag_as_original_combination_quick_and_dirty_fix', to: 'quick_and_dirty_fixes#flag_as_original_combination'
     post 'force_remove_pages_from_taxac_tags_quick_and_dirty_fix', to: 'quick_and_dirty_fixes#force_remove_pages_from_taxac_tags'
     post 'remove_pages_from_taxac_tags_quick_and_dirty_fix', to: 'quick_and_dirty_fixes#remove_pages_from_taxac_tags'
     post 'replace_missing_tags_quick_and_dirty_fix', to: 'quick_and_dirty_fixes#replace_missing_tags'
-    post 'replace_missing_tag_with_tax_tag_quick_and_dirty_fix', to: 'quick_and_dirty_fixes#replace_missing_tag_with_tax_tag'
-    post 'switch_tax_tag_quick_and_dirty_fix', to: 'quick_and_dirty_fixes#switch_tax_tag'
     post 'strip_except_replacement_name_for_quick_and_dirty_fix', to: 'quick_and_dirty_fixes#strip_except_replacement_name_for'
     post 'update_current_taxon_id_quick_and_dirty_fix', to: 'quick_and_dirty_fixes#update_current_taxon_id'
   end
