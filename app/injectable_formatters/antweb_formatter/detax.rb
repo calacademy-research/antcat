@@ -29,7 +29,6 @@ module AntwebFormatter
       parse_misspelling_tags
 
       parse_hiddennotes_tags
-      parse_parsertag_tags
 
       sanitize content.html_safe
     end
@@ -126,12 +125,6 @@ module AntwebFormatter
       # Hidden editor notes (logged-in only) "{hiddennote string}".
       def parse_hiddennotes_tags
         content.gsub!(Taxt::HIDDENNOTE_TAG_REGEX) do
-          ''
-        end
-      end
-
-      def parse_parsertag_tags
-        content.gsub!(Taxt::PARSERTAG_TAG_REGEX) do
           ''
         end
       end

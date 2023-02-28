@@ -114,15 +114,5 @@ describe AntwebFormatter::Detax do
           to eq "Synonym of Lasius and Formica"
       end
     end
-
-    describe "tag: `PARSERTAG`" do
-      it 'removes the note tag and its content' do
-        expect(described_class["{#{Taxt::PARSERTAG_TAG}}Synonym of Lasius and Formica"]).
-          to eq "Synonym of Lasius and Formica"
-
-        expect(described_class["{#{Taxt::PARSERTAG_TAG} ignore}Synonym of Lasius and Formica"]).
-          to eq "Synonym of Lasius and Formica"
-      end
-    end
   end
 end

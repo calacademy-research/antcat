@@ -201,15 +201,5 @@ describe Markdowns::ParseCatalogTags do
           to eq 'Synonym of Lasius<span class="taxt-hidden-note"><b>Hidden editor note:</b> check reference</span> and Formica'
       end
     end
-
-    describe "tag: `PARSERTAG_TAG_REGEX`" do
-      it 'wraps the content in a span only visible to logged-in users' do
-        expect(described_class["Synonym of Lasius{#{Taxt::PARSERTAG_TAG} ignore} and Formica"]).
-          to eq 'Synonym of Lasius<span class="taxt-parser-tag"><b>Hidden parser tag</b> ignore</span> and Formica'
-
-        expect(described_class["Synonym of Lasius{#{Taxt::PARSERTAG_TAG}} and Formica"]).
-          to eq 'Synonym of Lasius<span class="taxt-parser-tag"><b>Hidden parser tag</b></span> and Formica'
-      end
-    end
   end
 end

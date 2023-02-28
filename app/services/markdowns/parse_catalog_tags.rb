@@ -27,7 +27,6 @@ module Markdowns
       parse_misspelling_tags
 
       parse_hiddennotes_tags
-      parse_parsertag_tags
 
       content
     end
@@ -181,13 +180,6 @@ module Markdowns
       def parse_hiddennotes_tags
         content.gsub!(Taxt::HIDDENNOTE_TAG_REGEX) do
           %(<span class="taxt-hidden-note"><b>Hidden editor note:</b> #{$LAST_MATCH_INFO[:note_content]}</span>)
-        end
-      end
-
-      # Hidden parser tags (logged-in only) "{parsertag optional string}".
-      def parse_parsertag_tags
-        content.gsub!(Taxt::PARSERTAG_TAG_REGEX) do
-          %(<span class="taxt-parser-tag"><b>Hidden parser tag</b>#{$LAST_MATCH_INFO[:optional_content]}</span>)
         end
       end
 
