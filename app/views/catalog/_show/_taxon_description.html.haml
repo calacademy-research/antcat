@@ -3,12 +3,14 @@
     =javascript_include_tag 'markdown_and_friends', 'taxt_editor'
   =render "shared/default_reference"
 
+/--- First line ---
 .text-sm
   %span.text-lg.font-bold.mr-1=Taxa::LinkEachEpithet[taxon]
   =taxon.author_citation
   =taxon.decorate.expanded_status
   =taxon.name.gender
 
+/--- Second line ---
 %div
   %span.font-bold.mr-1{data: { testid: 'catalog-protonym-name' }}
     =protonym.decorate.link_to_protonym
@@ -26,6 +28,7 @@
     =decorated_protonym_type_name.format_rank
     =CatalogFormatter.link_to_taxon(protonym_type_name.taxon) + decorated_protonym_type_name.compact_taxon_status + Detax[decorated_protonym_type_name.format_fixation_method]
 
+/--- Type names ---
 -if current_user
   -if taxon.type_names.present?
     .bg-logged-in-only.callout.border-0.mt-8.mb-8
@@ -37,6 +40,7 @@
             of
             =as_type_name.protonym.decorate.link_to_protonym_with_author_citation + Detax[decorated_as_type_name.format_fixation_method]
 
+/--- Type information ---
 .text-sm.mb-4
   -if protonym.primary_type_information_taxt?
     %strong Primary type information:
@@ -48,6 +52,7 @@
     %strong Type notes:
     =::Types::FormatTypeField[protonym.type_notes_taxt]
 
+/--- Replacement names for ---
 -if current_user && taxon.replacement_name_for.present?
   .bg-logged-in-only.callout.border-0
     %strong Replacement name for
@@ -56,6 +61,7 @@
       =replaced_name.author_citation
     =info_tooltip_icon "Via 'taxa.homonym_replaced_by_id'"
 
+/--- History items ---
 -# History items as object.
 -if current_user
   -if taxon.history_items_as_object_for_taxon.present?
@@ -114,6 +120,7 @@
       -history_presenter.grouped_items.each do |grouped_item|
         %li=Detax[grouped_item.taxt]
 
+-# Not shown history items from protonym.
 -if current_user && !Status.display_history_items?(taxon.status)
   -if taxon.history_items_for_taxon_including_hidden.present?
     .bg-logged-in-only.callout.border-0.text-sm.mt-8.mb-8
@@ -134,6 +141,7 @@
             -else
               =Detax[history_item.to_taxt]
 
+/--- Junior synonyms ---
 -if taxon.junior_synonyms.exists?
   -name_of_obsoletes = taxon.decorate.name_of_obsoletes
   %h6.font-bold.mt-8 Junior synonyms
@@ -147,12 +155,14 @@
             Obsolete #{name_of_obsoletes}(s):
             =safe_join synonym.obsolete_combinations.map { |obsolete| CatalogFormatter.link_to_taxon(obsolete) }, ', '
 
+/--- Obsolete combinations ---
 -if taxon.obsolete_combinations.exists?
   %h6.font-bold.mt-8="Obsolete #{taxon.decorate.name_of_obsoletes}s"
   %ul.compact-list.no-bullet.mb-8
     -taxon.obsolete_combinations.order_by_name.includes(:name).each do |obsolete_combination|
       %li=CatalogFormatter.link_to_taxon(obsolete_combination)
 
+/--- Rank-specific ---
 .mb-4
   -Taxa::ChildList[taxon].each do |child_list|
     %div
@@ -170,6 +180,7 @@
   -if taxon.is_a?(Subspecies)
     =render 'catalog/_show/rank_specific/subspecies', taxon: taxon
 
+/--- Reference sections ---
 -if catalog_presenter.formicidae_landing_page?
   %br
   =link_to "Formicidae family references", catalog_path(taxon)
@@ -192,6 +203,7 @@
                 =link_to "Edit", edit_reference_section_path(reference_section), class: "btn-normal btn-very-tiny"
               =link_to "History", reference_section_history_path(reference_section), class: "btn-normal btn-very-tiny"
 
+/--- Citations ---
 -unless catalog_presenter.formicidae_landing_page?
   %h6.font-bold.mt-20 Citations
   %ul#citations.compact-list
