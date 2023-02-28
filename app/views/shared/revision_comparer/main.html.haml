@@ -28,7 +28,7 @@
             Version before item was deleted
           %small=comparer.most_recent.updated_at
 
-      .callout{class: (comparer.looking_at_a_single_old_revision? ? "make-red" : "make-green")}
+      .callout{class: (comparer.looking_at_a_single_old_revision? ? "bg-revision-red" : "bg-revision-green")}
         =preserve do
           =revision_presenter.render_revision(comparer.selected || comparer.most_recent, view_context: self)
 

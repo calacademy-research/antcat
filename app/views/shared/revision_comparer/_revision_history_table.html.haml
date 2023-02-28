@@ -22,7 +22,7 @@
         -# The `most_recent` revision is special, as it's not in `revisions`.
         -# It will be either the current object, or a reified instance of
         -# what it looked like before it was deleted.
-        %tr{class: ("make-green" if comparer.looking_at_most_recent?)}
+        %tr{class: ("bg-revision-green" if comparer.looking_at_most_recent?)}
           %td.shrink-tw-conflict cur
           %td.shrink-tw-conflict=link_to "prev", diff_with_id: revisions.first.id
           %td.shrink-tw-conflict

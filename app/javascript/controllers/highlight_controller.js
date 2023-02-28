@@ -6,7 +6,7 @@ export default class extends Controller {
   connect() {
     if (this.hasHrefValue) {
       this.element.querySelectorAll(`a[href*="${this.hrefValue}"]`).
-        forEach((element) => element.classList.add('bg-yellow'))
+        forEach((element) => element.classList.add('bg-yellow-200'))
     }
   }
 }
