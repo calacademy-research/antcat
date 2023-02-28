@@ -409,7 +409,7 @@ label {
   font-size: 0.875rem;
   font-weight: normal;
   line-height: 1.8;
-  color: $color_almost_black;
+  color: #000;
 }
 
 /////////// Forms: Select ///////////
@@ -421,11 +421,11 @@ select {
   appearance: none;
   border: 1px solid $color_medium_gray;
   border-radius: 3px;
-  background-color: #fefefe;
+  background-color: #fff;
   font-size: 1rem;
   font-weight: normal;
   line-height: 1.5;
-  color: $color_almost_black;
+  color: #000;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='32' height='24' viewBox='0 0 32 24'><polygon points='0,0 32,0 16,24' style='fill: rgb%28138, 138, 138%29'></polygon></svg>");
   background-origin: content-box;
   background-position: right -1rem center;
@@ -451,12 +451,12 @@ table {
   thead,
   tbody {
     border: 1px solid #f1f1f1;
-    background-color: #fefefe;
+    background-color: #fff;
   }
 
   thead {
-    background: $color_almost_white;
-    color: $color_almost_black;
+    background: #f8f8f8;
+    color: #000;
   }
 
   th,
@@ -493,6 +493,6 @@ code {
   border: 1px solid $color_medium_gray;
   background-color: $color_light_gray;
   font-family: Consolas, "Liberation Mono", Courier, monospace;
-  color: $color_almost_black;
+  color: #000;
   padding: 0.125rem 0.3125rem 0.0625rem;
 }
