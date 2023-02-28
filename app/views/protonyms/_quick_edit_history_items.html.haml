@@ -7,5 +7,5 @@
 
   #history-items{data: {protonym_id: protonym.id}}
     -protonym.history_items.each do |history_item|
-      .history-item{class: ["#{history_item.underscored_type}-history-item"]}
+      .history-item{class: ["#{history_item.underscored_type}-history-item", "mb-4 pb-4 border-b border-gray-300 last:border-0"]}
         =render 'history_items/taxt_editor_template', history_item: history_item
