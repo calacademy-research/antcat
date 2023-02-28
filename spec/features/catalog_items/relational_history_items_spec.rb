@@ -10,7 +10,7 @@ feature "Editing relational history items", as: :editor do
     visit protonym_path(protonym)
     the_history_should_be_empty
 
-    i_click_on 'the add history item button'
+    i_click_on_selector_for 'the add history item button'
     wait_for_taxt_editors_to_load
     select "Form descriptions (additional)", from: "history_item_type"
     fill_in "history_item_text_value", with: "w.q."
@@ -27,7 +27,7 @@ feature "Editing relational history items", as: :editor do
     visit protonym_path(protonym)
     the_history_should_be_empty
 
-    i_click_on 'the add history item button'
+    i_click_on_selector_for 'the add history item button'
     select "Form descriptions (additional)", from: "history_item_type"
     fill_in "taxt", with: "Pizza"
 
@@ -65,10 +65,10 @@ feature "Editing relational history items", as: :editor do
     i_should_see "Batiatus, 2004a: 77-78 (q.)"
 
     wait_for_taxt_editors_to_load
-    i_click_on 'the edit history item button'
+    i_click_on_selector_for 'the edit history item button'
     fill_in "text_value", with: "w."
     fill_in "pages", with: "99"
-    i_click_on 'the save history item button'
+    i_click_on_selector_for 'the save history item button'
     i_reload_the_page
     i_should_see "Batiatus, 2004a: 99 (w.)"
   end
