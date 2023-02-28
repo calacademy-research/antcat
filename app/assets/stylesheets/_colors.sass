@@ -1,4 +1,4 @@
-// TODO: Standardize/cleanup color names.
+// NOTE: Colors may be duplicated in 'tailwind.config.js'.
 
 $color_light_gray: #eeeeee
 $color_medium_gray: #cacaca
@@ -10,19 +10,12 @@ $color_really_dark_gray_text: #383d42
 
 $color_danger: #ec5840
 $color_danger_pale: #fce6e2
-$color_primary: #2188ff
-$color_primary_hover: #0073f8
-$color_primary_light: #79b8ff
+$color_ac_blue: #2188ff
 $color_save: #044289
-$color_pale: scale-color($color_primary, $lightness: 85%)
+$color_pale: scale-color($color_ac_blue, $lightness: 85%)
 $color_warning: #ffae00
 
 $color_scream_green: lighten(desaturate(#00a82d, 10%), 10%)
 $color_scream_orange: #ff851b
 
-$color_green_pale: scale-color($color_scream_green, $lightness: 85%)
-
 $color_high_priority: $color_scream_orange
-
-$color_almost_white: #f8f8f8
-$color_almost_black: #0a0a0a

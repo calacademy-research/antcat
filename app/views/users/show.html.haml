@@ -5,16 +5,16 @@
 
 -content_for :breadcrumbs_right do
   -if user_is_editor?
-    =link_to "PaperTrail Versions by user", versions_path(whodunnit: @user.id), class: "btn-normal"
+    =link_to "PaperTrail Versions by user", versions_path(whodunnit: @user.id), class: "btn-default"
 
   -if user_is_superadmin?
-    =link_to append_superadmin_icon("Edit"), edit_user_path(@user), class: "btn-normal"
+    =link_to append_superadmin_icon("Edit"), edit_user_path(@user), class: "btn-default"
     -unless @user.deleted?
-      =link_to append_superadmin_icon("Delete"), user_path(@user), method: :delete, data: { confirm: 'Are you sure? This will soft-delete the user and lock the account.' }, class: "btn-normal btn-warning"
+      =link_to append_superadmin_icon("Delete"), user_path(@user), method: :delete, data: { confirm: 'Are you sure? This will soft-delete the user and lock the account.' }, class: "btn-default btn-warning"
 
   -if current_user == @user
     -content_for :breadcrumbs_right do
-      =link_to "My account", edit_user_registration_path, class: "btn-normal"
+      =link_to "My account", edit_user_registration_path, class: "btn-default"
 
 -if @user.deleted?
   .callout-alert.small-6 This user has been soft-deleted. This page can only be seen by editors. Edit user to restore account.

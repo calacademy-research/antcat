@@ -3,24 +3,24 @@
 
 -content_for :breadcrumbs_right do
   -if user_is_at_least_helper?
-    =link_to 'Edit', edit_protonym_path(@protonym), class: "btn-normal"
+    =link_to 'Edit', edit_protonym_path(@protonym), class: "btn-default"
   -if current_user
-    =link_to "History", protonym_history_path(@protonym), class: "btn-normal"
-    =link_to "What Links Here", protonym_what_links_here_path(@protonym), class: "btn-normal"
+    =link_to "History", protonym_history_path(@protonym), class: "btn-default"
+    =link_to "What Links Here", protonym_what_links_here_path(@protonym), class: "btn-default"
   -if user_is_at_least_helper?
     -if !@protonym.taxa.exists?
       =link_to "Delete", protonym_path(@protonym), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-warning"
 
   -if current_user
     .dropdown-container
-      %button.btn-normal{"data-action" => "toggler#toggle", "data-toggler-target" => "more_dropdown"}
+      %button.btn-default{"data-action" => "toggler#toggle", "data-toggler-target" => "more_dropdown"}
         More
         %i.arrow-down.ml-2
       .hidden.callout.dropdown-content{data: { toggler_name: "more_dropdown" }}
         %ul.no-bullet
           -if user_is_at_least_helper?
-            %li=link_to "Move items", new_protonym_move_items_path(@protonym), class: "btn-normal"
-          %li=link_to "Soft validations", protonym_soft_validations_path(@protonym), class: "btn-normal"
+            %li=link_to "Move items", new_protonym_move_items_path(@protonym), class: "btn-default"
+          %li=link_to "Soft validations", protonym_soft_validations_path(@protonym), class: "btn-default"
           %li=activities_link_for_trackable @protonym
 
 -if Settings.catalog.show_failed_soft_validations
@@ -43,7 +43,7 @@
           =ndash
           nomen nudum
       -if current_user
-        .float-right=link_to "Name record ##{@protonym.name.id}", name_path(@protonym.name), class: 'btn-normal btn-tiny'
+        .float-right=link_to "Name record ##{@protonym.name.id}", name_path(@protonym.name), class: 'btn-default btn-tiny'
     %table.table-unstriped
       %tbody
         %tr
@@ -117,9 +117,9 @@
 
         %ul.no-bullet
           -if user_is_at_least_helper?
-            %li.mb-2=link_to "Add history item", new_protonym_history_item_path(@protonym, **current_page_redirect_back_url), class: "btn-normal btn-tiny"
+            %li.mb-2=link_to "Add history item", new_protonym_history_item_path(@protonym, **current_page_redirect_back_url), class: "btn-default btn-tiny"
             -if @protonym.history_items.size > 1
-              %li.mb-2=link_to "Reorder history items", protonym_reorder_history_items_path(@protonym), class: "btn-normal btn-tiny"
+              %li.mb-2=link_to "Reorder history items", protonym_reorder_history_items_path(@protonym), class: "btn-default btn-tiny"
 
         %ul.no-bullet.text-sm
           %li Created at: #{l @protonym.created_at, format: :ymd}
@@ -150,7 +150,7 @@
               %td
                 =taxon.decorate.link_to_antwiki
                 %br
-                =link_to "Show children", taxon_children_path(taxon), class: "btn-normal btn-tiny"
+                =link_to "Show children", taxon_children_path(taxon), class: "btn-default btn-tiny"
 
 -if current_user
   -content_for :javascripts do

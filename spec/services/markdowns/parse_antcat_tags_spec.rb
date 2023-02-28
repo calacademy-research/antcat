@@ -23,7 +23,7 @@ describe Markdowns::ParseAntCatTags do
 
       it "formats user links" do
         expect(described_class["@user#{user.id}"]).
-          to eq %(<a class="user-mention" href="/users/#{user.id}">@#{user.name}</a>)
+          to eq %(<a class="font-bold" href="/users/#{user.id}">@#{user.name}</a>)
       end
     end
 

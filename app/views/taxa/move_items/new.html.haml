@@ -12,7 +12,8 @@
       .callout
         %h6.font-bold ...to
         =taxon_picker @to_taxon || @taxon.current_taxon, name: 'to_taxon_id'
-        =f.button "Select...", class: "btn-normal"
+        .mb-4
+        =f.button "Select...", class: "btn-default"
 
 .row
   .medium-6.columns

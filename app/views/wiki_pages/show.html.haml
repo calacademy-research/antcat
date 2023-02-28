@@ -2,9 +2,9 @@
 -breadcrumb :wiki_page, @wiki_page
 
 -content_for :breadcrumbs_right do
-  =link_to "History", wiki_page_history_path(@wiki_page), class: "btn-normal"
+  =link_to "History", wiki_page_history_path(@wiki_page), class: "btn-default"
   -if current_user
-    =link_to("Edit", edit_wiki_page_path(@wiki_page), class: "btn-normal")
+    =link_to("Edit", edit_wiki_page_path(@wiki_page), class: "btn-default")
   -if user_is_superadmin?
     =link_to append_superadmin_icon("Delete"), @wiki_page, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-warning"
 

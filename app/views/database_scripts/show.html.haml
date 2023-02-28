@@ -5,7 +5,7 @@
   =javascript_include_tag "sortable_tables"
 
 -content_for :breadcrumbs_right do
-  =link_to "Show source code", @decorated_database_script.github_url, class: "btn-normal"
+  =link_to "Show source code", @decorated_database_script.github_url, class: "btn-default"
 
 .row.collapse-tw-conflict.mb-8
   .medium-8.columns
@@ -20,8 +20,7 @@
         %p=markdown @database_script.issue_description
 
     -if @database_script.related_scripts.present?
-      %h6.mt-8
-        %strong Related scripts
+      %h6.font-bold.mt-8 Related scripts
       %ul
         -@database_script.related_scripts.each do |related_script|
           %li

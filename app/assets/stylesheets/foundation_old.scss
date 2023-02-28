@@ -299,20 +299,6 @@ h6 {
   }
 }
 
-a {
-  color: $color_primary;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-a:hover, a:focus {
-  color: $color_primary_hover;
-}
-
-a img {
-  border: 0;
-}
-
 hr {
   clear: both;
   max-width: 75rem;
@@ -352,23 +338,15 @@ textarea {
   min-height: 50px;
   max-width: 100%;
   width: 100%;
-  border-radius: 3px;
 }
 
-[type='text'], [type='password'], [type='email'], [type='number'], [type='search'] {
+[type='text'], [type='password'], [type='email'], [type='number'], [type='search'], textarea {
+  border: 1px solid $color_medium_gray;
   border-radius: 3px;
 }
 
 [type='text'], [type='password'], [type='email'], [type='number'], [type='search'] {
   width: 100%;
-}
-
-select {
-  border-radius: 3px;
-}
-
-textarea[rows] {
-  height: auto;
 }
 
 input:disabled, input[readonly],
@@ -409,30 +387,13 @@ label {
   font-size: 0.875rem;
   font-weight: normal;
   line-height: 1.8;
-  color: $color_almost_black;
 }
 
-/////////// Forms: Select ///////////
 select {
   width: 100%;
-  height: 2.4375rem;
-  margin: 0 0 1rem;
-  padding: 0.5rem;
   appearance: none;
   border: 1px solid $color_medium_gray;
   border-radius: 3px;
-  background-color: #fefefe;
-  font-size: 1rem;
-  font-weight: normal;
-  line-height: 1.5;
-  color: $color_almost_black;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='32' height='24' viewBox='0 0 32 24'><polygon points='0,0 32,0 16,24' style='fill: rgb%28138, 138, 138%29'></polygon></svg>");
-  background-origin: content-box;
-  background-position: right -1rem center;
-  background-repeat: no-repeat;
-  background-size: 9px 6px;
-  padding-right: 1.5rem;
-  transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
 }
 
 /////////// Tables ///////////
@@ -451,12 +412,11 @@ table {
   thead,
   tbody {
     border: 1px solid #f1f1f1;
-    background-color: #fefefe;
+    background-color: #fff;
   }
 
   thead {
-    background: $color_almost_white;
-    color: $color_almost_black;
+    background: #f8f8f8;
   }
 
   th,
@@ -466,10 +426,6 @@ table {
 
   th {
     text-align: left;
-  }
-
-  thead tr {
-    background: transparent;
   }
 
   thead th,
@@ -493,6 +449,5 @@ code {
   border: 1px solid $color_medium_gray;
   background-color: $color_light_gray;
   font-family: Consolas, "Liberation Mono", Courier, monospace;
-  color: $color_almost_black;
   padding: 0.125rem 0.3125rem 0.0625rem;
 }

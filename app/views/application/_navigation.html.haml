@@ -22,23 +22,23 @@
     %ul.no-bullet.flex.items-center
       %li.uppercase.mr-6=link_to 'References', references_latest_additions_path, class: "big-screaming-orange-button #{'very-active' if menu_active?(:references)}"
       %li.uppercase.mr-6=link_to 'Catalog', root_path, class: "big-screaming-green-button #{'very-active' if menu_active?(:catalog)}"
-      %li
+      %li.text-black
         =form_with url: references_search_index_path, method: :get, class: "mr-4" do |f|
           .flex
-            =f.text_field "reference_q", value: params[:reference_q], placeholder: "Search References", "aria-label" => "Search References", id: nil, class: "typeahead-references-js expandable-reference-search placeholder:text-sm", data: { testid: 'header-reference-search-input' }
+            =f.text_field "reference_q", value: params[:reference_q], placeholder: "Search References", "aria-label" => "Search References", id: nil, class: "typeahead-references-js expandable-reference-search placeholder:text-sm border-0", data: { testid: 'header-reference-search-input' }
             =button_tag type: 'submit', name: nil, "aria-label" => 'Search References', data: { testid: 'header-reference-search-button' } do
               %i.inline-search-icon.icon-search
 
-      %li
+      %li.text-black
         =form_with url: catalog_search_path, method: :get do |f|
           .flex
-            =f.text_field 'qq', value: params[:qq], placeholder: "Search Catalog", "aria-label" => "Search Catalog", id: nil, class: 'expandable-catalog-search typeahead-taxa-js-hook placeholder:text-sm'
+            =f.text_field 'qq', value: params[:qq], placeholder: "Search Catalog", "aria-label" => "Search Catalog", id: nil, class: 'expandable-catalog-search typeahead-taxa-js-hook placeholder:text-sm border-0'
             =hidden_field_tag Catalog::SearchesController::SEARCHING_FROM_HEADER, true, id: nil
             =button_tag type: 'submit', name: nil, "aria-label" => 'Search Catalog', data: { testid: 'header-catalog-search-button' } do
               %i.inline-search-icon.icon-search
 
 #mobile-only-header.text-sm{class: "block lg:hidden pt-2"}
-  %input#mobile-hamburger-input{type: "checkbox", checked: false}
+  %input#mobile-hamburger-input.hidden{type: "checkbox", checked: false}
   %label.float-right.py-10.px-5{for: "mobile-hamburger-input"}
     %span#mobile-hamburger-lines
 
@@ -54,7 +54,7 @@
 
   .clearfix
 
-  #mobile-menu-content
+  #mobile-menu-content.hidden
     %ul.no-bullet
       %li.text-black.mb-2
         =form_with url: references_search_index_path, method: :get do |f|
@@ -98,7 +98,7 @@
 
 -if current_user
   .float-right{class: "hidden lg:block"}
-    =link_to "[disco button]", "#", id: 'toggle-disco-mode-js-hook', class: 'btn-lower-nav btn-lower-nav-no-danger hidden'
+    =link_to "[disco button]", "#", id: 'toggle-disco-mode-js-hook', class: 'btn-lower-nav btn-lower-nav-neutral hidden'
     =link_to "Issues (#{Issue.open.count})", issues_path, class: 'btn-lower-nav'
     -if Issue.any_help_wanted_open?
       =link_to "Help Wanted (#{Issue.open_help_wanted.count})", issues_path, class: 'btn-lower-nav btn-lower-nav-high-priority font-bold'

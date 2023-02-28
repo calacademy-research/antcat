@@ -6,14 +6,14 @@
 -content_for :breadcrumbs_right do
   .float-right
     -if user_is_at_least_helper?
-      =link_to "Edit", edit_reference_path(@reference), class: "btn-normal"
+      =link_to "Edit", edit_reference_path(@reference), class: "btn-default"
     -if current_user
-      =link_to "History", reference_history_path(@reference), class: "btn-normal"
-      =link_to "What Links Here", reference_what_links_here_path(@reference), class: "btn-normal"
+      =link_to "History", reference_history_path(@reference), class: "btn-default"
+      =link_to "What Links Here", reference_what_links_here_path(@reference), class: "btn-default"
 
     -if decorated.exportable_to_endnote? || decorated.exportable_to_wikipedia?
       .dropdown-container
-        %button.btn-normal{"data-action" => "toggler#toggle", "data-toggler-target" => "export_dropdown"}
+        %button.btn-default{"data-action" => "toggler#toggle", "data-toggler-target" => "export_dropdown"}
           Export
           %i.arrow-down.ml-2
         .hidden.callout.dropdown-content{data: { toggler_name: "export_dropdown" }}
@@ -25,14 +25,14 @@
 
     -if user_is_at_least_helper?
       .dropdown-container
-        %button.btn-normal{"data-action" => "toggler#toggle", "data-toggler-target" => "more_dropdown"}
+        %button.btn-default{"data-action" => "toggler#toggle", "data-toggler-target" => "more_dropdown"}
           More
           %i.arrow-down.ml-2
         .hidden.callout.dropdown-content{data: { toggler_name: "more_dropdown" }}
           %ul.no-bullet
             -if @reference.is_a?(ArticleReference) || @reference.is_a?(BookReference)
-              %li=link_to "New Nested Reference", new_reference_path(nesting_reference_id: @reference.id, year: @reference.year, stated_year: @reference.stated_year), class: "btn-normal"
-            %li=link_to "Copy", new_reference_path(reference_to_copy: @reference.id), class: "btn-normal"
+              %li=link_to "New Nested Reference", new_reference_path(nesting_reference_id: @reference.id, year: @reference.year, stated_year: @reference.stated_year), class: "btn-default"
+            %li=link_to "Copy", new_reference_path(reference_to_copy: @reference.id), class: "btn-default"
             -if user_is_editor?
               %li=link_to "Delete", reference_path(@reference), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-warning"
             =activities_link_for_trackable @reference

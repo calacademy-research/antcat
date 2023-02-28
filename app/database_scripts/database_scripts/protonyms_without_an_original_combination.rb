@@ -77,7 +77,7 @@ module DatabaseScripts
 
         link_to '^-- Flag as Original combination!',
           flag_as_original_combination_quick_and_dirty_fix_path(taxon_id: taxon.id),
-          method: :post, remote: true, class: 'btn-normal btn-tiny'
+          method: :post, remote: true, class: 'btn-default btn-tiny'
       end
 
       def cannot_quick_fix reason

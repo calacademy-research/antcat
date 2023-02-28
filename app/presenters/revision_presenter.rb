@@ -22,12 +22,12 @@ class RevisionPresenter
   def revision_css revision
     return unless comparer.revision_selected?(revision) || comparer.revision_diff_with?(revision)
 
-    return "make-red" if comparer.looking_at_a_single_old_revision?
+    return "bg-revision-red" if comparer.looking_at_a_single_old_revision?
 
     if comparer.revision_selected? revision
-      "make-green"
+      "bg-revision-green"
     else
-      "make-red"
+      "bg-revision-red"
     end
   end
 

@@ -18,7 +18,7 @@ describe UserDecorator do
 
     it "like `#user_page_link`, but prefixed with an '@'" do
       expect(decorated.ping_user_link).
-        to eq %(<a class="user-mention" href="/users/#{user.id}">@#{user.name}</a>)
+        to eq %(<a class="font-bold" href="/users/#{user.id}">@#{user.name}</a>)
     end
   end
 

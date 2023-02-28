@@ -22,7 +22,7 @@
   border-top-left-radius: 5px
   border-top-right-radius: 5px
   a
-    color: #fff !important
+    color: #fff
 
 table.activities .activity-link-wrapper:hover
   .show-on-hover
@@ -31,19 +31,8 @@ table.activities .activity-link-wrapper:hover
     display: none
 
 // TODO: Fix hack.
-.activity-link-wrapper .btn-normal
+.activity-link-wrapper .btn-default
   @extend .btn-very-tiny
-
-.inline-expandable
-  margin-left: 0.5rem
-  &:hover
-    cursor: pointer
-  .hide-when-expaned
-    font-style: italic
-    a.gray
-      color: $color_dark_gray
-  .show-when-expanded
-    background: $color_pale
 
 #soft-validations-table
   td
@@ -59,7 +48,7 @@ table.activities .activity-link-wrapper:hover
   // HACK: Margin/padding to make it look acceptable in both Chrome and Firefox.
   margin-left: -35px
   padding-right: 10px
-  color: $color_primary
+  color: $color_ac_blue
   cursor: pointer
   width: 0
 
@@ -68,7 +57,7 @@ span.discreet-author-citation
   padding-bottom: 3px
   font-size: 93%
   a
-    color: $color_almost_black !important
+    color: #000
 
 .external-link:after
   font-family: 'fontello'

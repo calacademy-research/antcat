@@ -1,9 +1,9 @@
 %div{"data-controller" => "picker", "data-picker-url-value" => "#{autocomplete_url}", "data-picker-pickable-type-value" => "#{pickable_type}"}
-  %p.picker-fake-input{"data-picker-target" => "fakeInput"}
+  .picker-fake-input.p-2{"data-picker-target" => "fakeInput"}
     = label || "(none)"
-  %button.btn-tiny.btn-nodanger{"data-action" => 'click->picker#open'} Pick
+  %button.btn-neutral.btn-tiny{"data-action" => 'click->picker#open'} Pick
   -# TODO: Only show 'Clear' button when nothing is selected.
-  %button.btn-tiny.btn-nodanger{"data-action" => 'click->picker#clear'} Clear
+  %button.btn-neutral.btn-tiny{"data-action" => 'click->picker#clear'} Clear
   %input.hidden{"data-picker-target" => "hiddenInput", name: name, id: id, type: "text", value: record&.id, data: { visible_in_test_env: true }}
 
   .picker-modal-backdrop.hidden{"data-picker-target" => "modalWrapper", "data-action" => 'click->picker#backdropClickClose'}
@@ -13,7 +13,7 @@
         -if ranks.present?
           %span Pickable ranks: #{ranks.join(', ')} (only works for taxa)
       %p.float-right
-        %button.btn-tiny.btn-nodanger{"data-action" => 'click->picker#close'} Close
+        %button.btn-neutral.btn-tiny{"data-action" => 'click->picker#close'} Close
 
       %input{"autocomplete" => "off", "spellcheck" => "false", "data-picker-target" => "searchInput", type: "text"}
       %div{"data-picker-target" => "searchResults"}

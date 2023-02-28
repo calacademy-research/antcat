@@ -2,7 +2,7 @@
   =javascript_include_tag 'jquery-ui/widgets/autocomplete'
 
 =form_with url: catalog_search_path, method: :get do |f|
-  .row
+  .row.mb-4
     .medium-2.columns
       Rank
       =f.select :type, options_for_select(Rank::TYPES, params[:type]), include_blank: "Any"
@@ -22,7 +22,7 @@
       Epithet
       =f.text_field :epithet, value: params[:epithet]
 
-  .row
+  .row.mb-4
     .medium-2.columns
       Fossil
       =f.select :fossil, yes_no_options_for_select(params[:fossil]), include_blank: "Either"
@@ -36,7 +36,7 @@
       Protonym contains
       =f.text_field :protonym, value: params[:protonym]
 
-  .row
+  .row.mb-4
     .medium-2.columns
       Bioregion
       =f.select :bioregion, options_for_select(Protonym::BIOREGIONS + [Catalog::AdvancedSearchQuery::BIOREGION_NONE], params[:bioregion]), include_blank: "Any"
@@ -54,7 +54,7 @@
       in
       =f.select :incertae_sedis_in, options_for_select(Rank::INCERTAE_SEDIS_IN_TYPES, params[:incertae_sedis_in]), include_blank: true
 
-  .row
+  .row.mb-4
     .medium-3.columns
       Unresolved junior homonym
       =f.select :unresolved_homonym, yes_no_options_for_select(params[:unresolved_homonym]), include_blank: "Either"
@@ -69,19 +69,20 @@
       %i Nomen nudum
       =f.select :nomen_nudum, yes_no_options_for_select(params[:nomen_nudum]), include_blank: "Either"
 
-  .row
+  .row.mb-4
     .medium-2.columns.end
       =check_box_tag :valid_only, true, !!params[:valid_only]
       =label_tag 'Valid only?'
-  .row
+
+  .row.mb-4
     .medium-3.columns
       =per_page_select Catalog::SearchesController::PER_PAGE_OPTIONS, params[:per_page]
     .medium-3.columns.end
       =f.select :history_items, options_for_select([['With or without history items', ''], ['Must have history items', Catalog::AdvancedSearchQuery::MUST_HAVE_HISTORY_ITEMS], ['Cannot have history items', Catalog::AdvancedSearchQuery::CANNOT_HAVE_HISTORY_ITEMS]], params[:history_items])
 
-  .row
+  .row.mb-4
     .medium-12.columns
-      =button_tag "Search ".html_safe + search_icon, type: 'submit', class: 'btn-normal'
+      =button_tag "Search ".html_safe + search_icon, type: 'submit', class: 'btn-default'
       -if taxa.present?
         &nbsp;
-        =link_to 'Download', "/catalog/search.txt?#{request.parameters.to_param}", class: "btn-normal"
+        =link_to 'Download', "/catalog/search.txt?#{request.parameters.to_param}", class: "btn-default"

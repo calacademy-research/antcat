@@ -6,9 +6,9 @@
 
 -content_for :breadcrumbs_right do
   -if params[:order] == JournalQuery::REFERENCE_COUNT_ORDER
-    =link_to "Order by name", journals_path, class: "btn-normal"
+    =link_to "Order by name", journals_path, class: "btn-default"
   -else
-    =link_to "Order by reference count", journals_path(order: JournalQuery::REFERENCE_COUNT_ORDER), class: "btn-normal"
+    =link_to "Order by reference count", journals_path(order: JournalQuery::REFERENCE_COUNT_ORDER), class: "btn-default"
 
 %table.table-striped
   %thead

@@ -29,15 +29,15 @@
 
     =yield :javascripts
 
-    %body{class: controller_css_class(params[:controller]), "data-controller" => "toggler"}
+    %body.min-h-full.relative{class: controller_css_class(params[:controller]), "data-controller" => "toggler"}
       -unless params[:controller] == 'feedback'
         %button#feedback-button{class: "hidden md:block"}
-          =link_to 'Suggest edit', new_feedback_path(page: current_page_for_feedback), rel: 'nofollow'
+          =link_to 'Suggest edit', new_feedback_path(page: current_page_for_feedback)
 
       =render "dev_helpers"
 
       %div
-        %header#header.px-4
+        %header#header.bg-ac-blue.text-white.px-4{class: "[&_a]:text-white"}
           .row.collapse-tw-conflict
             .small-12.columns
               =render "navigation"
@@ -52,7 +52,7 @@
 
         =yield :after_content
 
-        %footer
+        %footer.bg-ac-blue.text-white{class: "[&_a]:text-white"}
           =render "footer"
 
       -if Settings.google_analytics.enabled

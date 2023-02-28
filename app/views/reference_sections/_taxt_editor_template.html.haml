@@ -2,10 +2,10 @@
   .taxt-presenter
     %h6.font-bold=markdown_without_wrapping reference_section.title_taxt
     %h6.font-bold=Detax[reference_section.subtitle_taxt]
-    %a.taxt-editor-edit-button.btn-nodanger.btn-tiny Quick edit
+    %a.taxt-editor-edit-button.btn-neutral.btn-tiny Quick edit
     =markdown_without_wrapping reference_section.references_taxt
 
-  .taxt-editor-editor
+  .taxt-editor-editor.hidden
     =text_area_tag :title_taxt, reference_section.title_taxt, rows: 1, data: { has_linkables: true, previewable: true, previewable_title: "Title", use_extras: true }
     =text_area_tag :subtitle_taxt, reference_section.subtitle_taxt, rows: 1, data: { has_linkables: true, previewable: true, previewable_title: "Subtitle", use_extras: true }
     =text_area_tag :references_taxt, reference_section.references_taxt, rows: 5, data: { has_linkables: true, previewable: true, previewable_title: "References", use_extras: true }
@@ -15,5 +15,5 @@
         =text_field_tag :edit_summary, nil, placeholder: "Edit summary (optional)", maxlength: Activity::EDIT_SUMMARY_MAX_LENGTH, class: 'edit-summary-js-hook'
 
     %a.taxt-editor-reference-section-save-button.btn-saves Save
-    %a.taxt-editor-cancel-button.btn-nodanger Cancel
+    %a.taxt-editor-cancel-button.btn-neutral Cancel
     %a.taxt-editor-delete-button.btn-warning Delete

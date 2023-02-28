@@ -9,6 +9,6 @@ module ActivitiesHelper
     return unless trackable_type
 
     sti_aware_type = trackable_type.constantize.base_class
-    link_to 'Activities', activities_path(trackable_type: sti_aware_type, trackable_id: trackable_id), class: "btn-normal"
+    link_to 'Activities', activities_path(trackable_type: sti_aware_type, trackable_id: trackable_id), class: "btn-default"
   end
 end
