@@ -34,21 +34,7 @@
         %button#feedback-button{class: "hidden md:block"}
           =link_to 'Suggest edit', new_feedback_path(page: current_page_for_feedback), rel: 'nofollow'
 
-      -if Rails.env.development?
-        -# Tailwind breakpoints indicator.
-        .fixed.top-4.right-4.flex.h-8.w-8.items-center.justify-center.text-sm.text-black.font-mono.rounded-full.bg-blue-300{class: "sm:bg-purple-200 md:bg-teal-200 lg:bg-red-200 xl:bg-gray-200"}
-          .block{class: "sm:hidden md:hidden lg:hidden xl:hidden"}="**"
-          .hidden{class: "sm:block md:hidden lg:hidden xl:hidden"} sm
-          .hidden{class: "sm:hidden md:block lg:hidden xl:hidden"} md
-          .hidden{class: "sm:hidden md:hidden lg:block xl:hidden"} lg
-          .hidden{class: "sm:hidden md:hidden lg:hidden xl:block"} xl
-
-      -if user_is_developer?
-        .fixed.top-14.right-4.flex.h-8.w-8.items-center.justify-center.text-sm.text-black.font-mono.rounded-full.bg-blue-300
-          =link_to_current_page_on_live_site_or_localhost
-      -if Rails.env.staging?
-        .fixed.top-24.right-4.flex.h-8.w-8.items-center.justify-center.text-sm.text-black.font-mono.rounded-full.bg-blue-300
-          =link_to_current_page_on_live_site_from_staging
+      =render "dev_helpers"
 
       %div
         %header#header.px-4
