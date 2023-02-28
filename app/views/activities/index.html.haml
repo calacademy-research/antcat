@@ -8,7 +8,7 @@
   -breadcrumb :activity_feed
 
 =form_with url: request.path, method: :get do |f|
-  .row
+  .row.mb-4
     .small-6.medium-4.large-2.columns
       =f.select :user_id, options_for_select(User.active.non_hidden.order_by_name.pluck(:name, :id), params[:user_id]), prompt: 'User'
     .small-6.medium-4.large-2.columns

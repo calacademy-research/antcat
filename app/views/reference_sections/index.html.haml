@@ -12,7 +12,7 @@
         %li=link_to "Search History Items form", history_items_path, class: 'btn-normal'
 
 =form_with url: request.path, method: :get do |f|
-  .row
+  .row.mb-4
     .small-6.medium-4.large-2.columns
       =f.select :search_type, options_for_select([["LIKE (default)", "LIKE"], ["REGEXP", "REGEXP"]], params[:search_type]), prompt: "Search type"
     .small-6.medium-4.large-2.columns
