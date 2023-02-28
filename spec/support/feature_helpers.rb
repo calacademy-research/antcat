@@ -12,9 +12,8 @@ module FeatureHelpers
   end
 
   # Click/press/follow.
-  def i_click_on location
-    css_selector = selector_for location
-    find(css_selector).click
+  def i_click_on_selector_for locator
+    find(selector_for(locator)).click
   end
 
   def i_follow_the_first link_text
@@ -150,9 +149,6 @@ module FeatureHelpers
       '#history-items .history-item a.taxt-editor-history-item-save-button'
     when 'the delete history item button'
       '#history-items .history-item a.taxt-editor-delete-button'
-
-    when /"(.+)"/
-      Regexp.last_match(1)
 
     else
       raise %(Can't find mapping from "#{locator}" to a selector)

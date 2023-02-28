@@ -6,7 +6,7 @@
 
 -if current_user
   -content_for :breadcrumbs_right do
-    =render "catalog/_show/editor_buttons", taxon: @taxon, editors_catalog_presenter: @editors_catalog_presenter
+    =render "catalog/_show/breadcrumbs_right", taxon: @taxon, editors_catalog_presenter: @editors_catalog_presenter
 
 .row
   .medium-9.columns
@@ -15,7 +15,7 @@
 
   .medium-3.columns
     -if current_user
-      =render 'catalog/_show/logged_in_only/editors_sidebar', taxon: @taxon, protonym: @protonym, editors_catalog_presenter: @editors_catalog_presenter
+      =render 'catalog/_show/editors_sidebar', taxon: @taxon, protonym: @protonym, editors_catalog_presenter: @editors_catalog_presenter
 
     -if @catalog_presenter.formatted_statistics
       .callout.text-sm.mb-4

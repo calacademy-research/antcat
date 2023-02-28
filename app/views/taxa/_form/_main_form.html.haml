@@ -49,8 +49,7 @@
                 leave blank if you are
                 %br
                 creating a new protonym
-          %td
-            =protonym_picker (form.object.protonym if form.object.protonym&.persisted?), id: 'taxon_protonym_id', name: 'taxon[protonym_id]'
+          %td=protonym_picker (form.object.protonym if form.object.protonym&.persisted?), id: 'taxon_protonym_id', name: 'taxon[protonym_id]'
 
       %h6.font-bold Status-specific fields
       %table.table-unstriped
@@ -59,12 +58,10 @@
             =form.label :current_taxon do
               Current taxon
               =db_tooltip_icon :current_taxon, scope: :taxa
-          %td
-            =taxon_picker form.object.current_taxon, id: 'taxon_current_taxon_id', name: 'taxon[current_taxon_id]', ranks: Rank::RANKS_BY_GROUP[taxon.type]
+          %td=taxon_picker form.object.current_taxon, id: 'taxon_current_taxon_id', name: 'taxon[current_taxon_id]', ranks: Rank::RANKS_BY_GROUP[taxon.type]
         %tr
           %td.no-wrap=form.label :homonym_replaced_by, 'Replaced by'
-          %td
-            =taxon_picker form.object.homonym_replaced_by, id: 'taxon_homonym_replaced_by_id', name: 'taxon[homonym_replaced_by_id]'
+          %td=taxon_picker form.object.homonym_replaced_by, id: 'taxon_homonym_replaced_by_id', name: 'taxon[homonym_replaced_by_id]'
 
     .large-4.columns
       .callout
@@ -93,13 +90,9 @@
 
           -if Rank.genus_group_name?(taxon.type)
             %tr
-              %td
-                =name_form.label :gender
-              %td
-                =name_form.select :gender, Name::GENDERS, include_blank: '(blank)'
+              %td=name_form.label :gender
+              %td=name_form.select :gender, Name::GENDERS, include_blank: '(blank)'
 
           %tr
-            %td
-              =form.label :incertae_sedis_in, "<i>Incertae sedis</i> in".html_safe
-            %td
-              =form.select :incertae_sedis_in, Rank::INCERTAE_SEDIS_IN_TYPES, include_blank: '(none)'
+            %td=form.label :incertae_sedis_in, "<i>Incertae sedis</i> in".html_safe
+            %td=form.select :incertae_sedis_in, Rank::INCERTAE_SEDIS_IN_TYPES, include_blank: '(none)'

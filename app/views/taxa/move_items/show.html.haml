@@ -30,8 +30,7 @@
             -@taxon.reference_sections.each do |reference_section|
               %tr
                 %td=check_box_tag "reference_section_ids[]", reference_section.id, false, data: { 'checkbox-select-all-target': "checkbox" }
-                %td
-                  =render 'reference_section', reference_section: reference_section
+                %td=render 'reference_section', reference_section: reference_section
 
     -# Move to.
     .medium-6.columns
@@ -43,8 +42,7 @@
           %tbody
             -@to_taxon.reference_sections.each do |reference_section|
               %tr
-                %td
-                  =render 'reference_section', reference_section: reference_section
+                %td=render 'reference_section', reference_section: reference_section
 
   .row.mb-8
     .medium-12.columns

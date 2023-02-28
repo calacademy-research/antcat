@@ -21,7 +21,7 @@ module Types
       "MCZ-ENT"
     ]
     STOP_REGEX = /[A-Za-z0-9-]+/
-    ANTWEB_SPECIMEN_BASE_URL = 'https://www.antweb.org/specimen/'
+    ANTWEB_SPECIMEN_BASE_URL = 'https://www.antweb.org/specimen.do?name='
 
     def initialize content
       @content = content.dup

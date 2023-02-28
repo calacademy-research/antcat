@@ -52,9 +52,6 @@ module Taxt
   HIDDENNOTE_TAG = 'hiddennote' # Hidden editor notes, logged-in only.
   HIDDENNOTE_TAG_REGEX = /\{#{HIDDENNOTE_TAG} (?<note_content>.*?)\}/
 
-  PARSERTAG_TAG = 'parsertag' # Hidden parser tag notes, logged-in only.
-  PARSERTAG_TAG_REGEX = /\{#{PARSERTAG_TAG}(?<optional_content>.*?)\}/
-
   module RecordToTagRegex
     module_function
 

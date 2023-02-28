@@ -7,23 +7,6 @@
 class QuickAndDirtyFixesController < ApplicationController
   before_action :ensure_user_is_at_least_helper
 
-  # TODO: Not used (after migrating to protonym history items, 12faa7ec1). Use or remove.
-  def convert_bolton_tags
-    history_item = HistoryItem.find(params[:history_item_id])
-
-    old_taxt = history_item.taxt
-    new_taxt = Markdowns::BoltonKeysToRefTags[old_taxt]
-
-    if old_taxt == new_taxt
-      render js: %(AntCat.notifyError("Converted Bolton tags, but nothing was changed"))
-    elsif history_item.update(taxt: new_taxt)
-      history_item.create_activity Activity::UPDATE, current_user, edit_summary: "[automatic] Converted Bolton tags"
-      render js: %(AntCat.notifySuccess("Converted Bolton tags to: '#{new_taxt}'"))
-    else
-      render js: %(AntCat.notifyError("Could not convert Bolton tags"))
-    end
-  end
-
   def convert_to_taxac_tags
     history_item = HistoryItem.find(params[:history_item_id])
 
@@ -116,28 +99,6 @@ class QuickAndDirtyFixesController < ApplicationController
     end
   end
 
-  # TODO: Not used (after migrating to protonym history items, 12faa7ec1). Use or remove.
-  def replace_missing_tag_with_tax_tag
-    history_item = HistoryItem.find(params[:history_item_id])
-    hardcoded_missing_name = params[:hardcoded_missing_name]
-    replace_with_taxon_id = params[:replace_with_taxon_id]
-
-    old_taxt = history_item.taxt
-    new_taxt = old_taxt.dup.sub(
-      /\{missing[0-9]? #{hardcoded_missing_name}\}/,
-      "{#{Taxt::TAX_TAG} #{replace_with_taxon_id}}"
-    )
-
-    if old_taxt == new_taxt
-      render js: %(AntCat.notifyError("Replaced missing tags with selected tax, but nothing was changed"))
-    elsif history_item.update(taxt: new_taxt)
-      history_item.create_activity Activity::UPDATE, current_user, edit_summary: "[automatic] Replaced `missing` tags with selected tax"
-      render js: %(AntCat.notifySuccess("Replaced missing tags with selected tax: '#{new_taxt}'"))
-    else
-      render js: %(AntCat.notifyError("Could not replace missing tags with selected tax"))
-    end
-  end
-
   def strip_except_replacement_name_for
     history_item = HistoryItem.find(params[:history_item_id])
     edit_summary = params[:edit_summary]
@@ -155,28 +116,6 @@ class QuickAndDirtyFixesController < ApplicationController
       render js: %(AntCat.notifySuccess("Stripped to: '#{new_taxt}'"))
     else
       render js: %(AntCat.notifyError("Could not strip item"))
-    end
-  end
-
-  # TODO: Not used (after migrating to protonym history items, 12faa7ec1). Use or remove.
-  def switch_tax_tag
-    history_item = HistoryItem.find(params[:history_item_id])
-    replace_taxon = Taxon.find(params[:replace_tax_id])
-    new_taxon = Taxon.find(params[:new_tax_id])
-
-    old_taxt = history_item.taxt
-    new_taxt = old_taxt.dup.sub(
-      "{#{Taxt::TAX_TAG} #{replace_taxon.id}}",
-      "{#{Taxt::TAX_TAG} #{new_taxon.id}}"
-    )
-
-    if old_taxt == new_taxt
-      render js: %(AntCat.notifyError("Switched tax tags, but nothing was changed"))
-    elsif history_item.update(taxt: new_taxt)
-      history_item.create_activity Activity::UPDATE, current_user, edit_summary: "[automatic] Switch `tax` tags"
-      render js: %(AntCat.notifySuccess("Switched tax tags: '#{new_taxt}'"))
-    else
-      render js: %(AntCat.notifyError("Could not switch tax tags"))
     end
   end
 

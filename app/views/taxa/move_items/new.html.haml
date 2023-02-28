@@ -24,5 +24,4 @@
         %tbody
           -@taxon.reference_sections.each do |reference_section|
             %tr
-              %td
-                =render 'reference_section', reference_section: reference_section
+              %td=render 'reference_section', reference_section: reference_section

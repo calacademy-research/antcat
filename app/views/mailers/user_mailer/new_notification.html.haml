@@ -92,7 +92,7 @@
 
 
 =@notification.notifier.name
-=render partial: "mailers/user_mailer/notification_templates/#{@notification.reason}", locals: { notification: @notification }
+=render partial: @notification.email_template_name, locals: { notification: @notification }
 
 
 :plain
