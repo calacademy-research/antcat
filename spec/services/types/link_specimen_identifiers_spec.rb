@@ -15,7 +15,7 @@ describe Types::LinkSpecimenIdentifiers do
     it 'converts plain-text specimen identifiers to links with extra markup' do
       expect(described_class['CASENT123']).to eq <<~HTML.gsub(/\n +/, '').delete("\n")
         <span data-controller="external-preview">
-          <a data-external-preview-target="link" href="https://www.antweb.org/specimen/CASENT123">
+          <a data-external-preview-target="link" href="https://www.antweb.org/specimen.do?name=CASENT123">
             CASENT123
           </a>
         </span>
