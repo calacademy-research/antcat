@@ -45,8 +45,7 @@
   =antcat_icon(@decorated_database_script.soft_validated? ? "check" : "nope")
 
   Markdown tag:
-  %code
-    ="%dbscript:#{@database_script.class.name.demodulize}"
+  %code="%dbscript:#{@database_script.class.name.demodulize}"
 
 %small.float-right
   Script runtime: #{@render_duration.round(4)} seconds

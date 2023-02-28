@@ -41,11 +41,9 @@
   -if protonym.primary_type_information_taxt?
     %strong Primary type information:
     =::Types::FormatTypeField[protonym.primary_type_information_taxt]
-
   -if protonym.secondary_type_information_taxt?
     %strong Secondary type information:
     =::Types::FormatTypeField[protonym.secondary_type_information_taxt]
-
   -if protonym.type_notes_taxt?
     %strong Type notes:
     =::Types::FormatTypeField[protonym.type_notes_taxt]
@@ -67,8 +65,7 @@
       %strong History items as object (mirrored items)
       %ul#history.mb-4
         -history_presenter.grouped_items.each do |grouped_item|
-          %li
-            =Detax[grouped_item.taxt(:object)]
+          %li=Detax[grouped_item.taxt(:object)]
 
 -# Grouped history items.
 -if taxon.history_items_for_taxon.present?
@@ -90,10 +87,8 @@
                   -# TODO: Check `grouped_item.group_key.join('_')` because
                   -# `group_key` = `["JuniorSynonymOf", "object_protonym_id", 156572]`.
                   %button.btn-tiny.btn-nodanger{"data-action" => "toggler#toggle", "data-toggler-target" => "grouped-#{grouped_item.group_key.join('_')}"} Show/hide grouped
-
                   %span.ml-4
                   %small.logged-in-only-gray-bold-notice.mr-4 #{grouped_item.underscored_type} x #{grouped_item.number_of_items}
-
                   -if grouped_item.relational?
                     %span.show-on-hover=link_to "Add another", new_protonym_history_item_path(grouped_item.protonym, **grouped_item.params_for_add_another_of_same_type, **current_page_redirect_back_url), class: "btn-normal btn-very-tiny"
 
@@ -106,7 +101,6 @@
                         =render 'history_items/catalog_taxt_editor_template', history_item: history_item
                       -else
                         =Detax[history_item.to_taxt]
-
               -else
                 -history_item = grouped_item.items.first
                 =history_item.decorate.rank_specific_badge if history_item.rank?
@@ -115,12 +109,10 @@
                   =render 'history_items/catalog_taxt_editor_template', history_item: history_item
                 -else
                   %p=Detax[history_item.to_taxt]
-
   -else
     %ul#history.mb-4
       -history_presenter.grouped_items.each do |grouped_item|
-        %li
-          =Detax[grouped_item.taxt]
+        %li=Detax[grouped_item.taxt]
 
 -if current_user && !Status.display_history_items?(taxon.status)
   -if taxon.history_items_for_taxon_including_hidden.present?
@@ -159,8 +151,7 @@
   %h6.font-bold.mt-8="Obsolete #{taxon.decorate.name_of_obsoletes}s"
   %ul.compact-list.no-bullet.mb-8
     -taxon.obsolete_combinations.order_by_name.includes(:name).each do |obsolete_combination|
-      %li
-        =CatalogFormatter.link_to_taxon(obsolete_combination)
+      %li=CatalogFormatter.link_to_taxon(obsolete_combination)
 
 .mb-4
   -Taxa::ChildList[taxon].each do |child_list|
@@ -189,10 +180,8 @@
         .section.mb-4
           -if reference_section.title_taxt?
             %h6.font-bold=Detax[reference_section.title_taxt]
-
           -if reference_section.subtitle_taxt?
             %h6.font-bold=Detax[reference_section.subtitle_taxt]
-
           -if reference_section.references_taxt?
             %p=Detax[reference_section.references_taxt]
 
