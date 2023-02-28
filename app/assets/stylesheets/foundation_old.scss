@@ -299,19 +299,6 @@ h6 {
   }
 }
 
-a {
-  color: $color_ac_blue;
-  text-decoration: none;
-}
-
-a:hover, a:focus {
-  color: $color_ac_blue_hover;
-}
-
-a img {
-  border: 0;
-}
-
 hr {
   clear: both;
   max-width: 75rem;

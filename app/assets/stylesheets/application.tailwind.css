@@ -1,5 +1,3 @@
-/* TODO: Enable and use this. */
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -13,3 +11,13 @@
 }
 
 */
+
+@layer base {
+  a {
+    @apply text-ac-blue;
+  }
+
+  a:hover {
+    @apply text-ac-blue-hover;
+  }
+}

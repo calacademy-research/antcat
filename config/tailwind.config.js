@@ -15,6 +15,7 @@ module.exports = {
     extend: {
       colors: {
         'ac-blue': '#2188ff',
+        'ac-blue-hover': '#0073f8', // TODO: Find better name.
       },
       fontFamily: {
         sans: ['Inter var', ...defaultTheme.fontFamily.sans],
