@@ -1,7 +1,6 @@
 -author.names.each do |author_name|
   -references = author_name.references
-  %h6
-    %strong=author_name.name
+  %h6.font-bold=author_name.name
   %small #{references.count} reference(s)
   -if references.present?
     =render "shared/reference_table", references: references

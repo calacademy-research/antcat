@@ -302,7 +302,6 @@ h6 {
 a {
   color: $color_primary;
   text-decoration: none;
-  cursor: pointer;
 }
 
 a:hover, a:focus {
@@ -365,10 +364,6 @@ textarea {
 
 select {
   border-radius: 3px;
-}
-
-textarea[rows] {
-  height: auto;
 }
 
 input:disabled, input[readonly],
@@ -466,10 +461,6 @@ table {
 
   th {
     text-align: left;
-  }
-
-  thead tr {
-    background: transparent;
   }
 
   thead th,
