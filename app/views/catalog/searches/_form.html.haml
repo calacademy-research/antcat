@@ -82,7 +82,7 @@
 
   .row.mb-4
     .medium-12.columns
-      =button_tag "Search ".html_safe + search_icon, type: 'submit', class: 'btn-normal'
+      =button_tag "Search ".html_safe + search_icon, type: 'submit', class: 'btn-default'
       -if taxa.present?
         &nbsp;
-        =link_to 'Download', "/catalog/search.txt?#{request.parameters.to_param}", class: "btn-normal"
+        =link_to 'Download', "/catalog/search.txt?#{request.parameters.to_param}", class: "btn-default"

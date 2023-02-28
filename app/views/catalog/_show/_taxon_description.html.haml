@@ -96,7 +96,7 @@
                   %span.ml-4
                   %small.logged-in-only-gray-bold-notice.mr-4 #{grouped_item.underscored_type} x #{grouped_item.number_of_items}
                   -if grouped_item.relational?
-                    %span.show-on-hover=link_to "Add another", new_protonym_history_item_path(grouped_item.protonym, **grouped_item.params_for_add_another_of_same_type, **current_page_redirect_back_url), class: "btn-normal btn-very-tiny"
+                    %span.show-on-hover=link_to "Add another", new_protonym_history_item_path(grouped_item.protonym, **grouped_item.params_for_add_another_of_same_type, **current_page_redirect_back_url), class: "btn-default btn-very-tiny"
 
                 %ul.compact-list.no-bullet.mb-8.hidden{data: { toggler_name: "grouped-#{grouped_item.group_key.join('_')}" }}
                   -grouped_item.items.each do |history_item|
@@ -198,10 +198,10 @@
 
           -if current_user
             %span.show-on-hover
-              =link_to "Show", reference_section, class: "btn-normal btn-very-tiny"
+              =link_to "Show", reference_section, class: "btn-default btn-very-tiny"
               -if user_is_at_least_helper?
-                =link_to "Edit", edit_reference_section_path(reference_section), class: "btn-normal btn-very-tiny"
-              =link_to "History", reference_section_history_path(reference_section), class: "btn-normal btn-very-tiny"
+                =link_to "Edit", edit_reference_section_path(reference_section), class: "btn-default btn-very-tiny"
+              =link_to "History", reference_section_history_path(reference_section), class: "btn-default btn-very-tiny"
 
 /--- Citations ---
 -unless catalog_presenter.formicidae_landing_page?
@@ -216,6 +216,6 @@
         -if current_user
           .show-on-hover
             -if user_is_at_least_helper?
-              =link_to "Edit", edit_reference_path(reference), class: "btn-tiny btn-normal"
+              =link_to "Edit", edit_reference_path(reference), class: "btn-default btn-tiny"
             =copy_to_clipboard_button Taxt.ref(reference.id), "ref #{reference.id}"
             =copy_to_clipboard_button reference.id

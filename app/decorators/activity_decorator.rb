@@ -51,7 +51,7 @@ class ActivityDecorator < Draper::Decorator
 
   def revision_history_link
     return unless (url = RevisionHistoryPath[activity.trackable_type, activity.trackable_id])
-    h.link_to "History", url, class: "btn-normal btn-tiny"
+    h.link_to "History", url, class: "btn-default btn-tiny"
   end
 
   def icon

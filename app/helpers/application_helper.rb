@@ -64,7 +64,7 @@ module ApplicationHelper
     if submenu_active? submenu
       'btn-neutral'
     else
-      'btn-normal'
+      'btn-default'
     end
   end
 

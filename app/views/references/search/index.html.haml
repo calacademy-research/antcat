@@ -3,7 +3,7 @@
 
 -content_for :breadcrumbs_right do
   -if current_user
-    =link_to 'Export to EndNote', endnote_export_references_path(reference_q: params[:reference_q]), class: "btn-normal"
+    =link_to 'Export to EndNote', endnote_export_references_path(reference_q: params[:reference_q]), class: "btn-default"
 
 .callout-primary.medium-6
   %p

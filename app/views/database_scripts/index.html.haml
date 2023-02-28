@@ -6,10 +6,10 @@
 
 -content_for :breadcrumbs_right do
   -if @check_if_empty
-    =link_to "Show all", database_scripts_path, class: "btn-normal"
+    =link_to "Show all", database_scripts_path, class: "btn-default"
   -else
-    =link_to "Show empty status", database_scripts_path(view: DatabaseScriptsController::CHECK_IF_EMPTY), class: "btn-normal"
-    =link_to "Non-empty regression tests", database_scripts_path(view: DatabaseScriptsController::NON_EMPTY_REGRESSION_TESTS), class: "btn-normal"
+    =link_to "Show empty status", database_scripts_path(view: DatabaseScriptsController::CHECK_IF_EMPTY), class: "btn-default"
+    =link_to "Non-empty regression tests", database_scripts_path(view: DatabaseScriptsController::NON_EMPTY_REGRESSION_TESTS), class: "btn-default"
 
 -if params[:tag]
   .row.mb-8

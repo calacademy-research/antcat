@@ -6,11 +6,11 @@
     =history_item.decorate.rank_specific_badge if history_item.rank?
 
     %span.show-on-hover
-      =link_to "Show", history_item_path(history_item), class: "btn-normal btn-very-tiny"
-      =link_to "Edit", edit_history_item_path(history_item, **current_page_redirect_back_url), class: "btn-normal btn-very-tiny"
-      =link_to "History", history_item_history_path(history_item), class: "btn-normal btn-very-tiny"
+      =link_to "Show", history_item_path(history_item), class: "btn-default btn-very-tiny"
+      =link_to "Edit", edit_history_item_path(history_item, **current_page_redirect_back_url), class: "btn-default btn-very-tiny"
+      =link_to "History", history_item_history_path(history_item), class: "btn-default btn-very-tiny"
       -if history_item.taxt_type?
-        =link_to "Add item before this", new_protonym_history_item_path(history_item.protonym, position: history_item.position, **current_page_redirect_back_url), class: "btn-normal btn-very-tiny"
+        =link_to "Add item before this", new_protonym_history_item_path(history_item.protonym, position: history_item.position, **current_page_redirect_back_url), class: "btn-default btn-very-tiny"
 
     %br
 

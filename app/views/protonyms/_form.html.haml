@@ -18,7 +18,7 @@
                 =db_tooltip_icon :connecting_terms, scope: :protonyms
             %td
               -if protonym.name&.persisted?
-                %span.float-right=link_to "Name record ##{protonym.name.id}", name_path(protonym.name), class: 'btn-normal btn-tiny'
+                %span.float-right=link_to "Name record ##{protonym.name.id}", name_path(protonym.name), class: 'btn-default btn-tiny'
                 =protonym.name_with_fossil
               -else
                 =text_field_tag :protonym_name_string, protonym&.name&.name

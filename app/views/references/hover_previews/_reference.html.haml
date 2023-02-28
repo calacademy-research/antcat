@@ -3,7 +3,7 @@
 -if current_user
   .mb-2
     -if user_is_at_least_helper?
-      =link_to "Edit", edit_reference_path(reference), class: "btn-tiny btn-normal"
+      =link_to "Edit", edit_reference_path(reference), class: "btn-default btn-tiny"
     =copy_to_clipboard_button Taxt.ref(reference.id), "ref #{reference.id}"
     =copy_to_clipboard_button reference.id
 

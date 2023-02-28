@@ -12,7 +12,7 @@ module Editors
     end
 
     def edit_taxon_button
-      link_to "Edit", edit_taxon_path(taxon), class: "btn-normal"
+      link_to "Edit", edit_taxon_path(taxon), class: "btn-default"
     end
 
     def add_child_button
@@ -28,22 +28,22 @@ module Editors
       return unless rank_to_create
 
       link_to "Add #{rank_to_create.downcase}",
-        new_taxon_path(rank_to_create: rank_to_create, parent_id: taxon.id), class: "btn-normal"
+        new_taxon_path(rank_to_create: rank_to_create, parent_id: taxon.id), class: "btn-default"
     end
 
     def add_tribe_button
       return unless taxon.is_a?(Subfamily)
-      link_to "Add tribe", new_taxon_path(rank_to_create: Rank::TRIBE, parent_id: taxon.id), class: "btn-normal"
+      link_to "Add tribe", new_taxon_path(rank_to_create: Rank::TRIBE, parent_id: taxon.id), class: "btn-default"
     end
 
     def add_subgenus_button
       return unless taxon.is_a?(Genus)
-      link_to "Add subgenus", new_taxon_path(rank_to_create: Rank::SUBGENUS, parent_id: taxon.id), class: "btn-normal"
+      link_to "Add subgenus", new_taxon_path(rank_to_create: Rank::SUBGENUS, parent_id: taxon.id), class: "btn-default"
     end
 
     def convert_to_subspecies_button
       return unless taxon.is_a?(Species)
-      link_to 'Convert to subspecies', new_taxon_convert_to_subspecies_path(taxon), class: "btn-normal"
+      link_to 'Convert to subspecies', new_taxon_convert_to_subspecies_path(taxon), class: "btn-default"
     end
 
     def elevate_to_species_button

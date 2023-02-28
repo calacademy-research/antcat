@@ -11,8 +11,8 @@
     =logged_in_only_tooltip_icon "Beta feature. More formats will be supported in the future. This section is only visible to logged-in users."
 
   -if user_is_at_least_helper?
-    =link_to "Edit", edit_history_item_path(@history_item), class: "btn-normal"
-  =link_to "History", history_item_history_path(@history_item), class: "btn-normal"
+    =link_to "Edit", edit_history_item_path(@history_item), class: "btn-default"
+  =link_to "History", history_item_history_path(@history_item), class: "btn-default"
   =activities_link_for_trackable @history_item
   -if user_is_editor?
     =link_to "Delete", history_item_path(@history_item), method: :delete, data: { confirm: "Are you sure?" }, class: "btn-warning"

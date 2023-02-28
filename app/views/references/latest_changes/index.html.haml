@@ -6,7 +6,7 @@
 
 -content_for :breadcrumbs_right do
   -if user_is_at_least_helper?
-    =link_to "New", new_reference_path, class: "btn-normal"
+    =link_to "New", new_reference_path, class: "btn-default"
   -if user_is_superadmin?
     =link_to append_superadmin_icon("Approve all"), approve_all_reviewing_references_path, method: :put, data: { confirm: "Mark all citations as reviewed? This operation cannot be undone!" }, class: "btn-warning"
 

@@ -2,13 +2,13 @@
 -breadcrumb :issue, @issue
 
 -content_for :breadcrumbs_right do
-  =link_to "History", issue_history_path(@issue), class: "btn-normal"
+  =link_to "History", issue_history_path(@issue), class: "btn-default"
   -if current_user
     -if @issue.open?
       =link_to "Close", close_issue_path(@issue), method: :put, class: "btn-saves"
     -else
       =link_to "Re-open", reopen_issue_path(@issue), method: :put, class: "btn-warning"
-    =link_to "Edit", edit_issue_path(@issue), class: "btn-normal"
+    =link_to "Edit", edit_issue_path(@issue), class: "btn-default"
   -if user_is_superadmin? && user_is_developer?
     =link_to append_superadmin_icon("Delete"), @feedback, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-warning"
 

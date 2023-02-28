@@ -1,7 +1,7 @@
 -if current_user
   .mb-2
     -if user_is_at_least_helper?
-      =link_to "Edit protonym", edit_protonym_path(protonym), class: "btn-tiny btn-normal"
+      =link_to "Edit protonym", edit_protonym_path(protonym), class: "btn-default btn-tiny"
     =copy_to_clipboard_button Taxt.pro(protonym.id), "pro #{protonym.id}"
     =copy_to_clipboard_button protonym.id
 

@@ -2,8 +2,8 @@
   %h5
     Protonym history items
     .float-right
-      =link_to 'Add', new_protonym_history_item_path(protonym, **current_page_redirect_back_url), data: { testid: 'add-history-item-button' }, class: 'btn-normal btn-tiny'
-      =link_to "Reorder", protonym_reorder_history_items_path(protonym), class: "btn-normal btn-tiny #{' button disabled' unless protonym.history_items.size > 1}"
+      =link_to 'Add', new_protonym_history_item_path(protonym, **current_page_redirect_back_url), data: { testid: 'add-history-item-button' }, class: 'btn-default btn-tiny'
+      =link_to "Reorder", protonym_reorder_history_items_path(protonym), class: "btn-default btn-tiny #{' button disabled' unless protonym.history_items.size > 1}"
 
   #history-items{data: {protonym_id: protonym.id}}
     -protonym.history_items.each do |history_item|
