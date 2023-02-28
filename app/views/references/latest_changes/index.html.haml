@@ -12,11 +12,11 @@
 
 %table.table-striped.table-stack.references
   %tbody
-  -@references.each do |reference|
-    %tr
-      %td=render 'references/reference', reference: reference
-      %td.no-wrap
-        changed
-        =time_tag reference.updated_at.to_date
+    -@references.each do |reference|
+      %tr
+        %td=render 'references/reference', reference: reference
+        %td.no-wrap
+          changed
+          =time_tag reference.updated_at.to_date
 
 =will_paginate @references
