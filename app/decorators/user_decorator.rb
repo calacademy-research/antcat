@@ -8,7 +8,7 @@ class UserDecorator < Draper::Decorator
   end
 
   def ping_user_link
-    h.link_to "@#{name}", user, class: 'user-mention'
+    h.link_to "@#{name}", user, class: 'font-bold'
   end
 
   def email_address_with_name

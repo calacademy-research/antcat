@@ -1,5 +1,5 @@
 %div{"data-controller" => "picker", "data-picker-url-value" => "#{autocomplete_url}", "data-picker-pickable-type-value" => "#{pickable_type}"}
-  %p.picker-fake-input{"data-picker-target" => "fakeInput"}
+  .picker-fake-input.p-2{"data-picker-target" => "fakeInput"}
     = label || "(none)"
   %button.btn-tiny.btn-nodanger{"data-action" => 'click->picker#open'} Pick
   -# TODO: Only show 'Clear' button when nothing is selected.
