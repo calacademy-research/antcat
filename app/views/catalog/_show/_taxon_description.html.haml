@@ -172,13 +172,12 @@
 
   -if taxon.is_a?(Genus)
     =render 'catalog/_show/rank_specific/genus', taxon: taxon
+  -if taxon.is_a?(Subgenus)
+    =render 'catalog/_show/rank_specific/subgenus', taxon: taxon
   -if taxon.is_a?(Species)
     =render 'catalog/_show/rank_specific/species', taxon: taxon
   -if taxon.is_a?(Subspecies)
     =render 'catalog/_show/rank_specific/subspecies', taxon: taxon
-
--if current_user && taxon.is_a?(Subgenus) && taxon.species.exists?
-  =render 'catalog/_show/logged_in_only/species_in_subgenus', taxon: taxon
 
 -if catalog_presenter.formicidae_landing_page?
   %br
