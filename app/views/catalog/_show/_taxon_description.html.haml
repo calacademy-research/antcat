@@ -163,7 +163,13 @@
         =CatalogFormatter.link_to_taxon(obsolete_combination)
 
 .mb-4
-  =render 'catalog/_show/child_lists', taxon: taxon
+  -Taxa::ChildList[taxon].each do |child_list|
+    %div
+      %span.font-bold
+        =succeed ':' do
+          =child_list[:label]
+      =child_list[:children].map { |child| CatalogFormatter.link_to_taxon(child) }.join(', ').html_safe
+
   -if taxon.is_a?(Genus)
     =render 'catalog/_show/rank_specific/genus', taxon: taxon
   -if taxon.is_a?(Species)
