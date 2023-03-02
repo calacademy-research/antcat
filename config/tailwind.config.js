@@ -27,6 +27,7 @@ module.exports = {
       fontFamily: {
         sans: ['Inter var', ...defaultTheme.fontFamily.sans],
         courier: ['"Courier New"', 'Courier', 'serif', 'monospace'],
+        heading: ['Montserrat', '"Helvetica Neue"', 'Helvetica', 'Roboto', 'Arial', 'sans-serif'],
       },
       screens: {
         'nottiny': { 'raw': '(min-height: 640px) and (min-width: 640px)' },

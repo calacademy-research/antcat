@@ -31,7 +31,7 @@
 
     %body.min-h-full.relative{class: controller_css_class(params[:controller]), "data-controller" => "toggler"}
       -unless params[:controller] == 'feedback'
-        %button#feedback-button{class: "hidden md:block"}
+        %button.fixed.z-10.bg-zinc-800.rounded-t-md.h-10.font-bold.w-32.text-md.font-heading{class: "top-1/3 -rotate-90 -right-12 [&_a]:text-white hidden md:block"}
           =link_to 'Suggest edit', new_feedback_path(page: current_page_for_feedback)
 
       =render "dev_helpers"
