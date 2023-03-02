@@ -26,9 +26,9 @@
             =decorated.revision_history_link
             -if activity.request_uuid
               =link_to 'uuid', versions_path(request_uuid: activity.request_uuid), class: "btn-default btn-tiny"
-          %td.activity-link-wrapper.no-wrap
-            %span.hide-on-hover=decorated.when
-            %span.show-on-hover{data: { visible_in_test_env: true }}
+          %td.activity-link-wrapper.no-wrap{class: "group/activities-table-row"}
+            %span{class: "group-hover/activities-table-row:hidden"}=decorated.when
+            %span.hidden{class: "group-hover/activities-table-row:inline", data: { visible_in_test_env: true }}
               =link_to 'Link', activity, class: 'btn-default btn-very-tiny'
               =activities_link activity.trackable_type, activity.trackable_id
               -if user_is_developer? && show_delete_button

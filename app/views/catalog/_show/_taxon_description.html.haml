@@ -186,9 +186,9 @@
   =link_to "Formicidae family references", catalog_path(taxon)
 -else
   -if taxon.reference_sections.present?
-    #reference-sections
+    %div
       -taxon.reference_sections.each do |reference_section|
-        .section.mb-4
+        .mb-4{class: "group/reference-sections-item"}
           -if reference_section.title_taxt?
             %h6.font-bold=Detax[reference_section.title_taxt]
           -if reference_section.subtitle_taxt?
@@ -197,7 +197,7 @@
             %p=Detax[reference_section.references_taxt]
 
           -if current_user
-            %span.show-on-hover
+            %span.hidden{class: "group-hover/reference-sections-item:inline"}
               =link_to "Show", reference_section, class: "btn-default btn-very-tiny"
               -if user_is_at_least_helper?
                 =link_to "Edit", edit_reference_section_path(reference_section), class: "btn-default btn-very-tiny"
@@ -206,15 +206,15 @@
 /--- Citations ---
 -unless catalog_presenter.formicidae_landing_page?
   %h6.font-bold.mt-20 Citations
-  %ul#citations.compact-list
+  %ul.compact-list
     -catalog_presenter.collected_references.each do |reference|
       -decorated_reference = reference.decorate
-      %li
+      %li{class: "group/citations-reference"}
         =decorated_reference.expanded_reference
         =decorated_reference.format_document_links
 
         -if current_user
-          .show-on-hover
+          .hidden{class: "group-hover/citations-reference:inline"}
             -if user_is_at_least_helper?
               =link_to "Edit", edit_reference_path(reference), class: "btn-default btn-tiny"
             =copy_to_clipboard_button Taxt.ref(reference.id), "ref #{reference.id}"
