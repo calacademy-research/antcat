@@ -1,10 +1,10 @@
 -decorated = reference.decorate
 
-.reference
+.reference{class: "group/references-table-reference"}
   =decorated.expanded_reference
   =decorated.format_document_links
   -if current_user
-    %span.show-on-hover
+    %span.hidden{class: "group-hover/references-table-reference:inline"}
       -if user_is_at_least_helper?
         =link_to "Edit", edit_reference_path(reference), class: "btn-default btn-very-tiny"
       =link_to "History", reference_history_path(reference), class: "btn-default btn-very-tiny"

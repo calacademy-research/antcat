@@ -1,4 +1,4 @@
-.comment.mb-8
+.comment.mb-8{class: "group/comment"}
   %p
     -# Anchor link to scroll down to comment by id.
     %span{id: "comment-#{comment.id}", class: "target:bg-ac-blue-pale"}
@@ -9,10 +9,9 @@
         ago*:
       -else
         ago:
-      %span.show-on-hover
+      %span.hidden{class: "group-hover/comment:inline"}
         =inline_expandable("show raw") { comment.body }
         -if current_user == comment.user
           %small=link_to "edit", edit_comment_path(comment), class: "discreet"
-      %br
 
   %p=markdown comment.body
