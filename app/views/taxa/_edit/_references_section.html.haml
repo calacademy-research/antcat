@@ -11,6 +11,6 @@
       #reference-sections.text-sm
         -taxon.reference_sections.each do |reference_section|
           .reference-section
-            =render 'reference_sections/taxt_editor_template', reference_section: reference_section
+            =render 'taxt_editors/reference_section_taxt_editor', reference_section: reference_section
     -else
       (none)
