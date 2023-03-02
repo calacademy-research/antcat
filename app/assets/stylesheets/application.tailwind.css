@@ -29,4 +29,9 @@
   a:hover {
     @apply text-ac-blue-hover;
   }
+
+  code {
+    @apply bg-gray-100 border border-gray-300;
+    padding: 0.125rem 0.3125rem 0.0625rem;
+  }
 }

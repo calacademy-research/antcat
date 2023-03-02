@@ -211,10 +211,6 @@
 }
 
 /////////// Typography ///////////
-div,
-ul,
-ol,
-li,
 h1,
 h2,
 h3,
@@ -222,11 +218,15 @@ h4,
 h5,
 h6,
 pre,
+p {
+  padding: 0;
+}
+
+div,
+li,
 form,
-p,
 th,
 td {
-  margin: 0;
   padding: 0;
 }
 
@@ -241,11 +241,6 @@ i {
   font-style: italic;
 }
 
-strong,
-b {
-  font-weight: bold;
-}
-
 small {
   font-size: 80%;
 }
@@ -254,7 +249,6 @@ h1, h2, h3, h4, h5, h6 {
   font-family: Montserrat, "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
   font-weight: normal;
   line-height: 1.4;
-  margin-top: 0;
   margin-bottom: 0.5rem;
   text-rendering: optimizeLegibility;
 }
@@ -310,24 +304,20 @@ hr {
   border-left: 0;
 }
 
-ul,
-ol {
+ul {
   margin-bottom: 1rem;
   margin-left: 1.25rem;
   list-style-position: outside;
   line-height: 1.6;
-}
-
-ul {
   list-style-type: disc;
 }
 
-ul ul, ul ol, ol ul, ol ol {
+ul ul {
   margin-left: 1.25rem;
   margin-bottom: 0;
 }
 
-ul.no-bullet, ol.no-bullet {
+ul.no-bullet {
   margin-left: 0;
   list-style: none;
 }
@@ -383,7 +373,6 @@ label > [type='radio'] {
 
 label {
   display: block;
-  margin: 0;
   font-size: 0.875rem;
   font-weight: normal;
   line-height: 1.8;
@@ -442,12 +431,4 @@ table {
   &.table-unstriped tbody tr {
     border-bottom: 1px solid #f1f1f1;
   }
-}
-
-/////////// Misc. ///////////
-code {
-  border: 1px solid $color_medium_gray;
-  background-color: $color_light_gray;
-  font-family: Consolas, "Liberation Mono", Courier, monospace;
-  padding: 0.125rem 0.3125rem 0.0625rem;
 }
