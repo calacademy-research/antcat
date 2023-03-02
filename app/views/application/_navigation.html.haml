@@ -18,7 +18,7 @@
     =link_to root_path do
       =image_tag 'logos/antcat_white_174x37.png', alt: 'AntCat'
 
-  .float-right.mb-2
+  .float-right.mb-2.font-heading
     %ul.no-bullet.flex.items-center
       %li.uppercase.mr-6=link_to 'References', references_latest_additions_path, class: "big-screaming-orange-button #{'very-active' if menu_active?(:references)}"
       %li.uppercase.mr-6=link_to 'Catalog', root_path, class: "big-screaming-green-button #{'very-active' if menu_active?(:catalog)}"
@@ -54,7 +54,7 @@
 
   .clear-both
 
-  #mobile-menu-content.hidden
+  #mobile-menu-content.z-20.font-heading.hidden
     %ul.no-bullet
       %li.text-black.mb-2
         =form_with url: references_search_index_path, method: :get do |f|
