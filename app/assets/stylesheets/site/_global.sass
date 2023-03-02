@@ -1,35 +1,8 @@
 @import "colors"
 
-/////////// Start Tailwind ///////////
-// Overrides and customizations.
-// TODO: Fix import order.
-
-// TODO: Move colors to Tailwind config.
-// Typography: Text Color
-.text-dark-gray
-  color: $color_gray_text
-
-// Backgrounds: Background Color
-.bg-light-gray
-  background-color: $color_light_gray !important
-
-// TODO: Fix specificity (w.r.t 'table.table-striped/table-unstriped') and remove `!important`.
-.bg-pale-alert
-  background-color: $color_danger_pale !important
-
-.bg-logged-in-only
-  background-color: $color_ac_blue_pale
-
-// Borders: Border Color
-.border-medium-gray
-  border-color: $color_medium_gray
-
-// Borders: Border Width
 // TODO: Fix specificity (CSS layers or import order) and remove `!important`.
 .border-0
   border-width: 0px !important
-
-/////////// End Tailwind ///////////
 
 pre
   overflow: auto
@@ -51,10 +24,6 @@ td.grow-tw-conflict
 
 th.no-wrap, td.no-wrap
   white-space: nowrap
-
-// Override background color from '.table-striped'.
-tr.bg-logged-in-only
-  background-color: $color_ac_blue_pale !important
 
 table td.shrink-tw-conflict
   max-width: 100%

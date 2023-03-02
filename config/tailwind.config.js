@@ -20,6 +20,8 @@ module.exports = {
         'ac-blue-pale': '#deedff', // TODO: Find better name.
         'revision-red': '#fcdcd6',
         'revision-green': '#dafebf',
+        'danger-pale': '#fce6e2',
+        'logged-in-only': '#deedff',
       },
       fontFamily: {
         sans: ['Inter var', ...defaultTheme.fontFamily.sans],

@@ -19,7 +19,7 @@
 %table.table-unstriped.table-stack
   %tbody
     -@issues.each do |issue|
-      %tr{class: ('bg-light-gray' if issue.closed?)}
+      %tr{class: ('bg-gray-100' if issue.closed?)}
         %td.icon.align-top=issue.decorate.icon
         %td.grow-tw-conflict
           =link_to issue.title, issue

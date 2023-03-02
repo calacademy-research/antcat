@@ -43,7 +43,7 @@
   %table.table-striped.table-stack
     %tbody
       -@hidden_users.each do |user|
-        %tr{class: ('bg-pale-alert' if (user.locked? || user.deleted?))}
+        %tr{class: ('!bg-danger-pale' if (user.locked? || user.deleted?))}
           %td=user.decorate.user_page_link
           %td=user.decorate.user_badge
           -if user_is_superadmin?
@@ -67,7 +67,7 @@
   %table.table-unstriped.table-stack
     %tbody
       -@deleted_or_locked_users.each do |user|
-        %tr{class: ('bg-pale-alert' if (user.locked? || user.deleted?))}
+        %tr{class: ('!bg-danger-pale' if (user.locked? || user.deleted?))}
           %td=user.decorate.user_page_link
           %td=user.decorate.user_badge
           -if user_is_superadmin?
