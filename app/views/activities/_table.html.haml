@@ -9,7 +9,7 @@
       -activities.each do |activity|
         -decorated = activity.decorate
         -highlight = activity == highlighted_activity
-        %tr{class: ('bg-pale' if highlight), "data-controller" => ("scroll" if highlight)}
+        %tr{class: ('!bg-ac-blue-pale' if highlight), "data-controller" => ("scroll" if highlight)}
           %td.icon=decorated.icon
           %td
             -if activity.user&.unconfirmed?

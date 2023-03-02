@@ -77,7 +77,7 @@ module ApplicationHelper
     toggler_name = SecureRandom.uuid
 
     show_more = tag.a tag.small(label), class: "hide-when-expanded gray", data: { toggler_name: toggler_name }
-    hidden = tag.span(class: "show-when-expanded hidden bg-pale", data: { toggler_name: toggler_name }, &block)
+    hidden = tag.span(class: "show-when-expanded hidden bg-ac-blue-pale", data: { toggler_name: toggler_name }, &block)
 
     tag.span class: "inline-expandable ml-1 cursor-pointer", data: { action: 'click->toggler#toggle', toggler_target: toggler_name } do
       show_more + hidden

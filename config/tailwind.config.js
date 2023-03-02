@@ -17,6 +17,7 @@ module.exports = {
       colors: {
         'ac-blue': '#2188ff',
         'ac-blue-hover': '#0073f8', // TODO: Find better name.
+        'ac-blue-pale': '#deedff', // TODO: Find better name.
         'revision-red': '#fcdcd6',
         'revision-green': '#dafebf',
       },
