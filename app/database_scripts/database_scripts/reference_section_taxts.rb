@@ -93,19 +93,19 @@ module DatabaseScripts
       end
 
       def blank
-        '<small class="gray-text">[blank]</small>'.html_safe
+        '<small class="text-gray-600">[blank]</small>'.html_safe
       end
 
       def blank_warning
-        '<small class="bold-warning gray-text">[blank]</small>'.html_safe
+        '<small class="bold-warning text-gray-600">[blank]</small>'.html_safe
       end
 
       def not_blank
-        '<small class="gray-text">[not blank]</small>'.html_safe
+        '<small class="text-gray-600">[not blank]</small>'.html_safe
       end
 
       def not_blank_warning
-        '<small class="bold-warning gray-text">[not blank]</small>'.html_safe
+        '<small class="bold-warning text-gray-600">[not blank]</small>'.html_safe
       end
   end
 end

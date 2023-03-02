@@ -20,7 +20,7 @@
             %small.hidden{class: "group-hover/soft-validations-table-row:inline"}
               %br
               Issue description:
-              %span.gray-text=markdown_without_wrapping soft_validation.issue_description
+              %span.text-gray-600=markdown_without_wrapping soft_validation.issue_description
         %td
           -if soft_validation.looks_like_a_false_positive?
             Yes, filtered out
