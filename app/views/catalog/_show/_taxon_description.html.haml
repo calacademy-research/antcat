@@ -62,7 +62,7 @@
     =info_tooltip_icon "Via 'taxa.homonym_replaced_by_id'"
 
 /--- History items ---
--# History items as object.
+/--- History items: As object ---
 -if current_user
   -if taxon.history_items_as_object_for_taxon.present?
     -history_presenter = HistoryPresenter.new(taxon.history_items_as_object_for_taxon, :object)
@@ -73,7 +73,7 @@
         -history_presenter.grouped_items.each do |grouped_item|
           %li=Detax[grouped_item.taxt(:object)]
 
--# Grouped history items.
+/--- History items: Grouped items ---
 -if taxon.history_items_for_taxon.present?
   -history_presenter = HistoryPresenter.new(taxon.history_items_for_taxon)
 
@@ -120,7 +120,7 @@
       -history_presenter.grouped_items.each do |grouped_item|
         %li=Detax[grouped_item.taxt]
 
--# Not shown history items from protonym.
+/--- History items: Not shown items (from protonym) ---
 -if current_user && !Status.display_history_items?(taxon.status)
   -if taxon.history_items_for_taxon_including_hidden.present?
     .bg-logged-in-only.callout.border-0.text-sm.mt-8.mb-8
