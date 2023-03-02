@@ -4,7 +4,7 @@
 -if @feedbacks.blank?
   %p There are currently no pending feedbacks.
 -else
-  %table.table-unstriped.table-stack
+  %table.table-unstriped
     %tbody
       -@feedbacks.each do |feedback|
         %tr.align-top{class: ("bg-gray-100 text-gray-500" if feedback.closed?)}
