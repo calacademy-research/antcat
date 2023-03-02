@@ -1,9 +1,7 @@
 .references-controller
   .css-tabs
     input.tab-input
-      display: none
       & + label
-        display: inline-block
         border: 1px solid $color_dark_gray
         background: $color_light_gray
         padding: 4px 1rem
@@ -19,10 +17,10 @@
           background: #fff
           border-bottom: 1px solid transparent
 
-    .tab.article-tab-content, .tab.book-tab-content, .tab.nested-tab-content
+    .tab
       border: 1px solid $color_dark_gray
 
-  #article-tab:checked ~ .tab.article-tab-content,
-  #book-tab:checked ~ .tab.book-tab-content,
-  #nested-tab:checked ~ .tab.nested-tab-content,
+  #article-tab:checked ~ #article-tab-content,
+  #book-tab:checked    ~ #book-tab-content,
+  #nested-tab:checked  ~ #nested-tab-content,
     display: block

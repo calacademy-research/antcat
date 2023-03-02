@@ -44,13 +44,14 @@
       .row.mt-4
         .medium-12.columns
           .css-tabs
-            %input#article-tab.tab-input{checked: ("checked" if reference.is_a?(ArticleReference)), name: "reference_type", type: "radio", value: 'ArticleReference'}
+            %input#article-tab.tab-input.hidden{checked: ("checked" if reference.is_a?(ArticleReference)), name: "reference_type", type: "radio", value: 'ArticleReference'}
             %label{for: "article-tab"} Article
-            %input#book-tab.tab-input{checked: ("checked" if reference.is_a?(BookReference)), name: "reference_type", type: "radio", value: 'BookReference'}
+            %input#book-tab.tab-input.hidden{checked: ("checked" if reference.is_a?(BookReference)), name: "reference_type", type: "radio", value: 'BookReference'}
             %label{for: "book-tab"} Book
-            %input#nested-tab.tab-input{checked: ("checked" if reference.is_a?(NestedReference)), name: "reference_type", type: "radio", value: 'NestedReference'}
+            %input#nested-tab.tab-input.hidden{checked: ("checked" if reference.is_a?(NestedReference)), name: "reference_type", type: "radio", value: 'NestedReference'}
             %label{for: "nested-tab"} Nested
-            .tab.article-tab-content
+
+            #article-tab-content.tab
               .row
                 .medium-6.columns
                   =f.label :reference_journal_name do
@@ -63,7 +64,7 @@
                     =db_tooltip_icon :series_volume_issue, scope: :references
                   =f.text_field :series_volume_issue
 
-            .tab.book-tab-content
+            #book-tab-content.tab
               .row
                 .medium-6.columns.end
                   =f.label :reference_publisher_string do
@@ -71,7 +72,7 @@
                     =db_tooltip_icon :publisher, scope: :references
                   =f.text_field :publisher_string, value: params.dig(:reference, :publisher_string) || (reference.publisher&.display_name if reference.respond_to?(:publisher)) || ''
 
-            .tab.nested-tab-content
+            #nested-tab-content.tab
               .row
                 .medium-6.columns.end
                   =f.label :nesting_reference_id do
