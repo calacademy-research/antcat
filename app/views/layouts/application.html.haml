@@ -42,7 +42,7 @@
             .small-12.columns
               =render "navigation"
 
-        %section#content.px-4.pt-12.pb-32
+        %section#content.px-4.pt-12.pb-32{class: "min-h-[65vh]"}
           #fireworks
           .row.collapse-tw-conflict
             =render "breadcrumbs"
@@ -52,7 +52,7 @@
 
         =yield :after_content
 
-        %footer.bg-ac-blue.text-white{class: "[&_a]:text-white"}
+        %footer.bg-ac-blue.text-white{class: "[&_a]:text-white [&_a:hover]:font-bold"}
           =render "footer"
 
       -if Settings.google_analytics.enabled

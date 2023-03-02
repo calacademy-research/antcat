@@ -17,6 +17,11 @@
     @apply h-full;
   }
 
+  body {
+    color: #000;
+    font-family: Raleway, "Helvetica Neue", Arial, sans-serif;
+  }
+
   a {
     @apply text-ac-blue;
   }
