@@ -5,12 +5,13 @@ const defaultTheme = require('tailwindcss/defaultTheme')
 module.exports = {
   content: [
     './public/*.html',
+    './app/assets/javascripts/**/*.{js,coffee}',
+    './app/components/**/*.{erb,haml,html,slim,rb}',
     './app/helpers/**/*.rb',
     './app/javascript/**/*.js',
-    './app/views/**/*.{erb,haml,html,slim}',
-    './app/components/**/*.{erb,haml,html,slim,rb}',
-    './app/assets/javascripts/**/*.{js,coffee}',
-    './app/javascript/**/*.{js,coffee}'
+    './app/javascript/**/*.{js,coffee}',
+    './app/presenters/**/*.rb',
+    './app/views/**/*.{erb,haml,html,slim}'
   ],
   theme: {
     extend: {

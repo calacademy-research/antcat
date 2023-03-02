@@ -12,17 +12,17 @@ module TooltipHelper
   end
 
   def tooltip_icon text
-    tag.span antcat_icon("tooltip-icon"), tooltip2: brs_to_new_lines(text), class: "tooltip2"
+    tag.span antcat_icon("tooltip-icon"), tooltip2: brs_to_new_lines(text)
   end
 
   def info_tooltip_icon text
-    tag.span antcat_icon("info-tooltip"), tooltip2: brs_to_new_lines(text), class: "tooltip2"
+    tag.span antcat_icon("info-tooltip"), tooltip2: brs_to_new_lines(text)
   end
 
   # For content that which it is not obvious it is hidden to logged-out visitors.
   def logged_in_only_tooltip_icon text = nil, user_group: 'logged-in users'
     title = brs_to_new_lines(text || "This section is only visible to #{user_group}")
-    tag.span antcat_icon("info-tooltip"), tooltip2: title, class: "tooltip2"
+    tag.span antcat_icon("info-tooltip"), tooltip2: title
   end
 
   def link_to_wiki_page_or_missing permanent_identifier
@@ -33,7 +33,7 @@ module TooltipHelper
   private
 
     def wiki_page_icon text
-      tag.span antcat_icon("wiki-page-icon"), tooltip2: brs_to_new_lines(text), class: "tooltip2"
+      tag.span antcat_icon("wiki-page-icon"), tooltip2: brs_to_new_lines(text)
     end
 
     def new_db_tooltip key, scope

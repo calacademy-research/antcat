@@ -10,6 +10,6 @@
 %h6.mt-8=CommentableDecorator.new(commentable).comments_count_in_words
 =render "comments/form", new_comment: new_comment
 
-.comments-section.mt-12.mb-8
+.mt-12.mb-8
   -commentable.comments.include_associations.each do |comment|
     =render "comments/comment", comment: comment
