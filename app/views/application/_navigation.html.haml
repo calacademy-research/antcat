@@ -12,7 +12,7 @@
         %li=link_to 'Login', new_user_session_path, class: "desktop-upper-menu-link"
         %li=link_to 'Sign up', new_user_registration_path, class: "desktop-upper-menu-link"
 
-  .clearfix
+  .clear-both
 
   .float-left
     =link_to root_path do
@@ -46,13 +46,13 @@
     =link_to root_path do
       =image_tag 'logos/antcat_white_174x37.png', alt: 'AntCat'
 
-  .clearfix
+  .clear-both
 
   %ul.list-none
     =unseen_notifications_badge
     =unread_site_notices_badge
 
-  .clearfix
+  .clear-both
 
   #mobile-menu-content.hidden
     %ul.no-bullet
@@ -84,7 +84,7 @@
         %li=link_to 'Sign up', new_user_registration_path
       %li=link_to 'Feedback or suggest an edit', new_feedback_path(page: current_page_for_feedback)
 
-.clearfix
+.clear-both
 
 .float-left
   -if menu_active?(:catalog)
