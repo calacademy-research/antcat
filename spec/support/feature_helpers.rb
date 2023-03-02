@@ -79,10 +79,6 @@ module FeatureHelpers
   end
 
   # Record pickers.
-  def i_select_the_reference_tab tab_css_selector
-    find(tab_css_selector, visible: false).click
-  end
-
   def i_pick_from_the_taxon_picker name, input_css_selector
     taxon_id = Taxon.find_by!(name_cache: name).id
     set_record_picker taxon_id, input_css_selector
@@ -111,14 +107,6 @@ module FeatureHelpers
     expect(element).to have_content(content)
   end
 
-  def the_history_item_field_should_not_be_visible
-    expect(page).not_to have_css '#history-items textarea'
-  end
-
-  def the_history_item_field_should_be_visible
-    expect(page).to have_css '#history-items textarea'
-  end
-
   def the_history_should_be_empty
     expect(page).not_to have_css '#history-items .history-item'
   end
@@ -126,18 +114,6 @@ module FeatureHelpers
   # Selectors.
   def selector_for locator
     case locator
-    # Edit reference sections.
-    when 'the add reference section button'
-      "*[data-testid=add-reference-section-button]"
-    when 'the edit reference section button'
-      "#references-section a.taxt-editor-edit-button"
-    when 'the cancel reference section button'
-      "#references-section a.taxt-editor-cancel-button"
-    when 'the save reference section button'
-      '#references-section a.taxt-editor-reference-section-save-button'
-    when 'the delete reference section button'
-      '#references-section a.taxt-editor-delete-button'
-
     # Edit history items.
     when 'the add history item button'
       "*[data-testid=add-history-item-button]"
@@ -149,13 +125,16 @@ module FeatureHelpers
       '#history-items .history-item a.taxt-editor-history-item-save-button'
     when 'the delete history item button'
       '#history-items .history-item a.taxt-editor-delete-button'
-
     else
       raise %(Can't find mapping from "#{locator}" to a selector)
     end
   end
 
   # Misc.
+  def i_select_the_reference_tab tab_css_selector
+    find(tab_css_selector, visible: false).click
+  end
+
   def wait_for_taxt_editors_to_load
     if javascript_driver?
       find('body[data-test-taxt-editors-loaded="true"]')

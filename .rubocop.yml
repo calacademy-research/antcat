@@ -1,4 +1,5 @@
 require:
+  - rubocop-capybara
   - rubocop-performance
   - rubocop-rails
   - rubocop-rake
@@ -149,6 +150,9 @@ Metrics/ClassLength:
     - 'app/cleanup/**/*'
     - 'app/controllers/quick_and_dirty_fixes_controller.rb'
     - 'app/database_scripts/**/*'
+
+Metrics/CollectionLiteralLength:
+  Enabled: false
 
 Metrics/CyclomaticComplexity:
   Enabled: false

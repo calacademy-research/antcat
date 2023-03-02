@@ -1,20 +1,18 @@
 # frozen_string_literal: true
 
+# TODO: Make sure relevant formatters are covered by specs and then call them directly from here.
 module TestLinksHelpers
   def author_link author_name
     %(<a href="/authors/#{author_name.author.id}">#{author_name.name}</a>)
   end
 
   # Taxa.
-  def taxon_link taxon, label = nil
-    css_classes = CatalogFormatter.taxon_disco_mode_css(taxon)
+  def taxon_link taxon
+    CatalogFormatter.link_to_taxon(taxon)
+  end
 
-    <<~HTML.squish
-      <a data-controller="hover-preview"
-      data-hover-preview-url-value="/catalog/#{taxon.id}/hover_preview.json"
-      class="#{css_classes}"
-      href="/catalog/#{taxon.id}">#{label || taxon.name_with_fossil}</a>
-    HTML
+  def taxon_link_with_label taxon, label
+    CatalogFormatter.link_to_taxon_with_label(taxon, label)
   end
 
   def taxon_link_with_author_citation taxon

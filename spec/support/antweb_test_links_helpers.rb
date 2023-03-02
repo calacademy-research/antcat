@@ -1,12 +1,16 @@
 # frozen_string_literal: true
 
 module AntwebTestLinksHelpers
-  def antweb_taxon_link taxon, label = nil
-    %(<a href="https://www.antcat.org/catalog/#{taxon.id}">#{label || taxon.name_with_fossil}</a>)
+  def antweb_taxon_link taxon
+    AntwebFormatter.link_to_taxon(taxon)
+  end
+
+  def antweb_taxon_link_with_label taxon, label
+    AntwebFormatter.link_to_taxon_with_label(taxon, label)
   end
 
   def antweb_protonym_link protonym
-    %(<a href="https://www.antcat.org/protonyms/#{protonym.id}">#{protonym.name_with_fossil}</a>)
+    AntwebFormatter.link_to_protonym(protonym)
   end
 
   def antweb_reference_link reference

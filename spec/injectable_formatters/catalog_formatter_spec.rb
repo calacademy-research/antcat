@@ -9,7 +9,15 @@ describe CatalogFormatter do
     let(:taxon) { build_stubbed :any_taxon }
 
     specify { expect(described_class.link_to_taxon(taxon).html_safe?).to eq true }
-    specify { expect(described_class.link_to_taxon(taxon)).to eq taxon_link(taxon) }
+
+    specify do
+      expect(described_class.link_to_taxon(taxon)).to eq(<<~HTML.squish)
+        <a data-controller="hover-preview"
+        data-hover-preview-url-value="/catalog/#{taxon.id}/hover_preview.json"
+        class="#{described_class.taxon_disco_mode_css(taxon)}"
+        href="/catalog/#{taxon.id}">#{taxon.name_with_fossil}</a>
+      HTML
+    end
   end
 
   describe ".link_to_taxon_with_linked_author_citation" do
@@ -30,7 +38,12 @@ describe CatalogFormatter do
     specify { expect(described_class.link_to_taxon_with_label(taxon, 'AntCat').html_safe?).to eq true }
 
     specify do
-      expect(described_class.link_to_taxon_with_label(taxon, 'AntCat')).to eq taxon_link(taxon, 'AntCat')
+      expect(described_class.link_to_taxon_with_label(taxon, 'AntCat')).to eq(<<~HTML.squish)
+        <a data-controller="hover-preview"
+        data-hover-preview-url-value="/catalog/#{taxon.id}/hover_preview.json"
+        class="#{described_class.taxon_disco_mode_css(taxon)}"
+        href="/catalog/#{taxon.id}">AntCat</a>
+      HTML
     end
   end
 

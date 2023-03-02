@@ -159,32 +159,32 @@
             =f.label :etymology do
               Etymology
               =db_tooltip_icon :etymology, scope: :protonyms
-          %td=render 'shared/taxt_editor/taxt_editor_template', name: 'protonym[etymology_taxt]', content: protonym.etymology_taxt
+          %td=render 'taxt_editors/field_taxt_editor', name: 'protonym[etymology_taxt]', content: protonym.etymology_taxt
 
         %tr
           %td
             =f.label :primary_type_information do
               Primary type information
               =db_tooltip_icon :primary_type_information, scope: :protonyms
-          %td=render 'shared/taxt_editor/taxt_editor_template', name: 'protonym[primary_type_information_taxt]', content: protonym.primary_type_information_taxt, format_type_fields: true
+          %td=render 'taxt_editors/field_taxt_editor', name: 'protonym[primary_type_information_taxt]', content: protonym.primary_type_information_taxt, format_type_fields: true
         %tr
           %td.shrink-tw-conflict
             =f.label :secondary_type_information do
               Secondary type information
               =db_tooltip_icon :secondary_type_information, scope: :protonyms
-          %td=render 'shared/taxt_editor/taxt_editor_template', name: 'protonym[secondary_type_information_taxt]', content: protonym.secondary_type_information_taxt, format_type_fields: true
+          %td=render 'taxt_editors/field_taxt_editor', name: 'protonym[secondary_type_information_taxt]', content: protonym.secondary_type_information_taxt, format_type_fields: true
         %tr
           %td
             =f.label :type_notes do
               Type notes
               =db_tooltip_icon :type_notes, scope: :protonyms
-          %td=render 'shared/taxt_editor/taxt_editor_template', name: 'protonym[type_notes_taxt]', content: protonym.type_notes_taxt, format_type_fields: true
+          %td=render 'taxt_editors/field_taxt_editor', name: 'protonym[type_notes_taxt]', content: protonym.type_notes_taxt, format_type_fields: true
         %tr
           %td
             =f.label :notes do
               Notes
               =db_tooltip_icon :notes, scope: :protonyms
-          %td=render 'shared/taxt_editor/taxt_editor_template', name: 'protonym[notes_taxt]', content: protonym.notes_taxt
+          %td=render 'taxt_editors/field_taxt_editor', name: 'protonym[notes_taxt]', content: protonym.notes_taxt
 
   .row
     .large-6.columns

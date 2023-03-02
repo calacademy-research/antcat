@@ -104,7 +104,7 @@
                       =history_item.decorate.rank_specific_badge if history_item.rank?
 
                       -if user_is_at_least_helper?
-                        =render 'history_items/catalog_taxt_editor_template', history_item: history_item
+                        =render 'taxt_editors/history_item_catalog_taxt_editor', history_item: history_item
                       -else
                         =Detax[history_item.to_taxt]
               -else
@@ -112,7 +112,7 @@
                 =history_item.decorate.rank_specific_badge if history_item.rank?
 
                 -if user_is_at_least_helper?
-                  =render 'history_items/catalog_taxt_editor_template', history_item: history_item
+                  =render 'taxt_editors/history_item_catalog_taxt_editor', history_item: history_item
                 -else
                   %p=Detax[history_item.to_taxt]
   -else
@@ -137,7 +137,7 @@
             =history_item.decorate.rank_specific_badge if history_item.rank?
 
             -if user_is_at_least_helper?
-              =render 'history_items/catalog_taxt_editor_template', history_item: history_item
+              =render 'taxt_editors/history_item_catalog_taxt_editor', history_item: history_item
             -else
               =Detax[history_item.to_taxt]
 

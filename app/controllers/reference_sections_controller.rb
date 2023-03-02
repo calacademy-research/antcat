@@ -98,7 +98,7 @@ class ReferenceSectionsController < ApplicationController
       render json: {
         content: render_to_string(
           formats: :html,
-          partial: 'reference_sections/taxt_editor_template',
+          partial: 'taxt_editors/reference_section_taxt_editor',
           locals: { reference_section: reference_section }
         ),
         error: reference_section.errors.full_messages.to_sentence
