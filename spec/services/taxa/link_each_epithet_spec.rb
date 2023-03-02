@@ -19,8 +19,8 @@ describe Taxa::LinkEachEpithet do
 
       it 'links the genus and species' do
         expect(described_class[taxon]).to eq(
-          taxon_link(taxon.genus, "<i>#{taxon.genus.name_cache}</i>") + ' ' +
-          taxon_link(taxon, "<i>#{taxon.name.species_epithet}</i>")
+          taxon_link_with_label(taxon.genus, "<i>#{taxon.genus.name_cache}</i>") + ' ' +
+          taxon_link_with_label(taxon, "<i>#{taxon.name.species_epithet}</i>")
         )
       end
     end
@@ -30,9 +30,9 @@ describe Taxa::LinkEachEpithet do
 
       it 'links the genus, species and subspecies' do
         expect(described_class[taxon]).to eq(
-          taxon_link(taxon.genus, "<i>#{taxon.genus.name_cache}</i>") + ' ' +
-          taxon_link(taxon.species, "<i>#{taxon.species.name.species_epithet}</i>") + ' ' +
-          taxon_link(taxon, "<i>#{taxon.name.subspecies_epithet}</i>")
+          taxon_link_with_label(taxon.genus, "<i>#{taxon.genus.name_cache}</i>") + ' ' +
+          taxon_link_with_label(taxon.species, "<i>#{taxon.species.name.species_epithet}</i>") + ' ' +
+          taxon_link_with_label(taxon, "<i>#{taxon.name.subspecies_epithet}</i>")
         )
       end
     end
@@ -50,10 +50,10 @@ describe Taxa::LinkEachEpithet do
 
       specify do
         expect(described_class[infrasubspecies]).to eq(
-          taxon_link(genus, '<i>Formica</i>') + ' ' +
-          taxon_link(species, '<i>rufa</i>') + ' ' +
-          taxon_link(subspecies, '<i>pratensis</i>') + ' ' +
-          taxon_link(infrasubspecies, '<i>major</i>')
+          taxon_link_with_label(genus, '<i>Formica</i>') + ' ' +
+          taxon_link_with_label(species, '<i>rufa</i>') + ' ' +
+          taxon_link_with_label(subspecies, '<i>pratensis</i>') + ' ' +
+          taxon_link_with_label(infrasubspecies, '<i>major</i>')
         )
       end
     end
