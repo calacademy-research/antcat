@@ -47,7 +47,7 @@
       %ul.no-bullet
         %li
           Item type:
-          %span.logged-in-only-gray-bold-notice.mr-4=@history_item.underscored_type
+          %span.font-bold.text-gray-500.mr-4=@history_item.underscored_type
 
       %ul.no-bullet.text-sm
         %li Created at: #{l @history_item.created_at, format: :ymd}
