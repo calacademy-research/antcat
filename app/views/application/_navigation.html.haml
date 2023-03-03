@@ -2,8 +2,8 @@
   #desktop-upper-menu.float-right.pt-2
     %ul.no-bullet.flex.text-sm{class: "[&>*]:px-4 [&>*]:ml-4"}
       -if user_signed_in?
-        =unseen_notifications_badge = capture { render "unseen_notifications_badge" }
-        =unread_site_notices_badge = capture { render "unread_site_notices_badge" }
+        =render "unseen_notifications_badge"
+        =render "unread_site_notices_badge"
         %li=link_to "Editor's Panel", editors_panel_path, class: "desktop-upper-menu-link #{'very-active' if menu_active?(:editors_panel)}"
         %li=link_to 'Activity Feed', activities_path, class: "desktop-upper-menu-link #{'very-active' if menu_active?(:activity_feed)}"
         %li=link_to current_user.name, current_user, class: "desktop-upper-menu-link"
@@ -45,12 +45,6 @@
   .pt-4
     =link_to root_path do
       =image_tag 'logos/antcat_white_174x37.png', alt: 'AntCat'
-
-  .clear-both
-
-  %ul.list-none
-    =unseen_notifications_badge
-    =unread_site_notices_badge
 
   .clear-both
 
