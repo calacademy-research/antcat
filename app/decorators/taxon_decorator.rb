@@ -16,11 +16,11 @@ class TaxonDecorator < Draper::Decorator
 
   def id_and_name_and_author_citation
     h.tag.span do
-      h.concat h.tag.small("##{taxon.id}", class: "gray")
+      h.concat h.tag.small("##{taxon.id}", class: "text-gray-600")
       h.concat " "
       h.concat CatalogFormatter.link_to_taxon(taxon)
       h.concat " "
-      h.concat h.tag.small(taxon.author_citation, class: "gray")
+      h.concat h.tag.small(taxon.author_citation, class: "text-gray-600")
     end
   end
 

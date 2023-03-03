@@ -31,7 +31,7 @@
 
     %body.min-h-full.relative{class: controller_css_class(params[:controller]), "data-controller" => "toggler"}
       -unless params[:controller] == 'feedback'
-        %button#feedback-button{class: "hidden md:block"}
+        %button.fixed.z-10.bg-zinc-800.rounded-t-md.h-10.font-bold.w-32.text-md.font-heading{class: "top-1/3 -rotate-90 -right-12 [&_a]:text-white hidden md:block"}
           =link_to 'Suggest edit', new_feedback_path(page: current_page_for_feedback)
 
       =render "dev_helpers"
@@ -42,7 +42,7 @@
             .small-12.columns
               =render "navigation"
 
-        %section#content.px-4.pt-12.pb-32
+        %section#content.px-4.pt-12.pb-32{class: "min-h-[65vh]"}
           #fireworks
           .row.collapse-tw-conflict
             =render "breadcrumbs"
@@ -52,7 +52,7 @@
 
         =yield :after_content
 
-        %footer.bg-ac-blue.text-white{class: "[&_a]:text-white"}
+        %footer.bg-ac-blue.text-white{class: "[&_a]:text-white [&_a:hover]:font-bold"}
           =render "footer"
 
       -if Settings.google_analytics.enabled

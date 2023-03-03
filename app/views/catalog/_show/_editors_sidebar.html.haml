@@ -60,7 +60,7 @@
           %span.text-sm=homonym.decorate.compact_status
 
 -if taxon.policy.show_create_combination_button?
-  #can-be-combined-editing-helper.bg-logged-in-only.text-sm.callout.border-0
+  .bg-logged-in-only.text-sm.callout.border-0{class: "group/can-be-combined-box"}
     %h6 Can be combined?
 
     -if current_user.settings(:editing_helpers).create_combination
@@ -76,9 +76,12 @@
             %li=error
         See also this issue on GitHub
         =link_to '#808.', 'https://github.com/calacademy-research/antcat/issues/808'
-      =hide_editing_helper_link
+
+      .hidden{class: "group-hover/can-be-combined-box:inline"}
+        =link_to "Hide editing helper", edit_user_registration_path
     -else
-      =enable_editing_helper_link
+      Enable editing helper on
+      =link_to "My account", edit_user_registration_path
 
 .bg-logged-in-only.callout.border-0.text-sm
   %h6 Additional data

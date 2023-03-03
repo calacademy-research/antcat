@@ -17,11 +17,25 @@
     @apply h-full;
   }
 
+  body {
+    color: #000;
+    font-family: Raleway, "Helvetica Neue", Arial, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+
   a {
     @apply text-ac-blue;
   }
 
   a:hover {
     @apply text-ac-blue-hover;
+  }
+
+  code {
+    @apply bg-gray-100 border border-gray-300;
+    padding: 0.125rem 0.3125rem 0.0625rem;
   }
 }

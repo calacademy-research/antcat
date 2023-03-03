@@ -3,19 +3,44 @@
 $color_light_gray: #eeeeee
 $color_medium_gray: #cacaca
 $color_dark_gray: darkgray
-$color_darker_gray: #767676
 $color_gray_text: #586069
 $color_dark_gray_text: #464c53
 $color_really_dark_gray_text: #383d42
 
 $color_danger: #ec5840
-$color_danger_pale: #fce6e2
 $color_ac_blue: #2188ff
 $color_save: #044289
-$color_pale: scale-color($color_ac_blue, $lightness: 85%)
+$color_ac_blue_pale: #deedff
 $color_warning: #ffae00
 
-$color_scream_green: lighten(desaturate(#00a82d, 10%), 10%)
+$color_scream_green: #0bd040
 $color_scream_orange: #ff851b
 
 $color_high_priority: $color_scream_orange
+
+///// Colors used by Bolton.
+// Taxon statuses.
+$color_bolton_valid: red
+// NOTE: Synonyms are in black color in Bolton, but that makes them identical to regular text.
+$color_bolton_synonym: $color_really_dark_gray_text
+$color_bolton_unidentifiable: darkblue
+$color_bolton_excluded_from_formicidae: $color_bolton_unidentifiable
+$color_bolton_unavailable: purple
+$color_bolton_homonym: purple
+$color_bolton_obsolete_combination: green
+
+// Other.
+$color_bolton_valid_subspecies: blue
+
+///// Taxon browser and Disco mode colors.
+// Taxon statuses.
+$color_catalog_valid: $color_bolton_valid
+$color_catalog_synonym: $color_really_dark_gray_text
+$color_catalog_unidentifiable: $color_bolton_unidentifiable
+$color_catalog_excluded_from_formicidae: $color_bolton_unidentifiable
+$color_catalog_unavailable: $color_bolton_unavailable
+$color_catalog_homonym: $color_bolton_homonym
+$color_catalog_obsolete_combination: $color_bolton_obsolete_combination
+
+// Other.
+$color_catalog_protonym: blue

@@ -1,8 +1,7 @@
-.comment.mb-8
+.comment.mb-8{class: "group/comment"}
   %p
     -# Anchor link to scroll down to comment by id.
-    -# Wrapped in a `span` because we only want to highlight a small area.
-    %span.highlight-comment-anchor{id: "comment-#{comment.id}"}
+    %span{id: "comment-#{comment.id}", class: "target:bg-ac-blue-pale"}
       =comment.user.decorate.user_page_link
       commented
       =comment.decorate.link_comment time_ago_in_words(comment.created_at)
@@ -10,10 +9,9 @@
         ago*:
       -else
         ago:
-      %span.show-on-hover
+      %span.hidden{class: "group-hover/comment:inline"}
         =inline_expandable("show raw") { comment.body }
         -if current_user == comment.user
           %small=link_to "edit", edit_comment_path(comment), class: "discreet"
-      %br
 
   %p=markdown comment.body

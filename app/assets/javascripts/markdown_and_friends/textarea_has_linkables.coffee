@@ -45,8 +45,8 @@ window.setupLinkables = =>
       insertTpl: '{tax ${id}}:'
       displayTpl: """
         <li>
-          <span class='record-id'>#${id}</span>
-          <span class='main-result ${css_classes}'>${name_with_fossil}</span>
+          <span class='text-sm text-gray-400'>#${id}</span>
+          <span class='${css_classes}'>${name_with_fossil}</span>
           <span class='discreet-author-citation'>${author_citation}</span>
         </li>
       """
@@ -69,8 +69,8 @@ window.setupLinkables = =>
       insertTpl: '{pro ${id}}:'
       displayTpl: """
         <li>
-          <span class='record-id'>#${id}</span>
-          <span class='main-result'>${name_with_fossil}</span>
+          <span class='text-sm text-gray-400'>#${id}</span>
+          <span>${name_with_fossil}</span>
           <span class='discreet-author-citation'>${author_citation}</span>
         </li>
       """

@@ -100,7 +100,7 @@ module Markdowns
           if (terminal_taxon = Protonym.terminal_taxon_from_protonym_id(protonym_id))
             formatter.link_to_taxon(terminal_taxon)
           elsif (protonym = Protonym.find_by(id: protonym_id))
-            editor_warning = %(<span class="logged-in-only-bold-warning">protonym has no terminal taxon</span>)
+            editor_warning = %(<span class="taxt-logged-in-only-bold-warning">protonym has no terminal taxon</span>)
             "#{formatter.link_to_protonym(protonym)} (protonym) #{editor_warning}"
           else
             broken_taxt_tag "PROTONYM", $LAST_MATCH_INFO
@@ -117,7 +117,7 @@ module Markdowns
           if (terminal_taxon = Protonym.terminal_taxon_from_protonym_id(protonym_id))
             formatter.link_to_taxon_with_linked_author_citation(terminal_taxon)
           elsif (protonym = Protonym.find_by(id: protonym_id))
-            editor_warning = %(<span class="logged-in-only-bold-warning">protonym has no terminal taxon</span>)
+            editor_warning = %(<span class="taxt-logged-in-only-bold-warning">protonym has no terminal taxon</span>)
             "#{formatter.link_to_protonym(protonym)} (protonym) #{editor_warning}"
           else
             broken_taxt_tag "PROTONYM", $LAST_MATCH_INFO
@@ -156,7 +156,7 @@ module Markdowns
       # Renders: hardcoded name.
       def parse_missing_tags
         content.gsub!(Taxt::MISSING_TAG_REGEX) do
-          %(<span class="logged-in-only-bold-warning">#{$LAST_MATCH_INFO[:hardcoded_name]}</span>)
+          %(<span class="taxt-logged-in-only-bold-warning">#{$LAST_MATCH_INFO[:hardcoded_name]}</span>)
         end
       end
 
@@ -164,7 +164,7 @@ module Markdowns
       # Renders: hardcoded name.
       def parse_unmissing_tags
         content.gsub!(Taxt::UNMISSING_TAG_REGEX) do
-          %(<span class="logged-in-only-gray-bold-notice">#{$LAST_MATCH_INFO[:hardcoded_name]}</span>)
+          %(<span class="taxt-logged-in-only-gray-bold-notice">#{$LAST_MATCH_INFO[:hardcoded_name]}</span>)
         end
       end
 
@@ -172,7 +172,7 @@ module Markdowns
       # Renders: hardcoded name.
       def parse_misspelling_tags
         content.gsub!(Taxt::MISSPELLING_TAG_REGEX) do
-          %(<span class="logged-in-only-gray-bold-notice">#{$LAST_MATCH_INFO[:hardcoded_name]}</span>)
+          %(<span class="taxt-logged-in-only-gray-bold-notice">#{$LAST_MATCH_INFO[:hardcoded_name]}</span>)
         end
       end
 

@@ -88,7 +88,7 @@ describe Markdowns::ParseCatalogTags do
         it "links the protonym with a note" do
           expect(described_class[Taxt.prott(protonym.id)]).to eq <<~HTML.squish
             #{protonym_link(protonym)} (protonym)
-            <span class="logged-in-only-bold-warning">protonym has no terminal taxon</span>
+            <span class="taxt-logged-in-only-bold-warning">protonym has no terminal taxon</span>
           HTML
         end
       end
@@ -120,7 +120,7 @@ describe Markdowns::ParseCatalogTags do
         it "links the protonym with a note" do
           expect(described_class[Taxt.prottac(protonym.id)]).to eq <<~HTML.squish
             #{protonym_link(protonym)} (protonym)
-            <span class="logged-in-only-bold-warning">protonym has no terminal taxon</span>
+            <span class="taxt-logged-in-only-bold-warning">protonym has no terminal taxon</span>
           HTML
         end
       end
@@ -165,33 +165,33 @@ describe Markdowns::ParseCatalogTags do
     describe "tag: `MISSING_TAG`" do
       it 'renders the hardcoded name' do
         expect(described_class["Synonym of {#{Taxt::MISSING_TAG} <i>Atta</i>}"]).
-          to eq 'Synonym of <span class="logged-in-only-bold-warning"><i>Atta</i></span>'
+          to eq 'Synonym of <span class="taxt-logged-in-only-bold-warning"><i>Atta</i></span>'
 
         expect(described_class["in family {#{Taxt::MISSING_TAG} Ecitoninae}"]).
-          to eq 'in family <span class="logged-in-only-bold-warning">Ecitoninae</span>'
+          to eq 'in family <span class="taxt-logged-in-only-bold-warning">Ecitoninae</span>'
 
         expect(described_class["in family {#{Taxt::MISSING_TAG}2 Ecitoninae}"]).
-          to eq 'in family <span class="logged-in-only-bold-warning">Ecitoninae</span>'
+          to eq 'in family <span class="taxt-logged-in-only-bold-warning">Ecitoninae</span>'
       end
     end
 
     describe "tag: `UNMISSING_TAG`" do
       it 'renders the hardcoded name' do
         expect(described_class["Homonym of {#{Taxt::UNMISSING_TAG} <i>Decamera</i>}"]).
-          to eq 'Homonym of <span class="logged-in-only-gray-bold-notice"><i>Decamera</i></span>'
+          to eq 'Homonym of <span class="taxt-logged-in-only-gray-bold-notice"><i>Decamera</i></span>'
 
         expect(described_class["in family {#{Taxt::UNMISSING_TAG} Pices}"]).
-          to eq 'in family <span class="logged-in-only-gray-bold-notice">Pices</span>'
+          to eq 'in family <span class="taxt-logged-in-only-gray-bold-notice">Pices</span>'
       end
     end
 
     describe "tag: `MISSPELLING_TAG`" do
       it 'renders the hardcoded name' do
         expect(described_class["Homonym of {#{Taxt::MISSPELLING_TAG} <i>Decamera</i>}"]).
-          to eq 'Homonym of <span class="logged-in-only-gray-bold-notice"><i>Decamera</i></span>'
+          to eq 'Homonym of <span class="taxt-logged-in-only-gray-bold-notice"><i>Decamera</i></span>'
 
         expect(described_class["in family {#{Taxt::MISSPELLING_TAG} Pices}"]).
-          to eq 'in family <span class="logged-in-only-gray-bold-notice">Pices</span>'
+          to eq 'in family <span class="taxt-logged-in-only-gray-bold-notice">Pices</span>'
       end
     end
 

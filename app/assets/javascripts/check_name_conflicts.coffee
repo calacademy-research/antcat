@@ -31,7 +31,7 @@ $ ->
           string += homonymWarning if warnAboutHomonym
           string += "<a href='#{url}'>#{name.name_html}</a> "
           string += ' (protonym)' unless name.taxon_id
-          string += " <small class='gray'>##{name.id}</small>"
+          string += " <small class='text-gray-600'>##{name.id}</small>"
 
           "<li>#{string}</li>"
 

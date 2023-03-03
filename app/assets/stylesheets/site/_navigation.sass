@@ -1,8 +1,6 @@
 @import "colors"
 
 #header
-  font-family: Montserrat, Roboto, "Helvetica Neue", Arial, sans-serif
-
   #desktop-only-header
     #desktop-upper-menu
       .desktop-upper-menu-link
@@ -14,17 +12,17 @@
           border-radius: 3px
           background-color: #000
 
-  .expandable-catalog-search
-    width: 155px
-  .expandable-reference-search
-    width: 180px
-  .expandable-catalog-search, .expandable-reference-search
-    transition: all .5s
-    margin-right: 0rem
-    // Fix background after typeahead.
-    background-color: #fff !important
-    &:focus
-      width: 250px
+    .expandable-catalog-search
+      width: 155px
+    .expandable-reference-search
+      width: 180px
+    .expandable-catalog-search, .expandable-reference-search
+      transition: all .5s
+      margin-right: 0rem
+      // Fix background after typeahead.
+      background-color: #fff !important
+      &:focus
+        width: 250px
 
   #mobile-only-header
     #mobile-hamburger-input:checked ~ #mobile-menu-content
@@ -53,7 +51,6 @@
     border-radius: 3px
     font-weight: 900
     font-size: 12px
-    font-family: 'Montserrat', sans-serif
     padding: 0.75rem 1.15rem
     color: $color_ac_blue
     background-color: #fff

@@ -8,7 +8,7 @@
   -if user_is_at_least_helper?
     =link_to "New", new_reference_path, class: "btn-default"
 
-%table.table-striped.table-stack.references
+%table.table-striped
   %tbody
     -@references.each do |reference|
       %tr

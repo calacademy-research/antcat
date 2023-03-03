@@ -10,7 +10,7 @@
     =render "shared/revision_comparer/revision_info_user", revision: most_recent
 -else
   =form_with url: request.original_url, method: :get, enforce_utf8: false do |f|
-    %table.revisions
+    %table.table-unstriped
       %thead
         %tr
           %th.text-center{colspan: 4} Compare with...

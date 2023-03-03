@@ -1,4 +1,4 @@
-%table.table-striped.tablesorter#soft-validations-table
+%table.table-striped.tablesorter
   %thead
     %th Passed?
     %th Database script
@@ -11,16 +11,16 @@
         %td
           =antcat_icon(soft_validation.failed? ? "nope" : "check")
           =soft_validation.failed? ? "No" : "Yes"
-        %td{class: ('bold-warning' if soft_validation.failed?)}
+        %td{class: [('bold-warning' if soft_validation.failed?), "group/soft-validations-table-row"]}
           =link_to soft_validation.database_script.title, database_script_path(soft_validation.database_script), title: soft_validation.database_script.title
           -if soft_validation.failed?
             %br
             =markdown_without_wrapping soft_validation.issue_description
           -else
-            %small.show-on-hover
+            %small.hidden{class: "group-hover/soft-validations-table-row:inline"}
               %br
               Issue description:
-              %span.gray-text=markdown_without_wrapping soft_validation.issue_description
+              %span.text-gray-600=markdown_without_wrapping soft_validation.issue_description
         %td
           -if soft_validation.looks_like_a_false_positive?
             Yes, filtered out

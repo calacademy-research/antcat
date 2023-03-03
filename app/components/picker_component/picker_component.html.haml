@@ -1,19 +1,21 @@
 %div{"data-controller" => "picker", "data-picker-url-value" => "#{autocomplete_url}", "data-picker-pickable-type-value" => "#{pickable_type}"}
-  .picker-fake-input.p-2{"data-picker-target" => "fakeInput"}
+  .p-2.rounded.border.border-gray-300.inline-block{"data-picker-target" => "fakeInput", class: "min-w-[15rem]"}
     = label || "(none)"
+
   %button.btn-neutral.btn-tiny{"data-action" => 'click->picker#open'} Pick
   -# TODO: Only show 'Clear' button when nothing is selected.
   %button.btn-neutral.btn-tiny{"data-action" => 'click->picker#clear'} Clear
+
   %input.hidden{"data-picker-target" => "hiddenInput", name: name, id: id, type: "text", value: record&.id, data: { visible_in_test_env: true }}
 
-  .picker-modal-backdrop.hidden{"data-picker-target" => "modalWrapper", "data-action" => 'click->picker#backdropClickClose'}
-    .picker-modal
-      %p.float-left
-        %span.pickable-outline Pickable type: #{pickable_type}
-        -if ranks.present?
-          %span Pickable ranks: #{ranks.join(', ')} (only works for taxa)
-      %p.float-right
+  .hidden.fixed.inset-0.z-10.p-8{"data-picker-target" => "modalWrapper", "data-action" => 'click->picker#backdropClickClose', class: "bg-black/50"}
+    .bg-white.rounded.p-4.m-auto.relative
+      .flex.justify-between.mb-4
+        %div
+          %span.pickable-outline Pickable type: #{pickable_type}
+          -if ranks.present?
+            %span Pickable ranks: #{ranks.join(', ')} (only works for taxa)
         %button.btn-neutral.btn-tiny{"data-action" => 'click->picker#close'} Close
 
-      %input{"autocomplete" => "off", "spellcheck" => "false", "data-picker-target" => "searchInput", type: "text"}
+      %input.mb-4{"autocomplete" => "off", "spellcheck" => "false", "data-picker-target" => "searchInput", type: "text"}
       %div{"data-picker-target" => "searchResults"}

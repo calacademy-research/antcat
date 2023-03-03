@@ -4,10 +4,10 @@
 -if @feedbacks.blank?
   %p There are currently no pending feedbacks.
 -else
-  %table.table-unstriped.table-stack
+  %table.table-unstriped
     %tbody
       -@feedbacks.each do |feedback|
-        %tr.align-top{class: ("bg-light-gray text-dark-gray" if feedback.closed?)}
+        %tr.align-top{class: ("bg-gray-100 text-gray-500" if feedback.closed?)}
           %td=link_to "##{feedback.id}", feedback
           %td=feedback.open? ? "Open" : "Closed"
           %td=render "feedback", feedback: feedback

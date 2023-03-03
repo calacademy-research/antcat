@@ -20,7 +20,7 @@
   clear: both;
 }
 
-.row.collapse-tw-conflict > .column, .row.collapse-tw-conflict > .columns {
+.row.collapse-tw-conflict > .columns {
   padding-right: 0;
   padding-left: 0;
 }
@@ -50,7 +50,7 @@
   margin-left: 0;
 }
 
-.column, .columns {
+.columns {
   width: 100%;
   float: left;
   padding-right: 0.625rem;
@@ -58,30 +58,30 @@
 }
 
 @media (min-width: 40em) {
-  .column, .columns {
+  .columns {
     padding-right: 0.9375rem;
     padding-left: 0.9375rem;
   }
 }
 
-.column, .columns, .column:last-child:not(:first-child) {
+.columns {
   float: left;
   clear: none;
 }
 
-.column:last-child:not(:first-child), .columns:last-child:not(:first-child) {
+.columns:last-child:not(:first-child) {
   float: right;
 }
 
-.column.end:last-child:last-child, .end.columns:last-child:last-child {
+.end.columns:last-child:last-child {
   float: left;
 }
 
-.column.row.row, .row.row.columns {
+.row.row.columns {
   float: none;
 }
 
-.row .column.row.row, .row .row.row.columns {
+.row .row.row.columns {
   margin-right: 0;
   margin-left: 0;
   padding-right: 0;
@@ -211,29 +211,9 @@
 }
 
 /////////// Typography ///////////
-div,
-ul,
-ol,
-li,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-pre,
-form,
-p,
-th,
-td {
-  margin: 0;
-  padding: 0;
-}
-
 p {
   margin-bottom: 1rem;
   line-height: 1.6;
-  text-rendering: optimizeLegibility;
 }
 
 em,
@@ -241,62 +221,32 @@ i {
   font-style: italic;
 }
 
-strong,
-b {
-  font-weight: bold;
-}
-
 small {
   font-size: 80%;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: Montserrat, "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
-  font-weight: normal;
   line-height: 1.4;
-  margin-top: 0;
   margin-bottom: 0.5rem;
-  text-rendering: optimizeLegibility;
 }
 
 h1 {
-  font-size: 1.5rem;
+  font-size: 3rem;
 }
 h2 {
-  font-size: 1.25rem;
+  font-size: 2.5rem;
 }
 h3 {
-  font-size: 1.1875rem;
+  font-size: 1.9375rem;
 }
 h4 {
-  font-size: 1.125rem;
+  font-size: 1.5625rem;
 }
 h5 {
-  font-size: 1.0625rem;
+  font-size: 1.25rem;
 }
 h6 {
   font-size: 1rem;
-}
-
-@media (min-width: 40em) {
-  h1 {
-    font-size: 3rem;
-  }
-  h2 {
-    font-size: 2.5rem;
-  }
-  h3 {
-    font-size: 1.9375rem;
-  }
-  h4 {
-    font-size: 1.5625rem;
-  }
-  h5 {
-    font-size: 1.25rem;
-  }
-  h6 {
-    font-size: 1rem;
-  }
 }
 
 hr {
@@ -310,24 +260,19 @@ hr {
   border-left: 0;
 }
 
-ul,
-ol {
+ul {
   margin-bottom: 1rem;
   margin-left: 1.25rem;
   list-style-position: outside;
   line-height: 1.6;
-}
-
-ul {
   list-style-type: disc;
 }
 
-ul ul, ul ol, ol ul, ol ol {
-  margin-left: 1.25rem;
+ul ul {
   margin-bottom: 0;
 }
 
-ul.no-bullet, ol.no-bullet {
+ul.no-bullet {
   margin-left: 0;
   list-style: none;
 }
@@ -340,12 +285,12 @@ textarea {
   width: 100%;
 }
 
-[type='text'], [type='password'], [type='email'], [type='number'], [type='search'], textarea {
+[type='text'], [type='password'], [type='email'], [type='search'], textarea {
   border: 1px solid $color_medium_gray;
   border-radius: 3px;
 }
 
-[type='text'], [type='password'], [type='email'], [type='number'], [type='search'] {
+[type='text'], [type='password'], [type='email'], [type='search'] {
   width: 100%;
 }
 
@@ -354,12 +299,6 @@ textarea:disabled,
 textarea[readonly] {
   background-color: $color_light_gray;
   cursor: not-allowed;
-}
-
-[type='submit'],
-[type='button'] {
-  appearance: none;
-  border-radius: 3px;
 }
 
 [type='checkbox'] + label,
@@ -383,7 +322,6 @@ label > [type='radio'] {
 
 label {
   display: block;
-  margin: 0;
   font-size: 0.875rem;
   font-weight: normal;
   line-height: 1.8;
@@ -391,7 +329,6 @@ label {
 
 select {
   width: 100%;
-  appearance: none;
   border: 1px solid $color_medium_gray;
   border-radius: 3px;
 }
@@ -442,12 +379,4 @@ table {
   &.table-unstriped tbody tr {
     border-bottom: 1px solid #f1f1f1;
   }
-}
-
-/////////// Misc. ///////////
-code {
-  border: 1px solid $color_medium_gray;
-  background-color: $color_light_gray;
-  font-family: Consolas, "Liberation Mono", Courier, monospace;
-  padding: 0.125rem 0.3125rem 0.0625rem;
 }

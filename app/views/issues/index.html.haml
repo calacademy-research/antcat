@@ -16,16 +16,16 @@
     %p These issues were deemed important for one or another reason, in many cases because they are blocking improvements we want to make to the code.
     %p Any help fixing these is much appreciated. Resolved issues can be closed, and then this notice will disappear from this page and the header.
 
-%table.table-unstriped.table-stack
+%table.table-unstriped
   %tbody
     -@issues.each do |issue|
-      %tr{class: ('bg-light-gray' if issue.closed?)}
+      %tr{class: ('bg-gray-100' if issue.closed?)}
         %td.icon.align-top=issue.decorate.icon
         %td.grow-tw-conflict
           =link_to issue.title, issue
           =issue.decorate.help_wanted_badge
           %br
-          %small.gray-text.with-gray-links
+          %small.text-gray-600.with-gray-links
             added
             =time_ago_in_words issue.created_at
             ago by

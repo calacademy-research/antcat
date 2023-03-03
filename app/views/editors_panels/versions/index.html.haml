@@ -2,7 +2,7 @@
 -breadcrumb :versions
 
 =form_with url: request.path, method: :get do |f|
-  .row
+  .row.mb-4
     .small-6.medium-4.large-2.columns
       =f.select :whodunnit, options_for_select(User.order(:name).pluck(:name, :id), params[:whodunnit]), prompt: 'User'
     .small-6.medium-4.large-2.columns
@@ -12,7 +12,7 @@
     .small-6.medium-4.large-2.columns.end
       =f.select :event, options_for_select(PaperTrail::Version::EVENTS, params[:event]), prompt: 'Event'
 
-  .row
+  .row.mb-4
     .small-6.medium-4.large-2.columns
       =f.text_field :request_uuid, value: params[:request_uuid], placeholder: 'Request UUID'
     .small-6.medium-4.large-2.columns
@@ -57,7 +57,7 @@
             =decorated_version.revision_history_link
             =decorated_version.activity_link
           %td
-            %pre.pre-wrapped.text-sm=decorated_version.format_compact_changeset
+            %pre.pre-wrapped.text-md=decorated_version.format_compact_changeset
 
 -if @last_version
   .text-center

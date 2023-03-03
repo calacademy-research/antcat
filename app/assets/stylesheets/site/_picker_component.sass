@@ -1,0 +1,21 @@
+@import "colors"
+
+[data-controller='picker']
+  .pickable-row
+    cursor: cell
+    &:hover
+      background-color: $color_light_gray
+
+  [data-picker-selected-pickable]
+    background-color: $color_medium_gray
+
+  .pickable-record-id
+    color: $color_dark_gray_text
+    font-size: 90%
+    margin-right: 1rem
+
+  .pickable-outline
+    border: 1px solid $color_gray_text
+    border-radius: 3px
+    padding: 3px
+    background-color: $color_ac_blue_pale
