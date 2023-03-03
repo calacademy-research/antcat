@@ -15,7 +15,7 @@
           %span.pickable-outline Pickable type: #{pickable_type}
           -if ranks.present?
             %span Pickable ranks: #{ranks.join(', ')} (only works for taxa)
-        %button.btn-neutral.btn-tiny{"data-action" => 'click->picker#close'} Close
+        %button.btn-neutral.btn-tiny{"data-action" => 'click->picker#close'} Esc
 
       %input.mb-4{"autocomplete" => "off", "spellcheck" => "false", "data-picker-target" => "searchInput", type: "text"}
       %div{"data-picker-target" => "searchResults"}

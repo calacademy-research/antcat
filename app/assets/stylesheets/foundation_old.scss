@@ -285,12 +285,12 @@ textarea {
   width: 100%;
 }
 
-[type='text'], [type='password'], [type='email'], [type='search'], textarea {
+[type='text'], [type='password'], [type='email'], [type='number'], [type='search'], textarea {
   border: 1px solid $color_medium_gray;
   border-radius: 3px;
 }
 
-[type='text'], [type='password'], [type='email'], [type='search'] {
+[type='text'], [type='password'], [type='email'], [type='number'], [type='search'] {
   width: 100%;
 }
 
