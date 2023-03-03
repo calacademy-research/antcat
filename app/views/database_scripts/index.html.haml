@@ -25,9 +25,7 @@
       Found no database scripts.
     -@grouped_database_scripts.each do |section, database_scripts|
       %h5.float-right
-        %small
-          =database_scripts.size
-          scripts in section
+        %small #{database_scripts.size} scripts in section
       -case section
       -when DatabaseScripts::Tagging::DISAGREEING_HISTORY_SECTION
         %h5.float-left History items and taxa not agreeing

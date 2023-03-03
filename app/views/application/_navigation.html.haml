@@ -1,22 +1,18 @@
 #desktop-only-header{class: "hidden lg:block pt-4 pb-8"}
   #desktop-upper-menu.float-right.pt-2
     %ul.no-bullet.flex.text-sm{class: "[&>*]:px-4 [&>*]:ml-4"}
-      -if user_signed_in?
-        -if current_user
-          -count = current_user.unseen_notifications.count
-          -unless count.zero?
-            %li.text-sm.font-bold
-              =link_to notifications_path do
-                .label-white.border-0=count
-                new notification#{"s" unless count == 1}!
+      -if current_user
+        -unless (count = current_user.unseen_notifications.count).zero?
+          %li.font-bold
+            =link_to notifications_path do
+              .inline-flex.items-center.justify-center.w-7.h-5.text-black.bg-white.rounded-full=count
+              new notification#{"s" unless count == 1}!
 
-        -if current_user
-          -count = current_user.unread_site_notices.count
-          -unless count.zero?
-            %li.text-sm.font-bold
-              =link_to site_notices_path do
-                .label-white.border-0=count
-                new notice#{"s" unless count == 1}!
+        -unless (count = current_user.unread_site_notices.count).zero?
+          %li.font-bold
+            =link_to site_notices_path do
+              .inline-flex.items-center.justify-center.w-7.h-5.text-black.bg-white.rounded-full=count
+              new notice#{"s" unless count == 1}!
 
         %li=link_to "Editor's Panel", editors_panel_path, class: "desktop-upper-menu-link #{'very-active' if menu_active?(:editors_panel)}"
         %li=link_to 'Activity Feed', activities_path, class: "desktop-upper-menu-link #{'very-active' if menu_active?(:activity_feed)}"
