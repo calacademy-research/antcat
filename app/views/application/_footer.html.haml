@@ -1,36 +1,32 @@
-.row.text-center.text-sm.pt-12.pb-8
-  .small-12.medium-6.columns
-    .row
-      .small-4.columns
-        %ul.no-bullet
-          %li=image_tag 'logos/antcat_head_white_27x89.png', alt: 'AntCat', class: 'inline-block mb-3'
-          %li=link_to 'About', page_path('about')
-          %li=link_to 'List of users', users_path
-          %li=mail_to Settings.contact_us_email_address, 'Contact us ', subject: 'AntCat'
+.layout-container.text-center.text-sm.pt-12.pb-8
+  .w-full.flex.flex-wrap
+    .w-full.flex.items-center.justify-around{class: " lg:w-6/12"}
+      %ul.no-bullet
+        %li=image_tag 'logos/antcat_head_white_27x89.png', alt: 'AntCat', class: 'inline-block mb-4'
+        %li=link_to 'About', page_path('about')
+        %li=link_to 'List of users', users_path
+        %li=mail_to Settings.contact_us_email_address, 'Contact us ', subject: 'AntCat'
 
-      .small-4.columns.mt-4
-        %ul.no-bullet
-          %li=link_to 'Activity feed', activities_path
-          %li.whitespace-nowrap
-            =link_to page_path('contribute') do
-              Contribute
-              =antcat_icon "star"
-              =antcat_icon "star"
-              =antcat_icon "star"
-          %li=link_to 'Random ant', catalog_random_path
-          %li=link_to 'Feedback', new_feedback_path(page: current_page_for_feedback)
+      %ul.no-bullet
+        %li=link_to 'Activity feed', activities_path
+        %li.whitespace-nowrap
+          =link_to page_path('contribute') do
+            Contribute
+            =antcat_icon "star"
+            =antcat_icon "star"
+            =antcat_icon "star"
+        %li=link_to 'Random ant', catalog_random_path
+        %li=link_to 'Feedback', new_feedback_path(page: current_page_for_feedback)
 
-      .small-4.columns
-        %ul.no-bullet.mt-6
-          %li=link_to 'API', grape_swagger_rails_path
-          %li=link_to 'Help pages', wiki_pages_path
-          %li=external_link_to 'GitHub', Settings.github.repo_url
+      %ul.no-bullet
+        %li=link_to 'API', grape_swagger_rails_path
+        %li=link_to 'Help pages', wiki_pages_path
+        %li=external_link_to 'GitHub', Settings.github.repo_url
 
-  .small-12.columns.medium-6.large-push-1.mt-2
-    .row
-      .small-6.medium-6.large-5.columns.large-offset-2
+    .w-full.flex.items-center.justify-around.ml-auto.mt-4{class: " lg:w-5/12 lg:mt-0"}
+      %div
         =link_to 'https://www.calacademy.org', target: '_blank', rel: 'noopener' do
           =image_tag 'logos/california_academy_of_sciences_white_80x213.png', alt: 'California Academy of Sciences'
-      .small-6.medium-6.large-5.columns
+      %div
         =link_to 'https://antweb.org', target: '_blank', rel: 'noopener' do
-          =image_tag 'logos/antweb_white_27x146.png', alt: 'AntWeb', class: 'mt-8'
+          =image_tag 'logos/antweb_white_27x146.png', alt: 'AntWeb'
