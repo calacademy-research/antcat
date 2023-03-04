@@ -5,6 +5,10 @@ module LayoutsHelper
     "#{controller_name.tr('/', '_')}-controller"
   end
 
+  def rails_env_css_class
+    "rails-env-#{Rails.env}"
+  end
+
   def page_title title
     content_for :title_tag, title
   end
