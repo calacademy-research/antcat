@@ -11,7 +11,7 @@ describe PaperTrail::VersionDecorator do
 
     specify do
       expect(decorated.revision_history_link).
-        to eq %(<a class="btn-default btn-tiny" href="/issues/#{item.id}/history">History</a>)
+        to eq %(<a class="btn-default" href="/issues/#{item.id}/history">History</a>)
     end
   end
 end

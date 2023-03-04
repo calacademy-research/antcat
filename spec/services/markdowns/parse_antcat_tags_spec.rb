@@ -32,8 +32,8 @@ describe Markdowns::ParseAntCatTags do
         specify do
           expect(described_class["%dbscript:OrphanedProtonyms"].strip).to eq <<~HTML.squish
             <a href="/database_scripts/orphaned_protonyms">Orphaned protonyms</a>
-            <span class="label-white rounded-badge">protonyms</span>
-            <span class="label-warning rounded-badge">slow-render</span>
+            <span class="badge-white">protonyms</span>
+            <span class="badge-danger">slow-render</span>
           HTML
         end
       end

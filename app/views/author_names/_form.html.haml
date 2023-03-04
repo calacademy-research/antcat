@@ -1,5 +1,6 @@
 =form_with model: author_name, url: url do |f|
   =render "shared/errors_for", resource: author_name
+
   .row.mb-4
     .medium-6.columns.end
       =f.label :name
@@ -11,4 +12,4 @@
 
   .row
     .medium-3.columns.end
-      =f.button 'Save', class: "btn-saves"
+      =f.button 'Save', class: "btn-saves btn-md"

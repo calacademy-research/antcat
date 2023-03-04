@@ -41,7 +41,7 @@ module DatabaseScripts
 
       def replace_missing_tags_link history_item, normalized_name
         link_to "Replace #{normalized_name}!", replace_missing_tags_quick_and_dirty_fix_path(history_item_id: history_item.id),
-          method: :post, remote: true, class: 'btn-warning btn-tiny'
+          method: :post, remote: true, class: 'btn-warning'
       end
 
       def format_hardcoded_names_with_taxa hardcoded_names_with_taxa

@@ -13,9 +13,9 @@
           %td.icon=decorated.icon
           %td
             -if activity.user&.unconfirmed?
-              %span.rounded-badge unconfirmed user
+              %span.badge-white unconfirmed user
             -if decorated.locked_or_deleted_user_registration?
-              %span.label-warning.rounded-badge locked or deleted user
+              %span.badge-danger locked or deleted user
             =decorated.link_user
             =decorated.did_something
             -if activity.edit_summary?
@@ -25,12 +25,12 @@
           %td
             =decorated.revision_history_link
             -if activity.request_uuid
-              =link_to 'uuid', versions_path(request_uuid: activity.request_uuid), class: "btn-default btn-tiny"
-          %td.activity-link-wrapper.no-wrap{class: "group/activities-table-row"}
+              =link_to 'uuid', versions_path(request_uuid: activity.request_uuid), class: "btn-default"
+          %td.no-wrap{class: "group/activities-table-row"}
             %span{class: "group-hover/activities-table-row:hidden"}=decorated.when
             %span.hidden{class: "group-hover/activities-table-row:inline", data: { visible_in_test_env: true }}
-              =link_to 'Link', activity, class: 'btn-default btn-very-tiny'
+              =link_to 'Link', activity, class: 'btn-default'
               =activities_link activity.trackable_type, activity.trackable_id
               -if user_is_developer? && show_delete_button
                 %br
-                =link_to append_superadmin_icon("Delete"), activity_path(activity), method: :delete, data: { confirm: "Delete?" }, class: "btn-warning btn-very-tiny"
+                =link_to append_superadmin_icon("Delete"), activity_path(activity), method: :delete, data: { confirm: "Delete?" }, class: "btn-warning"

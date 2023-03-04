@@ -18,7 +18,7 @@ describe IssueDecorator do
 
         specify do
           expect(decorated.help_wanted_badge).
-            to eq '<span class="rounded-badge label-high-priority">Help wanted!</span>'
+            to eq '<span class="badge-orange">Help wanted!</span>'
         end
       end
 

@@ -14,7 +14,7 @@
 
     -if @taxon.genus.subgenera.empty?
       %p The genus of this species does not have any subgenera.
-      %p=link_to "Add #{@taxon.genus.name.name_html} subgenus".html_safe, new_taxon_path(rank_to_create: Rank::SUBGENUS, parent_id: @taxon.genus.id), class: "btn-default btn-tiny"
+      %p=link_to "Add #{@taxon.genus.name.name_html} subgenus".html_safe, new_taxon_path(rank_to_create: Rank::SUBGENUS, parent_id: @taxon.genus.id), class: "btn-default"
     -else
       %table.table-striped
         %caption
@@ -25,9 +25,9 @@
             %tr
               %td
                 -if @taxon.subgenus == subgenus
-                  =link_to 'Remove', taxon_set_subgenus_path(@taxon), method: :delete, class: 'btn-warning btn-very-tiny'
+                  =link_to 'Remove', taxon_set_subgenus_path(@taxon), method: :delete, class: 'btn-warning'
                 -else
-                  =link_to 'Set', taxon_set_subgenus_path(@taxon, subgenus_id: subgenus.id), method: :post, class: 'btn-saves btn-tiny'
+                  =link_to 'Set', taxon_set_subgenus_path(@taxon, subgenus_id: subgenus.id), method: :post, class: 'btn-saves'
               %td=CatalogFormatter.link_to_taxon(subgenus)
               %td=subgenus.author_citation
               %td.shrink-tw-conflict=subgenus.decorate.expanded_status

@@ -36,11 +36,11 @@ module ApplicationHelper
   end
 
   def beta_label
-    tag.span "beta", class: "rounded-badge"
+    tag.span "beta", class: "badge-blue"
   end
 
   def new_label
-    tag.span "new!", class: "rounded-badge"
+    tag.span "new!", class: "badge-blue"
   end
 
   def flash_message_class flash_type

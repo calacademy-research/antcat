@@ -13,21 +13,21 @@
 
     %br
 
-    %a.taxt-editor-history-item-save-button.btn-saves Save
-    %a.taxt-editor-cancel-button.btn-neutral Cancel
-    %a.taxt-editor-delete-button.btn-warning.ml-4 Delete
+    %a.taxt-editor-history-item-save-button.btn-saves.btn-md Save
+    %a.taxt-editor-cancel-button.btn-neutral.btn-md Cancel
+    %a.taxt-editor-delete-button.btn-warning.btn-md.ml-4 Delete
 
   .taxt-presenter.mt-2{class: "group/history-item-taxt-presenter"}
-    %a.taxt-editor-edit-button.btn-neutral.btn-tiny.mr-4 Quick edit
+    %a.taxt-editor-edit-button.btn-neutral.mr-4 Quick edit
 
     %small.font-bold.text-gray-500.mr-4=history_item.underscored_type
 
     %span.hidden{class: "group-hover/history-item-taxt-presenter:inline"}
-      =link_to "Show", history_item_path(history_item), class: "btn-default btn-very-tiny"
-      =link_to "Edit", edit_history_item_path(history_item, **current_page_redirect_back_url), class: "btn-default btn-very-tiny"
-      =link_to "History", history_item_history_path(history_item), class: "btn-default btn-very-tiny"
+      =link_to "Show", history_item_path(history_item), class: "btn-default"
+      =link_to "Edit", edit_history_item_path(history_item, **current_page_redirect_back_url), class: "btn-default"
+      =link_to "History", history_item_history_path(history_item), class: "btn-default"
 
       -if history_item.taxt_type?
-        =link_to "Add item before this", new_protonym_history_item_path(history_item.protonym, position: history_item.position, **current_page_redirect_back_url), class: "btn-default btn-very-tiny"
+        =link_to "Add item before this", new_protonym_history_item_path(history_item.protonym, position: history_item.position, **current_page_redirect_back_url), class: "btn-default"
       -if history_item.relational?
-        =link_to "Add another", new_protonym_history_item_path(history_item.protonym, **history_item.decorate.params_for_add_another_of_same_type, **current_page_redirect_back_url), class: "btn-default btn-very-tiny"
+        =link_to "Add another", new_protonym_history_item_path(history_item.protonym, **history_item.decorate.params_for_add_another_of_same_type, **current_page_redirect_back_url), class: "btn-default"

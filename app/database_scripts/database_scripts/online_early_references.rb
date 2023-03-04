@@ -12,7 +12,7 @@ module DatabaseScripts
         t.rows do |reference|
           [
             reference_link(reference),
-            link_to('What Links Here', reference_what_links_here_path(reference), class: 'btn-default btn-tiny')
+            link_to('What Links Here', reference_what_links_here_path(reference), class: 'btn-default')
           ]
         end
       end

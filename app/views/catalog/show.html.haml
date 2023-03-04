@@ -21,7 +21,7 @@
       .callout.text-sm.mb-4
         =@catalog_presenter.formatted_statistics
         -unless @catalog_presenter.show_full_statistics?
-          =link_to "More statistics", catalog_path(@taxon, include_full_statistics: "true"), class: "btn-default btn-tiny"
+          =link_to "More statistics", catalog_path(@taxon, include_full_statistics: "true"), class: "btn-default"
 
     .callout.text-sm
       =@taxon.decorate.link_to_antweb

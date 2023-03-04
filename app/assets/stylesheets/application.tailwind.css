@@ -2,15 +2,87 @@
 @tailwind components;
 @tailwind utilities;
 
-/*
-
 @layer components {
-  .btn-primary {
-    @apply py-2 px-4 bg-blue-200;
+  /* Buttons */
+  .--ac-base-btn {
+    @apply box-border whitespace-nowrap cursor-pointer;
+    @apply border rounded;
+
+    @apply btn-sm;
+  }
+
+  .btn-default {
+    @apply --ac-base-btn;
+    @apply text-white hover:text-white
+           bg-ac-blue hover:bg-ac-blue-darker
+           border-ac-blue-darker;
+  }
+
+  .btn-neutral {
+    @apply --ac-base-btn;
+    @apply !text-black hover:text-black
+           bg-white hover:bg-slate-200
+           border-black;
+  }
+
+  .btn-saves {
+    @apply --ac-base-btn;
+    @apply text-white hover:text-white
+           bg-ac-blue-saves hover:bg-ac-blue-saves-darker
+           border-ac-blue-darker;
+  }
+
+  .btn-warning {
+    @apply --ac-base-btn;
+    @apply text-white hover:text-white
+           bg-ac-red-danger hover:bg-ac-red-danger-darker
+           border-ac-red-danger;
+  }
+
+  .btn-orange {
+    @apply --ac-base-btn;
+    @apply text-white hover:text-white
+           bg-orange-500 hover:bg-orange-600
+           border-orange-500;
+  }
+
+  /* Badges */
+  .--ac-base-badge {
+    @apply whitespace-nowrap py-1 px-2;
+    @apply text-sm rounded-full;
+  }
+
+  .badge-blue {
+    @apply --ac-base-badge;
+    @apply text-white hover:text-white
+           bg-ac-blue;
+  }
+
+  .badge-white {
+    @apply --ac-base-badge;
+    @apply text-black hover:text-black
+           bg-white
+           border border-black;
+  }
+
+  .badge-danger {
+    @apply --ac-base-badge;
+    @apply text-white hover:text-white
+           bg-ac-red-danger;
+  }
+
+  .badge-green {
+    @apply --ac-base-badge;
+    @apply text-white hover:text-white
+           bg-green-600;
+  }
+
+  .badge-orange {
+    @apply --ac-base-badge;
+    @apply text-white hover:text-white
+           bg-orange-500;
   }
 }
-
-*/
 
 @layer base {
   html {
@@ -31,11 +103,31 @@
   }
 
   a:hover {
-    @apply text-ac-blue-hover;
+    @apply text-ac-blue-darker;
   }
 
   code {
     @apply bg-gray-100 border border-gray-300;
     padding: 0.125rem 0.3125rem 0.0625rem;
+  }
+
+  .dropdown-content > ul > li {
+    /* Vertically space stacked buttons. */
+    margin-bottom: 3px;
+  }
+}
+
+@layer utilities {
+  .btn-sm {
+    @apply py-1 px-2  text-sm;
+    @apply opacity-100;
+
+    /* Fix for `button` elements which become too tall without this. */
+    line-height: 1rem;
+  }
+
+  .btn-md {
+    @apply py-2 px-3 text-sm;
+    @apply opacity-100;
   }
 }

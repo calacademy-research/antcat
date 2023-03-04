@@ -18,7 +18,7 @@
                 =db_tooltip_icon :connecting_terms, scope: :protonyms
             %td
               -if protonym.name&.persisted?
-                %span.float-right=link_to "Name record ##{protonym.name.id}", name_path(protonym.name), class: 'btn-default btn-tiny'
+                %span.float-right=link_to "Name record ##{protonym.name.id}", name_path(protonym.name), class: 'btn-default'
                 =protonym.name_with_fossil
               -else
                 =text_field_tag :protonym_name_string, protonym&.name&.name
@@ -193,7 +193,7 @@
           %td
             =edit_summary_text_field_tag
             .mb-4
-            =f.button "Save", class: "btn-saves"
+            =f.button "Save", class: "btn-saves btn-md"
 
 -if protonym.taxa.present?
   %h5.mt-20.mb-4 Related records

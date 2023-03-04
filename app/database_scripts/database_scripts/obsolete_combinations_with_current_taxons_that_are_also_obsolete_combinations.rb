@@ -39,7 +39,7 @@ module DatabaseScripts
           taxon_id: very_obsolete_combination.id,
           new_current_taxon_id: current_taxon.id
         )
-        link = link_to "Set as CT for VOC!", url, method: :post, remote: true, class: 'btn-default btn-tiny'
+        link = link_to "Set as CT for VOC!", url, method: :post, remote: true, class: 'btn-default'
 
         description + link
       end

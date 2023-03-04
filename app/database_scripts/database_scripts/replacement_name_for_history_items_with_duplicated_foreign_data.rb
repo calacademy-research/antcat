@@ -50,7 +50,7 @@ module DatabaseScripts
           history_item_id: rep_name_for_item.id,
           edit_summary: "strip identical duplicate data of other 'Junior homonym of item'"
         )
-        link_to 'Yes! Strip identical data!', link, method: :post, remote: true, class: 'btn-default btn-tiny'
+        link_to 'Yes! Strip identical data!', link, method: :post, remote: true, class: 'btn-default'
       end
 
       def strip_non_identical_link rep_name_for_item
@@ -58,7 +58,7 @@ module DatabaseScripts
           history_item_id: rep_name_for_item.id,
           edit_summary: "strip foreign/duplicate-ish data of other 'Junior homonym of item'"
         )
-        link_to "Strip after 'Replacement name for TAG ID'", link, method: :post, remote: true, class: 'btn-warning btn-tiny'
+        link_to "Strip after 'Replacement name for TAG ID'", link, method: :post, remote: true, class: 'btn-warning'
       end
   end
 end

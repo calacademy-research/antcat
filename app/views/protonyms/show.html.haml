@@ -43,7 +43,7 @@
           =ndash
           nomen nudum
       -if current_user
-        .float-right=link_to "Name record ##{@protonym.name.id}", name_path(@protonym.name), class: 'btn-default btn-tiny'
+        .float-right=link_to "Name record ##{@protonym.name.id}", name_path(@protonym.name), class: 'btn-default'
     %table.table-unstriped
       %tbody
         %tr
@@ -117,9 +117,9 @@
 
         %ul.no-bullet
           -if user_is_at_least_helper?
-            %li.mb-2=link_to "Add history item", new_protonym_history_item_path(@protonym, **current_page_redirect_back_url), class: "btn-default btn-tiny"
+            %li.mb-2=link_to "Add history item", new_protonym_history_item_path(@protonym, **current_page_redirect_back_url), class: "btn-default"
             -if @protonym.history_items.size > 1
-              %li.mb-2=link_to "Reorder history items", protonym_reorder_history_items_path(@protonym), class: "btn-default btn-tiny"
+              %li.mb-2=link_to "Reorder history items", protonym_reorder_history_items_path(@protonym), class: "btn-default"
 
         %ul.no-bullet.text-sm
           %li Created at: #{l @protonym.created_at, format: :ymd}
@@ -150,7 +150,7 @@
               %td
                 =taxon.decorate.link_to_antwiki
                 %br
-                =link_to "Show children", taxon_children_path(taxon), class: "btn-default btn-tiny"
+                =link_to "Show children", taxon_children_path(taxon), class: "btn-default"
 
 -if current_user
   -content_for :javascripts do

@@ -31,11 +31,11 @@
       =@user.decorate.user_badge
       -if user_is_editor?
         -if @user.locked?
-          %span.label-warning.rounded-badge locked
+          %span.badge-danger locked
         -if @user.deleted?
-          %span.label-warning.rounded-badge soft-deleted
+          %span.badge-danger soft-deleted
         -if @user.hidden?
-          %span.label-warning.rounded-badge hidden
+          %span.badge-danger hidden
 
     -if user_is_at_least_helper?
       %p

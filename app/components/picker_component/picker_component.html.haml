@@ -2,9 +2,9 @@
   .p-2.rounded.border.border-gray-300.inline-block{"data-picker-target" => "fakeInput", class: "min-w-[15rem]"}
     = label || "(none)"
 
-  %button.btn-neutral.btn-tiny{"data-action" => 'click->picker#open'} Pick
+  %button.btn-neutral{"data-action" => 'click->picker#open'} Pick
   -# TODO: Only show 'Clear' button when nothing is selected.
-  %button.btn-neutral.btn-tiny{"data-action" => 'click->picker#clear'} Clear
+  %button.btn-neutral{"data-action" => 'click->picker#clear'} Clear
 
   %input.hidden{"data-picker-target" => "hiddenInput", name: name, id: id, type: "text", value: record&.id, data: { visible_in_test_env: true }}
 
@@ -15,7 +15,7 @@
           %span.pickable-outline Pickable type: #{pickable_type}
           -if ranks.present?
             %span Pickable ranks: #{ranks.join(', ')} (only works for taxa)
-        %button.btn-neutral.btn-tiny{"data-action" => 'click->picker#close'} Esc
+        %button.btn-neutral{"data-action" => 'click->picker#close'} Esc
 
       %input.mb-4{"autocomplete" => "off", "spellcheck" => "false", "data-picker-target" => "searchInput", type: "text"}
       %div{"data-picker-target" => "searchResults"}

@@ -7,14 +7,14 @@ describe DatabaseScriptDecorator do
 
   describe '.format_tags' do
     specify do
-      expect(described_class.format_tags(['new!'])).to eq '<span class="label rounded-badge">new!</span>'
+      expect(described_class.format_tags(['new!'])).to eq '<span class="badge-blue">new!</span>'
     end
   end
 
   describe '.format_linked_tags' do
     specify do
       expect(described_class.format_linked_tags(['new!'])).
-        to eq %(<a class="label rounded-badge" href="/database_scripts?tag=new%21">new!</a>)
+        to eq %(<a class="badge-blue" href="/database_scripts?tag=new%21">new!</a>)
     end
   end
 
@@ -24,8 +24,8 @@ describe DatabaseScriptDecorator do
 
       specify do
         expect(decorated.format_tags).to eq <<~HTML.squish
-          <span class="label-white rounded-badge">protonyms</span>
-          <span class="label-warning rounded-badge">slow-render</span>
+          <span class="badge-white">protonyms</span>
+          <span class="badge-danger">slow-render</span>
         HTML
       end
     end
