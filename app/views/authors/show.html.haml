@@ -17,7 +17,7 @@
       .float-right
         %small
           This author has an
-          =link_to 'antcat.org account', @author.user, class: 'btn-default btn-tiny'
+          =link_to 'antcat.org account', @author.user, class: 'btn-default'
   -if @references.empty?
     %p Found no references by this author.
   -else
@@ -83,7 +83,7 @@
     %h5
       Names belonging to author
       -if user_is_editor?
-        =link_to 'Add alternative spelling', new_author_author_name_path(@author), class: 'btn-default btn-tiny'
+        =link_to 'Add alternative spelling', new_author_author_name_path(@author), class: 'btn-default'
     %table.table-unstriped.mb-8
       %thead
         %tr
@@ -98,7 +98,7 @@
             %td=author_name.references.count
             %td
               -if user_is_editor?
-                =link_to 'Edit', edit_author_name_path(author_name), class: "btn-default btn-tiny"
+                =link_to 'Edit', edit_author_name_path(author_name), class: "btn-default"
               -unless hide_delete_author_name_button
                 -if user_is_editor? && author_name.references.empty?
-                  =link_to "Delete", author_name_path(author_name), method: :delete, data: { confirm: "Are you sure?" }, class: "btn-warning btn-tiny"
+                  =link_to "Delete", author_name_path(author_name), method: :delete, data: { confirm: "Are you sure?" }, class: "btn-warning"

@@ -20,16 +20,16 @@
 
   -if user_is_at_least_helper?
     %ul.no-bullet
-      %li.mb-2=link_to "Edit protonym", edit_protonym_path(protonym), class: "btn-default btn-tiny"
+      %li.mb-2=link_to "Edit protonym", edit_protonym_path(protonym), class: "btn-default"
 
       -if Status.display_history_items?(taxon.status)
-        %li.mb-2=link_to "Add history item", new_protonym_history_item_path(taxon.protonym, **current_page_redirect_back_url), class: "btn-default btn-tiny"
+        %li.mb-2=link_to "Add history item", new_protonym_history_item_path(taxon.protonym, **current_page_redirect_back_url), class: "btn-default"
       -else
         %li.mb-2
-          =link_to "Add history item", new_protonym_history_item_path(taxon.protonym, **current_page_redirect_back_url), class: "btn-warning btn-tiny"
+          =link_to "Add history item", new_protonym_history_item_path(taxon.protonym, **current_page_redirect_back_url), class: "btn-warning"
           (it will not be shown on this page)
       -if taxon.history_items_for_taxon.size > 1
-        %li.mb-2=link_to "Reorder history items", protonym_reorder_history_items_path(taxon.protonym), class: "btn-default btn-tiny"
+        %li.mb-2=link_to "Reorder history items", protonym_reorder_history_items_path(taxon.protonym), class: "btn-default"
 
 -# Ignore "Issue" sidebar for Formicidae for performance and a cleaner look.
 -if Settings.catalog.show_failed_soft_validations && !taxon.is_a?(Family)
@@ -68,7 +68,7 @@
       -if policy.allowed?
         %p
           Probably!
-          =link_to "Create combination", new_taxon_create_combination_path(taxon), class: "btn-default btn-tiny"
+          =link_to "Create combination", new_taxon_create_combination_path(taxon), class: "btn-default"
       -else
         No, because:
         %ul
@@ -98,7 +98,7 @@
           =CatalogFormatter.link_to_taxon(taxon.subgenus)
         -else
           (none)
-          =link_to "Set subgenus", taxon_set_subgenus_path(taxon), class: "btn-default btn-very-tiny"
+          =link_to "Set subgenus", taxon_set_subgenus_path(taxon), class: "btn-default"
 
   %ul.no-bullet.text-sm
     %li Created at: #{l taxon.created_at, format: :ymd}

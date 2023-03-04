@@ -91,7 +91,7 @@
                 %p
                   -# TODO: Check `grouped_item.group_key.join('_')` because
                   -# `group_key` = `["JuniorSynonymOf", "object_protonym_id", 156572]`.
-                  %button.btn-neutral.btn-tiny.mr-4{"data-action" => "toggler#toggle", "data-toggler-target" => "grouped-#{grouped_item.group_key.join('_')}"} Show/hide grouped
+                  %button.btn-neutral.mr-4{"data-action" => "toggler#toggle", "data-toggler-target" => "grouped-#{grouped_item.group_key.join('_')}"} Show/hide grouped
                   %small.font-bold.text-gray-500 #{grouped_item.underscored_type} x #{grouped_item.number_of_items}
 
                 %ul.compact-list.no-bullet.mb-8.hidden{data: { toggler_name: "grouped-#{grouped_item.group_key.join('_')}" }}
@@ -184,10 +184,10 @@
 
           -if current_user
             %span.hidden{class: "group-hover/reference-sections-item:inline"}
-              =link_to "Show", reference_section, class: "btn-default btn-very-tiny"
+              =link_to "Show", reference_section, class: "btn-default"
               -if user_is_at_least_helper?
-                =link_to "Edit", edit_reference_section_path(reference_section), class: "btn-default btn-very-tiny"
-              =link_to "History", reference_section_history_path(reference_section), class: "btn-default btn-very-tiny"
+                =link_to "Edit", edit_reference_section_path(reference_section), class: "btn-default"
+              =link_to "History", reference_section_history_path(reference_section), class: "btn-default"
 
 /--- Citations ---
 -unless catalog_presenter.formicidae_landing_page?
@@ -202,6 +202,6 @@
         -if current_user
           .hidden{class: "group-hover/citations-reference:inline"}
             -if user_is_at_least_helper?
-              =link_to "Edit", edit_reference_path(reference), class: "btn-default btn-tiny"
+              =link_to "Edit", edit_reference_path(reference), class: "btn-default"
             =copy_to_clipboard_button Taxt.ref(reference.id), "ref #{reference.id}"
             =copy_to_clipboard_button reference.id

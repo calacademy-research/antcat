@@ -6,6 +6,6 @@ module CopyToClipboardHelper
       'data-action': 'clipboard#copy',
       'data-clipboard-string-to-copy-value': string_to_copy,
       'data-controller': 'clipboard',
-      class: "btn-neutral btn-tiny font-courier"
+      class: "btn-neutral font-courier"
   end
 end

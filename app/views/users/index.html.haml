@@ -31,7 +31,7 @@
           %td=link_to "#{user.created_paper_trail_versions.count}&nbsp;PTVs".html_safe, versions_path(whodunnit: user.id)
         %td
           -if user.author
-            =link_to 'Author page', user.author, class: 'btn-default btn-tiny'
+            =link_to 'Author page', user.author, class: 'btn-default'
         -if user_is_at_least_helper?
           %td=user.email
           %td Reg. #{user.created_at.year}

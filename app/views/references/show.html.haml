@@ -55,7 +55,7 @@
           =copy_to_clipboard_button @reference.id
 
         .mb-2
-          =link_to "Add to Recently Used", my_recently_used_references_path(id: @reference.id), method: :post, remote: true, class: "btn-tiny add-to-recently-used-references-js-hook btn-saves"
+          =link_to "Add to Recently Used", my_recently_used_references_path(id: @reference.id), method: :post, remote: true, class: "add-to-recently-used-references-js-hook btn-saves"
         .mb-2
           =@editors_reference_presenter.set_as_default_reference_button
 

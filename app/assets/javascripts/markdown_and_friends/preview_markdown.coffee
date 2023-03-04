@@ -52,7 +52,7 @@ class MakePreviewable
         <div class="medium-6 columns">#{title}</div>
         <div class="medium-6 columns">
           Preview
-          <button class="btn-neutral btn-tiny preview-link">Rerender preview</button>
+          <button class="btn-neutral preview-link">Rerender preview</button>
         </div>
       </div>
       <div class="row">
@@ -111,11 +111,11 @@ class ExtrasArea
     $ """
     <div class="row">
       <div class="medium-6 columns end">
-        <a id="#{DEFAULT_REFERENCE_BUTTON_ID}" class="btn-default btn-tiny">Default reference</a>
-        <a id="#{RECENTLY_USED_REFERENCES_BUTTON_ID}" class="btn-default btn-tiny">Recently used references</a>
-        <a id="#{INSERT_REFERENCE_BUTTON_ID}" class="btn-default btn-tiny">+Reference</a>
-        <a id="#{INSERT_TAXON_BUTTON_ID}" class="btn-default btn-tiny">+Taxon</a>
-        <a id="#{CONVERT_BOLTON_KEYS_BUTTON_ID}" class="btn-warning btn-tiny">Convert Bolton keys</a>
+        <a id="#{DEFAULT_REFERENCE_BUTTON_ID}" class="btn-default">Default reference</a>
+        <a id="#{RECENTLY_USED_REFERENCES_BUTTON_ID}" class="btn-default">Recently used references</a>
+        <a id="#{INSERT_REFERENCE_BUTTON_ID}" class="btn-default">+Reference</a>
+        <a id="#{INSERT_TAXON_BUTTON_ID}" class="btn-default">+Taxon</a>
+        <a id="#{CONVERT_BOLTON_KEYS_BUTTON_ID}" class="btn-warning">Convert Bolton keys</a>
       </div>
     </div>
     """

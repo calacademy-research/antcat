@@ -56,7 +56,7 @@ module DatabaseScripts
 
       def new_taxon_link quick_adder
         label = "Add #{quick_adder.rank}"
-        link_to label, new_taxon_path(quick_adder.taxon_form_params), class: "btn-default btn-tiny"
+        link_to label, new_taxon_path(quick_adder.taxon_form_params), class: "btn-default"
       end
   end
 end

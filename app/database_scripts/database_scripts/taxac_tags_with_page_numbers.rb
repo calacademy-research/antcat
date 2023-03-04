@@ -40,12 +40,12 @@ module DatabaseScripts
 
       def quick_fix_link history_item
         link_to 'Remove pages!', remove_pages_from_taxac_tags_quick_and_dirty_fix_path(history_item_id: history_item.id),
-          method: :post, remote: true, class: 'btn-default btn-tiny'
+          method: :post, remote: true, class: 'btn-default'
       end
 
       def force_quick_fix_link history_item
         link_to 'Force-remove pages!', force_remove_pages_from_taxac_tags_quick_and_dirty_fix_path(history_item_id: history_item.id),
-          method: :post, remote: true, class: 'btn-warning btn-tiny'
+          method: :post, remote: true, class: 'btn-warning'
       end
 
       def without_pages_column show_quick_fix_link, without_pages

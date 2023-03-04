@@ -11,23 +11,23 @@ module Editors
     def review_reference_button
       if can_finish_reviewing?
         link_to 'Finish reviewing', finish_reviewing_reference_path(reference),
-          method: :post, class: "btn-saves btn-tiny"
+          method: :post, class: "btn-saves"
       elsif can_start_reviewing?
         link_to 'Start reviewing', start_reviewing_reference_path(reference),
-          method: :post, class: "btn-saves btn-tiny"
+          method: :post, class: "btn-saves"
       elsif can_restart_reviewing?
         link_to 'Restart reviewing', restart_reviewing_reference_path(reference),
-          method: :post, class: "btn-warning btn-tiny"
+          method: :post, class: "btn-warning"
       end
     end
 
     def set_as_default_reference_button
       if reference == References::DefaultReference.get(session)
-        tag.span ('Is default reference ' + antcat_icon('check')).html_safe, class: "btn-tiny",
+        tag.span ('Is default reference ' + antcat_icon('check')).html_safe,
           title: "This reference is set as the default reference."
       else
         link_to 'Make default', my_default_reference_path(id: reference.id),
-          method: :put, class: "btn-saves btn-tiny"
+          method: :put, class: "btn-saves"
       end
     end
 

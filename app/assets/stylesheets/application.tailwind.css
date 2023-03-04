@@ -46,11 +46,6 @@
            border-orange-500;
   }
 
-  /* TODO: Remove. */
-  .btn-tiny, .btn-very-tiny {
-    @apply btn-sm;
-  }
-
   /* Badges */
   .--ac-base-badge {
     @apply whitespace-nowrap py-1 px-2;
