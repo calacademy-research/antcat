@@ -36,16 +36,16 @@
         =form_with url: references_search_index_path, method: :get, class: "mr-4" do |f|
           .flex
             =f.text_field "reference_q", value: params[:reference_q], placeholder: "Search References", "aria-label" => "Search References", id: nil, class: "typeahead-references-js expandable-reference-search placeholder:text-sm border-0", data: { testid: 'header-reference-search-input' }
-            =button_tag type: 'submit', name: nil, "aria-label" => 'Search References', data: { testid: 'header-reference-search-button' } do
-              %i.inline-search-icon.icon-search
+            =button_tag type: 'submit', name: nil, "aria-label" => 'Search References', data: { testid: 'header-reference-search-button' }, class: "-ml-6 z-20" do
+              =inline_svg_tag('icons/magnifying-glass.svg', class: "text-ac-blue h-5 w-5")
 
       %li.text-black
         =form_with url: catalog_search_path, method: :get do |f|
           .flex
             =f.text_field 'qq', value: params[:qq], placeholder: "Search Catalog", "aria-label" => "Search Catalog", id: nil, class: 'expandable-catalog-search typeahead-taxa-js-hook placeholder:text-sm border-0'
             =hidden_field_tag Catalog::SearchesController::SEARCHING_FROM_HEADER, true, id: nil
-            =button_tag type: 'submit', name: nil, "aria-label" => 'Search Catalog', data: { testid: 'header-catalog-search-button' } do
-              %i.inline-search-icon.icon-search
+            =button_tag type: 'submit', name: nil, "aria-label" => 'Search Catalog', data: { testid: 'header-catalog-search-button' }, class: "-ml-6 z-20" do
+              =inline_svg_tag('icons/magnifying-glass.svg', class: "text-ac-blue h-5 w-5")
 
 #mobile-only-header.text-sm.pt-2.pb-4{class: "block lg:hidden"}
   %input#mobile-hamburger-input.hidden{type: "checkbox", checked: false}
@@ -64,16 +64,16 @@
         =form_with url: references_search_index_path, method: :get do |f|
           .flex
             =f.text_field "reference_q", value: params[:reference_q], placeholder: "Search References", "aria-label" => "Search References", id: nil, class: "typeahead-references-js placeholder:text-sm"
-            =button_tag search_icon, type: "submit", name: nil do
-              %i.inline-search-icon.icon-search
+            =button_tag search_icon, type: "submit", name: nil, class: "-ml-8 z-20" do
+              =inline_svg_tag('icons/magnifying-glass.svg', class: "text-ac-blue h-5 w-5")
 
       %li.text-black
         =form_with url: catalog_search_path, method: :get do |f|
           .flex
             =f.text_field 'qq', value: params[:qq], placeholder: "Search Catalog", "aria-label" => "Search Catalog", id: nil, class: "typeahead-taxa-js-hook placeholder:text-sm"
             =hidden_field_tag Catalog::SearchesController::SEARCHING_FROM_HEADER, true, id: nil
-            =button_tag search_icon, type: "submit", name: nil do
-              %i.inline-search-icon.icon-search
+            =button_tag search_icon, type: "submit", name: nil, class: "-ml-8 z-20" do
+              =inline_svg_tag('icons/magnifying-glass.svg', class: "text-ac-blue h-5 w-5")
 
     %ul.no-bullet{class: "[&>*]:py-1"}
       %li=link_to 'References', references_latest_additions_path
