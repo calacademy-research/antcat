@@ -22,8 +22,8 @@
       =edit_summary_text_field_tag
 
     .medium-3.columns.end
-      =form.submit 'Save', class: 'btn-saves'
+      =form.submit 'Save', class: 'btn-saves btn-md'
       &nbsp;
       -cancel_link = taxon.new_record? ? catalog_path(params[:parent_id]) : catalog_path(taxon)
-      =link_to 'Cancel', cancel_link, class: 'btn-neutral'
+      =link_to 'Cancel', cancel_link, class: 'btn-neutral btn-md'
       =db_tooltip_icon :cancel, scope: :taxa

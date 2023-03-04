@@ -104,9 +104,9 @@
 
   -if current_user
     .float-right
-      =link_to "[disco button]", "#", id: 'toggle-disco-mode-js-hook', class: 'btn-lower-nav btn-lower-nav-neutral hidden'
-      =link_to "Issues (#{Issue.open.count})", issues_path, class: 'btn-lower-nav'
+      =link_to "[disco button]", "#", id: 'toggle-disco-mode-js-hook', class: 'btn-neutral border-white'
+      =link_to "Issues (#{Issue.open.count})", issues_path, class: 'btn-default border-white'
       -if Issue.any_help_wanted_open?
-        =link_to "Help Wanted (#{Issue.open_help_wanted.count})", issues_path, class: 'btn-lower-nav btn-lower-nav-high-priority font-bold'
-      =link_to 'Database Scripts', database_scripts_path, class: 'btn-lower-nav'
-      =link_to "Search History Items", history_items_path, class: 'btn-lower-nav'
+        =link_to "Help Wanted (#{Issue.open_help_wanted.count})", issues_path, class: 'btn-orange font-bold'
+      =link_to 'Database Scripts', database_scripts_path, class: 'btn-default border-white'
+      =link_to "Search History Items", history_items_path, class: 'btn-default border-white'
