@@ -274,6 +274,9 @@ GEM
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     ice_nine (0.11.2)
+    inline_svg (1.8.0)
+      activesupport (>= 3.0)
+      nokogiri (>= 1.6)
     jmespath (1.6.2)
     jquery-atwho-rails (1.5.4)
     jquery-rails (4.5.1)
@@ -605,6 +608,7 @@ DEPENDENCIES
   haml_lint
   hamlit
   high_voltage
+  inline_svg
   jquery-atwho-rails
   jquery-rails
   jquery-ui-rails

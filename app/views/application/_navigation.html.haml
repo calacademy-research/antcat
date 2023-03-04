@@ -50,8 +50,7 @@
 #mobile-only-header.text-sm.pt-2.pb-4{class: "block lg:hidden"}
   %input#mobile-hamburger-input.hidden{type: "checkbox", checked: false}
   %label.float-right.mt-2.select-none{for: "mobile-hamburger-input"}
-    %svg.w-12.h-12{"fill" => "none", :stroke => "currentColor", "stroke-width" => "1.5", :viewbox => "0 0 24 24", :xmlns => "http://www.w3.org/2000/svg"}
-      %path{:d => "M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5", "stroke-linecap" => "round", "stroke-linejoin" => "round"}
+    =inline_svg_tag('icons/bars-3.svg', class: "w-12 h-12")
 
   .pt-4.pb-2.w-fit
     =link_to root_path do
