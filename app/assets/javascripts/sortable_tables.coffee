@@ -1,4 +1,4 @@
 #= require jquery.tablesorter
 
 $ ->
-   $("table.tablesorter").tablesorter()
+   $("table[data-tablesorter]").tablesorter()

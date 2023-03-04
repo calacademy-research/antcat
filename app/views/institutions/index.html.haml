@@ -8,7 +8,7 @@
   -content_for :breadcrumbs_right do
     =link_to 'New', new_institution_path, class: 'btn-default'
 
-%table.table-striped.tablesorter
+%table.table-striped{data: { tablesorter: true }}
   %thead
     %tr
       %th.no-wrap Abbreviation
