@@ -93,7 +93,6 @@ setupSaveHistoryItemButtons = ->
         object_taxon_id: taxtEditor.find('[name=object_taxon_id]').val()
         reference_id: taxtEditor.find('[name=reference_id]').val()
         pages: taxtEditor.find('input[name=pages]').val()
-      taxt_editor_template: taxtEditor.data('taxt-editor-template')
       edit_summary: taxtEditor.find(EDIT_SUMMARY_FIELD).val()
 
     $.ajax

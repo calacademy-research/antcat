@@ -98,7 +98,7 @@ module FeatureHelpers
 
   # History items.
   def the_history_should_be content
-    element = first('#history-items').find('.taxt-presenter')
+    element = first('#history-items').first('.taxt-presenter')
     expect(element).to have_content(content)
   end
 

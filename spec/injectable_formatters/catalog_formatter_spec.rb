@@ -87,6 +87,13 @@ describe CatalogFormatter do
     let(:reference) { build_stubbed :any_reference }
 
     specify { expect(described_class.link_to_reference(reference).html_safe?).to eq true }
-    specify { expect(described_class.link_to_reference(reference)).to eq reference_link(reference) }
+
+    specify do
+      expect(described_class.link_to_reference(reference)).to eq <<~HTML.squish
+        <a data-controller="hover-preview"
+        data-hover-preview-url-value="/references/#{reference.id}/hover_preview.json"
+        href="/references/#{reference.id}">#{reference.key_with_suffixed_year}</a>
+      HTML
+    end
   end
 end

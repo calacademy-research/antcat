@@ -3,6 +3,12 @@
 @import "colors";
 
 /////////// Grid ///////////
+.layout-container {
+  max-width: 75rem;
+  margin-right: auto;
+  margin-left: auto;
+}
+
 .row {
   max-width: 75rem;
   margin-right: auto;
@@ -168,13 +174,6 @@
   .large-1 {
     width: 8.3333333333%;
   }
-  .large-push-1 {
-    position: relative;
-    left: 8.3333333333%;
-  }
-  .large-offset-2 {
-    margin-left: 16.6666666667%;
-  }
   .large-2 {
     width: 16.6666666667%;
   }
@@ -285,12 +284,12 @@ textarea {
   width: 100%;
 }
 
-[type='text'], [type='password'], [type='email'], [type='search'], textarea {
+[type='text'], [type='password'], [type='email'], [type='number'], [type='search'], textarea {
   border: 1px solid $color_medium_gray;
   border-radius: 3px;
 }
 
-[type='text'], [type='password'], [type='email'], [type='search'] {
+[type='text'], [type='password'], [type='email'], [type='number'], [type='search'] {
   width: 100%;
 }
 

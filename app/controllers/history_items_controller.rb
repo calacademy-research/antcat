@@ -55,7 +55,7 @@ class HistoryItemsController < ApplicationController
     end
 
     respond_to do |format|
-      format.json { render_json @history_item, partial: params[:taxt_editor_template] }
+      format.json { render_json @history_item, partial: 'taxt_editors/history_item_taxt_editor' }
       format.html do
         if updated
           redirect_url = redirect_back_url || @history_item

@@ -1,9 +1,19 @@
 #desktop-only-header{class: "hidden lg:block pt-4 pb-8"}
   #desktop-upper-menu.float-right.pt-2
     %ul.no-bullet.flex.text-sm{class: "[&>*]:px-4 [&>*]:ml-4"}
-      -if user_signed_in?
-        =unseen_notifications_badge = capture { render "unseen_notifications_badge" }
-        =unread_site_notices_badge = capture { render "unread_site_notices_badge" }
+      -if current_user
+        -unless (count = current_user.unseen_notifications.count).zero?
+          %li.font-bold
+            =link_to notifications_path do
+              .inline-flex.items-center.justify-center.w-7.h-5.text-black.bg-white.rounded-full=count
+              new notification#{"s" unless count == 1}!
+
+        -unless (count = current_user.unread_site_notices.count).zero?
+          %li.font-bold
+            =link_to site_notices_path do
+              .inline-flex.items-center.justify-center.w-7.h-5.text-black.bg-white.rounded-full=count
+              new notice#{"s" unless count == 1}!
+
         %li=link_to "Editor's Panel", editors_panel_path, class: "desktop-upper-menu-link #{'very-active' if menu_active?(:editors_panel)}"
         %li=link_to 'Activity Feed', activities_path, class: "desktop-upper-menu-link #{'very-active' if menu_active?(:activity_feed)}"
         %li=link_to current_user.name, current_user, class: "desktop-upper-menu-link"
@@ -37,25 +47,20 @@
             =button_tag type: 'submit', name: nil, "aria-label" => 'Search Catalog', data: { testid: 'header-catalog-search-button' } do
               %i.inline-search-icon.icon-search
 
-#mobile-only-header.text-sm{class: "block lg:hidden pt-2"}
+#mobile-only-header.text-sm.pt-2.pb-4{class: "block lg:hidden"}
   %input#mobile-hamburger-input.hidden{type: "checkbox", checked: false}
-  %label.float-right.py-10.px-5{for: "mobile-hamburger-input"}
-    %span#mobile-hamburger-lines
+  %label.float-right.mt-2.select-none{for: "mobile-hamburger-input"}
+    %svg.w-12.h-12{"fill" => "none", :stroke => "currentColor", "stroke-width" => "1.5", :viewbox => "0 0 24 24", :xmlns => "http://www.w3.org/2000/svg"}
+      %path{:d => "M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5", "stroke-linecap" => "round", "stroke-linejoin" => "round"}
 
-  .pt-4
+  .pt-4.pb-2.w-fit
     =link_to root_path do
       =image_tag 'logos/antcat_white_174x37.png', alt: 'AntCat'
 
   .clear-both
 
-  %ul.list-none
-    =unseen_notifications_badge
-    =unread_site_notices_badge
-
-  .clear-both
-
   #mobile-menu-content.z-20.font-heading.hidden
-    %ul.no-bullet
+    %ul.no-bullet.pt-4
       %li.text-black.mb-2
         =form_with url: references_search_index_path, method: :get do |f|
           .flex
@@ -86,23 +91,22 @@
 
 .clear-both
 
-.float-left
-  -if menu_active?(:catalog)
-    An Online Catalog of the Ants of the World
-    %small by Barry Bolton
-  -if menu_active?(:references)
-    ANTBIB: A Bibliography of Ant Systematics
-    %small
-      by Philip S. Ward,
-      %i et al.
+.pb-12{class: "hidden lg:block"}
+  .float-left
+    -if menu_active?(:catalog)
+      An Online Catalog of the Ants of the World
+      %small by Barry Bolton
+    -if menu_active?(:references)
+      ANTBIB: A Bibliography of Ant Systematics
+      %small
+        by Philip S. Ward,
+        %i et al.
 
--if current_user
-  .float-right{class: "hidden lg:block"}
-    =link_to "[disco button]", "#", id: 'toggle-disco-mode-js-hook', class: 'btn-lower-nav btn-lower-nav-neutral hidden'
-    =link_to "Issues (#{Issue.open.count})", issues_path, class: 'btn-lower-nav'
-    -if Issue.any_help_wanted_open?
-      =link_to "Help Wanted (#{Issue.open_help_wanted.count})", issues_path, class: 'btn-lower-nav btn-lower-nav-high-priority font-bold'
-    =link_to 'Database Scripts', database_scripts_path, class: 'btn-lower-nav'
-    =link_to "Search History Items", history_items_path, class: 'btn-lower-nav'
-
-.pb-12
+  -if current_user
+    .float-right
+      =link_to "[disco button]", "#", id: 'toggle-disco-mode-js-hook', class: 'btn-lower-nav btn-lower-nav-neutral hidden'
+      =link_to "Issues (#{Issue.open.count})", issues_path, class: 'btn-lower-nav'
+      -if Issue.any_help_wanted_open?
+        =link_to "Help Wanted (#{Issue.open_help_wanted.count})", issues_path, class: 'btn-lower-nav btn-lower-nav-high-priority font-bold'
+      =link_to 'Database Scripts', database_scripts_path, class: 'btn-lower-nav'
+      =link_to "Search History Items", history_items_path, class: 'btn-lower-nav'

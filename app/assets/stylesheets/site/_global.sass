@@ -89,6 +89,7 @@ a.gray
   font-size: 0.8125rem
   line-height: 0.75rem
   border-radius: 3px
+  white-space: nowrap
 
 .btn-default
   @include base-button($color_ac_blue)
@@ -127,12 +128,10 @@ a.btn-neutral
 
 .btn-tiny
   padding: 0.30rem 0.5rem
-  white-space: nowrap
 
 .btn-very-tiny
   padding: 0.15rem 0.2rem !important
   margin-bottom: 0
-  white-space: nowrap
   display: inline
 
 /////////// Callouts ///////////
@@ -150,20 +149,18 @@ a.btn-neutral
 
 .callout-primary
   @extend .callout
-  background-color: scale-color($color_ac_blue, $lightness: 85%)
+  background-color: $color_ac_blue_pale
 
 .callout-alert
   @extend .callout
-  background-color: scale-color($color_danger, $lightness: 85%)
+  background-color: #fce6e2
 
 .callout-warning
   @extend .callout
-  background-color: scale-color($color_warning, $lightness: 85%)
+  background-color: #fff3d9
 
 /////////// Labels ///////////
 .label
-  border-collapse: collapse
-  border-spacing: 0
   display: inline-block
   padding: 0.33rem 0.5rem
   padding-top: 0.33rem

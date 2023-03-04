@@ -28,21 +28,12 @@ module TestLinksHelpers
 
   # Protonyms.
   def protonym_link protonym
-    <<~HTML.squish
-      <a data-controller="hover-preview"
-      data-hover-preview-url-value="/protonyms/#{protonym.id}/hover_preview.json"
-      class="protonym"
-      href="/protonyms/#{protonym.id}">#{protonym.name.name_html}</a>
-    HTML
+    CatalogFormatter.link_to_protonym(protonym)
   end
 
   # References.
   def reference_link reference
-    <<~HTML.squish
-      <a data-controller="hover-preview"
-      data-hover-preview-url-value="/references/#{reference.id}/hover_preview.json"
-      href="/references/#{reference.id}">#{reference.key_with_suffixed_year}</a>
-    HTML
+    CatalogFormatter.link_to_reference(reference)
   end
 
   def reference_taxt_link reference

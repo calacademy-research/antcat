@@ -6,9 +6,7 @@
     =link_to "New", new_issue_path, class: "btn-default"
 
 -if @no_open_issues
-  %p
-    There are currently no open issues.
-    =link_to "Create one?", new_issue_path, class: "btn-default btn-tiny"
+  %p There are currently no open issues.
 
 -if Issue.any_help_wanted_open?
   .callout-primary.medium-9.mb-8

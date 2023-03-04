@@ -10,7 +10,14 @@ describe ProtonymDecorator do
   describe "#link_to_protonym" do
     let(:protonym) { create :protonym }
 
-    specify { expect(decorated.link_to_protonym).to eq protonym_link(protonym) }
+    specify do
+      expect(decorated.link_to_protonym).to eq <<~HTML.squish
+        <a data-controller="hover-preview"
+        data-hover-preview-url-value="/protonyms/#{protonym.id}/hover_preview.json"
+        class="protonym"
+        href="/protonyms/#{protonym.id}">#{protonym.name.name_html}</a>
+      HTML
+    end
   end
 
   describe "#link_to_protonym_with_author_citation" do
@@ -18,7 +25,7 @@ describe ProtonymDecorator do
 
     specify do
       expect(decorated.link_to_protonym_with_author_citation).to eq <<~HTML.squish
-        #{protonym_link(protonym)} #{protonym.author_citation}
+        #{decorated.link_to_protonym} #{protonym.author_citation}
       HTML
     end
   end
@@ -28,7 +35,7 @@ describe ProtonymDecorator do
 
     specify do
       expect(decorated.link_to_protonym_with_linked_author_citation).to eq <<~HTML.squish
-        #{protonym_link(protonym)}
+        #{decorated.link_to_protonym}
         <span class="discreet-author-citation">#{reference_link(protonym.authorship_reference)}</span>
       HTML
     end
