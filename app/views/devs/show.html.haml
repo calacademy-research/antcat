@@ -5,3 +5,7 @@
 %ul
   %li=link_to '/dev/pickers', pickers_dev_path
   %li=link_to '/dev/styles', styles_dev_path
+  %li{"data-controller" => "dev"}
+    env_specific CSS:
+    %span.btn-default{"data-action" => 'click->dev#enableEnvCss'} enable
+    %span.btn-warning{"data-action" => 'click->dev#disableEnvCss'} disable

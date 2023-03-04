@@ -5,7 +5,7 @@
       =CatalogFormatter.link_to_taxon(protonym.terminal_taxon)
 
       -if DatabaseScripts::ProtonymsWithMoreThanOneTerminalTaxon.record_in_results?(protonym)
-        =info_tooltip_icon "Note this protonym has more than one terminal taxon."
+        =info_tooltip_icon "Note that this protonym has more than one terminal taxon."
     -else
       -if protonym.taxa.empty?
         This protonym has no terminal taxon (since it is orphaned).

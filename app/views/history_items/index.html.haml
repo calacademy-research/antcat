@@ -55,7 +55,7 @@
       .medium-3.columns
         %pre=JSON.pretty_generate(@history_items.group(:type).count)
 
-%table.table-striped.tablesorter
+%table.table-striped{data: { tablesorter: true }}
   %caption
     =number_with_delimiter @history_items.count
     result(s)

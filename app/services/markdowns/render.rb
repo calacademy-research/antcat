@@ -49,7 +49,7 @@ module Markdowns
 
         def table header, body
           <<-HTML
-            <table class="tablesorter hover mt-8">
+            <table class="mt-8" data-tablesorter>
               <thead>#{header}</thead>
               <tbody>#{body}</tbody>
             </table>
