@@ -60,17 +60,12 @@ module ApplicationHelper
     menu == first_breadcrumb
   end
 
-  def submenu_css submenu
-    if submenu_active? submenu
+  def references_submenu_css submenu
+    if references_submenu_active? submenu
       'btn-neutral'
     else
       'btn-default'
     end
-  end
-
-  def submenu_active? submenu
-    second_breadcrumb = breadcrumbs.second&.key
-    submenu == second_breadcrumb
   end
 
   def inline_expandable label = "Show more", &block
@@ -98,4 +93,11 @@ module ApplicationHelper
   def current_page_for_feedback
     request.original_fullpath.delete_prefix('/')
   end
+
+  private
+
+    def references_submenu_active? submenu
+      second_breadcrumb = breadcrumbs.second&.key
+      submenu == second_breadcrumb
+    end
 end

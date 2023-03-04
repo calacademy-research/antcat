@@ -73,8 +73,8 @@ task :antcat do
     'antcat:coverage',
     'antcat:rubycritic',
     'factory_bot:lint',
-    'test[^:]',
-    'test[^:]'
+    'test ',
+    'lint'
   ]
   puts rake_tasks.grep(/^rake #{Regexp.union(prefixes)}/)
   puts
