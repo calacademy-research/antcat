@@ -13,9 +13,9 @@
           %td.icon=decorated.icon
           %td
             -if activity.user&.unconfirmed?
-              %span.rounded-badge unconfirmed user
+              %span.badge-white unconfirmed user
             -if decorated.locked_or_deleted_user_registration?
-              %span.label-warning.rounded-badge locked or deleted user
+              %span.badge-danger locked or deleted user
             =decorated.link_user
             =decorated.did_something
             -if activity.edit_summary?

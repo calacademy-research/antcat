@@ -35,10 +35,10 @@
             =link_to 'What Links Here', taxon_what_links_here_path(child), class: 'btn-default btn-tiny'
             -if @check_what_links_heres
               -unless child.what_links_here.any?
-                %span.rounded-badge.label-white no WLHs
+                %span.badge-white no WLHs
               -if child.what_links_here.any_columns?
-                %span.rounded-badge.label-pretty columns
+                %span.badge-blue columns
               -if child.what_links_here.any_taxts?
-                %span.rounded-badge.label-warning taxts
+                %span.badge-danger taxts
 
 =will_paginate @children

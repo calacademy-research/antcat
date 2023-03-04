@@ -5,13 +5,13 @@
         -unless (count = current_user.unseen_notifications.count).zero?
           %li.font-bold
             =link_to notifications_path do
-              .inline-flex.items-center.justify-center.w-7.h-5.text-black.bg-white.rounded-full=count
+              .badge-white.inline=count
               new notification#{"s" unless count == 1}!
 
         -unless (count = current_user.unread_site_notices.count).zero?
           %li.font-bold
             =link_to site_notices_path do
-              .inline-flex.items-center.justify-center.w-7.h-5.text-black.bg-white.rounded-full=count
+              .badge-white.inline=count
               new notice#{"s" unless count == 1}!
 
         %li=link_to "Editor's Panel", editors_panel_path, class: "desktop-upper-menu-link #{'very-active' if menu_active?(:editors_panel)}"

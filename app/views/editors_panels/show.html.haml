@@ -6,13 +6,13 @@
     %h5 Unreviewed changes
     %ul.no-bullet
       %li
-        .label=@editors_panel_presenter.open_issues_count
+        .badge-blue.inline=@editors_panel_presenter.open_issues_count
         =link_to "Open issues", issues_path
       %li
-        .label=@editors_panel_presenter.unreviewed_references_count
+        .badge-blue.inline=@editors_panel_presenter.unreviewed_references_count
         =link_to "Unreviewed references", references_latest_additions_path
       %li
-        .label=@editors_panel_presenter.pending_user_feedbacks_count
+        .badge-blue.inline=@editors_panel_presenter.pending_user_feedbacks_count
         =link_to "Pending feedbacks", feedbacks_path
 
     %h5 Tools and other pages
