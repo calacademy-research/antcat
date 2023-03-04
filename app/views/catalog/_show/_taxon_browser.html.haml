@@ -16,7 +16,7 @@
 
     .float-right{class: "hidden sm:block"}
       %button.btn-neutral{"data-action" => "toggler#toggle", "data-toggler-target" => "taxon_key"} toggle legend
-      %span.ex-label-secondary.bg-gray-500
+      %span{class: "--ac-base-btn [&_a]:text-white bg-gray-500 hover:bg-gray-600 border-gray-500"}
         =taxon_browser_presenter.toggle_invalid_or_valid_only_link
 
     -taxon_browser.tabs.each.with_index do |tab, index|
