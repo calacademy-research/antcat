@@ -5,6 +5,7 @@ const defaultTheme = require('tailwindcss/defaultTheme')
 module.exports = {
   content: [
     './public/*.html',
+    './app/assets/images/icons/**/*.svg',
     './app/assets/javascripts/**/*.{js,coffee}',
     './app/components/**/*.{erb,haml,html,slim,rb}',
     './app/decorators/**/*.rb',

@@ -29,6 +29,7 @@ gem 'ey_config' # Required for accessing service configurations through `EY::Con
 gem 'grape-swagger-rails'
 gem 'gretel'
 gem 'high_voltage'
+gem 'inline_svg'
 gem 'jquery-atwho-rails'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
