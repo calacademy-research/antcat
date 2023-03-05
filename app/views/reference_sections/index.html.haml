@@ -3,13 +3,9 @@
 
 -content_for :breadcrumbs_right do
   -# NOTE: Added as a dropdown because that was less confusing.
-  .dropdown-container
-    %button.btn-default{"data-action" => "toggler#toggle", "data-toggler-target" => "more_dropdown"}
-      Other Search forms
-      =inline_svg_tag('icons/chevron-down.svg', class: "inline w-4 h-4")
-    .hidden.callout.dropdown-content{data: { toggler_name: "more_dropdown" }}
-      %ul.no-bullet
-        %li=link_to "Search History Items form", history_items_path, class: 'btn-default'
+  =render DropdownComponent.new("Other Search forms") do
+    %ul.no-bullet
+      %li=link_to "Search History Items form", history_items_path, class: 'btn-default'
 
 =form_with url: request.path, method: :get do |f|
   .row.mb-4

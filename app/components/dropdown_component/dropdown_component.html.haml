@@ -1,0 +1,6 @@
+.relative.inline-block
+  %button.btn-default{"data-action" => "toggler#toggle", "data-toggler-target" => "#{dropdown_name}"}
+    =title
+    =inline_svg_tag('icons/chevron-down.svg', class: "inline w-3 h-3")
+  .dropdown-content.hidden.absolute.z-20.callout.bg-white{data: { toggler_name: "#{dropdown_name}" }}
+    =content
