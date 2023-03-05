@@ -110,11 +110,6 @@
     @apply bg-gray-100 border border-gray-300;
     padding: 0.125rem 0.3125rem 0.0625rem;
   }
-
-  .dropdown-content > ul > li {
-    /* Vertically space stacked buttons. */
-    margin-bottom: 3px;
-  }
 }
 
 @layer utilities {

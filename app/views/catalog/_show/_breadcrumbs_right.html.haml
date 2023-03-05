@@ -4,44 +4,40 @@
   =link_to "History", taxon_history_path(taxon), class: "btn-default"
   =link_to "What Links Here", taxon_what_links_here_path(taxon), class: "btn-default"
 
-  .dropdown-container
-    %button.btn-default{"data-action" => "toggler#toggle", "data-toggler-target" => "more_dropdown"}
-      More
-      =inline_svg_tag('icons/chevron-down.svg', class: "inline w-4 h-4")
-    .hidden.callout.dropdown-content{data: { toggler_name: "more_dropdown" }}
-      %ul.no-bullet
-        -if user_is_editor?
-          %li=editors_catalog_presenter.add_child_button
-          %li=editors_catalog_presenter.add_tribe_button
-          %li=editors_catalog_presenter.add_subgenus_button
+  =render DropdownComponent.new("More") do
+    %ul.no-bullet
+      -if user_is_editor?
+        %li=editors_catalog_presenter.add_child_button
+        %li=editors_catalog_presenter.add_tribe_button
+        %li=editors_catalog_presenter.add_subgenus_button
 
-          -if taxon.is_a?(Species)
-            %li=link_to "Set subgenus", taxon_set_subgenus_path(taxon), class: "btn-default"
+        -if taxon.is_a?(Species)
+          %li=link_to "Set subgenus", taxon_set_subgenus_path(taxon), class: "btn-default"
 
-          %li=editors_catalog_presenter.elevate_to_species_button
-          %li=editors_catalog_presenter.convert_to_subspecies_button
+        %li=editors_catalog_presenter.elevate_to_species_button
+        %li=editors_catalog_presenter.convert_to_subspecies_button
 
-          -if taxon.policy.show_create_combination_button?
-            %li=link_to "Create combination#{' (blocked)' unless taxon.policy.allow_create_combination?}", new_taxon_create_combination_path(taxon), class: "btn-default"
+        -if taxon.policy.show_create_combination_button?
+          %li=link_to "Create combination#{' (blocked)' unless taxon.policy.allow_create_combination?}", new_taxon_create_combination_path(taxon), class: "btn-default"
 
-          -if taxon.policy.allow_create_obsolete_combination?
-            %li=link_to "Create obsolete combination", taxon_create_obsolete_combination_path(taxon), class: "btn-default"
+        -if taxon.policy.allow_create_obsolete_combination?
+          %li=link_to "Create obsolete combination", taxon_create_obsolete_combination_path(taxon), class: "btn-default"
 
-          -if taxon.policy.allow_force_change_parent?
-            %li=link_to "Force parent change...", taxon_force_parent_change_path(taxon), class: "btn-warning"
+        -if taxon.policy.allow_force_change_parent?
+          %li=link_to "Force parent change...", taxon_force_parent_change_path(taxon), class: "btn-warning"
 
-          -if user_is_superadmin?
-            %li=link_to append_superadmin_icon("Force-update"), taxon_force_update_path(taxon), class: "btn-warning"
+        -if user_is_superadmin?
+          %li=link_to append_superadmin_icon("Force-update"), taxon_force_update_path(taxon), class: "btn-warning"
 
-          %li=editors_catalog_presenter.delete_unreferenced_taxon_button
+        %li=editors_catalog_presenter.delete_unreferenced_taxon_button
 
-        -if user_is_at_least_helper?
-          %li=link_to "Move items", new_taxon_move_items_path(taxon), class: "btn-default"
-        -if taxon.type.in?(Rank::AntCatSpecific::CAN_HAVE_REFERENCE_SECTIONS_TYPES) && taxon.reference_sections.any?
-          %li=link_to "Reorder reference sections", taxon_reorder_reference_sections_path(taxon), class: "btn-default"
+      -if user_is_at_least_helper?
+        %li=link_to "Move items", new_taxon_move_items_path(taxon), class: "btn-default"
+      -if taxon.type.in?(Rank::AntCatSpecific::CAN_HAVE_REFERENCE_SECTIONS_TYPES) && taxon.reference_sections.any?
+        %li=link_to "Reorder reference sections", taxon_reorder_reference_sections_path(taxon), class: "btn-default"
 
-        %li=link_to "Show children", taxon_children_path(taxon), class: "btn-default"
-        %li=link_to "Soft validations", taxon_soft_validations_path(taxon), class: "btn-default"
-        -if taxon.type.in?(Catalog::BoltonController::SUPPORTED_TYPES)
-          %li=link_to "Bolton view (beta)", bolton_catalog_view_path(taxon), class: "btn-default"
-        %li=activities_link_for_trackable taxon
+      %li=link_to "Show children", taxon_children_path(taxon), class: "btn-default"
+      %li=link_to "Soft validations", taxon_soft_validations_path(taxon), class: "btn-default"
+      -if taxon.type.in?(Catalog::BoltonController::SUPPORTED_TYPES)
+        %li=link_to "Bolton view (beta)", bolton_catalog_view_path(taxon), class: "btn-default"
+      %li=activities_link_for_trackable taxon
