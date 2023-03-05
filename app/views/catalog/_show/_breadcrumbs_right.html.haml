@@ -7,7 +7,7 @@
   .dropdown-container
     %button.btn-default{"data-action" => "toggler#toggle", "data-toggler-target" => "more_dropdown"}
       More
-      %i.arrow-down.ml-2
+      =inline_svg_tag('icons/chevron-down.svg', class: "inline w-4 h-4")
     .hidden.callout.dropdown-content{data: { toggler_name: "more_dropdown" }}
       %ul.no-bullet
         -if user_is_editor?
