@@ -10,12 +10,14 @@
 
   .hidden.fixed.inset-0.z-50.p-8{"data-picker-target" => "modalWrapper", "data-action" => 'click->picker#backdropClickClose', class: "bg-black/50"}
     .bg-white.rounded.p-4.m-auto.relative
-      .flex.justify-between.mb-4
+      .flex.justify-between.mb-2
         %div
           %span.pickable-outline Pickable type: #{pickable_type}
           -if ranks.present?
             %span Pickable ranks: #{ranks.join(', ')} (only works for taxa)
-        %button.btn-neutral{"data-action" => 'click->picker#close'} Esc
+
+        %button{"data-action" => 'click->picker#close', class: "text-gray-400 hover:bg-gray-200 hover:text-gray-900 p-1.5 rounded-lg"}
+          =inline_svg_tag('icons/x-mark.svg', class: "inline w-6 h-6")
 
       %input.mb-4{"autocomplete" => "off", "spellcheck" => "false", "data-picker-target" => "searchInput", type: "text"}
       %div{"data-picker-target" => "searchResults"}
