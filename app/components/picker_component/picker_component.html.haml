@@ -8,7 +8,7 @@
 
   %input.hidden{"data-picker-target" => "hiddenInput", name: name, id: id, type: "text", value: record&.id, data: { visible_in_test_env: true }}
 
-  .hidden.fixed.inset-0.z-10.p-8{"data-picker-target" => "modalWrapper", "data-action" => 'click->picker#backdropClickClose', class: "bg-black/50"}
+  .hidden.fixed.inset-0.z-50.p-8{"data-picker-target" => "modalWrapper", "data-action" => 'click->picker#backdropClickClose', class: "bg-black/50"}
     .bg-white.rounded.p-4.m-auto.relative
       .flex.justify-between.mb-4
         %div
