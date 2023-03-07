@@ -111,11 +111,6 @@
     @apply w-full lg:w-9/12;
   }
 
-  code {
-    @apply bg-gray-100 border border-gray-300;
-    padding: 0.125rem 0.3125rem 0.0625rem;
-  }
-
   /* Typography */
   p {
     margin-bottom: 1rem;
@@ -165,6 +160,10 @@
     border-left: 0;
   }
 
+  hr.discreet {
+    width: 90%;
+  }
+
   ul {
     margin-bottom: 1rem;
     margin-left: 1.25rem;
@@ -180,6 +179,25 @@
   ul.no-bullet {
     margin-left: 0;
     list-style: none;
+  }
+
+  ul.compact-list {
+    font-size: 95%;
+    line-height: 1.2;
+  }
+
+  code {
+    @apply bg-gray-100 border border-gray-300;
+    padding: 0.125rem 0.3125rem 0.0625rem;
+  }
+
+  pre {
+    overflow: auto;
+  }
+
+  pre.pre-wrapped {
+    white-space: pre-wrap;
+    word-wrap: break-word;
   }
 
   /* Forms */
@@ -275,6 +293,20 @@
 
   table.table-unstriped tbody tr {
     @apply border-b border-gray-100;
+  }
+
+  td.grow-tw-conflict {
+    width: 100%;
+  }
+
+  th.no-wrap, td.no-wrap {
+    white-space: nowrap;
+  }
+
+  table td.shrink-tw-conflict {
+    max-width: 100%;
+    white-space: nowrap;
+    width: 1px;
   }
 }
 
