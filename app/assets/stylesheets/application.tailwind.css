@@ -116,6 +116,62 @@
     padding: 0.125rem 0.3125rem 0.0625rem;
   }
 
+  /* Forms */
+  textarea {
+    height: auto;
+    min-height: 50px;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  [type='text'], [type='password'], [type='email'], [type='number'], [type='search'], textarea {
+    @apply border border-gray-300;
+    border-radius: 3px;
+  }
+
+  [type='text'], [type='password'], [type='email'], [type='number'], [type='search'] {
+    width: 100%;
+  }
+
+  input:disabled, input[readonly],
+  textarea:disabled,
+  textarea[readonly] {
+    @apply bg-gray-200;
+    cursor: not-allowed;
+  }
+
+  [type='checkbox'] + label,
+  [type='radio'] + label {
+    display: inline-block;
+    vertical-align: baseline;
+    margin-left: 0.5rem;
+    margin-right: 1rem;
+    margin-bottom: 0;
+  }
+
+  [type='checkbox'] + label[for],
+  [type='radio'] + label[for] {
+    cursor: pointer;
+  }
+
+  label > [type='checkbox'],
+  label > [type='radio'] {
+    margin-right: 0.5rem;
+  }
+
+  label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: normal;
+    line-height: 1.8;
+  }
+
+  select {
+    @apply border border-gray-300;
+    width: 100%;
+    border-radius: 3px;
+  }
+
   /* Tables */
   table {
     border-collapse: collapse;
