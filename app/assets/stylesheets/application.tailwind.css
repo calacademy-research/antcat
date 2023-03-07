@@ -116,6 +116,72 @@
     padding: 0.125rem 0.3125rem 0.0625rem;
   }
 
+  /* Typography */
+  p {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+
+  em, i {
+    font-style: italic;
+  }
+
+  small {
+    font-size: 80%;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    line-height: 1.4;
+    margin-bottom: 0.5rem;
+  }
+
+  h1 {
+    font-size: 3rem;
+  }
+  h2 {
+    font-size: 2.5rem;
+  }
+  h3 {
+    font-size: 1.9375rem;
+  }
+  h4 {
+    font-size: 1.5625rem;
+  }
+  h5 {
+    font-size: 1.25rem;
+  }
+  h6 {
+    font-size: 1rem;
+  }
+
+  hr {
+    @apply border border-b-gray-300;
+    clear: both;
+    max-width: 75rem;
+    height: 0;
+    margin: 1.25rem auto;
+    border-top: 0;
+    border-right: 0;
+    border-left: 0;
+  }
+
+  ul {
+    margin-bottom: 1rem;
+    margin-left: 1.25rem;
+    list-style-position: outside;
+    line-height: 1.6;
+    list-style-type: disc;
+  }
+
+  ul ul {
+    margin-bottom: 0;
+  }
+
+  ul.no-bullet {
+    margin-left: 0;
+    list-style: none;
+  }
+
   /* Forms */
   textarea {
     height: auto;
