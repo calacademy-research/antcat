@@ -115,6 +115,45 @@
     @apply bg-gray-100 border border-gray-300;
     padding: 0.125rem 0.3125rem 0.0625rem;
   }
+
+  /* Tables */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 1rem;
+    border-radius: 3px;
+  }
+
+  caption {
+    padding: 0.5rem 0.625rem 0.625rem;
+    font-weight: bold;
+    text-align: left;
+  }
+
+  thead, tbody {
+    @apply bg-white border border-gray-100;
+  }
+
+  thead {
+    background: #f0f0f0;
+  }
+
+  th {
+    font-weight: bold;
+    text-align: left;
+  }
+
+  th, td {
+    padding: 0.5rem 0.625rem 0.625rem;
+  }
+
+  table.table-striped tbody tr {
+    @apply even:bg-gray-100;
+  }
+
+  table.table-unstriped tbody tr {
+    @apply border-b border-gray-100;
+  }
 }
 
 @layer utilities {
