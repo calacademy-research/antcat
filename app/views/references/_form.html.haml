@@ -43,7 +43,7 @@
 
       .row.mt-4
         .medium-12.columns
-          .reference-type-css-tabs
+          #reference-type-css-tabs
             %input#article-tab.tab-input.hidden{checked: ("checked" if reference.is_a?(ArticleReference)), name: "reference_type", type: "radio", value: 'ArticleReference'}
             %label{for: "article-tab"} Article
             %input#book-tab.tab-input.hidden{checked: ("checked" if reference.is_a?(BookReference)), name: "reference_type", type: "radio", value: 'BookReference'}
