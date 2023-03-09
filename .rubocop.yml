@@ -362,6 +362,9 @@ RSpec/ImplicitSubject:
 RSpec/LetSetup:
   Enabled: false
 
+RSpec/MatchArray:
+  Enabled: false
+
 # Disabled for now even if `have_received` is more correct because `expect ... to receive` is currently mostly used for
 # a) call checking (in a lazy way but with less duplication), and b) the cases in the comment for RSpec/StubbedMock.
 RSpec/MessageSpies:
