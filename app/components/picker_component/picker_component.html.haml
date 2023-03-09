@@ -3,8 +3,7 @@
     = label || "(none)"
 
   %button.btn-neutral{"data-action" => 'click->picker#open'} Pick
-  -# TODO: Only show 'Clear' button when nothing is selected.
-  %button.btn-neutral{"data-action" => 'click->picker#clear'} Clear
+  %button.btn-neutral.hidden{"data-action" => 'click->picker#clear', "data-picker-target" => "clearButton"} Clear
 
   %input.hidden{"data-picker-target" => "hiddenInput", name: name, id: id, type: "text", value: record&.id, data: { visible_in_test_env: true }}
 
