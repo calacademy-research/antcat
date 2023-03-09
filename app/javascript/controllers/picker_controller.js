@@ -1,6 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
 
-const PICKABLE_SELECTOR = "[data-picker-pickable='true']"
 const SELECTED_PICKABLE_DATA_ATTRIBUTE = "data-picker-selected-pickable"
 const FAKE_INPUT_LABEL_TEMPLATE_SELECTOR = "[data-picker-fake-input-label-template]"
 
@@ -12,6 +11,7 @@ export default class extends Controller {
     "hiddenInput",
     "searchInput",
     "searchResults",
+    "pickable",
   ]
 
   static values = {
@@ -80,14 +80,10 @@ export default class extends Controller {
   }
 
   _sibling(offset) {
-    const pickables = this._pickablesSearchResults()
+    const pickables = this.pickableTargets
     const selected = this._currentlySelected()
     const index = pickables.indexOf(selected)
     return pickables[index + offset]
-  }
-
-  _pickablesSearchResults() {
-    return Array.from(this.searchResultsTarget.querySelectorAll(PICKABLE_SELECTOR))
   }
 
   _pick(selected) {
@@ -100,6 +96,10 @@ export default class extends Controller {
 
     this._handleClearButtonVisibility()
     this.close()
+  }
+
+  _pickCurrentTarget(event) {
+    this._pick(event.currentTarget)
   }
 
   _onKeydown = (event) => {
@@ -141,15 +141,6 @@ export default class extends Controller {
       default: {
         break
       }
-    }
-  }
-
-  _onClickSearchResult = (event) => {
-    event.preventDefault() // Don't follow links.
-
-    const selected = event.target.closest(PICKABLE_SELECTOR)
-    if (selected) {
-      this._pick(selected)
     }
   }
 

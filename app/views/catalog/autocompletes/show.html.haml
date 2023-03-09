@@ -15,7 +15,7 @@
         -taxon_label = CatalogFormatter.link_to_taxon_with_linked_author_citation(taxon)
         -protonym_label = CatalogFormatter.link_to_protonym_with_linked_author_citation(taxon.protonym)
 
-        %tr.pickable-row{"data-picker-value" => "#{pickable.id}", "data-picker-pickable" => "true"}
+        %tr.pickable-row{"data-picker-value" => "#{pickable.id}", "data-picker-target" => "pickable", "data-action" => "click->picker#_pickCurrentTarget"}
           %td.shrink-tw-conflict
             %span.pickable-record-id=taxon.id
           %td.shrink-tw-conflict
@@ -49,7 +49,7 @@
         -taxon_label = CatalogFormatter.link_to_taxon_with_linked_author_citation(terminal_taxon) if terminal_taxon
         -protonym_label = CatalogFormatter.link_to_protonym_with_linked_author_citation(protonym)
 
-        %tr.pickable-row{"data-picker-value" => "#{pickable&.id}", "data-picker-pickable" => "true"}
+        %tr.pickable-row{"data-picker-value" => "#{pickable&.id}", "data-picker-target" => "pickable", "data-action" => "click->picker#_pickCurrentTarget"}
           %td.shrink-tw-conflict
             %span.pickable-record-id=protonym.id
           %td.shrink-tw-conflict
