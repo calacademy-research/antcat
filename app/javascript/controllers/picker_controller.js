@@ -1,7 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 
 const SELECTED_PICKABLE_DATA_ATTRIBUTE = "data-picker-selected-pickable"
-const FAKE_INPUT_LABEL_TEMPLATE_SELECTOR = "[data-picker-fake-input-label-template]"
 
 export default class extends Controller {
   static targets = [
@@ -87,10 +86,10 @@ export default class extends Controller {
   }
 
   _pick(selected) {
-    const value = selected.getAttribute("data-picker-value")
+    const value = selected.getAttribute("data-pickable-value")
     this.hiddenInputTarget.value = value
 
-    const fakeInputLabel = selected.querySelector(FAKE_INPUT_LABEL_TEMPLATE_SELECTOR)
+    const fakeInputLabel = selected.querySelector("[data-pickable-fake-input-label-template]")
     this.fakeInputTarget.innerHTML = ''
     this.fakeInputTarget.insertAdjacentHTML("beforeend", fakeInputLabel.innerHTML)
 
