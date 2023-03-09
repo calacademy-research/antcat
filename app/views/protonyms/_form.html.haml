@@ -44,7 +44,7 @@
               =authorship_fields.label :reference do
                 Authorship
                 =db_tooltip_icon :authorship, scope: :protonyms
-            %td=reference_picker authorship_fields.object.reference, name: 'protonym[authorship_attributes][reference_id]', id: 'protonym_authorship_attributes_reference_id'
+            %td=reference_picker authorship_fields.object.reference, name: 'protonym[authorship_attributes][reference_id]', id: 'protonym_authorship_attributes_reference_id', allow_clear: false
           %tr
             %td
               =authorship_fields.label :pages do

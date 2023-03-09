@@ -7,6 +7,7 @@ const FAKE_INPUT_LABEL_TEMPLATE_SELECTOR = "[data-picker-fake-input-label-templa
 export default class extends Controller {
   static targets = [
     "modalWrapper",
+    "clearButton",
     "fakeInput",
     "hiddenInput",
     "searchInput",
@@ -15,12 +16,15 @@ export default class extends Controller {
 
   static values = {
     url: String,
+    allowClear: Boolean,
   }
 
   connect() {
     this.modalWrapperTarget.addEventListener("keydown", this._onKeydown)
     this.searchInputTarget.addEventListener("input", this._onSearch)
     this.searchResultsTarget.addEventListener("click", this._onClickSearchResult)
+
+    this._handleClearButtonVisibility()
   }
 
   disconnect() {
@@ -66,6 +70,7 @@ export default class extends Controller {
     event.stopPropagation()
 
     this.hiddenInputTarget.value = ''
+    this._handleClearButtonVisibility()
     this.fakeInputTarget.innerHTML = '(none)'
   }
 
@@ -111,6 +116,7 @@ export default class extends Controller {
     this.fakeInputTarget.innerHTML = ''
     this.fakeInputTarget.insertAdjacentHTML("beforeend", fakeInputLabel.innerHTML)
 
+    this._handleClearButtonVisibility()
     this.close()
   }
 
@@ -175,5 +181,13 @@ export default class extends Controller {
     const html = await response.text()
 
     this.searchResultsTarget.innerHTML = html
+  }
+
+  _handleClearButtonVisibility() {
+    if (this.allowClearValue && this.hiddenInputTarget.value) {
+      this.clearButtonTarget.classList.remove("hidden")
+    } else {
+      this.clearButtonTarget.classList.add("hidden")
+    }
   }
 }

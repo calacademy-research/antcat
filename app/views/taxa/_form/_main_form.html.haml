@@ -44,12 +44,12 @@
         %tr
           %td.shrink-tw-conflict
             =form.label :protonym
-            -unless taxon.persisted?
+            -if taxon.new_record?
               %small.text-blue-800
                 leave blank if you are
                 %br
                 creating a new protonym
-          %td=protonym_picker (form.object.protonym if form.object.protonym&.persisted?), id: 'taxon_protonym_id', name: 'taxon[protonym_id]'
+          %td=protonym_picker (form.object.protonym if form.object.protonym&.persisted?), id: 'taxon_protonym_id', name: 'taxon[protonym_id]', allow_clear: taxon.new_record?
 
       %h6.font-bold Status-specific fields
       %table.table-unstriped
