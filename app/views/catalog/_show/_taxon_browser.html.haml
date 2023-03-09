@@ -1,5 +1,5 @@
 #taxon-browser.sticky.color-coded-catalog-links{class: "nottiny:bottom-0"}
-  .taxon-browser-css-tabs.bg-white.overflow-hidden.h-auto
+  #taxon-browser-css-tabs.bg-white.overflow-hidden.h-auto
     .hidden.text-sm.px-4{data: { toggler_name: "taxon_key" }}
       .flex.justify-between.gap-1.flex-wrap
         %div &dagger;fossil
@@ -11,16 +11,17 @@
         .obsolete-combination obsolete combination
 
     -taxon_browser.tabs.each.with_index do |tab, index|
-      %input.taxon-browser-tab-input.hidden{id: tab.id, class: "taxon-browser-tab-#{index}", checked: ("checked" if tab.open?), name: "taxon_browser_tab", type: "radio", value: 'selected tab'}
-      %label.text-ac-blue.py-1.px-4{for: tab.id, class: "!m-0"}=tab.title
+      -tab_id = "taxon-browser-tab-#{index}"
+      %input.taxon-browser-tab-input.hidden{id: tab_id, checked: ("checked" if tab.open?), name: "taxon_browser_tab", type: "radio", value: 'selected tab'}
+      %label.text-ac-blue.py-1.px-4{for: tab_id, class: "!m-0"}=tab.title
 
     .float-right{class: "hidden sm:block"}
       %button.btn-neutral{"data-action" => "toggler#toggle", "data-toggler-target" => "taxon_key"} toggle legend
-      %span{class: "--ac-base-btn [&_a]:text-white bg-gray-500 hover:bg-gray-600 border-gray-500"}
+      %span{class: "base__btn [&_a]:text-white bg-gray-500 hover:bg-gray-600 border-gray-500"}
         =taxon_browser_presenter.toggle_invalid_or_valid_only_link
 
     -taxon_browser.tabs.each.with_index do |tab, index|
-      .hidden.overflow-y-auto.clear-right.text-sm.p-4.pt-0{class: "taxon-browser-tab-content-#{index} min-h-[10rem] max-h-[24vh]"}
+      .hidden.overflow-y-auto.clear-right.text-sm.p-4.pt-0{id: "taxon-browser-tab-#{index}-content", class: "min-h-[10rem] max-h-[24vh]"}
         %ul.no-bullet.py-2{class: "columns-[9rem]"}
           -TaxonBrowser::LinksToExtraTabs[tab.tab_taxon].each do |link|
             %li.uppercase.whitespace-nowrap=taxon_browser_presenter.extra_tab_link tab.tab_taxon, link[:label], link[:view]

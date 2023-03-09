@@ -12,10 +12,6 @@ module TaxonBrowser
         super tab_taxon.immediate_children, taxon_browser
       end
 
-      def id
-        "tab-taxon-#{tab_taxon.id}"
-      end
-
       def title
         return tab_taxon.name_with_fossil if use_epithet_as_title?
         "#{tab_taxon.name_with_fossil} #{tab_taxon.immediate_children_rank}".html_safe

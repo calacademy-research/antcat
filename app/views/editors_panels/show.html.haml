@@ -46,7 +46,7 @@
         -featured_wiki_pages = @editors_panel_presenter.featured_wiki_pages
         -if featured_wiki_pages.present?
           -featured_wiki_pages.each do |wiki_page|
-            %li.truncated=link_to wiki_page.title, wiki_page
+            %li.whitespace-nowrap.text-ellipsis.overflow-hidden=link_to wiki_page.title, wiki_page
         -else
           %li There are no featured wiki pages
         -if @editors_panel_presenter.see_more_wiki_pages?

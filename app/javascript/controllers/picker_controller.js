@@ -4,7 +4,7 @@ const PICKABLE_SELECTOR = "[data-picker-pickable='true']"
 const SELECTED_PICKABLE_DATA_ATTRIBUTE = "data-picker-selected-pickable"
 const FAKE_INPUT_LABEL_TEMPLATE_SELECTOR = "[data-picker-fake-input-label-template]"
 
-export default class Picker extends Controller {
+export default class extends Controller {
   static targets = [
     "modalWrapper",
     "fakeInput",
@@ -177,5 +177,3 @@ export default class Picker extends Controller {
     this.searchResultsTarget.innerHTML = html
   }
 }
-
-export { Picker }

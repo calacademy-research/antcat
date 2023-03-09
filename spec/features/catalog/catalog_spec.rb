@@ -9,7 +9,7 @@ feature "Using the catalog", as: :visitor do
     end
   end
 
-  # TODO: Remove hack with 'i_select_the_taxon_browser_tab ".taxon-browser-tab-0"'.
+  # TODO: Remove hack with 'i_select_the_taxon_browser_tab "#taxon-browser-tab-0"'.
   def i_select_the_taxon_browser_tab tab_css_selector
     find(tab_css_selector, visible: false).click
   end
@@ -30,7 +30,7 @@ feature "Using the catalog", as: :visitor do
     visit root_path
 
     i_follow "Dolichoderinae", within_scope: "#taxon-browser"
-    i_select_the_taxon_browser_tab ".taxon-browser-tab-0"
+    i_select_the_taxon_browser_tab "#taxon-browser-tab-0"
     i_follow "Dolichoderus"
     should_be_selected_in_the_taxon_browser "Dolichoderinae"
     should_be_selected_in_the_taxon_browser "Dolichoderini"

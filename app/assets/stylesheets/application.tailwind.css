@@ -4,7 +4,7 @@
 
 @layer components {
   /* Buttons */
-  .--ac-base-btn {
+  .base__btn {
     @apply box-border whitespace-nowrap cursor-pointer;
     @apply border rounded;
 
@@ -12,73 +12,73 @@
   }
 
   .btn-default {
-    @apply --ac-base-btn;
+    @apply base__btn;
     @apply text-white hover:text-white
            bg-ac-blue hover:bg-ac-blue-darker
            border-ac-blue-darker;
   }
 
   .btn-neutral {
-    @apply --ac-base-btn;
+    @apply base__btn;
     @apply !text-black hover:text-black
            bg-white hover:bg-slate-200
            border-black;
   }
 
   .btn-saves {
-    @apply --ac-base-btn;
+    @apply base__btn;
     @apply text-white hover:text-white
            bg-ac-blue-saves hover:bg-ac-blue-saves-darker
            border-ac-blue-darker;
   }
 
   .btn-warning {
-    @apply --ac-base-btn;
+    @apply base__btn;
     @apply text-white hover:text-white
            bg-ac-red-danger hover:bg-ac-red-danger-darker
            border-ac-red-danger;
   }
 
   .btn-orange {
-    @apply --ac-base-btn;
+    @apply base__btn;
     @apply text-white hover:text-white
            bg-orange-500 hover:bg-orange-600
            border-orange-500;
   }
 
   /* Badges */
-  .--ac-base-badge {
+  .base__badge {
     @apply whitespace-nowrap py-1 px-2;
     @apply text-sm rounded-full;
   }
 
   .badge-blue {
-    @apply --ac-base-badge;
+    @apply base__badge;
     @apply text-white hover:text-white
            bg-ac-blue;
   }
 
   .badge-white {
-    @apply --ac-base-badge;
+    @apply base__badge;
     @apply text-black hover:text-black
            bg-white
            border border-black;
   }
 
   .badge-danger {
-    @apply --ac-base-badge;
+    @apply base__badge;
     @apply text-white hover:text-white
            bg-ac-red-danger;
   }
 
   .badge-green {
-    @apply --ac-base-badge;
+    @apply base__badge;
     @apply text-white hover:text-white
            bg-green-600;
   }
 
   .badge-orange {
-    @apply --ac-base-badge;
+    @apply base__badge;
     @apply text-white hover:text-white
            bg-orange-500;
   }
@@ -106,16 +106,213 @@
     @apply text-ac-blue-darker;
   }
 
+  /* TODO: Zurb Foundation legacy */
+  .callout-responsive {
+    @apply w-full lg:w-9/12;
+  }
+
+  /* Typography */
+  p {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+
+  em, i {
+    font-style: italic;
+  }
+
+  small {
+    font-size: 80%;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    line-height: 1.4;
+    margin-bottom: 0.5rem;
+  }
+
+  h1 {
+    font-size: 3rem;
+  }
+  h2 {
+    font-size: 2.5rem;
+  }
+  h3 {
+    font-size: 1.9375rem;
+  }
+  h4 {
+    font-size: 1.5625rem;
+  }
+  h5 {
+    font-size: 1.25rem;
+  }
+  h6 {
+    font-size: 1rem;
+  }
+
+  hr {
+    @apply border border-b-gray-300;
+    clear: both;
+    max-width: 75rem;
+    height: 0;
+    margin: 1.25rem auto;
+    border-top: 0;
+    border-right: 0;
+    border-left: 0;
+  }
+
+  hr.discreet {
+    width: 90%;
+  }
+
+  ul {
+    margin-bottom: 1rem;
+    margin-left: 1.25rem;
+    list-style-position: outside;
+    line-height: 1.6;
+    list-style-type: disc;
+  }
+
+  ul ul {
+    margin-bottom: 0;
+  }
+
+  ul.no-bullet {
+    margin-left: 0;
+    list-style: none;
+  }
+
+  ul.compact-list {
+    font-size: 95%;
+    line-height: 1.2;
+  }
+
   code {
     @apply bg-gray-100 border border-gray-300;
     padding: 0.125rem 0.3125rem 0.0625rem;
+  }
+
+  pre {
+    overflow: auto;
+  }
+
+  pre.pre-wrapped {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  /* Forms */
+  textarea {
+    height: auto;
+    min-height: 50px;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  [type='text'], [type='password'], [type='email'], [type='number'], [type='search'], textarea {
+    @apply border border-gray-300;
+    border-radius: 3px;
+  }
+
+  [type='text'], [type='password'], [type='email'], [type='number'], [type='search'] {
+    width: 100%;
+  }
+
+  input:disabled, input[readonly],
+  textarea:disabled,
+  textarea[readonly] {
+    @apply bg-gray-200;
+    cursor: not-allowed;
+  }
+
+  [type='checkbox'] + label,
+  [type='radio'] + label {
+    display: inline-block;
+    vertical-align: baseline;
+    margin-left: 0.5rem;
+    margin-right: 1rem;
+    margin-bottom: 0;
+  }
+
+  [type='checkbox'] + label[for],
+  [type='radio'] + label[for] {
+    cursor: pointer;
+  }
+
+  label > [type='checkbox'],
+  label > [type='radio'] {
+    margin-right: 0.5rem;
+  }
+
+  label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: normal;
+    line-height: 1.8;
+  }
+
+  select {
+    @apply border border-gray-300;
+    width: 100%;
+    border-radius: 3px;
+  }
+
+  /* Tables */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 1rem;
+    border-radius: 3px;
+  }
+
+  caption {
+    padding: 0.5rem 0.625rem 0.625rem;
+    font-weight: bold;
+    text-align: left;
+  }
+
+  thead, tbody {
+    @apply bg-white border border-gray-100;
+  }
+
+  thead {
+    background: #f0f0f0;
+  }
+
+  th {
+    font-weight: bold;
+    text-align: left;
+  }
+
+  th, td {
+    padding: 0.5rem 0.625rem 0.625rem;
+  }
+
+  table.table-striped tbody tr {
+    @apply even:bg-gray-100;
+  }
+
+  table.table-unstriped tbody tr {
+    @apply border-b border-gray-100;
+  }
+
+  td.grow-tw-conflict {
+    width: 100%;
+  }
+
+  th.no-wrap, td.no-wrap {
+    white-space: nowrap;
+  }
+
+  table td.shrink-tw-conflict {
+    max-width: 100%;
+    white-space: nowrap;
+    width: 1px;
   }
 }
 
 @layer utilities {
   .btn-sm {
     @apply py-1 px-2  text-sm;
-    @apply opacity-100;
 
     /* Fix for `button` elements which become too tall without this. */
     line-height: 1rem;
@@ -123,6 +320,5 @@
 
   .btn-md {
     @apply py-2 px-3 text-sm;
-    @apply opacity-100;
   }
 }
