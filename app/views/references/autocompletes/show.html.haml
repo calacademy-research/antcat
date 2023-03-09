@@ -6,7 +6,7 @@
       -@references.each do |reference|
         -label = reference.decorate.link_to_reference
 
-        %tr.pickable-row{"data-pickable-value" => "#{reference.id}", "data-picker-target" => "pickable", "data-action" => "click->picker#_pickCurrentTarget"}
+        %tr.pickable-row{"data-pickable-value" => "#{reference.id}", "data-picker-target" => "pickable", "data-action" => "click->picker#pickCurrentTarget"}
           %td.shrink-tw-conflict
             %span.pickable-record-id=reference.id
           %td.shrink-tw-conflict

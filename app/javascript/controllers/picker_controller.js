@@ -29,7 +29,7 @@ export default class extends Controller {
     this.modalWrapperTarget.classList.remove('hidden')
 
     this.searchInputTarget.focus()
-    this._onSearch()
+    this.onSearch()
   }
 
   close(event) {
@@ -53,6 +53,56 @@ export default class extends Controller {
     this.hiddenInputTarget.value = ''
     this._handleClearButtonVisibility()
     this.fakeInputTarget.innerHTML = '(none)'
+  }
+
+  onSearch = () => {
+    this._setSearchResults(this.searchInputTarget.value)
+  }
+
+  pickCurrentTarget(event) {
+    this._pick(event.currentTarget)
+  }
+
+  onKeydown = (event) => {
+    switch (event.key) {
+      case 'Escape': {
+        this.close()
+
+        event.stopPropagation()
+        event.preventDefault()
+        break
+      }
+      case 'ArrowDown': {
+        const selected = this._nextPickable()
+
+        if (selected) {
+          this._select(selected)
+        }
+        event.preventDefault()
+        break
+      }
+      case 'ArrowUp': {
+        const selected = this._previousPickable()
+
+        if (selected) {
+          this._select(selected)
+        }
+        event.preventDefault()
+        break
+      }
+      case 'Enter': {
+        const selected = this._currentlySelected()
+
+        if (selected) {
+          this._pick(selected)
+          event.preventDefault()
+        }
+        break
+      }
+      default: {
+        break
+      }
+    }
   }
 
   // Private functions.
@@ -95,56 +145,6 @@ export default class extends Controller {
 
     this._handleClearButtonVisibility()
     this.close()
-  }
-
-  _pickCurrentTarget(event) {
-    this._pick(event.currentTarget)
-  }
-
-  _onKeydown = (event) => {
-    switch (event.key) {
-      case 'Escape': {
-        this.close()
-
-        event.stopPropagation()
-        event.preventDefault()
-        break
-      }
-      case 'ArrowDown': {
-        const selected = this._nextPickable()
-
-        if (selected) {
-          this._select(selected)
-        }
-        event.preventDefault()
-        break
-      }
-      case 'ArrowUp': {
-        const selected = this._previousPickable()
-
-        if (selected) {
-          this._select(selected)
-        }
-        event.preventDefault()
-        break
-      }
-      case 'Enter': {
-        const selected = this._currentlySelected()
-
-        if (selected) {
-          this._pick(selected)
-          event.preventDefault()
-        }
-        break
-      }
-      default: {
-        break
-      }
-    }
-  }
-
-  _onSearch = () => {
-    this._setSearchResults(this.searchInputTarget.value)
   }
 
   _setSearchResults = async (query) => {
