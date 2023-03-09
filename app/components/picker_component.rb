@@ -3,12 +3,17 @@
 class PickerComponent < ApplicationComponent
   NUM_CATALOG_RESULTS = 7
 
-  def initialize pickable_type, record, name:, id: nil, ranks: nil
+  def initialize pickable_type, record, name:, id: nil, ranks: nil, allow_clear: true
     @pickable_type = pickable_type
     @record = record
     @name = name
     @id = id || name
     @ranks = Array.wrap(ranks)
+    @allow_clear = allow_clear
+  end
+
+  def allow_clear?
+    allow_clear
   end
 
   def label
@@ -33,7 +38,7 @@ class PickerComponent < ApplicationComponent
 
   private
 
-    attr_reader :pickable_type, :record, :name, :id, :ranks
+    attr_reader :pickable_type, :record, :name, :id, :ranks, :allow_clear
 
     def ranks_query
       return if ranks.blank?

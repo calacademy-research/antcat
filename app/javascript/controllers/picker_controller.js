@@ -16,6 +16,7 @@ export default class extends Controller {
 
   static values = {
     url: String,
+    allowClear: Boolean,
   }
 
   connect() {
@@ -183,7 +184,7 @@ export default class extends Controller {
   }
 
   _handleClearButtonVisibility() {
-    if (this.hiddenInputTarget.value) {
+    if (this.allowClearValue && this.hiddenInputTarget.value) {
       this.clearButtonTarget.classList.remove("hidden")
     } else {
       this.clearButtonTarget.classList.add("hidden")

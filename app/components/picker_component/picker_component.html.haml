@@ -1,4 +1,4 @@
-%div{"data-controller" => "picker", "data-picker-url-value" => "#{autocomplete_url}", "data-picker-pickable-type-value" => "#{pickable_type}"}
+%div{"data-controller" => "picker", "data-picker-url-value" => "#{autocomplete_url}", "data-picker-pickable-type-value" => "#{pickable_type}", "data-picker-allow-clear-value" => "#{allow_clear?}"}
   .p-2.rounded.border.border-gray-300.inline-block{"data-picker-target" => "fakeInput", class: "min-w-[15rem]"}
     = label || "(none)"
 
