@@ -20,25 +20,7 @@ export default class extends Controller {
   }
 
   connect() {
-    this.modalWrapperTarget.addEventListener("keydown", this._onKeydown)
-    this.searchInputTarget.addEventListener("input", this._onSearch)
-    this.searchResultsTarget.addEventListener("click", this._onClickSearchResult)
-
     this._handleClearButtonVisibility()
-  }
-
-  disconnect() {
-    if (this.modalWrapperTarget) {
-      this.modalWrapperTarget.removeEventListener("keydown", this._onKeydown)
-    }
-
-    if (this.searchInputTarget) {
-      this.searchInputTarget.removeEventListener("input", this._onSearch)
-    }
-
-    if (this.hasSearchResultsTarget) {
-      this.searchResultsTarget.removeEventListener("click", this._onClickSearchResult)
-    }
   }
 
   open(event) {
