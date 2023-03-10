@@ -1,6 +1,4 @@
 $ ->
-  ADVANCED_SEARCH_FORM_LINK = '<a id="advanced-search-form-link" href="/catalog/search">Show advanced search form...</a>'
-
   taxa = new Bloodhound
     datumTokenizer: Bloodhound.tokenizers.whitespace
     queryTokenizer: Bloodhound.tokenizers.whitespace
@@ -15,13 +13,14 @@ $ ->
     source: taxa.ttAdapter()
     templates:
       header: """
-        <h5 class="autocompletion-header">
+        <h5 class="text-base font-bold">
           Taxon results <small>(first 10)</small>
         </h5>
         """
       empty: """
-        <div class="empty-message">
-          Unable to find any taxa that match the current query.<br>#{ADVANCED_SEARCH_FORM_LINK}
+        <div class="text-sm p-2">
+          <div class="mb-2">Unable to find any taxa that match the current query</div>
+          <a class="!text-ac-blue" href="/catalog/search">Show advanced search form</a>
         </div>
         """
       suggestion: (taxon) ->
@@ -40,10 +39,10 @@ $ ->
     displayKey: 'plaintext_name'
     source: protonyms.ttAdapter()
     templates:
-      header: '<h5 class="autocompletion-header">Protonym results <small>(first 10)</small></h5>'
-      empty: '<div class="empty-message">Unable to find any protonyms that match the current query.</div>'
+      header: '<h5 class="text-base font-bold mt-4">Protonym results <small>(first 10)</small></h5>'
+      empty: '<div class="text-sm p-2">Unable to find any protonyms that match the current query</div>'
       suggestion: (protonym) ->
-        "<p>#{protonym.name_with_fossil} <small>#{protonym.author_citation}</small></p>"
+        "<p><span class='protonym'>#{protonym.name_with_fossil}</span> <small>#{protonym.author_citation}</small></p>"
 
   options =
     hint: true

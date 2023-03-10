@@ -1,8 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 
-const PICKABLE_SELECTOR = "[data-picker-pickable='true']"
 const SELECTED_PICKABLE_DATA_ATTRIBUTE = "data-picker-selected-pickable"
-const FAKE_INPUT_LABEL_TEMPLATE_SELECTOR = "[data-picker-fake-input-label-template]"
 
 export default class extends Controller {
   static targets = [
@@ -12,6 +10,7 @@ export default class extends Controller {
     "hiddenInput",
     "searchInput",
     "searchResults",
+    "pickable",
   ]
 
   static values = {
@@ -20,25 +19,7 @@ export default class extends Controller {
   }
 
   connect() {
-    this.modalWrapperTarget.addEventListener("keydown", this._onKeydown)
-    this.searchInputTarget.addEventListener("input", this._onSearch)
-    this.searchResultsTarget.addEventListener("click", this._onClickSearchResult)
-
     this._handleClearButtonVisibility()
-  }
-
-  disconnect() {
-    if (this.modalWrapperTarget) {
-      this.modalWrapperTarget.removeEventListener("keydown", this._onKeydown)
-    }
-
-    if (this.searchInputTarget) {
-      this.searchInputTarget.removeEventListener("input", this._onSearch)
-    }
-
-    if (this.hasSearchResultsTarget) {
-      this.searchResultsTarget.removeEventListener("click", this._onClickSearchResult)
-    }
   }
 
   open(event) {
@@ -48,7 +29,7 @@ export default class extends Controller {
     this.modalWrapperTarget.classList.remove('hidden')
 
     this.searchInputTarget.focus()
-    this._onSearch()
+    this.onSearch()
   }
 
   close(event) {
@@ -74,53 +55,15 @@ export default class extends Controller {
     this.fakeInputTarget.innerHTML = '(none)'
   }
 
-  // Private functions.
-
-  _select(selected) {
-    const currentlySelected = this._currentlySelected()
-    if (currentlySelected) {
-      currentlySelected.removeAttribute(SELECTED_PICKABLE_DATA_ATTRIBUTE)
-    }
-
-    selected.setAttribute(SELECTED_PICKABLE_DATA_ATTRIBUTE, "true")
+  onSearch = () => {
+    this._setSearchResults(this.searchInputTarget.value)
   }
 
-  _currentlySelected() {
-    return this.searchResultsTarget.querySelector(`[${SELECTED_PICKABLE_DATA_ATTRIBUTE}]`)
+  pickCurrentTarget(event) {
+    this._pick(event.currentTarget)
   }
 
-  _nextPickable() {
-    return this._sibling(1)
-  }
-
-  _previousPickable() {
-    return this._sibling(-1)
-  }
-
-  _sibling(offset) {
-    const pickables = this._pickablesSearchResults()
-    const selected = this._currentlySelected()
-    const index = pickables.indexOf(selected)
-    return pickables[index + offset]
-  }
-
-  _pickablesSearchResults() {
-    return Array.from(this.searchResultsTarget.querySelectorAll(PICKABLE_SELECTOR))
-  }
-
-  _pick(selected) {
-    const value = selected.getAttribute("data-picker-value")
-    this.hiddenInputTarget.value = value
-
-    const fakeInputLabel = selected.querySelector(FAKE_INPUT_LABEL_TEMPLATE_SELECTOR)
-    this.fakeInputTarget.innerHTML = ''
-    this.fakeInputTarget.insertAdjacentHTML("beforeend", fakeInputLabel.innerHTML)
-
-    this._handleClearButtonVisibility()
-    this.close()
-  }
-
-  _onKeydown = (event) => {
+  onKeydown = (event) => {
     switch (event.key) {
       case 'Escape': {
         this.close()
@@ -162,17 +105,46 @@ export default class extends Controller {
     }
   }
 
-  _onClickSearchResult = (event) => {
-    event.preventDefault() // Don't follow links.
+  // Private functions.
 
-    const selected = event.target.closest(PICKABLE_SELECTOR)
-    if (selected) {
-      this._pick(selected)
+  _select(selected) {
+    const currentlySelected = this._currentlySelected()
+    if (currentlySelected) {
+      currentlySelected.removeAttribute(SELECTED_PICKABLE_DATA_ATTRIBUTE)
     }
+
+    selected.setAttribute(SELECTED_PICKABLE_DATA_ATTRIBUTE, "true")
   }
 
-  _onSearch = () => {
-    this._setSearchResults(this.searchInputTarget.value)
+  _currentlySelected() {
+    return this.searchResultsTarget.querySelector(`[${SELECTED_PICKABLE_DATA_ATTRIBUTE}]`)
+  }
+
+  _nextPickable() {
+    return this._sibling(1)
+  }
+
+  _previousPickable() {
+    return this._sibling(-1)
+  }
+
+  _sibling(offset) {
+    const pickables = this.pickableTargets
+    const selected = this._currentlySelected()
+    const index = pickables.indexOf(selected)
+    return pickables[index + offset]
+  }
+
+  _pick(selected) {
+    const value = selected.getAttribute("data-pickable-value")
+    this.hiddenInputTarget.value = value
+
+    const fakeInputLabel = selected.querySelector("[data-pickable-fake-input-label-template]")
+    this.fakeInputTarget.innerHTML = ''
+    this.fakeInputTarget.insertAdjacentHTML("beforeend", fakeInputLabel.innerHTML)
+
+    this._handleClearButtonVisibility()
+    this.close()
   }
 
   _setSearchResults = async (query) => {

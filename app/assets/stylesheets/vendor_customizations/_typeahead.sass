@@ -15,6 +15,13 @@
   margin: 0
   border-radius: 3px
 
+  overflow: hidden
+  text-overflow: ellipsis
+  white-space: nowrap
+
+  &:hover
+    white-space: normal
+
 .tt-suggestion.tt-cursor, .tt-suggestion:hover
   color: #fff
   background-color: $color_ac_blue
@@ -26,29 +33,3 @@
     padding: 3px
   p:first-child
     border-top: none
-
-.tt-dataset-authors
-  a
-    color: #000
-  p
-    margin-bottom: 0
-    border-radius: 3px
-
-.tt-dataset-references
-  margin-top: 1.2rem
-  p
-    overflow: hidden
-    text-overflow: ellipsis
-
-// TODO: Not all classes here are owned by typeahead.
-.autocompletion-header
-  font-size: 16px
-  font-weight: bold
-
-.empty-message
-  padding: 5px 10px
-  text-align: center
-  font-size: 90%
-
-#advanced-search-form-link
-  font-size: 90%

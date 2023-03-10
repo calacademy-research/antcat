@@ -110,7 +110,7 @@ class ExtrasArea
   createExtrasArea: ->
     $ """
     <div class="row">
-      <div class="medium-6 columns end">
+      <div class="medium-6 columns end leading-7">
         <a id="#{DEFAULT_REFERENCE_BUTTON_ID}" class="btn-default">Default reference</a>
         <a id="#{RECENTLY_USED_REFERENCES_BUTTON_ID}" class="btn-default">Recently used references</a>
         <a id="#{INSERT_REFERENCE_BUTTON_ID}" class="btn-default">+Reference</a>

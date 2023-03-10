@@ -16,5 +16,5 @@ $ ->
     name: 'localities'
     source: localities
     templates:
-      empty: '<div class="empty-message">No results</div>'
+      empty: 'No results'
       suggestion: (locality) -> "<p>#{locality}</p>"

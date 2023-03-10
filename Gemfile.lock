@@ -87,7 +87,7 @@ GEM
     attr_extras (7.1.0)
     awesome_print (1.9.2)
     aws-eventstream (1.2.0)
-    aws-partitions (1.719.0)
+    aws-partitions (1.723.0)
     aws-sdk-core (3.170.0)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.651.0)
@@ -314,7 +314,7 @@ GEM
       rake
     mini_mime (1.1.2)
     mini_portile2 (2.8.1)
-    minitest (5.17.0)
+    minitest (5.18.0)
     mysql2 (0.5.5)
     nenv (0.3.0)
     net-imap (0.3.4)
@@ -346,7 +346,7 @@ GEM
       mimemagic (~> 0.3.0)
       terrapin (~> 0.6.0)
     parallel (1.22.1)
-    parser (3.2.1.0)
+    parser (3.2.1.1)
       ast (~> 2.4.1)
     path_expander (1.1.1)
     pr_geohash (1.0.0)
@@ -360,7 +360,7 @@ GEM
     puma (5.6.5)
       nio4r (~> 2.0)
     racc (1.6.2)
-    rack (2.2.6.2)
+    rack (2.2.6.3)
     rack-cors (2.0.0)
       rack (>= 2.0.0)
     rack-proxy (0.7.6)
@@ -438,7 +438,7 @@ GEM
       rspec-mocks (~> 3.11)
       rspec-support (~> 3.11)
     rspec-support (3.12.0)
-    rubocop (1.47.0)
+    rubocop (1.48.0)
       json (~> 2.3)
       parallel (~> 1.10)
       parser (>= 3.2.0.0)
@@ -461,12 +461,12 @@ GEM
       rubocop (>= 1.33.0, < 2.0)
     rubocop-rake (0.6.0)
       rubocop (~> 1.0)
-    rubocop-rspec (2.18.1)
+    rubocop-rspec (2.19.0)
       rubocop (~> 1.33)
       rubocop-capybara (~> 2.17)
-    ruby-progressbar (1.12.0)
+    ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
-    ruby_parser (3.19.2)
+    ruby_parser (3.20.0)
       sexp_processor (~> 4.16)
     rubycritic (4.7.0)
       flay (~> 2.8)
@@ -523,7 +523,7 @@ GEM
     tabulo (2.8.2)
       tty-screen (= 0.8.1)
       unicode-display_width (~> 2.2)
-    tailwindcss-rails (2.0.23)
+    tailwindcss-rails (2.0.24)
       railties (>= 6.0.0)
     temple (0.10.0)
     terrapin (0.6.0)
@@ -628,7 +628,7 @@ DEPENDENCIES
   redcarpet
   request_store
   rspec-rails
-  rubocop (~> 1.47.0)
+  rubocop (~> 1.48.0)
   rubocop-performance
   rubocop-rails
   rubocop-rake

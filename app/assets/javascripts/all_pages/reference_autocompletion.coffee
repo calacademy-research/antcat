@@ -12,8 +12,8 @@ $ ->
     source: authors.ttAdapter()
     limit: Infinity # NOTE: Bug in typeahead.js v0.11.1. See https://github.com/twitter/typeahead.js/issues/1232.
     templates:
-      header: '<h5 class="autocompletion-header">Author results <small>(first 5)</small></h5>'
-      empty: '<div class="empty-message">Unable to find any authors that match the current query.</div>'
+      header: '<h5 class="text-base font-bold">Author results <small>(first 5)</small></h5>'
+      empty: '<div class="text-sm p-2">Unable to find any authors that match the current query</div>'
       suggestion: (authorName) ->
         "<p>#{authorName.label}</p>"
 
@@ -30,11 +30,11 @@ $ ->
     displayKey: 'search_query'
     source: references.ttAdapter()
     templates:
-      header: '<h5 class="autocompletion-header">Reference results <small>(first 10)</small></h5>'
+      header: '<h5 class="text-base font-bold mt-4">Reference results <small>(first 10)</small></h5>'
       empty:
-        '<div class="empty-message">' +
-        'Unable to find any references that match the current query.<br>' +
-        '<small>Maybe try with a keyword? Examples: "author:bolton", "year:2003".</small>' +
+        '<div class="text-sm p-2">' +
+        '<div class="mb-2">Unable to find any references that match the current query</div>' +
+        '<div class="text-blue-800">Maybe try with a keyword? Examples: "author:bolton", "year:2003"</div>' +
         '</div>'
       suggestion: (reference) ->
         '<p>' + reference.author + ' (' + reference.year + ')<br><small>' + reference.title + '</small></p>'
