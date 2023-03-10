@@ -27,34 +27,36 @@ TYPE_SPECIFIC_SECTION = '.type-specific-section' # Any type-specific section.
 TYPE_SPECIFIC_HELP_PREFIX = '.type-specific-help-'
 
 $ ->
-  onSelectType($(TYPE_SELECT).val())
+  onSelectType($(TYPE_SELECT).get(0).value)
 
   $(TYPE_SELECT).change ->
-    selectedType = $(this).val()
+    selectedType = $(this).get(0).value
     onSelectType(selectedType)
 
   document.body.setAttribute('data-test-taxt-editors-loaded', "true") # HACK.
 
 setupSelect = (identifier, options) ->
   selectElement = $(identifier)
-  currentValue = selectElement.val()
+  currentValue = selectElement.get(0).value
 
-  selectElement.empty()
+  selectElement.get(0).replaceChildren()
   $.each options, (label, value) ->
-    selectElement.append($("<option></option>").attr("value", value).text(label))
-  selectElement.val(currentValue)
+    option = $("<option></option>")
+    option.attr("value", value).text(label)
+    selectElement.append(option)
+  selectElement.get(0).value = currentValue
 
 resetTypeSpecific = ->
   $(TYPE_SPECIFIC_SECTION).hide()
 
-  $(TYPE_LABEL_SUBTYPE).text "???"
-  $(TYPE_LABEL_PICKED_VALUE).text "???"
-  $(TYPE_LABEL_TEXT_VALUE).text "???"
-  $(TYPE_LABEL_OBJECT_PROTONYM).text "???"
-  $(TYPE_LABEL_OBJECT_TAXON).text "???"
+  $(TYPE_LABEL_SUBTYPE).get(0).textContent = "???"
+  $(TYPE_LABEL_PICKED_VALUE).get(0).textContent = "???"
+  $(TYPE_LABEL_TEXT_VALUE).get(0).textContent = "???"
+  $(TYPE_LABEL_OBJECT_PROTONYM).get(0).textContent = "???"
+  $(TYPE_LABEL_OBJECT_TAXON).get(0).textContent = "???"
 
-  $(TYPE_LABEL_REFERENCE).text "Reference"
-  $(TYPE_LABEL_PAGES).text "Pages"
+  $(TYPE_LABEL_REFERENCE).get(0).textContent = "Reference"
+  $(TYPE_LABEL_PAGES).get(0).textContent = "Pages"
 
 onSelectType = (selectedType) ->
   resetTypeSpecific()
@@ -68,11 +70,11 @@ onSelectType = (selectedType) ->
         []
 
       when 'FormDescriptions'
-        $(TYPE_LABEL_TEXT_VALUE).text "Forms"
+        $(TYPE_LABEL_TEXT_VALUE).get(0).textContent = "Forms"
         [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES, TYPE_SPECIFIC_TEXT_VALUE]
 
       when 'TypeSpecimenDesignation'
-        $(TYPE_LABEL_SUBTYPE).text "Designation type"
+        $(TYPE_LABEL_SUBTYPE).get(0).textContent = "Designation type"
 
         setupSelect SUBTYPE_SELECT, {
           "(none)": ""
@@ -83,11 +85,11 @@ onSelectType = (selectedType) ->
         [TYPE_SPECIFIC_SUBTYPE, TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES]
 
       when 'CombinationIn'
-        $(TYPE_LABEL_OBJECT_TAXON).text "Combination in"
+        $(TYPE_LABEL_OBJECT_TAXON).get(0).textContent = "Combination in"
         [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES, TYPE_SPECIFIC_OBJECT_TAXON]
 
       when 'JuniorSynonymOf'
-        $(TYPE_LABEL_OBJECT_PROTONYM).text "Junior synonym of"
+        $(TYPE_LABEL_OBJECT_PROTONYM).get(0).textContent = "Junior synonym of"
         [
           TYPE_SPECIFIC_REFERENCE,
           TYPE_SPECIFIC_PAGES,
@@ -96,7 +98,7 @@ onSelectType = (selectedType) ->
         ]
 
       when 'SeniorSynonymOf'
-        $(TYPE_LABEL_OBJECT_PROTONYM).text "Senior synonym of"
+        $(TYPE_LABEL_OBJECT_PROTONYM).get(0).textContent = "Senior synonym of"
         [
           TYPE_SPECIFIC_REFERENCE,
           TYPE_SPECIFIC_PAGES,
@@ -105,7 +107,7 @@ onSelectType = (selectedType) ->
         ]
 
       when 'SubspeciesOf'
-        $(TYPE_LABEL_OBJECT_PROTONYM).text "Subspecies of"
+        $(TYPE_LABEL_OBJECT_PROTONYM).get(0).textContent = "Subspecies of"
         [
           TYPE_SPECIFIC_REFERENCE,
           TYPE_SPECIFIC_PAGES,
@@ -114,35 +116,35 @@ onSelectType = (selectedType) ->
         ]
 
       when 'StatusAsSpecies'
-        $(TYPE_LABEL_OBJECT_PROTONYM).text "Senior synonym of"
+        $(TYPE_LABEL_OBJECT_PROTONYM).get(0).textContent = "Senior synonym of"
         [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES]
 
       when 'JuniorPrimaryHomonymOf'
-        $(TYPE_LABEL_OBJECT_TAXON).text "Junior primary homonym of"
+        $(TYPE_LABEL_OBJECT_TAXON).get(0).textContent = "Junior primary homonym of"
         markCitationAsOptional()
 
         [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES, TYPE_SPECIFIC_OBJECT_TAXON]
 
       when 'JuniorPrimaryHomonymOfHardcodedGenus'
-        $(TYPE_LABEL_TEXT_VALUE).text "Junior primary homonym of hardcoded genus"
+        $(TYPE_LABEL_TEXT_VALUE).get(0).textContent = "Junior primary homonym of hardcoded genus"
         markCitationAsOptional()
 
         [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES, TYPE_SPECIFIC_TEXT_VALUE]
 
       when 'JuniorSecondaryHomonymOf'
-        $(TYPE_LABEL_OBJECT_TAXON).text "Junior secondary homonym of"
+        $(TYPE_LABEL_OBJECT_TAXON).get(0).textContent = "Junior secondary homonym of"
         markCitationAsOptional()
 
         [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES, TYPE_SPECIFIC_OBJECT_TAXON]
 
       when 'HomonymReplacedBy'
-        $(TYPE_LABEL_OBJECT_TAXON).text "Replacement name (homonym replaced by)"
+        $(TYPE_LABEL_OBJECT_TAXON).get(0).textContent = "Replacement name (homonym replaced by)"
         markCitationAsOptional()
 
         [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES, TYPE_SPECIFIC_OBJECT_TAXON]
 
       when 'ReplacementNameFor'
-        $(TYPE_LABEL_OBJECT_TAXON).text "Replacement name for"
+        $(TYPE_LABEL_OBJECT_TAXON).get(0).textContent = "Replacement name for"
         markCitationAsOptional()
 
         [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES, TYPE_SPECIFIC_OBJECT_TAXON]
@@ -159,5 +161,5 @@ onSelectType = (selectedType) ->
     $(input).show()
 
 markCitationAsOptional = ->
-  $(TYPE_LABEL_REFERENCE).text "Optional reference"
-  $(TYPE_LABEL_PAGES).text "Optional pages"
+  $(TYPE_LABEL_REFERENCE).get(0).textContent = "Optional reference"
+  $(TYPE_LABEL_PAGES).get(0).textContent = "Optional pages"

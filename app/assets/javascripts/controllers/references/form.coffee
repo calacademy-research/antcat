@@ -21,7 +21,7 @@ setupAdvancedAuthorAutocomplete = ->
     minLength: 1
     source: (_request, response) ->
       selectionStart = AntCat.getInputSelection(@element.get(0), true)
-      searchTerm = extractAuthorSearchTerm(@element.val(), selectionStart)
+      searchTerm = extractAuthorSearchTerm(@element.get(0).value, selectionStart)
       if searchTerm.length >= 1
         $.getJSON '/authors/autocomplete.json', { term: searchTerm }, response
       else
@@ -40,7 +40,7 @@ extractAuthorSearchTerm = (string, position) ->
 
   beforeCursor = string.substring(0, position)
   lastSemicolon = beforeCursor.lastIndexOf(';')
-  $.trim beforeCursor.substring(lastSemicolon + 1, position)
+  beforeCursor.substring(lastSemicolon + 1, position).trim()
 
 insertAuthor = (string, position, author) ->
   return { string: string, position: 0 } if string.length == 0
@@ -51,7 +51,7 @@ insertAuthor = (string, position, author) ->
   if beforePriorSemicolon.length > 0
     beforePriorSemicolon += '; '
   afterCursor = string.substring(position, string.length)
-  string = beforePriorSemicolon + author + '; ' + $.trim(afterCursor)
+  string = beforePriorSemicolon + author + '; ' + afterCursor.trim()
   afterCursor = string.substring(position, string.length)
   nextSemicolon = afterCursor.indexOf(';')
   position = nextSemicolon + position + 2

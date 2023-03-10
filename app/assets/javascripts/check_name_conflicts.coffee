@@ -10,16 +10,15 @@ $ ->
   checkNameConflicts = (nameStringSelector, exceptNameId, numberOfWords) =>
     $.ajax
       url: "/names/check_name_conflicts"
-      type: "get"
       data:
-        qq: $(nameStringSelector).val()
+        qq: $(nameStringSelector).get(0).value
         number_of_words: numberOfWords
         except_name_id: exceptNameId
       dataType: "json"
       success: (names) =>
-        currentValue = $(nameStringSelector).val()
+        currentValue = $(nameStringSelector).get(0).value
         formattedNames = names.map (name) ->
-          warnAboutHomonym = name.name.toLowerCase() == $.trim(currentValue.toLowerCase())
+          warnAboutHomonym = name.name.toLowerCase() == currentValue.toLowerCase().trim()
           homonymWarning = '<span class="bold-warning">Homonym</span> '
 
           url = if name.taxon_id
@@ -40,7 +39,7 @@ $ ->
                else
                  "<h6>Found no similar names <span class='antcat_icon check'></span></h3>"
 
-         $("#{nameStringSelector}-possible-conflicts-js-hook").html html
+         $("#{nameStringSelector}-possible-conflicts-js-hook").get(0).innerHTML = html
 
       error: -> AntCat.notifyError "Error checking for name conflicts"
 

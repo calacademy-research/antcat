@@ -41,7 +41,7 @@ setupEditButtons = ->
     event.preventDefault()
 
     taxtEditor = $(this).parent().parent()
-    taxtEditor.find(TAXT_EDITOR_EDITOR).show()
+    taxtEditor.find(TAXT_EDITOR_EDITOR).get(0).classList.remove("hidden")
 
     textareas = taxtEditor.find('textarea')
 
@@ -53,14 +53,14 @@ setupEditButtons = ->
     # Resize textareas according to content.
     textareas.each (index, element) -> $(element).height $(element)[0].scrollHeight
 
-    taxtEditor.find(TAXT_PRESENTER).hide()
+    taxtEditor.find(TAXT_PRESENTER).get(0).classList.add("hidden")
 
 setupOkButtons = ->
   $(OK_BUTTONS).click (event) ->
     event.preventDefault()
 
     taxtEditor = $(this).parent().parent()
-    toParse = taxtEditor.find('textarea').val()
+    toParse = taxtEditor.find('textarea').get(0).value
 
     $.ajax
       url: "/markdown/preview"
@@ -68,11 +68,11 @@ setupOkButtons = ->
       dataType: 'html'
       data: text: toParse
       success: (html) ->
-        taxtEditor.find(TAXT_EDITOR_CONTENT).html html
-        taxtEditor.find(TAXT_EDITOR_EDITOR).hide()
+        taxtEditor.find(TAXT_EDITOR_CONTENT).get(0).innerHTML = html
+        taxtEditor.find(TAXT_EDITOR_EDITOR).get(0).classList.add("hidden")
 
         taxtPresenter = taxtEditor.find(TAXT_PRESENTER)
-        taxtPresenter.show()
+        taxtPresenter.get(0).classList.remove("hidden")
 
         window.setupTaxtEditors()
       error: -> alert 'error :('
@@ -85,15 +85,15 @@ setupSaveHistoryItemButtons = ->
 
     data =
       history_item:
-        taxt: taxtEditor.find('textarea#taxt').val()
-        subtype: taxtEditor.find('select[name=subtype]').val()
-        picked_value: taxtEditor.find('select[name=picked_value]').val()
-        text_value: taxtEditor.find('input[name=text_value]').val()
-        object_protonym_id: taxtEditor.find('[name=object_protonym_id]').val()
-        object_taxon_id: taxtEditor.find('[name=object_taxon_id]').val()
-        reference_id: taxtEditor.find('[name=reference_id]').val()
-        pages: taxtEditor.find('input[name=pages]').val()
-      edit_summary: taxtEditor.find(EDIT_SUMMARY_FIELD).val()
+        taxt: taxtEditor.find('textarea#taxt').get(0)?.value
+        subtype: taxtEditor.find('select[name=subtype]').get(0)?.value
+        picked_value: taxtEditor.find('select[name=picked_value]').get(0)?.value
+        text_value: taxtEditor.find('input[name=text_value]').get(0)?.value
+        object_protonym_id: taxtEditor.find('[name=object_protonym_id]').get(0)?.value
+        object_taxon_id: taxtEditor.find('[name=object_taxon_id]').get(0)?.value
+        reference_id: taxtEditor.find('[name=reference_id]').get(0)?.value
+        pages: taxtEditor.find('input[name=pages]').get(0)?.value
+      edit_summary: taxtEditor.find(EDIT_SUMMARY_FIELD).get(0).value
 
     $.ajax
       url: taxtEditor.data('url')
@@ -106,8 +106,7 @@ setupSaveHistoryItemButtons = ->
         else
           AntCat.notifySuccess("Updated history item")
 
-          parent = taxtEditor.parent()
-          parent.html response.content
+          taxtEditor.get(0).parentNode.innerHTML = response.content
           window.setupLinkables()
           window.setupTaxtEditors()
       error: ->
@@ -121,10 +120,10 @@ setupSaveReferenceSectionButtons = ->
 
     data =
       reference_section:
-        title_taxt:      taxtEditor.find('textarea#title_taxt').val()
-        subtitle_taxt:   taxtEditor.find('textarea#subtitle_taxt').val()
-        references_taxt: taxtEditor.find('textarea#references_taxt').val()
-      edit_summary:      taxtEditor.find(EDIT_SUMMARY_FIELD).val()
+        title_taxt:      taxtEditor.find('textarea#title_taxt').get(0).value
+        subtitle_taxt:   taxtEditor.find('textarea#subtitle_taxt').get(0).value
+        references_taxt: taxtEditor.find('textarea#references_taxt').get(0).value
+      edit_summary:      taxtEditor.find(EDIT_SUMMARY_FIELD).get(0).value
 
     $.ajax
       url: taxtEditor.data('url')
@@ -137,8 +136,7 @@ setupSaveReferenceSectionButtons = ->
         else
           AntCat.notifySuccess("Updated reference section")
 
-          parent = taxtEditor.parent()
-          parent.html response.content
+          taxtEditor.get(0).parentNode.innerHTML = response.content
           window.setupLinkables()
           window.setupTaxtEditors()
       error: ->
@@ -152,7 +150,7 @@ setupDeleteButton = ->
     taxtEditor = $(this).parent().parent()
 
     data =
-      edit_summary: taxtEditor.find(EDIT_SUMMARY_FIELD).val()
+      edit_summary: taxtEditor.find(EDIT_SUMMARY_FIELD).get(0).value
 
     $.ajax
       url: taxtEditor.data('url')
@@ -162,7 +160,7 @@ setupDeleteButton = ->
       success: ->
         AntCat.notifySuccess("Deleted item")
 
-        taxtEditor.parent().remove()
+        taxtEditor.get(0).parentNode.remove()
       error: -> alert 'error :('
 
 setupCancelButtons = ->
@@ -170,5 +168,5 @@ setupCancelButtons = ->
     event.preventDefault()
 
     taxtEditor = $(this).parent().parent()
-    taxtEditor.find(TAXT_EDITOR_EDITOR).hide()
-    taxtEditor.find(TAXT_PRESENTER).show()
+    taxtEditor.find(TAXT_EDITOR_EDITOR).get(0).classList.add("hidden")
+    taxtEditor.find(TAXT_PRESENTER).get(0).classList.remove("hidden")
