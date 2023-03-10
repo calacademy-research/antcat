@@ -41,7 +41,7 @@ setupEditButtons = ->
     event.preventDefault()
 
     taxtEditor = $(this).parent().parent()
-    taxtEditor.find(TAXT_EDITOR_EDITOR).show()
+    taxtEditor.find(TAXT_EDITOR_EDITOR).get(0).classList.remove("hidden")
 
     textareas = taxtEditor.find('textarea')
 
@@ -53,7 +53,7 @@ setupEditButtons = ->
     # Resize textareas according to content.
     textareas.each (index, element) -> $(element).height $(element)[0].scrollHeight
 
-    taxtEditor.find(TAXT_PRESENTER).hide()
+    taxtEditor.find(TAXT_PRESENTER).get(0).classList.add("hidden")
 
 setupOkButtons = ->
   $(OK_BUTTONS).click (event) ->
@@ -69,10 +69,10 @@ setupOkButtons = ->
       data: text: toParse
       success: (html) ->
         taxtEditor.find(TAXT_EDITOR_CONTENT).get(0).innerHTML = html
-        taxtEditor.find(TAXT_EDITOR_EDITOR).hide()
+        taxtEditor.find(TAXT_EDITOR_EDITOR).get(0).classList.add("hidden")
 
         taxtPresenter = taxtEditor.find(TAXT_PRESENTER)
-        taxtPresenter.show()
+        taxtPresenter.get(0).classList.remove("hidden")
 
         window.setupTaxtEditors()
       error: -> alert 'error :('
@@ -168,5 +168,5 @@ setupCancelButtons = ->
     event.preventDefault()
 
     taxtEditor = $(this).parent().parent()
-    taxtEditor.find(TAXT_EDITOR_EDITOR).hide()
-    taxtEditor.find(TAXT_PRESENTER).show()
+    taxtEditor.find(TAXT_EDITOR_EDITOR).get(0).classList.add("hidden")
+    taxtEditor.find(TAXT_PRESENTER).get(0).classList.remove("hidden")
