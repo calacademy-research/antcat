@@ -10,7 +10,6 @@ $ ->
   checkNameConflicts = (nameStringSelector, exceptNameId, numberOfWords) =>
     $.ajax
       url: "/names/check_name_conflicts"
-      type: "get"
       data:
         qq: $(nameStringSelector).val()
         number_of_words: numberOfWords

@@ -103,7 +103,7 @@
 
   -if current_user
     .float-right
-      =link_to "[disco button]", "#", id: 'toggle-disco-mode-js-hook', class: 'btn-neutral border-white'
+      =link_to "[disco button]", "#", id: 'toggle-disco-mode-js-hook', class: 'btn-neutral border-white hidden'
       =link_to "Issues (#{Issue.open.count})", issues_path, class: 'btn-default border-white'
       -if Issue.any_help_wanted_open?
         =link_to "Help Wanted (#{Issue.open_help_wanted.count})", issues_path, class: 'btn-orange font-bold'

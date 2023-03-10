@@ -79,7 +79,7 @@ class MakePreviewable
 
     $.ajax
       url: "/markdown/preview"
-      type: "post"
+      type: "POST"
       data:
         text: toParse
         format_type_fields: formatTypeFields
@@ -191,7 +191,7 @@ class ExtrasArea
 
       $.ajax
         url: "/panel/bolton_keys_to_ref_tags.json"
-        type: "post"
+        type: "POST"
         data: bolton_content: @textarea.val()
         dataType: "html"
         success: (parsedContent) =>
