@@ -27,22 +27,22 @@ TYPE_SPECIFIC_SECTION = '.type-specific-section' # Any type-specific section.
 TYPE_SPECIFIC_HELP_PREFIX = '.type-specific-help-'
 
 $ ->
-  onSelectType($(TYPE_SELECT).val())
+  onSelectType($(TYPE_SELECT).get(0).value)
 
   $(TYPE_SELECT).change ->
-    selectedType = $(this).val()
+    selectedType = $(this).get(0).value
     onSelectType(selectedType)
 
   document.body.setAttribute('data-test-taxt-editors-loaded', "true") # HACK.
 
 setupSelect = (identifier, options) ->
   selectElement = $(identifier)
-  currentValue = selectElement.val()
+  currentValue = selectElement.get(0).value
 
   selectElement.empty()
   $.each options, (label, value) ->
     selectElement.append($("<option></option>").attr("value", value).text(label))
-  selectElement.val(currentValue)
+  selectElement.get(0).value = currentValue
 
 resetTypeSpecific = ->
   $(TYPE_SPECIFIC_SECTION).hide()

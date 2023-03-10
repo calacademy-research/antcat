@@ -60,7 +60,7 @@ setupOkButtons = ->
     event.preventDefault()
 
     taxtEditor = $(this).parent().parent()
-    toParse = taxtEditor.find('textarea').val()
+    toParse = taxtEditor.find('textarea').get(0).value
 
     $.ajax
       url: "/markdown/preview"
@@ -85,15 +85,15 @@ setupSaveHistoryItemButtons = ->
 
     data =
       history_item:
-        taxt: taxtEditor.find('textarea#taxt').val()
-        subtype: taxtEditor.find('select[name=subtype]').val()
-        picked_value: taxtEditor.find('select[name=picked_value]').val()
-        text_value: taxtEditor.find('input[name=text_value]').val()
-        object_protonym_id: taxtEditor.find('[name=object_protonym_id]').val()
-        object_taxon_id: taxtEditor.find('[name=object_taxon_id]').val()
-        reference_id: taxtEditor.find('[name=reference_id]').val()
-        pages: taxtEditor.find('input[name=pages]').val()
-      edit_summary: taxtEditor.find(EDIT_SUMMARY_FIELD).val()
+        taxt: taxtEditor.find('textarea#taxt').get(0)?.value
+        subtype: taxtEditor.find('select[name=subtype]').get(0)?.value
+        picked_value: taxtEditor.find('select[name=picked_value]').get(0)?.value
+        text_value: taxtEditor.find('input[name=text_value]').get(0)?.value
+        object_protonym_id: taxtEditor.find('[name=object_protonym_id]').get(0)?.value
+        object_taxon_id: taxtEditor.find('[name=object_taxon_id]').get(0)?.value
+        reference_id: taxtEditor.find('[name=reference_id]').get(0)?.value
+        pages: taxtEditor.find('input[name=pages]').get(0)?.value
+      edit_summary: taxtEditor.find(EDIT_SUMMARY_FIELD).get(0).value
 
     $.ajax
       url: taxtEditor.data('url')
@@ -120,10 +120,10 @@ setupSaveReferenceSectionButtons = ->
 
     data =
       reference_section:
-        title_taxt:      taxtEditor.find('textarea#title_taxt').val()
-        subtitle_taxt:   taxtEditor.find('textarea#subtitle_taxt').val()
-        references_taxt: taxtEditor.find('textarea#references_taxt').val()
-      edit_summary:      taxtEditor.find(EDIT_SUMMARY_FIELD).val()
+        title_taxt:      taxtEditor.find('textarea#title_taxt').get(0).value
+        subtitle_taxt:   taxtEditor.find('textarea#subtitle_taxt').get(0).value
+        references_taxt: taxtEditor.find('textarea#references_taxt').get(0).value
+      edit_summary:      taxtEditor.find(EDIT_SUMMARY_FIELD).get(0).value
 
     $.ajax
       url: taxtEditor.data('url')
@@ -150,7 +150,7 @@ setupDeleteButton = ->
     taxtEditor = $(this).parent().parent()
 
     data =
-      edit_summary: taxtEditor.find(EDIT_SUMMARY_FIELD).val()
+      edit_summary: taxtEditor.find(EDIT_SUMMARY_FIELD).get(0).value
 
     $.ajax
       url: taxtEditor.data('url')

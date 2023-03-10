@@ -18,7 +18,7 @@ $.fn.renderUnrenderedPreviewableHack = -> new MakePreviewable(this, true)
 class MakePreviewable
   constructor: (@textarea, justRender = false) ->
     if @isAlreadyPreviewable() and justRender
-      return if @textarea.val() == ""
+      return if @textarea.get(0).value == ""
       return @renderPreview()
 
     return if @isAlreadyPreviewable()
@@ -29,7 +29,7 @@ class MakePreviewable
     if @textarea.data('use-extras')
       new ExtrasArea(@textarea, @textarea.parent().parent().parent(), this)
 
-    @renderPreview() if @textarea.is(":visible") and @textarea.val() != ""
+    @renderPreview() if @textarea.is(":visible") and @textarea.get(0).value != ""
 
     # Resize textareas according to content (works only for visible text areas).
     @textarea.height @textarea[0].scrollHeight
@@ -70,7 +70,7 @@ class MakePreviewable
   renderPreview: ->
     tab = @textarea.parent().parent().find(".preview-previewable")
 
-    toParse = @textarea.val()
+    toParse = @textarea.get(0).value
     formatTypeFields = @textarea.data('format-type-fields')
 
     if toParse is ""
@@ -126,10 +126,10 @@ class ExtrasArea
     button.click =>
       event.preventDefault()
 
-      originalValue = @textarea.val()
+      originalValue = @textarea.get(0).value
 
       @textarea.insertAtCaret "!!"
-      afterValue = @textarea.val()
+      afterValue = @textarea.get(0).value
 
       @restoreIfUnchanged originalValue, afterValue
       @textarea.trigger('click.atwhoInner')
@@ -140,11 +140,11 @@ class ExtrasArea
     button.click =>
       event.preventDefault()
 
-      originalValue = @textarea.val()
+      originalValue = @textarea.get(0).value
 
       selectedValue = AntCat.getInputSelection(@textarea.get(0))
       @textarea.insertAtCaret "{r#{selectedValue}"
-      afterValue = @textarea.val()
+      afterValue = @textarea.get(0).value
 
       @restoreIfUnchanged originalValue, afterValue
       @textarea.trigger('click.atwhoInner')
@@ -155,11 +155,11 @@ class ExtrasArea
     button.click =>
       event.preventDefault()
 
-      originalValue = @textarea.val()
+      originalValue = @textarea.get(0).value
 
       selectedValue = AntCat.getInputSelection(@textarea.get(0))
       @textarea.insertAtCaret "{t#{selectedValue}"
-      afterValue = @textarea.val()
+      afterValue = @textarea.get(0).value
 
       @restoreIfUnchanged originalValue, afterValue
       @textarea.trigger('click.atwhoInner')
@@ -167,8 +167,8 @@ class ExtrasArea
   restoreIfUnchanged: (originalValue, afterValue) ->
     @textarea.off 'hidden.atwho'
     @textarea.on 'hidden.atwho', =>
-      if @textarea.val() == afterValue
-        @textarea.val originalValue
+      if @textarea.get(0).value == afterValue
+        @textarea.get(0).value = originalValue
 
   setupDefaultReferenceButton: ->
     reference = defaultReference()
@@ -192,10 +192,10 @@ class ExtrasArea
       $.ajax
         url: "/panel/bolton_keys_to_ref_tags.json"
         type: "POST"
-        data: bolton_content: @textarea.val()
+        data: bolton_content: @textarea.get(0).value
         dataType: "html"
         success: (parsedContent) =>
-          @textarea.val parsedContent
+          @textarea.get(0).value = parsedContent
           @taxtEditor.renderPreview()
           AntCat.notifySuccess "Converted Bolton keys"
         error: -> AntCat.notifyError "Error parsing Bolton keys"

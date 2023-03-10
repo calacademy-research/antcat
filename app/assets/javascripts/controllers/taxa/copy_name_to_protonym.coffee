@@ -5,6 +5,6 @@ COPY_NAME_TO_PROTONYM = '#copy-name-to-protonym-js-hook'
 $ ->
   $(COPY_NAME_TO_PROTONYM).click (event) ->
     event.preventDefault()
-    taxon_name_string = $(TAXON_NAME_STRING).val()
-    $(PROTONYM_NAME_STRING).val taxon_name_string
+    taxon_name_string = $(TAXON_NAME_STRING).get(0).value
+    $(PROTONYM_NAME_STRING).get(0).value = taxon_name_string
     $(PROTONYM_NAME_STRING).trigger('keyup')

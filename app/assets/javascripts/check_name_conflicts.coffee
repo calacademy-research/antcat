@@ -11,12 +11,12 @@ $ ->
     $.ajax
       url: "/names/check_name_conflicts"
       data:
-        qq: $(nameStringSelector).val()
+        qq: $(nameStringSelector).get(0).value
         number_of_words: numberOfWords
         except_name_id: exceptNameId
       dataType: "json"
       success: (names) =>
-        currentValue = $(nameStringSelector).val()
+        currentValue = $(nameStringSelector).get(0).value
         formattedNames = names.map (name) ->
           warnAboutHomonym = name.name.toLowerCase() == currentValue.toLowerCase().trim()
           homonymWarning = '<span class="bold-warning">Homonym</span> '
