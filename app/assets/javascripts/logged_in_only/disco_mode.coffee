@@ -2,7 +2,7 @@ TOGGLE_BUTTON = "#toggle-disco-mode-js-hook"
 
 $ ->
   discoMode = new DiscoMode()
-  $(TOGGLE_BUTTON).removeClass('hidden') # Hidden initially due to FoUC link text.
+  $(TOGGLE_BUTTON).get(0).classList.remove('hidden') # Hidden initially due to FoUC link text.
 
   $(TOGGLE_BUTTON).click (event) ->
     event.preventDefault()
@@ -10,7 +10,7 @@ $ ->
 
 class DiscoMode
   LOCAL_STORAGE_KEY = 'discoMode'
-  CONTAINER = "body"
+  CONTAINER = document.body
 
   COLOR_CODED_CATALOG_LINKS_CLASS = "color-coded-catalog-links"
   SHOW_FIREWORKS_CLASS = "show-fireworks"
@@ -28,7 +28,7 @@ class DiscoMode
       @_enableDiscoMode()
       @_showFireworks()
 
-  _isEnabledInState: -> $(CONTAINER).hasClass(COLOR_CODED_CATALOG_LINKS_CLASS)
+  _isEnabledInState: -> CONTAINER.classList.contains(COLOR_CODED_CATALOG_LINKS_CLASS)
   _isEnabledInCookies: -> localStorage.getItem(LOCAL_STORAGE_KEY)
   _enableInCookies: -> localStorage.setItem(LOCAL_STORAGE_KEY, true)
   _disableInCookies: -> localStorage.removeItem(LOCAL_STORAGE_KEY)
@@ -44,8 +44,8 @@ class DiscoMode
     @_disableInCookies()
     @_hideFireworks()
 
-  _showLinkColors: -> $(CONTAINER).addClass(COLOR_CODED_CATALOG_LINKS_CLASS)
-  _hideLinkColors: -> $(CONTAINER).removeClass(COLOR_CODED_CATALOG_LINKS_CLASS)
+  _showLinkColors: -> CONTAINER.classList.add(COLOR_CODED_CATALOG_LINKS_CLASS)
+  _hideLinkColors: -> CONTAINER.classList.remove(COLOR_CODED_CATALOG_LINKS_CLASS)
 
-  _showFireworks: -> $(CONTAINER).addClass(SHOW_FIREWORKS_CLASS)
-  _hideFireworks: -> $(CONTAINER).removeClass(SHOW_FIREWORKS_CLASS)
+  _showFireworks: -> CONTAINER.classList.add(SHOW_FIREWORKS_CLASS)
+  _hideFireworks: -> CONTAINER.classList.remove(SHOW_FIREWORKS_CLASS)

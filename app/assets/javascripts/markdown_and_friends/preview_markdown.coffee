@@ -34,7 +34,7 @@ class MakePreviewable
     # Resize textareas according to content (works only for visible text areas).
     @textarea.height @textarea[0].scrollHeight
 
-  isAlreadyPreviewable: -> @textarea.parent().hasClass "is-already-previewable"
+  isAlreadyPreviewable: -> @textarea.parent().get(0).classList.contains("is-already-previewable")
 
   wrapInPreviewArea: ->
     # Create new preview area (tabs) and insert after textarea, and tabify.
@@ -175,7 +175,7 @@ class ExtrasArea
     button = @textareaTab.find("##{DEFAULT_REFERENCE_BUTTON_ID}")
 
     unless reference?.id
-      button.addClass('ui-state-disabled')
+      button.get(0).classList.add('ui-state-disabled')
       return
 
     button.html reference.referenceKey
