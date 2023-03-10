@@ -160,7 +160,7 @@ setupDeleteButton = ->
       success: ->
         AntCat.notifySuccess("Deleted item")
 
-        taxtEditor.parent().remove()
+        taxtEditor.get(0).parentNode.remove()
       error: -> alert 'error :('
 
 setupCancelButtons = ->

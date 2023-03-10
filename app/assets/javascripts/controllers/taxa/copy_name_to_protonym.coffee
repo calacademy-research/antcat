@@ -7,4 +7,6 @@ $ ->
     event.preventDefault()
     taxon_name_string = $(TAXON_NAME_STRING).get(0).value
     $(PROTONYM_NAME_STRING).get(0).value = taxon_name_string
-    $(PROTONYM_NAME_STRING).trigger('keyup')
+
+    # To trigger the name conflict check.
+    $(PROTONYM_NAME_STRING).get(0).dispatchEvent(new Event('keyup'))

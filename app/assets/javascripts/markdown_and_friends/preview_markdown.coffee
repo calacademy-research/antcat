@@ -32,9 +32,9 @@ class MakePreviewable
     @renderPreview() if @textarea.is(":visible") and @textarea.get(0).value != ""
 
     # Resize textareas according to content (works only for visible text areas).
-    @textarea.height @textarea[0].scrollHeight
+    @textarea.get(0).style.height = "#{@textarea[0].scrollHeight}px"
 
-  isAlreadyPreviewable: -> @textarea.parent().get(0).classList.contains("is-already-previewable")
+  isAlreadyPreviewable: -> @textarea.get(0).parentNode.classList.contains("is-already-previewable")
 
   wrapInPreviewArea: ->
     # Create new preview area (tabs) and insert after textarea, and tabify.

@@ -39,9 +39,11 @@ setupSelect = (identifier, options) ->
   selectElement = $(identifier)
   currentValue = selectElement.get(0).value
 
-  selectElement.empty()
+  selectElement.get(0).replaceChildren()
   $.each options, (label, value) ->
-    selectElement.append($("<option></option>").attr("value", value).text(label))
+    option = $("<option></option>")
+    option.attr("value", value).text(label)
+    selectElement.append(option)
   selectElement.get(0).value = currentValue
 
 resetTypeSpecific = ->
