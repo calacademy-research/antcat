@@ -18,7 +18,7 @@ $ ->
       success: (names) =>
         currentValue = $(nameStringSelector).val()
         formattedNames = names.map (name) ->
-          warnAboutHomonym = name.name.toLowerCase() == $.trim(currentValue.toLowerCase())
+          warnAboutHomonym = name.name.toLowerCase() == currentValue.toLowerCase().trim()
           homonymWarning = '<span class="bold-warning">Homonym</span> '
 
           url = if name.taxon_id
