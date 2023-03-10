@@ -74,7 +74,7 @@ class MakePreviewable
     formatTypeFields = @textarea.data('format-type-fields')
 
     if toParse is ""
-      tab.html "No content. Try this: <code>{tax 430207}</code>."
+      tab.get(0).innerHTML = "No content. Try this: <code>{tax 430207}</code>"
       return
 
     $.ajax
@@ -85,7 +85,7 @@ class MakePreviewable
         format_type_fields: formatTypeFields
       dataType: "html"
       success: (html) =>
-        tab.html html
+        tab.get(0).innerHTML = html
         window.setupLinkables()
         if typeof variable != 'undefined'
           window.setupTaxtEditors()
@@ -178,7 +178,7 @@ class ExtrasArea
       button.get(0).classList.add('ui-state-disabled')
       return
 
-    button.html reference.referenceKey
+    button.get(0).innerHTML = reference.referenceKey
     button.click =>
       event.preventDefault()
       @textarea.insertAtCaret "{ref #{reference.id}}: "

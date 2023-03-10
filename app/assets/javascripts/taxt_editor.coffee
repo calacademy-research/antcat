@@ -68,7 +68,7 @@ setupOkButtons = ->
       dataType: 'html'
       data: text: toParse
       success: (html) ->
-        taxtEditor.find(TAXT_EDITOR_CONTENT).html html
+        taxtEditor.find(TAXT_EDITOR_CONTENT).get(0).innerHTML = html
         taxtEditor.find(TAXT_EDITOR_EDITOR).hide()
 
         taxtPresenter = taxtEditor.find(TAXT_PRESENTER)
@@ -106,8 +106,7 @@ setupSaveHistoryItemButtons = ->
         else
           AntCat.notifySuccess("Updated history item")
 
-          parent = taxtEditor.parent()
-          parent.html response.content
+          taxtEditor.get(0).parentNode.innerHTML = response.content
           window.setupLinkables()
           window.setupTaxtEditors()
       error: ->
@@ -137,8 +136,7 @@ setupSaveReferenceSectionButtons = ->
         else
           AntCat.notifySuccess("Updated reference section")
 
-          parent = taxtEditor.parent()
-          parent.html response.content
+          taxtEditor.get(0).parentNode.innerHTML = response.content
           window.setupLinkables()
           window.setupTaxtEditors()
       error: ->

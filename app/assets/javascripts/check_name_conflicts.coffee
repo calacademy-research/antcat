@@ -39,7 +39,7 @@ $ ->
                else
                  "<h6>Found no similar names <span class='antcat_icon check'></span></h3>"
 
-         $("#{nameStringSelector}-possible-conflicts-js-hook").html html
+         $("#{nameStringSelector}-possible-conflicts-js-hook").get(0).innerHTML = html
 
       error: -> AntCat.notifyError "Error checking for name conflicts"
 
