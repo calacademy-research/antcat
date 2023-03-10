@@ -89,7 +89,7 @@ class MakePreviewable
         window.setupLinkables()
         if typeof variable != 'undefined'
           window.setupTaxtEditors()
-      error: -> tab.text "Error rendering preview"
+      error: -> tab.get(0).textContent = "Error rendering preview"
 
 class ExtrasArea
   DEFAULT_REFERENCE_BUTTON_ID        = "default-reference-button"

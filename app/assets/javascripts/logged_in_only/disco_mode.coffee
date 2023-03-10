@@ -35,12 +35,12 @@ class DiscoMode
 
   _enableDiscoMode: ->
     @_showLinkColors()
-    $(TOGGLE_BUTTON).text "Leave the disco :("
+    $(TOGGLE_BUTTON).get(0).textContent = "Leave the disco :("
     @_enableInCookies()
 
   _disableDiscoMode: ->
     @_hideLinkColors()
-    $(TOGGLE_BUTTON).text "Go to the disco!"
+    $(TOGGLE_BUTTON).get(0).textContent = "Go to the disco!"
     @_disableInCookies()
     @_hideFireworks()
 
