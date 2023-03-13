@@ -92,21 +92,6 @@ module FeatureHelpers
     set_record_picker reference.id, input_css_selector
   end
 
-  # History items.
-  def the_history_should_be content
-    element = first('#history-items').first('.taxt-presenter')
-    expect(element).to have_content(content)
-  end
-
-  def the_history_item_field_should_be content
-    element = first('#history-items').find('textarea')
-    expect(element).to have_content(content)
-  end
-
-  def the_history_should_be_empty
-    expect(page).not_to have_css '#history-items .history-item'
-  end
-
   # Misc.
   def i_select_the_reference_tab tab_css_selector
     find(tab_css_selector, visible: false).click

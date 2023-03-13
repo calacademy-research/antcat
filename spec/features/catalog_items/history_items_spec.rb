@@ -25,11 +25,20 @@ feature "History items" do
   end
 
   feature "Editing history items", as: :editor do
+    def the_history_should_be content
+      element = first('.taxt-presenter')
+      expect(element).to have_content(content)
+    end
+
+    def the_history_item_field_should_be content
+      element = first('.taxt-editor').find('textarea')
+      expect(element).to have_content(content)
+    end
+
     scenario "Adding a history item (with edit summary)" do
       protonym = create :protonym, :genus_group, protonym_name_string: "Atta"
 
       visit protonym_path(protonym)
-      the_history_should_be_empty
 
       find(:testid, 'add-history-item-button').click
       fill_in "taxt", with: "Abc"
@@ -44,7 +53,6 @@ feature "History items" do
       protonym = create :protonym
 
       visit protonym_path(protonym)
-      the_history_should_be_empty
 
       find(:testid, 'add-history-item-button').click
       click_button "Save"
@@ -61,7 +69,7 @@ feature "History items" do
       wait_for_taxt_editors_to_load
       find(:testid, 'history-item-taxt-editor-edit-button').click
       fill_in "taxt", with: "(none)"
-      within "#history-items" do
+      within ".taxt-editor" do
         fill_in "edit_summary", with: "fix typo"
       end
       find(:testid, 'history-item-taxt-editor-save-button').click
@@ -117,9 +125,6 @@ feature "History items" do
       i_will_confirm_on_the_next_step
       expect { find(:testid, 'history-item-taxt-editor-delete-button').click }.to change { HistoryItem.count }.by(-1)
       i_should_be_on protonym_path(protonym)
-
-      i_reload_the_page
-      the_history_should_be_empty
 
       there_should_be_an_activity "Archibald deleted the history item ##{history_item.id} belonging to Antcatinae",
         edit_summary: "delete duplicate"

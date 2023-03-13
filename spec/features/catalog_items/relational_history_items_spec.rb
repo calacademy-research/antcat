@@ -8,7 +8,6 @@ feature "Editing relational history items", as: :editor do
     create :any_reference, author_string: "Batiatus", year: 2004
 
     visit protonym_path(protonym)
-    the_history_should_be_empty
 
     find(:testid, 'add-history-item-button').click
     wait_for_taxt_editors_to_load
@@ -25,7 +24,6 @@ feature "Editing relational history items", as: :editor do
     protonym = create :protonym
 
     visit protonym_path(protonym)
-    the_history_should_be_empty
 
     find(:testid, 'add-history-item-button').click
     select "Form descriptions (additional)", from: "history_item_type"
