@@ -1,11 +1,34 @@
 -page_title "Dev"
 
+-content_for :breadcrumbs_right do
+  %div{"data-controller" => "dev"}
+    %span.btn-default{"data-action" => 'click->dev#enableEnvCss'} Enable env CSS
+    %span.btn-warning{"data-action" => 'click->dev#disableEnvCss'} Disable env CSS
+
 %h4 Dev
 
 %ul
   %li=link_to '/dev/pickers', pickers_dev_path
   %li=link_to '/dev/styles', styles_dev_path
-  %li{"data-controller" => "dev"}
-    env_specific CSS:
-    %span.btn-default{"data-action" => 'click->dev#enableEnvCss'} enable
-    %span.btn-warning{"data-action" => 'click->dev#disableEnvCss'} disable
+
+%ul
+  %li=markdown_without_wrapping "%dbscript:CurrentTaxonChains"
+  %li=markdown_without_wrapping "%dbscript:ProtonymsWithMoreThanOneTerminalTaxon"
+  %li=markdown_without_wrapping "%dbscript:ProtonymsWithoutATerminalTaxon"
+  %li=markdown_without_wrapping "%dbscript:ProtonymsWithEtymologyTaxt"
+
+%ul
+  %li=link_to 'Taxon with more than one reference section', catalog_path(430052)
+  %li=link_to 'Taxon with relational history items', catalog_path(430842)
+  %li=link_to 'Protonym with primary_type_information_taxt', protonym_path(Protonym.find_by("primary_type_information_taxt LIKE ?", "%CASENT%"))
+
+%ul
+  -HistoryItem.distinct.pluck(:type).sort.each do |type|
+    -history_item = HistoryItem.find_by(type: type)
+    %li
+      =link_to 'Show', history_item_path(history_item), class: 'btn-default'
+      =link_to 'Edit', edit_history_item_path(history_item), class: 'btn-default'
+      %code.mx-4=type
+      =CatalogFormatter.link_to_taxon(history_item.terminal_taxon)
+      \ .....
+      =CatalogFormatter.link_to_protonym(history_item.protonym)
