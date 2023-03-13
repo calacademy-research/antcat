@@ -8,17 +8,20 @@
 
     %br
 
-    %a.taxt-editor-history-item-save-button.btn-saves.btn-md Save
-    %a.taxt-editor-cancel-button.btn-neutral.btn-md Cancel
-    %a.taxt-editor-delete-button.btn-warning.btn-md.ml-4 Delete
+    %a.taxt-editor-history-item-save-button.btn-saves.btn-md{data: { testid: 'history-item-taxt-editor-save-button' }} Save
+    %a.taxt-editor-cancel-button.btn-neutral.btn-md{data: { testid: 'history-item-taxt-editor-cancel-button' }} Cancel
+    %a.taxt-editor-delete-button.btn-warning.btn-md.ml-4{data: { testid: 'history-item-taxt-editor-delete-button' }} Delete
 
   .taxt-presenter{class: "group/history-item-taxt-presenter"}
     =Detax[history_item.to_taxt]
 
-    %br.mt-2
-    %a.taxt-editor-edit-button.btn-neutral.mr-4 Quick edit
+    .mt-3
+
+    %a.taxt-editor-edit-button.btn-neutral.mr-4{data: { testid: 'history-item-taxt-editor-edit-button' }} Quick edit
 
     %small.font-bold.text-gray-500.mr-4=history_item.underscored_type
+
+    =history_item.decorate.rank_specific_badge if history_item.rank?
 
     %span.hidden{class: "group-hover/history-item-taxt-presenter:inline"}
       =link_to "Show", history_item_path(history_item), class: "btn-default"

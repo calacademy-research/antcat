@@ -1,66 +1,62 @@
--unless protonym
-  .callout.mb-8
-    %h6 Protonym: (none)
--else
-  .callout.mb-8
-    %h6
-      Protonym:
-      =protonym.decorate.link_to_protonym
-      .float-right
-        =link_to 'Edit', edit_protonym_path(protonym), class: 'btn-default'
+.callout.mb-8
+  %h6
+    Protonym:
+    =protonym.decorate.link_to_protonym
+    .float-right
+      =link_to 'Edit', edit_protonym_path(protonym), class: 'btn-default'
 
-    %table.table-unstriped.text-sm
-      %tbody
+  %table.table-unstriped
+    %tbody
+      %tr
+        %td Authorship
+        %td
+          =succeed ':' do
+            =protonym.authorship_reference.decorate.link_to_reference
+          =protonym.authorship.pages
+
+      -if protonym.species_group_name?
+        -if protonym.forms?
+          %tr
+            %td Forms
+            %td=protonym.forms
+        -if protonym.bioregion?
+          %tr
+            %td Bioregion
+            %td=protonym.bioregion
+        -if protonym.locality?
+          %tr
+            %td Locality
+            %td=protonym.decorate.format_locality
+
+      -if taxon.type.in?(Rank::CAN_HAVE_TYPE_TAXON_TYPES)
+        -if (type_name = protonym.type_name)
+          %tr
+            %td Type name
+            %td
+              -decorated_type_name = type_name.decorate
+              =decorated_type_name.format_rank
+              =CatalogFormatter.link_to_taxon(type_name.taxon) + decorated_type_name.compact_taxon_status + Detax[decorated_type_name.format_fixation_method]
+
+      -if protonym.etymology_taxt?
         %tr
-          %td Authorship
-          %td
-            =succeed ':' do
-              =protonym.authorship_reference.decorate.link_to_reference
-            =protonym.authorship.pages
+          %td Etymology
+          %td=Detax[protonym.etymology_taxt]
 
-        -if protonym.species_group_name?
-          -if protonym.forms?
-            %tr
-              %td Forms
-              %td=protonym.forms
-          -if protonym.bioregion?
-            %tr
-              %td Bioregion
-              %td=protonym.bioregion
-          -if protonym.locality?
-            %tr
-              %td Locality
-              %td=protonym.decorate.format_locality
+      -if protonym.primary_type_information_taxt?
+        %tr
+          %td Primary type information
+          %td=::Types::FormatTypeField[protonym.primary_type_information_taxt]
+      -if protonym.secondary_type_information_taxt?
+        %tr
+          %td Secondary type information
+          %td=::Types::FormatTypeField[protonym.secondary_type_information_taxt]
+      -if protonym.type_notes_taxt?
+        %tr
+          %td Type notes
+          %td=::Types::FormatTypeField[protonym.type_notes_taxt]
+      -if protonym.notes_taxt?
+        %tr
+          %td Notes
+          %td=Detax[protonym.notes_taxt]
 
-        -if taxon.type.in?(Rank::CAN_HAVE_TYPE_TAXON_TYPES)
-          -if (type_name = protonym.type_name)
-            %tr
-              %td Type name
-              %td
-                -decorated_type_name = type_name.decorate
-                =decorated_type_name.format_rank
-                =CatalogFormatter.link_to_taxon(type_name.taxon) + decorated_type_name.compact_taxon_status + Detax[decorated_type_name.format_fixation_method]
-
-        -if protonym.etymology_taxt?
-          %tr
-            %td Etymology
-            %td=Detax[protonym.etymology_taxt]
-
-        -if protonym.primary_type_information_taxt?
-          %tr
-            %td Primary type information
-            %td=::Types::FormatTypeField[protonym.primary_type_information_taxt]
-        -if protonym.secondary_type_information_taxt?
-          %tr
-            %td Secondary type information
-            %td=::Types::FormatTypeField[protonym.secondary_type_information_taxt]
-        -if protonym.type_notes_taxt?
-          %tr
-            %td Type notes
-            %td=::Types::FormatTypeField[protonym.type_notes_taxt]
-        -if protonym.notes_taxt?
-          %tr
-            %td Notes
-            %td=Detax[protonym.notes_taxt]
-
-  =render 'protonyms/quick_edit_history_items', protonym: protonym
+=render 'protonyms/quick_edit_history_items', protonym: protonym

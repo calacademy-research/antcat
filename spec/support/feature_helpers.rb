@@ -12,10 +12,6 @@ module FeatureHelpers
   end
 
   # Click/press/follow.
-  def i_click_on_selector_for locator
-    find(selector_for(locator)).click
-  end
-
   def i_follow_the_first link_text
     first(:link, link_text, exact: true).click
   end
@@ -94,40 +90,6 @@ module FeatureHelpers
     reference = Reference.where("author_names_string_cache LIKE ?", "#{last_name}%").find_by!(year: year)
 
     set_record_picker reference.id, input_css_selector
-  end
-
-  # History items.
-  def the_history_should_be content
-    element = first('#history-items').first('.taxt-presenter')
-    expect(element).to have_content(content)
-  end
-
-  def the_history_item_field_should_be content
-    element = first('#history-items').find('textarea')
-    expect(element).to have_content(content)
-  end
-
-  def the_history_should_be_empty
-    expect(page).not_to have_css '#history-items .history-item'
-  end
-
-  # Selectors.
-  def selector_for locator
-    case locator
-    # Edit history items.
-    when 'the add history item button'
-      "*[data-testid=add-history-item-button]"
-    when 'the edit history item button'
-      '#history-items .history-item a.taxt-editor-edit-button'
-    when 'the cancel history item button'
-      '#history-items .history-item a.taxt-editor-cancel-button'
-    when 'the save history item button'
-      '#history-items .history-item a.taxt-editor-history-item-save-button'
-    when 'the delete history item button'
-      '#history-items .history-item a.taxt-editor-delete-button'
-    else
-      raise %(Can't find mapping from "#{locator}" to a selector)
-    end
   end
 
   # Misc.

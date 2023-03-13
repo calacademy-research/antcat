@@ -8,6 +8,6 @@ export default class extends Controller {
     event.stopPropagation()
 
     navigator.clipboard.writeText(this.stringToCopyValue)
-    AntCat.notifySuccess(`Copied "${this.stringToCopyValue}" to clipboard`) // eslint-disable-line no-undef
+    AntCat.notifySuccess(`Copied "${this.stringToCopyValue}" to clipboard`)
   }
 }

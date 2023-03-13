@@ -2,7 +2,8 @@
   .taxt-presenter
     %h6.font-bold=markdown_without_wrapping reference_section.title_taxt
     %h6.font-bold=Detax[reference_section.subtitle_taxt]
-    %a.taxt-editor-edit-button.btn-neutral Quick edit
+    %a.taxt-editor-edit-button.btn-neutral{data: { testid: 'reference-section-taxt-editor-edit-button' }} Quick edit
+    .mt-3
     =markdown_without_wrapping reference_section.references_taxt
 
   .taxt-editor-editor.hidden
@@ -14,6 +15,6 @@
 
     %br
 
-    %a.taxt-editor-reference-section-save-button.btn-saves.btn-md Save
-    %a.taxt-editor-cancel-button.btn-neutral.btn-md Cancel
-    %a.taxt-editor-delete-button.btn-warning.btn-md.ml-4 Delete
+    %a.taxt-editor-reference-section-save-button.btn-saves.btn-md{data: { testid: 'reference-section-taxt-editor-save-button' }} Save
+    %a.taxt-editor-cancel-button.btn-neutral.btn-md{data: { testid: 'reference-section-taxt-editor-cancel-button' }} Cancel
+    %a.taxt-editor-delete-button.btn-warning.btn-md.ml-4{data: { testid: 'reference-section-taxt-editor-delete-button' }} Delete

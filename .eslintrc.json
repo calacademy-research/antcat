@@ -11,6 +11,9 @@
     "sourceType": "module"
   },
   "parser": "@babel/eslint-parser",
+  "globals": {
+    "AntCat": "readonly"
+  },
   "rules": {
     "consistent-return": "off",
     "class-methods-use-this": "off",

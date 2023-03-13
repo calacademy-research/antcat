@@ -8,15 +8,14 @@ feature "Editing relational history items", as: :editor do
     create :any_reference, author_string: "Batiatus", year: 2004
 
     visit protonym_path(protonym)
-    the_history_should_be_empty
 
-    i_click_on_selector_for 'the add history item button'
+    find(:testid, 'add-history-item-button').click
     wait_for_taxt_editors_to_load
     select "Form descriptions (additional)", from: "history_item_type"
     fill_in "history_item_text_value", with: "w.q."
     fill_in "history_item_pages", with: "123"
     i_pick_from_the_reference_picker "Batiatus, 2004", "#history_item_reference_id"
-    click_button "Save"
+    expect { click_button "Save" }.to change { HistoryItem.count }.by(1)
     i_should_see "Successfully added history item"
     i_should_see "Batiatus, 2004: 123 (w.q.)"
   end
@@ -25,9 +24,8 @@ feature "Editing relational history items", as: :editor do
     protonym = create :protonym
 
     visit protonym_path(protonym)
-    the_history_should_be_empty
 
-    i_click_on_selector_for 'the add history item button'
+    find(:testid, 'add-history-item-button').click
     select "Form descriptions (additional)", from: "history_item_type"
     fill_in "taxt", with: "Pizza"
 
@@ -65,10 +63,10 @@ feature "Editing relational history items", as: :editor do
     i_should_see "Batiatus, 2004a: 77-78 (q.)"
 
     wait_for_taxt_editors_to_load
-    i_click_on_selector_for 'the edit history item button'
+    find(:testid, 'history-item-taxt-editor-edit-button').click
     fill_in "text_value", with: "w."
     fill_in "pages", with: "99"
-    i_click_on_selector_for 'the save history item button'
+    find(:testid, 'history-item-taxt-editor-save-button').click
     i_reload_the_page
     i_should_see "Batiatus, 2004a: 99 (w.)"
   end

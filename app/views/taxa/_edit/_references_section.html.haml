@@ -1,5 +1,5 @@
 -if taxon.type.in?(Rank::AntCatSpecific::CAN_HAVE_REFERENCE_SECTIONS_TYPES)
-  #references-section.callout.mb-8
+  .callout.mb-8
     %h6
       Reference sections
       .float-right
@@ -8,9 +8,7 @@
           =link_to "Reorder", taxon_reorder_reference_sections_path(taxon), class: "btn-default"
 
     -if taxon.reference_sections.present?
-      #reference-sections.text-sm
-        -taxon.reference_sections.each do |reference_section|
-          .reference-section
-            =render 'taxt_editors/reference_section_taxt_editor', reference_section: reference_section
+      -taxon.reference_sections.each do |reference_section|
+        =render 'taxt_editors/reference_section_taxt_editor', reference_section: reference_section
     -else
       (none)

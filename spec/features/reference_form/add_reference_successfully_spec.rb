@@ -16,7 +16,7 @@ feature "Add reference", as: :helper do
     fill_in "reference_journal_name", with: "Ant Journal"
     fill_in "reference_series_volume_issue", with: "1"
     fill_in "reference_pagination", with: "2"
-    click_button "Save"
+    expect { click_button "Save" }.to change { ArticleReference.count }.by(1)
     i_should_see "Ward, B.L.; Bolton, B. 1981f. A reference title. Ant Journal 1:2"
     i_should_see "Ward B.L. Bolton B. 1981a"
   end
@@ -28,7 +28,7 @@ feature "Add reference", as: :helper do
     i_select_the_reference_tab "#book-tab"
     fill_in "reference_publisher_string", with: "New York: Houghton Mifflin"
     fill_in "reference_pagination", with: "32 pp."
-    click_button "Save"
+    expect { click_button "Save" }.to change { BookReference.count }.by(1)
     i_should_see "Ward, B.L.; Bolton, B. 1981. A reference title. New York: Houghton Mifflin, 32 pp."
   end
 
@@ -42,7 +42,7 @@ feature "Add reference", as: :helper do
     i_select_the_reference_tab "#nested-tab"
     fill_in "reference_pagination", with: "Pp. 32-33 in:"
     fill_in "reference_nesting_reference_id", with: nesting_reference.id
-    click_button "Save"
+    expect { click_button "Save" }.to change { NestedReference.count }.by(1)
     i_should_see "Ward, B.L.; Bolton, B. 1981. A reference title. Pp. 32-33 in: Ward, P.S. 2010. Ants Nests. Acta 4:9"
   end
 end

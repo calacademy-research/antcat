@@ -3,22 +3,6 @@
 require 'rails_helper'
 
 feature "Reference sections" do
-  def the_edit_reference_section_button
-    find("#references-section a.taxt-editor-edit-button")
-  end
-
-  def the_cancel_reference_section_button
-    find("#references-section a.taxt-editor-cancel-button")
-  end
-
-  def the_save_reference_section_button
-    find('#references-section a.taxt-editor-reference-section-save-button')
-  end
-
-  def the_delete_reference_section_button
-    find('#references-section a.taxt-editor-delete-button')
-  end
-
   feature "Browse reference sections", as: :user do
     scenario "Filtering reference sections by search query" do
       create :reference_section, references_taxt: "typo of Forel"
@@ -41,12 +25,8 @@ feature "Reference sections" do
   end
 
   feature "Editing references sections", as: :editor do
-    def the_reference_section_should_be_empty
-      expect(page).not_to have_css '#reference-sections .reference_section'
-    end
-
     def the_reference_section_should_be content
-      element = first('#references-section').find('.taxt-presenter')
+      element = first('.taxt-presenter')
       expect(element).to have_content(content)
     end
 
@@ -54,12 +34,11 @@ feature "Reference sections" do
       taxon = create :genus, name_string: "Atta"
 
       visit edit_taxon_path(taxon)
-      the_reference_section_should_be_empty
 
       find(:testid, "add-reference-section-button").click
       fill_in "references_taxt", with: "New reference"
       fill_in "edit_summary", with: "added new stuff"
-      click_button "Save"
+      expect { click_button "Save" }.to change { ReferenceSection.count }.by(1)
       the_reference_section_should_be "New reference"
 
       there_should_be_an_activity "Archibald added the reference section ##{ReferenceSection.last.id} belonging to Atta", edit_summary: "added new stuff"
@@ -73,12 +52,12 @@ feature "Reference sections" do
       the_reference_section_should_be "Original reference"
 
       wait_for_taxt_editors_to_load
-      the_edit_reference_section_button.click
+      find(:testid, 'reference-section-taxt-editor-edit-button').click
       fill_in "references_taxt", with: "(none)"
-      within "#references-section" do
+      within ".taxt-editor" do
         fill_in "edit_summary", with: "fix typo"
       end
-      the_save_reference_section_button.click
+      find(:testid, 'reference-section-taxt-editor-save-button').click
       i_should_not_see "Original reference"
       the_reference_section_should_be "(none)"
 
@@ -104,9 +83,9 @@ feature "Reference sections" do
 
       visit edit_taxon_path(taxon)
       wait_for_taxt_editors_to_load
-      the_edit_reference_section_button.click
+      find(:testid, 'reference-section-taxt-editor-edit-button').click
       fill_in "references_taxt", with: "(none)"
-      the_cancel_reference_section_button.click
+      find(:testid, 'reference-section-taxt-editor-cancel-button').click
       the_reference_section_should_be "Original reference"
     end
 
@@ -116,12 +95,15 @@ feature "Reference sections" do
 
       visit edit_taxon_path(taxon)
       wait_for_taxt_editors_to_load
-      the_edit_reference_section_button.click
+      find(:testid, 'reference-section-taxt-editor-edit-button').click
+      within ".taxt-editor" do
+        fill_in "edit_summary", with: "delete duplicate"
+      end
       i_will_confirm_on_the_next_step
-      the_delete_reference_section_button.click
-      the_reference_section_should_be_empty
+      expect { find(:testid, 'reference-section-taxt-editor-delete-button').click }.to change { ReferenceSection.count }.by(-1)
 
-      there_should_be_an_activity "Archibald deleted the reference section ##{reference_section.id} belonging to Dolichoderinae"
+      there_should_be_an_activity "Archibald deleted the reference section ##{reference_section.id} belonging to Dolichoderinae",
+        edit_summary: "delete duplicate"
     end
   end
 end

@@ -25,16 +25,25 @@ feature "History items" do
   end
 
   feature "Editing history items", as: :editor do
+    def the_history_should_be content
+      element = first('.taxt-presenter')
+      expect(element).to have_content(content)
+    end
+
+    def the_history_item_field_should_be content
+      element = first('.taxt-editor').find('textarea')
+      expect(element).to have_content(content)
+    end
+
     scenario "Adding a history item (with edit summary)" do
       protonym = create :protonym, :genus_group, protonym_name_string: "Atta"
 
       visit protonym_path(protonym)
-      the_history_should_be_empty
 
-      i_click_on_selector_for 'the add history item button'
+      find(:testid, 'add-history-item-button').click
       fill_in "taxt", with: "Abc"
       fill_in "edit_summary", with: "added new stuff"
-      click_button "Save"
+      expect { click_button "Save" }.to change { HistoryItem.count }.by(1)
       the_history_should_be "Abc"
 
       there_should_be_an_activity "Archibald added the history item ##{HistoryItem.last.id} belonging to Atta", edit_summary: "added new stuff"
@@ -44,9 +53,8 @@ feature "History items" do
       protonym = create :protonym
 
       visit protonym_path(protonym)
-      the_history_should_be_empty
 
-      i_click_on_selector_for 'the add history item button'
+      find(:testid, 'add-history-item-button').click
       click_button "Save"
       i_should_see "Taxt can't be blank"
     end
@@ -59,18 +67,18 @@ feature "History items" do
       the_history_should_be "Antcatinae as family"
 
       wait_for_taxt_editors_to_load
-      i_click_on_selector_for 'the edit history item button'
+      find(:testid, 'history-item-taxt-editor-edit-button').click
       fill_in "taxt", with: "(none)"
-      within "#history-items" do
+      within ".taxt-editor" do
         fill_in "edit_summary", with: "fix typo"
       end
-      i_click_on_selector_for 'the save history item button'
+      find(:testid, 'history-item-taxt-editor-save-button').click
       i_reload_the_page
       i_should_not_see "Antcatinae as family"
       the_history_should_be "(none)"
 
       wait_for_taxt_editors_to_load
-      i_click_on_selector_for 'the edit history item button'
+      find(:testid, 'history-item-taxt-editor-edit-button').click
       the_history_item_field_should_be "(none)"
 
       there_should_be_an_activity "Archibald edited the history item ##{history_item.id} belonging to Antcatinae", edit_summary: "fix typo"
@@ -95,12 +103,12 @@ feature "History items" do
 
       visit protonym_path(protonym)
       wait_for_taxt_editors_to_load
-      i_click_on_selector_for 'the edit history item button'
+      find(:testid, 'history-item-taxt-editor-edit-button').click
       fill_in "taxt", with: "(none)"
-      i_click_on_selector_for 'the cancel history item button'
+      find(:testid, 'history-item-taxt-editor-cancel-button').click
       the_history_should_be "Antcatinae as family"
 
-      i_click_on_selector_for 'the edit history item button'
+      find(:testid, 'history-item-taxt-editor-edit-button').click
       the_history_item_field_should_be "Antcatinae as family"
     end
 
@@ -112,15 +120,14 @@ feature "History items" do
       i_should_see "Antcatinae as family"
 
       wait_for_taxt_editors_to_load
-      i_click_on_selector_for 'the edit history item button'
+      find(:testid, 'history-item-taxt-editor-edit-button').click
+      fill_in "edit_summary", with: "delete duplicate"
       i_will_confirm_on_the_next_step
-      i_click_on_selector_for 'the delete history item button'
+      expect { find(:testid, 'history-item-taxt-editor-delete-button').click }.to change { HistoryItem.count }.by(-1)
       i_should_be_on protonym_path(protonym)
 
-      i_reload_the_page
-      the_history_should_be_empty
-
-      there_should_be_an_activity "Archibald deleted the history item ##{history_item.id} belonging to Antcatinae"
+      there_should_be_an_activity "Archibald deleted the history item ##{history_item.id} belonging to Antcatinae",
+        edit_summary: "delete duplicate"
     end
   end
 end
