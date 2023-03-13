@@ -150,18 +150,7 @@
   }
 
   hr {
-    @apply border border-b-gray-300;
-    clear: both;
-    max-width: 75rem;
-    height: 0;
-    margin: 1.25rem auto;
-    border-top: 0;
-    border-right: 0;
-    border-left: 0;
-  }
-
-  hr.discreet {
-    width: 90%;
+    @apply my-5 border border-b-gray-300;
   }
 
   ul {
