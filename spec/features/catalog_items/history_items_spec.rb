@@ -59,18 +59,18 @@ feature "History items" do
       the_history_should_be "Antcatinae as family"
 
       wait_for_taxt_editors_to_load
-      i_click_on_selector_for 'the edit history item button'
+      find(:testid, 'history-item-taxt-editor-edit-button').click
       fill_in "taxt", with: "(none)"
       within "#history-items" do
         fill_in "edit_summary", with: "fix typo"
       end
-      i_click_on_selector_for 'the save history item button'
+      find(:testid, 'history-item-taxt-editor-save-button').click
       i_reload_the_page
       i_should_not_see "Antcatinae as family"
       the_history_should_be "(none)"
 
       wait_for_taxt_editors_to_load
-      i_click_on_selector_for 'the edit history item button'
+      find(:testid, 'history-item-taxt-editor-edit-button').click
       the_history_item_field_should_be "(none)"
 
       there_should_be_an_activity "Archibald edited the history item ##{history_item.id} belonging to Antcatinae", edit_summary: "fix typo"
@@ -95,12 +95,12 @@ feature "History items" do
 
       visit protonym_path(protonym)
       wait_for_taxt_editors_to_load
-      i_click_on_selector_for 'the edit history item button'
+      find(:testid, 'history-item-taxt-editor-edit-button').click
       fill_in "taxt", with: "(none)"
-      i_click_on_selector_for 'the cancel history item button'
+      find(:testid, 'history-item-taxt-editor-cancel-button').click
       the_history_should_be "Antcatinae as family"
 
-      i_click_on_selector_for 'the edit history item button'
+      find(:testid, 'history-item-taxt-editor-edit-button').click
       the_history_item_field_should_be "Antcatinae as family"
     end
 
@@ -112,9 +112,9 @@ feature "History items" do
       i_should_see "Antcatinae as family"
 
       wait_for_taxt_editors_to_load
-      i_click_on_selector_for 'the edit history item button'
+      find(:testid, 'history-item-taxt-editor-edit-button').click
       i_will_confirm_on_the_next_step
-      i_click_on_selector_for 'the delete history item button'
+      find(:testid, 'history-item-taxt-editor-delete-button').click
       i_should_be_on protonym_path(protonym)
 
       i_reload_the_page

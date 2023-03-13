@@ -65,10 +65,10 @@ feature "Editing relational history items", as: :editor do
     i_should_see "Batiatus, 2004a: 77-78 (q.)"
 
     wait_for_taxt_editors_to_load
-    i_click_on_selector_for 'the edit history item button'
+    find(:testid, 'history-item-taxt-editor-edit-button').click
     fill_in "text_value", with: "w."
     fill_in "pages", with: "99"
-    i_click_on_selector_for 'the save history item button'
+    find(:testid, 'history-item-taxt-editor-save-button').click
     i_reload_the_page
     i_should_see "Batiatus, 2004a: 99 (w.)"
   end

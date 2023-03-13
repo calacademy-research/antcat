@@ -114,17 +114,8 @@ module FeatureHelpers
   # Selectors.
   def selector_for locator
     case locator
-    # Edit history items.
     when 'the add history item button'
       "*[data-testid=add-history-item-button]"
-    when 'the edit history item button'
-      '#history-items .history-item a.taxt-editor-edit-button'
-    when 'the cancel history item button'
-      '#history-items .history-item a.taxt-editor-cancel-button'
-    when 'the save history item button'
-      '#history-items .history-item a.taxt-editor-history-item-save-button'
-    when 'the delete history item button'
-      '#history-items .history-item a.taxt-editor-delete-button'
     else
       raise %(Can't find mapping from "#{locator}" to a selector)
     end

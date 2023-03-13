@@ -3,22 +3,6 @@
 require 'rails_helper'
 
 feature "Reference sections" do
-  def the_edit_reference_section_button
-    find("#references-section a.taxt-editor-edit-button")
-  end
-
-  def the_cancel_reference_section_button
-    find("#references-section a.taxt-editor-cancel-button")
-  end
-
-  def the_save_reference_section_button
-    find('#references-section a.taxt-editor-reference-section-save-button')
-  end
-
-  def the_delete_reference_section_button
-    find('#references-section a.taxt-editor-delete-button')
-  end
-
   feature "Browse reference sections", as: :user do
     scenario "Filtering reference sections by search query" do
       create :reference_section, references_taxt: "typo of Forel"
@@ -73,12 +57,12 @@ feature "Reference sections" do
       the_reference_section_should_be "Original reference"
 
       wait_for_taxt_editors_to_load
-      the_edit_reference_section_button.click
+      find(:testid, 'reference-section-taxt-editor-edit-button').click
       fill_in "references_taxt", with: "(none)"
       within "#references-section" do
         fill_in "edit_summary", with: "fix typo"
       end
-      the_save_reference_section_button.click
+      find(:testid, 'reference-section-taxt-editor-save-button').click
       i_should_not_see "Original reference"
       the_reference_section_should_be "(none)"
 
@@ -104,9 +88,9 @@ feature "Reference sections" do
 
       visit edit_taxon_path(taxon)
       wait_for_taxt_editors_to_load
-      the_edit_reference_section_button.click
+      find(:testid, 'reference-section-taxt-editor-edit-button').click
       fill_in "references_taxt", with: "(none)"
-      the_cancel_reference_section_button.click
+      find(:testid, 'reference-section-taxt-editor-cancel-button').click
       the_reference_section_should_be "Original reference"
     end
 
@@ -116,9 +100,9 @@ feature "Reference sections" do
 
       visit edit_taxon_path(taxon)
       wait_for_taxt_editors_to_load
-      the_edit_reference_section_button.click
+      find(:testid, 'reference-section-taxt-editor-edit-button').click
       i_will_confirm_on_the_next_step
-      the_delete_reference_section_button.click
+      find(:testid, 'reference-section-taxt-editor-delete-button').click
       the_reference_section_should_be_empty
 
       there_should_be_an_activity "Archibald deleted the reference section ##{reference_section.id} belonging to Dolichoderinae"
