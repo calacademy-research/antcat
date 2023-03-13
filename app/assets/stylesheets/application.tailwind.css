@@ -293,6 +293,9 @@
 
   table.table-unstriped tbody tr {
     @apply border-b border-gray-100;
+
+    /* TODO: Fix for unstriped tables that are nested inside striped tables. */
+    @apply even:bg-transparent;
   }
 
   td.grow-tw-conflict {
