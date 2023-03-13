@@ -10,7 +10,7 @@ feature "Editing relational history items", as: :editor do
     visit protonym_path(protonym)
     the_history_should_be_empty
 
-    i_click_on_selector_for 'the add history item button'
+    find(:testid, 'add-history-item-button').click
     wait_for_taxt_editors_to_load
     select "Form descriptions (additional)", from: "history_item_type"
     fill_in "history_item_text_value", with: "w.q."
@@ -27,7 +27,7 @@ feature "Editing relational history items", as: :editor do
     visit protonym_path(protonym)
     the_history_should_be_empty
 
-    i_click_on_selector_for 'the add history item button'
+    find(:testid, 'add-history-item-button').click
     select "Form descriptions (additional)", from: "history_item_type"
     fill_in "taxt", with: "Pizza"
 

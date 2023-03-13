@@ -4,7 +4,7 @@ require 'rails_helper'
 
 feature "Compare revisions", skip_ci: true, as: :editor, versioning: true do
   def i_add_a_history_item content
-    i_click_on_selector_for 'the add history item button'
+    find(:testid, 'add-history-item-button').click
     fill_in "taxt", with: content
     click_button "Save"
   end

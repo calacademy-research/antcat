@@ -12,10 +12,6 @@ module FeatureHelpers
   end
 
   # Click/press/follow.
-  def i_click_on_selector_for locator
-    find(selector_for(locator)).click
-  end
-
   def i_follow_the_first link_text
     first(:link, link_text, exact: true).click
   end
@@ -109,16 +105,6 @@ module FeatureHelpers
 
   def the_history_should_be_empty
     expect(page).not_to have_css '#history-items .history-item'
-  end
-
-  # Selectors.
-  def selector_for locator
-    case locator
-    when 'the add history item button'
-      "*[data-testid=add-history-item-button]"
-    else
-      raise %(Can't find mapping from "#{locator}" to a selector)
-    end
   end
 
   # Misc.

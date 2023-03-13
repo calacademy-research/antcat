@@ -31,7 +31,7 @@ feature "History items" do
       visit protonym_path(protonym)
       the_history_should_be_empty
 
-      i_click_on_selector_for 'the add history item button'
+      find(:testid, 'add-history-item-button').click
       fill_in "taxt", with: "Abc"
       fill_in "edit_summary", with: "added new stuff"
       click_button "Save"
@@ -46,7 +46,7 @@ feature "History items" do
       visit protonym_path(protonym)
       the_history_should_be_empty
 
-      i_click_on_selector_for 'the add history item button'
+      find(:testid, 'add-history-item-button').click
       click_button "Save"
       i_should_see "Taxt can't be blank"
     end
