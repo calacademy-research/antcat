@@ -43,7 +43,7 @@ feature "Reference sections" do
       find(:testid, "add-reference-section-button").click
       fill_in "references_taxt", with: "New reference"
       fill_in "edit_summary", with: "added new stuff"
-      click_button "Save"
+      expect { click_button "Save" }.to change { ReferenceSection.count }.by(1)
       the_reference_section_should_be "New reference"
 
       there_should_be_an_activity "Archibald added the reference section ##{ReferenceSection.last.id} belonging to Atta", edit_summary: "added new stuff"
@@ -101,11 +101,15 @@ feature "Reference sections" do
       visit edit_taxon_path(taxon)
       wait_for_taxt_editors_to_load
       find(:testid, 'reference-section-taxt-editor-edit-button').click
+      within ".taxt-editor" do
+        fill_in "edit_summary", with: "delete duplicate"
+      end
       i_will_confirm_on_the_next_step
-      find(:testid, 'reference-section-taxt-editor-delete-button').click
+      expect { find(:testid, 'reference-section-taxt-editor-delete-button').click }.to change { ReferenceSection.count }.by(-1)
       the_reference_section_should_be_empty
 
-      there_should_be_an_activity "Archibald deleted the reference section ##{reference_section.id} belonging to Dolichoderinae"
+      there_should_be_an_activity "Archibald deleted the reference section ##{reference_section.id} belonging to Dolichoderinae",
+        edit_summary: "delete duplicate"
     end
   end
 end

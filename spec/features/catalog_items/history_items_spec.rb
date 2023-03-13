@@ -34,7 +34,7 @@ feature "History items" do
       find(:testid, 'add-history-item-button').click
       fill_in "taxt", with: "Abc"
       fill_in "edit_summary", with: "added new stuff"
-      click_button "Save"
+      expect { click_button "Save" }.to change { HistoryItem.count }.by(1)
       the_history_should_be "Abc"
 
       there_should_be_an_activity "Archibald added the history item ##{HistoryItem.last.id} belonging to Atta", edit_summary: "added new stuff"
@@ -113,14 +113,16 @@ feature "History items" do
 
       wait_for_taxt_editors_to_load
       find(:testid, 'history-item-taxt-editor-edit-button').click
+      fill_in "edit_summary", with: "delete duplicate"
       i_will_confirm_on_the_next_step
-      find(:testid, 'history-item-taxt-editor-delete-button').click
+      expect { find(:testid, 'history-item-taxt-editor-delete-button').click }.to change { HistoryItem.count }.by(-1)
       i_should_be_on protonym_path(protonym)
 
       i_reload_the_page
       the_history_should_be_empty
 
-      there_should_be_an_activity "Archibald deleted the history item ##{history_item.id} belonging to Antcatinae"
+      there_should_be_an_activity "Archibald deleted the history item ##{history_item.id} belonging to Antcatinae",
+        edit_summary: "delete duplicate"
     end
   end
 end

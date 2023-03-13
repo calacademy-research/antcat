@@ -16,7 +16,7 @@ feature "Editing relational history items", as: :editor do
     fill_in "history_item_text_value", with: "w.q."
     fill_in "history_item_pages", with: "123"
     i_pick_from_the_reference_picker "Batiatus, 2004", "#history_item_reference_id"
-    click_button "Save"
+    expect { click_button "Save" }.to change { HistoryItem.count }.by(1)
     i_should_see "Successfully added history item"
     i_should_see "Batiatus, 2004: 123 (w.q.)"
   end
