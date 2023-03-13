@@ -97,16 +97,12 @@
                 %ul.compact-list.no-bullet.mb-8.hidden{data: { toggler_name: "grouped-#{grouped_item.group_key.join('_')}" }}
                   -grouped_item.items.each do |history_item|
                     %li.pl-8
-                      =history_item.decorate.rank_specific_badge if history_item.rank?
-
                       -if user_is_at_least_helper?
                         =render 'taxt_editors/history_item_taxt_editor', history_item: history_item
                       -else
                         =Detax[history_item.to_taxt]
               -else
                 -history_item = grouped_item.items.first
-                =history_item.decorate.rank_specific_badge if history_item.rank?
-
                 -if user_is_at_least_helper?
                   =render 'taxt_editors/history_item_taxt_editor', history_item: history_item
                 -else
