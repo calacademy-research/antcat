@@ -276,15 +276,12 @@
     padding: 0.5rem 0.625rem 0.625rem;
   }
 
-  table.table-striped tbody tr {
+  table.table-striped > tbody > tr {
     @apply even:bg-gray-100;
   }
 
-  table.table-unstriped tbody tr {
+  table.table-unstriped > tbody > tr {
     @apply border-b border-gray-100;
-
-    /* TODO: Fix for unstriped tables that are nested inside striped tables. */
-    @apply even:bg-transparent;
   }
 
   td.grow-tw-conflict {
