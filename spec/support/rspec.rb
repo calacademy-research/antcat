@@ -75,6 +75,18 @@ RSpec.configure do |config|
   config.before(:each, type: :controller, &ensure_has_as_tag)
   config.before(:each, type: :feature, &ensure_has_as_tag)
 
+  # Use to enable CSRF checking in test (disabled by default).
+  config.around(:each, :protect_from_forgery) do |example|
+    original_forgery_protection = ActionController::Base.allow_forgery_protection
+    ActionController::Base.allow_forgery_protection = true
+
+    begin
+      example.run
+    ensure
+      ActionController::Base.allow_forgery_protection = original_forgery_protection
+    end
+  end
+
   config.after do
     Config.reload!
   end

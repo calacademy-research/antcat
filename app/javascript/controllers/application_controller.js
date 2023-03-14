@@ -7,8 +7,8 @@ export default class extends Controller {
     if (element) {
       return element.getAttribute("content")
     } else {
-      // TODO: Hack because CSRF is disabled in the test env. Figure out how to best handle.
-      return "???"
+      // This should only happen in the test env. Use the RSpec meta tag `:protect_from_forgery` to enable CSRF in specs.
+      throw new Error("cannot read csrf-token")
     }
   }
 }
