@@ -26,12 +26,12 @@ feature "History items" do
 
   feature "Editing history items", as: :editor do
     def the_history_should_be content
-      element = first('.taxt-presenter')
+      element = first('[data-taxt-editor-target=presenter]')
       expect(element).to have_content(content)
     end
 
     def the_history_item_field_should_be content
-      element = first('.taxt-editor').find('textarea')
+      element = first('[data-taxt-editor-target=editor]').find('textarea')
       expect(element).to have_content(content)
     end
 
@@ -69,7 +69,7 @@ feature "History items" do
       wait_for_taxt_editors_to_load
       find(:testid, 'history-item-taxt-editor-edit-button').click
       fill_in "taxt", with: "(none)"
-      within ".taxt-editor" do
+      within "[data-taxt-editor-target=editor]" do
         fill_in "edit_summary", with: "fix typo"
       end
       find(:testid, 'history-item-taxt-editor-save-button').click

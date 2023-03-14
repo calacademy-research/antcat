@@ -26,7 +26,7 @@ feature "Reference sections" do
 
   feature "Editing references sections", as: :editor do
     def the_reference_section_should_be content
-      element = first('.taxt-presenter')
+      element = first('[data-taxt-editor-target=presenter]')
       expect(element).to have_content(content)
     end
 
@@ -54,7 +54,7 @@ feature "Reference sections" do
       wait_for_taxt_editors_to_load
       find(:testid, 'reference-section-taxt-editor-edit-button').click
       fill_in "references_taxt", with: "(none)"
-      within ".taxt-editor" do
+      within "[data-taxt-editor-target=editor]" do
         fill_in "edit_summary", with: "fix typo"
       end
       find(:testid, 'reference-section-taxt-editor-save-button').click
@@ -96,7 +96,7 @@ feature "Reference sections" do
       visit edit_taxon_path(taxon)
       wait_for_taxt_editors_to_load
       find(:testid, 'reference-section-taxt-editor-edit-button').click
-      within ".taxt-editor" do
+      within "[data-taxt-editor-target=editor]" do
         fill_in "edit_summary", with: "delete duplicate"
       end
       i_will_confirm_on_the_next_step

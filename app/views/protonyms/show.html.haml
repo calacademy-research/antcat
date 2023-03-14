@@ -150,7 +150,7 @@
 
 -if current_user
   -content_for :javascripts do
-    =javascript_include_tag 'markdown_and_friends', 'taxt_editor'
+    =javascript_include_tag 'markdown_and_friends'
   =render "shared/default_reference"
   =render 'protonyms/quick_edit_history_items', protonym: @protonym
 

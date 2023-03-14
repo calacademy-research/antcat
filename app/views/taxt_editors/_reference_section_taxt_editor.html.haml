@@ -1,17 +1,17 @@
-.taxt-editor.border.p-2{"data-controller" => "taxt-editor", "data-taxt-editor-url-value" => reference_section_path(reference_section)}
-  .taxt-presenter{"data-taxt-editor-target" => "presenter"}
+.border.p-2{"data-controller" => "taxt-editor", "data-taxt-editor-url-value" => reference_section_path(reference_section)}
+  %div{"data-taxt-editor-target" => "presenter"}
     %h6.font-bold=markdown_without_wrapping reference_section.title_taxt
     %h6.font-bold=Detax[reference_section.subtitle_taxt]
-    %a.taxt-editor-edit-button.btn-neutral{data: { testid: 'reference-section-taxt-editor-edit-button' }} Quick edit
+    %button.btn-neutral{"data-action" => 'click->taxt-editor#enterEditMode', data: { testid: 'reference-section-taxt-editor-edit-button' }} Quick edit
     .mt-3
     =markdown_without_wrapping reference_section.references_taxt
 
-  .taxt-editor-editor.hidden{"data-taxt-editor-target" => "editor"}
+  .hidden{"data-taxt-editor-target" => "editor"}
     =text_area_tag :title_taxt, reference_section.title_taxt, rows: 1, data: { has_linkables: true, previewable: true, previewable_title: "Title", use_extras: true }
     =text_area_tag :subtitle_taxt, reference_section.subtitle_taxt, rows: 1, data: { has_linkables: true, previewable: true, previewable_title: "Subtitle", use_extras: true }
     =text_area_tag :references_taxt, reference_section.references_taxt, rows: 5, data: { has_linkables: true, previewable: true, previewable_title: "References", use_extras: true }
 
-    =text_field_tag :edit_summary, nil, placeholder: "Edit summary (optional)", maxlength: Activity::EDIT_SUMMARY_MAX_LENGTH, class: 'edit-summary-js-hook !w-2/3 mb-4', "data-taxt-editor-target" => "editSummaryInput"
+    =text_field_tag :edit_summary, nil, placeholder: "Edit summary (optional)", maxlength: Activity::EDIT_SUMMARY_MAX_LENGTH, class: '!w-2/3 mb-4', "data-taxt-editor-target" => "editSummaryInput"
 
     %br
 

@@ -11,7 +11,7 @@ class MarkdownController < ApplicationController
       if params[:format_type_fields] == 'true'
         Types::FormatTypeField
       else
-        Markdowns::Render
+        Markdowns::RenderWithoutWrappingP
       end
     end
 

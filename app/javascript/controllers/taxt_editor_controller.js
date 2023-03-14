@@ -1,5 +1,7 @@
 import ApplicationController from "./application_controller"
 
+// TODO: Cleanup/DRY.
+
 export default class extends ApplicationController {
   static targets = [
     "editor",
@@ -15,6 +17,8 @@ export default class extends ApplicationController {
 
   connect() {
     this.container = this.element
+
+    document.body.setAttribute('data-test-taxt-editors-loaded', "true") // HACK.
   }
 
   saveHistoryItem() {
@@ -51,7 +55,6 @@ export default class extends ApplicationController {
         AntCat.notifySuccess("Updated history item")
         this.container.outerHTML = json.content
         window.setupLinkables()
-        window.setupTaxtEditors()
       }).
       catch((error) => { alert(error) })
   }
@@ -85,7 +88,6 @@ export default class extends ApplicationController {
         AntCat.notifySuccess("Updated reference section")
         this.container.outerHTML = json.content
         window.setupLinkables()
-        window.setupTaxtEditors()
       }).
       catch((error) => { alert(error) })
   }
@@ -156,6 +158,23 @@ export default class extends ApplicationController {
         this.exitEditMode()
       }).
       catch((error) => { alert(error) })
+  }
+
+  enterEditMode(event) {
+    event.preventDefault()
+
+    this.editorTarget.classList.remove("hidden")
+    this.presenterTarget.classList.add("hidden")
+
+    const textareas = this.container.querySelectorAll("textarea")
+    textareas.forEach((textarea) => {
+      // Render preview.
+      // TODO: Remove jQuery.
+      $(textarea).renderUnrenderedPreviewableHack() // eslint-disable-line no-undef
+
+      // Resize textareas according to content.
+      textarea.style.height = `${textarea.scrollHeight}px`
+    })
   }
 
   exitEditMode() {
