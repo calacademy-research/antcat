@@ -1,15 +1,15 @@
 -format_type_fields ||= false
 
-.taxt-editor
-  .taxt-presenter
+.taxt-editor{"data-controller" => "taxt-editor"}
+  .taxt-presenter{"data-taxt-editor-target" => "presenter"}
     %a.float-left.taxt-editor-edit-button.btn-neutral.m-2 Edit
-    .taxt-editor-content.border.border-gray-300.p-1{class: "min-h-[2.5rem]"}
+    .border.border-gray-300.p-1{"data-taxt-editor-target" => "content", class: "min-h-[2.5rem]"}
       -if format_type_fields
         =::Types::FormatTypeField[content]
       -else
         =Detax[content]
 
-  .taxt-editor-editor.hidden{data: { visible_in_test_env: true }}
-    =text_area_tag name, content, rows: 5, data: { has_linkables: true, previewable: true, use_extras: true, format_type_fields: format_type_fields }
+  .taxt-editor-editor.hidden{"data-taxt-editor-target" => "editor", data: { visible_in_test_env: true }}
+    =text_area_tag name, content, rows: 5, data: { has_linkables: true, previewable: true, use_extras: true, format_type_fields: format_type_fields }, "data-taxt-editor-target" => "textarea"
 
-    %a.taxt-editor-ok-button.btn-saves.btn-md OK
+    %button.btn-saves.btn-md{"data-action" => 'click->taxt-editor#ok'} OK

@@ -6,11 +6,9 @@ $ ->
 EDIT_BUTTONS                    = '.taxt-editor-edit-button'
 HISTORY_ITEM_SAVE_BUTTONS       = '.taxt-editor-history-item-save-button'
 REFERENCE_SECTION_SAVE_BUTTONS  = '.taxt-editor-reference-section-save-button'
-OK_BUTTONS                      = '.taxt-editor-ok-button'
 
 TAXT_EDITOR_EDITOR              = '.taxt-editor-editor'
 TAXT_PRESENTER                  = '.taxt-presenter'
-TAXT_EDITOR_CONTENT             = '.taxt-editor-content'
 
 EDIT_SUMMARY_FIELD              = '.edit-summary-js-hook'
 
@@ -20,7 +18,6 @@ window.setupTaxtEditors = ->
   setupEditButtons()
   setupSaveHistoryItemButtons()
   setupSaveReferenceSectionButtons()
-  setupOkButtons()
 
   document.body.setAttribute('data-test-taxt-editors-loaded', "true") # HACK.
 
@@ -28,7 +25,6 @@ unbindAllButtons = ->
   $(EDIT_BUTTONS).unbind('click')
   $(HISTORY_ITEM_SAVE_BUTTONS).unbind('click')
   $(REFERENCE_SECTION_SAVE_BUTTONS).unbind('click')
-  $(OK_BUTTONS).unbind('click')
 
 setupEditButtons = ->
   $(EDIT_BUTTONS).click (event) ->
@@ -48,28 +44,6 @@ setupEditButtons = ->
     textareas.each (index, element) -> $(element).height $(element)[0].scrollHeight
 
     taxtEditor.find(TAXT_PRESENTER).get(0).classList.add("hidden")
-
-setupOkButtons = ->
-  $(OK_BUTTONS).click (event) ->
-    event.preventDefault()
-
-    taxtEditor = $(this).parent().parent()
-    toParse = taxtEditor.find('textarea').get(0).value
-
-    $.ajax
-      url: "/markdown/preview"
-      type: 'POST'
-      dataType: 'html'
-      data: text: toParse
-      success: (html) ->
-        taxtEditor.find(TAXT_EDITOR_CONTENT).get(0).innerHTML = html
-        taxtEditor.find(TAXT_EDITOR_EDITOR).get(0).classList.add("hidden")
-
-        taxtPresenter = taxtEditor.find(TAXT_PRESENTER)
-        taxtPresenter.get(0).classList.remove("hidden")
-
-        window.setupTaxtEditors()
-      error: -> alert 'error :('
 
 setupSaveHistoryItemButtons = ->
   $(HISTORY_ITEM_SAVE_BUTTONS).click (event) ->
