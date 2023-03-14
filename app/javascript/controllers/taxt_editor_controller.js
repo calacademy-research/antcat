@@ -17,6 +17,45 @@ export default class extends ApplicationController {
     this.container = this.element
   }
 
+  saveHistoryItem() {
+    const jsonData = {
+      history_item: {
+        taxt:               this.container.querySelector('textarea#taxt')?.value,
+        subtype:            this.container.querySelector('select[name=subtype]')?.value,
+        picked_value:       this.container.querySelector('select[name=picked_value]')?.value,
+        text_value:         this.container.querySelector('input[name=text_value]')?.value,
+        object_protonym_id: this.container.querySelector('[name=object_protonym_id]')?.value,
+        object_taxon_id:    this.container.querySelector('[name=object_taxon_id]')?.value,
+        reference_id:       this.container.querySelector('[name=reference_id]')?.value,
+        pages:              this.container.querySelector('input[name=pages]')?.value,
+      },
+      edit_summary: this.editSummary,
+    }
+
+    fetch(this.urlValue, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "X-CSRF-Token": this.csrfToken(),
+      },
+      body: JSON.stringify(jsonData),
+    }).
+      then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP status ${response.status}`)
+        }
+        return response.json()
+      }).
+      then((json) => {
+        AntCat.notifySuccess("Updated history item")
+        this.container.outerHTML = json.content
+        window.setupLinkables()
+        window.setupTaxtEditors()
+      }).
+      catch((error) => { alert(error) })
+  }
+
   // TODO: This leaves empty HTML elements in some places.
   delete(event) {
     event.preventDefault()
