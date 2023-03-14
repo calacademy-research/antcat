@@ -17,8 +17,8 @@
                 =db_tooltip_icon :protonym, scope: :taxa
                 =db_tooltip_icon :connecting_terms, scope: :protonyms
             %td
-              =text_field_tag :protonym_name_string, taxon.protonym.name.name
-              %span#copy-name-to-protonym-js-hook.btn-neutral.ml-4 Same as name (copy)
+              =text_field_tag :protonym_name_string, taxon.protonym.name.name, {"data-copy-field-target" => "copyTo"}
+              %button.btn-neutral.ml-4{"data-action" => 'click->copy-field#copy'} Same as name (copy)
           %tr
             %td
             %td
