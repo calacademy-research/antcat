@@ -8,7 +8,6 @@ CANCEL_BUTTONS                  = '.taxt-editor-cancel-button'
 HISTORY_ITEM_SAVE_BUTTONS       = '.taxt-editor-history-item-save-button'
 REFERENCE_SECTION_SAVE_BUTTONS  = '.taxt-editor-reference-section-save-button'
 OK_BUTTONS                      = '.taxt-editor-ok-button'
-DELETE_BUTTONS                  = '.taxt-editor-delete-button'
 
 TAXT_EDITOR_EDITOR              = '.taxt-editor-editor'
 TAXT_PRESENTER                  = '.taxt-presenter'
@@ -23,7 +22,6 @@ window.setupTaxtEditors = ->
   setupSaveHistoryItemButtons()
   setupSaveReferenceSectionButtons()
   setupOkButtons()
-  setupDeleteButton()
   setupCancelButtons()
 
   document.body.setAttribute('data-test-taxt-editors-loaded', "true") # HACK.
@@ -33,7 +31,6 @@ unbindAllButtons = ->
   $(HISTORY_ITEM_SAVE_BUTTONS).unbind('click')
   $(REFERENCE_SECTION_SAVE_BUTTONS).unbind('click')
   $(OK_BUTTONS).unbind('click')
-  $(DELETE_BUTTONS).unbind('click')
   $(CANCEL_BUTTONS).unbind('click')
 
 setupEditButtons = ->
@@ -141,27 +138,6 @@ setupSaveReferenceSectionButtons = ->
           window.setupTaxtEditors()
       error: ->
         alert 'error :('
-
-setupDeleteButton = ->
-  $(DELETE_BUTTONS).click (event) ->
-    event.preventDefault()
-    return false unless confirm 'Are you sure?'
-
-    taxtEditor = $(this).parent().parent()
-
-    data =
-      edit_summary: taxtEditor.find(EDIT_SUMMARY_FIELD).get(0).value
-
-    $.ajax
-      url: taxtEditor.data('taxt-editor-url-value')
-      type: 'DELETE'
-      dataType: 'json'
-      data: data
-      success: ->
-        AntCat.notifySuccess("Deleted item")
-
-        taxtEditor.get(0).parentNode.remove()
-      error: -> alert 'error :('
 
 setupCancelButtons = ->
   $(CANCEL_BUTTONS).click (event) ->

@@ -1,4 +1,4 @@
-.taxt-editor.border.p-2{"data-taxt-editor-url-value" => reference_section_path(reference_section)}
+.taxt-editor.border.p-2{"data-controller" => "taxt-editor", "data-taxt-editor-url-value" => reference_section_path(reference_section)}
   .taxt-presenter
     %h6.font-bold=markdown_without_wrapping reference_section.title_taxt
     %h6.font-bold=Detax[reference_section.subtitle_taxt]
@@ -11,10 +11,10 @@
     =text_area_tag :subtitle_taxt, reference_section.subtitle_taxt, rows: 1, data: { has_linkables: true, previewable: true, previewable_title: "Subtitle", use_extras: true }
     =text_area_tag :references_taxt, reference_section.references_taxt, rows: 5, data: { has_linkables: true, previewable: true, previewable_title: "References", use_extras: true }
 
-    =text_field_tag :edit_summary, nil, placeholder: "Edit summary (optional)", maxlength: Activity::EDIT_SUMMARY_MAX_LENGTH, class: 'edit-summary-js-hook !w-2/3 mb-4'
+    =text_field_tag :edit_summary, nil, placeholder: "Edit summary (optional)", maxlength: Activity::EDIT_SUMMARY_MAX_LENGTH, class: 'edit-summary-js-hook !w-2/3 mb-4', "data-taxt-editor-target" => "editSummaryInput"
 
     %br
 
     %a.taxt-editor-reference-section-save-button.btn-saves.btn-md{data: { testid: 'reference-section-taxt-editor-save-button' }} Save
     %a.taxt-editor-cancel-button.btn-neutral.btn-md{data: { testid: 'reference-section-taxt-editor-cancel-button' }} Cancel
-    %a.taxt-editor-delete-button.btn-warning.btn-md.ml-4{data: { testid: 'reference-section-taxt-editor-delete-button' }} Delete
+    %button.btn-warning.btn-md.ml-4{"data-action" => 'click->taxt-editor#delete', data: { testid: 'reference-section-taxt-editor-delete-button' }} Delete
