@@ -18,8 +18,6 @@ Rails.application.config.assets.precompile += %w[*.png *.jpg *.jpeg *.gif *.ico]
 Rails.application.config.assets.precompile += %w[
   jquery-ui/core.js
   jquery-ui/widgets/autocomplete.js
-  jquery-ui/widgets/draggable.js
-  jquery-ui/widgets/sortable.js
 
   jquery3.js
 ]
