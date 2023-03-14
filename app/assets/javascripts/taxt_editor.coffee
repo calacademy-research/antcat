@@ -4,7 +4,6 @@ $ ->
   window.setupTaxtEditors()
 
 EDIT_BUTTONS                    = '.taxt-editor-edit-button'
-REFERENCE_SECTION_SAVE_BUTTONS  = '.taxt-editor-reference-section-save-button'
 
 TAXT_EDITOR_EDITOR              = '.taxt-editor-editor'
 TAXT_PRESENTER                  = '.taxt-presenter'
@@ -15,13 +14,11 @@ window.setupTaxtEditors = ->
   unbindAllButtons()
 
   setupEditButtons()
-  setupSaveReferenceSectionButtons()
 
   document.body.setAttribute('data-test-taxt-editors-loaded', "true") # HACK.
 
 unbindAllButtons = ->
   $(EDIT_BUTTONS).unbind('click')
-  $(REFERENCE_SECTION_SAVE_BUTTONS).unbind('click')
 
 setupEditButtons = ->
   $(EDIT_BUTTONS).click (event) ->
@@ -41,33 +38,3 @@ setupEditButtons = ->
     textareas.each (index, element) -> $(element).height $(element)[0].scrollHeight
 
     taxtEditor.find(TAXT_PRESENTER).get(0).classList.add("hidden")
-
-setupSaveReferenceSectionButtons = ->
-  $(REFERENCE_SECTION_SAVE_BUTTONS).click (event) ->
-    event.preventDefault()
-
-    taxtEditor = $(this).parent().parent()
-
-    data =
-      reference_section:
-        title_taxt:      taxtEditor.find('textarea#title_taxt').get(0).value
-        subtitle_taxt:   taxtEditor.find('textarea#subtitle_taxt').get(0).value
-        references_taxt: taxtEditor.find('textarea#references_taxt').get(0).value
-      edit_summary:      taxtEditor.find(EDIT_SUMMARY_FIELD).get(0).value
-
-    $.ajax
-      url: taxtEditor.data('taxt-editor-url-value')
-      type: 'PUT'
-      dataType: 'json'
-      data: data
-      success: (response) ->
-        if response.error
-          alert "Error: #{response.error}"
-        else
-          AntCat.notifySuccess("Updated reference section")
-
-          taxtEditor.get(0).parentNode.innerHTML = response.content
-          window.setupLinkables()
-          window.setupTaxtEditors()
-      error: ->
-        alert 'error :('
