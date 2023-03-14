@@ -2,6 +2,8 @@ import ApplicationController from "./application_controller"
 
 export default class extends ApplicationController {
   static targets = [
+    "editor",
+    "presenter",
     "editSummaryInput",
   ]
 
@@ -45,6 +47,15 @@ export default class extends ApplicationController {
         this.container.remove()
       }).
       catch((error) => { alert(error) })
+  }
+
+  cancel() {
+    this.exitEditMode()
+  }
+
+  exitEditMode() {
+    this.editorTarget.classList.add("hidden")
+    this.presenterTarget.classList.remove("hidden")
   }
 
   get editSummary() {
