@@ -29,7 +29,7 @@ feature "Adding a taxon successfully", as: :editor do
     visit catalog_path(taxon)
     i_follow "Add tribe"
     fill_in "taxon_name_string", with: "Dorylini"
-    find("#copy-name-to-protonym-js-hook").click
+    find("*[data-action='click->copy-field#copy']").click
     fill_in "taxon_protonym_attributes_authorship_attributes_pages", with: "page 35"
     expect { click_button "Save" }.to change { Taxon.count }.by(1)
 

@@ -1,7 +1,7 @@
 DELAY_MS = 500
 
-TAXON_NAME_STRING = AntCat.CONSTANTS.TAXON_NAME_STRING # For the taxon form.
-PROTONYM_NAME_STRING = AntCat.CONSTANTS.PROTONYM_NAME_STRING # For the taxon and protonym forms.
+TAXON_NAME_STRING = '#taxon_name_string'
+PROTONYM_NAME_STRING = '#protonym_name_string'
 
 # For the name form.
 NAME_NAME_STRING = '#name_name_string'

@@ -1,20 +1,20 @@
 -page_title "Reorder reference sections"
 -breadcrumb :reorder_reference_sections, @taxon
 
--content_for :javascripts do
-  =javascript_include_tag 'jquery-ui/widgets/draggable', 'jquery-ui/widgets/sortable', 'reorder_items'
+-if @taxon.reference_sections.blank?
+  %p This taxon does not have any reference items
+-else
+  %p.mb-8 Drag and drop reference sections to reorder them
 
-.callout.callout-responsive.mb-8 Drag and drop reference sections to reorder them.
+  =form_with url: taxon_reorder_reference_sections_path, html: { "data-controller" => "reorder" } do |f|
+    =f.hidden_field :new_order, value: @taxon.reference_sections.pluck(:id).join(','), "data-reorder-target" => 'hiddenInput'
 
-=form_with url: taxon_reorder_reference_sections_path, id: 'reorder-form' do |f|
-  =f.hidden_field :new_order, value: @taxon.reference_sections.pluck(:id).join(','), id: 'new-order'
+    %ol.list-decimal{"data-reorder-target" => "sortableList"}
+      -@taxon.reference_sections.each do |reference_section|
+        %li.cursor-grab{"data-sortable-id" => reference_section.id}
+          -[:title_taxt, :subtitle_taxt, :references_taxt].each do |field|
+            -if reference_section[field].present?
+              %p=Detax[reference_section[field]]
+          %hr
 
-  %ol#sortable
-    -@taxon.reference_sections.each do |reference_section|
-      %li.sortable-item{id: reference_section.id}
-        -[:title_taxt, :subtitle_taxt, :references_taxt].each do |field|
-          -if reference_section[field].present?
-            %p=Detax[reference_section[field]]
-        %hr
-
-  =f.button "Reorder", class: "btn-saves btn-md"
+    =f.button "Reorder", class: "btn-saves btn-md"
