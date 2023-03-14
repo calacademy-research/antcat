@@ -96,7 +96,7 @@ setupSaveHistoryItemButtons = ->
       edit_summary: taxtEditor.find(EDIT_SUMMARY_FIELD).get(0).value
 
     $.ajax
-      url: taxtEditor.data('url')
+      url: taxtEditor.data('taxt-editor-url-value')
       type: 'PUT'
       dataType: 'json'
       data: data
@@ -126,7 +126,7 @@ setupSaveReferenceSectionButtons = ->
       edit_summary:      taxtEditor.find(EDIT_SUMMARY_FIELD).get(0).value
 
     $.ajax
-      url: taxtEditor.data('url')
+      url: taxtEditor.data('taxt-editor-url-value')
       type: 'PUT'
       dataType: 'json'
       data: data
@@ -153,7 +153,7 @@ setupDeleteButton = ->
       edit_summary: taxtEditor.find(EDIT_SUMMARY_FIELD).get(0).value
 
     $.ajax
-      url: taxtEditor.data('url')
+      url: taxtEditor.data('taxt-editor-url-value')
       type: 'DELETE'
       dataType: 'json'
       data: data
