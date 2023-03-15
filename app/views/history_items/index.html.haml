@@ -1,9 +1,6 @@
 -page_title "Search History Items"
 -breadcrumb :search_history_items
 
--content_for :javascripts do
-  =javascript_include_tag "sortable_tables"
-
 -content_for :breadcrumbs_right do
   -if current_user && !params[:standard]
     =link_to "Show 'Standard?' column", request.query_parameters.merge(standard: "y"), class: 'btn-default'
@@ -51,7 +48,7 @@
       .medium-3.columns
         %pre=JSON.pretty_generate(@history_items.group(:type).count)
 
-%table.table-striped{data: { tablesorter: true }}
+%table.table-striped{"data-controller" => "tablesort"}
   %caption
     =number_with_delimiter @history_items.count
     result(s)

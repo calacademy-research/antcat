@@ -1,10 +1,10 @@
-%table.table-striped{data: { tablesorter: true }}
+%table.table-striped{"data-controller" => "tablesort"}
   %thead
     %th Passed?
     %th Database script
     %th False positive?
     %th Runtime
-    %th.sorter-false %
+    %th.no-sort %
   %tbody
     -soft_validations.all.each do |soft_validation|
       %tr

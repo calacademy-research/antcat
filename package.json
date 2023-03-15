@@ -16,6 +16,7 @@
     "@rails/webpacker": "6.0.0-rc.6",
     "sortablejs": "^1.15.0",
     "stimulus-use": "~0.51.3",
+    "tablesort": "^5.3.0",
     "webpack-cli": "~5.0.1"
   },
   "devDependencies": {

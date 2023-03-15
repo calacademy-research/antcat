@@ -1,20 +1,17 @@
 -page_title "Institutions"
 -breadcrumb :institutions
 
--content_for :javascripts do
-  =javascript_include_tag "sortable_tables"
-
 -if user_is_at_least_helper?
   -content_for :breadcrumbs_right do
     =link_to 'New', new_institution_path, class: 'btn-default'
 
-%table.table-striped{data: { tablesorter: true }}
+%table.table-striped{"data-controller" => "tablesort"}
   %thead
     %tr
       %th.no-wrap Abbreviation
       %th Name
       %th GRSciColl
-      %th.no-wrap.sorter-false
+      %th.no-wrap.no-sort
   %tbody
     -@institutions.each do |institution|
       %tr

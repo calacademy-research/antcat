@@ -2,9 +2,6 @@
 -breadcrumb :taxon_soft_validations, @taxon
 -noindex_meta_tag
 
--content_for :javascripts do
-  =javascript_include_tag "sortable_tables"
-
 %p.mb-8
   =antcat_icon(@soft_validations.failed? ? "nope" : "check")
   =CatalogFormatter.link_to_taxon(@taxon)
