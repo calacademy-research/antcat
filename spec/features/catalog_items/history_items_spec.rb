@@ -26,12 +26,12 @@ feature "History items" do
 
   feature "Editing history items", as: :editor do
     def the_history_should_be content
-      element = first('.taxt-presenter')
+      element = first('[data-taxt-editor-target=presenter]')
       expect(element).to have_content(content)
     end
 
     def the_history_item_field_should_be content
-      element = first('.taxt-editor').find('textarea')
+      element = first('[data-taxt-editor-target=editor]').find('textarea')
       expect(element).to have_content(content)
     end
 
@@ -59,7 +59,7 @@ feature "History items" do
       i_should_see "Taxt can't be blank"
     end
 
-    scenario "Editing a history item (with edit summary)", :js do
+    scenario "Editing a history item (with edit summary)", :js, :protect_from_forgery do
       protonym = create :protonym, :family_group_subfamily_name, protonym_name_string: "Antcatinae"
       history_item = create :history_item, :taxt, taxt: "Antcatinae as family", protonym: protonym
 
@@ -69,7 +69,7 @@ feature "History items" do
       wait_for_taxt_editors_to_load
       find(:testid, 'history-item-taxt-editor-edit-button').click
       fill_in "taxt", with: "(none)"
-      within ".taxt-editor" do
+      within "[data-taxt-editor-target=editor]" do
         fill_in "edit_summary", with: "fix typo"
       end
       find(:testid, 'history-item-taxt-editor-save-button').click
@@ -97,7 +97,7 @@ feature "History items" do
       i_should_see "history item content"
     end
 
-    scenario "Editing a history item, but cancelling", :js do
+    scenario "Editing a history item, but cancelling", :js, :protect_from_forgery do
       protonym = create :protonym
       create :history_item, :taxt, taxt: "Antcatinae as family", protonym: protonym
 
@@ -112,7 +112,7 @@ feature "History items" do
       the_history_item_field_should_be "Antcatinae as family"
     end
 
-    scenario "Deleting a history item (with feed)", :js do
+    scenario "Deleting a history item (with feed)", :js, :protect_from_forgery do
       protonym = create :protonym, :family_group_subfamily_name, protonym_name_string: "Antcatinae"
       history_item = create :history_item, :taxt, taxt: "Antcatinae as family", protonym: protonym
 

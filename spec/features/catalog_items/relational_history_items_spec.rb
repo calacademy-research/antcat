@@ -54,7 +54,7 @@ feature "Editing relational history items", as: :editor do
     i_should_see "Batiatus, 2004a: 99 (w.)"
   end
 
-  scenario "Editing a history item (Quick edit)", :js do
+  scenario "Editing a history item (Quick edit)", :js, :protect_from_forgery do
     protonym = create :protonym, :species_group
     reference = create :any_reference, author_string: 'Batiatus', year: 2004, year_suffix: 'a'
     create :history_item, :form_descriptions, protonym: protonym, text_value: "q.", reference: reference, pages: "77-78"

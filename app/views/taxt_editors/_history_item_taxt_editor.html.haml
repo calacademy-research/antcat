@@ -1,23 +1,23 @@
-.taxt-editor.border.p-4.rounded.bg-white{data: { url: history_item_path(history_item) }}
-  .taxt-editor-editor.hidden
+.border.p-4.rounded.bg-white{"data-controller" => "taxt-editor", "data-taxt-editor-url-value" => history_item_path(history_item)}
+  .hidden{"data-taxt-editor-target" => "editor"}
     %h6.font-bold.mb-4=history_item.type_label
     -# [grep:history_type].
     =render partial: "history_items/edit_templates/#{history_item.underscored_type}", locals: { history_item: history_item }
 
-    =text_field_tag :edit_summary, nil, placeholder: "Edit summary (optional)", maxlength: Activity::EDIT_SUMMARY_MAX_LENGTH, class: 'edit-summary-js-hook !w-2/3 mb-4'
+    =text_field_tag :edit_summary, nil, placeholder: "Edit summary (optional)", maxlength: Activity::EDIT_SUMMARY_MAX_LENGTH, class: '!w-2/3 mb-4', "data-taxt-editor-target" => "editSummaryInput"
 
     %br
 
-    %a.taxt-editor-history-item-save-button.btn-saves.btn-md{data: { testid: 'history-item-taxt-editor-save-button' }} Save
-    %a.taxt-editor-cancel-button.btn-neutral.btn-md{data: { testid: 'history-item-taxt-editor-cancel-button' }} Cancel
-    %a.taxt-editor-delete-button.btn-warning.btn-md.ml-4{data: { testid: 'history-item-taxt-editor-delete-button' }} Delete
+    %button.btn-saves.btn-md{"data-action" => 'click->taxt-editor#saveHistoryItem', data: { testid: 'history-item-taxt-editor-save-button' }} Save
+    %button.btn-neutral.btn-md{"data-action" => 'click->taxt-editor#cancel', data: { testid: 'history-item-taxt-editor-cancel-button' }} Cancel
+    %button.btn-warning.btn-md.ml-4{"data-action" => 'click->taxt-editor#delete', data: { testid: 'history-item-taxt-editor-delete-button' }} Delete
 
-  .taxt-presenter{class: "group/history-item-taxt-presenter"}
+  %div{"data-taxt-editor-target" => "presenter", class: "group/history-item-taxt-presenter"}
     =Detax[history_item.to_taxt]
 
     .mt-3
 
-    %a.taxt-editor-edit-button.btn-neutral.mr-4{data: { testid: 'history-item-taxt-editor-edit-button' }} Quick edit
+    %button.btn-neutral.mr-4{"data-action" => 'click->taxt-editor#enterEditMode', data: { testid: 'history-item-taxt-editor-edit-button' }} Quick edit
 
     %small.font-bold.text-gray-500.mr-4=history_item.underscored_type
 

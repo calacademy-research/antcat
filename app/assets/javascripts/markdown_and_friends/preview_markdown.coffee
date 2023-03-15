@@ -87,8 +87,6 @@ class MakePreviewable
       success: (html) =>
         tab.get(0).innerHTML = html
         window.setupLinkables()
-        if typeof variable != 'undefined'
-          window.setupTaxtEditors()
       error: -> tab.get(0).textContent = "Error rendering preview"
 
 class ExtrasArea

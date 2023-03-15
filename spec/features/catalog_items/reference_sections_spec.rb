@@ -26,7 +26,7 @@ feature "Reference sections" do
 
   feature "Editing references sections", as: :editor do
     def the_reference_section_should_be content
-      element = first('.taxt-presenter')
+      element = first('[data-taxt-editor-target=presenter]')
       expect(element).to have_content(content)
     end
 
@@ -44,7 +44,7 @@ feature "Reference sections" do
       there_should_be_an_activity "Archibald added the reference section ##{ReferenceSection.last.id} belonging to Atta", edit_summary: "added new stuff"
     end
 
-    scenario "Editing a reference section (with edit summary)", :js do
+    scenario "Editing a reference section (with edit summary)", :js, :protect_from_forgery do
       taxon = create :subfamily, name_string: "Dolichoderinae"
       reference_section = create :reference_section, references_taxt: "Original reference", taxon: taxon
 
@@ -54,7 +54,7 @@ feature "Reference sections" do
       wait_for_taxt_editors_to_load
       find(:testid, 'reference-section-taxt-editor-edit-button').click
       fill_in "references_taxt", with: "(none)"
-      within ".taxt-editor" do
+      within "[data-taxt-editor-target=editor]" do
         fill_in "edit_summary", with: "fix typo"
       end
       find(:testid, 'reference-section-taxt-editor-save-button').click
@@ -77,7 +77,7 @@ feature "Reference sections" do
       i_should_see "reference section content"
     end
 
-    scenario "Editing a reference section, but cancelling", :js do
+    scenario "Editing a reference section, but cancelling", :js, :protect_from_forgery do
       taxon = create :subfamily
       create :reference_section, references_taxt: "Original reference", taxon: taxon
 
@@ -89,14 +89,14 @@ feature "Reference sections" do
       the_reference_section_should_be "Original reference"
     end
 
-    scenario "Deleting a reference section (with feed)", :js do
+    scenario "Deleting a reference section (with feed)", :js, :protect_from_forgery do
       taxon = create :subfamily, name_string: "Dolichoderinae"
       reference_section = create :reference_section, taxon: taxon
 
       visit edit_taxon_path(taxon)
       wait_for_taxt_editors_to_load
       find(:testid, 'reference-section-taxt-editor-edit-button').click
-      within ".taxt-editor" do
+      within "[data-taxt-editor-target=editor]" do
         fill_in "edit_summary", with: "delete duplicate"
       end
       i_will_confirm_on_the_next_step
