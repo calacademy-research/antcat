@@ -1,9 +1,6 @@
 -page_title "Database Scripts"
 -breadcrumb :database_scripts
 
--content_for :javascripts do
-  =javascript_include_tag "sortable_tables"
-
 -content_for :breadcrumbs_right do
   -if @check_if_empty
     =link_to "Show all", database_scripts_path, class: "btn-default"
@@ -54,7 +51,7 @@
       -else
         %h5.float-left Unknown section. What???
 
-      %table.table-striped.mb-16{data: { tablesorter: true }}
+      %table.table-striped.mb-16{"data-controller" => "tablesort"}
         %thead
           %tr
             %th Script
