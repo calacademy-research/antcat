@@ -1,16 +1,47 @@
 @import "colors"
 
-#header
+header
   #desktop-only-header
-    #desktop-upper-menu
-      .desktop-upper-menu-link
-        &:hover, &.very-active
-          font-weight: bold
-        &.very-active
-          font-size: 0.8125rem
-          padding: 0.3rem 0.6rem
-          border-radius: 3px
-          background-color: #000
+    .base__big-screaming-button
+      border-radius: 3px
+      font-weight: bold
+      font-size: 13px
+      padding: 0.75rem 1.15rem
+      color: $color_ac_blue
+      background-color: #fff
+
+    .big-screaming-green-button
+      @extend .base__big-screaming-button
+      &.very-active
+        color: #fff
+        background-color: $color_scream_green
+        &:hover
+          color: #fff
+      &:hover
+        box-shadow: 0 0 0 0.5rem rgba(69, 210, 152, 0.35)
+        transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+        color: $color_scream_green
+
+    .big-screaming-orange-button
+      @extend .base__big-screaming-button
+      &.very-active
+        color: #fff
+        background-color: $color_scream_orange
+        &:hover
+          color: #fff
+      &:hover
+        box-shadow: 0 0 0 0.5rem rgba(255, 133, 27, 0.50)
+        transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+        color: $color_scream_orange
+
+    .desktop-upper-menu-link
+      &:hover, &.very-active
+        font-weight: bold
+      &.very-active
+        font-size: 0.8125rem
+        padding: 0.3rem 0.6rem
+        border-radius: 3px
+        background-color: #000
 
     .expandable-catalog-search
       width: 155px
@@ -27,36 +58,3 @@
   #mobile-only-header
     #mobile-hamburger-input:checked ~ #mobile-menu-content
       display: block
-
-#header
-  .big-screaming-button
-    border-radius: 3px
-    font-weight: bold
-    font-size: 13px
-    padding: 0.75rem 1.15rem
-    color: $color_ac_blue
-    background-color: #fff
-
-  .big-screaming-green-button
-    @extend .big-screaming-button
-    &.very-active
-      color: #fff
-      background-color: $color_scream_green
-      &:hover
-        color: #fff
-    &:hover
-      box-shadow: 0 0 0 0.5rem rgba(69, 210, 152, 0.35)
-      transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)
-      color: $color_scream_green
-
-  .big-screaming-orange-button
-    @extend .big-screaming-button
-    &.very-active
-      color: #fff
-      background-color: $color_scream_orange
-      &:hover
-        color: #fff
-    &:hover
-      box-shadow: 0 0 0 0.5rem rgba(255, 133, 27, 0.50)
-      transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)
-      color: $color_scream_orange
