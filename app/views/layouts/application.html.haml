@@ -43,11 +43,10 @@
 
         %section.px-4.pt-12.pb-32{class: "min-h-[65vh]"}
           #fireworks
-          .row.collapse-tw-conflict
+          .row
             =render "breadcrumbs"
             =render "flash_messages"
-            .small-12.columns.collapse-tw-conflict
-              =yield
+            =yield
 
         =yield :after_content
 

@@ -24,11 +24,6 @@
   clear: both;
 }
 
-.row.collapse-tw-conflict > .columns {
-  padding-right: 0;
-  padding-left: 0;
-}
-
 .row .row {
   max-width: none;
   margin-right: -0.625rem;
@@ -47,11 +42,6 @@
     margin-right: -0.9375rem;
     margin-left: -0.9375rem;
   }
-}
-
-.row .row.collapse-tw-conflict {
-  margin-right: 0;
-  margin-left: 0;
 }
 
 .columns {
