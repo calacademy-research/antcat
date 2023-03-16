@@ -9,7 +9,7 @@
         =link_to "Edit", edit_reference_path(reference), class: "btn-default"
       =link_to "History", reference_history_path(reference), class: "btn-default"
       =link_to "What Links Here", reference_what_links_here_path(reference), class: "btn-default"
-      =link_to "Add to Recently Used", my_recently_used_references_path(id: reference.id), method: :post, remote: true, class: "add-to-recently-used-references-js-hook btn-saves"
+      =add_to_recently_used_references_link(reference)
 
   -if reference.public_notes?
     %p.notes{class: "mb-0 first-of-type:mt-2"}
