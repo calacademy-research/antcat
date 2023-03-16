@@ -4,7 +4,7 @@
 -content_for :breadcrumbs_right do
   =link_to "Show source code", @decorated_database_script.github_url, class: "btn-default"
 
-.row.collapse-tw-conflict.mb-8
+.row.mb-8
   .medium-8.columns
     %h5
       =@database_script.title
@@ -29,9 +29,10 @@
       .bg-logged-in-only.callout.border-0
         %p.text-sm=@database_script.statistics
 
-.row.column
-  .callout
-    =@rendered
+.row
+  .small-12.columns
+    .callout
+      =@rendered
 
 -if @database_script.paginate?
   =will_paginate @database_script.paginated_results(page: params[:page])
