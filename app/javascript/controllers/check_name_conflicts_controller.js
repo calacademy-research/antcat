@@ -20,7 +20,7 @@ export default class extends Controller {
   check(event) {
     const queryParams = {
       qq: this.inputTarget.value,
-      number_of_words: event.params?.nameScope ? event.params.nameScope : "", // TODO: Naming.
+      name_scope: event.params?.nameScope ? event.params.nameScope : "",
       except_name_id: event.params?.exceptNameId ? event.params.exceptNameId : "",
     }
 
