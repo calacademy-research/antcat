@@ -10,8 +10,7 @@
 
 .row
   .medium-9.columns
-    #taxon-description
-      =render "catalog/_show/taxon_description", taxon: @taxon, protonym: @protonym, catalog_presenter: @catalog_presenter
+    =render "catalog/_show/taxon_description", taxon: @taxon, protonym: @protonym, catalog_presenter: @catalog_presenter
 
   .medium-3.columns
     -if current_user
