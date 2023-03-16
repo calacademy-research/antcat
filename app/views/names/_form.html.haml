@@ -1,7 +1,3 @@
--content_for :javascripts do
-  =javascript_include_tag 'check_name_conflicts'
-
-
 .callout-alert.callout-responsive.mb-8
   %h6
     =antcat_icon 'warning-icon'
@@ -22,18 +18,18 @@
       =render 'shared/errors_for', resource: name
       =hidden_field_tag :type, name.type
 
-      %table.table-unstriped
+      %table.table-unstriped{"data-controller" => "check-name-conflicts"}
         %tbody
           %tr
             %th.no-wrap
               =f.label :name, class: 'mb-4' do
                 Name
                 =db_wiki_page_icon WikiPage::SPECIES_GROUP_NAMES_CONNECTING_TERMS
-            %td.grow-tw-conflict=f.text_field :name, id: 'name_name_string', data: { name_id: name.id }
+            %td.grow-tw-conflict
+              =f.text_field :name, "data-check-name-conflicts-target" => "input", "data-action" => 'input->check-name-conflicts#check', "data-check-name-conflicts-except-name-id-param" => name.id
           %tr
             %td
-            %td
-              #name_name_string-possible-conflicts-js-hook.possible-name-conflicts
+            %td.possible-name-conflicts{"data-check-name-conflicts-target" => "results"}
 
           %tr
             %td{colspan: 2}

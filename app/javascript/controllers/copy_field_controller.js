@@ -12,6 +12,6 @@ export default class extends Controller {
     this.copyToTarget.value = this.copyFromTarget.value
 
     // To trigger the name conflict check.
-    this.copyToTarget.dispatchEvent(new Event('keyup'))
+    this.copyToTarget.dispatchEvent(new Event('input'))
   }
 }

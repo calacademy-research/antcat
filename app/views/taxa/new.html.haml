@@ -2,7 +2,7 @@
 -breadcrumb :new_taxon, params[:parent_id], params[:rank_to_create]
 
 -content_for :javascripts do
-  =javascript_include_tag 'check_name_conflicts', 'locality_autocompletion'
+  =javascript_include_tag 'locality_autocompletion'
 
 %div{"data-controller" => "copy-field"}
   =render 'form', taxon: @taxon, default_name_string: @default_name_string, taxon_form: @taxon_form

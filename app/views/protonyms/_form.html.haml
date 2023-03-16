@@ -1,6 +1,6 @@
 -content_for :javascripts do
   =javascript_include_tag 'markdown_and_friends'
-  =javascript_include_tag 'check_name_conflicts', 'locality_autocompletion'
+  =javascript_include_tag 'locality_autocompletion'
 
 =render "shared/default_reference"
 
@@ -9,7 +9,7 @@
 
   .row
     .large-7.columns
-      %table.table-unstriped
+      %table.table-unstriped{"data-controller" => "check-name-conflicts"}
         =f.fields_for :name do |_name_fields|
           %tr
             %td
@@ -21,8 +21,8 @@
                 %span.float-right=link_to "Name record ##{protonym.name.id}", name_path(protonym.name), class: 'btn-default'
                 =protonym.name_with_fossil
               -else
-                =text_field_tag :protonym_name_string, protonym&.name&.name
-                #protonym_name_string-possible-conflicts-js-hook.possible-name-conflicts
+                =text_field_tag :protonym_name_string, protonym&.name&.name, "data-check-name-conflicts-target" => "input", "data-action" => 'input->check-name-conflicts#check'
+                .mt-2.possible-name-conflicts{"data-check-name-conflicts-target" => "results"}
 
         %tr
           %td

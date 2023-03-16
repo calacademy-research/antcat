@@ -15,7 +15,7 @@ feature "Names", as: :editor do
     i_should_not_see "Similar names"
     i_should_not_see "Formicus"
 
-    fill_in "name_name_string", with: "Lasius"
+    fill_in "name_name", with: "Lasius"
     fill_in "edit_summary", with: "fix name"
     click_button "Save"
     i_should_see "Successfully updated name."
@@ -36,12 +36,12 @@ feature "Names", as: :editor do
     i_should_not_see "Formica (protonym)"
     i_should_not_see "Formicus (protonym)"
 
-    fill_in "name_name_string", with: "formi"
+    fill_in "name_name", with: "formi"
     i_should_see "Similar names"
     i_should_see "Formica (protonym)"
     i_should_see "Formicus (protonym)"
 
-    fill_in "name_name_string", with: "formica"
+    fill_in "name_name", with: "formica"
     i_should_see "Homonym Formica (protonym)"
   end
 end

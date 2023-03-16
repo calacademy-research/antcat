@@ -24,6 +24,7 @@ module Names
         end
       end
 
+      # TODO: Rename `params[:number_of_words]` to something like `name_scope`.
       def names
         Names::FindConflicts[params[:qq], params[:number_of_words], params[:except_name_id]]
       end

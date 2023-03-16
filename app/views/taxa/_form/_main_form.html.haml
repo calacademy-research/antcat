@@ -4,7 +4,7 @@
   .row.mb-8
     .large-8.columns
       %h6.font-bold Required fields
-      %table.table-unstriped.mb-8
+      %table.table-unstriped.mb-8{"data-controller" => "check-name-conflicts"}
         %tr
           %td=form.label :parent, 'Parent'
           %td
@@ -24,16 +24,14 @@
               %span.ml-8
               =link_to "Name record ##{taxon.name.id}", name_path(taxon.name), class: 'btn-default'
             -else
-              -number_of_words = Rank.single_word_name?(taxon.type) ? Names::FindConflicts::SINGLE_WORD_NAMES_ONLY : Names::FindConflicts::NO_SINGLE_WORD_NAMES
-              =text_field_tag :taxon_name_string, (taxon.name.name || default_name_string), data: { number_of_words: number_of_words }, "data-copy-field-target" => "copyFrom"
+              =text_field_tag :taxon_name_string, (taxon.name.name || default_name_string), "data-copy-field-target" => "copyFrom", "data-check-name-conflicts-target" => "input", "data-action" => 'input->check-name-conflicts#check', "data-check-name-conflicts-name-scope-param" => (Rank.single_word_name?(taxon.type) ? Names::FindConflicts::SINGLE_WORD_NAMES_ONLY : Names::FindConflicts::NO_SINGLE_WORD_NAMES)
               -if taxon.is_a?(Subgenus)
                 %span
                   Subgenus name format:
                   %i Genus (Subgenus)
         %tr
           %td.pb-0
-          %td.pb-0
-            #taxon_name_string-possible-conflicts-js-hook.possible-name-conflicts
+          %td.pb-0.possible-name-conflicts{"data-check-name-conflicts-target" => "results"}
 
         %tr
           %td=form.label :status
