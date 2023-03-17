@@ -4,35 +4,28 @@
 -content_for :breadcrumbs_right do
   %button.btn-neutral{"data-action" => "toggler#toggle", "data-toggler-target" => "help"} Show/hide markdown formatting help
 
-.row.hidden{data: { toggler_name: "help" }}
-  .medium-12.columns
-    .callout
-      =render 'shared/markdown_formatting_help'
+.hidden{data: { toggler_name: "help" }}
+  .callout
+    =render 'shared/markdown_formatting_help'
 
-.row
-  .medium-12.columns
-    =form_with model: wiki_page do |f|
-      =render "shared/errors_for", resource: wiki_page
+=form_with model: wiki_page do |f|
+  =render "shared/errors_for", resource: wiki_page
 
-      .row.mb-4
-        .medium-8.columns.end
-          =f.label :title
-          =f.text_field :title, maxlength: WikiPage::TITLE_MAX_LENGTH
+  .row.mb-4
+    .medium-8.columns.end
+      =f.label :title
+      =f.text_field :title, maxlength: WikiPage::TITLE_MAX_LENGTH
 
-      .row.mb-4
-        .medium-12.columns
-          =f.check_box :featured
-          =f.label :featured do
-            Featured (show in Editor's Panel)
+  .mb-4
+    =f.check_box :featured
+    =f.label :featured do
+      Featured (show in Editor's Panel)
 
-      .row
-        .medium-12.columns
-          =f.text_area :content, rows: 20, data: { has_mentionables: true, has_linkables: true, previewable: true, previewable_title: "Content" }
+  .mb-4
+    =f.text_area :content, rows: 20, data: { has_mentionables: true, has_linkables: true, previewable: true, previewable_title: "Content" }
 
-      .row.mb-4
-        .medium-12.columns
-          =edit_summary_text_field_tag
+  .mb-4
+    =edit_summary_text_field_tag
 
-      .row
-        .medium-12.columns
-          =f.button "Save", class: "btn-saves btn-md"
+  .mb-4
+    =f.button "Save", class: "btn-saves btn-md"

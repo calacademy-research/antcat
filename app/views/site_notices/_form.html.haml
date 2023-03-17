@@ -4,29 +4,23 @@
 -content_for :breadcrumbs_right do
   %button.btn-neutral{"data-action" => "toggler#toggle", "data-toggler-target" => "help"} Show/hide help
 
-.row.hidden{data: { toggler_name: "help" }}
-  .medium-12.columns
-    .callout
-      %h6 Help
-      %p After creating a site notice, all logged-in users will see the message in an "Unread site notices" notification. Notices can not be unpublished, but edited existing notices does not trigger new notifications. All editors have the user rights for creating new notices.
+.hidden{data: { toggler_name: "help" }}
+  .callout
+    %h6 Help
+    %p After creating a site notice, all logged-in users will see the message in an "Unread site notices" notification. Notices can not be unpublished, but edited existing notices does not trigger new notifications. All editors have the user rights for creating new notices.
 
-.row
-  .medium-12.columns
-    =form_with model: site_notice do |f|
-      =render "shared/errors_for", resource: site_notice
+=form_with model: site_notice do |f|
+  =render "shared/errors_for", resource: site_notice
 
-      .row.mb-4
-        .medium-8.columns.end
-          =f.label :title
-          =f.text_field :title, maxlength: SiteNotice::TITLE_MAX_LENGTH
+  .row.mb-4
+    .medium-8.columns.end
+      =f.label :title
+      =f.text_field :title, maxlength: SiteNotice::TITLE_MAX_LENGTH
 
-      .row
-        .medium-12.columns
-          =f.text_area :message, rows: 10,
-            data: { has_mentionables: true, has_linkables: true, previewable: true, previewable_title: "Message" }
+  .mb-4
+    =f.text_area :message, rows: 10, data: { has_mentionables: true, has_linkables: true, previewable: true, previewable_title: "Message" }
 
-      .row.mb-4
-        .medium-12.columns
-          =edit_summary_text_field_tag
+  .mb-4
+    =edit_summary_text_field_tag
 
-      =f.button "Publish", class: "btn-saves btn-md"
+  =f.button "Publish", class: "btn-saves btn-md"

@@ -9,85 +9,81 @@
     =link_to "Non-empty regression tests", database_scripts_path(view: DatabaseScriptsController::NON_EMPTY_REGRESSION_TESTS), class: "btn-default"
 
 -if params[:tag]
-  .row.mb-8
-    .small-12.columns
-      %p
-        Showing:
-        =DatabaseScriptDecorator.format_tags([params[:tag]])
-        =link_to "(show all)", database_scripts_path
+  .mb-8
+    %p
+      Showing:
+      =DatabaseScriptDecorator.format_tags([params[:tag]])
+      =link_to "(show all)", database_scripts_path
 
-.row
-  .small-12.columns
-    -if @grouped_database_scripts.empty?
-      Found no database scripts.
-    -@grouped_database_scripts.each do |section, database_scripts|
-      %h5.float-right
-        %small #{database_scripts.size} scripts in section
-      -case section
-      -when DatabaseScripts::Tagging::DISAGREEING_HISTORY_SECTION
-        %h5.float-left History items and taxa not agreeing
-      -when DatabaseScripts::Tagging::MISSING_TAGS_SECTION
-        %h5.float-left History items with hardcoded names or <code>missing</code> tags
-      -when DatabaseScripts::Tagging::CODE_CHANGES_REQUIRED_SECTION
-        %h5.float-left Code changes required
-        =info_tooltip_icon 'For issues which may not be completely fixable without making changes to the code.'
-      -when DatabaseScripts::Tagging::PENDING_AUTOMATION_ACTION_REQUIRED_SECTION
-        %h5.float-left Pending automation, editor action required
-        =info_tooltip_icon 'For issues that require manual editing before they can be fixed by script.'
-      -when DatabaseScripts::Tagging::PENDING_AUTOMATION_NO_ACTION_REQUIRED_SECTION
-        %h5.float-left Pending automation, no editor action required
-        =info_tooltip_icon 'For issues that can be fixed by script once agreed upon, but require little to no manual editing.'
-      -when DatabaseScripts::Tagging::REVERSED_SECTION
-        %h5.float-left Reversed scripts
-        =info_tooltip_icon 'Some scripts have "reversed" scripts, for finding the same issue from the other side of the relation. This section was added to make other sections less populated.'
-      -when DatabaseScripts::Tagging::REGRESSION_TEST_SECTION
-        %h5.float-left Regression tests
-        =info_tooltip_icon 'For issues that have been mostly fixed, but we want to make sure do not re-appear. Only needs to be checked periodically.'
-      -when DatabaseScripts::Tagging::RESEARCH_SECTION
-        %h5.float-left Research scripts
-        =info_tooltip_icon 'Scripts that were added to get an overview of our current data.'
-      -when *DatabaseScripts::Tagging::SECTIONS
-        %h5.float-left="#{section.capitalize} scripts"
-      -else
-        %h5.float-left Unknown section. What???
 
-      %table.table-striped.mb-16{"data-controller" => "tablesort"}
-        %thead
-          %tr
-            %th Script
-            %th.no-wrap Tags
-            %th Soft-validated
-            -if @check_if_empty
-              %th Empty?
-        %tbody
-          -database_scripts.each do |database_script|
-            -decorated = database_script.decorate
-            %tr
-              %td
-                =link_to database_script.title, database_script_path(database_script)
-                -if database_script.issue_description.present?
-                  %div
-                    %small.text-gray-600
-                      Issue description:
-                      =database_script.issue_description
-              %td=decorated.format_linked_tags
-              %td.shrink-tw-conflict
-                -if decorated.soft_validated?
-                  %span.hidden-sort Yes
-                  =antcat_icon("check")
-              -if @check_if_empty
-                %td.shrink-tw-conflict{class: decorated.empty_status_css}
-                  =decorated.empty_status
+-if @grouped_database_scripts.empty?
+  Found no database scripts.
+-@grouped_database_scripts.each do |section, database_scripts|
+  %h5.float-right
+    %small #{database_scripts.size} scripts in section
+  -case section
+  -when DatabaseScripts::Tagging::DISAGREEING_HISTORY_SECTION
+    %h5.float-left History items and taxa not agreeing
+  -when DatabaseScripts::Tagging::MISSING_TAGS_SECTION
+    %h5.float-left History items with hardcoded names or <code>missing</code> tags
+  -when DatabaseScripts::Tagging::CODE_CHANGES_REQUIRED_SECTION
+    %h5.float-left Code changes required
+    =info_tooltip_icon 'For issues which may not be completely fixable without making changes to the code.'
+  -when DatabaseScripts::Tagging::PENDING_AUTOMATION_ACTION_REQUIRED_SECTION
+    %h5.float-left Pending automation, editor action required
+    =info_tooltip_icon 'For issues that require manual editing before they can be fixed by script.'
+  -when DatabaseScripts::Tagging::PENDING_AUTOMATION_NO_ACTION_REQUIRED_SECTION
+    %h5.float-left Pending automation, no editor action required
+    =info_tooltip_icon 'For issues that can be fixed by script once agreed upon, but require little to no manual editing.'
+  -when DatabaseScripts::Tagging::REVERSED_SECTION
+    %h5.float-left Reversed scripts
+    =info_tooltip_icon 'Some scripts have "reversed" scripts, for finding the same issue from the other side of the relation. This section was added to make other sections less populated.'
+  -when DatabaseScripts::Tagging::REGRESSION_TEST_SECTION
+    %h5.float-left Regression tests
+    =info_tooltip_icon 'For issues that have been mostly fixed, but we want to make sure do not re-appear. Only needs to be checked periodically.'
+  -when DatabaseScripts::Tagging::RESEARCH_SECTION
+    %h5.float-left Research scripts
+    =info_tooltip_icon 'Scripts that were added to get an overview of our current data.'
+  -when *DatabaseScripts::Tagging::SECTIONS
+    %h5.float-left="#{section.capitalize} scripts"
+  -else
+    %h5.float-left Unknown section. What???
 
-.row
-  .small-12.columns.mb-16
-    %small.float-right
-      Total number of scripts:
-      =@total_number_of_database_scripts
+  %table.table-striped.mb-16{"data-controller" => "tablesort"}
+    %thead
+      %tr
+        %th Script
+        %th.no-wrap Tags
+        %th Soft-validated
+        -if @check_if_empty
+          %th Empty?
+    %tbody
+      -database_scripts.each do |database_script|
+        -decorated = database_script.decorate
+        %tr
+          %td
+            =link_to database_script.title, database_script_path(database_script)
+            -if database_script.issue_description.present?
+              %div
+                %small.text-gray-600
+                  Issue description:
+                  =database_script.issue_description
+          %td=decorated.format_linked_tags
+          %td.shrink-tw-conflict
+            -if decorated.soft_validated?
+              %span.hidden-sort Yes
+              =antcat_icon("check")
+          -if @check_if_empty
+            %td.shrink-tw-conflict{class: decorated.empty_status_css}
+              =decorated.empty_status
 
-.row
-  .small-12.columns.mb-8
-    %h5 Filter by tags
-    -@database_scripts_presenter.tallied_tags.each do |tag, count|
-      =DatabaseScriptDecorator.format_linked_tags([tag])
-      %small.mr-4=count
+.mb-16
+  %small.float-right
+    Total number of scripts:
+    =@total_number_of_database_scripts
+
+.mb-8
+  %h5 Filter by tags
+  -@database_scripts_presenter.tallied_tags.each do |tag, count|
+    =DatabaseScriptDecorator.format_linked_tags([tag])
+    %small.mr-4=count

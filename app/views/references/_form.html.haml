@@ -8,12 +8,11 @@
 
   .row
     .medium-8.columns
-      .row.mb-4
-        .medium-12.columns
-          =f.label :reference_author_names_string do
-            Authors
-            =db_tooltip_icon :authors, scope: :references
-          =f.text_field :author_names_string, value: params.dig(:reference, :author_names_string) || reference.author_names_string
+      .mb-4
+        =f.label :reference_author_names_string do
+          Authors
+          =db_tooltip_icon :authors, scope: :references
+        =f.text_field :author_names_string, value: params.dig(:reference, :author_names_string) || reference.author_names_string
 
       .row.mb-4
         .medium-2.columns
@@ -34,64 +33,61 @@
             =db_tooltip_icon :nested_pagination, scope: :references
           =f.text_field :pagination
 
-      .row.mb-4
-        .medium-12.columns
-          =f.label :reference_title do
-            Title
-            =db_tooltip_icon :title, scope: :references
-          =f.text_area :title, rows: 1
+      .mb-4
+        =f.label :reference_title do
+          Title
+          =db_tooltip_icon :title, scope: :references
+        =f.text_area :title, rows: 1
 
-      .row.mt-4
-        .medium-12.columns
-          #reference-type-css-tabs
-            %input#article-tab.tab-input.hidden{checked: ("checked" if reference.is_a?(ArticleReference)), name: "reference_type", type: "radio", value: 'ArticleReference'}
-            %label{for: "article-tab"} Article
-            %input#book-tab.tab-input.hidden{checked: ("checked" if reference.is_a?(BookReference)), name: "reference_type", type: "radio", value: 'BookReference'}
-            %label{for: "book-tab"} Book
-            %input#nested-tab.tab-input.hidden{checked: ("checked" if reference.is_a?(NestedReference)), name: "reference_type", type: "radio", value: 'NestedReference'}
-            %label{for: "nested-tab"} Nested
+      .mt-4
+        #reference-type-css-tabs
+          %input#article-tab.tab-input.hidden{checked: ("checked" if reference.is_a?(ArticleReference)), name: "reference_type", type: "radio", value: 'ArticleReference'}
+          %label{for: "article-tab"} Article
+          %input#book-tab.tab-input.hidden{checked: ("checked" if reference.is_a?(BookReference)), name: "reference_type", type: "radio", value: 'BookReference'}
+          %label{for: "book-tab"} Book
+          %input#nested-tab.tab-input.hidden{checked: ("checked" if reference.is_a?(NestedReference)), name: "reference_type", type: "radio", value: 'NestedReference'}
+          %label{for: "nested-tab"} Nested
 
-            #article-tab-content.tab
-              .row
-                .medium-6.columns
-                  =f.label :reference_journal_name do
-                    Journal
-                    =db_tooltip_icon :journal_name, scope: :references
-                  =f.text_field :journal_name, value: params.dig(:reference, :journal_name) || (reference.journal&.name if reference.respond_to?(:journal)) || ''
-                .medium-6.columns.end
-                  =f.label :reference_series_volume_issue do
-                    Series volume issue
-                    =db_tooltip_icon :series_volume_issue, scope: :references
-                  =f.text_field :series_volume_issue
+          #article-tab-content.tab
+            .row
+              .medium-6.columns
+                =f.label :reference_journal_name do
+                  Journal
+                  =db_tooltip_icon :journal_name, scope: :references
+                =f.text_field :journal_name, value: params.dig(:reference, :journal_name) || (reference.journal&.name if reference.respond_to?(:journal)) || ''
+              .medium-6.columns.end
+                =f.label :reference_series_volume_issue do
+                  Series volume issue
+                  =db_tooltip_icon :series_volume_issue, scope: :references
+                =f.text_field :series_volume_issue
 
-            #book-tab-content.tab
-              .row
-                .medium-6.columns.end
-                  =f.label :reference_publisher_string do
-                    Publisher
-                    =db_tooltip_icon :publisher, scope: :references
-                  =f.text_field :publisher_string, value: params.dig(:reference, :publisher_string) || (reference.publisher&.display_name if reference.respond_to?(:publisher)) || ''
+          #book-tab-content.tab
+            .row
+              .medium-6.columns.end
+                =f.label :reference_publisher_string do
+                  Publisher
+                  =db_tooltip_icon :publisher, scope: :references
+                =f.text_field :publisher_string, value: params.dig(:reference, :publisher_string) || (reference.publisher&.display_name if reference.respond_to?(:publisher)) || ''
 
-            #nested-tab-content.tab
-              .row
-                .medium-6.columns.end
-                  =f.label :nesting_reference_id do
-                    Nesting reference ID
-                    =db_tooltip_icon :nesting_reference_id, scope: :references
-                  =f.text_field :nesting_reference_id
+          #nested-tab-content.tab
+            .row
+              .medium-6.columns.end
+                =f.label :nesting_reference_id do
+                  Nesting reference ID
+                  =db_tooltip_icon :nesting_reference_id, scope: :references
+                =f.text_field :nesting_reference_id
 
-      .row.mt-8.mb-4
-        .medium-12.columns
-          %h6.font-bold Notes
-        .medium-12.columns.mb-2
+      .mt-8.mb-4
+        %h6.font-bold Notes
+        .mb-2
           =f.label :reference_public_notes, 'Public notes'
           =f.text_area :public_notes, rows: 2
-        .medium-12.columns.mb-2
+        .mb-2
           =f.label :reference_editor_notes do
             Editor notes
             =db_tooltip_icon :editor_notes, scope: :references
           =f.text_area :editor_notes, rows: 2
-        .medium-12.columns
+        .mb-2
           =f.label :reference_taxonomic_notes do
             Taxonomic notes
             =db_tooltip_icon :taxonomic_notes, scope: :references
@@ -99,22 +95,21 @@
 
     .medium-4.columns
       .callout
+        %h6.font-bold Misc. fields
+
+        .mb-4
+          =f.label :reference_bolton_key do
+            Bolton key
+            =db_tooltip_icon :bolton_key, scope: :references
+          =f.text_field :bolton_key
+
+        .mb-4
+          =f.label :reference_doi do
+            DOI
+            =db_tooltip_icon :doi, scope: :references
+          =f.text_field :doi
+
         .row
-          .medium-12.columns
-            %h6.font-bold Misc. fields
-
-          .medium-12.columns.mb-4
-            =f.label :reference_bolton_key do
-              Bolton key
-              =db_tooltip_icon :bolton_key, scope: :references
-            =f.text_field :bolton_key
-
-          .medium-12.columns.mb-4
-            =f.label :reference_doi do
-              DOI
-              =db_tooltip_icon :doi, scope: :references
-            =f.text_field :doi
-
           .medium-6.columns
             =f.label :stated_year do
               Stated year
@@ -126,45 +121,43 @@
               =db_tooltip_icon :author_names_suffix, scope: :references
             =f.select :author_names_suffix, Reference.distinct.pluck(:author_names_suffix)
 
+        .row
           .medium-8.columns.end.mb-4
             =f.label :reference_date do
               Date
               =db_tooltip_icon :date, scope: :references
             =f.text_field :date
 
-          .medium-12.columns
-            =f.label :online_early do
-              =f.check_box :online_early
-              Online early
+        .mb-4
+          =f.label :online_early do
+            =f.check_box :online_early
+            Online early
 
     .medium-4.columns.end.mt-4
       .callout
         %h6.font-bold Reference document
         =f.fields_for :document, (reference.document || ReferenceDocument.new) do |document_form|
-          .row.mb-4
-            .medium-12.columns
-              =document_form.file_field :file
+          .mb-4
+            =document_form.file_field :file
 
           -if document_form.object.url?
-            .row
-              .medium-12.columns.end
-                =f.label :document_url do
-                  Source URL (legacy)
-                =document_form.text_field :url
+            .mb-4
+              =f.label :document_url do
+                Source URL (legacy)
+              =document_form.text_field :url
 
-          .row
-            .medium-12.columns
-              =succeed ":" do
-                %code reference_documents.id
-              =document_form.object.id || '(none)'
-          .row
-            .medium-12.columns
-              =succeed ":" do
-                %code file_file_name
-              -if document_form.object.file_file_name.present?
-                =document_form.object.file_file_name
-              -else
-                (none)
+          .mb-4
+            =succeed ":" do
+              %code reference_documents.id
+            =document_form.object.id || '(none)'
+
+          .mb-4
+            =succeed ":" do
+              %code file_file_name
+            -if document_form.object.file_file_name.present?
+              =document_form.object.file_file_name
+            -else
+              (none)
 
   .row
     .medium-3.columns

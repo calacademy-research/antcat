@@ -8,33 +8,31 @@
   .callout.callout-responsive.mb-8
     =render "shared/revision_comparer/help"
 
-.row
-  .medium-12.columns
-    -if comparer.diff_with
-      %h5 Difference between revisions
-      .callout.mb-8
-        .row
-          .medium-6.columns=revision_presenter.left_side_diff.html_safe
-          .medium-6.columns=revision_presenter.right_side_diff.html_safe
+-if comparer.diff_with
+  %h5 Difference between revisions
+  .callout.mb-8
+    .row
+      .medium-6.columns=revision_presenter.left_side_diff.html_safe
+      .medium-6.columns=revision_presenter.right_side_diff.html_safe
+-else
+  %h5
+    -if comparer.selected
+      Revision as of
+      =l comparer.selected.updated_at, format: :time_with_full_date_in_words
     -else
-      %h5
-        -if comparer.selected
-          Revision as of
-          =l comparer.selected.updated_at, format: :time_with_full_date_in_words
-        -else
-          -if comparer.most_recent.persisted?
-            Current version
-          -else
-            Version before item was deleted
-          %small=comparer.most_recent.updated_at
+      -if comparer.most_recent.persisted?
+        Current version
+      -else
+        Version before item was deleted
+      %small=comparer.most_recent.updated_at
 
-      .callout{class: (comparer.looking_at_a_single_old_revision? ? "bg-revision-red" : "bg-revision-green")}
-        =preserve do
-          =revision_presenter.render_revision(comparer.selected || comparer.most_recent, view_context: self)
+  .callout{class: (comparer.looking_at_a_single_old_revision? ? "bg-revision-red" : "bg-revision-green")}
+    =preserve do
+      =revision_presenter.render_revision(comparer.selected || comparer.most_recent, view_context: self)
 
-  .medium-12.columns.mb-8.mt-8
-    =render "shared/revision_comparer/revision_history_table",
-      comparer: comparer,
-      revision_presenter: revision_presenter,
-      revisions: comparer.revisions.reverse,
-      most_recent: comparer.most_recent
+.mb-8.mt-8
+  =render "shared/revision_comparer/revision_history_table",
+    comparer: comparer,
+    revision_presenter: revision_presenter,
+    revisions: comparer.revisions.reverse,
+    most_recent: comparer.most_recent

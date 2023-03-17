@@ -11,66 +11,62 @@
   =render "shared/errors_for", resource: history_item
   =hidden_field_tag :redirect_back_url, params[:redirect_back_url]
 
-  .row{class: ("hidden" if collapse_history_item_taxt_textarea?(history_item)), data: { toggler_name: "taxt_textarea" }}
-    .medium-12.columns
-      =text_area_tag :taxt, history_item.taxt, rows: 5, name: 'history_item[taxt]', data: { has_linkables: true, previewable: true, previewable_title: "Taxt (freeform text) #{tooltip_icon('Required for taxt items; must it be blank for almost all other types of items. This textarea is always visible in order to make it easier to convert taxt item to relational items (or the other way around).')}", use_extras: true }
+  %div{class: ("hidden" if collapse_history_item_taxt_textarea?(history_item)), data: { toggler_name: "taxt_textarea" }}
+    =text_area_tag :taxt, history_item.taxt, rows: 5, name: 'history_item[taxt]', data: { has_linkables: true, previewable: true, previewable_title: "Taxt (freeform text) #{tooltip_icon('Required for taxt items; must it be blank for almost all other types of items. This textarea is always visible in order to make it easier to convert taxt item to relational items (or the other way around).')}", use_extras: true }
 
-  .row.mt-8
-    .large-12.columns
-      .callout
-        %h6
-          Fields for relational history items
-          =beta_label
-          =tooltip_icon 'Still in beta. This section can be ignored for taxt items.'
-        .row
-          .medium-5.columns.end
-            %table.table-unstriped
-              %tr
-                %td
-                  =f.label :type do
-                    Item type
-                %td=f.select :type, options_for_history_item_types(history_item.type)
+  .mt-8
+    .callout
+      %h6
+        Fields for relational history items
+        =beta_label
+        =tooltip_icon 'Still in beta. This section can be ignored for taxt items.'
+      .row
+        .medium-5.columns.end
+          %table.table-unstriped
+            %tr
+              %td
+                =f.label :type do
+                  Item type
+              %td=f.select :type, options_for_history_item_types(history_item.type)
 
-        .row
-          .medium-12.columns
-            %table.table-unstriped
-              %tr
-                %td.type-specific-section.hidden.type-specific-help-Taxt
-                  %p
-                    Fields in this box are not relevant for
-                    %code Taxt
-                    items.
+        %table.table-unstriped
+          %tr
+            %td.type-specific-section.hidden.type-specific-help-Taxt
+              %p
+                Fields in this box are not relevant for
+                %code Taxt
+                items.
 
-                %td.type-specific-section.hidden.type-specific-help-JuniorSynonymOf.type-specific-help-SeniorSynonymOf
-                  %p
-                    Protonym-based. Currently only for species-group names, because the terminal taxon of the
-                    %code object_protonym
-                    is used for the link (for which cannot pick the correct rank for protonyms with both genera and subgenera).
-                  %p
-                    Like with
-                    %code Taxt
-                    items, mirrored items
-                    =surround "(", ")" do
-                      %code JuniorSynonymOf
-                      +
-                      %code SeniorSynonymOf
-                    must be added.
+            %td.type-specific-section.hidden.type-specific-help-JuniorSynonymOf.type-specific-help-SeniorSynonymOf
+              %p
+                Protonym-based. Currently only for species-group names, because the terminal taxon of the
+                %code object_protonym
+                is used for the link (for which cannot pick the correct rank for protonyms with both genera and subgenera).
+              %p
+                Like with
+                %code Taxt
+                items, mirrored items
+                =surround "(", ")" do
+                  %code JuniorSynonymOf
+                  +
+                  %code SeniorSynonymOf
+                must be added.
 
-                %td.type-specific-section.hidden.type-specific-help-FormDescriptions
-                  %p
-                    See also related wiki page
-                    =link_to_wiki_page_or_missing WikiPage::FORMS
+            %td.type-specific-section.hidden.type-specific-help-FormDescriptions
+              %p
+                See also related wiki page
+                =link_to_wiki_page_or_missing WikiPage::FORMS
 
-                %td.type-specific-section.hidden.type-specific-help-HomonymReplacedBy.type-specific-help-ReplacementNameFor
-                  %p
-                    Like with
-                    %code Taxt
-                    items, mirrored items
-                    =surround "(", ")" do
-                      %code HomonymReplacedBy
-                      +
-                      %code ReplacementNameFor
-                    must be added.
+            %td.type-specific-section.hidden.type-specific-help-HomonymReplacedBy.type-specific-help-ReplacementNameFor
+              %p
+                Like with
+                %code Taxt
+                items, mirrored items
+                =surround "(", ")" do
+                  %code HomonymReplacedBy
+                  +
+                  %code ReplacementNameFor
+                must be added.
 
         -# [grep:history_type].
         %table.table-unstriped
@@ -162,19 +158,18 @@
 
 -# TODO: DRY w.r.t. 'history_items/show.html.haml'.
 -if protonym.taxa.present?
-  .row.mb-8
-    .small-12.columns
-      %h6.font-bold Taxa belonging to this history item's protonym
-      %table.table-striped
-        -TaxonQuery.new(protonym.taxa.order_by_name).with_common_includes_and_current_taxon_includes.each do |taxon|
-          %tr
-            %td=CatalogFormatter.link_to_taxon(taxon)
-            %td=taxon.rank.capitalize
-            %td
-              =taxon.status.capitalize
-              -unless taxon.status.in?(Taxa::ExpandedStatus::SELF_STATUSES)
-                %br
-                %small=taxon.decorate.expanded_status
+  .mb-8
+    %h6.font-bold Taxa belonging to this history item's protonym
+    %table.table-striped
+      -TaxonQuery.new(protonym.taxa.order_by_name).with_common_includes_and_current_taxon_includes.each do |taxon|
+        %tr
+          %td=CatalogFormatter.link_to_taxon(taxon)
+          %td=taxon.rank.capitalize
+          %td
+            =taxon.status.capitalize
+            -unless taxon.status.in?(Taxa::ExpandedStatus::SELF_STATUSES)
+              %br
+              %small=taxon.decorate.expanded_status
 
 %h6.font-bold.mb-4 Other history items belonging to #{protonym.name.name_html}
 %table.table-striped
