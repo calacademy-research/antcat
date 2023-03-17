@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module RecordPickerHelper
-  def taxon_picker taxon, name:, id: nil, ranks: nil
-    render PickerComponent.new(:taxon, taxon, name: name, id: id, ranks: ranks)
+  def taxon_picker taxon, name:, id: nil, ranks: nil, allow_clear: true
+    render PickerComponent.new(:taxon, taxon, name: name, id: id, ranks: ranks, allow_clear: allow_clear)
   end
 
   def protonym_picker protonym, name:, id: nil, allow_clear: true

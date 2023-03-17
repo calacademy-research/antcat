@@ -100,7 +100,7 @@
           =f.fields_for :type_name, (protonym.type_name || TypeName.new) do |type_name_fields|
             %tr
               %td=type_name_fields.label :taxon
-              %td=taxon_picker type_name_fields.object.taxon, name: 'protonym[type_name_attributes][taxon_id]', id: 'protonym_type_name_attributes_taxon_id'
+              %td=taxon_picker type_name_fields.object.taxon, name: 'protonym[type_name_attributes][taxon_id]', id: 'protonym_type_name_attributes_taxon_id', allow_clear: !protonym.type_name&.persisted?
 
             %tr
               %td
