@@ -3,7 +3,7 @@
 
 -content_for :breadcrumbs_right do
   -if user_is_at_least_helper? && @author.references.empty?
-    =link_to "Delete", author_path(@author), method: :delete, data: { confirm: "Are you sure?" }, class: "btn-warning"
+    =link_to "Delete", author_path(@author), method: :delete, data: { confirm: "Are you sure?" }, class: "btn-danger"
   -if user_is_editor?
     =link_to "Merge", new_author_merges_path(@author), class: "btn-default"
 
@@ -101,4 +101,4 @@
                 =link_to 'Edit', edit_author_name_path(author_name), class: "btn-default"
               -unless hide_delete_author_name_button
                 -if user_is_editor? && author_name.references.empty?
-                  =link_to "Delete", author_name_path(author_name), method: :delete, data: { confirm: "Are you sure?" }, class: "btn-warning"
+                  =link_to "Delete", author_name_path(author_name), method: :delete, data: { confirm: "Are you sure?" }, class: "btn-danger"

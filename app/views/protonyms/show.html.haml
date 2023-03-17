@@ -9,7 +9,7 @@
     =link_to "What Links Here", protonym_what_links_here_path(@protonym), class: "btn-default"
   -if user_is_at_least_helper?
     -if !@protonym.taxa.exists?
-      =link_to "Delete", protonym_path(@protonym), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-warning"
+      =link_to "Delete", protonym_path(@protonym), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-danger"
 
   -if current_user
     =render DropdownComponent.new("More") do

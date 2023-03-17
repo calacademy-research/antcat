@@ -23,7 +23,7 @@
         %tr
           %td
             -if @taxon.subgenus == subgenus
-              =link_to 'Remove', taxon_set_subgenus_path(@taxon), method: :delete, class: 'btn-warning'
+              =link_to 'Remove', taxon_set_subgenus_path(@taxon), method: :delete, class: 'btn-danger'
             -else
               =link_to 'Set', taxon_set_subgenus_path(@taxon, subgenus_id: subgenus.id), method: :post, class: 'btn-saves'
           %td=CatalogFormatter.link_to_taxon(subgenus)

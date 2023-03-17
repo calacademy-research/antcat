@@ -71,7 +71,7 @@ module DatabaseScripts
 
       def quick_fix_link history_item
         link_to 'Convert to taxac!', convert_to_taxac_tags_quick_and_dirty_fix_path(history_item_id: history_item.id),
-          method: :post, remote: true, class: 'btn-warning'
+          method: :post, remote: true, class: 'btn-danger'
       end
   end
 end

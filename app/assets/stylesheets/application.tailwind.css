@@ -31,7 +31,7 @@
            border-ac-blue-darker;
   }
 
-  .btn-warning {
+  .btn-danger {
     @apply base__btn
            text-white hover:text-white
            bg-ac-red-danger hover:bg-ac-red-danger-darker

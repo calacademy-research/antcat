@@ -113,7 +113,7 @@ class ExtrasArea
         <a id="#{RECENTLY_USED_REFERENCES_BUTTON_ID}" class="btn-default">Recently used references</a>
         <a id="#{INSERT_REFERENCE_BUTTON_ID}" class="btn-default">+Reference</a>
         <a id="#{INSERT_TAXON_BUTTON_ID}" class="btn-default">+Taxon</a>
-        <a id="#{CONVERT_BOLTON_KEYS_BUTTON_ID}" class="btn-warning">Convert Bolton keys</a>
+        <a id="#{CONVERT_BOLTON_KEYS_BUTTON_ID}" class="btn-danger">Convert Bolton keys</a>
       </div>
     </div>
     """

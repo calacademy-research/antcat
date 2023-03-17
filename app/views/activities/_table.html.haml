@@ -33,4 +33,4 @@
               =activities_link activity.trackable_type, activity.trackable_id
               -if user_is_developer? && show_delete_button
                 %br
-                =link_to append_superadmin_icon("Delete"), activity_path(activity), method: :delete, data: { confirm: "Delete?" }, class: "btn-warning"
+                =link_to append_superadmin_icon("Delete"), activity_path(activity), method: :delete, data: { confirm: "Delete?" }, class: "btn-danger"

@@ -61,7 +61,7 @@ module DatabaseScripts
           history_item_id: own_homonym_of_item.id,
           edit_summary: "Delete duplicate-ish of other 'Junior homonym of item'"
         )
-        link_to 'Delete this one!', link, method: :post, remote: true, class: 'btn-warning'
+        link_to 'Delete this one!', link, method: :post, remote: true, class: 'btn-danger'
       end
   end
 end

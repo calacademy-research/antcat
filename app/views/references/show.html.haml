@@ -25,7 +25,7 @@
           %li=link_to "New Nested Reference", new_reference_path(nesting_reference_id: @reference.id, year: @reference.year, stated_year: @reference.stated_year), class: "btn-default"
         %li=link_to "Copy", new_reference_path(reference_to_copy: @reference.id), class: "btn-default"
         -if user_is_editor?
-          %li=link_to "Delete", reference_path(@reference), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-warning"
+          %li=link_to "Delete", reference_path(@reference), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-danger"
         %li=activities_link_for_trackable @reference
 
 .row.mb-8

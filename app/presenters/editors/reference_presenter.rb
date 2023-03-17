@@ -17,7 +17,7 @@ module Editors
           method: :post, class: "btn-saves"
       elsif can_restart_reviewing?
         link_to 'Restart reviewing', restart_reviewing_reference_path(reference),
-          method: :post, class: "btn-warning"
+          method: :post, class: "btn-danger"
       end
     end
 

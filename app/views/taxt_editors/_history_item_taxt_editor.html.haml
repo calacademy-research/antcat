@@ -10,7 +10,7 @@
 
     %button.btn-saves.btn-md{"data-action" => 'click->taxt-editor#saveHistoryItem', data: { testid: 'history-item-taxt-editor-save-button' }} Save
     %button.btn-neutral.btn-md{"data-action" => 'click->taxt-editor#cancel', data: { testid: 'history-item-taxt-editor-cancel-button' }} Cancel
-    %button.btn-warning.btn-md.ml-4{"data-action" => 'click->taxt-editor#delete', data: { testid: 'history-item-taxt-editor-delete-button' }} Delete
+    %button.btn-danger.btn-md.ml-4{"data-action" => 'click->taxt-editor#delete', data: { testid: 'history-item-taxt-editor-delete-button' }} Delete
 
   %div{"data-taxt-editor-target" => "presenter", class: "group/history-item-taxt-presenter"}
     =Detax[history_item.to_taxt]
