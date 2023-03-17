@@ -4,30 +4,29 @@
 -decorated = @reference.decorate
 
 -content_for :breadcrumbs_right do
-  .float-right
-    -if user_is_at_least_helper?
-      =link_to "Edit", edit_reference_path(@reference), class: "btn-default"
-    -if current_user
-      =link_to "History", reference_history_path(@reference), class: "btn-default"
-      =link_to "What Links Here", reference_what_links_here_path(@reference), class: "btn-default"
+  -if user_is_at_least_helper?
+    =link_to "Edit", edit_reference_path(@reference), class: "btn-default"
+  -if current_user
+    =link_to "History", reference_history_path(@reference), class: "btn-default"
+    =link_to "What Links Here", reference_what_links_here_path(@reference), class: "btn-default"
 
-    -if decorated.exportable_to_endnote? || decorated.exportable_to_wikipedia?
-      =render DropdownComponent.new("Export") do
-        %ul.no-bullet
-          -if decorated.exportable_to_endnote?
-            %li=link_to "EndNote", endnote_export_references_path(id: @reference.id)
-          -if decorated.exportable_to_wikipedia?
-            %li=link_to "Wikipedia", wikipedia_export_reference_path(@reference)
+  -if decorated.exportable_to_endnote? || decorated.exportable_to_wikipedia?
+    =render DropdownComponent.new("Export") do
+      %ul.no-bullet
+        -if decorated.exportable_to_endnote?
+          %li=link_to "EndNote", endnote_export_references_path(id: @reference.id)
+        -if decorated.exportable_to_wikipedia?
+          %li=link_to "Wikipedia", wikipedia_export_reference_path(@reference)
 
-    -if user_is_at_least_helper?
-      =render DropdownComponent.new("More") do
-        %ul.no-bullet
-          -if @reference.is_a?(ArticleReference) || @reference.is_a?(BookReference)
-            %li=link_to "New Nested Reference", new_reference_path(nesting_reference_id: @reference.id, year: @reference.year, stated_year: @reference.stated_year), class: "btn-default"
-          %li=link_to "Copy", new_reference_path(reference_to_copy: @reference.id), class: "btn-default"
-          -if user_is_editor?
-            %li=link_to "Delete", reference_path(@reference), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-warning"
-          =activities_link_for_trackable @reference
+  -if user_is_at_least_helper?
+    =render DropdownComponent.new("More") do
+      %ul.no-bullet.no-bullet.leading-7
+        -if @reference.is_a?(ArticleReference) || @reference.is_a?(BookReference)
+          %li=link_to "New Nested Reference", new_reference_path(nesting_reference_id: @reference.id, year: @reference.year, stated_year: @reference.stated_year), class: "btn-default"
+        %li=link_to "Copy", new_reference_path(reference_to_copy: @reference.id), class: "btn-default"
+        -if user_is_editor?
+          %li=link_to "Delete", reference_path(@reference), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-warning"
+        %li=activities_link_for_trackable @reference
 
 .row.mb-8
   .medium-9.columns
