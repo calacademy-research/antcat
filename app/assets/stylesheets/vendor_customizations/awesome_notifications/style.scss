@@ -1,0 +1,10 @@
+// From https://github.com/f3oall/awesome-notifications/tree/ede79406bb0a91c40aa2be8688422641eb7e0d03/src/styles
+
+@import "variables";
+@import "animations";
+@import "popups";
+@import "toasts";
+
+[class^="awn-"] {
+  box-sizing: border-box;
+}
