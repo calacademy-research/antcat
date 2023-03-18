@@ -7,7 +7,7 @@
   =link_to "History", reference_section_history_path(@reference_section), class: "btn-default"
   =activities_link_for_trackable @reference_section
   -if user_is_editor?
-    =link_to "Delete", reference_section_path(@reference_section), method: :delete, data: { confirm: "Are you sure?" }, class: "btn-warning"
+    =link_to "Delete", reference_section_path(@reference_section), method: :delete, data: { confirm: "Are you sure?" }, class: "btn-danger"
 
 %p
   This reference section belongs to

@@ -58,7 +58,7 @@ module DatabaseScripts
           history_item_id: rep_name_for_item.id,
           edit_summary: "strip foreign/duplicate-ish data of other 'Junior homonym of item'"
         )
-        link_to "Strip after 'Replacement name for TAG ID'", link, method: :post, remote: true, class: 'btn-warning'
+        link_to "Strip after 'Replacement name for TAG ID'", link, method: :post, remote: true, class: 'btn-danger'
       end
   end
 end

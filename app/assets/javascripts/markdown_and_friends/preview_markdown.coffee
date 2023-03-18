@@ -26,7 +26,7 @@ class MakePreviewable
     @wrapInPreviewArea()
     @setupPreviewLink()
 
-    if @textarea.data('use-extras')
+    if @textarea.get(0).getAttribute('data-use-extras')
       new ExtrasArea(@textarea, @textarea.parent().parent().parent(), this)
 
     @renderPreview() if @textarea.is(":visible") and @textarea.get(0).value != ""
@@ -38,7 +38,7 @@ class MakePreviewable
 
   wrapInPreviewArea: ->
     # Create new preview area (tabs) and insert after textarea, and tabify.
-    title = @textarea.data("previewable-title") || "Text"
+    title = @textarea.get(0).getAttribute('data-previewable-title') || "Text"
     previewArea = @createPreviewArea title
     previewArea.insertAfter @textarea
 
@@ -71,7 +71,7 @@ class MakePreviewable
     tab = @textarea.parent().parent().find(".preview-previewable")
 
     toParse = @textarea.get(0).value
-    formatTypeFields = @textarea.data('format-type-fields')
+    formatTypeFields = @textarea.get(0).getAttribute('data-format-type-fields')
 
     if toParse is ""
       tab.get(0).innerHTML = "No content. Try this: <code>{tax 430207}</code>"
@@ -109,11 +109,11 @@ class ExtrasArea
     $ """
     <div class="row">
       <div class="medium-6 columns end leading-7">
-        <a id="#{DEFAULT_REFERENCE_BUTTON_ID}" class="btn-default">Default reference</a>
-        <a id="#{RECENTLY_USED_REFERENCES_BUTTON_ID}" class="btn-default">Recently used references</a>
-        <a id="#{INSERT_REFERENCE_BUTTON_ID}" class="btn-default">+Reference</a>
-        <a id="#{INSERT_TAXON_BUTTON_ID}" class="btn-default">+Taxon</a>
-        <a id="#{CONVERT_BOLTON_KEYS_BUTTON_ID}" class="btn-warning">Convert Bolton keys</a>
+        <button id="#{DEFAULT_REFERENCE_BUTTON_ID}" class="btn-default">Default reference</button>
+        <button id="#{RECENTLY_USED_REFERENCES_BUTTON_ID}" class="btn-default">Recently used references</button>
+        <button id="#{INSERT_REFERENCE_BUTTON_ID}" class="btn-default">+Reference</button>
+        <button id="#{INSERT_TAXON_BUTTON_ID}" class="btn-default">+Taxon</button>
+        <button id="#{CONVERT_BOLTON_KEYS_BUTTON_ID}" class="btn-danger">Convert Bolton keys</button>
       </div>
     </div>
     """
@@ -173,7 +173,7 @@ class ExtrasArea
     button = @textareaTab.find("##{DEFAULT_REFERENCE_BUTTON_ID}")
 
     unless reference?.id
-      button.get(0).classList.add('ui-state-disabled')
+      button.get(0).setAttribute("disabled", "disabled")
       return
 
     button.get(0).innerHTML = reference.referenceKey
@@ -199,8 +199,8 @@ class ExtrasArea
         error: -> AntCat.notifyError "Error parsing Bolton keys"
 
 defaultReference = ->
-  reference = $('#default-reference')
-  id = reference.data('id')
-  referenceKey = reference.data('reference-key')
+  reference = $('#default-reference').get(0)
+  id = reference.getAttribute('data-reference-id')
+  referenceKey = reference.getAttribute('data-reference-key')
 
   { id: id, referenceKey: referenceKey }

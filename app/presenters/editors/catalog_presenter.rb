@@ -50,14 +50,14 @@ module Editors
       return unless taxon.is_a?(Subspecies)
 
       link_to 'Elevate to species', taxon_elevate_to_species_path(taxon),
-        method: :post, class: "btn-warning",
+        method: :post, class: "btn-danger",
         data: { confirm: "Are you sure you want to elevate this subspecies to species?" }
     end
 
     def delete_unreferenced_taxon_button
       return if taxon.is_a?(Family) || taxon.what_links_here.any_columns?
 
-      link_to 'Delete', taxon_path(taxon), method: :delete, class: "btn-warning",
+      link_to 'Delete', taxon_path(taxon), method: :delete, class: "btn-danger",
         data: { confirm: 'Are you sure?' }
     end
   end

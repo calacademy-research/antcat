@@ -15,7 +15,7 @@
   =link_to "History", history_item_history_path(@history_item), class: "btn-default"
   =activities_link_for_trackable @history_item
   -if user_is_editor?
-    =link_to "Delete", history_item_path(@history_item), method: :delete, data: { confirm: "Are you sure?" }, class: "btn-warning"
+    =link_to "Delete", history_item_path(@history_item), method: :delete, data: { confirm: "Are you sure?" }, class: "btn-danger"
 
 .row.mb-8
   .medium-9.columns

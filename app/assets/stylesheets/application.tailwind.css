@@ -5,81 +5,84 @@
 @layer components {
   /* Buttons */
   .base__btn {
-    @apply box-border whitespace-nowrap cursor-pointer;
-    @apply border rounded;
-
-    @apply btn-sm;
+    @apply box-border whitespace-nowrap cursor-pointer
+           border rounded
+           btn-sm;
   }
 
   .btn-default {
-    @apply base__btn;
-    @apply text-white hover:text-white
+    @apply base__btn
+           text-white hover:text-white
            bg-ac-blue hover:bg-ac-blue-darker
            border-ac-blue-darker;
   }
 
   .btn-neutral {
-    @apply base__btn;
-    @apply !text-black hover:text-black
+    @apply base__btn
+           !text-black hover:text-black
            bg-white hover:bg-slate-200
            border-black;
   }
 
   .btn-saves {
-    @apply base__btn;
-    @apply text-white hover:text-white
+    @apply base__btn
+           text-white hover:text-white
            bg-ac-blue-saves hover:bg-ac-blue-saves-darker
            border-ac-blue-darker;
   }
 
-  .btn-warning {
-    @apply base__btn;
-    @apply text-white hover:text-white
+  .btn-danger {
+    @apply base__btn
+           text-white hover:text-white
            bg-ac-red-danger hover:bg-ac-red-danger-darker
            border-ac-red-danger;
   }
 
   .btn-orange {
-    @apply base__btn;
-    @apply text-white hover:text-white
+    @apply base__btn
+           text-white hover:text-white
            bg-orange-500 hover:bg-orange-600
            border-orange-500;
   }
 
+  button[disabled=disabled], a[disabled=disabled] {
+    @apply pointer-events-none opacity-40;
+  }
+
   /* Badges */
   .base__badge {
-    @apply whitespace-nowrap py-1 px-2;
-    @apply text-sm rounded-full;
+    @apply whitespace-nowrap py-1 px-2
+           text-sm rounded-full;
   }
 
   .badge-blue {
-    @apply base__badge;
-    @apply text-white hover:text-white
+    @apply base__badge
+           text-white hover:text-white
            bg-ac-blue;
   }
 
   .badge-white {
-    @apply base__badge;
-    @apply text-black hover:text-black
+    @apply base__badge
+           text-black hover:text-black
            bg-white
            border border-black;
   }
 
   .badge-danger {
-    @apply base__badge;
-    @apply text-white hover:text-white
+    @apply base__badge
+           text-white hover:text-white
            bg-ac-red-danger;
   }
 
   .badge-green {
-    @apply base__badge;
-    @apply text-white hover:text-white
+    @apply base__badge
+           text-white hover:text-white
            bg-green-600;
   }
 
   .badge-orange {
-    @apply base__badge;
-    @apply text-white hover:text-white
+    @apply base__badge
+           text-white hover:text-white
            bg-orange-500;
   }
 }
@@ -301,7 +304,7 @@
 
 @layer utilities {
   .btn-sm {
-    @apply py-1 px-2  text-sm;
+    @apply py-1 px-2 text-sm;
 
     /* Fix for `button` elements which become too tall without this. */
     line-height: 1rem;

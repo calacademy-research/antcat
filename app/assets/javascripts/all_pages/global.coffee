@@ -1,9 +1,5 @@
 window.AntCat = {}
 
-$ ->
-  # To make ".disabled" link be unclickable.
-  $('body').on 'click', 'a.disabled', (event) -> event.preventDefault()
-
 AntCat.notifySuccess = (message, autoHide = true) -> $.notify message, className: "success", autoHide: autoHide
 AntCat.notifyError = (message, autoHide = true) -> $.notify message, autoHide: autoHide
 

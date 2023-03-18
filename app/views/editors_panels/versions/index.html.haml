@@ -57,14 +57,17 @@
             =decorated_version.revision_history_link
             =decorated_version.activity_link
           %td
-            %pre.pre-wrapped.text-md=decorated_version.format_compact_changeset
+            %pre.pre-wrapped.break-all.text-md
+              =decorated_version.format_compact_changeset
 
 -if @last_version
   .text-center
     %h5=time_ago_in_words @last_version.created_at
     %h6=@last_version.created_at
 
-%p
-  %small.float-right Total versions: #{@total_versions_count} (#{Time.current})
+%p.text-sm.float-right
+  Total versions: #{@total_versions_count} (#{Time.current})
+
+.clear-both
 
 =will_paginate @versions
