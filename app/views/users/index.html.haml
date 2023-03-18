@@ -43,7 +43,7 @@
   %table.table-striped
     %tbody
       -@hidden_users.each do |user|
-        %tr{class: ('!bg-danger-pale' if (user.locked? || user.deleted?))}
+        %tr
           %td=user.decorate.user_page_link
           %td=user.decorate.user_badge
           -if @show_user_stats
@@ -62,12 +62,11 @@
 -if @deleted_or_locked_users
   %h5.mt-20
     Deleted or locked users
-    %small This section is only visible to superadmins.
     =logged_in_only_tooltip_icon user_group: 'superadmins'
-  %table.table-unstriped
+  %table.table-striped
     %tbody
       -@deleted_or_locked_users.each do |user|
-        %tr{class: ('!bg-danger-pale' if (user.locked? || user.deleted?))}
+        %tr
           %td=user.decorate.user_page_link
           %td=user.decorate.user_badge
           -if @show_user_stats

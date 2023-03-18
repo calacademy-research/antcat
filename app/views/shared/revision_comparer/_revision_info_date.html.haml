@@ -2,6 +2,7 @@
 -# "07:45 12 December 2016<link to revision> (about 19 hours ago)"
 
 -if revision.is_a?(PaperTrail::Version)
+  -# TODO: http://localhost:3000/names/134043/history raises error: "The single-table inheritance mechanism failed to locate the subclass: 'FamilyOrSubfamilyName'".
   -date = revision.reify.updated_at
   -link_selected_id = revision.id
 -else

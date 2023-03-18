@@ -6,5 +6,5 @@
       =link_to "Reorder", protonym_reorder_history_items_path(protonym), disabled: (protonym.history_items.size < 2), class: "btn-default"
 
   -protonym.history_items.each do |history_item|
-    .history-item{class: ["#{history_item.underscored_type}-history-item", "mb-4 pb-4 border-b border-gray-300 last:border-0"]}
+    .history-item{class: "#{history_item.underscored_type}-history-item mb-4 pb-4"}
       =render 'taxt_editors/history_item_taxt_editor', history_item: history_item
