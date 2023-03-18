@@ -22,9 +22,9 @@
         =tooltip_icon 'Still in beta. This section can be ignored for taxt items.'
       .row
         .medium-4.columns.end
-          %table.table-unstriped
+          %table
             %tr
-              %td
+              %td.whitespace-nowrap
                 =f.label :type do
                   Item type
               %td=f.select :type, options_for_history_item_types(history_item.type)

@@ -18,7 +18,7 @@
       =render 'shared/errors_for', resource: name
       =hidden_field_tag :type, name.type
 
-      %table.table-unstriped{"data-controller" => "check-name-conflicts"}
+      %table{"data-controller" => "check-name-conflicts"}
         %tbody
           %tr
             %th.no-wrap

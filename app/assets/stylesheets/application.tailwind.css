@@ -262,8 +262,9 @@
     text-align: left;
   }
 
-  thead, tbody {
-    @apply bg-white border border-gray-100;
+  .table-striped thead, .table-striped tbody,
+  .table-unstriped thead, .table-unstriped tbody, {
+    @apply border border-gray-100;
   }
 
   thead {

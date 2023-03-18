@@ -30,7 +30,7 @@
 
   .row
     .medium-6.columns
-      %table.table-unstriped
+      %table
         %tr
           %td.shrink-tw-conflict
             =f.label :status do
@@ -111,7 +111,7 @@
 
         %tr
           %td{colspan: 2}
-            =edit_summary_text_field_tag optional: false
+            %p=edit_summary_text_field_tag optional: false
             %p
               Please provide a short edit summary for this change.
               For example what is supposed to change, or why it cannot be updated in other forms.

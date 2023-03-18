@@ -187,12 +187,9 @@
 
   .row
     .medium-6.columns
-      %table.table-unstriped
-        %tr
-          %td
-            =edit_summary_text_field_tag
-            .mb-4
-            =f.button "Save", class: "btn-saves btn-md"
+      =edit_summary_text_field_tag
+      .mb-4
+      =f.button "Save", class: "btn-saves btn-md"
 
 -if protonym.taxa.present?
   %h5.mt-20.mb-4 Related records
