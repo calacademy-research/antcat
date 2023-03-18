@@ -109,11 +109,11 @@ class ExtrasArea
     $ """
     <div class="row">
       <div class="medium-6 columns end leading-7">
-        <a id="#{DEFAULT_REFERENCE_BUTTON_ID}" class="btn-default">Default reference</a>
-        <a id="#{RECENTLY_USED_REFERENCES_BUTTON_ID}" class="btn-default">Recently used references</a>
-        <a id="#{INSERT_REFERENCE_BUTTON_ID}" class="btn-default">+Reference</a>
-        <a id="#{INSERT_TAXON_BUTTON_ID}" class="btn-default">+Taxon</a>
-        <a id="#{CONVERT_BOLTON_KEYS_BUTTON_ID}" class="btn-danger">Convert Bolton keys</a>
+        <button id="#{DEFAULT_REFERENCE_BUTTON_ID}" class="btn-default">Default reference</button>
+        <button id="#{RECENTLY_USED_REFERENCES_BUTTON_ID}" class="btn-default">Recently used references</button>
+        <button id="#{INSERT_REFERENCE_BUTTON_ID}" class="btn-default">+Reference</button>
+        <button id="#{INSERT_TAXON_BUTTON_ID}" class="btn-default">+Taxon</button>
+        <button id="#{CONVERT_BOLTON_KEYS_BUTTON_ID}" class="btn-danger">Convert Bolton keys</button>
       </div>
     </div>
     """

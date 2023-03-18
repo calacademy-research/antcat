@@ -155,7 +155,7 @@
             =succeed ":" do
               %code file_file_name
             -if document_form.object.file_file_name.present?
-              =document_form.object.file_file_name
+              .break-all=document_form.object.file_file_name
             -else
               (none)
 
