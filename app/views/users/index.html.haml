@@ -26,7 +26,7 @@
           =user.decorate.user_badge
           -if user.superadmin? && user_is_at_least_helper?
             %span.badge-orange superadmin
-        -if user_is_superadmin?
+        -if @show_user_stats
           %td=link_to "#{user.activities.count}&nbsp;activities".html_safe, activities_path(user_id: user.id)
           %td=link_to "#{user.created_paper_trail_versions.count}&nbsp;PTVs".html_safe, versions_path(whodunnit: user.id)
         %td
@@ -46,7 +46,7 @@
         %tr{class: ('!bg-danger-pale' if (user.locked? || user.deleted?))}
           %td=user.decorate.user_page_link
           %td=user.decorate.user_badge
-          -if user_is_superadmin?
+          -if @show_user_stats
             %td=link_to "#{user.activities.count}&nbsp;activities".html_safe, activities_path(user_id: user.id)
             %td=link_to "#{user.created_paper_trail_versions.count}&nbsp;PTVs".html_safe, versions_path(whodunnit: user.id)
           %td
@@ -70,7 +70,7 @@
         %tr{class: ('!bg-danger-pale' if (user.locked? || user.deleted?))}
           %td=user.decorate.user_page_link
           %td=user.decorate.user_badge
-          -if user_is_superadmin?
+          -if @show_user_stats
             %td=link_to "#{user.activities.count}&nbsp;activities".html_safe, activities_path(user_id: user.id)
             %td=link_to "#{user.created_paper_trail_versions.count}&nbsp;PTVs".html_safe, versions_path(whodunnit: user.id)
           %td
