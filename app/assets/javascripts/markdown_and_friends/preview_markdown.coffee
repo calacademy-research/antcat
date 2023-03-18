@@ -173,7 +173,7 @@ class ExtrasArea
     button = @textareaTab.find("##{DEFAULT_REFERENCE_BUTTON_ID}")
 
     unless reference?.id
-      button.get(0).classList.add('ui-state-disabled')
+      button.get(0).setAttribute("disabled", "disabled")
       return
 
     button.get(0).innerHTML = reference.referenceKey
