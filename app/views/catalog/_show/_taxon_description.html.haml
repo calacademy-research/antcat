@@ -89,7 +89,7 @@
               -# TODO: Check `grouped_item.group_key.join('_')` because
               -# `group_key` = `["JuniorSynonymOf", "object_protonym_id", 156572]`.
               %button.btn-neutral.mr-4{"data-action" => "toggler#toggle", "data-toggler-target" => "grouped-#{grouped_item.group_key.join('_')}"} Show/hide grouped
-              %small.font-bold.text-gray-500 #{grouped_item.underscored_type} x #{grouped_item.number_of_items}
+              %span.text-sm.font-bold.text-gray-500 #{grouped_item.underscored_type} x #{grouped_item.number_of_items}
 
             %ul.compact-list.no-bullet.mb-8.hidden{data: { toggler_name: "grouped-#{grouped_item.group_key.join('_')}" }}
               -grouped_item.items.each do |history_item|

@@ -72,8 +72,7 @@
               %td
                 =taxon.status.capitalize
                 -unless taxon.status.in?(Taxa::ExpandedStatus::SELF_STATUSES)
-                  %br
-                  %small=taxon.decorate.expanded_status
+                  .text-sm=taxon.decorate.expanded_status
 
     -if has_more_than_a_single_history_item
       %h6.font-bold.mt-12.mb-4 This history item highlighted in context with other history items belonging to #{@protonym.name.name_html}
@@ -85,5 +84,5 @@
                 =link_to "##{protonym_history_item.id}", history_item_path(protonym_history_item)
                 -if protonym_history_item == @history_item
                   %strong (selected)
-              %td.grow-tw-conflict
-                %small=Detax[protonym_history_item.to_taxt]
+              %td.grow-tw-conflict.text-sm
+                =Detax[protonym_history_item.to_taxt]

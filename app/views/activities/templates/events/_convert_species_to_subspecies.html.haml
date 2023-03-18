@@ -10,6 +10,6 @@ to a subspecies (now
   =activity.link_taxon_trackable_if_exists deleted_label: activity.parameters[:name].html_safe
 
 -unless activity.parameters[:original_species_id]
-  %small.bold-warning please see note
+  %span.text-sm.bold-warning please see note
   =inline_expandable("show more") do
     This species was converted using the old code that modified the original record in place. The old species record may be missing and may have to be recreated.

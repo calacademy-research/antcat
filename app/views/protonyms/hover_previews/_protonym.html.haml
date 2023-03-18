@@ -18,4 +18,4 @@
     -TaxonQuery.new(protonym.taxa.order_by_name).with_common_includes_and_current_taxon_includes.each do |taxon|
       %li
         =CatalogFormatter.link_to_taxon(taxon)
-        %small=taxon.decorate.expanded_status
+        %span.text-sm=taxon.decorate.expanded_status

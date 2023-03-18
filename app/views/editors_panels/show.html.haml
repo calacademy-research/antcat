@@ -50,8 +50,8 @@
         -else
           %li There are no featured wiki pages
         -if @editors_panel_presenter.see_more_wiki_pages?
-          %li.mt-4
-            %small=link_to "See all #{@editors_panel_presenter.total_wiki_pages_count} wiki pages...", wiki_pages_path
+          %li.mt-4.text-sm
+            =link_to "See all #{@editors_panel_presenter.total_wiki_pages_count} wiki pages...", wiki_pages_path
 
 .mt-8
   %h5 Most recent activity (#{link_to("see more", activities_path)})

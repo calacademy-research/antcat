@@ -21,7 +21,7 @@
           -if current_user
             %td
               -if wiki_page.permanent_identifier?
-                %small
+                .text-sm
                   %code=wiki_page.permanent_identifier
                   =logged_in_only_tooltip_icon "Permanent identifier. This section is only visible to logged-in users."
 

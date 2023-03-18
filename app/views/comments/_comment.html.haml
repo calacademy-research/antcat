@@ -12,6 +12,6 @@
       %span.hidden{class: "group-hover/comment:inline"}
         =inline_expandable("show raw") { comment.body }
         -if current_user == comment.user
-          %small=link_to "edit", edit_comment_path(comment), class: "discreet"
+          %span.text-sm=link_to "edit", edit_comment_path(comment), class: "discreet"
 
   %p=markdown comment.body

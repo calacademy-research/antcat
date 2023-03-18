@@ -16,7 +16,7 @@
   %h5
     #{@issue.open? ? 'Open' : 'Closed'} issue: #{@issue.title}
     =@issue.decorate.help_wanted_badge
-  %small
+  .text-sm
     Added by
     =@issue.user.decorate.user_page_link
     =time_ago_in_words @issue.created_at

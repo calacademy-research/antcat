@@ -53,7 +53,7 @@ export default class extends Controller {
         <li>
           ${warnAboutHomonym ? '<span class="bold-warning">Homonym</span> ' : ''}
           <a href='${nameOwnerUrl}'>${name.name_html}</a> ${!name.taxon_id ? '(protonym)' : ''}
-          <small class='text-gray-600'>#${name.id}</small>
+          <span class='text-sm text-gray-600'>#${name.id}</span>
         </li>
       `
     }).join('')

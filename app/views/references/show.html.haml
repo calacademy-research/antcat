@@ -140,7 +140,7 @@
   -if @citations_presenter.any_citations?
     .bg-logged-in-only.callout.border-0.mb-8
       %h5 Citations
-      %small Note: nested references of this reference are not included here.
+      .text-sm.mb-4 Note: nested references of this reference are not included here.
 
       %table.table-striped
         %thead
@@ -180,7 +180,8 @@
 -if decorated.described_taxa.exists?
   .mb-8
     %h5 Taxa originally described in this reference (including combinations)
-    %small Note: taxa described in nested references of this reference are not included here.
+    .text-sm.mb-4 Note: taxa described in nested references of this reference are not included here.
+
     %table.table-striped
       %thead
         %th Taxon

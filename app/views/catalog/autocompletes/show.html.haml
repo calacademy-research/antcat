@@ -1,6 +1,6 @@
 -pickable_type = @pickable_type
 
-%small.font-bold Taxa
+.font-bold Taxa
 -if @taxa.blank?
   %p No results
 -else
@@ -32,7 +32,7 @@
               -elsif pickable_type == 'protonym'
                 =protonym_label
 
-%small.mt-8.font-bold Protonyms
+.mt-8.font-bold Protonyms
 -if @protonyms.blank?
   %p No results
 -else

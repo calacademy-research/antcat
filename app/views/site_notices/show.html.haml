@@ -9,7 +9,7 @@
 
 .mb-4
   %h5=@site_notice.title
-  %small.text-gray-600
+  .text-sm.text-gray-600
     Added by
     =@site_notice.user.decorate.user_page_link
     =time_ago_in_words(@site_notice.created_at)

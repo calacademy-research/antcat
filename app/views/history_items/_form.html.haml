@@ -168,8 +168,7 @@
           %td
             =taxon.status.capitalize
             -unless taxon.status.in?(Taxa::ExpandedStatus::SELF_STATUSES)
-              %br
-              %small=taxon.decorate.expanded_status
+              .text-sm=taxon.decorate.expanded_status
 
 %h6.font-bold.mb-4 Other history items belonging to #{protonym.name.name_html}
 %table.table-striped
@@ -185,4 +184,4 @@
             -if protonym_history_item == history_item
               %strong (selected)
           %td.grow-tw-conflict
-            %small=Detax[protonym_history_item.to_taxt]
+            =Detax[protonym_history_item.to_taxt]

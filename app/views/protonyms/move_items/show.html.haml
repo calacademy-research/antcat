@@ -30,8 +30,8 @@
             -@protonym.history_items.each do |history_item|
               %tr
                 %td=check_box_tag "history_item_ids[]", history_item.id, false, data: { 'checkbox-select-all-target': "checkbox" }
-                %td
-                  %small=Detax[history_item.to_taxt]
+                %td.text-sm
+                  =Detax[history_item.to_taxt]
 
     -# Move to.
     .medium-6.columns
@@ -43,8 +43,8 @@
           %tbody
             -@to_protonym.history_items.each do |history_item|
               %tr
-                %td
-                  %small=Detax[history_item.to_taxt]
+                %td.text-sm
+                  =Detax[history_item.to_taxt]
 
   .mb-8
     .text-center
