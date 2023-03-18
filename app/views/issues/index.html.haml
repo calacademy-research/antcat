@@ -23,7 +23,7 @@
           =link_to issue.title, issue
           =issue.decorate.help_wanted_badge
           %br
-          %small.text-gray-600{class: "[&_a]:text-gray-600"}
+          %span.text-sm.text-gray-600{class: "[&_a]:text-gray-600"}
             added
             =time_ago_in_words issue.created_at
             ago by

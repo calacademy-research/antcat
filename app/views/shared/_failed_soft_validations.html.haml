@@ -5,8 +5,8 @@
       =link_to 'See more similar.', database_script_path(soft_validation.database_script), title: soft_validation.database_script.title
 
 -if soft_validations.warn_about_slow_runtime?
-  %small.bold-warning
+  .bold-warning
     Checking all scripts took a long time
-    =surround "(", ")." do
+    =surround "(", ")" do
       =soft_validations.total_runtime.round(2)
       seconds

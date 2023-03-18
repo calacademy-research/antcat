@@ -5,7 +5,7 @@ class HistoryItemDecorator < Draper::Decorator
     return unless history_item.rank?
 
     h.tag.span(class: 'bg-logged-in-only') do
-      h.tag.small "#{history_item.rank}-only item", class: 'bold-notice'
+      h.tag.span "#{history_item.rank}-only item", class: 'text-sm bold-notice'
     end
   end
 

@@ -22,9 +22,9 @@
         =tooltip_icon 'Still in beta. This section can be ignored for taxt items.'
       .row
         .medium-4.columns.end
-          %table.table-unstriped
+          %table
             %tr
-              %td
+              %td.whitespace-nowrap
                 =f.label :type do
                   Item type
               %td=f.select :type, options_for_history_item_types(history_item.type)
@@ -168,8 +168,7 @@
           %td
             =taxon.status.capitalize
             -unless taxon.status.in?(Taxa::ExpandedStatus::SELF_STATUSES)
-              %br
-              %small=taxon.decorate.expanded_status
+              .text-sm=taxon.decorate.expanded_status
 
 %h6.font-bold.mb-4 Other history items belonging to #{protonym.name.name_html}
 %table.table-striped
@@ -179,10 +178,10 @@
         %td{colspan: 2} Protonym has no history items.
     -else
       -protonym.history_items.persisted.each do |protonym_history_item|
-        %tr{class: ('bg-logged-in-only' if protonym_history_item == history_item)}
+        %tr{class: ('!bg-logged-in-only' if protonym_history_item == history_item)}
           %td
             =link_to "##{protonym_history_item.id}", history_item_path(protonym_history_item)
             -if protonym_history_item == history_item
               %strong (selected)
           %td.grow-tw-conflict
-            %small=Detax[protonym_history_item.to_taxt]
+            =Detax[protonym_history_item.to_taxt]

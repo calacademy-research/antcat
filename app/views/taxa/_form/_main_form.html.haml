@@ -17,12 +17,13 @@
           %td.pr-16
             =form.label :name do
               Name
-              =db_tooltip_icon :name, scope: :taxa
-          %td
+              -if taxon.name.new_record?
+                =db_tooltip_icon :name, scope: :taxa
+          %td{class: "group/name-column"}
             -if taxon.name.persisted?
               =taxon.name.name_html
-              %span.ml-8
-              =link_to "Name record ##{taxon.name.id}", name_path(taxon.name), class: 'btn-default'
+              %span.hidden{class: "group-hover/name-column:inline"}
+                =link_to "Name record ##{taxon.name.id}", name_path(taxon.name), class: 'btn-default'
             -else
               =text_field_tag :taxon_name_string, (taxon.name.name || default_name_string), "data-copy-field-target" => "copyFrom", "data-check-name-conflicts-target" => "input", "data-action" => 'input->check-name-conflicts#check', "data-check-name-conflicts-name-scope-param" => (Rank.single_word_name?(taxon.type) ? Names::FindConflicts::SINGLE_WORD_NAMES_ONLY : Names::FindConflicts::NO_SINGLE_WORD_NAMES)
               -if taxon.is_a?(Subgenus)
@@ -43,7 +44,7 @@
           %td.shrink-tw-conflict
             =form.label :protonym
             -if taxon.new_record?
-              %small.text-blue-800
+              %span.text-sm.text-blue-800
                 leave blank if you are
                 %br
                 creating a new protonym
@@ -64,7 +65,7 @@
     .large-4.columns
       .callout
         %h6.font-bold Fossil-only fields
-        %table.table-unstriped
+        %table
           %tr
             %td.py-0
               %ul.no-bullet.compact-list
@@ -73,7 +74,7 @@
                   =form.label :collective_group_name
 
         %h6.font-bold.mt-2 Misc. fields
-        %table.table-unstriped.pb-4
+        %table.pb-4
           %tr
             %td.py-0{colspan: 2}
               %ul.no-bullet.compact-list.mb-2

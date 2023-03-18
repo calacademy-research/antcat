@@ -22,9 +22,9 @@ describe TaxonDecorator do
 
     specify do
       expect(decorated.id_and_name_and_author_citation).to eq <<~HTML.squish
-        <span><small class="text-gray-600">##{taxon.id}</small>
+        <span><span class="text-sm text-gray-600">##{taxon.id}</span>
         #{taxon_link(taxon)}
-        <small class="text-gray-600">#{taxon.author_citation}</small></span>
+        <span class="text-sm text-gray-600">#{taxon.author_citation}</span></span>
       HTML
     end
   end

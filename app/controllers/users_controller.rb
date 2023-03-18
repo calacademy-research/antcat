@@ -5,6 +5,7 @@ class UsersController < ApplicationController
 
   def index
     @active_users = User.active.non_hidden.order_by_name
+    @show_user_stats = current_user&.superadmin? && params[:show_user_stats] # TODO: Secret hidden param.
 
     if user_is_at_least_helper?
       @hidden_users = User.hidden.order_by_name

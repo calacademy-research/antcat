@@ -20,7 +20,7 @@
   Found no database scripts.
 -@grouped_database_scripts.each do |section, database_scripts|
   %h5.float-right
-    %small #{database_scripts.size} scripts in section
+    .text-base #{database_scripts.size} scripts in section
   -case section
   -when DatabaseScripts::Tagging::DISAGREEING_HISTORY_SECTION
     %h5.float-left History items and taxa not agreeing
@@ -64,10 +64,7 @@
           %td
             =link_to database_script.title, database_script_path(database_script)
             -if database_script.issue_description.present?
-              %div
-                %small.text-gray-600
-                  Issue description:
-                  =database_script.issue_description
+              .text-sm.text-gray-600 Issue description: #{database_script.issue_description}
           %td=decorated.format_linked_tags
           %td.shrink-tw-conflict
             -if decorated.soft_validated?
@@ -78,7 +75,7 @@
               =decorated.empty_status
 
 .mb-16
-  %small.float-right
+  .text-sm.float-right
     Total number of scripts:
     =@total_number_of_database_scripts
 
@@ -86,4 +83,4 @@
   %h5 Filter by tags
   -@database_scripts_presenter.tallied_tags.each do |tag, count|
     =DatabaseScriptDecorator.format_linked_tags([tag])
-    %small.mr-4=count
+    %span.text-sm.mr-4=count

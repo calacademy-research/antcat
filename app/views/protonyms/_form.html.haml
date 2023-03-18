@@ -16,10 +16,11 @@
               =label_tag :name do
                 Name
                 =db_tooltip_icon :connecting_terms, scope: :protonyms
-            %td
+            %td{class: "group/name-column"}
               -if protonym.name&.persisted?
-                %span.float-right=link_to "Name record ##{protonym.name.id}", name_path(protonym.name), class: 'btn-default'
                 =protonym.name_with_fossil
+                %span.hidden{class: "group-hover/name-column:inline"}
+                  =link_to "Name record ##{protonym.name.id}", name_path(protonym.name), class: 'btn-default'
               -else
                 =text_field_tag :protonym_name_string, protonym&.name&.name, "data-check-name-conflicts-target" => "input", "data-action" => 'input->check-name-conflicts#check'
                 .mt-2.possible-name-conflicts{"data-check-name-conflicts-target" => "results"}
@@ -186,12 +187,9 @@
 
   .row
     .medium-6.columns
-      %table.table-unstriped
-        %tr
-          %td
-            =edit_summary_text_field_tag
-            .mb-4
-            =f.button "Save", class: "btn-saves btn-md"
+      =edit_summary_text_field_tag
+      .mb-4
+      =f.button "Save", class: "btn-saves btn-md"
 
 -if protonym.taxa.present?
   %h5.mt-20.mb-4 Related records
@@ -205,8 +203,7 @@
         %td
           =taxon.status.capitalize
           -unless taxon.status.in?(Taxa::ExpandedStatus::SELF_STATUSES)
-            %br
-            %small=taxon.decorate.expanded_status
+            .text-sm=taxon.decorate.expanded_status
         %td
           -if taxon.original_combination?
             Original combination

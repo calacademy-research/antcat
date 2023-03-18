@@ -10,7 +10,7 @@
 
 .mb-4
   %h5=@wiki_page.title
-  %small.text-gray-600
+  %span.text-sm.text-gray-600
     Last edited
     =time_ago_in_words(@wiki_page.updated_at)
     ago

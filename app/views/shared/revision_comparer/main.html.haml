@@ -24,7 +24,7 @@
         Current version
       -else
         Version before item was deleted
-      %small=comparer.most_recent.updated_at
+      %span.text-base=comparer.most_recent.updated_at
 
   .callout{class: (comparer.looking_at_a_single_old_revision? ? "bg-revision-red" : "bg-revision-green")}
     =preserve do

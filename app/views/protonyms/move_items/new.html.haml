@@ -25,5 +25,5 @@
         %tbody
           -@protonym.history_items.each do |history_item|
             %tr
-              %td
-                %small=Detax[history_item.to_taxt]
+              %td.text-sm
+                =Detax[history_item.to_taxt]

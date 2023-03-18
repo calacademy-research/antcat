@@ -80,33 +80,30 @@
     %h6.font-bold.mt-8
       Taxonomic history
       =info_tooltip_icon 'Automatically sorted and grouped items, logged-in version.'
+    .mb-16
+      -history_presenter.grouped_items.each do |grouped_item|
+        .mb-4
+          -if grouped_item.grouped?
+            %p=Detax[grouped_item.taxt]
+            %p
+              -# TODO: Check `grouped_item.group_key.join('_')` because
+              -# `group_key` = `["JuniorSynonymOf", "object_protonym_id", 156572]`.
+              %button.btn-neutral.mr-4{"data-action" => "toggler#toggle", "data-toggler-target" => "grouped-#{grouped_item.group_key.join('_')}"} Show/hide grouped
+              %span.text-sm.font-bold.text-gray-500 #{grouped_item.underscored_type} x #{grouped_item.number_of_items}
 
-    %table.table-striped.mb-16
-      %tbody
-        -history_presenter.grouped_items.each do |grouped_item|
-          %tr
-            %td
-              -if grouped_item.grouped?
-                %p=Detax[grouped_item.taxt]
-                %p
-                  -# TODO: Check `grouped_item.group_key.join('_')` because
-                  -# `group_key` = `["JuniorSynonymOf", "object_protonym_id", 156572]`.
-                  %button.btn-neutral.mr-4{"data-action" => "toggler#toggle", "data-toggler-target" => "grouped-#{grouped_item.group_key.join('_')}"} Show/hide grouped
-                  %small.font-bold.text-gray-500 #{grouped_item.underscored_type} x #{grouped_item.number_of_items}
-
-                %ul.compact-list.no-bullet.mb-8.hidden{data: { toggler_name: "grouped-#{grouped_item.group_key.join('_')}" }}
-                  -grouped_item.items.each do |history_item|
-                    %li.pl-8
-                      -if user_is_at_least_helper?
-                        =render 'taxt_editors/history_item_taxt_editor', history_item: history_item
-                      -else
-                        =Detax[history_item.to_taxt]
-              -else
-                -history_item = grouped_item.items.first
-                -if user_is_at_least_helper?
-                  =render 'taxt_editors/history_item_taxt_editor', history_item: history_item
-                -else
-                  %p=Detax[history_item.to_taxt]
+            %ul.compact-list.no-bullet.mb-8.hidden{data: { toggler_name: "grouped-#{grouped_item.group_key.join('_')}" }}
+              -grouped_item.items.each do |history_item|
+                %li.pl-8
+                  -if user_is_at_least_helper?
+                    =render 'taxt_editors/history_item_taxt_editor', history_item: history_item
+                  -else
+                    =Detax[history_item.to_taxt]
+          -else
+            -history_item = grouped_item.items.first
+            -if user_is_at_least_helper?
+              =render 'taxt_editors/history_item_taxt_editor', history_item: history_item
+            -else
+              %p=Detax[history_item.to_taxt]
   -else
     %ul.mb-4
       -history_presenter.grouped_items.each do |grouped_item|

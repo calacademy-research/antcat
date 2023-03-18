@@ -29,7 +29,7 @@
 
 .row.mb-8
   .medium-9.columns
-    %h5
+    %h5{class: "group/name-column"}
       Protonym:
       =@protonym.name_with_fossil
       -if @protonym.sic?
@@ -39,7 +39,8 @@
           =ndash
           nomen nudum
       -if current_user
-        .float-right=link_to "Name record ##{@protonym.name.id}", name_path(@protonym.name), class: 'btn-default'
+        .hidden{class: "group-hover/name-column:inline", data: { visible_in_test_env: true }}
+          =link_to "Name record ##{@protonym.name.id}", name_path(@protonym.name), class: 'btn-default'
     %table.table-unstriped
       %tbody
         %tr
@@ -135,8 +136,7 @@
           %td
             =taxon.status.capitalize
             -unless taxon.status.in?(Taxa::ExpandedStatus::SELF_STATUSES)
-              %br
-              %small=taxon.decorate.expanded_status
+              .text-sm=taxon.decorate.expanded_status
           %td
             -if taxon.original_combination?
               Original combination

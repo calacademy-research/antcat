@@ -17,19 +17,17 @@
             %br
             =markdown_without_wrapping soft_validation.issue_description
           -else
-            %small.hidden{class: "group-hover/soft-validations-table-row:inline"}
+            .text-sm.hidden{class: "group-hover/soft-validations-table-row:inline"}
               %br
               Issue description:
               %span.text-gray-600=markdown_without_wrapping soft_validation.issue_description
         %td
           -if soft_validation.looks_like_a_false_positive?
             Yes, filtered out
-        %td
-          %small=soft_validation.decorate.format_runtime
-        %td
-          %small=soft_validation.decorate.format_runtime_percent soft_validations.total_runtime
+        %td.text-sm=soft_validation.decorate.format_runtime
+        %td.text-sm=soft_validation.decorate.format_runtime_percent soft_validations.total_runtime
 
-%small.float-right
+.text-sm.float-right
   Total runtime:
   =soft_validations.total_runtime.round(4)
   seconds
