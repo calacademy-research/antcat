@@ -1,33 +1,31 @@
 -page_title "Set subgenus"
 -breadcrumb :edit_taxon, @taxon
 
-.row
-  .medium-12.columns
-    %p
-      The currently set subgenus of
-      =CatalogFormatter.link_to_taxon(@taxon)
-      is
-      -if @taxon.subgenus
-        =CatalogFormatter.link_to_taxon(@taxon.subgenus)
-      -else
-        (none)
+%p
+  The currently set subgenus of
+  =CatalogFormatter.link_to_taxon(@taxon)
+  is
+  -if @taxon.subgenus
+    =CatalogFormatter.link_to_taxon(@taxon.subgenus)
+  -else
+    (none)
 
-    -if @taxon.genus.subgenera.empty?
-      %p The genus of this species does not have any subgenera.
-      %p=link_to "Add #{@taxon.genus.name.name_html} subgenus".html_safe, new_taxon_path(rank_to_create: Rank::SUBGENUS, parent_id: @taxon.genus.id), class: "btn-default"
-    -else
-      %table.table-striped
-        %caption
-          Subgenera of
-          =CatalogFormatter.link_to_taxon(@taxon.genus)
-        %tbody
-          -TaxonQuery.new(@taxon.genus.subgenera.order_by_name).with_common_includes.each do |subgenus|
-            %tr
-              %td
-                -if @taxon.subgenus == subgenus
-                  =link_to 'Remove', taxon_set_subgenus_path(@taxon), method: :delete, class: 'btn-warning'
-                -else
-                  =link_to 'Set', taxon_set_subgenus_path(@taxon, subgenus_id: subgenus.id), method: :post, class: 'btn-saves'
-              %td=CatalogFormatter.link_to_taxon(subgenus)
-              %td=subgenus.author_citation
-              %td.shrink-tw-conflict=subgenus.decorate.expanded_status
+-if @taxon.genus.subgenera.empty?
+  %p The genus of this species does not have any subgenera.
+  %p=link_to "Add #{@taxon.genus.name.name_html} subgenus".html_safe, new_taxon_path(rank_to_create: Rank::SUBGENUS, parent_id: @taxon.genus.id), class: "btn-default"
+-else
+  %table.table-striped
+    %caption
+      Subgenera of
+      =CatalogFormatter.link_to_taxon(@taxon.genus)
+    %tbody
+      -TaxonQuery.new(@taxon.genus.subgenera.order_by_name).with_common_includes.each do |subgenus|
+        %tr
+          %td
+            -if @taxon.subgenus == subgenus
+              =link_to 'Remove', taxon_set_subgenus_path(@taxon), method: :delete, class: 'btn-warning'
+            -else
+              =link_to 'Set', taxon_set_subgenus_path(@taxon, subgenus_id: subgenus.id), method: :post, class: 'btn-saves'
+          %td=CatalogFormatter.link_to_taxon(subgenus)
+          %td=subgenus.author_citation
+          %td.shrink-tw-conflict=subgenus.decorate.expanded_status

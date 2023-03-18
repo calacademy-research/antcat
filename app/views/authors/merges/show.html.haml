@@ -3,16 +3,15 @@
 
 =form_with url: author_merges_path do |f|
   =hidden_field_tag :author_to_merge_id, @author_to_merge.id
-  .row
-    .medium-12.columns.mb-8
-      %p
-        %h5 Please confirm
-        %ul
-          -[@author, @author_to_merge].each do |author|
-            -author.names.each do |author_name|
-              %li=author_name.name
-        Click this button to make the target names refer to the same author, so that searching for one of the names finds the others.
-      %p=f.button 'Merge these authors', data: { confirm: 'Do you want to merge these authors?' }, class: "btn-warning btn-md"
+  .mb-8
+    %p
+      %h5 Please confirm
+      %ul
+        -[@author, @author_to_merge].each do |author|
+          -author.names.each do |author_name|
+            %li=author_name.name
+      Click this button to make the target names refer to the same author, so that searching for one of the names finds the others.
+    %p=f.button 'Merge these authors', data: { confirm: 'Do you want to merge these authors?' }, class: "btn-warning btn-md"
 
   .row
     .medium-6.columns

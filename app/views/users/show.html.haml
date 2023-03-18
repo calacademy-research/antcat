@@ -24,7 +24,7 @@
   .callout-alert.callout-responsive This user is hidden from the users list. Edit user to show it.
 
 .row.mb-8
-  .small-6.columns
+  .medium-6.columns
     %p
       %strong Name:
       =@user.name
@@ -50,23 +50,21 @@
         =link_to @user.author.first_author_name_name, @user.author
 
   -if user_is_superadmin?
-    .small-4.columns
+    .medium-4.columns
       .bg-logged-in-only.callout.border-0
         PaperTrail versions:
         =link_to @user.created_paper_trail_versions.count, versions_path(whodunnit: @user.id)
         =tooltip_icon "Use link in the breadcrumbs to see PaperTrail versions created by this user. The number in this infobox may be higher than the number of search results, since 'User' versions are excluded from the versions search page."
         =logged_in_only_tooltip_icon user_group: "superadmins"
 
-.row.mt-8
-  .large-12.columns
-    %h5
-      #{@user.name}'s most
-      =link_to "recent activity", activities_path(user_id: @user.id)
-    =render "activities/table", activities: @recent_user_activities
+.mt-8
+  %h5
+    #{@user.name}'s most
+    =link_to "recent activity", activities_path(user_id: @user.id)
+  =render "activities/table", activities: @recent_user_activities
 
-.row.mt-8
-  .large-12.columns
-    %h5
-      #{@user.name}'s most
-      =link_to "recent comments", comments_path(user_id: @user.id)
-    =render "comments/comments_table", comments: @recent_user_comments
+.mt-8
+  %h5
+    #{@user.name}'s most
+    =link_to "recent comments", comments_path(user_id: @user.id)
+  =render "comments/comments_table", comments: @recent_user_comments

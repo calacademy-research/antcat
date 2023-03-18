@@ -1,12 +1,10 @@
 %tr
   %td Reference
   %td
-    .row
-      .small-10.columns.end
-        =reference_picker history_item.reference, name: 'reference_id'
+    .max-w-xs
+      =reference_picker history_item.reference, name: 'reference_id'
 %tr
   %td Pages
   %td
-    .row
-      .small-4.columns.end
-        =text_field_tag :pages, history_item.pages, id: nil
+    .max-w-xs
+      =text_field_tag :pages, history_item.pages, id: nil

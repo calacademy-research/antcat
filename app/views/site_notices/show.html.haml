@@ -7,16 +7,14 @@
     -if user_is_superadmin?
       =link_to append_superadmin_icon("Delete"), @site_notice, method: :delete, data: { confirm: "Delete? This removes the site notice from the archive." }, class: "btn-warning"
 
-.row.mb-4
-  .medium-12.columns
-    %h5=@site_notice.title
-    %small.text-gray-600
-      Added by
-      =@site_notice.user.decorate.user_page_link
-      =time_ago_in_words(@site_notice.created_at)
+.mb-4
+  %h5=@site_notice.title
+  %small.text-gray-600
+    Added by
+    =@site_notice.user.decorate.user_page_link
+    =time_ago_in_words(@site_notice.created_at)
 
-.row
-  .medium-12.columns
-    =markdown @site_notice.message
+.mb-4
+  =markdown @site_notice.message
 
 =render "comments/comments_area", commentable: @site_notice, new_comment: @new_comment

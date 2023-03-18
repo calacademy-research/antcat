@@ -18,7 +18,7 @@
     =link_to "Delete", history_item_path(@history_item), method: :delete, data: { confirm: "Are you sure?" }, class: "btn-warning"
 
 .row.mb-8
-  .small-9.columns
+  .medium-9.columns
     %p
       This history item belongs to
       =@protonym.decorate.link_to_protonym_with_author_citation
@@ -42,7 +42,7 @@
         %pre.pre-wrapped
           =@history_item.to_taxt
 
-  .small-3.columns
+  .medium-3.columns
     .bg-logged-in-only.callout.border-0
       %ul.no-bullet
         %li
@@ -53,39 +53,37 @@
         %li Created at: #{l @history_item.created_at, format: :ymd}
         %li Updated at: #{l @history_item.updated_at, format: :ymd}
 
-.row.mt-8.mb-8
-  .small-12.columns
-    -protonym_taxa_present = @protonym.taxa.present?
-    -has_more_than_a_single_history_item = @protonym.history_items.size > 1
+.mt-8.mb-8
+  -protonym_taxa_present = @protonym.taxa.present?
+  -has_more_than_a_single_history_item = @protonym.history_items.size > 1
 
-    -if protonym_taxa_present || has_more_than_a_single_history_item
-      %h5.mt-20.mb-4 Related records
+  -if protonym_taxa_present || has_more_than_a_single_history_item
+    %h5.mt-20.mb-4 Related records
 
-      -# TODO: DRY w.r.t. 'history_items/_form.html.haml'.
-      -if protonym_taxa_present
-        .row.mb-8
-          .small-12.columns
-            %h6.font-bold Taxa belonging to this history item's protonym
-            %table.table-striped
-              -TaxonQuery.new(@protonym.taxa.order_by_name).with_common_includes_and_current_taxon_includes.each do |taxon|
-                %tr
-                  %td=CatalogFormatter.link_to_taxon(taxon)
-                  %td=taxon.rank.capitalize
-                  %td
-                    =taxon.status.capitalize
-                    -unless taxon.status.in?(Taxa::ExpandedStatus::SELF_STATUSES)
-                      %br
-                      %small=taxon.decorate.expanded_status
-
-      -if has_more_than_a_single_history_item
-        %h6.font-bold.mt-12.mb-4 This history item highlighted in context with other history items belonging to #{@protonym.name.name_html}
+    -# TODO: DRY w.r.t. 'history_items/_form.html.haml'.
+    -if protonym_taxa_present
+      .mb-8
+        %h6.font-bold Taxa belonging to this history item's protonym
         %table.table-striped
-          %tbody
-            -@protonym.history_items.each do |protonym_history_item|
-              %tr{class: ('bg-logged-in-only' if protonym_history_item == @history_item)}
-                %td
-                  =link_to "##{protonym_history_item.id}", history_item_path(protonym_history_item)
-                  -if protonym_history_item == @history_item
-                    %strong (selected)
-                %td.grow-tw-conflict
-                  %small=Detax[protonym_history_item.to_taxt]
+          -TaxonQuery.new(@protonym.taxa.order_by_name).with_common_includes_and_current_taxon_includes.each do |taxon|
+            %tr
+              %td=CatalogFormatter.link_to_taxon(taxon)
+              %td=taxon.rank.capitalize
+              %td
+                =taxon.status.capitalize
+                -unless taxon.status.in?(Taxa::ExpandedStatus::SELF_STATUSES)
+                  %br
+                  %small=taxon.decorate.expanded_status
+
+    -if has_more_than_a_single_history_item
+      %h6.font-bold.mt-12.mb-4 This history item highlighted in context with other history items belonging to #{@protonym.name.name_html}
+      %table.table-striped
+        %tbody
+          -@protonym.history_items.each do |protonym_history_item|
+            %tr{class: ('bg-logged-in-only' if protonym_history_item == @history_item)}
+              %td
+                =link_to "##{protonym_history_item.id}", history_item_path(protonym_history_item)
+                -if protonym_history_item == @history_item
+                  %strong (selected)
+              %td.grow-tw-conflict
+                %small=Detax[protonym_history_item.to_taxt]

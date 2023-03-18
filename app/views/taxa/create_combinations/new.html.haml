@@ -1,42 +1,38 @@
 -page_title "Create combination"
 -breadcrumb :create_combination, @taxon
 
-.row
-  .small-12.columns
-    .callout.mb-8
-      %p
-        This feature is still being developed and I'm not 100% sure how it will evolve or what we can expect.
-        Implementing support for handling some of the currently unsupported cases will be easier than others.
-        Ideas and suggestions how to improve this tool can discussed with the AntCat Team, or on this issue on Github:
-        =link_to '#808.', 'https://github.com/calacademy-research/antcat/issues/808'
-      %p
-        The code does not check gender, for now please manually check the gender of the "Combine in genus".
+.callout.mb-8
+  %p
+    This feature is still being developed and I'm not 100% sure how it will evolve or what we can expect.
+    Implementing support for handling some of the currently unsupported cases will be easier than others.
+    Ideas and suggestions how to improve this tool can discussed with the AntCat Team, or on this issue on Github:
+    =link_to '#808.', 'https://github.com/calacademy-research/antcat/issues/808'
+  %p
+    The code does not check gender, for now please manually check the gender of the "Combine in genus".
 
-.row
-  .small-12.columns
-    -unless @create_combination_policy.allowed?
-      =render 'shared/operation_not_supported', callout_title: 'Cannot create combination', errors: @create_combination_policy.errors
-    -else
-      =form_with url: taxon_create_combination_path, method: :get do |f|
-        %table.table-unstriped
-          %tr
-            %td Create new combination for
-            %td=@taxon.decorate.id_and_name_and_author_citation
-            %td
-              -if @taxon.genus
-                Gender of #{CatalogFormatter.link_to_taxon(@taxon.genus)}:
-                ="#{@taxon.genus.name.gender}."
+-if @create_combination_policy.allowed?
+  =form_with url: taxon_create_combination_path, method: :get do |f|
+    %table.table-unstriped
+      %tr
+        %td Create new combination for
+        %td=@taxon.decorate.id_and_name_and_author_citation
+        %td
+          -if @taxon.genus
+            Gender of #{CatalogFormatter.link_to_taxon(@taxon.genus)}:
+            ="#{@taxon.genus.name.gender}."
 
-          %tr
-            %td Combine in genus
-            %td=taxon_picker @new_parent, name: 'new_parent_id', ranks: Rank::GENUS
+      %tr
+        %td Combine in genus
+        %td=taxon_picker @new_parent, name: 'new_parent_id', ranks: Rank::GENUS
 
-          %tr
-            %td Species epithet
-            %td=f.text_field :species_epithet, value: params[:species_epithet] || @taxon.name.species_epithet
-            %td May require spelling changes to agree with new genus.
+      %tr
+        %td Species epithet
+        %td=f.text_field :species_epithet, value: params[:species_epithet] || @taxon.name.species_epithet
+        %td May require spelling changes to agree with new genus.
 
-          %tr
-            %td
-            %td
-              =f.button "Continue", class: "btn-default btn-md"
+      %tr
+        %td
+        %td
+          =f.button "Continue", class: "btn-default btn-md"
+-else
+  =render 'shared/operation_not_supported', callout_title: 'Cannot create combination', errors: @create_combination_policy.errors

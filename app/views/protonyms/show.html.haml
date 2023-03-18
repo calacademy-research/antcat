@@ -28,7 +28,7 @@
           =render 'shared/failed_soft_validations', soft_validations: @protonym.soft_validations
 
 .row.mb-8
-  .small-9.columns
+  .medium-9.columns
     %h5
       Protonym:
       =@protonym.name_with_fossil
@@ -125,28 +125,27 @@
       =render 'protonyms/shared/etymology_and_gender', protonym: @protonym, taxon: nil
 
 -if @protonym.taxa.present?
-  .row.mb-8
-    .small-12.columns
-      %h5 Taxa belonging to this protonym
-      %table.table-striped
-        -TaxonQuery.new(@protonym.taxa.order_by_name).with_common_includes_and_current_taxon_includes.each do |taxon|
-          %tr
-            %td=CatalogFormatter.link_to_taxon(taxon)
-            %td=taxon.rank.capitalize
+  .mb-8
+    %h5 Taxa belonging to this protonym
+    %table.table-striped
+      -TaxonQuery.new(@protonym.taxa.order_by_name).with_common_includes_and_current_taxon_includes.each do |taxon|
+        %tr
+          %td=CatalogFormatter.link_to_taxon(taxon)
+          %td=taxon.rank.capitalize
+          %td
+            =taxon.status.capitalize
+            -unless taxon.status.in?(Taxa::ExpandedStatus::SELF_STATUSES)
+              %br
+              %small=taxon.decorate.expanded_status
+          %td
+            -if taxon.original_combination?
+              Original combination
+              =antcat_icon 'check'
+          -if current_user
             %td
-              =taxon.status.capitalize
-              -unless taxon.status.in?(Taxa::ExpandedStatus::SELF_STATUSES)
-                %br
-                %small=taxon.decorate.expanded_status
-            %td
-              -if taxon.original_combination?
-                Original combination
-                =antcat_icon 'check'
-            -if current_user
-              %td
-                =taxon.decorate.link_to_antwiki
-                %br
-                =link_to "Show children", taxon_children_path(taxon), class: "btn-default"
+              =taxon.decorate.link_to_antwiki
+              %br
+              =link_to "Show children", taxon_children_path(taxon), class: "btn-default"
 
 -if current_user
   -content_for :javascripts do
@@ -156,20 +155,19 @@
 
 -if current_user
   -if @protonym.history_items_as_object.present?
-    .row.mt-8.mb-8
-      .small-12.columns
-        .bg-logged-in-only.callout.border-0.mb-16
-          %h5 History items as object protonym
-          %table.table-striped
-            %thead
-              %th History item
-              %th Protonym owner / terminal taxa
-              %th Taxt
-            -@protonym.history_items_as_object.each do |history_item|
-              %tr
-                %td=link_to history_item.id, history_item
-                %td
-                  =history_item.protonym.decorate.link_to_protonym
-                  %br
-                  =CatalogFormatter.link_to_taxa(history_item.terminal_taxa)
-                %td=Detax[history_item.to_taxt]
+    .mt-8.mb-8
+      .bg-logged-in-only.callout.border-0.mb-16
+        %h5 History items as object protonym
+        %table.table-striped
+          %thead
+            %th History item
+            %th Protonym owner / terminal taxa
+            %th Taxt
+          -@protonym.history_items_as_object.each do |history_item|
+            %tr
+              %td=link_to history_item.id, history_item
+              %td
+                =history_item.protonym.decorate.link_to_protonym
+                %br
+                =CatalogFormatter.link_to_taxa(history_item.terminal_taxa)
+              %td=Detax[history_item.to_taxt]

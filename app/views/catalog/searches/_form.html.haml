@@ -81,7 +81,7 @@
       =f.select :history_items, options_for_select([['With or without history items', ''], ['Must have history items', Catalog::AdvancedSearchQuery::MUST_HAVE_HISTORY_ITEMS], ['Cannot have history items', Catalog::AdvancedSearchQuery::CANNOT_HAVE_HISTORY_ITEMS]], params[:history_items])
 
   .row.mb-4
-    .medium-12.columns
+    .columns
       =button_tag "Search ".html_safe + search_icon, type: 'submit', class: 'btn-default btn-md'
       -if taxa.present?
         &nbsp;

@@ -1,23 +1,18 @@
 -page_title "Edit ##{@feedback.id}"
 -breadcrumb :edit_feedback, @feedback
 
-.row
-  .medium-12.columns
-    =form_with(model: @feedback) do |f|
-      =render "shared/errors_for", resource: @feedback
+=form_with(model: @feedback) do |f|
+  =render "shared/errors_for", resource: @feedback
 
-      .row.mb-4
-        .medium-12.columns
-          =f.label :comment
-          =f.text_area :comment, rows: 10, maxlength: Feedback::COMMENT_MAX_LENGTH
+  .mb-4
+    =f.label :comment
+    =f.text_area :comment, rows: 10, maxlength: Feedback::COMMENT_MAX_LENGTH
 
-      .row.mb-4
-        .medium-12.columns
-          =f.label :page do
-            Page: https://www.antcat.org/...
-          =f.text_field :page, placeholder: "Optional"
+  .mb-4
+    =f.label :page do
+      Page: https://www.antcat.org/...
+    =f.text_field :page, placeholder: "Optional"
 
-      .row
-        .medium-12.columns
-          =edit_summary_text_field_tag
-          =f.button "Save", class: "btn-saves btn-md"
+  .mb-4
+    =edit_summary_text_field_tag
+    =f.button "Save", class: "btn-saves btn-md"
