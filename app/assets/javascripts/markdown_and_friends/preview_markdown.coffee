@@ -26,7 +26,7 @@ class MakePreviewable
     @wrapInPreviewArea()
     @setupPreviewLink()
 
-    if @textarea.data('use-extras')
+    if @textarea.get(0).getAttribute('data-use-extras')
       new ExtrasArea(@textarea, @textarea.parent().parent().parent(), this)
 
     @renderPreview() if @textarea.is(":visible") and @textarea.get(0).value != ""
@@ -38,7 +38,7 @@ class MakePreviewable
 
   wrapInPreviewArea: ->
     # Create new preview area (tabs) and insert after textarea, and tabify.
-    title = @textarea.data("previewable-title") || "Text"
+    title = @textarea.get(0).getAttribute('data-previewable-title') || "Text"
     previewArea = @createPreviewArea title
     previewArea.insertAfter @textarea
 
@@ -71,7 +71,7 @@ class MakePreviewable
     tab = @textarea.parent().parent().find(".preview-previewable")
 
     toParse = @textarea.get(0).value
-    formatTypeFields = @textarea.data('format-type-fields')
+    formatTypeFields = @textarea.get(0).getAttribute('data-format-type-fields')
 
     if toParse is ""
       tab.get(0).innerHTML = "No content. Try this: <code>{tax 430207}</code>"
@@ -199,8 +199,8 @@ class ExtrasArea
         error: -> AntCat.notifyError "Error parsing Bolton keys"
 
 defaultReference = ->
-  reference = $('#default-reference')
-  id = reference.data('id')
-  referenceKey = reference.data('reference-key')
+  reference = $('#default-reference').get(0)
+  id = reference.getAttribute('data-reference-id')
+  referenceKey = reference.getAttribute('data-reference-key')
 
   { id: id, referenceKey: referenceKey }
