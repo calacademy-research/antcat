@@ -2,6 +2,17 @@ import { Application } from "@hotwired/stimulus"
 import { Turbo } from "@hotwired/turbo-rails"
 import { definitionsFromContext } from "@hotwired/stimulus-webpack-helpers"
 
+import AWN from "awesome-notifications"
+
+window.AntCat = window.AntCat || {}
+window.AntCat.notifier = new AWN({
+  position: "top-right",
+  labels: { success: "", alert: "" },
+})
+
+window.AntCat.notifySuccess = (message) => { window.AntCat.notifier.success(message, {}) }
+window.AntCat.notifyError = (message) => { window.AntCat.notifier.alert(message, {}) }
+
 window.Turbo = Turbo
 
 const application = Application.start()

@@ -55,6 +55,3 @@
 
       -if Settings.google_analytics.enabled
         =render "google_analytics", tracking_id: Settings.google_analytics.tracking_id, logged_in: current_user.present?.to_s
-
-      -if current_user
-        =javascript_include_tag 'logged_in_only'

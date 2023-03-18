@@ -1,8 +1,5 @@
 window.AntCat = {}
 
-AntCat.notifySuccess = (message, autoHide = true) -> $.notify message, className: "success", autoHide: autoHide
-AntCat.notifyError = (message, autoHide = true) -> $.notify message, autoHide: autoHide
-
 AntCat.escapeRegExp = (string) ->
   string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 
