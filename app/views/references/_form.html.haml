@@ -133,31 +133,31 @@
             =f.check_box :online_early
             Online early
 
-    .medium-4.mt-4
-      .callout
-        %h6.font-bold Reference document
-        =f.fields_for :document, (reference.document || ReferenceDocument.new) do |document_form|
-          .mb-4
-            =document_form.file_field :file
-
-          -if document_form.object.url?
+      .mt-4
+        .callout
+          %h6.font-bold Reference document
+          =f.fields_for :document, (reference.document || ReferenceDocument.new) do |document_form|
             .mb-4
-              =f.label :document_url do
-                Source URL (legacy)
-              =document_form.text_field :url
+              =document_form.file_field :file
 
-          .mb-4
-            =succeed ":" do
-              %code reference_documents.id
-            =document_form.object.id || '(none)'
+            -if document_form.object.url?
+              .mb-4
+                =f.label :document_url do
+                  Source URL (legacy)
+                =document_form.text_field :url
 
-          .mb-4
-            =succeed ":" do
-              %code file_file_name
-            -if document_form.object.file_file_name.present?
-              .break-all=document_form.object.file_file_name
-            -else
-              (none)
+            .mb-4
+              =succeed ":" do
+                %code reference_documents.id
+              =document_form.object.id || '(none)'
+
+            .mb-4
+              =succeed ":" do
+                %code file_file_name
+              -if document_form.object.file_file_name.present?
+                .break-all=document_form.object.file_file_name
+              -else
+                (none)
 
   .row
     .medium-3
