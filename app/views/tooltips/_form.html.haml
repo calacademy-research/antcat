@@ -1,7 +1,7 @@
 =form_with model: tooltip do |f|
   =render 'shared/errors_for', resource: tooltip
   .row.mb-4
-    .medium-6.columns
+    .medium-6
       =f.label :key
       =f.text_field :key
 
@@ -11,17 +11,17 @@
       =f.text_field :scope
 
   .row.mb-4
-    .medium-6.columns
+    .medium-6
       =f.label :text do
         Text
         =tooltip_icon "HTML is allowed, but double quotes are not 100% supported."
       =f.text_area :text, cols: 40, rows: 5
 
   .row.mb-4
-    .medium-6.columns
+    .medium-6
       =edit_summary_text_field_tag
 
   .row
-    .medium-6.columns
+    .medium-6
       .actions
         =f.button 'Save', class: "btn-saves btn-md"

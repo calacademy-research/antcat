@@ -3,17 +3,17 @@
 -noindex_meta_tag
 
 .row
-  .medium-4.columns
+  .medium-4
     %h5 Content from Bolton
     =form_with url: bolton_keys_to_ref_tags_path do |f|
       =f.text_area :bolton_content, value: params[:bolton_content], class: "min-h-[20rem]"
       =f.button "Convert", class: "btn-default btn-md"
 
-  .medium-4.columns
+  .medium-4
     %h5 With AntCat ref tags
     =text_area_tag :with_ref_tags, @with_ref_tags, class: "min-h-[20rem]"
 
-  .medium-4.columns
+  .medium-4
     %h5 Rendered
     -if @with_ref_tags.present?
       =Detax[@with_ref_tags]

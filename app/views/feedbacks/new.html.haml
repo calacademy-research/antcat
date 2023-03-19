@@ -18,18 +18,18 @@
 
   -if current_user
     .row
-      .medium-4.columns
+      .medium-4
         =f.label :name
         =f.text_field :name, value: current_user.name, disabled: true
-      .medium-4.columns.end
+      .medium-4
         =f.label :email
         =f.text_field :email, value: current_user.email, disabled: true
   -else
     .row
-      .medium-4.columns
+      .medium-4
         =f.label :name
         =f.text_field :name, placeholder: "Optional"
-      .medium-4.columns.end
+      .medium-4
         =f.label :email
         =f.text_field :email, placeholder: "Optional"
 

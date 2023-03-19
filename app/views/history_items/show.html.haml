@@ -18,7 +18,7 @@
     =link_to "Delete", history_item_path(@history_item), method: :delete, data: { confirm: "Are you sure?" }, class: "btn-danger"
 
 .row.mb-8
-  .medium-9.columns
+  .medium-9
     %p
       This history item belongs to
       =@protonym.decorate.link_to_protonym_with_author_citation
@@ -42,7 +42,7 @@
         %pre.pre-wrapped
           =@history_item.to_taxt
 
-  .medium-3.columns
+  .medium-3
     .bg-logged-in-only.callout.border-0
       %ul.no-bullet
         %li

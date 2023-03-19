@@ -9,10 +9,10 @@
     =render "catalog/_show/breadcrumbs_right", taxon: @taxon, editors_catalog_presenter: @editors_catalog_presenter
 
 .row
-  .medium-9.columns
+  .medium-9
     =render "catalog/_show/taxon_description", taxon: @taxon, protonym: @protonym, catalog_presenter: @catalog_presenter
 
-  .medium-3.columns
+  .medium-3
     -if current_user
       =render 'catalog/_show/editors_sidebar', taxon: @taxon, protonym: @protonym, editors_catalog_presenter: @editors_catalog_presenter
 

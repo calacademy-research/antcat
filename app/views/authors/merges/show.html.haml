@@ -14,10 +14,10 @@
     %p=f.button 'Merge these authors', data: { confirm: 'Do you want to merge these authors?' }, class: "btn-danger btn-md"
 
   .row
-    .medium-6.columns
+    .medium-6
       %h6 Target author
       =render 'author', author: @author
 
-    .medium-6.columns
+    .medium-6
       %h6 Author to merge into target
       =render 'author', author: @author_to_merge

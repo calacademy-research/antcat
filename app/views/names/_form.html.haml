@@ -13,7 +13,7 @@
     Saving this form will update the name in place.
 
 .row
-  .medium-8.columns
+  .medium-8
     =form_with model: name, url: name_path(name), scope: :name do |f|
       =render 'shared/errors_for', resource: name
       =hidden_field_tag :type, name.type

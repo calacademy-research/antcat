@@ -48,16 +48,16 @@ class MakePreviewable
   createPreviewArea: (title) ->
     $ """
     <div class="preview-area mb-4">
-      <div class="row">
-        <div class="medium-6 columns">#{title}</div>
-        <div class="medium-6 columns">
+      <div class="grid grid-cols-2 gap-4">
+        <div>#{title}</div>
+        <div>
           Preview
           <button class="btn-neutral preview-link">Rerender preview</button>
         </div>
       </div>
-      <div class="row">
-        <div class="medium-6 columns preview-editable is-already-previewable [&_textarea]:text-lg"></div>
-        <div class="medium-6 columns preview-previewable p-2 border border-gray-300 min-h-[4rem]"></div>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="preview-editable is-already-previewable [&_textarea]:text-lg"></div>
+        <div class="preview-previewable p-2 border border-gray-300 min-h-[4rem]"></div>
       </div>
     </div>
     """
@@ -107,8 +107,8 @@ class ExtrasArea
 
   createExtrasArea: ->
     $ """
-    <div class="row">
-      <div class="medium-6 columns end leading-7">
+    <div class="grid grid-cols-2 gap-4">
+      <div class="leading-7">
         <button id="#{DEFAULT_REFERENCE_BUTTON_ID}" class="btn-default">Default reference</button>
         <button id="#{RECENTLY_USED_REFERENCES_BUTTON_ID}" class="btn-default">Recently used references</button>
         <button id="#{INSERT_REFERENCE_BUTTON_ID}" class="btn-default">+Reference</button>

@@ -22,13 +22,13 @@
 -if Settings.catalog.show_failed_soft_validations
   -if current_user && @protonym.soft_validations.failed?
     .row.mb-8
-      .medium-9.columns
+      .medium-9
         .callout-warning.text-sm
           %h6 Issues (#{link_to("see more", protonym_soft_validations_path(@protonym))})
           =render 'shared/failed_soft_validations', soft_validations: @protonym.soft_validations
 
 .row.mb-8
-  .medium-9.columns
+  .medium-9
     %h5{class: "group/name-column"}
       Protonym:
       =@protonym.name_with_fossil
@@ -100,7 +100,7 @@
             %td=Detax[@protonym.notes_taxt]
 
   -if current_user
-    .medium-3.columns
+    .medium-3
       .bg-logged-in-only.callout.border-0
         %h6
           Protonym:

@@ -17,7 +17,7 @@
 
 =form_with url: taxon_force_parent_change_path do |f|
   .row
-    .medium-4.columns
+    .medium-4
       .callout
         %h6.font-bold Change parent of...
         %p=@taxon.decorate.id_and_name_and_author_citation
@@ -25,7 +25,7 @@
           Current parent:
           =@taxon.parent.decorate.id_and_name_and_author_citation
 
-    .medium-4.columns
+    .medium-4
       .callout
         %h6.font-bold ...to
         %p=taxon_picker @new_parent, name: 'new_parent_id', ranks: @valid_parent_ranks
@@ -33,7 +33,7 @@
           Possible parent ranks:
           =@valid_parent_ranks.to_sentence
 
-    .medium-4.columns
+    .medium-4
       .callout
         %h6 Help
         %p Use this page to...
@@ -55,6 +55,6 @@
           %strong Force-changing parent will modify the record in place without creating a new record.
 
   .row.mb-8
-    .medium-6.columns
+    .medium-6
       .text-center
         =f.button "Change parent", class: "btn-danger btn-md"

@@ -24,7 +24,7 @@
   .callout-alert.callout-responsive This user is hidden from the users list. Edit user to show it.
 
 .row.mb-8
-  .medium-6.columns
+  .medium-6
     %p
       %strong Name:
       =@user.name
@@ -50,7 +50,7 @@
         =link_to @user.author.first_author_name_name, @user.author
 
   -if user_is_superadmin?
-    .medium-4.columns
+    .medium-4
       .bg-logged-in-only.callout.border-0
         PaperTrail versions:
         =link_to @user.created_paper_trail_versions.count, versions_path(whodunnit: @user.id)

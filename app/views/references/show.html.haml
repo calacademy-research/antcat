@@ -29,12 +29,12 @@
         %li=activities_link_for_trackable @reference
 
 .row.mb-8
-  .medium-9.columns
+  .medium-9
     %h5 Reference
     =decorated.expanded_reference
     =decorated.format_document_links
 
-  .medium-3.columns
+  .medium-3
     -if current_user
       .bg-logged-in-only.callout.border-0.text-sm
         %h6

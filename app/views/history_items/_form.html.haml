@@ -21,7 +21,7 @@
         =beta_label
         =tooltip_icon 'Still in beta. This section can be ignored for taxt items.'
       .row
-        .medium-4.columns.end
+        .medium-4
           %table
             %tr
               %td.whitespace-nowrap
@@ -29,122 +29,122 @@
                   Item type
               %td=f.select :type, options_for_history_item_types(history_item.type)
 
-        %table.table-unstriped
-          %tr
-            %td.type-specific-section.hidden.type-specific-help-Taxt
-              %p
-                Fields in this box are not relevant for
-                %code Taxt
-                items.
+      %table.table-unstriped
+        %tr
+          %td.type-specific-section.hidden.type-specific-help-Taxt
+            %p
+              Fields in this box are not relevant for
+              %code Taxt
+              items.
 
-            %td.type-specific-section.hidden.type-specific-help-JuniorSynonymOf.type-specific-help-SeniorSynonymOf
-              %p
-                Protonym-based. Currently only for species-group names, because the terminal taxon of the
-                %code object_protonym
-                is used for the link (for which cannot pick the correct rank for protonyms with both genera and subgenera).
-              %p
-                Like with
-                %code Taxt
-                items, mirrored items
-                =surround "(", ")" do
-                  %code JuniorSynonymOf
-                  +
-                  %code SeniorSynonymOf
-                must be added.
+          %td.type-specific-section.hidden.type-specific-help-JuniorSynonymOf.type-specific-help-SeniorSynonymOf
+            %p
+              Protonym-based. Currently only for species-group names, because the terminal taxon of the
+              %code object_protonym
+              is used for the link (for which cannot pick the correct rank for protonyms with both genera and subgenera).
+            %p
+              Like with
+              %code Taxt
+              items, mirrored items
+              =surround "(", ")" do
+                %code JuniorSynonymOf
+                +
+                %code SeniorSynonymOf
+              must be added.
 
-            %td.type-specific-section.hidden.type-specific-help-FormDescriptions
-              %p
-                See also related wiki page
-                =link_to_wiki_page_or_missing WikiPage::FORMS
+          %td.type-specific-section.hidden.type-specific-help-FormDescriptions
+            %p
+              See also related wiki page
+              =link_to_wiki_page_or_missing WikiPage::FORMS
 
-            %td.type-specific-section.hidden.type-specific-help-HomonymReplacedBy.type-specific-help-ReplacementNameFor
-              %p
-                Like with
-                %code Taxt
-                items, mirrored items
-                =surround "(", ")" do
-                  %code HomonymReplacedBy
-                  +
-                  %code ReplacementNameFor
-                must be added.
+          %td.type-specific-section.hidden.type-specific-help-HomonymReplacedBy.type-specific-help-ReplacementNameFor
+            %p
+              Like with
+              %code Taxt
+              items, mirrored items
+              =surround "(", ")" do
+                %code HomonymReplacedBy
+                +
+                %code ReplacementNameFor
+              must be added.
 
-        -# [grep:history_type].
-        %table.table-unstriped
-          %tbody
-            %tr#type-specific-subtype.type-specific-section.hidden
-              %th
-                =f.label :subtype, id: 'type-label-subtype' do
-                  subtype [???]
-              %td.grow-tw-conflict
-                .max-w-xs=f.select :subtype, [history_item.subtype, '???']
-              %td
-                %code subtype
+      -# [grep:history_type].
+      %table.table-unstriped
+        %tbody
+          %tr#type-specific-subtype.type-specific-section.hidden
+            %th
+              =f.label :subtype, id: 'type-label-subtype' do
+                subtype [???]
+            %td.grow-tw-conflict
+              .max-w-xs=f.select :subtype, [history_item.subtype, '???']
+            %td
+              %code subtype
 
-            %tr#type-specific-picked-value.type-specific-section.hidden
-              %th
-                =f.label :picked_value, id: 'type-label-picked-value' do
-                  picked_value [???]
-              %td.grow-tw-conflict=f.select :picked_value, [history_item.picked_value, '???']
-              %td
-                %code picked_value
+          %tr#type-specific-picked-value.type-specific-section.hidden
+            %th
+              =f.label :picked_value, id: 'type-label-picked-value' do
+                picked_value [???]
+            %td.grow-tw-conflict=f.select :picked_value, [history_item.picked_value, '???']
+            %td
+              %code picked_value
 
-            %tr#type-specific-text-value.type-specific-section.hidden
-              %th.no-wrap
-                =f.label :text_value, id: 'type-label-text-value' do
-                  text_value [???]
-              %td.grow-tw-conflict
-                .max-w-xs=f.text_field :text_value
-              %td
-                %code text_value
+          %tr#type-specific-text-value.type-specific-section.hidden
+            %th.no-wrap
+              =f.label :text_value, id: 'type-label-text-value' do
+                text_value [???]
+            %td.grow-tw-conflict
+              .max-w-xs=f.text_field :text_value
+            %td
+              %code text_value
 
-            %tr#type-specific-object-protonym.type-specific-section.hidden
-              %th.no-wrap
-                =f.label :object_protonym, id: 'type-label-object-protonym' do
-                  object_protonym_id [???]
-              %td.grow-tw-conflict=protonym_picker f.object.object_protonym, name: 'history_item[object_protonym_id]', id: 'history_item_object_protonym_id'
-              %td
-                %code object_protonym
+          %tr#type-specific-object-protonym.type-specific-section.hidden
+            %th.no-wrap
+              =f.label :object_protonym, id: 'type-label-object-protonym' do
+                object_protonym_id [???]
+            %td.grow-tw-conflict=protonym_picker f.object.object_protonym, name: 'history_item[object_protonym_id]', id: 'history_item_object_protonym_id'
+            %td
+              %code object_protonym
 
-            %tr#type-specific-object-taxon.type-specific-section.hidden
-              %th.no-wrap
-                =f.label :object_taxon, id: 'type-label-object-taxon' do
-                  object_taxon_id [???]
-              %td.grow-tw-conflict=taxon_picker f.object.object_taxon, name: 'history_item[object_taxon_id]', id: 'history_item_object_taxon_id'
-              %td
-                %code object_taxon
+          %tr#type-specific-object-taxon.type-specific-section.hidden
+            %th.no-wrap
+              =f.label :object_taxon, id: 'type-label-object-taxon' do
+                object_taxon_id [???]
+            %td.grow-tw-conflict=taxon_picker f.object.object_taxon, name: 'history_item[object_taxon_id]', id: 'history_item_object_taxon_id'
+            %td
+              %code object_taxon
 
-            %tr#type-specific-reference.type-specific-section.hidden
-              %th.no-wrap
-                =f.label :reference, id: 'type-label-reference' do
-                  Reference
-              %td.grow-tw-conflict=reference_picker f.object.reference, name: 'history_item[reference_id]', id: 'history_item_reference_id'
-              %td
-                %code reference_id
+          %tr#type-specific-reference.type-specific-section.hidden
+            %th.no-wrap
+              =f.label :reference, id: 'type-label-reference' do
+                Reference
+            %td.grow-tw-conflict=reference_picker f.object.reference, name: 'history_item[reference_id]', id: 'history_item_reference_id'
+            %td
+              %code reference_id
 
-            %tr#type-specific-pages.type-specific-section.hidden
-              %th.no-wrap
-                =f.label :pages, id: 'type-label-pages' do
-                  Pages
-              %td.grow-tw-conflict
-                .max-w-xs=f.text_field :pages
-              %td
-                %code pages
+          %tr#type-specific-pages.type-specific-section.hidden
+            %th.no-wrap
+              =f.label :pages, id: 'type-label-pages' do
+                Pages
+            %td.grow-tw-conflict
+              .max-w-xs=f.text_field :pages
+            %td
+              %code pages
 
-            %tr#type-specific-force-author-citation.type-specific-section.hidden
-              %th.no-wrap
-                =f.label :pages, id: 'type-label-force-author-citation' do
-                  Force author citation
-              %td.grow-tw-conflict
-                .max-w-xsh=f.check_box :force_author_citation
-              %td
-                %code force_author_citation
+          %tr#type-specific-force-author-citation.type-specific-section.hidden
+            %th.no-wrap
+              =f.label :pages, id: 'type-label-force-author-citation' do
+                Force author citation
+            %td.grow-tw-conflict
+              .max-w-xsh=f.check_box :force_author_citation
+            %td
+              %code force_author_citation
 
   .row.mt-8
-    .medium-3.columns
+    .medium-3
       =edit_summary_text_field_tag
-    .medium-6.columns
+    .medium-6
       =f.button 'Save', class: "btn-saves btn-md"
-    .medium-3.columns.end
+    .medium-3
       =f.label :position do
         Position
         =tooltip_icon 'Leave blank to add new items last. Only relevant for items of Taxt type'

@@ -8,7 +8,7 @@
   =render 'shared/errors_for', resource: protonym_form
 
   .row
-    .large-7.columns
+    .medium-7
       %table.table-unstriped{"data-controller" => "check-name-conflicts"}
         =f.fields_for :name do |_name_fields|
           %tr
@@ -92,7 +92,7 @@
           =f.label :nomen_nudum do
             %i Nomen nudum
 
-    .large-5.columns
+    .medium-5
       .callout.mb-8
         %table.table-unstriped
           %h6.font-bold
@@ -136,57 +136,57 @@
                   -# TODO: Improve "(don't blank taxon)".
                   =label_tag :destroy_type_name, "Clear type name on save (don't blank taxon)"
 
-    .mb-8.columns
-      %p
-        See also related wiki page
-        =link_to_wiki_page_or_missing WikiPage::TYPE_INFORMATION
+  .mb-8
+    %p
+      See also related wiki page
+      =link_to_wiki_page_or_missing WikiPage::TYPE_INFORMATION
 
-      %table.table-unstriped
-        -# TODO: `protonym.gender_agreement_type?` for same reason as for forms/bioregion/locality.
-        -if protonym.species_group_name? || protonym.gender_agreement_type?
-          %tr
-            %td
-              =f.label :gender_agreement_type do
-                Gender agreement type (only for species-group names)
-                =db_tooltip_icon :gender_agreement_type, scope: :protonyms
-            %td
-              .max-w-xs
-                =f.select :gender_agreement_type, Protonym::GENDER_AGREEMENT_TYPES, include_blank: '(blank)'
+    %table.table-unstriped
+      -# TODO: `protonym.gender_agreement_type?` for same reason as for forms/bioregion/locality.
+      -if protonym.species_group_name? || protonym.gender_agreement_type?
+        %tr
+          %td
+            =f.label :gender_agreement_type do
+              Gender agreement type (only for species-group names)
+              =db_tooltip_icon :gender_agreement_type, scope: :protonyms
+          %td
+            .max-w-xs
+              =f.select :gender_agreement_type, Protonym::GENDER_AGREEMENT_TYPES, include_blank: '(blank)'
 
-        %tr
-          %td
-            =f.label :etymology do
-              Etymology
-              =db_tooltip_icon :etymology, scope: :protonyms
-          %td=render 'taxt_editors/field_taxt_editor', name: 'protonym[etymology_taxt]', content: protonym.etymology_taxt
+      %tr
+        %td
+          =f.label :etymology do
+            Etymology
+            =db_tooltip_icon :etymology, scope: :protonyms
+        %td=render 'taxt_editors/field_taxt_editor', name: 'protonym[etymology_taxt]', content: protonym.etymology_taxt
 
-        %tr
-          %td
-            =f.label :primary_type_information do
-              Primary type information
-              =db_tooltip_icon :primary_type_information, scope: :protonyms
-          %td=render 'taxt_editors/field_taxt_editor', name: 'protonym[primary_type_information_taxt]', content: protonym.primary_type_information_taxt, format_type_fields: true
-        %tr
-          %td.shrink-tw-conflict
-            =f.label :secondary_type_information do
-              Secondary type information
-              =db_tooltip_icon :secondary_type_information, scope: :protonyms
-          %td=render 'taxt_editors/field_taxt_editor', name: 'protonym[secondary_type_information_taxt]', content: protonym.secondary_type_information_taxt, format_type_fields: true
-        %tr
-          %td
-            =f.label :type_notes do
-              Type notes
-              =db_tooltip_icon :type_notes, scope: :protonyms
-          %td=render 'taxt_editors/field_taxt_editor', name: 'protonym[type_notes_taxt]', content: protonym.type_notes_taxt, format_type_fields: true
-        %tr
-          %td
-            =f.label :notes do
-              Notes
-              =db_tooltip_icon :notes, scope: :protonyms
-          %td=render 'taxt_editors/field_taxt_editor', name: 'protonym[notes_taxt]', content: protonym.notes_taxt
+      %tr
+        %td
+          =f.label :primary_type_information do
+            Primary type information
+            =db_tooltip_icon :primary_type_information, scope: :protonyms
+        %td=render 'taxt_editors/field_taxt_editor', name: 'protonym[primary_type_information_taxt]', content: protonym.primary_type_information_taxt, format_type_fields: true
+      %tr
+        %td.shrink-tw-conflict
+          =f.label :secondary_type_information do
+            Secondary type information
+            =db_tooltip_icon :secondary_type_information, scope: :protonyms
+        %td=render 'taxt_editors/field_taxt_editor', name: 'protonym[secondary_type_information_taxt]', content: protonym.secondary_type_information_taxt, format_type_fields: true
+      %tr
+        %td
+          =f.label :type_notes do
+            Type notes
+            =db_tooltip_icon :type_notes, scope: :protonyms
+        %td=render 'taxt_editors/field_taxt_editor', name: 'protonym[type_notes_taxt]', content: protonym.type_notes_taxt, format_type_fields: true
+      %tr
+        %td
+          =f.label :notes do
+            Notes
+            =db_tooltip_icon :notes, scope: :protonyms
+        %td=render 'taxt_editors/field_taxt_editor', name: 'protonym[notes_taxt]', content: protonym.notes_taxt
 
   .row
-    .medium-6.columns
+    .medium-6
       =edit_summary_text_field_tag
       .mb-4
       =f.button "Save", class: "btn-saves btn-md"
