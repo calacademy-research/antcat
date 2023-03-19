@@ -8,7 +8,7 @@
   =render 'shared/errors_for', resource: protonym_form
 
   .row
-    .medium-7.columns
+    .medium-7
       %table.table-unstriped{"data-controller" => "check-name-conflicts"}
         =f.fields_for :name do |_name_fields|
           %tr
@@ -92,7 +92,7 @@
           =f.label :nomen_nudum do
             %i Nomen nudum
 
-    .medium-5.columns
+    .medium-5
       .callout.mb-8
         %table.table-unstriped
           %h6.font-bold
@@ -136,7 +136,7 @@
                   -# TODO: Improve "(don't blank taxon)".
                   =label_tag :destroy_type_name, "Clear type name on save (don't blank taxon)"
 
-    .mb-8.columns
+    .mb-8
       %p
         See also related wiki page
         =link_to_wiki_page_or_missing WikiPage::TYPE_INFORMATION
@@ -186,7 +186,7 @@
           %td=render 'taxt_editors/field_taxt_editor', name: 'protonym[notes_taxt]', content: protonym.notes_taxt
 
   .row
-    .medium-6.columns
+    .medium-6
       =edit_summary_text_field_tag
       .mb-4
       =f.button "Save", class: "btn-saves btn-md"

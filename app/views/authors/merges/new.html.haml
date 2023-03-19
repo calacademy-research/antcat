@@ -6,11 +6,11 @@
   =javascript_include_tag 'controllers/authors/merges'
 
 .row
-  .medium-6.columns
+  .medium-6
     %h6 Target author
     =render 'author', author: @author
 
-  .medium-6.columns
+  .medium-6
     %h6 Author to merge into target
     =text_field_tag :author_to_merge_name, params[:author_to_merge_name]
 

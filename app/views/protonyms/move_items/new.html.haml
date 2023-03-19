@@ -3,12 +3,12 @@
 
 =form_with url: protonym_move_items_path, method: :get do |f|
   .row
-    .medium-6.columns
+    .medium-6
       .callout
         %h6.font-bold Move items from...
         =@protonym.decorate.link_to_protonym
 
-    .medium-6.columns
+    .medium-6
       .callout
         %h6.font-bold ...to
         =protonym_picker @to_protonym, name: 'to_protonym_id'
@@ -16,7 +16,7 @@
         =f.button "Select...", class: "btn-default btn-md"
 
 .row
-  .medium-6.columns
+  .medium-6
     -if @protonym.history_items.empty?
       No history items.
     -else

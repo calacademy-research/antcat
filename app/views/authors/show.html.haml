@@ -55,7 +55,7 @@
   =will_paginate @described_protonyms, param_name: "protonyms_page", params: { anchor: "protonyms" }
 
 .row
-  .medium-6.columns.mt-8.end
+  .medium-6.mt-8
     %h5 Statistics
     %table.table-unstriped
       %tbody
@@ -79,7 +79,7 @@
           %td=or_dash @author.described_protonyms.count
 
 .row
-  .medium-6.columns.mt-8.end
+  .medium-6.mt-8
     %h5
       Names belonging to author
       -if user_is_editor?

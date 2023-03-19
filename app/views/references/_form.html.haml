@@ -7,7 +7,7 @@
   =render 'shared/errors_for', resource: reference_form
 
   .row
-    .medium-8.columns
+    .medium-8
       .mb-4
         =f.label :reference_author_names_string do
           Authors
@@ -15,17 +15,17 @@
         =f.text_field :author_names_string, value: params.dig(:reference, :author_names_string) || reference.author_names_string
 
       .row.mb-4
-        .medium-2.columns
+        .medium-2
           =f.label :year do
             Year
             =db_tooltip_icon :year, scope: :references
           =f.text_field :year
-        .medium-2.columns
+        .medium-2
           =f.label :year_suffix do
             Year suffix
             =db_tooltip_icon :year_suffix, scope: :references
           =f.text_field :year_suffix, placeholder: 'Optional'
-        .medium-4.columns.end
+        .medium-4
           =f.label :reference_pagination do
             Pagination
             =db_tooltip_icon :journal_pagination, scope: :references
@@ -50,12 +50,12 @@
 
           #article-tab-content.tab
             .row
-              .medium-6.columns
+              .medium-6
                 =f.label :reference_journal_name do
                   Journal
                   =db_tooltip_icon :journal_name, scope: :references
                 =f.text_field :journal_name, value: params.dig(:reference, :journal_name) || (reference.journal&.name if reference.respond_to?(:journal)) || ''
-              .medium-6.columns.end
+              .medium-6
                 =f.label :reference_series_volume_issue do
                   Series volume issue
                   =db_tooltip_icon :series_volume_issue, scope: :references
@@ -63,7 +63,7 @@
 
           #book-tab-content.tab
             .row
-              .medium-6.columns.end
+              .medium-6
                 =f.label :reference_publisher_string do
                   Publisher
                   =db_tooltip_icon :publisher, scope: :references
@@ -71,7 +71,7 @@
 
           #nested-tab-content.tab
             .row
-              .medium-6.columns.end
+              .medium-6
                 =f.label :nesting_reference_id do
                   Nesting reference ID
                   =db_tooltip_icon :nesting_reference_id, scope: :references
@@ -93,7 +93,7 @@
             =db_tooltip_icon :taxonomic_notes, scope: :references
           =f.text_area :taxonomic_notes, rows: 2
 
-    .medium-4.columns
+    .medium-4
       .callout
         %h6.font-bold Misc. fields
 
@@ -110,19 +110,19 @@
           =f.text_field :doi
 
         .row
-          .medium-6.columns
+          .medium-6
             =f.label :stated_year do
               Stated year
               =db_tooltip_icon :stated_year, scope: :references
             =f.text_field :stated_year
-          .medium-6.columns.end.mb-2
+          .medium-6.mb-2
             =f.label :author_names_suffix do
               Authors suffix
               =db_tooltip_icon :author_names_suffix, scope: :references
             =f.select :author_names_suffix, Reference.distinct.pluck(:author_names_suffix)
 
         .row
-          .medium-8.columns.end.mb-4
+          .medium-8.mb-4
             =f.label :reference_date do
               Date
               =db_tooltip_icon :date, scope: :references
@@ -133,7 +133,7 @@
             =f.check_box :online_early
             Online early
 
-    .medium-4.columns.end.mt-4
+    .medium-4.mt-4
       .callout
         %h6.font-bold Reference document
         =f.fields_for :document, (reference.document || ReferenceDocument.new) do |document_form|
@@ -160,10 +160,10 @@
               (none)
 
   .row
-    .medium-3.columns
+    .medium-3
       =edit_summary_text_field_tag
 
-    .medium-3.columns.end
+    .medium-3
       %button.submit.btn-saves.btn-md Save
       -cancel_link = reference.new_record? ? references_path : reference_path(reference)
       =link_to "Cancel", cancel_link, class: "btn-neutral btn-md"

@@ -5,7 +5,7 @@
   =link_to "Show source code", @decorated_database_script.github_url, class: "btn-default"
 
 .row.mb-8
-  .medium-8.columns
+  .medium-8
     %h5
       =@database_script.title
       =@decorated_database_script.format_linked_tags
@@ -25,10 +25,9 @@
             =DatabaseScriptDecorator.new(related_script).format_linked_tags
 
   -if @database_script.statistics
-    .medium-4.columns
+    .medium-4
       .bg-logged-in-only.callout.border-0
         %p.text-sm=@database_script.statistics
-
 
 .callout
   =@rendered

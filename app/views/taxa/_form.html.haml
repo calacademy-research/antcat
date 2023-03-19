@@ -18,10 +18,10 @@
     =render 'taxa/_form/create_new_protonym_form', taxon: taxon, form: form
 
   .row
-    .medium-3.columns
+    .medium-3
       =edit_summary_text_field_tag
 
-    .medium-3.columns.end
+    .medium-3
       =form.submit 'Save', class: 'btn-saves btn-md'
       &nbsp;
       -cancel_link = taxon.new_record? ? catalog_path(params[:parent_id]) : catalog_path(taxon)

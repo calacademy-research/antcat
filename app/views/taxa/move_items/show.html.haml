@@ -4,19 +4,19 @@
 =form_with path: taxon_move_items_path, data: { controller: 'checkbox-select-all' } do |f|
   =hidden_field_tag :to_taxon_id, @to_taxon.id
   .row
-    .medium-6.columns
+    .medium-6
       .callout
         %h6.font-bold Move items from...
         =@taxon.decorate.id_and_name_and_author_citation
 
-    .medium-6.columns
+    .medium-6
       .callout
         %h6.font-bold ...to
         =@to_taxon.decorate.id_and_name_and_author_citation
 
   .row.mb-8
     -# Move from.
-    .medium-6.columns
+    .medium-6
       -if @taxon.reference_sections.empty?
         No reference sections.
       -else
@@ -33,7 +33,7 @@
                 %td=render 'reference_section', reference_section: reference_section
 
     -# Move to.
-    .medium-6.columns
+    .medium-6
       -if @to_taxon.reference_sections.empty?
         No reference sections.
       -else

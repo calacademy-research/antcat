@@ -17,7 +17,7 @@
   %p IDs have to be entered manually.
 
 .row.mb-8
-  .medium-9.columns
+  .medium-9
     %p
       =@taxon.decorate.link_to_taxon
       has
@@ -29,7 +29,7 @@
   =render 'shared/errors_for', resource: @taxon
 
   .row
-    .medium-6.columns
+    .medium-6
       %table
         %tr
           %td.shrink-tw-conflict

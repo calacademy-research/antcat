@@ -5,14 +5,14 @@
   =javascript_include_tag "markdown_and_friends"
 
 .row
-  .medium-8.columns
+  .medium-8
     -# See also form in `comments/_form.html.haml`.
     =form_with model: @comment do |f|
       =f.text_area :body, rows: 4, placeholder: "Add comment here", data: { has_mentionables: true, has_linkables: true, previewable: true, previewable_title: "Write" }, maxlength: Comment::BODY_MAX_LENGTH
 
       =f.button "Save", class: "btn-saves btn-md"
 
-  .medium-4.columns
+  .medium-4
     .callout
       %h6 Help
       %p

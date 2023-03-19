@@ -3,7 +3,7 @@
 
 =form_with model: resource, url: session_path(resource_name) do |f|
   .row.mb-4
-    .medium-6.columns
+    .medium-6
       =f.label :email
       =f.text_field :email
 
@@ -18,12 +18,12 @@
       =f.label :remember_me
 
   .row.mb-6
-    .medium-6.columns
+    .medium-6
       =f.button "Login", class: "btn-default btn-md"
       -if Settings.email.enabled
         =link_to 'Forgot password?', new_user_password_path
 
   .row
-    .medium-6.columns
+    .medium-6
       Don't have an account?
       =link_to 'Join AntCat!', new_user_registration_path

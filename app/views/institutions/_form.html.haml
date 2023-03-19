@@ -1,10 +1,10 @@
 .row
-  .medium-8.columns
+  .medium-8
     =form_with model: institution do |f|
       =render "shared/errors_for", resource: institution
 
       .row.mb-4
-        .medium-4.columns.end
+        .medium-4
           =f.label :abbreviation
           =f.text_field :abbreviation, maxlength: Institution::ABBREVIATION_MAX_LENGTH
 
@@ -19,12 +19,12 @@
         =f.text_field :grscicoll_identifier, placeholder: "Format: <institution or collection>/e6e9d21b-faf8-4698-95e6-bacc55860a95"
 
       .row.mt-8.mb-4
-        .medium-4.columns.end
+        .medium-4
           =edit_summary_text_field_tag
 
       =f.button 'Save', class: 'btn-saves btn-md'
 
-  .medium-4.columns
+  .medium-4
     .callout
       %p Institutions are used in some "taxt items". Full names of institutions are shown when abbreviations are hovered.
       %p

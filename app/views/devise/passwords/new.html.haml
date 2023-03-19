@@ -6,15 +6,15 @@
     =render 'shared/errors_for', resource: resource
 
     .row.mb-4
-      .medium-6.columns
+      .medium-6
         =f.label :email
         =f.text_field :email
 
     .row
-      .medium-6.columns
+      .medium-6
         =f.button "Send me reset password instructions", type: :submit, class: "btn-default btn-md"
 -else
   .row
-    .medium-6.columns
+    .medium-6
       .callout-alert
         Cannot request password reset because emails are not enabled.

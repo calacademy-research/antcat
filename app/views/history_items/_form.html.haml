@@ -21,7 +21,7 @@
         =beta_label
         =tooltip_icon 'Still in beta. This section can be ignored for taxt items.'
       .row
-        .medium-4.columns.end
+        .medium-4
           %table
             %tr
               %td.whitespace-nowrap
@@ -140,11 +140,11 @@
                 %code force_author_citation
 
   .row.mt-8
-    .medium-3.columns
+    .medium-3
       =edit_summary_text_field_tag
-    .medium-6.columns
+    .medium-6
       =f.button 'Save', class: "btn-saves btn-md"
-    .medium-3.columns.end
+    .medium-3
       =f.label :position do
         Position
         =tooltip_icon 'Leave blank to add new items last. Only relevant for items of Taxt type'
