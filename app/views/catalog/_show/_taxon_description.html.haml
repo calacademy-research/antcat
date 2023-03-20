@@ -31,7 +31,7 @@
 /--- Type names ---
 -if current_user
   -if taxon.type_names.present?
-    .bg-logged-in-only.callout.border-0.mt-8.mb-8
+    .bluebox
       %ul.no-bullet
         -taxon.type_names.each do |as_type_name|
           %li
@@ -54,7 +54,7 @@
 
 /--- Replacement names for ---
 -if current_user && taxon.replacement_name_for.present?
-  .bg-logged-in-only.callout.border-0
+  .bluebox
     %strong Replacement name for
     -taxon.replacement_name_for.each do |replaced_name|
       =CatalogFormatter.link_to_taxon(replaced_name)
@@ -66,7 +66,7 @@
 -if current_user
   -if taxon.history_items_as_object_for_taxon.present?
     -history_presenter = HistoryPresenter.new(taxon.history_items_as_object_for_taxon, :object)
-    .bg-logged-in-only.callout.border-0.mt-8.mb-8
+    .bluebox
       %strong History items as object (mirrored items)
       %ul
         -history_presenter.grouped_items.each do |grouped_item|
@@ -110,7 +110,7 @@
 /--- History items: Not shown items (from protonym) ---
 -if current_user && !Status.display_history_items?(taxon.status)
   -if taxon.history_items_for_taxon_including_hidden.present?
-    .bg-logged-in-only.callout.border-0.mt-8.mb-8
+    .bluebox
       %h6.font-bold Protonym history items not shown on this page
       %p
         History items in this bluebox are shown on catalog pages for the protonym's terminal taxon:

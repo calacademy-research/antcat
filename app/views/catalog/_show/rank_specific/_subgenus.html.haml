@@ -1,5 +1,5 @@
 -if current_user && taxon.species.exists?
-  .bg-logged-in-only.callout.border-0
+  .bluebox
     %h6 Species and subspecies in subgenus
     %ul.compact-list.mb-4
       -TaxonQuery.new(taxon.species.order_by_name).with_common_includes.each do |species|

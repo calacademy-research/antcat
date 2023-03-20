@@ -7,7 +7,7 @@
         =subspecies.author_citation
 
 -if current_user && taxon.subspecies.invalid.exists?
-  .bg-logged-in-only.callout.border-0
+  .bluebox
     %h6.font-bold
       Invalid subspecies
       =logged_in_only_tooltip_icon "We want to show subspecies somewhere in catalog pages, but we need to figure out how to present them."

@@ -340,6 +340,12 @@
     white-space: nowrap;
     width: 1px;
   }
+
+  /* Misc. */
+  /* For content for logged-in users. */
+  .bluebox {
+    @apply bg-logged-in-only rounded-lg p-4 mb-4 last:[&>*]:mb-0;
+  }
 }
 
 @layer utilities {

@@ -51,7 +51,7 @@
 
   -if user_is_superadmin?
     .medium-4
-      .bg-logged-in-only.callout.border-0
+      .bluebox
         PaperTrail versions:
         =link_to @user.created_paper_trail_versions.count, versions_path(whodunnit: @user.id)
         =logged_in_only_tooltip_icon user_group: "superadmins"
