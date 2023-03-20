@@ -26,11 +26,11 @@
         Version before item was deleted
       %span.text-base=comparer.most_recent.updated_at
 
-  .callout{class: (comparer.looking_at_a_single_old_revision? ? "bg-revision-red" : "bg-revision-green")}
+  .callout.mb-8{class: (comparer.looking_at_a_single_old_revision? ? "bg-revision-red" : "bg-revision-green")}
     =preserve do
       =revision_presenter.render_revision(comparer.selected || comparer.most_recent, view_context: self)
 
-.mb-8.mt-8
+.mb-8
   =render "shared/revision_comparer/revision_history_table",
     comparer: comparer,
     revision_presenter: revision_presenter,

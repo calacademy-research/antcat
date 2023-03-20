@@ -24,7 +24,7 @@
     =render "shared/reference_table", references: @references
     =will_paginate @references, param_name: "references_page", params: { anchor: "references" }
 
-%h5.mt-8 Protonyms originally described by author
+%h5 Protonyms originally described by author
 -# Anchor for the pagination.
 %a{name: 'protonyms'}
 -if @described_protonyms.blank?
@@ -54,8 +54,10 @@
               =antcat_icon 'check'
   =will_paginate @described_protonyms, param_name: "protonyms_page", params: { anchor: "protonyms" }
 
-.row
-  .medium-6.mt-8
+.mb-8
+
+.row.mb-8
+  .medium-6
     %h5 Statistics
     %table.table-unstriped
       %tbody
@@ -79,7 +81,7 @@
           %td=or_dash @author.described_protonyms.count
 
 .row
-  .medium-6.mt-8
+  .medium-6
     %h5
       Names belonging to author
       -if user_is_editor?

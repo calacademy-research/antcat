@@ -33,13 +33,13 @@
             =db_tooltip_icon :nested_pagination, scope: :references
           =f.text_field :pagination
 
-      .mb-4
+      .mb-8
         =f.label :reference_title do
           Title
           =db_tooltip_icon :title, scope: :references
         =f.text_area :title, rows: 1
 
-      .mt-4
+      .mb-8
         #reference-type-css-tabs
           %input#article-tab.tab-input.hidden{checked: ("checked" if reference.is_a?(ArticleReference)), name: "reference_type", type: "radio", value: 'ArticleReference'}
           %label{for: "article-tab"} Article
@@ -77,7 +77,7 @@
                   =db_tooltip_icon :nesting_reference_id, scope: :references
                 =f.text_field :nesting_reference_id
 
-      .mt-8.mb-4
+      .mb-8
         %h6.font-bold Notes
         .mb-2
           =f.label :reference_public_notes, 'Public notes'
@@ -109,20 +109,20 @@
             =db_tooltip_icon :doi, scope: :references
           =f.text_field :doi
 
-        .row
+        .row.mb-2
           .medium-6
             =f.label :stated_year do
               Stated year
               =db_tooltip_icon :stated_year, scope: :references
             =f.text_field :stated_year
-          .medium-6.mb-2
+          .medium-6
             =f.label :author_names_suffix do
               Authors suffix
               =db_tooltip_icon :author_names_suffix, scope: :references
             =f.select :author_names_suffix, Reference.distinct.pluck(:author_names_suffix)
 
-        .row
-          .medium-8.mb-4
+        .row.mb-4
+          .medium-8
             =f.label :reference_date do
               Date
               =db_tooltip_icon :date, scope: :references
@@ -133,31 +133,30 @@
             =f.check_box :online_early
             Online early
 
-      .mt-4
-        .callout
-          %h6.font-bold Reference document
-          =f.fields_for :document, (reference.document || ReferenceDocument.new) do |document_form|
-            .mb-4
-              =document_form.file_field :file
+      .callout
+        %h6.font-bold Reference document
+        =f.fields_for :document, (reference.document || ReferenceDocument.new) do |document_form|
+          .mb-4
+            =document_form.file_field :file
 
-            -if document_form.object.url?
-              .mb-4
-                =f.label :document_url do
-                  Source URL (legacy)
-                =document_form.text_field :url
-
+          -if document_form.object.url?
             .mb-4
-              =succeed ":" do
-                %code reference_documents.id
-              =document_form.object.id || '(none)'
+              =f.label :document_url do
+                Source URL (legacy)
+              =document_form.text_field :url
 
-            .mb-4
-              =succeed ":" do
-                %code file_file_name
-              -if document_form.object.file_file_name.present?
-                .break-all=document_form.object.file_file_name
-              -else
-                (none)
+          .mb-4
+            =succeed ":" do
+              %code reference_documents.id
+            =document_form.object.id || '(none)'
+
+          .mb-4
+            =succeed ":" do
+              %code file_file_name
+            -if document_form.object.file_file_name.present?
+              .break-all=document_form.object.file_file_name
+            -else
+              (none)
 
   .row
     .medium-3

@@ -11,10 +11,10 @@
   =render "shared/errors_for", resource: history_item
   =hidden_field_tag :redirect_back_url, params[:redirect_back_url]
 
-  %div{class: ("hidden" if collapse_history_item_taxt_textarea?(history_item)), data: { toggler_name: "taxt_textarea" }}
+  .mb-8{class: ("hidden" if collapse_history_item_taxt_textarea?(history_item)), data: { toggler_name: "taxt_textarea" }}
     =text_area_tag :taxt, history_item.taxt, rows: 5, name: 'history_item[taxt]', data: { has_linkables: true, previewable: true, previewable_title: "Taxt (freeform text) #{tooltip_icon('Required for taxt items; must it be blank for almost all other types of items. This textarea is always visible in order to make it easier to convert taxt item to relational items (or the other way around).')}", use_extras: true }
 
-  .mt-8
+  .mb-8
     .callout
       %h6
         Fields for relational history items
@@ -139,7 +139,7 @@
             %td
               %code force_author_citation
 
-  .row.mt-8
+  .row.mb-8
     .medium-3
       =edit_summary_text_field_tag
     .medium-6
@@ -149,12 +149,12 @@
         Position
         =tooltip_icon 'Leave blank to add new items last. Only relevant for items of Taxt type'
       =f.number_field :position, placeholder: ('Leave blank for default' if history_item.new_record?)
-
       .mb-4
-
       =f.select :rank, Rank::AntCatSpecific::TYPE_SPECIFIC_HISTORY_ITEM_TYPES, include_blank: 'Show for all ranks (default)'
 
-%h5.mt-20.mb-4 Related records
+.mb-20
+
+%h5 Related records
 
 -# TODO: DRY w.r.t. 'history_items/show.html.haml'.
 -if protonym.taxa.present?
@@ -170,7 +170,7 @@
             -unless taxon.status.in?(Taxa::ExpandedStatus::SELF_STATUSES)
               .text-sm=taxon.decorate.expanded_status
 
-%h6.font-bold.mb-4 Other history items belonging to #{protonym.name.name_html}
+%h6.font-bold Other history items belonging to #{protonym.name.name_html}
 %table.table-striped
   %tbody
     -if protonym.history_items.persisted.empty?

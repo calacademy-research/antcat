@@ -1,5 +1,5 @@
 -if taxon.infrasubspecies.exists?
-  %h6.font-bold.mt-8 Infrasubspecies
+  %h6.font-bold Infrasubspecies
   %ul.compact-list.no-bullet.mb-8
     -TaxonQuery.new(taxon.infrasubspecies.order_by_name).with_common_includes.each do |infrasubspecies|
       %li

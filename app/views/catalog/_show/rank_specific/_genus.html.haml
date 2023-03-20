@@ -1,5 +1,5 @@
 -if taxon.valid_status? && taxon.subgenera.valid.exists?
-  %h6.font-bold.mt-8 Subgenera
+  %h6.font-bold Subgenera
   %ul.compact-list.no-bullet.mb-8
     -TaxonQuery.new(taxon.subgenera.valid.order_by_name).with_common_includes.each do |subgenus|
       %li

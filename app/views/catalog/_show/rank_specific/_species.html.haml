@@ -1,5 +1,5 @@
 -if taxon.valid_status? && taxon.subspecies.valid.exists?
-  %h6.font-bold.mt-8 Current subspecies (nominal plus)
+  %h6.font-bold Current subspecies (nominal plus)
   %ul.compact-list.no-bullet.mb-8
     -TaxonQuery.new(taxon.subspecies.valid.order_by_name).with_common_includes.each do |subspecies|
       %li

@@ -11,7 +11,7 @@
   =taxon.name.gender
 
 /--- Second line ---
-%div
+%div.mb-4
   %span.font-bold.mr-1{data: { testid: 'catalog-protonym-name' }}
     =protonym.decorate.link_to_protonym
   -if protonym.sic?
@@ -41,7 +41,7 @@
             =as_type_name.protonym.decorate.link_to_protonym_with_author_citation + Detax[decorated_as_type_name.format_fixation_method]
 
 /--- Type information ---
-.mt-4.mb-4
+.mb-8
   -if protonym.primary_type_information_taxt?
     %strong Primary type information:
     =::Types::FormatTypeField[protonym.primary_type_information_taxt]
@@ -77,10 +77,10 @@
   -history_presenter = HistoryPresenter.new(taxon.history_items_for_taxon)
 
   -if current_user
-    %h6.font-bold.mt-8 Taxonomic history
-    .mb-16
+    %h6.font-bold Taxonomic history
+    .mb-8
       -history_presenter.grouped_items.each do |grouped_item|
-        .mb-4
+        .mb-2
           -if grouped_item.grouped?
             %p=Detax[grouped_item.taxt]
             %p
@@ -103,7 +103,7 @@
             -else
               %p=Detax[history_item.to_taxt]
   -else
-    %ul.mb-4
+    %ul.mb-8
       -history_presenter.grouped_items.each do |grouped_item|
         %li=Detax[grouped_item.taxt]
 
@@ -123,7 +123,7 @@
 /--- Junior synonyms ---
 -if taxon.junior_synonyms.exists?
   -name_of_obsoletes = taxon.decorate.name_of_obsoletes
-  %h6.font-bold.mt-8 Junior synonyms
+  %h6.font-bold Junior synonyms
   %ul.compact-list.no-bullet.mb-8
     -TaxonQuery.new(taxon.junior_synonyms.order_by_name).with_common_includes.each do |synonym|
       %li
@@ -136,13 +136,13 @@
 
 /--- Obsolete combinations ---
 -if taxon.obsolete_combinations.exists?
-  %h6.font-bold.mt-8="Obsolete #{taxon.decorate.name_of_obsoletes}s"
+  %h6.font-bold="Obsolete #{taxon.decorate.name_of_obsoletes}s"
   %ul.compact-list.no-bullet.mb-8
     -taxon.obsolete_combinations.order_by_name.includes(:name).each do |obsolete_combination|
       %li=CatalogFormatter.link_to_taxon(obsolete_combination)
 
 /--- Rank-specific ---
-.mb-4
+.mb-8
   -Taxa::ChildList[taxon].each do |child_list|
     %div
       %span.font-bold #{child_list[:label]}:
@@ -180,9 +180,11 @@
                 =link_to "Edit", edit_reference_section_path(reference_section), class: "btn-default"
               =link_to "History", reference_section_history_path(reference_section), class: "btn-default"
 
+.mb-20
+
 /--- Citations ---
 -unless catalog_presenter.formicidae_landing_page?
-  %h5.font-bold.mt-20 Citations
+  %h5.font-bold Citations
   %ul
     -catalog_presenter.collected_references.each do |reference|
       -decorated_reference = reference.decorate

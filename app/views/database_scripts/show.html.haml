@@ -17,7 +17,8 @@
         %p=markdown @database_script.issue_description
 
     -if @database_script.related_scripts.present?
-      %h6.font-bold.mt-8 Related scripts
+      .mb-8
+      %h6.font-bold Related scripts
       %ul
         -@database_script.related_scripts.each do |related_script|
           %li

@@ -9,17 +9,17 @@
 
 -if user_is_at_least_helper?
   %p
-    %span.bg-logged-in-only.mb-8
+    %span.bg-logged-in-only
       Emails are only visible to logged in helpers and editors.
       =logged_in_only_tooltip_icon user_group: 'helpers/editors'
 
 -if user_is_superadmin?
-  %p
-    %span.bg-logged-in-only.mb-8
+  %p.mb-8
+    %span.bg-logged-in-only
       Activity and PaperTrail version counts are only visible to superadmins.
       =logged_in_only_tooltip_icon user_group: 'superadmins'
 
-%table.table-striped
+%table.table-striped.mb-8
   %tbody
     -@active_users.each do |user|
       %tr
@@ -39,10 +39,10 @@
           %td Reg. #{user.created_at.year}
 
 -if @hidden_users
-  %h5.mt-20
+  %h5
     Hidden users
     =logged_in_only_tooltip_icon user_group: 'helpers/editors'
-  %table.table-striped
+  %table.table-striped.mb-8
     %tbody
       -@hidden_users.each do |user|
         %tr
@@ -62,7 +62,7 @@
           %td Reg. #{user.created_at.year}
 
 -if @deleted_or_locked_users
-  %h5.mt-20
+  %h5
     Deleted or locked users
     =logged_in_only_tooltip_icon user_group: 'superadmins'
   %table.table-striped

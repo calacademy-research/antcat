@@ -30,6 +30,7 @@
 
 =will_paginate @issues
 
-.mt-20
-  %h5 Most recent activity (#{link_to "see more", activities_path(trackable_type: 'Issue')})
-  =render "activities/table", activities: @recent_activities
+.mb-20
+
+%h5 Most recent activity (#{link_to "see more", activities_path(trackable_type: 'Issue')})
+=render "activities/table", activities: @recent_activities
