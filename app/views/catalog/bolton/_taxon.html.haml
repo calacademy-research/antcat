@@ -12,17 +12,17 @@
 .ml-12
   %ul.no-bullet.mb-4{class: "[&_li:hover]:bg-gray-200"}
     -if protonym.primary_type_information_taxt?
-      %li.text-sm
+      %li
         %span Primary type information:
         =::Types::FormatTypeField[protonym.primary_type_information_taxt]
 
     -if protonym.secondary_type_information_taxt?
-      %li.text-sm
+      %li
         %span Secondary type information:
         =::Types::FormatTypeField[protonym.secondary_type_information_taxt]
 
     -if protonym.type_notes_taxt?
-      %li.text-sm
+      %li
         %span Type notes:
         =::Types::FormatTypeField[protonym.type_notes_taxt]
 

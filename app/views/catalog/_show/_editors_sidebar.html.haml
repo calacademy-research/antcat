@@ -1,4 +1,4 @@
-.bg-logged-in-only.callout.border-0.text-sm
+.bg-logged-in-only.callout.border-0
   %h6
     Taxon:
     =taxon.name.epithet_html
@@ -7,7 +7,7 @@
     =copy_to_clipboard_button Taxt.tax(taxon.id), "tax #{taxon.id}"
     =copy_to_clipboard_button taxon.id
 
-.bg-logged-in-only.callout.border-0.text-sm
+.bg-logged-in-only.callout.border-0
   %h6
     Protonym:
     =protonym.decorate.link_to_protonym_epithet
@@ -34,12 +34,12 @@
 -# Ignore "Issue" sidebar for Formicidae for performance and a cleaner look.
 -if Settings.catalog.show_failed_soft_validations && !taxon.is_a?(Family)
   -if taxon.soft_validations.failed?
-    .callout-warning.text-sm
+    .callout-warning
       %h6 Issues (#{link_to("see more", taxon_soft_validations_path(taxon))})
       =render 'shared/failed_soft_validations', soft_validations: taxon.soft_validations
 
   -if protonym.soft_validations.failed?
-    .callout-warning.text-sm
+    .callout-warning
       %h6=link_to 'Protonym issues', protonym_soft_validations_path(protonym)
       %p
         These issues listed here are for the protonym of this taxon,
@@ -50,7 +50,7 @@
 =render 'protonyms/shared/etymology_and_gender', protonym: protonym, taxon: taxon
 
 -if editors_catalog_presenter.taxa_with_same_name.present?
-  .bg-logged-in-only.callout.border-0.text-sm
+  .bg-logged-in-only.callout.border-0
     %h6 Taxa with same name
     %ul.compact-list.mb-4
       -editors_catalog_presenter.taxa_with_same_name.includes(:name, protonym: [{ authorship: :reference }]).each do |homonym|
@@ -60,7 +60,7 @@
           %span.text-sm=homonym.decorate.compact_status
 
 -if taxon.policy.show_create_combination_button?
-  .bg-logged-in-only.text-sm.callout.border-0{class: "group/can-be-combined-box"}
+  .bg-logged-in-only.callout.border-0{class: "group/can-be-combined-box"}
     %h6 Can be combined?
 
     -if current_user.settings(:editing_helpers).create_combination
@@ -80,10 +80,10 @@
       .hidden{class: "group-hover/can-be-combined-box:inline"}
         =link_to "Hide editing helper", edit_user_registration_path
     -else
-      Enable editing helper on
+      Enable helper on
       =link_to "My account", edit_user_registration_path
 
-.bg-logged-in-only.callout.border-0.text-sm
+.bg-logged-in-only.callout.border-0
   %h6 Additional data
 
   %ul.no-bullet

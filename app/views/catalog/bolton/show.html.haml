@@ -16,7 +16,7 @@
 
 -if @collected_references
   %h5.mt-20 Citations
-  %ul.compact-list
+  %ul
     -@collected_references.each do |reference|
       -decorated_reference = reference.decorate
       %li

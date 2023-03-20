@@ -1,6 +1,6 @@
 #desktop-only-header{class: "hidden lg:block pt-4 pb-8"}
   .float-right.pt-2
-    %ul.no-bullet.flex.text-sm{class: "[&>*]:px-4 [&>*]:ml-4"}
+    %ul.no-bullet.flex{class: "[&>*]:px-4 [&>*]:ml-4"}
       -if current_user
         -unless (count = current_user.unseen_notifications.count).zero?
           %li.font-bold

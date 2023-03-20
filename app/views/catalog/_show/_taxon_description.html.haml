@@ -4,9 +4,9 @@
   =render "shared/default_reference"
 
 /--- First line ---
-.text-sm
-  %span.text-lg.font-bold.mr-1=Taxa::LinkEachEpithet[taxon]
-  =taxon.author_citation
+%span.text-lg.font-bold.mr-1=Taxa::LinkEachEpithet[taxon]
+=taxon.author_citation
+%span.text-sm
   =taxon.decorate.expanded_status
   =taxon.name.gender
 
@@ -41,7 +41,7 @@
             =as_type_name.protonym.decorate.link_to_protonym_with_author_citation + Detax[decorated_as_type_name.format_fixation_method]
 
 /--- Type information ---
-.text-sm.mb-4
+.mt-4.mb-4
   -if protonym.primary_type_information_taxt?
     %strong Primary type information:
     =::Types::FormatTypeField[protonym.primary_type_information_taxt]
@@ -91,7 +91,7 @@
               %button.btn-neutral.mr-4{"data-action" => "toggler#toggle", "data-toggler-target" => "grouped-#{grouped_item.group_key.join('_')}"} Show/hide grouped
               %span.text-sm.font-bold.text-gray-500 #{grouped_item.underscored_type} x #{grouped_item.number_of_items}
 
-            %ul.compact-list.no-bullet.mb-8.hidden{data: { toggler_name: "grouped-#{grouped_item.group_key.join('_')}" }}
+            %ul.no-bullet.mb-8.hidden{data: { toggler_name: "grouped-#{grouped_item.group_key.join('_')}" }}
               -grouped_item.items.each do |history_item|
                 %li.pl-8
                   -if user_is_at_least_helper?
@@ -112,7 +112,7 @@
 /--- History items: Not shown items (from protonym) ---
 -if current_user && !Status.display_history_items?(taxon.status)
   -if taxon.history_items_for_taxon_including_hidden.present?
-    .bg-logged-in-only.callout.border-0.text-sm.mt-8.mb-8
+    .bg-logged-in-only.callout.border-0.mt-8.mb-8
       %h6.font-bold Protonym history items not shown on this page
       %p
         History items in this bluebox are shown on catalog pages for the protonym's terminal taxon:
@@ -184,8 +184,8 @@
 
 /--- Citations ---
 -unless catalog_presenter.formicidae_landing_page?
-  %h6.font-bold.mt-20 Citations
-  %ul.compact-list
+  %h5.font-bold.mt-20 Citations
+  %ul
     -catalog_presenter.collected_references.each do |reference|
       -decorated_reference = reference.decorate
       %li{class: "group/citations-reference"}
