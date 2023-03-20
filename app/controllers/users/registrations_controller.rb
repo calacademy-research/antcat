@@ -52,6 +52,10 @@ module Users
         end
       end
 
+      def after_update_path_for _resource
+        edit_user_registration_path
+      end
+
     private
 
       def settings_params

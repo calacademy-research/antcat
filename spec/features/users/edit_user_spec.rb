@@ -37,7 +37,9 @@ feature "Editing a user", as: :current_user, skip_ci: true do
     fill_in "user_name", with: "Quintus, B."
     fill_in "user_current_password", with: "secret"
     click_button "Save"
-    i_should_be_on root_path
+
+    i_should_be_on edit_user_registration_path
+    i_should_see "Your account has been updated successfully."
     i_should_see "Quintus, B."
     i_should_not_see "Batiatus"
   end

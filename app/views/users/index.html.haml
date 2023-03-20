@@ -4,6 +4,8 @@
 -if user_is_superadmin?
   -content_for :breadcrumbs_right do
     =link_to append_superadmin_icon("New"), new_user_path, class: "btn-default"
+    -unless params[UsersController::SHOW_USER_STATS_PARAM]
+      =link_to append_superadmin_icon("Show user stats"), users_path(UsersController::SHOW_USER_STATS_PARAM => 'yes'), class: "btn-default"
 
 -if user_is_at_least_helper?
   %p
