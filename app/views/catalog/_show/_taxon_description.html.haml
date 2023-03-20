@@ -77,9 +77,7 @@
   -history_presenter = HistoryPresenter.new(taxon.history_items_for_taxon)
 
   -if current_user
-    %h6.font-bold.mt-8
-      Taxonomic history
-      =info_tooltip_icon 'Automatically sorted and grouped items, logged-in version.'
+    %h6.font-bold.mt-8 Taxonomic history
     .mb-16
       -history_presenter.grouped_items.each do |grouped_item|
         .mb-4

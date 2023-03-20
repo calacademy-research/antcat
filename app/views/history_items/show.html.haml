@@ -8,7 +8,7 @@
       =antcat_icon 'check'
     -else
       =antcat_icon 'nope'
-    =logged_in_only_tooltip_icon "Beta feature. More formats will be supported in the future. This section is only visible to logged-in users."
+    =logged_in_only_tooltip_icon "Beta feature. More formats will be supported in the future."
 
   -if user_is_at_least_helper?
     =link_to "Edit", edit_history_item_path(@history_item), class: "btn-default"
