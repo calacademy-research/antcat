@@ -13,7 +13,7 @@ feature "Site notices", as: :editor do
     i_follow "New"
     fill_in "site_notice_title", with: "New AntCat features"
     fill_in "site_notice_message", with: "You would not believe it!"
-    click_button "Publish"
+    click_button "Save"
     i_should_see "Successfully created site notice"
   end
 

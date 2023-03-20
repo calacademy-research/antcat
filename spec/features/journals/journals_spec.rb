@@ -11,7 +11,7 @@ feature "Journals" do
   end
 
   scenario "Edit a journal's name (with feed)", as: :editor do
-    i_follow "Edit journal name"
+    i_follow "Edit"
     fill_in "journal_name", with: "Science"
     click_button "Save"
     i_should_see "Successfully updated journal"
