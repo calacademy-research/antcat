@@ -30,7 +30,7 @@
       =f.select :type, options_for_history_item_types(params[:type]), include_blank: 'Any item type'
   .row.mb-8
     .small-6.medium-2
-      =button_tag "Search ".html_safe + search_icon, type: "submit", name: nil, class: "btn-default btn-md"
+      =button_tag "Search ".html_safe + search_icon, name: nil, class: "btn-default btn-md"
       =link_to "Clear", request.path, class: "btn-neutral btn-md"
 
 -if current_user && @history_items.present?

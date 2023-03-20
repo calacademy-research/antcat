@@ -164,6 +164,7 @@
       =edit_summary_text_field_tag
 
     .medium-3
-      %button.submit.btn-saves.btn-md Save
+      =f.button "Save", class: "btn-saves btn-md"
+
       -cancel_link = reference.new_record? ? references_path : reference_path(reference)
       =link_to "Cancel", cancel_link, class: "btn-neutral btn-md"
