@@ -24,10 +24,7 @@
           =issue.decorate.help_wanted_badge
           %br
           %span.text-sm.text-gray-600{class: "[&_a]:text-gray-600"}
-            added
-            =time_ago_in_words issue.created_at
-            ago by
-            =issue.user.decorate.user_page_link
+            added #{time_ago_in_words issue.created_at} ago by #{issue.user.decorate.user_page_link}
         %td.no-wrap=CommentableDecorator.new(issue).link_existing_comments_section
         %td.no-wrap
 
