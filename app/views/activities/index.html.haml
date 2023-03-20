@@ -23,7 +23,6 @@
 
     .small-6.medium-2
       =f.button 'Filter', name: nil, class: "btn-default btn-md"
-      &nbsp;
       =link_to "Clear", request.path, class: "btn-neutral btn-md"
 
 =render "table", activities: @activities, highlighted_activity: @activity, show_delete_button: true
