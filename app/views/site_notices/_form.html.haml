@@ -2,7 +2,7 @@
   =javascript_include_tag "markdown_and_friends"
 
 -content_for :breadcrumbs_right do
-  %button.btn-neutral{"data-action" => "toggler#toggle", "data-toggler-target" => "help"} Show/hide help
+  %button.btn-neutral{"data-action" => "click->toggler#toggle", "data-toggler-target" => "help"} Show/hide help
 
 .hidden{data: { toggler_name: "help" }}
   .callout

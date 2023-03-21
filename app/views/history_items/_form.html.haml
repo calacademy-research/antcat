@@ -5,7 +5,7 @@
 =render "shared/default_reference"
 
 -content_for :breadcrumbs_right do
-  %button.btn-neutral{"data-action" => "toggler#toggle", "data-toggler-target" => "taxt_textarea"} Show/hide taxt textarea
+  %button.btn-neutral{"data-action" => "click->toggler#toggle", "data-toggler-target" => "taxt_textarea"} Show/hide taxt textarea
 
 =form_with model: history_item, scope: :history_item, url: url do |f|
   =render "shared/errors_for", resource: history_item
