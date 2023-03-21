@@ -341,10 +341,32 @@
     width: 1px;
   }
 
-  /* Misc. */
-  /* For content for logged-in users. */
+  /* Callouts */
+  /* TODO: Cleanup. */
+  .base__callout {
+    @apply rounded-lg p-4 mb-4 last:[&>*]:mb-0;
+  }
+
+  .callout {
+    @apply base__callout border border-gray-300;
+  }
+
+  .callout-primary {
+    @apply base__callout border border-gray-400 bg-logged-in-only;
+  }
+
+  .callout-alert {
+    @apply base__callout border border-gray-400;
+    background-color: #fce6e2
+  }
+
+  .callout-warning {
+    @apply base__callout border border-gray-400;
+    background-color: #fff3d9
+  }
+
   .bluebox {
-    @apply bg-logged-in-only rounded-lg p-4 mb-4 last:[&>*]:mb-0;
+    @apply base__callout bg-logged-in-only;
   }
 }
 
