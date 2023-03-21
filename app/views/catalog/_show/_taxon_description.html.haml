@@ -124,20 +124,20 @@
 -if taxon.junior_synonyms.exists?
   -name_of_obsoletes = taxon.decorate.name_of_obsoletes
   %h6.font-bold Junior synonyms
-  %ul.compact-list.no-bullet.mb-8
+  %ul.compact-list.mb-8
     -TaxonQuery.new(taxon.junior_synonyms.order_by_name).with_common_includes.each do |synonym|
       %li
         =CatalogFormatter.link_to_taxon(synonym)
         =synonym.author_citation
         -if synonym.obsolete_combinations.present?
-          .pl-8
+          .pl-4
             Obsolete #{name_of_obsoletes}(s):
             =safe_join synonym.obsolete_combinations.map { |obsolete| CatalogFormatter.link_to_taxon(obsolete) }, ', '
 
 /--- Obsolete combinations ---
 -if taxon.obsolete_combinations.exists?
   %h6.font-bold="Obsolete #{taxon.decorate.name_of_obsoletes}s"
-  %ul.compact-list.no-bullet.mb-8
+  %ul.compact-list.mb-8
     -taxon.obsolete_combinations.order_by_name.includes(:name).each do |obsolete_combination|
       %li=CatalogFormatter.link_to_taxon(obsolete_combination)
 
