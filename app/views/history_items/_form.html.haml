@@ -76,7 +76,7 @@
               =f.label :subtype, id: 'type-label-subtype' do
                 subtype [???]
             %td.grow-tw-conflict
-              .max-w-xs=f.select :subtype, [history_item.subtype, '???']
+              =f.select :subtype, [history_item.subtype, '???']
             %td
               %code subtype
 
@@ -135,7 +135,7 @@
               =f.label :pages, id: 'type-label-force-author-citation' do
                 Force author citation
             %td.grow-tw-conflict
-              .max-w-xsh=f.check_box :force_author_citation
+              =f.check_box :force_author_citation
             %td
               %code force_author_citation
 

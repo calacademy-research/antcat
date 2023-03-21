@@ -36,9 +36,7 @@
 
         %tr
           %td=form.label :status
-          %td
-            .max-w-xs
-              =form.select :status, Status::STATUSES
+          %td=form.select :status, Status::STATUSES
 
         %tr
           %td.shrink-tw-conflict

@@ -63,9 +63,7 @@
                 =protonym_form.label :bioregion do
                   Bioregion
                   =db_tooltip_icon :bioregion, scope: :protonyms
-              %td
-                .max-w-xs
-                  =protonym_form.select :bioregion, Protonym::BIOREGIONS, include_blank: true
+              %td=protonym_form.select :bioregion, Protonym::BIOREGIONS, include_blank: true
             %tr
               %td
                 =protonym_form.label :locality do
@@ -92,9 +90,7 @@
                 =protonym_form.label :gender_agreement_type do
                   Gender agreement type (only for species-group names)
                   =db_tooltip_icon :gender_agreement_type, scope: :protonyms
-              %td
-                .max-w-xs
-                  =protonym_form.select :gender_agreement_type, Protonym::GENDER_AGREEMENT_TYPES, include_blank: '(blank)'
+              %td=protonym_form.select :gender_agreement_type, Protonym::GENDER_AGREEMENT_TYPES, include_blank: '(blank)'
 
           %tr
             %td

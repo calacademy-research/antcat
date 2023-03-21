@@ -119,7 +119,7 @@
             =f.label :author_names_suffix do
               Authors suffix
               =db_tooltip_icon :author_names_suffix, scope: :references
-            =f.select :author_names_suffix, Reference.distinct.pluck(:author_names_suffix)
+            =f.select :author_names_suffix, Reference.distinct.pluck(:author_names_suffix), {}, { class: "w-full" }
 
         .row.mb-4
           .medium-8
