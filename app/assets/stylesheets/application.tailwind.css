@@ -343,7 +343,7 @@
   /* Callouts */
   /* TODO: Cleanup. */
   .base__callout {
-    @apply rounded-lg p-4 mb-4 last:[&>*]:mb-0;
+    @apply rounded-md p-4 mb-4 last:[&>*]:mb-0;
   }
 
   .callout {

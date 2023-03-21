@@ -7,7 +7,7 @@
       "check_name": "Execute",
       "message": "Possible command injection",
       "file": "lib/dev_monkey_patches/antcat.rb",
-      "line": 70,
+      "line": 69,
       "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
       "code": "`xdg-open \"#{self}\"`",
       "render_path": null,
@@ -18,6 +18,32 @@
       },
       "user_input": "self",
       "confidence": "Medium",
+      "cwe_id": [
+        77
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Remote Code Execution",
+      "warning_code": 24,
+      "fingerprint": "052124f051ed4ff60a82b6b1826e2be193741896a0124ac6cbdd64dc0efe99cf",
+      "check_name": "UnsafeReflection",
+      "message": "Unsafe reflection method `constantize` called on parameter value",
+      "file": "app/controllers/references_controller.rb",
+      "line": 108,
+      "link": "https://brakemanscanner.org/docs/warning_types/remote_code_execution/",
+      "code": "params[:reference_type].constantize",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "ReferencesController",
+        "method": "reference_type_from_params"
+      },
+      "user_input": "params[:reference_type]",
+      "confidence": "High",
+      "cwe_id": [
+        470
+      ],
       "note": ""
     },
     {
@@ -27,7 +53,7 @@
       "check_name": "CrossSiteScripting",
       "message": "Unescaped model attribute",
       "file": "app/views/shared/revision_comparer/main.html.haml",
-      "line": 19,
+      "line": 16,
       "link": "https://brakemanscanner.org/docs/warning_types/cross_site_scripting",
       "code": "RevisionPresenter.new(:comparer => RevisionComparer.new(HistoryItem, params[:history_item_id], params[:selected_id], params[:diff_with_id]), :template => \"history_items/histories/compare_revision_template\").right_side_diff",
       "render_path": [
@@ -59,6 +85,9 @@
       },
       "user_input": "RevisionComparer.new(HistoryItem, params[:history_item_id], params[:selected_id], params[:diff_with_id])",
       "confidence": "Weak",
+      "cwe_id": [
+        79
+      ],
       "note": ""
     },
     {
@@ -68,7 +97,7 @@
       "check_name": "CrossSiteScripting",
       "message": "Unescaped model attribute",
       "file": "app/views/shared/revision_comparer/main.html.haml",
-      "line": 18,
+      "line": 15,
       "link": "https://brakemanscanner.org/docs/warning_types/cross_site_scripting",
       "code": "RevisionPresenter.new(:comparer => RevisionComparer.new(HistoryItem, params[:history_item_id], params[:selected_id], params[:diff_with_id]), :template => \"history_items/histories/compare_revision_template\").left_side_diff",
       "render_path": [
@@ -100,6 +129,9 @@
       },
       "user_input": "RevisionComparer.new(HistoryItem, params[:history_item_id], params[:selected_id], params[:diff_with_id])",
       "confidence": "Weak",
+      "cwe_id": [
+        79
+      ],
       "note": ""
     },
     {
@@ -109,7 +141,7 @@
       "check_name": "Execute",
       "message": "Possible command injection",
       "file": "lib/dev_monkey_patches/antcat.rb",
-      "line": 22,
+      "line": 21,
       "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
       "code": "`xdg-open \"#{self}\"`",
       "render_path": null,
@@ -120,6 +152,9 @@
       },
       "user_input": "self",
       "confidence": "Medium",
+      "cwe_id": [
+        77
+      ],
       "note": ""
     },
     {
@@ -140,26 +175,9 @@
       },
       "user_input": "NAMES.join(\"%' OR taxt LIKE '%\")",
       "confidence": "Medium",
-      "note": ""
-    },
-    {
-      "warning_type": "Denial of Service",
-      "warning_code": 76,
-      "fingerprint": "2f7ec2c56ebf475ec62cee6875c25681f339ae560b1633d0119c81276d66826f",
-      "check_name": "RegexDoS",
-      "message": "Parameter value used in regular expression",
-      "file": "app/controllers/quick_and_dirty_fixes_controller.rb",
-      "line": 127,
-      "link": "https://brakemanscanner.org/docs/warning_types/denial_of_service/",
-      "code": "/\\{missing[0-9]? #{params[:hardcoded_missing_name]}\\}/",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "QuickAndDirtyFixesController",
-        "method": "replace_missing_tag_with_tax_tag"
-      },
-      "user_input": "params[:hardcoded_missing_name]",
-      "confidence": "High",
+      "cwe_id": [
+        89
+      ],
       "note": ""
     },
     {
@@ -180,6 +198,9 @@
       },
       "user_input": "NAMES.join(\"%' OR taxt LIKE '%\")",
       "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
       "note": ""
     },
     {
@@ -200,6 +221,9 @@
       },
       "user_input": "NAMES.join(\"%' OR taxt LIKE '%\")",
       "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
       "note": ""
     },
     {
@@ -220,6 +244,9 @@
       },
       "user_input": "column",
       "confidence": "Weak",
+      "cwe_id": [
+        89
+      ],
       "note": ""
     },
     {
@@ -240,26 +267,9 @@
       },
       "user_input": "column",
       "confidence": "Weak",
-      "note": ""
-    },
-    {
-      "warning_type": "Command Injection",
-      "warning_code": 14,
-      "fingerprint": "c347dd90cfcf71a1ae34cbdda616b33db92587be41f996fb55cea1256c457d80",
-      "check_name": "Execute",
-      "message": "Possible command injection",
-      "file": "lib/dev_monkey_patches/antcat.rb",
-      "line": 89,
-      "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
-      "code": "`xdg-open \"#{self}\"`",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "DevMonkeyPatches::AntCat::ReferenceSection",
-        "method": "s(:lvar, :link).open"
-      },
-      "user_input": "self",
-      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
       "note": ""
     },
     {
@@ -280,6 +290,9 @@
       },
       "user_input": "NAMES.join(\"%' OR taxt LIKE '%\")",
       "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
       "note": ""
     },
     {
@@ -289,7 +302,7 @@
       "check_name": "Execute",
       "message": "Possible command injection",
       "file": "lib/dev_monkey_patches/antcat.rb",
-      "line": 51,
+      "line": 50,
       "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
       "code": "`xdg-open \"#{self}\"`",
       "render_path": null,
@@ -300,6 +313,9 @@
       },
       "user_input": "self",
       "confidence": "Medium",
+      "cwe_id": [
+        77
+      ],
       "note": ""
     },
     {
@@ -320,9 +336,12 @@
       },
       "user_input": "NAMES.join(\"%' OR taxt LIKE '%\")",
       "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
       "note": ""
     }
   ],
-  "updated": "2022-07-04 18:51:00 +0200",
-  "brakeman_version": "5.2.3"
+  "updated": "2023-03-21 19:49:23 +0100",
+  "brakeman_version": "5.4.1"
 }
