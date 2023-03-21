@@ -94,7 +94,7 @@
           =f.text_area :taxonomic_notes, rows: 2
 
     .medium-4
-      .callout
+      .callout-white
         %h6.font-bold Misc. fields
 
         .mb-4
@@ -133,7 +133,7 @@
             =f.check_box :online_early
             Online early
 
-      .callout
+      .callout-white
         %h6.font-bold Reference document
         =f.fields_for :document, (reference.document || ReferenceDocument.new) do |document_form|
           .mb-4

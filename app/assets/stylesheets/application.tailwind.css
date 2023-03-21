@@ -109,11 +109,6 @@
     @apply text-ac-blue-darker;
   }
 
-  /* TODO: Zurb Foundation legacy */
-  .callout-responsive {
-    @apply w-full lg:w-9/12;
-  }
-
   /* Typography */
   p {
     margin-bottom: 1rem;
@@ -341,22 +336,25 @@
   }
 
   /* Callouts */
-  /* TODO: Cleanup. */
+  /* TODO: Cleanup  Zurb Foundation relics. */
+  .callout-responsive {
+    @apply w-full lg:w-9/12;
+  }
+
   .base__callout {
     @apply rounded-md p-4 mb-4 last:[&>*]:mb-0;
   }
 
-  .callout {
+  .callout-white {
     @apply base__callout border border-gray-300;
   }
 
-  .callout-primary {
-    @apply base__callout border border-gray-400 bg-logged-in-only;
+  .callout-blue {
+    @apply base__callout border border-gray-400 bg-ac-blue-pale;
   }
 
-  .callout-alert {
-    @apply base__callout border border-gray-400;
-    background-color: #fce6e2
+  .callout-danger {
+    @apply base__callout border border-gray-400 bg-danger-pale;
   }
 
   .callout-warning {

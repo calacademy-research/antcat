@@ -15,7 +15,7 @@
 
 -[:title_taxt, :subtitle_taxt, :references_taxt].each do |field|
   -if @reference_section[field].present?
-    .callout
+    .callout-white
       %h6=field.to_s
       %p
         =Detax[@reference_section[field]]

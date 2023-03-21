@@ -17,12 +17,12 @@
       =render 'catalog/_show/editors_sidebar', taxon: @taxon, protonym: @protonym, editors_catalog_presenter: @editors_catalog_presenter
 
     -if @catalog_presenter.formatted_statistics
-      .callout.mb-4
+      .callout-white.mb-4
         =@catalog_presenter.formatted_statistics
         -unless @catalog_presenter.show_full_statistics?
           =link_to "More statistics", catalog_path(@taxon, include_full_statistics: "true"), class: "btn-default"
 
-    .callout
+    .callout-white
       =@taxon.decorate.link_to_antweb
       =@taxon.decorate.link_to_antwiki
       =@taxon.decorate.link_to_hol

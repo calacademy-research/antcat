@@ -7,7 +7,7 @@
     =link_to 'Export to EndNote', endnote_export_references_path(reference_q: params[:reference_q]), class: "btn-default"
 
 -if @references.empty?
-  .callout-alert.callout.callout-responsive
+  .callout-danger.callout-responsive
     %p No results found for:
     %p=params[:reference_q]
 -else

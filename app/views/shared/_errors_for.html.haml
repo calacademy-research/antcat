@@ -1,5 +1,5 @@
 -if resource.errors.present?
-  .callout-alert.w-full{class: "md:w-1/2"}
+  .callout-danger.w-full{class: "md:w-1/2"}
     %ul
       -resource.errors.full_messages.each do |error|
         %li=sanitize error

@@ -45,9 +45,9 @@ module ApplicationHelper
 
   def flash_message_class flash_type
     case flash_type.to_sym
-    when :notice then "callout-primary"
-    when :alert  then "callout-alert"
-    when :error  then "callout-alert"
+    when :notice then "callout-blue"
+    when :alert  then "callout-danger"
+    when :error  then "callout-danger"
     else         raise "flash_type `#{flash_type}` not supported"
     end
   end

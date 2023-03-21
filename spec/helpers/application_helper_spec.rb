@@ -13,8 +13,8 @@ describe ApplicationHelper do
   end
 
   describe "#flash_message_class" do
-    specify { expect(helper.flash_message_class("notice")).to eq "callout-primary" }
-    specify { expect(helper.flash_message_class("alert")).to eq "callout-alert" }
-    specify { expect(helper.flash_message_class("error")).to eq "callout-alert" }
+    specify { expect(helper.flash_message_class("notice")).to eq "callout-blue" }
+    specify { expect(helper.flash_message_class("alert")).to eq "callout-danger" }
+    specify { expect(helper.flash_message_class("error")).to eq "callout-danger" }
   end
 end

@@ -32,7 +32,7 @@
         =antcat_icon "warning-icon"
         Show only for rank: #{@history_item.rank}
 
-    .callout.mb-8
+    .callout-white.mb-8
       -if @history_item.valid?
         %p
           =Detax[@history_item.to_taxt]

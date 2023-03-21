@@ -5,12 +5,12 @@
   %button.btn-neutral{"data-action" => "click->toggler#toggle", "data-toggler-target" => "revision_comparer_help"} Show/hide help
 
 .hidden{data: { toggler_name: "revision_comparer_help" }}
-  .callout.callout-responsive.mb-8
+  .callout-white.callout-responsive.mb-8
     =render "shared/revision_comparer/help"
 
 -if comparer.diff_with
   %h5 Difference between revisions
-  .callout.mb-8
+  .callout-white.mb-8
     .row
       .medium-6=revision_presenter.left_side_diff.html_safe
       .medium-6=revision_presenter.right_side_diff.html_safe
@@ -26,7 +26,7 @@
         Version before item was deleted
       %span.text-base=comparer.most_recent.updated_at
 
-  .callout.mb-8{class: (comparer.looking_at_a_single_old_revision? ? "bg-revision-red" : "bg-revision-green")}
+  .callout-white.mb-8{class: (comparer.looking_at_a_single_old_revision? ? "bg-revision-red" : "bg-revision-green")}
     =preserve do
       =revision_presenter.render_revision(comparer.selected || comparer.most_recent, view_context: self)
 

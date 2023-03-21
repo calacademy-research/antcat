@@ -29,7 +29,7 @@
     %h6=@first_version.created_at
 
 -if @versions.blank?
-  .callout-alert.callout-responsive Found no versions
+  .callout-danger.callout-responsive Found no versions
 -else
   %table.table-striped
     %thead
