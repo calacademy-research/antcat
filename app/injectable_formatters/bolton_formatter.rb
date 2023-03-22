@@ -11,6 +11,13 @@ module BoltonFormatter
     %(<a class="#{taxon_css(taxon)}" href="/catalog/#{taxon.id}">#{label}</a>).html_safe
   end
 
+  def link_to_bolton_taxon_with_label taxon, label
+    %(<a data-controller="hover-preview" \
+data-hover-preview-url-value="/catalog/#{taxon.id}/hover_preview.json" \
+class="#{taxon_css(taxon)}" \
+href="/catalog/#{taxon.id}/bolton">#{label}</a>).html_safe
+  end
+
   def taxon_css taxon
     css_classes = [taxon.status.tr(' ', '-'), taxon.rank]
     css_classes << ['unresolved-homonym'] if taxon.unresolved_homonym?
