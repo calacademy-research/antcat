@@ -14,7 +14,7 @@ module DatabaseScripts
 
       def render
         <<-HTML.html_safe
-          <table class="table-striped mt-8" data-controller="tablesort">
+          <table class="table-striped" data-controller="tablesort">
             #{"<caption>#{caption_content}</caption>" if caption_content}
             #{"<caption>#{info_content}</caption>" if info_content}
             <thead>

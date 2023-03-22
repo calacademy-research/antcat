@@ -93,7 +93,7 @@
   }
 
   body {
-    color: #000;
+    @apply text-black;
     font-family: Raleway, "Helvetica Neue", Arial, sans-serif;
   }
 
@@ -111,7 +111,7 @@
 
   /* Typography */
   p {
-    margin-bottom: 1rem;
+    @apply mb-4;
     line-height: 1.6;
   }
 
@@ -124,8 +124,8 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
+    @apply mb-2;
     line-height: 1.4;
-    margin-bottom: 0.5rem;
   }
 
   h1 {
@@ -152,19 +152,18 @@
   }
 
   ul {
-    margin-bottom: 1rem;
-    margin-left: 1.25rem;
+    @apply mb-4 ml-5;
     list-style-position: outside;
     line-height: 1.6;
     list-style-type: disc;
   }
 
   ul ul {
-    margin-bottom: 0;
+    @apply mb-0;
   }
 
   ul.no-bullet {
-    margin-left: 0;
+    @apply ml-0;
     list-style: none;
   }
 
@@ -174,8 +173,7 @@
   }
 
   code {
-    @apply bg-gray-100 border border-gray-300;
-    padding: 0.125rem 0.3125rem 0.0625rem;
+    @apply px-1 py-[0.0625rem] bg-gray-100 border border-gray-300;
   }
 
   pre {
@@ -233,9 +231,8 @@
     width: 100%;
   }
 
-  [type='text'], [type='password'], [type='email'], [type='number'], [type='search'], textarea {
-    @apply border border-gray-300;
-    border-radius: 3px;
+  [type='text'], [type='password'], [type='email'], [type='number'], [type='search'], textarea, select {
+    @apply rounded border border-gray-300;
   }
 
   [type='text'], [type='password'], [type='email'], [type='number'], [type='search'] {
@@ -274,22 +271,15 @@
     line-height: 1.8;
   }
 
-  select {
-    @apply border border-gray-300;
-    border-radius: 3px;
-  }
-
   /* Tables */
   table {
+    @apply mb-4;
     border-collapse: collapse;
     width: 100%;
-    margin-bottom: 1rem;
   }
 
   caption {
-    padding: 0.5rem 0.625rem 0.625rem;
-    font-weight: bold;
-    text-align: left;
+    @apply pl-2 pb-2 font-bold text-left;
   }
 
   .table-striped thead, .table-striped tbody,
@@ -302,12 +292,11 @@
   }
 
   th {
-    font-weight: bold;
-    text-align: left;
+    @apply font-bold text-left;
   }
 
   th, td {
-    padding: 0.5rem 0.625rem 0.625rem;
+    @apply py-2 px-2.5;
   }
 
   table.table-striped > tbody > tr {
@@ -356,7 +345,7 @@
 
   .callout-warning {
     @apply base__callout border border-gray-400;
-    background-color: #fff3d9
+    background-color: #fff3d9;
   }
 
   .bluebox {
