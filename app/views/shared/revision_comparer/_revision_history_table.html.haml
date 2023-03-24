@@ -10,7 +10,7 @@
     =render "shared/revision_comparer/revision_info_user", revision: most_recent
 -else
   =form_with url: request.original_url, method: :get, enforce_utf8: false do |f|
-    %table.table-unstriped
+    %table.table-unstriped{"data-controller" => "revisions-table"}
       %thead
         %tr
           %th.text-center{colspan: 4} Compare with...
@@ -26,7 +26,7 @@
           %td.shrink-tw-conflict cur
           %td.shrink-tw-conflict=link_to "prev", diff_with_id: revisions.first.id
           %td.shrink-tw-conflict
-          %td.shrink-tw-conflict=radio_button_tag :selected_id, "", comparer.looking_at_most_recent?, data: { radio_button_index: -1 }
+          %td.shrink-tw-conflict=radio_button_tag :selected_id, "", comparer.looking_at_most_recent?, "data-action" => "revisions-table#updateAvailable", "data-revisions-table-target" => "rightRadio", 'data-radio-index' => -1
           %td.shrink-tw-conflict=render "shared/revision_comparer/revision_info_date", revision: most_recent
           %td=render "shared/revision_comparer/revision_info_user", revision: most_recent
           %td
@@ -42,10 +42,10 @@
               -else
                 prev
 
-            %td=radio_button_tag :diff_with_id, revision.id, comparer.revision_diff_with?(revision), data: { radio_button_index: index }
+            %td=radio_button_tag :diff_with_id, revision.id, comparer.revision_diff_with?(revision), "data-action" => "revisions-table#updateAvailable", "data-revisions-table-target" => "leftRadio", 'data-radio-index' => index
             %td
               -if previous
-                =radio_button_tag :selected_id, revision.id, comparer.revision_selected?(revision), data: { radio_button_index: index }
+                =radio_button_tag :selected_id, revision.id, comparer.revision_selected?(revision), "data-action" => "revisions-table#updateAvailable", "data-revisions-table-target" => "rightRadio", 'data-radio-index' => index
             %td=render "shared/revision_comparer/revision_info_date", revision: revision
             %td=render "shared/revision_comparer/revision_info_user", revision: revision
             %td
