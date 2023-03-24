@@ -1,4 +1,4 @@
-.bg-logged-in-only.callout.border-0.text-sm
+.bluebox
   %h6
     Taxon:
     =taxon.name.epithet_html
@@ -7,7 +7,7 @@
     =copy_to_clipboard_button Taxt.tax(taxon.id), "tax #{taxon.id}"
     =copy_to_clipboard_button taxon.id
 
-.bg-logged-in-only.callout.border-0.text-sm
+.bluebox
   %h6
     Protonym:
     =protonym.decorate.link_to_protonym_epithet
@@ -19,27 +19,26 @@
   =render 'protonyms/shared/additional_data_for_editors', protonym: protonym
 
   -if user_is_at_least_helper?
-    %ul.no-bullet
-      %li.mb-2=link_to "Edit protonym", edit_protonym_path(protonym), class: "btn-default"
-
+    %ul.no-bullet.leading-7
+      %li=link_to "Edit protonym", edit_protonym_path(protonym), class: "btn-default"
       -if Status.display_history_items?(taxon.status)
-        %li.mb-2=link_to "Add history item", new_protonym_history_item_path(taxon.protonym, **current_page_redirect_back_url), class: "btn-default"
+        %li=link_to "Add history item", new_protonym_history_item_path(taxon.protonym, **current_page_redirect_back_url), class: "btn-default"
       -else
-        %li.mb-2
+        %li
           =link_to "Add history item", new_protonym_history_item_path(taxon.protonym, **current_page_redirect_back_url), class: "btn-danger"
           (it will not be shown on this page)
       -if taxon.history_items_for_taxon.size > 1
-        %li.mb-2=link_to "Reorder history items", protonym_reorder_history_items_path(taxon.protonym), class: "btn-default"
+        %li=link_to "Reorder history items", protonym_reorder_history_items_path(taxon.protonym), class: "btn-default"
 
 -# Ignore "Issue" sidebar for Formicidae for performance and a cleaner look.
 -if Settings.catalog.show_failed_soft_validations && !taxon.is_a?(Family)
   -if taxon.soft_validations.failed?
-    .callout-warning.text-sm
+    .callout-warning
       %h6 Issues (#{link_to("see more", taxon_soft_validations_path(taxon))})
       =render 'shared/failed_soft_validations', soft_validations: taxon.soft_validations
 
   -if protonym.soft_validations.failed?
-    .callout-warning.text-sm
+    .callout-warning
       %h6=link_to 'Protonym issues', protonym_soft_validations_path(protonym)
       %p
         These issues listed here are for the protonym of this taxon,
@@ -50,9 +49,9 @@
 =render 'protonyms/shared/etymology_and_gender', protonym: protonym, taxon: taxon
 
 -if editors_catalog_presenter.taxa_with_same_name.present?
-  .bg-logged-in-only.callout.border-0.text-sm
+  .bluebox
     %h6 Taxa with same name
-    %ul.compact-list.mb-4
+    %ul.compact-list
       -editors_catalog_presenter.taxa_with_same_name.includes(:name, protonym: [{ authorship: :reference }]).each do |homonym|
         %li
           =CatalogFormatter.link_to_taxon(homonym)
@@ -60,7 +59,7 @@
           %span.text-sm=homonym.decorate.compact_status
 
 -if taxon.policy.show_create_combination_button?
-  .bg-logged-in-only.text-sm.callout.border-0{class: "group/can-be-combined-box"}
+  .bluebox{class: "group/can-be-combined-box"}
     %h6 Can be combined?
 
     -if current_user.settings(:editing_helpers).create_combination
@@ -80,10 +79,10 @@
       .hidden{class: "group-hover/can-be-combined-box:inline"}
         =link_to "Hide editing helper", edit_user_registration_path
     -else
-      Enable editing helper on
+      Enable helper on
       =link_to "My account", edit_user_registration_path
 
-.bg-logged-in-only.callout.border-0.text-sm
+.bluebox
   %h6 Additional data
 
   %ul.no-bullet

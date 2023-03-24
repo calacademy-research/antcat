@@ -10,20 +10,19 @@
 =form_with url: request.path, method: :get do |f|
   .row.mb-4
     .small-6.medium-2
-      =f.select :user_id, options_for_select(User.active.non_hidden.order_by_name.pluck(:name, :id), params[:user_id]), prompt: 'User'
+      =f.select :user_id, options_for_select(User.active.non_hidden.order_by_name.pluck(:name, :id), params[:user_id]), { prompt: 'User' }, { class: "w-full" }
     .small-6.medium-2
-      =f.select :trackable_type, grouped_options_for_select(ActivitiesController::FILTERABLE_TRACKABLE_TYPES_BY_GROUP.map { |group, trackable_types| [group, trackable_types] }, params[:trackable_type]), prompt: 'Trackable type'
+      =f.select :trackable_type, grouped_options_for_select(ActivitiesController::FILTERABLE_TRACKABLE_TYPES_BY_GROUP.map { |group, trackable_types| [group, trackable_types] }, params[:trackable_type]), { prompt: 'Trackable type' }, { class: "w-full" }
     .small-6.medium-2
       =f.number_field :trackable_id, value: params[:trackable_id], placeholder: 'Trackable ID'
     .small-6.medium-2
-      =f.select :event, grouped_options_for_select(Activity::EVENTS_BY_GROUP.map { |group, events| [group.to_s.humanize, events.map(&:humanize).zip(events)] }, params[:event]), prompt: 'Event'
+      =f.select :event, grouped_options_for_select(Activity::EVENTS_BY_GROUP.map { |group, events| [group.to_s.humanize, events.map(&:humanize).zip(events)] }, params[:event]), { prompt: 'Event' }, { class: "w-full" }
     .small-6.medium-2
       =check_box_tag :show_automated_edits, false, !!params[:show_automated_edits]
       Show automated?
 
     .small-6.medium-2
       =f.button 'Filter', name: nil, class: "btn-default btn-md"
-      &nbsp;
       =link_to "Clear", request.path, class: "btn-neutral btn-md"
 
 =render "table", activities: @activities, highlighted_activity: @activity, show_delete_button: true

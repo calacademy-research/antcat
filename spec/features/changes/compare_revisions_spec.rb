@@ -14,11 +14,11 @@ feature "Compare revisions", skip_ci: true, as: :editor, versioning: true do
   end
 
   def left_side_of_the_diff
-    all(".callout .diff")[0]
+    all(".callout-white .diff")[0]
   end
 
   def right_side_of_the_diff
-    all(".callout .diff")[1]
+    all(".callout-white .diff")[1]
   end
 
   scenario "Comparing history item revisions" do

@@ -36,7 +36,7 @@
 
   .medium-3
     -if current_user
-      .bg-logged-in-only.callout.border-0.text-sm
+      .bluebox
         %h6
           Reference:
           =@reference.key_with_suffixed_year
@@ -138,7 +138,7 @@
 
 -if current_user
   -if @citations_presenter.any_citations?
-    .bg-logged-in-only.callout.border-0.mb-8
+    .bluebox
       %h5 Citations
       .text-sm.mb-4 Note: nested references of this reference are not included here.
 
@@ -154,7 +154,7 @@
             %td=citation.pages
 
   -if @history_citations.present?
-    .bg-logged-in-only.callout.border-0.mb-8
+    .bluebox
       -# Anchor for the pagination.
       %a{name: 'history_citations'}
       %h5 Citations (via relational history items)

@@ -20,8 +20,7 @@
     .small-6.medium-2
       =per_page_select ReferenceSectionsController::PER_PAGE_OPTIONS, params[:per_page]
     .small-6.medium-2
-      =button_tag "Search ".html_safe + search_icon, type: "submit", name: nil, class: "btn-default btn-md"
-      &nbsp;
+      =button_tag "Search ".html_safe + search_icon, name: nil, class: "btn-default btn-md"
       =link_to "Clear", request.path, class: "btn-neutral btn-md"
 
 %table.table-striped
@@ -50,6 +49,7 @@
 
 =will_paginate @reference_sections
 
-.mt-8
-  .callout
-    =render "shared/note_on_taxt_references"
+.mb-8
+
+.callout-white
+  =render "shared/note_on_taxt_references"

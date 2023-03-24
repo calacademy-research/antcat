@@ -8,7 +8,7 @@
   =render 'shared/errors_for', resource: protonym_form
 
   .row
-    .medium-7
+    .medium-7.mb-8
       %table.table-unstriped{"data-controller" => "check-name-conflicts"}
         =f.fields_for :name do |_name_fields|
           %tr
@@ -72,9 +72,7 @@
               =f.label :bioregion do
                 Bioregion
                 =db_tooltip_icon :bioregion, scope: :protonyms
-            %td
-              .max-w-xs
-                =f.select :bioregion, Protonym::BIOREGIONS, include_blank: true
+            %td=f.select :bioregion, Protonym::BIOREGIONS, include_blank: true
 
         -if protonym.species_group_name? || protonym.locality?
           %tr
@@ -85,7 +83,7 @@
             %td
               =f.text_field :locality, data: { use_locality_autocomplete: true }
 
-      %h6.font-bold.mt-8 Nomen attributes
+      %h6.font-bold Nomen attributes
       %ul.no-bullet
         %li
           =f.check_box :nomen_nudum
@@ -93,7 +91,7 @@
             %i Nomen nudum
 
     .medium-5
-      .callout.mb-8
+      .callout-white.mb-8
         %table.table-unstriped
           %h6.font-bold
             Type name
@@ -149,9 +147,7 @@
             =f.label :gender_agreement_type do
               Gender agreement type (only for species-group names)
               =db_tooltip_icon :gender_agreement_type, scope: :protonyms
-          %td
-            .max-w-xs
-              =f.select :gender_agreement_type, Protonym::GENDER_AGREEMENT_TYPES, include_blank: '(blank)'
+          %td=f.select :gender_agreement_type, Protonym::GENDER_AGREEMENT_TYPES, include_blank: '(blank)'
 
       %tr
         %td
@@ -192,7 +188,8 @@
       =f.button "Save", class: "btn-saves btn-md"
 
 -if protonym.taxa.present?
-  %h5.mt-20.mb-4 Related records
+  .mb-20
+  %h5 Related records
 
   %h6.font-bold Taxa belonging to this protonym
   %table.table-striped

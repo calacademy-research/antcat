@@ -7,28 +7,134 @@
 
 %h4 Dev
 
+%table.table-striped
+  %caption Catalog pages: Taxon description
+  %thead
+    %th Section
+    %th What
+    %th
+  %body
+    %tr
+      -taxon = Genus.joins(:type_names).first
+      %td Type names
+      %td Is type-genus of
+      %td=CatalogFormatter.link_to_taxon(taxon)
+
+    %tr
+      -taxon = Taxon.joins(:protonym).where.not(protonyms: { primary_type_information_taxt: nil }).first
+      %td Type information
+      %td With primary type information
+      %td=CatalogFormatter.link_to_taxon(taxon)
+
+    %tr
+      -taxon = Taxon.joins(:replacement_name_for).first
+      %td Replacement name for
+      %td Is replacement name for
+      %td=CatalogFormatter.link_to_taxon(taxon)
+
+    %tr
+      -taxon = Taxon.joins(junior_synonyms: :obsolete_combinations).first
+      %td Junior synonyms
+      %td Has junior synonyms which have obsolete combinations
+      %td=CatalogFormatter.link_to_taxon(taxon)
+
+    %tr
+      -taxon = Taxon.joins(:obsolete_combinations).first
+      %td Obsolete classifications
+      %td Has obsolete classifications
+      %td=CatalogFormatter.link_to_taxon(taxon)
+
+    %tr
+      -taxon = Genus.valid.joins(:subgenera).where(subgenera_taxa: { status: Status::VALID }).first
+      %td Rank-specific: Genus
+      %td Has valid subgenera
+      %td=CatalogFormatter.link_to_taxon(taxon)
+
+    %tr
+      -taxon = Subgenus.valid.joins(species: :subspecies).where(species_taxa: { status: Status::VALID }).first
+      %td Rank-specific: Subgenus
+      %td Has valid species and valid subspecies
+      %td=CatalogFormatter.link_to_taxon(taxon)
+
+    %tr
+      -taxon = Species.valid.joins(:subspecies).where(subspecies_taxa: { status: Status::VALID }).first
+      %td Rank-specific: Species
+      %td Has valid subspecies
+      %td=CatalogFormatter.link_to_taxon(taxon)
+
+    %tr
+      -taxon = Species.valid.joins(:subspecies).where.not(subspecies_taxa: { status: Status::VALID }).first
+      %td Rank-specific: Species
+      %td Has invalid subspecies
+      %td=CatalogFormatter.link_to_taxon(taxon)
+
+    %tr
+      -taxon = Subspecies.valid.joins(:infrasubspecies).first
+      %td Rank-specific: Subspecies
+      %td Has infrasubspecies
+      %td=CatalogFormatter.link_to_taxon(taxon)
+
+.mb-8
+
+%table.table-striped
+  %caption Catalog items
+  %thead
+    %th Type
+    %th What
+    %th
+  %body
+    %tr
+      -taxon = Subfamily.joins(:reference_sections).group(:taxon_id).having("COUNT(taxa.id) > 1").first
+      %td Reference sections
+      %td Taxon with more than one reference section
+      %td=CatalogFormatter.link_to_taxon(taxon)
+
+    %tr
+      -protonym = Protonym.joins(:history_items).where.not(history_items: { type: History::Definitions::TAXT }).group('history_items.protonym_id').having("COUNT(*) > 1").first
+      %td History items
+      %td Taxon with relational history items
+      %td=CatalogFormatter.link_to_taxon(protonym.terminal_taxon)
+
+.mb-8
+
+%table.table-striped
+  %caption Relational history items
+  %thead
+    %th Type
+    %th Taxon
+    %th Protonym
+    %th
+  %body
+    -HistoryItem.distinct.pluck(:type).sort.each do |type|
+      -history_item = HistoryItem.find_by(type: type)
+      %tr
+        %td
+          %code.mx-4=type
+        %td=CatalogFormatter.link_to_taxon(history_item.terminal_taxon)
+        %td=CatalogFormatter.link_to_protonym(history_item.protonym)
+        %td
+          =link_to 'Show', history_item_path(history_item), class: 'btn-default'
+          =link_to 'Edit', edit_history_item_path(history_item), class: 'btn-default'
+
+.mb-8
+
+%table.table-striped
+  %caption DB scripts
+  %thead
+    %th Script
+  %body
+    %tr
+      %td=markdown_without_wrapping "%dbscript:CurrentTaxonChains"
+    %tr
+      %td=markdown_without_wrapping "%dbscript:ProtonymsWithMoreThanOneTerminalTaxon"
+    %tr
+      %td=markdown_without_wrapping "%dbscript:ProtonymsWithoutATerminalTaxon"
+    %tr
+      %td=markdown_without_wrapping "%dbscript:ProtonymsWithEtymologyTaxt"
+
+.mb-8
+
+%h6 Misc.
 %ul
   %li=link_to '/dev/pickers', pickers_dev_path
   %li=link_to '/dev/styles', styles_dev_path
-
-%ul
-  %li=markdown_without_wrapping "%dbscript:CurrentTaxonChains"
-  %li=markdown_without_wrapping "%dbscript:ProtonymsWithMoreThanOneTerminalTaxon"
-  %li=markdown_without_wrapping "%dbscript:ProtonymsWithoutATerminalTaxon"
-  %li=markdown_without_wrapping "%dbscript:ProtonymsWithEtymologyTaxt"
-
-%ul
-  %li=link_to 'Taxon with more than one reference section', catalog_path(430052)
-  %li=link_to 'Taxon with relational history items', catalog_path(430842)
-  %li=link_to 'Protonym with primary_type_information_taxt', protonym_path(Protonym.find_by("primary_type_information_taxt LIKE ?", "%CASENT%"))
-
-%ul
-  -HistoryItem.distinct.pluck(:type).sort.each do |type|
-    -history_item = HistoryItem.find_by(type: type)
-    %li
-      =link_to 'Show', history_item_path(history_item), class: 'btn-default'
-      =link_to 'Edit', edit_history_item_path(history_item), class: 'btn-default'
-      %code.mx-4=type
-      =CatalogFormatter.link_to_taxon(history_item.terminal_taxon)
-      \ .....
-      =CatalogFormatter.link_to_protonym(history_item.protonym)

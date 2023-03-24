@@ -5,12 +5,12 @@
   =hidden_field_tag :to_protonym_id, @to_protonym.id
   .row
     .medium-6
-      .callout
+      .callout-white
         %h6.font-bold Move items from...
         =@protonym.decorate.link_to_protonym
 
     .medium-6
-      .callout
+      .callout-white
         %h6.font-bold ...to
         =@to_protonym.decorate.link_to_protonym
 
@@ -30,8 +30,7 @@
             -@protonym.history_items.each do |history_item|
               %tr
                 %td=check_box_tag "history_item_ids[]", history_item.id, false, data: { 'checkbox-select-all-target': "checkbox" }
-                %td.text-sm
-                  =Detax[history_item.to_taxt]
+                %td=Detax[history_item.to_taxt]
 
     -# Move to.
     .medium-6
@@ -43,9 +42,8 @@
           %tbody
             -@to_protonym.history_items.each do |history_item|
               %tr
-                %td.text-sm
-                  =Detax[history_item.to_taxt]
+                %td=Detax[history_item.to_taxt]
 
   .mb-8
     .text-center
-      =f.submit "Move selected items", class: "btn-saves btn-md"
+      =f.button "Move selected items", class: "btn-saves btn-md"

@@ -23,10 +23,11 @@
               -if wiki_page.permanent_identifier?
                 .text-sm
                   %code=wiki_page.permanent_identifier
-                  =logged_in_only_tooltip_icon "Permanent identifier. This section is only visible to logged-in users."
+                  =logged_in_only_tooltip_icon "Permanent identifier"
 
 =will_paginate @wiki_pages
 
-.mt-20
-  %h5 Most recent activity (#{link_to "see more", activities_path(trackable_type: 'WikiPage')})
-  =render "activities/table", activities: @recent_activities
+.mb-20
+
+%h5 Most recent activity (#{link_to "see more", activities_path(trackable_type: 'WikiPage')})
+=render "activities/table", activities: @recent_activities

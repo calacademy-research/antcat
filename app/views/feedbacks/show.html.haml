@@ -2,7 +2,7 @@
 -breadcrumb :feedback, @feedback
 
 -content_for :breadcrumbs_right do
-  %button.btn-neutral{"data-action" => "toggler#toggle", "data-toggler-target" => "for_email"} Show/hide formatted for email
+  %button.btn-neutral{"data-action" => "click->toggler#toggle", "data-toggler-target" => "for_email"} Show/hide formatted for email
   -if @feedback.closed?
     =link_to("Re-open", reopen_feedback_path(@feedback), method: :put, class: "btn-danger")
   -else
@@ -17,10 +17,10 @@
 .hidden{data: { toggler_name: "for_email" }}
   %h6 Formatted for email replies
   =preserve do
-    %pre.callout
+    %pre.callout-white
       =@feedback.decorate.format_feedback_for_email
 
-.callout-primary.callout-responsive.border-0
+.bluebox.callout-responsive
   %p Registered users will receive notifications for comments posted here (next time they sign in).
   %p
     Non-logged in submitters will not receive any notification. This is a good opportunity to recruit new editors; if you have some extra time,

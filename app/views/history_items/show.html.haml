@@ -8,7 +8,7 @@
       =antcat_icon 'check'
     -else
       =antcat_icon 'nope'
-    =logged_in_only_tooltip_icon "Beta feature. More formats will be supported in the future. This section is only visible to logged-in users."
+    =logged_in_only_tooltip_icon "Beta feature. More formats will be supported in the future."
 
   -if user_is_at_least_helper?
     =link_to "Edit", edit_history_item_path(@history_item), class: "btn-default"
@@ -32,7 +32,7 @@
         =antcat_icon "warning-icon"
         Show only for rank: #{@history_item.rank}
 
-    .callout.mb-8
+    .callout-white.mb-8
       -if @history_item.valid?
         %p
           =Detax[@history_item.to_taxt]
@@ -43,7 +43,7 @@
           =@history_item.to_taxt
 
   .medium-3
-    .bg-logged-in-only.callout.border-0
+    .bluebox
       %ul.no-bullet
         %li
           Item type:
@@ -53,36 +53,37 @@
         %li Created at: #{l @history_item.created_at, format: :ymd}
         %li Updated at: #{l @history_item.updated_at, format: :ymd}
 
-.mt-8.mb-8
-  -protonym_taxa_present = @protonym.taxa.present?
-  -has_more_than_a_single_history_item = @protonym.history_items.size > 1
+.mb-20
 
-  -if protonym_taxa_present || has_more_than_a_single_history_item
-    %h5.mt-20.mb-4 Related records
+-protonym_taxa_present = @protonym.taxa.present?
+-has_more_than_a_single_history_item = @protonym.history_items.size > 1
 
-    -# TODO: DRY w.r.t. 'history_items/_form.html.haml'.
-    -if protonym_taxa_present
-      .mb-8
-        %h6.font-bold Taxa belonging to this history item's protonym
-        %table.table-striped
-          -TaxonQuery.new(@protonym.taxa.order_by_name).with_common_includes_and_current_taxon_includes.each do |taxon|
-            %tr
-              %td=CatalogFormatter.link_to_taxon(taxon)
-              %td=taxon.rank.capitalize
-              %td
-                =taxon.status.capitalize
-                -unless taxon.status.in?(Taxa::ExpandedStatus::SELF_STATUSES)
-                  .text-sm=taxon.decorate.expanded_status
+-if protonym_taxa_present || has_more_than_a_single_history_item
+  %h5 Related records
 
-    -if has_more_than_a_single_history_item
-      %h6.font-bold.mt-12.mb-4 Other history items belonging to #{@protonym.name.name_html}
+  -# TODO: DRY w.r.t. 'history_items/_form.html.haml'.
+  -if protonym_taxa_present
+    .mb-8
+      %h6.font-bold Taxa belonging to this history item's protonym
       %table.table-striped
-        %tbody
-          -@protonym.history_items.each do |protonym_history_item|
-            %tr{class: ('!bg-logged-in-only' if protonym_history_item == @history_item)}
-              %td
-                =link_to "##{protonym_history_item.id}", history_item_path(protonym_history_item)
-                -if protonym_history_item == @history_item
-                  %strong (selected)
-              %td.grow-tw-conflict.text-sm
-                =Detax[protonym_history_item.to_taxt]
+        -TaxonQuery.new(@protonym.taxa.order_by_name).with_common_includes_and_current_taxon_includes.each do |taxon|
+          %tr
+            %td=CatalogFormatter.link_to_taxon(taxon)
+            %td=taxon.rank.capitalize
+            %td
+              =taxon.status.capitalize
+              -unless taxon.status.in?(Taxa::ExpandedStatus::SELF_STATUSES)
+                .text-sm=taxon.decorate.expanded_status
+
+  -if has_more_than_a_single_history_item
+    %h6.font-bold Other history items belonging to #{@protonym.name.name_html}
+    %table.table-striped
+      %tbody
+        -@protonym.history_items.each do |protonym_history_item|
+          %tr{class: ('!bg-logged-in-only' if protonym_history_item == @history_item)}
+            %td
+              =link_to "##{protonym_history_item.id}", history_item_path(protonym_history_item)
+              -if protonym_history_item == @history_item
+                %strong (selected)
+            %td.grow-tw-conflict.text-sm
+              =Detax[protonym_history_item.to_taxt]

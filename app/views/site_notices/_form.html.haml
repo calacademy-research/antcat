@@ -2,12 +2,12 @@
   =javascript_include_tag "markdown_and_friends"
 
 -content_for :breadcrumbs_right do
-  %button.btn-neutral{"data-action" => "toggler#toggle", "data-toggler-target" => "help"} Show/hide help
+  %button.btn-neutral{"data-action" => "click->toggler#toggle", "data-toggler-target" => "help"} Show/hide help
 
 .hidden{data: { toggler_name: "help" }}
-  .callout
+  .callout-white
     %h6 Help
-    %p After creating a site notice, all logged-in users will see the message in an "Unread site notices" notification. Notices can not be unpublished, but edited existing notices does not trigger new notifications. All editors have the user rights for creating new notices.
+    %p After creating a site notice, all logged-in users will see the message in an "Unread site notices" notification.
 
 =form_with model: site_notice do |f|
   =render "shared/errors_for", resource: site_notice
@@ -23,4 +23,4 @@
   .mb-4
     =edit_summary_text_field_tag
 
-  =f.button "Publish", class: "btn-saves btn-md"
+  =f.button "Save", class: "btn-saves btn-md"

@@ -6,36 +6,37 @@
 
 =render "form", taxa: @taxa
 
--if @taxa
-  .mt-8
-    -if @taxa.empty?
-      .callout-alert
-        No results found
-    -else
-      %table.table-striped
-        %caption
-          =number_with_delimiter @taxa.count
-          result(s)
-        %thead
-          %tr
-            %th Name
-            %th Authorship
-            %th Protonym
-        -@taxa.each do |taxon|
-          -decorated_protonym = taxon.protonym.decorate
-          %tr
-            %td
-              =CatalogFormatter.link_to_taxon(taxon)
-              %br
-              .text-sm=taxon.decorate.expanded_status
-            %td=taxon.authorship_reference.decorate.link_to_reference
-            %td
-              =decorated_protonym.link_to_protonym
-              .text-sm
-                -if taxon.protonym.forms
-                  =surround "(", ")" do
-                    =taxon.protonym.forms
-                =add_period_if_necessary(decorated_protonym.format_locality)
-                =add_period_if_necessary(taxon.protonym.bioregion)
+.mb-8
 
-      =will_paginate @taxa
+-if @taxa
+  -if @taxa.empty?
+    .callout-danger
+      No results found
+  -else
+    %table.table-striped
+      %caption
+        =number_with_delimiter @taxa.count
+        result(s)
+      %thead
+        %tr
+          %th Name
+          %th Authorship
+          %th Protonym
+      -@taxa.each do |taxon|
+        -decorated_protonym = taxon.protonym.decorate
+        %tr
+          %td
+            =CatalogFormatter.link_to_taxon(taxon)
+            %br
+            .text-sm=taxon.decorate.expanded_status
+          %td=taxon.authorship_reference.decorate.link_to_reference
+          %td
+            =decorated_protonym.link_to_protonym
+            .text-sm
+              -if taxon.protonym.forms
+                =surround "(", ")" do
+                  =taxon.protonym.forms
+              =add_period_if_necessary(decorated_protonym.format_locality)
+              =add_period_if_necessary(taxon.protonym.bioregion)
+
+    =will_paginate @taxa

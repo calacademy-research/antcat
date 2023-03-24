@@ -158,8 +158,6 @@ Metrics/CyclomaticComplexity:
   Enabled: false
   Exclude:
     - 'app/database_scripts/database_scripts/**/*'
-    - 'spec/support/feature_helpers/paths.rb'
-    - 'spec/support/feature_helpers/selectors.rb'
 
 Metrics/MethodLength:
   Enabled: false
@@ -169,8 +167,6 @@ Metrics/MethodLength:
     - 'app/database_scripts/database_scripts/**/*'
     - 'db/migrate/**/*'
     - 'lib/tasks/**/*'
-    - 'spec/support/feature_helpers/paths.rb'
-    - 'spec/support/feature_helpers/selectors.rb'
 
 Metrics/ModuleLength:
   Enabled: false

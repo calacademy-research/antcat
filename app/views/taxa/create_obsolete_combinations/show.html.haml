@@ -6,7 +6,7 @@
     .medium-8
       .row
         .medium-6
-          .callout
+          .callout-white
             %h6.font-bold Create missing obsolete combination for current valid name
             %p=@taxon.decorate.id_and_name_and_author_citation
             %p
@@ -14,7 +14,7 @@
               =@taxon.parent.decorate.id_and_name_and_author_citation
 
         .medium-6
-          .callout
+          .callout-white
             %h6.font-bold Pick obsolete genus
             %p=taxon_picker @obsolete_genus, name: 'obsolete_genus_id', ranks: @valid_parent_ranks
             %p
@@ -24,7 +24,7 @@
         =f.button "Create!", class: "btn-saves btn-md"
 
     .medium-4
-      .callout
+      .callout-white
         %h6 Help
         %p
           This page is for creating missing obsolete combination records. A new record will be created when "Create" is pressed. The new record will have:

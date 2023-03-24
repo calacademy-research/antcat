@@ -4,17 +4,17 @@
 -content_for :breadcrumbs_right do
   .text-sm=AntCatVersionLink.new.call
 
-%p AntCat is a catalog and bibliography of the taxonomy of the world's ants.
+%p.mb-8 AntCat is a catalog and bibliography of the taxonomy of the world's ants.
 
 -if user_is_developer?
-  %p{"data-controller" => "stimulus-test"}
+  %p.mb-8{"data-controller" => "stimulus-test"}
     Stimulus does not work.
 
-%h5.mt-8 To cite AntCat
-%p Bolton, B. #{Time.current.year}. An online catalog of the ants of the world. Available from https://antcat.org. (accessed [date])
+%h5 To cite AntCat
+%p.mb-8 Bolton, B. #{Time.current.year}. An online catalog of the ants of the world. Available from https://antcat.org. (accessed [date])
 
-%h5.mt-8 Links
-%ul
+%h5 Links
+%ul.mb-8
   %li=link_to 'List of users', users_path
   %li=link_to 'Contribute', page_path('contribute')
   %li=external_link_to 'Source code', Settings.github.repo_url
@@ -24,14 +24,16 @@
     =surround "(", ")" do
       =link_to 'Swagger API definition', '/api/v1/swagger.yaml'
 
-%p.mt-8
+%p.mb-8
   This material is based on work supported by the
   =external_link_to 'National Science Foundation (NSF)', 'https://www.nsf.gov/'
   under grant number
   =external_link_to('#0642321', 'https://www.nsf.gov/awardsearch/showAward?AWD_ID=0642321') + '.'
   Any opinions, findings, and conclusions or recommendations are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.
 
-.flex.flex-wrap.justify-around.items-center.mt-20
+.mb-20
+
+.flex.flex-wrap.justify-around.items-center.gap-y-6
   =link_to 'https://www.calacademy.org/', target: '_blank', rel: 'noopener' do
     =image_tag 'logos/california_academy_of_sciences.png', alt: 'California Academy of Sciences (CASC)', class: 'max-h-16'
 

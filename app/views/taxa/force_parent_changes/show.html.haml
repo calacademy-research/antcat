@@ -1,7 +1,7 @@
 -page_title "Force parent change"
 -breadcrumb :force_parent_change, @taxon
 
-.callout-alert.callout-responsive.mb-8
+.callout-danger.callout-responsive.mb-8
   %h6
     =antcat_icon 'warning-icon'
     %strong Consider this an advanced feature
@@ -9,7 +9,7 @@
   %p Force-changing parent may create data inconsistencies. Not all cases are supported.
 
 -if @taxon.is_a?(Species) && @taxon.subspecies.any?
-  .callout-alert.callout-responsive
+  .callout-danger.callout-responsive
     %p It may not be possible to change the parent of this species, because this species has subspecies.
     %p
       This additional check was added since subspecies names are not updated, which can lead to names not agreeing with each other.
@@ -18,7 +18,7 @@
 =form_with url: taxon_force_parent_change_path do |f|
   .row
     .medium-4
-      .callout
+      .callout-white
         %h6.font-bold Change parent of...
         %p=@taxon.decorate.id_and_name_and_author_citation
         %p
@@ -26,7 +26,7 @@
           =@taxon.parent.decorate.id_and_name_and_author_citation
 
     .medium-4
-      .callout
+      .callout-white
         %h6.font-bold ...to
         %p=taxon_picker @new_parent, name: 'new_parent_id', ranks: @valid_parent_ranks
         %p
@@ -34,7 +34,7 @@
           =@valid_parent_ranks.to_sentence
 
     .medium-4
-      .callout
+      .callout-white
         %h6 Help
         %p Use this page to...
         %p

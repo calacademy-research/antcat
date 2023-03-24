@@ -17,15 +17,11 @@
     #{@issue.open? ? 'Open' : 'Closed'} issue: #{@issue.title}
     =@issue.decorate.help_wanted_badge
   .text-sm
-    Added by
-    =@issue.user.decorate.user_page_link
-    =time_ago_in_words @issue.created_at
-    ago
+    Added by #{@issue.user.decorate.user_page_link} #{time_ago_in_words(@issue.created_at)} ago
 
     -if @issue.closed?
       =mdash
-      Closed by
-      =@issue.closer.decorate.user_page_link
+      Closed by #{@issue.closer.decorate.user_page_link}
 
 .clear-both
 

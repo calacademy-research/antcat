@@ -1,28 +1,28 @@
 -protonym = taxon.protonym
 -decorated_protonym = protonym.decorate
 
-.nomen-synopsis
-  %span.name{class: BoltonFormatter.taxon_css(taxon)}
-    ="#{taxon.name.epithet}."
-  =protonym.name_with_fossil
-  =protonym.authorship_reference.key_with_suffixed_year
-  =decorated_protonym.format_pages_and_forms
-  =add_period_if_necessary(decorated_protonym.format_locality)
+%span.nomen-synopsis-name
+  =BoltonFormatter.link_to_bolton_taxon_with_label(taxon, "#{taxon.name.epithet}.")
+
+=protonym.name_with_fossil
+=protonym.authorship_reference.key_with_suffixed_year
+=decorated_protonym.format_pages_and_forms
+=add_period_if_necessary(decorated_protonym.format_locality)
 
 .ml-12
   %ul.no-bullet.mb-4{class: "[&_li:hover]:bg-gray-200"}
     -if protonym.primary_type_information_taxt?
-      %li.text-sm
+      %li
         %span Primary type information:
         =::Types::FormatTypeField[protonym.primary_type_information_taxt]
 
     -if protonym.secondary_type_information_taxt?
-      %li.text-sm
+      %li
         %span Secondary type information:
         =::Types::FormatTypeField[protonym.secondary_type_information_taxt]
 
     -if protonym.type_notes_taxt?
-      %li.text-sm
+      %li
         %span Type notes:
         =::Types::FormatTypeField[protonym.type_notes_taxt]
 

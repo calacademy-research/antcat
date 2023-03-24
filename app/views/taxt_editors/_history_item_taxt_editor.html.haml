@@ -1,4 +1,4 @@
-.border.p-4.rounded.bg-white{"data-controller" => "taxt-editor", "data-taxt-editor-url-value" => history_item_path(history_item)}
+.border.p-4.rounded{"data-controller" => "taxt-editor", "data-taxt-editor-url-value" => history_item_path(history_item)}
   .hidden{"data-taxt-editor-target" => "editor"}
     %h6.font-bold.mb-4=history_item.type_label
     -# [grep:history_type].
@@ -15,7 +15,7 @@
   %div{"data-taxt-editor-target" => "presenter", class: "group/history-item-taxt-presenter"}
     =Detax[history_item.to_taxt]
 
-    .mt-3
+    .mb-3
 
     %button.btn-neutral.mr-4{"data-action" => 'click->taxt-editor#enterEditMode', data: { testid: 'history-item-taxt-editor-edit-button' }} Quick edit
 

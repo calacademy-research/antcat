@@ -3,7 +3,7 @@
 
 %p Click on "Create combination" to execute the following operations.
 
-.callout
+.callout-white
   =markdown Operations::CreateNewCombination.description(current_taxon: @taxon, new_combination_name: @target_name.name_html, new_genus: @new_parent).html_safe
 
 =form_with(url: taxon_create_combination_path, method: :post) do |f|

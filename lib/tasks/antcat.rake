@@ -6,7 +6,7 @@ task :antcat do
   puts <<~STR
     ./bin/dev
     ./bin/webpack-dev-server
-    brakeman
+    brakeman --interactive-ignore
     bundle audit check --update
     cat docker_dev/README.md
     guard                      # Or: GUARD=all guard; GUARD=spec guard; GUARD=rubocop guard

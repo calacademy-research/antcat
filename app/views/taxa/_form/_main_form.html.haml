@@ -36,9 +36,7 @@
 
         %tr
           %td=form.label :status
-          %td
-            .max-w-xs
-              =form.select :status, Status::STATUSES
+          %td=form.select :status, Status::STATUSES
 
         %tr
           %td.shrink-tw-conflict
@@ -63,21 +61,23 @@
           %td=taxon_picker form.object.homonym_replaced_by, id: 'taxon_homonym_replaced_by_id', name: 'taxon[homonym_replaced_by_id]'
 
     .medium-4
-      .callout
+      .callout-white
         %h6.font-bold Fossil-only fields
         %table
           %tr
             %td.py-0
-              %ul.no-bullet.compact-list
+              %ul.no-bullet
                 %li
                   =form.check_box :collective_group_name
                   =form.label :collective_group_name
 
-        %h6.font-bold.mt-2 Misc. fields
-        %table.pb-4
+        .mb-2
+
+        %h6.font-bold Misc. fields
+        %table
           %tr
             %td.py-0{colspan: 2}
-              %ul.no-bullet.compact-list.mb-2
+              %ul.no-bullet.mb-2
                 %li
                   =form.check_box :unresolved_homonym
                   =form.label :unresolved_homonym, 'Unresolved junior homonym?'

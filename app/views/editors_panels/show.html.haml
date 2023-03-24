@@ -1,7 +1,7 @@
 -page_title "Editor's Panel"
 -breadcrumb :editors_panel_dashboard
 
-.row
+.row.mb-8
   .medium-4
     %h5 Unreviewed changes
     %ul.no-bullet
@@ -41,7 +41,7 @@
 
   .medium-4
     %h5=link_to 'Wiki pages', wiki_pages_path
-    .callout-primary
+    .callout-blue
       %ul.no-bullet
         -featured_wiki_pages = @editors_panel_presenter.featured_wiki_pages
         -if featured_wiki_pages.present?
@@ -53,19 +53,19 @@
           %li.mt-4.text-sm
             =link_to "See all #{@editors_panel_presenter.total_wiki_pages_count} wiki pages...", wiki_pages_path
 
-.mt-8
+.mb-8
   %h5 Most recent activity (#{link_to("see more", activities_path)})
   =render "activities/table", activities: @editors_panel_presenter.recent_activities
 
-.mt-8
+.mb-8
   %h5 Most recent comments (#{link_to("see more", comments_path)})
   =render "comments/comments_table", comments: @editors_panel_presenter.recent_comments
 
-.mt-8
+.mb-8
   %h5 Most recent unconfirmed edits (#{link_to("see more", unconfirmed_activities_path)})
   =render "activities/table", activities: @editors_panel_presenter.recent_unconfirmed_activities
 
-.mt-8
+.mb-8
   %h5 Misc. less frequently used pages
   %ul
     %li=link_to "Bolton keys to ref tags", bolton_keys_to_ref_tags_path
@@ -73,7 +73,7 @@
     -if user_is_superadmin?
       %li=link_to append_superadmin_icon('Restart and reindex Solr'), restart_and_reindex_solrs_path, method: :post, data: { confirm: "Are you sure?" }, class: 'btn-danger'
 
-.mt-8
+.mb-8
   %h5 External links
   %ul
     %li

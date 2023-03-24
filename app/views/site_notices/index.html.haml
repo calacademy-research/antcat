@@ -22,9 +22,7 @@
             =link_to site_notice.title, site_notice_path(site_notice)
             %br
             .text-sm.text-gray-600
-              added
-              =time_ago_in_words site_notice.created_at
-              ago
+              Added #{time_ago_in_words site_notice.created_at} ago
           %td.no-wrap
             .float-right
               =CommentableDecorator.new(site_notice).link_existing_comments_section

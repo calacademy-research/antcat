@@ -2,10 +2,10 @@
   =javascript_include_tag "markdown_and_friends"
 
 -content_for :breadcrumbs_right do
-  %button.btn-neutral{"data-action" => "toggler#toggle", "data-toggler-target" => "help"} Show/hide markdown formatting help
+  %button.btn-neutral{"data-action" => "click->toggler#toggle", "data-toggler-target" => "help"} Show/hide markdown formatting help
 
 .hidden{data: { toggler_name: "help" }}
-  .callout
+  .callout-white
     =render 'shared/markdown_formatting_help'
 
 =form_with model: wiki_page do |f|

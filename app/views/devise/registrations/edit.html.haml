@@ -4,7 +4,7 @@
 =form_with model: resource, url: registration_path(resource_name), method: :put, data: { turbo: false } do |f|
   =render 'shared/errors_for', resource: resource
 
-  .row.mb-4
+  .row.mb-8
     .medium-6
       =f.label :email
       =f.text_field :email
@@ -33,21 +33,20 @@
       =f.label :current_password, "Current password (required when changing password)"
       =f.password_field :current_password
 
-  .row.mt-8
+  .row.mb-8
     .medium-6
       %h5 Preferences
       =f.check_box :enable_email_notifications
       =f.label :enable_email_notifications
 
-  .row.mt-8
+  .row.mb-8
     .medium-6
-      %h6 Enabled editing helpers
+      %h5 Enabled editing helpers
       =f.fields_for :settings do |settings_fields|
         =settings_fields.fields_for :editing_helpers, current_user.settings(:editing_helpers) do |editing_helpers_fields|
-
           =editing_helpers_fields.check_box :create_combination
           =editing_helpers_fields.label :create_combination, "Show 'Can be combined?' blue box on species pages"
 
-  .row.mt-8
+  .row.mb-8
     .medium-6
       =f.button 'Save', class: "btn-saves btn-md"

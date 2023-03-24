@@ -9,7 +9,7 @@
   %p There are currently no open issues.
 
 -if Issue.any_help_wanted_open?
-  .callout-primary.callout-responsive.mb-8
+  .callout-blue.callout-responsive.mb-8
     %p One or more open issues are tagged as 'Help wanted'.
     %p These issues were deemed important for one or another reason, in many cases because they are blocking improvements we want to make to the code.
     %p Any help fixing these is much appreciated. Resolved issues can be closed, and then this notice will disappear from this page and the header.
@@ -24,15 +24,13 @@
           =issue.decorate.help_wanted_badge
           %br
           %span.text-sm.text-gray-600{class: "[&_a]:text-gray-600"}
-            added
-            =time_ago_in_words issue.created_at
-            ago by
-            =issue.user.decorate.user_page_link
+            added #{time_ago_in_words issue.created_at} ago by #{issue.user.decorate.user_page_link}
         %td.no-wrap=CommentableDecorator.new(issue).link_existing_comments_section
         %td.no-wrap
 
 =will_paginate @issues
 
-.mt-20
-  %h5 Most recent activity (#{link_to "see more", activities_path(trackable_type: 'Issue')})
-  =render "activities/table", activities: @recent_activities
+.mb-20
+
+%h5 Most recent activity (#{link_to "see more", activities_path(trackable_type: 'Issue')})
+=render "activities/table", activities: @recent_activities

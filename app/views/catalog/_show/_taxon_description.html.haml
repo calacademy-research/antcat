@@ -4,14 +4,14 @@
   =render "shared/default_reference"
 
 /--- First line ---
-.text-sm
-  %span.text-lg.font-bold.mr-1=Taxa::LinkEachEpithet[taxon]
-  =taxon.author_citation
+%span.text-lg.font-bold.mr-1=Taxa::LinkEachEpithet[taxon]
+=taxon.author_citation
+%span.text-sm
   =taxon.decorate.expanded_status
   =taxon.name.gender
 
 /--- Second line ---
-%div
+.mb-4
   %span.font-bold.mr-1{data: { testid: 'catalog-protonym-name' }}
     =protonym.decorate.link_to_protonym
   -if protonym.sic?
@@ -31,7 +31,7 @@
 /--- Type names ---
 -if current_user
   -if taxon.type_names.present?
-    .bg-logged-in-only.callout.border-0.mt-8.mb-8
+    .bluebox
       %ul.no-bullet
         -taxon.type_names.each do |as_type_name|
           %li
@@ -41,7 +41,7 @@
             =as_type_name.protonym.decorate.link_to_protonym_with_author_citation + Detax[decorated_as_type_name.format_fixation_method]
 
 /--- Type information ---
-.text-sm.mb-4
+.mb-8
   -if protonym.primary_type_information_taxt?
     %strong Primary type information:
     =::Types::FormatTypeField[protonym.primary_type_information_taxt]
@@ -54,7 +54,7 @@
 
 /--- Replacement names for ---
 -if current_user && taxon.replacement_name_for.present?
-  .bg-logged-in-only.callout.border-0
+  .bluebox
     %strong Replacement name for
     -taxon.replacement_name_for.each do |replaced_name|
       =CatalogFormatter.link_to_taxon(replaced_name)
@@ -66,7 +66,7 @@
 -if current_user
   -if taxon.history_items_as_object_for_taxon.present?
     -history_presenter = HistoryPresenter.new(taxon.history_items_as_object_for_taxon, :object)
-    .bg-logged-in-only.callout.border-0.mt-8.mb-8
+    .bluebox
       %strong History items as object (mirrored items)
       %ul
         -history_presenter.grouped_items.each do |grouped_item|
@@ -77,27 +77,25 @@
   -history_presenter = HistoryPresenter.new(taxon.history_items_for_taxon)
 
   -if current_user
-    %h6.font-bold.mt-8
-      Taxonomic history
-      =info_tooltip_icon 'Automatically sorted and grouped items, logged-in version.'
-    .mb-16
+    %h6.font-bold Taxonomic history
+    .mb-8
       -history_presenter.grouped_items.each do |grouped_item|
-        .mb-4
+        .mb-2
           -if grouped_item.grouped?
-            %p=Detax[grouped_item.taxt]
-            %p
+            .border.p-4.rounded
+              %p=Detax[grouped_item.taxt]
               -# TODO: Check `grouped_item.group_key.join('_')` because
               -# `group_key` = `["JuniorSynonymOf", "object_protonym_id", 156572]`.
-              %button.btn-neutral.mr-4{"data-action" => "toggler#toggle", "data-toggler-target" => "grouped-#{grouped_item.group_key.join('_')}"} Show/hide grouped
+              %button.btn-neutral.mr-4{"data-action" => "click->toggler#toggle", "data-toggler-target" => "grouped-#{grouped_item.group_key.join('_')}"} Show/hide grouped
               %span.text-sm.font-bold.text-gray-500 #{grouped_item.underscored_type} x #{grouped_item.number_of_items}
-
-            %ul.compact-list.no-bullet.mb-8.hidden{data: { toggler_name: "grouped-#{grouped_item.group_key.join('_')}" }}
-              -grouped_item.items.each do |history_item|
-                %li.pl-8
-                  -if user_is_at_least_helper?
-                    =render 'taxt_editors/history_item_taxt_editor', history_item: history_item
-                  -else
-                    =Detax[history_item.to_taxt]
+              .mb-2
+              %ul.no-bullet.hidden{data: { toggler_name: "grouped-#{grouped_item.group_key.join('_')}" }}
+                -grouped_item.items.each do |history_item|
+                  %li.mb-2
+                    -if user_is_at_least_helper?
+                      =render 'taxt_editors/history_item_taxt_editor', history_item: history_item
+                    -else
+                      =Detax[history_item.to_taxt]
           -else
             -history_item = grouped_item.items.first
             -if user_is_at_least_helper?
@@ -105,14 +103,14 @@
             -else
               %p=Detax[history_item.to_taxt]
   -else
-    %ul.mb-4
+    %ul.mb-8
       -history_presenter.grouped_items.each do |grouped_item|
         %li=Detax[grouped_item.taxt]
 
 /--- History items: Not shown items (from protonym) ---
 -if current_user && !Status.display_history_items?(taxon.status)
   -if taxon.history_items_for_taxon_including_hidden.present?
-    .bg-logged-in-only.callout.border-0.text-sm.mt-8.mb-8
+    .bluebox
       %h6.font-bold Protonym history items not shown on this page
       %p
         History items in this bluebox are shown on catalog pages for the protonym's terminal taxon:
@@ -125,26 +123,26 @@
 /--- Junior synonyms ---
 -if taxon.junior_synonyms.exists?
   -name_of_obsoletes = taxon.decorate.name_of_obsoletes
-  %h6.font-bold.mt-8 Junior synonyms
-  %ul.compact-list.no-bullet.mb-8
+  %h6.font-bold Junior synonyms
+  %ul.compact-list.mb-8
     -TaxonQuery.new(taxon.junior_synonyms.order_by_name).with_common_includes.each do |synonym|
       %li
         =CatalogFormatter.link_to_taxon(synonym)
         =synonym.author_citation
         -if synonym.obsolete_combinations.present?
-          .pl-8
+          .pl-4
             Obsolete #{name_of_obsoletes}(s):
             =safe_join synonym.obsolete_combinations.map { |obsolete| CatalogFormatter.link_to_taxon(obsolete) }, ', '
 
 /--- Obsolete combinations ---
 -if taxon.obsolete_combinations.exists?
-  %h6.font-bold.mt-8="Obsolete #{taxon.decorate.name_of_obsoletes}s"
-  %ul.compact-list.no-bullet.mb-8
+  %h6.font-bold="Obsolete #{taxon.decorate.name_of_obsoletes}s"
+  %ul.compact-list.mb-8
     -taxon.obsolete_combinations.order_by_name.includes(:name).each do |obsolete_combination|
       %li=CatalogFormatter.link_to_taxon(obsolete_combination)
 
 /--- Rank-specific ---
-.mb-4
+.mb-8
   -Taxa::ChildList[taxon].each do |child_list|
     %div
       %span.font-bold #{child_list[:label]}:
@@ -182,10 +180,12 @@
                 =link_to "Edit", edit_reference_section_path(reference_section), class: "btn-default"
               =link_to "History", reference_section_history_path(reference_section), class: "btn-default"
 
+.mb-20
+
 /--- Citations ---
 -unless catalog_presenter.formicidae_landing_page?
-  %h6.font-bold.mt-20 Citations
-  %ul.compact-list
+  %h5.font-bold Citations
+  %ul
     -catalog_presenter.collected_references.each do |reference|
       -decorated_reference = reference.decorate
       %li{class: "group/citations-reference"}

@@ -17,14 +17,14 @@
       =link_to "My account", edit_user_registration_path, class: "btn-default"
 
 -if @user.deleted?
-  .callout-alert.callout-responsive This user has been soft-deleted. This page can only be seen by editors. Edit user to restore account.
+  .callout-danger.callout-responsive This user has been soft-deleted. This page can only be seen by editors. Edit user to restore account.
 -elsif @user.locked?
-  .callout-alert.callout-responsive This user is locked. Edit user to unlock account.
+  .callout-danger.callout-responsive This user is locked. Edit user to unlock account.
 -elsif @user.hidden?
-  .callout-alert.callout-responsive This user is hidden from the users list. Edit user to show it.
+  .callout-danger.callout-responsive This user is hidden from the users list. Edit user to show it.
 
 .row.mb-8
-  .medium-6
+  .medium-8
     %p
       %strong Name:
       =@user.name
@@ -51,19 +51,18 @@
 
   -if user_is_superadmin?
     .medium-4
-      .bg-logged-in-only.callout.border-0
+      .bluebox
         PaperTrail versions:
         =link_to @user.created_paper_trail_versions.count, versions_path(whodunnit: @user.id)
-        =tooltip_icon "Use link in the breadcrumbs to see PaperTrail versions created by this user. The number in this infobox may be higher than the number of search results, since 'User' versions are excluded from the versions search page."
         =logged_in_only_tooltip_icon user_group: "superadmins"
 
-.mt-8
+.mb-8
   %h5
     #{@user.name}'s most
     =link_to "recent activity", activities_path(user_id: @user.id)
   =render "activities/table", activities: @recent_user_activities
 
-.mt-8
+.mb-8
   %h5
     #{@user.name}'s most
     =link_to "recent comments", comments_path(user_id: @user.id)

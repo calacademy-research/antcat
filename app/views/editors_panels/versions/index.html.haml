@@ -4,24 +4,23 @@
 =form_with url: request.path, method: :get do |f|
   .row.mb-4
     .small-6.medium-2
-      =f.select :whodunnit, options_for_select(User.order(:name).pluck(:name, :id), params[:whodunnit]), prompt: 'User'
+      =f.select :whodunnit, options_for_select(User.order(:name).pluck(:name, :id), params[:whodunnit]), { prompt: 'User' }, { class: "w-full" }
     .small-6.medium-2
-      =f.select :item_type, options_for_select(EditorsPanels::VersionsController::FILTERABLE_ITEM_TYPES, params[:item_type]), prompt: 'Item type'
+      =f.select :item_type, options_for_select(EditorsPanels::VersionsController::FILTERABLE_ITEM_TYPES, params[:item_type]), { prompt: 'Item type' }, { class: "w-full" }
     .small-6.medium-2
       =f.number_field :item_id, value: params[:item_id], placeholder: 'Item ID'
     .small-6.medium-2
-      =f.select :event, options_for_select(PaperTrail::Version::EVENTS, params[:event]), prompt: 'Event'
+      =f.select :event, options_for_select(PaperTrail::Version::EVENTS, params[:event]), { prompt: 'Event' }, { class: "w-full" }
 
   .row.mb-4
     .small-6.medium-2
       =f.text_field :request_uuid, value: params[:request_uuid], placeholder: 'Request UUID'
     .small-6.medium-2
-      =f.select :search_type, options_for_select([["LIKE (default)", "LIKE"], ["REGEXP", "REGEXP"]], params[:search_type]), prompt: "Search type"
+      =f.select :search_type, options_for_select([["LIKE (default)", "LIKE"], ["REGEXP", "REGEXP"]], params[:search_type]), { prompt: "Search type" }, { class: "w-full" }
     .small-6.medium-2
       =f.text_field :q, value: params[:q], placeholder: "Search query"
     .small-6.medium-2
       =f.button "Filter", name: nil, class: "btn-default btn-md"
-      &nbsp;
       =link_to "Clear", request.path, class: "btn-neutral btn-md"
 
 -if @first_version
@@ -30,7 +29,7 @@
     %h6=@first_version.created_at
 
 -if @versions.blank?
-  .callout-alert.callout-responsive Found no versions
+  .callout-danger.callout-responsive Found no versions
 -else
   %table.table-striped
     %thead

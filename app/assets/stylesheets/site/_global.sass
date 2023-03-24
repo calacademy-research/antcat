@@ -1,10 +1,5 @@
 @import "colors"
 
-// TODO: Fix specificity (CSS layers or import order) and remove `!important`.
-.border-0
-  border-width: 0px !important
-
-
 .bold-warning
   color: red
   font-weight: bold
@@ -50,28 +45,3 @@ span.discreet-author-citation
   font-family: 'fontello'
   content: "\a0\e801"
   font-size: 80%
-
-/////////// Callouts ///////////
-.callout
-  line-height: 1.5
-  margin: 0 0 1rem 0
-  padding: 1rem
-  border: 1px solid rgba(10, 10, 10, 0.25)
-  border-radius: 5px
-
-  &> :first-child
-    margin-top: 0
-  &> :last-child
-    margin-bottom: 0
-
-.callout-primary
-  @extend .callout
-  background-color: $color_ac_blue_pale
-
-.callout-alert
-  @extend .callout
-  background-color: #fce6e2
-
-.callout-warning
-  @extend .callout
-  background-color: #fff3d9

@@ -1,7 +1,7 @@
 -show_agreement_in_gender = taxon.is_a?(SpeciesGroupTaxon)
 
 -if protonym.etymology_taxt? || show_agreement_in_gender || protonym.gender_agreement_type?
-  .bg-logged-in-only.callout.border-0.text-sm
+  .bluebox
     -if protonym.etymology_taxt?
       %p
         %strong Etymology:
@@ -11,9 +11,10 @@
       -if protonym.etymology_taxt?
         %hr
 
-      Agreement in gender
-      =tooltip_icon 'Which genus gender to agree with can currently only be shown on catalog pages (Taxon records)'
-      %p.mt-2
+      %h6
+        Agreement in gender
+        =tooltip_icon 'Which genus gender to agree with can currently only be shown on catalog pages (Taxon records)'
+      %p
         The spelling of this species-group name
         -if protonym.changeable_name?
           is

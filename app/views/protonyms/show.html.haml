@@ -23,7 +23,7 @@
   -if current_user && @protonym.soft_validations.failed?
     .row.mb-8
       .medium-9
-        .callout-warning.text-sm
+        .callout-warning
           %h6 Issues (#{link_to("see more", protonym_soft_validations_path(@protonym))})
           =render 'shared/failed_soft_validations', soft_validations: @protonym.soft_validations
 
@@ -101,7 +101,7 @@
 
   -if current_user
     .medium-3
-      .bg-logged-in-only.callout.border-0
+      .bluebox
         %h6
           Protonym:
           =@protonym.name.epithet_html
@@ -155,8 +155,8 @@
 
 -if current_user
   -if @protonym.history_items_as_object.present?
-    .mt-8.mb-8
-      .bg-logged-in-only.callout.border-0.mb-16
+    .mb-8
+      .bluebox
         %h5 History items as object protonym
         %table.table-striped
           %thead

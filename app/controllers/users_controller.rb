@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
+  SHOW_USER_STATS_PARAM = :show_user_stats
+
   before_action :ensure_user_is_superadmin, except: [:index, :show, :mentionables]
 
   def index
     @active_users = User.active.non_hidden.order_by_name
-    @show_user_stats = current_user&.superadmin? && params[:show_user_stats] # TODO: Secret hidden param.
+    @show_user_stats = current_user&.superadmin? && params[SHOW_USER_STATS_PARAM]
 
     if user_is_at_least_helper?
       @hidden_users = User.hidden.order_by_name

@@ -1,8 +1,6 @@
 %table.table-unstriped
   %tr
     %td Designation type
-    %td
-      .max-w-xs
-        =select_tag :subtype, options_for_select(History::Definitions::TYPE_DEFINITIONS[History::Definitions::TYPE_SPECIMEN_DESIGNATION][:subtype_options], history_item.subtype), id: nil
+    %td=select_tag :subtype, options_for_select(History::Definitions::TYPE_DEFINITIONS[History::Definitions::TYPE_SPECIMEN_DESIGNATION][:subtype_options], history_item.subtype), id: nil
 
   =tr_for_reference_and_pages history_item

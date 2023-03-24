@@ -8,12 +8,12 @@
   .medium-8
     -# See also form in `comments/_form.html.haml`.
     =form_with model: @comment do |f|
-      =f.text_area :body, rows: 4, placeholder: "Add comment here", data: { has_mentionables: true, has_linkables: true, previewable: true, previewable_title: "Write" }, maxlength: Comment::BODY_MAX_LENGTH
+      =f.text_area :body, rows: 4, placeholder: "Leave a comment", data: { has_mentionables: true, has_linkables: true, previewable: true, previewable_title: "Write" }, maxlength: Comment::BODY_MAX_LENGTH
 
       =f.button "Save", class: "btn-saves btn-md"
 
   .medium-4
-    .callout
+    .callout-white
       %h6 Help
       %p
         Editing comments does not re-trigger user notifications, and no new

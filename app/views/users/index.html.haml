@@ -4,20 +4,22 @@
 -if user_is_superadmin?
   -content_for :breadcrumbs_right do
     =link_to append_superadmin_icon("New"), new_user_path, class: "btn-default"
+    -unless params[UsersController::SHOW_USER_STATS_PARAM]
+      =link_to append_superadmin_icon("Show user stats"), users_path(UsersController::SHOW_USER_STATS_PARAM => 'yes'), class: "btn-default"
 
 -if user_is_at_least_helper?
   %p
-    %span.bg-logged-in-only.mb-8
+    %span.bg-logged-in-only
       Emails are only visible to logged in helpers and editors.
       =logged_in_only_tooltip_icon user_group: 'helpers/editors'
 
 -if user_is_superadmin?
-  %p
-    %span.bg-logged-in-only.mb-8
+  %p.mb-8
+    %span.bg-logged-in-only
       Activity and PaperTrail version counts are only visible to superadmins.
       =logged_in_only_tooltip_icon user_group: 'superadmins'
 
-%table.table-striped
+%table.table-striped.mb-8
   %tbody
     -@active_users.each do |user|
       %tr
@@ -27,8 +29,8 @@
           -if user.superadmin? && user_is_at_least_helper?
             %span.badge-orange superadmin
         -if @show_user_stats
-          %td=link_to "#{user.activities.count}&nbsp;activities".html_safe, activities_path(user_id: user.id)
-          %td=link_to "#{user.created_paper_trail_versions.count}&nbsp;PTVs".html_safe, versions_path(whodunnit: user.id)
+          %td.whitespace-nowrap=link_to "#{user.activities.count} activities", activities_path(user_id: user.id)
+          %td.whitespace-nowrap=link_to "#{user.created_paper_trail_versions.count} PTVs", versions_path(whodunnit: user.id)
         %td
           -if user.author
             =link_to 'Author page', user.author, class: 'btn-default'
@@ -37,18 +39,18 @@
           %td Reg. #{user.created_at.year}
 
 -if @hidden_users
-  %h5.mt-20
+  %h5
     Hidden users
     =logged_in_only_tooltip_icon user_group: 'helpers/editors'
-  %table.table-striped
+  %table.table-striped.mb-8
     %tbody
       -@hidden_users.each do |user|
         %tr
           %td=user.decorate.user_page_link
           %td=user.decorate.user_badge
           -if @show_user_stats
-            %td=link_to "#{user.activities.count}&nbsp;activities".html_safe, activities_path(user_id: user.id)
-            %td=link_to "#{user.created_paper_trail_versions.count}&nbsp;PTVs".html_safe, versions_path(whodunnit: user.id)
+            %td.whitespace-nowrap=link_to "#{user.activities.count} activities", activities_path(user_id: user.id)
+            %td.whitespace-nowrap=link_to "#{user.created_paper_trail_versions.count} PTVs", versions_path(whodunnit: user.id)
           %td
             -if user.locked?
               %span.badge-danger locked
@@ -60,7 +62,7 @@
           %td Reg. #{user.created_at.year}
 
 -if @deleted_or_locked_users
-  %h5.mt-20
+  %h5
     Deleted or locked users
     =logged_in_only_tooltip_icon user_group: 'superadmins'
   %table.table-striped
@@ -70,8 +72,8 @@
           %td=user.decorate.user_page_link
           %td=user.decorate.user_badge
           -if @show_user_stats
-            %td=link_to "#{user.activities.count}&nbsp;activities".html_safe, activities_path(user_id: user.id)
-            %td=link_to "#{user.created_paper_trail_versions.count}&nbsp;PTVs".html_safe, versions_path(whodunnit: user.id)
+            %td.whitespace-nowrap=link_to "#{user.activities.count} activities", activities_path(user_id: user.id)
+            %td.whitespace-nowrap=link_to "#{user.created_paper_trail_versions.count} PTVs", versions_path(whodunnit: user.id)
           %td
             -if user.locked?
               %span.badge-danger locked

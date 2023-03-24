@@ -5,15 +5,15 @@
 %table.table-striped
   %thead
     %tr
-      %th Search by...
-      %th Example(s)
+      %th Search by
+      %th Examples
       %th{width: "30%"} Notes
   %tr
-    %td any field (no keyword)
+    %td Any field
     %td=link_to "nylanderia", references_search_index_path(reference_q: "nylanderia")
-    %td Case insensitive.
+    %td No keyword required
   %tr
-    %td title
+    %td Title
     %td=link_to "title:leach", references_search_index_path(reference_q: "title:leach")
     %td
       Compare:
@@ -21,64 +21,58 @@
       \/
       =link_to "author:leach", references_search_index_path(reference_q: "author:leach")
       \/
-      =succeed "." do
-        =link_to "leach", references_search_index_path(reference_q: "leach")
+      =link_to "leach", references_search_index_path(reference_q: "leach")
   %tr
-    %td title, more than one word
+    %td Title (more than one word)
     %td=link_to 'title:"solenopsis invicta"', references_search_index_path(reference_q: 'title:"solenopsis invicta"')
-    %td Wrap query in single or double quotes, and put in after the colon.
+    %td Wrap query in single or double quotes
   %tr
-    %td publication year
+    %td Publication year
     %td=link_to "year:2009", references_search_index_path(reference_q: "year:2009")
     %td
   %tr
-    %td publication year, range
+    %td Publication year (range)
     %td=link_to "year:2000-2009", references_search_index_path(reference_q: "year:2000-2009")
   %tr
-    %td author
+    %td Author
     %td=link_to "author:wilson", references_search_index_path(reference_q: 'author:wilson')
-    %td Authors are indexed by last name and initials. If you cannot find what you're looking for, try removing the first name from the query.
+    %td Authors are indexed by last name and initials. If you cannot find what you're looking for, try searching without the first name.
   %tr
-    %td author, names containing spaces
+    %td Author (names containing spaces)
     %td=link_to "author:'De Andrade'", references_search_index_path(reference_q: "author:'De Andrade'")
-    %td Wrap the name in single or double quotes, and put in after the colon.
+    %td Wrap name in single or double quotes
   %tr
-    %td author, exact match
+    %td Author (exact match)
     %td=link_to 'author:"Smith, D. R."', references_search_index_path(reference_q: 'author:"Smith, D. R."')
-    %td Manually type the name(s) or start typing and click on one of the suggestions.
+    %td Manually type the name, or start typing and click on one of the suggestions
   %tr
-    %td author, multiple authors
+    %td Author (multiple authors)
     %td=link_to "author:'Bolton, B.; Fisher, B. L.'", references_search_index_path(reference_q: "author:'Bolton, B.; Fisher, B. L.'")
-    %td As above.
+    %td Use semicolons between names
   %tr
-    %td doi
+    %td DOI
     %td=link_to "doi:10.11865/zs.201806", references_search_index_path(reference_q: "doi:10.11865/zs.201806")
     %td Requires an exact match. Using this keyword is the only way to search for DOIs.
   %tr
-    %td reference type
+    %td Reference type
     %td
       =link_to "type:nested", references_search_index_path(reference_q: "type:nested")
     %td
   %tr
-    %td combined keywords
+    %td Combining keywords
     %td=link_to 'author:wilson year:1970-1979', references_search_index_path(reference_q: 'author:wilson year:1970-1979')
     %td
   %tr
-    %td queries containing diacritics
+    %td Queries containing diacritics
     %td
       =link_to "hölldobler", references_search_index_path(reference_q: "hölldobler")
       or
       =link_to "holldobler", references_search_index_path(reference_q: "holldobler")
     %td
   %tr
-    %td journal; type the name, there's no keyword for this
+    %td Journal
     %td=link_to "zootaxa", references_search_index_path(reference_q: "zootaxa")
     %td
-      Current workaround: if there are too many unrelated results (example:
-      =succeed ")," do
-        =link_to "tropics", references_search_index_path(reference_q: "tropics")
-      find the journal in the
-      =link_to "journals index", journals_path
-      or follow the journal link from the reference details page to see which references are linked to that journal (example:
-      =succeed ")." do
-        %i=link_to "Tropics", journal_path(20158)
+      To see all references linked to a journal, go to the journal's page by following the link on a reference's page or in the
+      =succeed "." do
+        =link_to "list of journals", journals_path

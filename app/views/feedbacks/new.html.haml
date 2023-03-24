@@ -17,7 +17,7 @@
   =render "shared/errors_for", resource: @feedback
 
   -if current_user
-    .row
+    .row.mb-4
       .medium-4
         =f.label :name
         =f.text_field :name, value: current_user.name, disabled: true
@@ -25,7 +25,7 @@
         =f.label :email
         =f.text_field :email, value: current_user.email, disabled: true
   -else
-    .row
+    .row.mb-4
       .medium-4
         =f.label :name
         =f.text_field :name, placeholder: "Optional"
@@ -33,7 +33,7 @@
         =f.label :email
         =f.text_field :email, placeholder: "Optional"
 
-  .mt-4.mb-4
+  .mb-4
     =f.label :comment
     =f.text_area :comment, rows: 10, maxlength: Feedback::COMMENT_MAX_LENGTH
 

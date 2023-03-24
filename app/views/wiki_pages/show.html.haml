@@ -11,15 +11,9 @@
 .mb-4
   %h5=@wiki_page.title
   %span.text-sm.text-gray-600
-    Last edited
-    =time_ago_in_words(@wiki_page.updated_at)
-    ago
-
+    Last edited #{time_ago_in_words(@wiki_page.updated_at)} ago
     =mdash
-
-    Added
-    =time_ago_in_words(@wiki_page.created_at)
-    ago
+    Added #{time_ago_in_words(@wiki_page.created_at)} ago
 
 .mb-4
   =markdown @wiki_page.content
