@@ -14,13 +14,13 @@ class RevisionComparer
 
   def selected
     @_selected ||= if selected_id.present?
-                     revisions.find(selected_id).reify
+                     revisions.find(selected_id).safe_reify
                    end
   end
 
   def diff_with
     @_diff_with ||= if diff_with_id.present?
-                      revisions.find(diff_with_id).reify
+                      revisions.find(diff_with_id).safe_reify
                     end
   end
 
@@ -60,7 +60,7 @@ class RevisionComparer
     end
 
     def last_live_item
-      versions.last.reify
+      versions.last.safe_reify
     end
 
     def versions

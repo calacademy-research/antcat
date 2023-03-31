@@ -55,6 +55,7 @@ module DevMonkeyPatches
     end
 
     def dd_ap
+      require 'awesome_print'
       AwesomePrint.irb!
     end
 

@@ -86,4 +86,19 @@ describe PaperTrail::Version do
       end
     end
   end
+
+  describe '#safe_reify', :versioning do
+    let(:reference) { create :article_reference }
+
+    it 'safely reifies specific STI classes' do
+      reference.update!(title: 'updated to create a version')
+
+      version = reference.versions.last
+      version.update_columns(object: version.object.gsub('ArticleReference', 'MissingReference'))
+
+      expect { version.reify }.to raise_error(ActiveRecord::SubclassNotFound)
+
+      expect(version.safe_reify).to be_a(Reference)
+    end
+  end
 end
