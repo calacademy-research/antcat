@@ -10,6 +10,16 @@ Bundler.require(*Rails.groups)
 
 module AntCat
   class Application < Rails::Application
+    config.before_configuration do
+      # TODO: Fix for gems that still use `File.exists?`.
+      # See https://docs.ruby-lang.org/en/master/NEWS/NEWS-3_2_0_md.html#label-Removed+methods
+      unless File.respond_to?(:exists?)
+        class << File
+          alias_method :exists?, :exist?
+        end
+      end
+    end
+
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
 
