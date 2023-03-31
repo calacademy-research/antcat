@@ -163,8 +163,7 @@
   }
 
   ul.no-bullet {
-    @apply ml-0;
-    list-style: none;
+    @apply ml-0 list-none;
   }
 
   ul.compact-list {
@@ -187,9 +186,8 @@
 
   /* Grid */
   .layout-container {
+    @apply mx-auto;
     max-width: 75rem;
-    margin-right: auto;
-    margin-left: auto;
   }
 
   /* TODO: Relics from Zurb Foundation */
@@ -273,9 +271,7 @@
 
   /* Tables */
   table {
-    @apply mb-4;
-    border-collapse: collapse;
-    width: 100%;
+    @apply mb-4 w-full border-collapse;
   }
 
   caption {
