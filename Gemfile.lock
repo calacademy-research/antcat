@@ -538,10 +538,6 @@ GEM
       actionpack (>= 6.0.0)
       activejob (>= 6.0.0)
       railties (>= 6.0.0)
-    twitter-typeahead-rails (0.11.1)
-      actionpack (>= 3.1)
-      jquery-rails
-      railties (>= 3.1)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     uglifier (4.2.0)
@@ -647,7 +643,6 @@ DEPENDENCIES
   tabulo
   tailwindcss-rails
   turbo-rails
-  twitter-typeahead-rails
   uglifier
   unread
   view_component

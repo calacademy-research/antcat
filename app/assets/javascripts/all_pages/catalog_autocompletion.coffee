@@ -8,7 +8,7 @@ $ ->
 
   taxaDataSet =
     name: 'taxa'
-    limit: Infinity # NOTE: Bug in typeahead.js v0.11.1; limited on server-side anyway.
+    limit: Infinity
     displayKey: 'plaintext_name'
     source: taxa.ttAdapter()
     templates:
@@ -35,7 +35,7 @@ $ ->
 
   protonymsDataSet =
     name: 'protonyms'
-    limit: Infinity # NOTE: Bug in typeahead.js v0.11.1; limited on server-side anyway.
+    limit: Infinity
     displayKey: 'plaintext_name'
     source: protonyms.ttAdapter()
     templates:

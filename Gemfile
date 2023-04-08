@@ -49,7 +49,6 @@ gem 'sunspot_rails'
 gem 'sunspot_solr', '2.2.0'
 gem 'tailwindcss-rails'
 gem 'turbo-rails'
-gem 'twitter-typeahead-rails'
 gem 'unread'
 gem 'view_component'
 # NOTE: webrick is required for `ReferenceDocument#actual_url`, but specs may incorrectly pass even after removing

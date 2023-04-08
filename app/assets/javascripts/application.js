@@ -1,7 +1,8 @@
 // gems
 //= require rails-ujs
 
-//= require twitter/typeahead
+// package.json
+//= require corejs-typeahead/dist/typeahead.bundle.min.js
 
 // app/assets/javascripts
 //= require all_pages/catalog_autocompletion
