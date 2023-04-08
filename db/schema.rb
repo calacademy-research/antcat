@@ -365,7 +365,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_13_170109) do
     t.boolean "locked", default: false, null: false
     t.boolean "deleted", default: false, null: false
     t.boolean "hidden", default: false, null: false
-    t.boolean "enable_email_notifications", default: true
+    t.boolean "enable_email_notifications", default: true, null: false
     t.integer "author_id"
     t.boolean "developer", default: false, null: false
     t.index ["author_id"], name: "ux_users__author_id", unique: true
