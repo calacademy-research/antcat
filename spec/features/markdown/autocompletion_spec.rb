@@ -22,13 +22,14 @@ feature "Markdown autocompletion", as: :editor, js: true do
     markdown_textarea.set ""
   end
 
-  scenario "References markdown autocompletion", :skip_ci, :search do
+  scenario "References markdown autocompletion", :search do
     create :any_reference, author_string: "Giovanni, S.", title: "Giovanni's Favorite Ants", year: 1810
     joffre_1810 = create :any_reference, author_string: "Joffre, J.", title: "Joffre's Favorite Ants", year: 1810
     Sunspot.commit
 
     i_am_on_a_page_with_a_textarea_with_markdown_preview_and_autocompletion
 
+    wait_for_atwho_to_load
     fill_in "issue_description", with: "{rfav"
     i_should_see "Giovanni's Favorite Ants"
     i_should_see "Joffre's Favorite Ants"
@@ -41,12 +42,13 @@ feature "Markdown autocompletion", as: :editor, js: true do
     expect(markdown_textarea.value).to include Taxt.ref(joffre_1810.id)
   end
 
-  scenario "Taxa markdown autocompletion", :skip_ci, :search do
+  scenario "Taxa markdown autocompletion", :search do
     eciton = create :genus, name_string: "Eciton"
     create :genus, name_string: "Atta"
     Sunspot.commit
     i_am_on_a_page_with_a_textarea_with_markdown_preview_and_autocompletion
 
+    wait_for_atwho_to_load
     fill_in "issue_description", with: "{tec"
     i_should_see "Eciton"
 
@@ -54,10 +56,11 @@ feature "Markdown autocompletion", as: :editor, js: true do
     expect(markdown_textarea.value).to include Taxt.tax(eciton.id)
   end
 
-  scenario "User markdown autocompletion", :skip_ci do
+  scenario "User markdown autocompletion" do
     user = create :user, name: "Archibald"
     i_am_on_a_page_with_a_textarea_with_markdown_preview_and_autocompletion
 
+    wait_for_atwho_to_load
     fill_in "issue_description", with: "@arch"
     i_click_the_suggestion_containing "Archibald"
     expect(markdown_textarea.value).to include "@user#{user.id}"

@@ -3,6 +3,8 @@
 $ ->
   window.setupLinkables()
 
+  document.body.setAttribute('data-test-atwho-loaded', "true") # HACK.
+
 reuseCallbacks = (url) ->
   matcher: AntCat.allowSpacesWhileAutocompleting
   # Added to make queries with parentheses work (subgenus names).

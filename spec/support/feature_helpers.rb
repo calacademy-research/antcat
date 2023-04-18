@@ -105,6 +105,15 @@ module FeatureHelpers
     end
   end
 
+  # TODO: See if we can replace this and `wait_for_taxt_editors_to_load` with something general.
+  def wait_for_atwho_to_load
+    if javascript_driver?
+      find('body[data-test-atwho-loaded="true"]')
+    else
+      $stdout.puts "skipping wait_for_atwho_to_load because spec is not using javascript".red
+    end
+  end
+
   def these_settings yaml_string
     hsh = YAML.safe_load(yaml_string)
     Settings.merge!(hsh)
