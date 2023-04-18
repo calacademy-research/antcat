@@ -4,12 +4,13 @@
 -# TODO: Copy pasted from 'views/history_items/show.html.haml'; DRY and generally repeat
 -# breadcrumb buttons from 'show' pages in more places.
 -content_for :breadcrumbs_right do
+  %button.btn-neutral{"data-action" => "click->toggler#toggle", "data-toggler-target" => "original"} Show/hide original
   =link_to "History", history_item_history_path(@history_item), class: "btn-default"
   =activities_link_for_trackable @history_item
   -if user_is_editor?
     =link_to "Delete", history_item_path(@history_item), method: :delete, data: { confirm: "Are you sure?" }, class: "btn-danger"
 
-.callout-white
+.callout-white.hidden{data: { toggler_name: "original" }}
   %p
     %span.font-bold Current item before saving form:
     -# HACK: To make sure changed and invalid records render as the original.
