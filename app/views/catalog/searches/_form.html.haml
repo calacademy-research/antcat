@@ -11,16 +11,16 @@
       =f.select :status, options_for_select(Status::STATUSES, params[:status]), { include_blank: "Any" }, { class: "w-full" }
     .medium-2
       Name...
-      =f.text_field :name, value: params[:name]
+      =f.text_field :name, value: params[:name], class: 'w-full'
     .medium-2
       %br
       =f.select :name_search_type, options_for_select([['...contains', Catalog::AdvancedSearchQuery::NAME_CONTAINS], ['...matches', Catalog::AdvancedSearchQuery::NAME_MATCHES], ['...begins with', Catalog::AdvancedSearchQuery::NAME_BEGINS_WITH]], params[:name_search_type] || Catalog::AdvancedSearchQuery::NAME_CONTAINS), {}, { class: "w-full" }
     .medium-2
       Genus contains
-      =f.text_field :genus, value: params[:genus]
+      =f.text_field :genus, value: params[:genus], class: 'w-full'
     .medium-2
       Epithet
-      =f.text_field :epithet, value: params[:epithet]
+      =f.text_field :epithet, value: params[:epithet], class: 'w-full'
 
   .row.mb-4
     .medium-2
@@ -28,13 +28,13 @@
       =f.select :fossil, yes_no_options_for_select(params[:fossil]), { include_blank: "Either" }, { class: "w-full" }
     .medium-2
       Described by
-      =f.text_field :author_name, value: params[:author_name], id: "author_name-js-hook"
+      =f.text_field :author_name, value: params[:author_name], id: "author_name-js-hook", class: 'w-full'
     .medium-2
       Described year
-      =f.text_field :year, value: params[:year], placeholder: "1990, or 2000-2005"
+      =f.text_field :year, value: params[:year], placeholder: "1990, or 2000-2005", class: 'w-full'
     .medium-2
       Protonym contains
-      =f.text_field :protonym, value: params[:protonym]
+      =f.text_field :protonym, value: params[:protonym], class: 'w-full'
 
   .row.mb-4
     .medium-2
@@ -42,13 +42,13 @@
       =f.select :bioregion, options_for_select(Protonym::BIOREGIONS + [Catalog::AdvancedSearchQuery::BIOREGION_NONE], params[:bioregion]), { include_blank: "Any" }, { class: "w-full" }
     .medium-2
       Locality contains
-      =f.text_field :locality, value: params[:locality]
+      =f.text_field :locality, value: params[:locality], class: 'w-full'
     .medium-3
       Type information contains
-      =f.text_field :type_information, value: params[:type_information]
+      =f.text_field :type_information, value: params[:type_information], class: 'w-full'
     .medium-2
       Forms contains
-      =f.text_field :forms, value: params[:forms]
+      =f.text_field :forms, value: params[:forms], class: 'w-full'
     .medium-2
       %i Incertae sedis
       in

@@ -14,11 +14,11 @@
 
   .row.mb-4
     .small-6.medium-2
-      =f.text_field :request_uuid, value: params[:request_uuid], placeholder: 'Request UUID'
+      =f.text_field :request_uuid, value: params[:request_uuid], placeholder: 'Request UUID', class: 'w-full'
     .small-6.medium-2
       =f.select :search_type, options_for_select([["LIKE (default)", "LIKE"], ["REGEXP", "REGEXP"]], params[:search_type]), { prompt: "Search type" }, { class: "w-full" }
     .small-6.medium-2
-      =f.text_field :q, value: params[:q], placeholder: "Search query"
+      =f.text_field :q, value: params[:q], placeholder: "Search query", class: 'w-full'
     .small-6.medium-2
       =f.button "Filter", name: nil, class: "btn-default btn-md"
       =link_to "Clear", request.path, class: "btn-neutral btn-md"

@@ -233,10 +233,6 @@
     @apply rounded border border-gray-300;
   }
 
-  [type='text'] {
-    width: 100%;
-  }
-
   input:disabled, input[readonly],
   textarea:disabled,
   textarea[readonly] {

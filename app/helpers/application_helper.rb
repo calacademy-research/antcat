@@ -79,11 +79,11 @@ module ApplicationHelper
     end
   end
 
-  def edit_summary_text_field_tag optional: true
+  def edit_summary_text_field_tag optional: true, css_class: []
     placeholder = "Edit summary (#{optional ? 'optional' : 'required'})"
 
     text_field_tag :edit_summary, params[:edit_summary],
-      placeholder: placeholder, maxlength: Activity::EDIT_SUMMARY_MAX_LENGTH
+      placeholder: placeholder, maxlength: Activity::EDIT_SUMMARY_MAX_LENGTH, class: css_class
   end
 
   def current_page_redirect_back_url

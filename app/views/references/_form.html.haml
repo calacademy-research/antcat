@@ -12,26 +12,26 @@
         =f.label :reference_author_names_string do
           Authors
           =db_tooltip_icon :authors, scope: :references
-        =f.text_field :author_names_string, value: params.dig(:reference, :author_names_string) || reference.author_names_string
+        =f.text_field :author_names_string, value: params.dig(:reference, :author_names_string) || reference.author_names_string, class: 'w-full'
 
       .row.mb-4
         .medium-2
           =f.label :year do
             Year
             =db_tooltip_icon :year, scope: :references
-          =f.text_field :year
+          =f.text_field :year, class: 'w-full'
         .medium-2
           =f.label :year_suffix do
             Year suffix
             =db_tooltip_icon :year_suffix, scope: :references
-          =f.text_field :year_suffix, placeholder: 'Optional'
+          =f.text_field :year_suffix, placeholder: 'Optional', class: 'w-full'
         .medium-4
           =f.label :reference_pagination do
             Pagination
             =db_tooltip_icon :journal_pagination, scope: :references
             =db_tooltip_icon :book_pagination, scope: :references
             =db_tooltip_icon :nested_pagination, scope: :references
-          =f.text_field :pagination
+          =f.text_field :pagination, class: 'w-full'
 
       .mb-8
         =f.label :reference_title do
@@ -54,12 +54,12 @@
                 =f.label :reference_journal_name do
                   Journal
                   =db_tooltip_icon :journal_name, scope: :references
-                =f.text_field :journal_name, value: params.dig(:reference, :journal_name) || (reference.journal&.name if reference.respond_to?(:journal)) || ''
+                =f.text_field :journal_name, value: params.dig(:reference, :journal_name) || (reference.journal&.name if reference.respond_to?(:journal)) || '', class: 'w-full'
               .medium-6
                 =f.label :reference_series_volume_issue do
                   Series volume issue
                   =db_tooltip_icon :series_volume_issue, scope: :references
-                =f.text_field :series_volume_issue
+                =f.text_field :series_volume_issue, class: 'w-full'
 
           #book-tab-content.tab
             .row
@@ -67,7 +67,7 @@
                 =f.label :reference_publisher_string do
                   Publisher
                   =db_tooltip_icon :publisher, scope: :references
-                =f.text_field :publisher_string, value: params.dig(:reference, :publisher_string) || (reference.publisher&.display_name if reference.respond_to?(:publisher)) || ''
+                =f.text_field :publisher_string, value: params.dig(:reference, :publisher_string) || (reference.publisher&.display_name if reference.respond_to?(:publisher)) || '', class: 'w-full'
 
           #nested-tab-content.tab
             .row
@@ -114,7 +114,7 @@
             =f.label :stated_year do
               Stated year
               =db_tooltip_icon :stated_year, scope: :references
-            =f.text_field :stated_year
+            =f.text_field :stated_year, class: 'w-full'
           .medium-6
             =f.label :author_names_suffix do
               Authors suffix

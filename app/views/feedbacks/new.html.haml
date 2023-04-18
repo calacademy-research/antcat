@@ -40,7 +40,7 @@
   .mb-4
     =f.label :page do
       Page: https://www.antcat.org/...
-    =f.text_field :page, placeholder: "Optional"
+    =f.text_field :page, placeholder: "Optional", class: 'w-full'
 
   .mb-4
     =recaptcha_v3_execute FeedbacksController::RECAPTCHA_V3_ACTION
