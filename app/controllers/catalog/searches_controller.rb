@@ -41,29 +41,7 @@ module Catalog
     private
 
       def advanced_search_params
-        params.slice(
-          :author_name,
-          :bioregion,
-          :collective_group_name,
-          :epithet,
-          :forms,
-          :fossil,
-          :genus,
-          :history_items,
-          :ichnotaxon,
-          :incertae_sedis_in,
-          :locality,
-          :must_have_history_items,
-          :name,
-          :name_search_type,
-          :nomen_nudum,
-          :protonym,
-          :status,
-          :type,
-          :type_information,
-          :unresolved_homonym,
-          :year
-        )
+        params.slice(*Catalog::AdvancedSearchQuery::PERMITTED_PARAMS)
       end
 
       def per_page
