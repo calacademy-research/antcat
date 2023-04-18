@@ -13,7 +13,7 @@
     -taxon_browser.tabs.each.with_index do |tab, index|
       -tab_id = "taxon-browser-tab-#{index}"
       %input.taxon-browser-tab-input.hidden{id: tab_id, checked: ("checked" if tab.open?), name: "taxon_browser_tab", type: "radio", value: 'selected tab'}
-      %label.text-ac-blue.py-1.px-4{for: tab_id, class: "!m-0"}=tab.title
+      %label.text-ac-blue-text.py-1.px-4{for: tab_id, class: "!m-0"}=tab.title
 
     .float-right{class: "hidden sm:block"}
       %button.btn-neutral{"data-action" => "click->toggler#toggle", "data-toggler-target" => "taxon_key"} toggle legend

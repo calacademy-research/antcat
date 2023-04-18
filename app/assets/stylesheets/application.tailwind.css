@@ -103,11 +103,11 @@
   }
 
   a {
-    @apply text-ac-blue;
+    @apply text-ac-blue-text;
   }
 
   a:hover {
-    @apply text-ac-blue-darker;
+    @apply text-ac-blue-text-darker;
   }
 
   /* Typography */

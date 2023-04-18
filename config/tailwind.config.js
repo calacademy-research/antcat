@@ -20,6 +20,8 @@ module.exports = {
       // TODO: Improve names.
       colors: {
         'ac-blue': '#2188ff',
+        'ac-blue-text': '#096adc',
+        'ac-blue-text-darker': '#0753ae',
         'ac-blue-darker': '#0073f8',
         'ac-blue-pale': '#deedff',
         'ac-blue-saves': '#044289',
