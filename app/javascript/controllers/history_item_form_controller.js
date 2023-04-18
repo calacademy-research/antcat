@@ -5,6 +5,7 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = [
     // Type-specific elements.
+    "typeSpecificTaxt",
     "typeSpecificSubtype",
     "typeSpecificPickedValue",
     "typeSpecificTextValue",
@@ -34,7 +35,6 @@ export default class extends Controller {
     "typeSpecificHelpJuniorSynonymOf",
     "typeSpecificHelpReplacementNameFor",
     "typeSpecificHelpSeniorSynonymOf",
-    "typeSpecificHelpTaxt",
   ]
 
   connect() {
@@ -55,7 +55,7 @@ export default class extends Controller {
     const inputsToShow = []
     switch (selectedType) {
       case 'Taxt':
-        inputsToShow.push(this.typeSpecificHelpTaxtTarget)
+        inputsToShow.push(this.typeSpecificTaxtTarget)
         break
 
       case 'FormDescriptions':
