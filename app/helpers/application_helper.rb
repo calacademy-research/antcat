@@ -31,8 +31,8 @@ module ApplicationHelper
   end
 
   def per_page_select per_page_options, value
-    options = per_page_options.map { |number| ["Show #{number} results per page", number] }
-    select_tag :per_page, options_for_select(options, (value || 30))
+    options = per_page_options.map { |number| ["#{number} results per page", number] }
+    select_tag :per_page, options_for_select(options, (value || 30)), { class: 'w-full' }
   end
 
   def beta_label
