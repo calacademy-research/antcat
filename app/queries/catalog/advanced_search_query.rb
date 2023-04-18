@@ -4,6 +4,30 @@ module Catalog
   class AdvancedSearchQuery
     include Service
 
+    PERMITTED_PARAMS = %i[
+      author_name
+      bioregion
+      collective_group_name
+      epithet
+      forms
+      fossil
+      genus
+      history_items
+      ichnotaxon
+      incertae_sedis_in
+      locality
+      must_have_history_items
+      name
+      name_search_type
+      nomen_nudum
+      protonym
+      status
+      type
+      type_information
+      unresolved_homonym
+      year
+    ]
+
     TAXA_COLUMNS = %i[
       unresolved_homonym status type collective_group_name
       incertae_sedis_in
@@ -42,8 +66,6 @@ module Catalog
         PROTONYM_COLUMNS.each do |column|
           relation = relation.where(protonyms: { column => params[column] }) if params[column]
         end
-
-        relation = relation.valid if params[:valid_only]
 
         relation.
           then(&method(:history_items_clause)).

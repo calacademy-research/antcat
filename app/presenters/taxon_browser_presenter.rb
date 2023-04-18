@@ -18,7 +18,7 @@ class TaxonBrowserPresenter
                         else
                           ['show invalid', Catalog::ToggleViewsController::VALID_AND_INVALID]
                         end
-    link_to append_refresh_icon(label), catalog_toggle_view_path(show: show_param), method: :put
+    link_to label.html_safe << antcat_icon("refresh"), catalog_toggle_view_path(show: show_param), method: :put
   end
 
   def extra_tab_link tab_taxon, label, tab_view

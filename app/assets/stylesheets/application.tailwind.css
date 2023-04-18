@@ -240,8 +240,7 @@
   input:disabled, input[readonly],
   textarea:disabled,
   textarea[readonly] {
-    @apply bg-gray-200;
-    cursor: not-allowed;
+    @apply bg-gray-200 cursor-not-allowed;
   }
 
   [type='checkbox'] + label,

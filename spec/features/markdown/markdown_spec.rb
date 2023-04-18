@@ -14,10 +14,11 @@ feature "Markdown", as: :editor do
     i_should_see "See: Giovanni, 1809"
   end
 
-  scenario "Previewing references markdown", as: :editor, skip_ci: true, js: true do
+  scenario "Previewing references markdown", as: :editor, js: true do
     giovanni_1809 = create :any_reference, author_string: "Giovanni, S. ", year: 1809
 
     visit new_issue_path
+    wait_for_atwho_to_load
     fill_in "issue_description", with: "See: #{Taxt.ref(giovanni_1809.id)}"
     click_button "Rerender preview"
     i_should_see "See: Giovanni, 1809"
