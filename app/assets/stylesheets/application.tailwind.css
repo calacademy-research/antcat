@@ -52,7 +52,8 @@
   /* Badges */
   .base__badge {
     @apply whitespace-nowrap py-1 px-2
-           text-sm rounded-full;
+           text-sm rounded-full
+           leading-7;
   }
 
   .badge-blue {
@@ -102,11 +103,11 @@
   }
 
   a {
-    @apply text-ac-blue;
+    @apply text-ac-blue-text;
   }
 
   a:hover {
-    @apply text-ac-blue-darker;
+    @apply text-ac-blue-text-darker;
   }
 
   /* Typography */
@@ -226,15 +227,10 @@
   textarea {
     height: auto;
     min-height: 50px;
-    width: 100%;
   }
 
   [type='text'], [type='password'], [type='email'], [type='number'], [type='search'], textarea, select {
     @apply rounded border border-gray-300;
-  }
-
-  [type='text'], [type='password'], [type='email'], [type='number'], [type='search'] {
-    width: 100%;
   }
 
   input:disabled, input[readonly],
@@ -351,6 +347,7 @@
 @layer utilities {
   .btn-sm {
     @apply py-1 px-2 text-sm;
+    @apply inline-block my-[0.1rem];
 
     /* Fix for `button` elements which become too tall without this. */
     line-height: 1rem;

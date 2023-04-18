@@ -10,6 +10,6 @@
         =Detax[content]
 
   .hidden{"data-taxt-editor-target" => "editor", data: { visible_in_test_env: true }}
-    =text_area_tag name, content, rows: 5, data: { has_linkables: true, previewable: true, use_extras: true, format_type_fields: format_type_fields }, "data-taxt-editor-target" => "textarea"
+    =text_area_tag name, content, rows: 5, data: { has_linkables: true, previewable: true, use_extras: true, format_type_fields: format_type_fields }, "data-taxt-editor-target" => "textarea", class: 'w-full'
 
     %button.btn-saves.btn-md{"data-action" => 'click->taxt-editor#ok'} OK

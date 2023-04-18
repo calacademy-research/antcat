@@ -4,7 +4,7 @@
 =link_to "What Links Here", taxon_what_links_here_path(taxon), class: "btn-default"
 
 =render DropdownComponent.new("More") do
-  %ul.no-bullet.leading-7
+  %ul.no-bullet
     -if user_is_editor?
       %li=editors_catalog_presenter.add_child_button
       %li=editors_catalog_presenter.add_tribe_button

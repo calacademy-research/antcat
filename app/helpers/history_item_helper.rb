@@ -18,19 +18,4 @@ module HistoryItemHelper
   def tr_for_optional_reference_and_pages history_item
     render partial: "history_items/edit_templates/shared/optional_reference_and_pages", locals: { history_item: history_item }
   end
-
-  def collapse_history_item_taxt_textarea? history_item
-    return true if relational_history_item_without_taxt?(history_item)
-    return false if currently_or_previously_taxt_history_item?(history_item)
-  end
-
-  private
-
-    def relational_history_item_without_taxt? history_item
-      history_item.relational? && history_item.taxt.blank?
-    end
-
-    def currently_or_previously_taxt_history_item? history_item
-      History::Definitions::TAXT.in?([history_item.type, history_item.type_was])
-    end
 end

@@ -15,15 +15,15 @@
     .small-6.medium-2
       =f.select :search_type, options_for_select([["LIKE (default)", "LIKE"], ["REGEXP", "REGEXP"]], params[:search_type]), prompt: "Search type"
     .small-6.medium-4
-      =f.text_field :q, value: params[:q], placeholder: "Search query"
+      =f.text_field :q, value: params[:q], placeholder: "Search query", class: 'w-full'
     .small-6.medium-4
-      =f.text_field :nq, value: params[:nq], placeholder: "Exclude search query"
+      =f.text_field :nq, value: params[:nq], placeholder: "Exclude search query", class: 'w-full'
 
   .row.mb-4
     .small-6.medium-2
       =f.select :taxon_type, options_for_select(Rank::TYPES, params[:taxon_type]), include_blank: "Taxon rank"
     .small-6.medium-2
-      =f.select :taxon_status, options_for_select(Status::STATUSES, params[:taxon_status]), include_blank: "Taxon status"
+      =f.select :taxon_status, options_for_select(Status::STATUSES, params[:taxon_status]), { include_blank: "Taxon status" }, { class: 'w-full' }
     .small-6.medium-2
       =per_page_select HistoryItemsController::PER_PAGE_OPTIONS, params[:per_page]
     .small-6.medium-2

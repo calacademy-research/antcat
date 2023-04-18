@@ -65,7 +65,7 @@
             =link_to database_script.title, database_script_path(database_script)
             -if database_script.issue_description.present?
               .text-sm.text-gray-600 Issue description: #{database_script.issue_description}
-          %td.leading-7=decorated.format_linked_tags
+          %td=decorated.format_linked_tags
           %td.shrink-tw-conflict
             -if decorated.soft_validated?
               %span.hidden-sort Yes
@@ -81,7 +81,6 @@
 
 .mb-8
   %h5 Filter by tags
-  .leading-7
-    -@database_scripts_presenter.tallied_tags.each do |tag, count|
-      =DatabaseScriptDecorator.format_linked_tags([tag])
-      %span.text-sm.mr-4=count
+  -@database_scripts_presenter.tallied_tags.each do |tag, count|
+    =DatabaseScriptDecorator.format_linked_tags([tag])
+    %span.text-sm.mr-4=count

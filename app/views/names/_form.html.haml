@@ -26,7 +26,7 @@
                 Name
                 =db_wiki_page_icon WikiPage::SPECIES_GROUP_NAMES_CONNECTING_TERMS
             %td.grow-tw-conflict
-              =f.text_field :name, "data-check-name-conflicts-target" => "input", "data-action" => 'input->check-name-conflicts#check', "data-check-name-conflicts-except-name-id-param" => name.id
+              =f.text_field :name, "data-check-name-conflicts-target" => "input", "data-action" => 'input->check-name-conflicts#check', "data-check-name-conflicts-except-name-id-param" => name.id, class: 'w-full'
           %tr
             %td
             %td.possible-name-conflicts{"data-check-name-conflicts-target" => "results"}
@@ -40,6 +40,6 @@
 
           %tr
             %td{colspan: 2}
-              =edit_summary_text_field_tag
+              =edit_summary_text_field_tag css_class: 'w-full'
               .mb-4
               =f.button "Save", class: "btn-danger btn-md"

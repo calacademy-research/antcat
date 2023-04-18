@@ -20,7 +20,7 @@ $ ->
       empty: """
         <div class="text-sm p-2">
           <div class="mb-2">Unable to find any taxa that match the current query</div>
-          <a class="!text-ac-blue" href="/catalog/search">Show advanced search form</a>
+          <a class="!text-ac-blue-text" href="/catalog/search">Show advanced search form</a>
         </div>
         """
       suggestion: (taxon) ->
