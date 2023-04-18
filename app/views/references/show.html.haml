@@ -20,7 +20,7 @@
 
   -if user_is_at_least_helper?
     =render DropdownComponent.new("More") do
-      %ul.no-bullet.no-bullet.leading-7
+      %ul.no-bullet.no-bullet
         -if @reference.is_a?(ArticleReference) || @reference.is_a?(BookReference)
           %li=link_to "New Nested Reference", new_reference_path(nesting_reference_id: @reference.id, year: @reference.year, stated_year: @reference.stated_year), class: "btn-default"
         %li=link_to "Copy", new_reference_path(reference_to_copy: @reference.id), class: "btn-default"

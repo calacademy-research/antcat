@@ -108,7 +108,7 @@ class ExtrasArea
   createExtrasArea: ->
     $ """
     <div class="grid grid-cols-2 gap-4">
-      <div class="leading-7">
+      <div>
         <button id="#{DEFAULT_REFERENCE_BUTTON_ID}" class="btn-default">Default reference</button>
         <button id="#{RECENTLY_USED_REFERENCES_BUTTON_ID}" class="btn-default">Recently used references</button>
         <button id="#{INSERT_REFERENCE_BUTTON_ID}" class="btn-default">+Reference</button>
