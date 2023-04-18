@@ -12,8 +12,4 @@ module IconHelper
   def append_superadmin_icon label
     label.html_safe << antcat_icon("superadmin")
   end
-
-  def append_refresh_icon label
-    label.html_safe << antcat_icon("refresh")
-  end
 end

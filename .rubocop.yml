@@ -182,7 +182,7 @@ Metrics/PerceivedComplexity:
 
 ### Naming.
 
-# TODO: Check if we want to enable this.
+# Disabled because anonymous block forwarding requires parentheses.
 Naming/BlockForwarding:
   Enabled: false
 

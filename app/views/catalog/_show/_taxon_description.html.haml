@@ -188,7 +188,7 @@
   %ul
     -catalog_presenter.collected_references.each do |reference|
       -decorated_reference = reference.decorate
-      %li{class: "group/citations-reference"}
+      %li{class: "group/citations-reference [&_a]:break-words"}
         =decorated_reference.expanded_reference
         =decorated_reference.format_document_links
 

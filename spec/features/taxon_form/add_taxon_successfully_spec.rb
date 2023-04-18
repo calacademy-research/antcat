@@ -5,7 +5,7 @@ require 'rails_helper'
 feature "Adding a taxon successfully", as: :editor do
   background do
     default_reference = create :any_reference
-    References::DefaultReference.stub(:get).and_return(default_reference)
+    allow(References::DefaultReference).to receive(:get).and_return(default_reference)
   end
 
   scenario "Adding a subfamily" do
