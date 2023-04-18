@@ -126,7 +126,7 @@ class ExtrasArea
 
       originalValue = @textarea.get(0).value
 
-      @textarea.insertAtCaret "!!"
+      @_insertAtCaret(@textarea, "!!")
       afterValue = @textarea.get(0).value
 
       @restoreIfUnchanged originalValue, afterValue
@@ -141,7 +141,7 @@ class ExtrasArea
       originalValue = @textarea.get(0).value
 
       selectedValue = AntCat.getInputSelection(@textarea.get(0))
-      @textarea.insertAtCaret "{r#{selectedValue}"
+      @_insertAtCaret(@textarea, "{r#{selectedValue}")
       afterValue = @textarea.get(0).value
 
       @restoreIfUnchanged originalValue, afterValue
@@ -156,7 +156,7 @@ class ExtrasArea
       originalValue = @textarea.get(0).value
 
       selectedValue = AntCat.getInputSelection(@textarea.get(0))
-      @textarea.insertAtCaret "{t#{selectedValue}"
+      @_insertAtCaret(@textarea, "{t#{selectedValue}")
       afterValue = @textarea.get(0).value
 
       @restoreIfUnchanged originalValue, afterValue
@@ -179,7 +179,7 @@ class ExtrasArea
     button.get(0).innerHTML = reference.referenceKey
     button.click =>
       event.preventDefault()
-      @textarea.insertAtCaret "{ref #{reference.id}}: "
+      @_insertAtCaret(@textarea, "{ref #{reference.id}}: ")
 
   setupConvertBoltonKeysButton: ->
     button = @textareaTab.find("##{CONVERT_BOLTON_KEYS_BUTTON_ID}")
@@ -197,6 +197,28 @@ class ExtrasArea
           @taxtEditor.renderPreview()
           AntCat.notifySuccess "Converted Bolton keys"
         error: -> AntCat.notifyError "Error parsing Bolton keys"
+
+  # Via https://stackoverflow.com/questions/28873350
+  _insertAtCaret: (jQueryElement, valueToInsert) ->
+    element = jQueryElement.first().get(0)
+
+    if document.selection # For browsers like Internet Explorer.
+      element.focus()
+      selection = document.selection.createRange()
+      selection.text = valueToInsert
+      element.focus()
+    else if element.selectionStart || element.selectionStart == '0' || element.selectionStart == 0 # Firefox and Webkit-based.
+      startPos = element.selectionStart
+      endPos = element.selectionEnd
+      scrollTop = element.scrollTop
+      element.value = element.value.substring(0, startPos) + valueToInsert + element.value.substring(endPos, element.value.length)
+      element.focus()
+      element.selectionStart = startPos + valueToInsert.length
+      element.selectionEnd = startPos + valueToInsert.length
+      element.scrollTop = scrollTop
+    else
+      element.value += valueToInsert
+      element.focus()
 
 defaultReference = ->
   reference = $('#default-reference').get(0)
