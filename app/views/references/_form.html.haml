@@ -37,7 +37,7 @@
         =f.label :reference_title do
           Title
           =db_tooltip_icon :title, scope: :references
-        =f.text_area :title, rows: 1
+        =f.text_area :title, rows: 1, class: 'w-full'
 
       .mb-8
         #reference-type-css-tabs
@@ -81,17 +81,17 @@
         %h6.font-bold Notes
         .mb-2
           =f.label :reference_public_notes, 'Public notes'
-          =f.text_area :public_notes, rows: 2
+          =f.text_area :public_notes, rows: 2, class: 'w-full'
         .mb-2
           =f.label :reference_editor_notes do
             Editor notes
             =db_tooltip_icon :editor_notes, scope: :references
-          =f.text_area :editor_notes, rows: 2
+          =f.text_area :editor_notes, rows: 2, class: 'w-full'
         .mb-2
           =f.label :reference_taxonomic_notes do
             Taxonomic notes
             =db_tooltip_icon :taxonomic_notes, scope: :references
-          =f.text_area :taxonomic_notes, rows: 2
+          =f.text_area :taxonomic_notes, rows: 2, class: 'w-full'
 
     .medium-4
       .callout-white

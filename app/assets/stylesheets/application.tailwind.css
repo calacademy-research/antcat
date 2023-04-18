@@ -227,7 +227,6 @@
   textarea {
     height: auto;
     min-height: 50px;
-    width: 100%;
   }
 
   [type='text'], [type='password'], [type='email'], [type='number'], [type='search'], textarea, select {
