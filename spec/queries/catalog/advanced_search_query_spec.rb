@@ -9,16 +9,6 @@ describe Catalog::AdvancedSearchQuery do
       specify { expect(described_class[year: '']).to be_empty }
     end
 
-    describe "searching by validity" do
-      let!(:valid) { create :family }
-      let!(:synonym) { create :family, :synonym }
-
-      specify do
-        expect(described_class[valid_only: true, dummy: 'see NOTE']).to eq [valid]
-        expect(described_class[valid_only: false, dummy: 'see NOTE']).to match_array [valid, synonym]
-      end
-    end
-
     describe "searching for taxa with history items" do
       let!(:with_history) { create :family, :with_history_item }
       let!(:without_history) { create :family }

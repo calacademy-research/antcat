@@ -43,8 +43,6 @@ module Catalog
           relation = relation.where(protonyms: { column => params[column] }) if params[column]
         end
 
-        relation = relation.valid if params[:valid_only]
-
         relation.
           then(&method(:history_items_clause)).
           then(&method(:author_name_clause)).

@@ -62,7 +62,6 @@ module Catalog
           :type,
           :type_information,
           :unresolved_homonym,
-          :valid_only,
           :year
         )
       end

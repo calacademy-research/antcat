@@ -70,11 +70,6 @@
       =f.select :nomen_nudum, yes_no_options_for_select(params[:nomen_nudum]), { include_blank: "Either" }, { class: "w-full" }
 
   .row.mb-4
-    .medium-2
-      =check_box_tag :valid_only, true, !!params[:valid_only]
-      =label_tag 'Valid only?'
-
-  .row.mb-4
     .medium-3
       =per_page_select Catalog::SearchesController::PER_PAGE_OPTIONS, params[:per_page]
     .medium-3
