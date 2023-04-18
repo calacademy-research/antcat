@@ -234,7 +234,7 @@
     @apply rounded border border-gray-300;
   }
 
-  [type='text'], [type='password'], [type='email'], [type='number'], [type='search'] {
+  [type='text'], [type='number'], [type='search'] {
     width: 100%;
   }
 

@@ -10,7 +10,7 @@
     .medium-6.mb-4
       =f.label :email do
         Email (public)
-      =f.email_field :email, autofocus: true
+      =f.email_field :email, autofocus: true, class: 'w-full'
 
       .mb-4
 
@@ -22,12 +22,12 @@
   .row.mb-4
     .medium-6
       =f.label :password, "Password (#{@minimum_password_length} characters minimum)"
-      =f.password_field :password, autocomplete: "off"
+      =f.password_field :password, class: 'w-full'
 
       .mb-4
 
       =f.label :password_confirmation
-      =f.password_field :password_confirmation, autocomplete: "off"
+      =f.password_field :password_confirmation, class: 'w-full'
 
   .row
     .medium-6

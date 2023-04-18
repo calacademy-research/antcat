@@ -7,7 +7,7 @@
   .row.mb-8
     .medium-6
       =f.label :email
-      =f.text_field :email
+      =f.email_field :email, class: 'w-full'
 
       .mb-4
 
@@ -21,17 +21,17 @@
 
     .medium-6
       =f.label :password, "Password (leave blank if you don't want to change it)"
-      =f.password_field :password, autocomplete: 'new-password'
+      =f.password_field :password, autocomplete: 'new-password', class: 'w-full'
 
       .mb-4
 
       =f.label :password_confirmation
-      =f.password_field :password_confirmation
+      =f.password_field :password_confirmation, class: 'w-full'
 
       .mb-4
 
       =f.label :current_password, "Current password (required when changing password)"
-      =f.password_field :current_password
+      =f.password_field :current_password, class: 'w-full'
 
   .row.mb-8
     .medium-6

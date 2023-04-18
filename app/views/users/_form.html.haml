@@ -9,12 +9,12 @@
       .mb-4
 
       =f.label :email
-      =f.text_field :email
+      =f.email_field :email, class: 'w-full'
 
       .mb-4
 
       =f.label :password
-      =f.password_field :password
+      =f.password_field :password, autocomplete: "new-password", class: 'w-full'
 
       .mb-4
 

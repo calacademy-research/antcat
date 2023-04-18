@@ -20,18 +20,18 @@
     .row.mb-4
       .medium-4
         =f.label :name
-        =f.text_field :name, value: current_user.name, disabled: true
+        =f.text_field :name, value: current_user.name, disabled: true, class: 'w-full'
       .medium-4
         =f.label :email
-        =f.text_field :email, value: current_user.email, disabled: true
+        =f.email_field :email, value: current_user.email, disabled: true, class: 'w-full'
   -else
     .row.mb-4
       .medium-4
         =f.label :name
-        =f.text_field :name, placeholder: "Optional"
+        =f.text_field :name, placeholder: "Optional", class: 'w-full'
       .medium-4
         =f.label :email
-        =f.text_field :email, placeholder: "Optional"
+        =f.email_field :email, placeholder: "Optional", class: 'w-full'
 
   .mb-4
     =f.label :comment

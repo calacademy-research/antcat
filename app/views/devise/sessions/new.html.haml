@@ -5,12 +5,12 @@
   .row.mb-4
     .medium-6
       =f.label :email
-      =f.text_field :email
+      =f.email_field :email, autofocus: true, class: 'w-full'
 
       .mb-4
 
       =f.label :password
-      =f.password_field :password
+      =f.password_field :password, class: 'w-full'
 
       .mb-4
 
