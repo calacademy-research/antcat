@@ -180,10 +180,10 @@
                 =link_to "Edit", edit_reference_section_path(reference_section), class: "btn-default"
               =link_to "History", reference_section_history_path(reference_section), class: "btn-default"
 
-.mb-20
-
 /--- Citations ---
 -unless catalog_presenter.formicidae_landing_page?
+  .mb-12
+
   %h5.font-bold Citations
   %ul
     -catalog_presenter.collected_references.each do |reference|
