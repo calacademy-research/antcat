@@ -317,6 +317,9 @@ Rake/Desc:
 
 ### RSpec.
 
+RSpec/BeEmpty:
+  Enabled: false
+
 # Disabled because identity comparisons do not matter for `true/false/nil`.
 RSpec/BeEq:
   Enabled: false
@@ -353,6 +356,9 @@ RSpec/FilePath:
 RSpec/ImplicitSubject:
   Enabled: false
   EnforcedStyle: single_statement_only
+
+RSpec/IndexedLet:
+  Enabled: false
 
 # Disabled because `let!` makes it easier to separate the Arrange step from the Act/Assert steps.
 RSpec/LetSetup:

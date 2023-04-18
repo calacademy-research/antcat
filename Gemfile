@@ -49,7 +49,6 @@ gem 'sunspot_rails'
 gem 'sunspot_solr', '2.2.0'
 gem 'tailwindcss-rails'
 gem 'turbo-rails'
-gem 'twitter-typeahead-rails'
 gem 'unread'
 gem 'view_component'
 # NOTE: webrick is required for `ReferenceDocument#actual_url`, but specs may incorrectly pass even after removing
@@ -73,7 +72,7 @@ group :development, :test do
   gem 'haml_lint', require: false
   gem 'pry'
   gem 'rspec-rails'
-  gem 'rubocop', '~> 1.48.0', require: false
+  gem 'rubocop', '~> 1.50.0', require: false
   gem 'rubocop-performance'
   gem 'rubocop-rails'
   gem 'rubocop-rake'

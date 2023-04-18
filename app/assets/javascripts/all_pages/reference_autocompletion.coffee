@@ -10,7 +10,7 @@ $ ->
     name: 'authors'
     displayKey: 'label'
     source: authors.ttAdapter()
-    limit: Infinity # NOTE: Bug in typeahead.js v0.11.1. See https://github.com/twitter/typeahead.js/issues/1232.
+    limit: Infinity
     templates:
       header: '<h5 class="text-base font-bold">Author results <small>(first 5)</small></h5>'
       empty: '<div class="text-sm p-2">Unable to find any authors that match the current query</div>'
@@ -26,7 +26,7 @@ $ ->
 
   referencesDataSet =
     name: 'references'
-    limit: Infinity # NOTE: Bug in typeahead.js v0.11.1; limited on server-side anyway.
+    limit: Infinity
     displayKey: 'search_query'
     source: references.ttAdapter()
     templates:
