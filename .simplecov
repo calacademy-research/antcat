@@ -9,7 +9,7 @@ SimpleCov.configure do
   add_group "Decorators", "app/decorators"
   add_group "Forms", "app/forms"
   add_group "Helpers", "app/helpers"
-  add_group "Injectable formatters", "app/injectable_formatters"
+  add_group "Formatters", "app/formatters"
   add_group "Lib", %r{lib/(?!tasks)}
   add_group "Mailers", "app/mailers"
   add_group "Models", "app/models"
