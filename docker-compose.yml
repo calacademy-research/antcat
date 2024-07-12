@@ -20,6 +20,8 @@ services:
     user: antcat
     stdin_open: true
     tty: true
+    container_name: antcat_app
+
 
   db:
     image: mysql:5.7
