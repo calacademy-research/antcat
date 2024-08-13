@@ -1,0 +1,23 @@
+
+services:
+  db:  # The name of your service
+    image: mysql/mysql-server:latest  # The image to use
+    environment:  # Environment variables
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_ROOT_PASSWORD=password
+    ports:
+      - "3306:3306"  # Port mapping
+    container_name: db # Name of the container
+    restart: unless-stopped  # Restart policy
+    volumes:
+      - ./sql-data:/docker-entrypoint-initdb.d  # Mount the initialization directory
+
+  app:
+    depends_on:
+      - db
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"  # Map port 8080 of the container to port 8080 on the host
+    container_name: ruby-hello-world
