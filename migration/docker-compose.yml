@@ -8,7 +8,6 @@ services:
     ports:
       - "3306:3306"  # Port mapping
     container_name: db # Name of the container
-    restart: unless-stopped  # Restart policy
     volumes:
       - ./sql-data:/docker-entrypoint-initdb.d  # Mount the initialization directory
 

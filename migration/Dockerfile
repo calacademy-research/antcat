@@ -10,6 +10,7 @@ COPY app.rb .
 # Install the webrick gem
 RUN gem install webrick
 RUN gem install mysql2
+RUN gem install timeout
 
 # Expose port 8080 to be accessible from outside the container
 EXPOSE 8080
