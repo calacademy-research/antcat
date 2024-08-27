@@ -1,27 +1,15 @@
-services:
-  db:
-    image: mysql/mysql-server:latest
-    environment:
-      - MYSQL_ROOT_HOST=%
-      - MYSQL_ROOT_PASSWORD=password
-    ports:
-      - "3309:3306"
-    expose:
-      - "3306"
-    container_name: antcat-db
-    volumes:
-      - ./sql-data:/docker-entrypoint-initdb.d
+version: "3"
 
+services:
   app:
     depends_on:
       - db
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     environment:
       DB_USERNAME: root
-      DB_PASSWORD: password
-      DB_DATABASE: antcat
+      DB_DATABASE: antcat_docker
       DB_PORT: 3306
       DB_HOST: db
       NO_DEV_MONKEY_PATCHES: "y"
@@ -29,10 +17,22 @@ services:
       - .:/app
       - ./docker_dev/database.docker-dev.yml:/app/config/database.yml
       - ./config/server.yml.example:/app/config/server.yml
-    ports:
-      - "8080:8080"
-    container_name: antcat-app
     user: antcat
     stdin_open: true
     tty: true
-    command: ["/bin/bash", "-c", "app/startup.sh"]     
+    container_name: antcat_app
+
+
+  db:
+    image: mysql:5.7
+    expose:
+      - "3306"
+    ports:
+      - "3309:3306"
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+    volumes:
+      - mysql:/var/lib/mysql
+
+volumes:
+  mysql:
