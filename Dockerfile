@@ -29,6 +29,4 @@ RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - \
 RUN gem install bundler --version "$BUNDLER_VERSION"
 RUN npm install -g yarn
 
-RUN rake assete:precompile
-
 WORKDIR $APP_PATH

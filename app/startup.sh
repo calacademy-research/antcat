@@ -1,10 +1,7 @@
 #!/bin/bash
 
-# Remove temporary cache files
-# rm -rf tmp/cache
 
 # Remove any pre-exisitng PID files
-# rm -rf /app/solr/pids/development/sunspot-solr-development.pid
 rm -rf /app/tmp/pids/server.pid
 
 bundle install --path=vendor/bundle

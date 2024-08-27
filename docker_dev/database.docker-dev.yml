@@ -11,7 +11,7 @@ default: &default
 development:
   <<: *default
   database: <%= ENV['DB_DATABASE'] %>
-#  database: <%= ENV['DB_DATABASE'] %>_development
+#  database: <%= ENV['DB_DATABASE'] %>_developmment
 
 test:
   <<: *default
