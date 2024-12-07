@@ -9,7 +9,7 @@ module CleanupAndConvertTaxtColumns
         new_taxt = Taxt::Cleanup[new_taxt]
         new_taxt = Taxt::ConvertTags[new_taxt]
 
-        public_send("#{taxt_column}=".to_sym, new_taxt)
+        public_send(:"#{taxt_column}=", new_taxt)
       end
     end
 end
