@@ -20,6 +20,10 @@ AllCops:
 
 ### Capybara.
 
+# TODO: Enable.
+Capybara/ClickLinkOrButtonStyle:
+  Enabled: false
+
 Capybara/SpecificFinders:
   Enabled: false
 
@@ -215,6 +219,9 @@ Naming/VariableNumber:
 
 # Disabled because `filter_map` and `map.compact` are not identical.
 Performance/MapCompact:
+  Enabled: false
+
+Performance/MapMethodChain:
   Enabled: false
 
 Performance/MethodObjectAsBlock:
