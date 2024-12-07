@@ -45,12 +45,12 @@ module DevMonkeyPatches
     %w[red green yellow blue magenta cyan white].each do |color|
       color_method_name = "ddp#{color.to_s.first}".to_sym
       define_method color_method_name do |string|
-        $stdout.puts string.to_s.public_send color
+        $stdout.puts string.to_s.public_send(color)
       end
 
       light_color_method_name = "#{color_method_name}l".to_sym
       define_method light_color_method_name do |string|
-        $stdout.puts string.to_s.public_send "light_#{color}"
+        $stdout.puts string.to_s.public_send(:"light_#{color}")
       end
     end
 
