@@ -9,7 +9,7 @@ module TaxonBrowser
 
       def initialize tab_taxon, taxon_browser
         @tab_taxon = tab_taxon
-        super tab_taxon.immediate_children, taxon_browser
+        super(tab_taxon.immediate_children, taxon_browser)
       end
 
       def title

@@ -44,7 +44,7 @@ class ProtonymForm
       @protonym.name = build_name protonym_name_string
     end
 
-    super params
+    super(params)
   end
 
   def authorship_attributes= attributes
