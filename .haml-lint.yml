@@ -29,6 +29,7 @@ linters:
   RuboCop:
     enabled: true
     ignored_cops:
+      - Layout/ArgumentAlignment
       - Layout/ElseAlignment
       - Layout/EndAlignment
       - Layout/IndentationWidth
