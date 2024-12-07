@@ -105,7 +105,7 @@ class FeedbacksController < ApplicationController
     end
 
     def rate_throttle? remote_ip
-      return if current_user
+      return false if current_user
       Feedback.submitted_by_ip(remote_ip).recent.count >= 5
     end
 end

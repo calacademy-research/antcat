@@ -8,8 +8,8 @@ class DbScriptSoftValidation
   attr_private_initialize :record, :database_script_klass
   delegate :issue_description, to: :database_script
 
-  def self.run *args
-    new(*args).tap(&:run)
+  def self.run(*)
+    new(*).tap(&:run)
   end
 
   def run

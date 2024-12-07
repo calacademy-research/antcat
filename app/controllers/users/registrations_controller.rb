@@ -37,7 +37,7 @@ module Users
 
         if settings_params
           settings_params[:editing_helpers]&.each do |key, value|
-            resource.settings(:editing_helpers).public_send("#{key}=", ActiveModel::Type::Boolean.new.cast(value))
+            resource.settings(:editing_helpers).public_send(:"#{key}=", ActiveModel::Type::Boolean.new.cast(value))
           end
         end
 
