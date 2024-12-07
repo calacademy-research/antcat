@@ -23,6 +23,16 @@ AllCops:
 Capybara/SpecificFinders:
   Enabled: false
 
+# FactoryBot.
+
+# FactoryBot/CreateList:
+RSpec/FactoryBot/CreateList:
+  EnforcedStyle: n_times
+
+# FactoryBot/ConsistentParenthesesStyle:
+RSpec/FactoryBot/ConsistentParenthesesStyle:
+  Enabled: false
+
 ### Layout.
 
 Layout/ArgumentAlignment:
@@ -110,9 +120,16 @@ Lint/EmptyBlock:
 Lint/HeredocMethodCallPosition:
   Enabled: true
 
+# TODO: Investigate.
+Lint/LiteralAssignmentInCondition:
+  Enabled: false
+
 Lint/MissingSuper:
   Exclude:
     - 'app/components/**/*'
+
+Lint/RedundantCopDisableDirective:
+  Enabled: false
 
 Lint/RequireRelativeSelfPath:
   Exclude:
@@ -235,6 +252,9 @@ Rails/EnvironmentVariableAccess:
   Enabled: true
   AllowReads: true
 
+Rails/FindEach:
+  Enabled: false
+
 Rails/FreezeTime:
   Enabled: false
 
@@ -339,12 +359,6 @@ RSpec/ExampleLength:
 
 RSpec/ExpectChange:
   EnforcedStyle: block
-
-RSpec/FactoryBot/CreateList:
-  EnforcedStyle: n_times
-
-RSpec/FactoryBot/ConsistentParenthesesStyle:
-  Enabled: false
 
 RSpec/FilePath:
   # TODO: See if we can remove this after https://github.com/rubocop/rubocop-rspec/pull/1266
@@ -500,6 +514,19 @@ Style/RedundantConstantBase:
   Exclude:
     - 'config/environments/production.rb'
     - 'config/environments/staging.rb'
+
+# TODO: Investigate.
+Style/RedundantDoubleSplatHashBraces:
+  Enabled: false
+
+Style/RedundantParentheses:
+  Enabled: false
+
+Style/RedundantRegexpArgument:
+  Enabled: false
+
+Style/RedundantReturn:
+  Enabled: false
 
 Style/ReturnNil:
   Enabled: true

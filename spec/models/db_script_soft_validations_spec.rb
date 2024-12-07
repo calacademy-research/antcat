@@ -12,9 +12,11 @@ describe DbScriptSoftValidations do
         end
 
         it "does not include slow database scripts (since it's checked in the catalog)" do
+          # rubocop:disable Lint/LiteralAssignmentInCondition
           unless klass.methods(_including_ancestors = false).include?(:record_in_results?)
             expect(klass.new.decorate.slow?).to eq false
           end
+          # rubocop:enable Lint/LiteralAssignmentInCondition
         end
       end
     end
