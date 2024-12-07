@@ -6,7 +6,7 @@ FactoryBot.define do
       taxt_tag {}
     end
 
-    association :protonym
+    protonym
 
     trait :family_rank_only_item do
       rank { Rank::FAMILY }
