@@ -23,8 +23,13 @@ RUN apt-get update -qq && apt-get install -y \
   default-mysql-client \
   default-jre-headless
 
+# Explicitly install Node.js 16.19.0
 RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - \
-	  && apt-get install -y nodejs
+    && apt-get install -y nodejs \
+    && npm install -g n \
+    && n 16.19.0 \
+    && apt-get purge -y nodejs \
+    && apt-get install -y nodejs=16.19.0-1nodesource1
 
 RUN gem install bundler --version "$BUNDLER_VERSION"
 RUN npm install -g yarn

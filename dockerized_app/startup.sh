@@ -10,6 +10,8 @@ yarn install
 # Configure bundle to use a local path for gems
 bundle config path vendor/bundle
 
+bundle exec rake assets:precompile
+
 # Start the Solr service for Sunspot
 bundle exec rails sunspot:solr:start
 
