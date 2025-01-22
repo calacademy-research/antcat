@@ -1,3 +1,4 @@
+version: '3.9'
 services:
   db:
     image: mysql/mysql-server:latest
@@ -5,12 +6,14 @@ services:
       - MYSQL_ROOT_HOST=%
       - MYSQL_ROOT_PASSWORD=password
     ports:
-      - "3309:3306"
+      - "3309:3306" # Expose port for external access
     expose:
-      - "3306"
+      - "3306" # Internal access within the Docker network
     container_name: antcat-db
     volumes:
       - ./sql-data:/docker-entrypoint-initdb.d
+    networks:
+      - antcat-network
 
   app:
     depends_on:
@@ -23,7 +26,7 @@ services:
       DB_PASSWORD: password
       DB_DATABASE: antcat
       DB_PORT: 3306
-      DB_HOST: db
+      DB_HOST: db # Use service name for DNS resolution
       NO_DEV_MONKEY_PATCHES: "y"
     volumes:
       - ..:/app
@@ -35,4 +38,11 @@ services:
     user: antcat
     stdin_open: true
     tty: true
-    command: ["/bin/bash", "-c", "app/startup.sh"]     
+    command: ["/bin/bash", "-c", "app/startup.sh"]
+    networks:
+      - antcat-network
+
+networks:
+  antcat-network:
+    driver: bridge
+
