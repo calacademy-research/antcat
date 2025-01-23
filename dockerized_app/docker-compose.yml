@@ -1,4 +1,4 @@
-version: '3.9'
+version: "3.9"
 services:
   db:
     image: mysql/mysql-server:latest
@@ -6,7 +6,7 @@ services:
       - MYSQL_ROOT_HOST=%
       - MYSQL_ROOT_PASSWORD=password
     ports:
-      - "3309:3306" # Expose port for external access
+      - "3306:3306" # Expose port for external access
     expose:
       - "3306" # Internal access within the Docker network
     container_name: antcat-db
@@ -45,4 +45,3 @@ services:
 networks:
   antcat-network:
     driver: bridge
-
