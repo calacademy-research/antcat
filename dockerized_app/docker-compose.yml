@@ -38,7 +38,7 @@ services:
     user: antcat
     stdin_open: true
     tty: true
-    command: ["/bin/bash", "-c", "app/startup.sh"]
+    command: ["/bin/bash", "-c", "dockerized_app/startup.sh"]
     networks:
       - antcat-network
 
