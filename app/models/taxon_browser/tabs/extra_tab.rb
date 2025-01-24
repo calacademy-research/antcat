@@ -54,7 +54,7 @@ module TaxonBrowser
       end
 
       def initialize title, taxa_in_tab, taxon_browser
-        super taxa_in_tab, taxon_browser
+        super(taxa_in_tab, taxon_browser)
         @title = title.html_safe
       end
 

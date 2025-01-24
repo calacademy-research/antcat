@@ -18,7 +18,7 @@ module Taxa
       private
 
         def cannot_move_reference_sections?
-          return if reference_sections.blank?
+          return false if reference_sections.blank?
           !to_taxon.type.in?(Rank::AntCatSpecific::CAN_HAVE_REFERENCE_SECTIONS_TYPES)
         end
 
