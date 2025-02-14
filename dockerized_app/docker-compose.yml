@@ -2,6 +2,7 @@ version: "3.9"
 services:
   db:
     image: mysql/mysql-server:latest
+    restart: unless-stopped
     environment:
       - MYSQL_ROOT_HOST=%
       - MYSQL_ROOT_PASSWORD=password
@@ -20,6 +21,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    restart: unless-stopped
     environment:
       DB_USERNAME: root
       DB_PASSWORD: password
