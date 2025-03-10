@@ -1,5 +1,11 @@
-import 'rails-ujs'
-import 'corejs-typeahead/dist/typeahead.bundle.min.js'
-import './all_pages/catalog_autocompletion'
-import './all_pages/reference_autocompletion'
-import './all_pages/global'
+// gems
+// = require rails-ujs
+
+// package.json
+// = require @rails/webpacker
+// = require corejs-typeahead/dist/typeahead.bundle.min.js
+
+// app/assets/javascripts
+// = require all_pages/catalog_autocompletion
+// = require all_pages/reference_autocompletion
+// = require all_pages/global
