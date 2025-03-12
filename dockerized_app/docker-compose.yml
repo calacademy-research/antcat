@@ -38,7 +38,6 @@ services:
     expose:
       - "8080"
     container_name: antcat-app
-    user: antcat
     stdin_open: true
     tty: true
     command: ["/bin/bash", "-c", "dockerized_app/startup.sh"]
