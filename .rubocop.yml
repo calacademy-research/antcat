@@ -531,6 +531,10 @@ Style/RedundantConstantBase:
 Style/RedundantDoubleSplatHashBraces:
   Enabled: false
 
+# TODO: Investigate.
+Style/RedundantInterpolationUnfreeze:
+  Enabled: false
+
 Style/RedundantParentheses:
   Enabled: false
 
