@@ -1,9 +1,11 @@
 require:
   - rubocop-capybara
+  - rubocop-factory_bot
   - rubocop-performance
   - rubocop-rails
   - rubocop-rake
   - rubocop-rspec
+  - rubocop-rspec_rails
 
 AllCops:
   NewCops: enable
@@ -29,12 +31,18 @@ Capybara/SpecificFinders:
 
 # FactoryBot.
 
-# FactoryBot/CreateList:
-RSpec/FactoryBot/CreateList:
+# TODO: Investigate.
+FactoryBot/AssociationStyle:
+  Enabled: false
+
+FactoryBot/CreateList:
   EnforcedStyle: n_times
 
-# FactoryBot/ConsistentParenthesesStyle:
-RSpec/FactoryBot/ConsistentParenthesesStyle:
+FactoryBot/ConsistentParenthesesStyle:
+  Enabled: false
+
+# TODO: Investigate.
+FactoryBot/FactoryAssociationWithStrategy:
   Enabled: false
 
 ### Layout.
@@ -247,6 +255,10 @@ Rails/ActionOrder:
 Rails/BulkChangeTable:
   Enabled: false
 
+# TODO: Investigate.
+Rails/CompactBlank:
+  Enabled: false
+
 Rails/DefaultScope:
   Enabled: true
 
@@ -258,6 +270,10 @@ Rails/Delegate:
 Rails/EnvironmentVariableAccess:
   Enabled: true
   AllowReads: true
+
+# TODO: Uncomment for Rails 7.1.
+# Rails/EnvLocal:
+#   Enabled: false
 
 Rails/FindEach:
   Enabled: false
@@ -290,8 +306,15 @@ Rails/OutputSafety:
 Rails/RakeEnvironment:
   Enabled: false
 
+Rails/RedundantActiveRecordAllMethod:
+  Enabled: false
+
 # Disabled because it does not consider string constants to be strings.
 Rails/ReflectionClassName:
+  Enabled: false
+
+# TODO: Investigate.
+Rails/RootPathnameMethods:
   Enabled: false
 
 # Disabled because it flags many false positives.
@@ -328,6 +351,10 @@ Rails/WhereExists:
 Rails/WhereNot:
   Enabled: false
 
+# TODO: Investigate.
+Rails/WhereRange:
+  Enabled: false
+
 # Indexes are not case sensitive in MySQL. Revisit if we ever migrate to Postgres.
 Rails/UniqueValidationWithoutIndex:
   Enabled: false
@@ -351,7 +378,7 @@ RSpec/BeEmpty:
 RSpec/BeEq:
   Enabled: false
 
-RSpec/Capybara/FeatureMethods:
+RSpec/Dialect:
   Exclude:
     - 'spec/features/**/*'
 
@@ -366,12 +393,6 @@ RSpec/ExampleLength:
 
 RSpec/ExpectChange:
   EnforcedStyle: block
-
-RSpec/FilePath:
-  # TODO: See if we can remove this after https://github.com/rubocop/rubocop-rspec/pull/1266
-  CustomTransform:
-    AntCatVersionLink: antcat_version_link
-    ParseAntCatTags: parse_antcat_tags
 
 # Disabled because grouped Shoulda Matchers makes sense sometimes.
 RSpec/ImplicitSubject:
@@ -393,6 +414,9 @@ RSpec/MatchArray:
 RSpec/MessageSpies:
   Enabled: false
 
+RSpec/MetadataStyle:
+  Enabled: false
+
 # Disabled because it misunderstands "one expectation per spec" (don't test unrelated behavior in one spec) as "one `expect`".
 RSpec/MultipleExpectations:
   Enabled: false
@@ -410,7 +434,14 @@ RSpec/NoExpectationExample:
 RSpec/PendingWithoutReason:
   Enabled: false
 
+RSpec/ReceiveMessages:
+  Enabled: false
+
 RSpec/SortMetadata:
+  Enabled: false
+
+# TODO: Investigate.
+RSpec/SpecFilePathFormat:
   Enabled: false
 
 # Disabled for now because `expect` is currently misused to make some specs less complicated. And `allow`s (which are more correct)
@@ -422,6 +453,10 @@ RSpec/StubbedMock:
 
 Style/Alias:
   EnforcedStyle: prefer_alias_method
+
+# TODO: Investigate.
+Style/ArgumentsForwarding:
+  Enabled: false
 
 Style/ArrayCoercion:
   Enabled: true
@@ -524,6 +559,10 @@ Style/RedundantConstantBase:
 
 # TODO: Investigate.
 Style/RedundantDoubleSplatHashBraces:
+  Enabled: false
+
+# TODO: Investigate.
+Style/RedundantInterpolationUnfreeze:
   Enabled: false
 
 Style/RedundantParentheses:
