@@ -654,6 +654,7 @@ DEPENDENCIES
   ledermann-rails-settings
   mysql2
   newrelic_rpm
+  nokogiri
   paper_trail (~> 16.0)
   paperclip
   progress_bar
@@ -701,4 +702,4 @@ RUBY VERSION
    ruby 3.2.1p31
 
 BUNDLED WITH
-   2.3.10
+   2.6.6
