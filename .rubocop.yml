@@ -424,6 +424,10 @@ RSpec/StubbedMock:
 Style/Alias:
   EnforcedStyle: prefer_alias_method
 
+# TODO: Investigate.
+Style/ArgumentsForwarding:
+  Enabled: false
+
 Style/ArrayCoercion:
   Enabled: true
 

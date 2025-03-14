@@ -60,7 +60,16 @@ group :development do
   gem 'awesome_print', require: 'ap'
   gem 'brakeman'
   gem 'bundler-audit'
-  gem 'rubycritic', '> 4', require: false
+  # TODO: Pinned to GitHub to fix dependency issue:
+  # Bundler could not find compatible versions for gem "parser":
+  #   In Gemfile:
+  #     rubycritic (> 4) was resolved to 4.9.1, which depends on
+  #       reek (~> 6.0, < 6.2) was resolved to 6.1.4, which depends on
+  #         parser (~> 3.2.0)
+  #
+  #     rubocop (~> 1.61.0) was resolved to 1.61.0, which depends on
+  #       parser (>= 3.3.0.2)
+  gem 'rubycritic', '> 4', require: false, github: 'whitesmith/rubycritic', ref: '27445832495742d45ee10b5a80ff33b0d86cd26d'
   gem 'tabulo'
 end
 
@@ -72,7 +81,7 @@ group :development, :test do
   gem 'haml_lint', require: false
   gem 'pry'
   gem 'rspec-rails'
-  gem 'rubocop', '~> 1.59.0', require: false
+  gem 'rubocop', '~> 1.61.0', require: false
   gem 'rubocop-capybara', require: false
   gem 'rubocop-performance'
   gem 'rubocop-rails'
