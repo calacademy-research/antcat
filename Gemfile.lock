@@ -251,10 +251,6 @@ GEM
     i18n (1.14.6)
       concurrent-ruby (~> 1.0)
     ice_nine (0.11.2)
-    importmap-rails (2.1.0)
-      actionpack (>= 6.0.0)
-      activesupport (>= 6.0.0)
-      railties (>= 6.0.0)
     inline_svg (1.10.0)
       activesupport (>= 3.0)
       nokogiri (>= 1.6)
@@ -537,10 +533,6 @@ GEM
     turbo-rails (2.0.11)
       actionpack (>= 6.0.0)
       railties (>= 6.0.0)
-    twitter-typeahead-rails (0.11.1)
-      actionpack (>= 3.1)
-      jquery-rails
-      railties (>= 3.1)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     uglifier (4.2.1)
@@ -607,7 +599,6 @@ DEPENDENCIES
   haml_lint
   hamlit
   high_voltage
-  importmap-rails
   inline_svg
   jquery-atwho-rails
   jquery-rails
@@ -648,7 +639,6 @@ DEPENDENCIES
   tabulo
   tailwindcss-rails
   turbo-rails
-  twitter-typeahead-rails
   uglifier
   unread
   view_component
