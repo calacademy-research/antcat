@@ -249,6 +249,10 @@ Rails/EnvironmentVariableAccess:
   Enabled: true
   AllowReads: true
 
+# TODO: Uncomment for Rails 7.1.
+# Rails/EnvLocal:
+#   Enabled: false
+
 Rails/FindEach:
   Enabled: false
 
