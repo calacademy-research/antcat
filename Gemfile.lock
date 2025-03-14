@@ -321,8 +321,8 @@ GEM
     options (2.3.2)
     orm_adapter (0.5.0)
     ostruct (0.6.1)
-    paper_trail (14.0.0)
-      activerecord (>= 6.0)
+    paper_trail (16.0.0)
+      activerecord (>= 6.1)
       request_store (~> 1.4)
     paperclip (6.1.0)
       activemodel (>= 4.2.0)
@@ -606,7 +606,7 @@ DEPENDENCIES
   ledermann-rails-settings
   mysql2
   newrelic_rpm
-  paper_trail (~> 14.0)
+  paper_trail (~> 16.0)
   paperclip
   progress_bar
   pry
