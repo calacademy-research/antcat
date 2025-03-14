@@ -237,6 +237,10 @@ Rails/ActionOrder:
 Rails/BulkChangeTable:
   Enabled: false
 
+# TODO: Investigate.
+Rails/CompactBlank:
+  Enabled: false
+
 Rails/DefaultScope:
   Enabled: true
 
@@ -291,6 +295,10 @@ Rails/RedundantActiveRecordAllMethod:
 Rails/ReflectionClassName:
   Enabled: false
 
+# TODO: Investigate.
+Rails/RootPathnameMethods:
+  Enabled: false
+
 # Disabled because it flags many false positives.
 Rails/SaveBang:
   Enabled: false
@@ -323,6 +331,10 @@ Rails/WhereExists:
 
 # Disabled because it's not safe (for example with handwritten SQL/joins).
 Rails/WhereNot:
+  Enabled: false
+
+# TODO: Investigate.
+Rails/WhereRange:
   Enabled: false
 
 # Indexes are not case sensitive in MySQL. Revisit if we ever migrate to Postgres.
