@@ -83,6 +83,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'rubocop', '~> 1.69.1', require: false
   gem 'rubocop-capybara', require: false
+  gem 'rubocop-factory_bot', require: false
   gem 'rubocop-performance'
   gem 'rubocop-rails'
   gem 'rubocop-rake'

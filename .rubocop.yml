@@ -1,5 +1,6 @@
 require:
   - rubocop-capybara
+  - rubocop-factory_bot
   - rubocop-performance
   - rubocop-rails
   - rubocop-rake
@@ -25,6 +26,22 @@ Capybara/ClickLinkOrButtonStyle:
   Enabled: false
 
 Capybara/SpecificFinders:
+  Enabled: false
+
+# FactoryBot.
+
+# TODO: Investigate.
+FactoryBot/AssociationStyle:
+  Enabled: false
+
+FactoryBot/CreateList:
+  EnforcedStyle: n_times
+
+FactoryBot/ConsistentParenthesesStyle:
+  Enabled: false
+
+# TODO: Investigate.
+FactoryBot/FactoryAssociationWithStrategy:
   Enabled: false
 
 ### Layout.
