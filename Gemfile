@@ -88,6 +88,7 @@ group :development, :test do
   gem 'rubocop-rails'
   gem 'rubocop-rake'
   gem 'rubocop-rspec'
+  gem 'rubocop-rspec_rails', require: false
   gem 'sunspot_test'
 end
 

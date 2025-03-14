@@ -502,6 +502,9 @@ GEM
       rubocop (~> 1.0)
     rubocop-rspec (3.2.0)
       rubocop (~> 1.61)
+    rubocop-rspec_rails (2.30.0)
+      rubocop (~> 1.61)
+      rubocop-rspec (~> 3, >= 3.0.1)
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
     ruby_parser (3.21.1)
@@ -661,6 +664,7 @@ DEPENDENCIES
   rubocop-rails
   rubocop-rake
   rubocop-rspec
+  rubocop-rspec_rails
   ruby-progressbar
   rubycritic (> 4)!
   sassc-rails
