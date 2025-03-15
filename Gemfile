@@ -80,12 +80,13 @@ end
 group :development, :test do
   gem 'email_spec'
   gem 'factory_bot_rails'
+  gem 'guard-shell'
   gem 'guard-rspec'
   gem 'guard-rubocop'
   gem 'haml_lint', require: false
   gem 'pry'
   gem 'rspec-rails'
-  gem 'rubocop', '~> 1.69.1', require: false
+  gem 'rubocop', '~> 1.74', require: false
   gem 'rubocop-capybara', require: false
   gem 'rubocop-factory_bot', require: false
   gem 'rubocop-performance'
