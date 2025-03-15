@@ -80,6 +80,7 @@ end
 group :development, :test do
   gem 'email_spec'
   gem 'factory_bot_rails'
+  gem 'guard-shell'
   gem 'guard-rspec'
   gem 'guard-rubocop'
   gem 'haml_lint', require: false

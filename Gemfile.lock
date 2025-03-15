@@ -280,6 +280,9 @@ GEM
     guard-rubocop (1.5.0)
       guard (~> 2.0)
       rubocop (< 2.0)
+    guard-shell (0.7.2)
+      guard (>= 2.0.0)
+      guard-compat (~> 1.0)
     haml (6.3.0)
       temple (>= 0.8.2)
       thor
@@ -653,6 +656,7 @@ DEPENDENCIES
   gretel
   guard-rspec
   guard-rubocop
+  guard-shell
   haml_lint
   hamlit
   high_voltage
