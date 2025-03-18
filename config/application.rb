@@ -57,13 +57,6 @@ module AntCat
       end
     end
 
-    # Don't precompile Turbo assets because they break the JS uglifier, see
-    # https://github.com/hotwired/turbo-rails/blob/3355f2fae0a2bd3653ccccc62d9395b677c4ee1f/lib/turbo/engine.rb#L23
-    # To reproduce in dev/test: `config.assets.js_compressor = Uglifier.new(harmony: true)`.
-    config.after_initialize do
-      config.assets.precompile -= Turbo::Engine::PRECOMPILE_ASSETS
-    end
-
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files

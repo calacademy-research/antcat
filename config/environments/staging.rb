@@ -28,7 +28,7 @@ Rails.application.configure do
   # Disable serving static files from `public/`, relying on NGINX/Apache to do so instead.
   # config.public_file_server.enabled = false
 
-  config.assets.js_compressor = Uglifier.new(harmony: true)
+  config.assets.js_compressor = :terser
 
   # Compress CSS using a preprocessor.
   # TODO: Disabled `:sass` because it conflicts with Tailwind, see https://github.com/rails/tailwindcss-rails#conflict-with-sassc-rails

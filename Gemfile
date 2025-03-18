@@ -14,7 +14,7 @@ gem 'rack-cors'
 gem 'rake'
 gem 'sassc-rails'
 gem 'sprockets-rails', require: 'sprockets/railtie'
-gem 'uglifier'
+gem 'terser'
 gem 'webpacker', '6.0.0.rc.6'
 
 gem 'acts_as_list'
