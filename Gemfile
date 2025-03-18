@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 ruby '3.2.1'
 
-gem 'rails', '7.0.4.3'
+gem 'rails', '7.0.8.7'
 
 gem 'coffee-rails'
 gem 'hamlit'
@@ -80,9 +80,9 @@ end
 group :development, :test do
   gem 'email_spec'
   gem 'factory_bot_rails'
-  gem 'guard-shell'
   gem 'guard-rspec'
   gem 'guard-rubocop'
+  gem 'guard-shell'
   gem 'haml_lint', require: false
   gem 'pry'
   gem 'rspec-rails'

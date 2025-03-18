@@ -34,43 +34,43 @@ module References
         :reference_type, :page, :per_page
 
       def search_results
-        Reference.solr_search(include: [:document]) do
-          keywords normalized_freetext
+        Reference.solr_search(include: [:document]) do |solr|
+          solr.keywords(normalized_freetext)
 
           if title
-            keywords title do
+            solr.keywords(title) do
               fields(:title)
             end
           end
 
           if author
-            keywords author do
+            solr.keywords(author) do
               fields(:author_names_string)
             end
           end
 
           if year
-            with(:year).equal_to year
+            solr.with(:year).equal_to(year)
           end
 
           if start_year && end_year
-            with(:year).between(start_year..end_year)
+            solr.with(:year).between(start_year..end_year)
           end
 
           if doi
-            with(:doi).equal_to doi
+            solr.with(:doi).equal_to(doi)
           end
 
           # TODO: Probably support `:book` and `:article`.
           case reference_type
-          when 'nested' then with :type, 'NestedReference'
+          when 'nested' then solr.with(:type, 'NestedReference')
           end
 
-          paginate page: page, per_page: per_page
+          solr.paginate(page: page, per_page: per_page)
 
-          order_by :score, :desc
-          order_by :author_names_string, :desc
-          order_by :suffixed_year, :asc
+          solr.order_by(:score, :desc)
+          solr.order_by(:author_names_string, :desc)
+          solr.order_by(:suffixed_year, :asc)
         end.results
       end
 
