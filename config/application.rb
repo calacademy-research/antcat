@@ -38,6 +38,8 @@ module AntCat
     # See https://github.com/rails/rails/blob/7-0-stable/activerecord/CHANGELOG.md#rails-7031-july-12-2022
     # and also https://github.com/paper-trail-gem/paper_trail/blob/master/doc/pt_13_yaml_safe_load.md
     config.active_record.yaml_column_permitted_classes = [
+      ActiveSupport::HashWithIndifferentAccess,
+      ActiveSupport::SafeBuffer,
       ActiveSupport::TimeWithZone,
       ActiveSupport::TimeZone,
       Symbol,
