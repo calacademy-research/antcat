@@ -27,20 +27,20 @@ module Autocomplete
       end
 
       def search_results
-        Taxon.solr_search(include: [:name, { protonym: [:name, { authorship: :reference }] }]) do
-          keywords search_query do
+        Taxon.solr_search(include: [:name, { protonym: [:name, { authorship: :reference }] }]) do |solr|
+          solr.keywords search_query do
             fields(:name_cache)
             fields(:authors)
             fields(:year_as_string)
 
-            boost_fields name_cache: 2.0
+            boost_fields(name_cache: 2.0)
           end
 
           if rank
-            with(:type).any_of(rank)
+            solr.with(:type).any_of(rank)
           end
 
-          paginate page: page, per_page: per_page
+          solr.paginate(page: page, per_page: per_page)
         end.results
       end
   end
