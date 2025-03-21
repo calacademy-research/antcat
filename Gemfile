@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 ruby '3.2.1'
 
-gem 'rails', '7.0.8.7'
+gem 'rails', '7.1.5.1'
 
 gem 'coffee-rails'
 gem 'hamlit'
@@ -14,15 +14,13 @@ gem 'rack-cors'
 gem 'rake'
 gem 'sassc-rails'
 gem 'sprockets-rails', require: 'sprockets/railtie'
-gem 'uglifier'
+gem 'terser'
 gem 'webpacker', '6.0.0.rc.6'
 
 gem 'acts_as_list'
 gem 'attr_extras'
 gem 'aws-sdk-s3'
 gem 'colorize'
-# TODO: This can be removed after upgrading to Rails 7.1, see https://stackoverflow.com/a/79361034
-gem 'concurrent-ruby', '1.3.4'
 gem 'config'
 gem 'devise'
 gem 'diffy'
