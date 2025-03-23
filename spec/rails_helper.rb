@@ -9,12 +9,12 @@ require_relative '../config/environment'
 require 'rspec/rails'
 require 'paper_trail/frameworks/rspec' # Tag blocks with `:versioning` to enable PaperTrail.
 require 'capybara/rspec'
-require 'capybara/apparition'
+require 'capybara/cuprite'
 require 'capybara-screenshot/rspec'
 
 abort "The Rails environment is running in production mode!" if Rails.env.production?
 
-Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
+Rails.root.glob("spec/support/**/*.rb").each { |f| require f }
 
 Aws.config[:s3] = { stub_responses: true }
 

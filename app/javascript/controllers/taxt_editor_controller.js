@@ -130,7 +130,7 @@ export default class extends ApplicationController {
     this.exitEditMode()
   }
 
-  // TOOD: This does not take into account `format_type_fields` after pressing "OK".`
+  // TODO: This does not take into account `format_type_fields` after pressing "OK".`
   ok(event) {
     event.preventDefault()
 

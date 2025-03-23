@@ -22,10 +22,8 @@ AllCops:
 
 ### Capybara.
 
-# TODO: Enable.
-Capybara/ClickLinkOrButtonStyle:
-  Enabled: false
-
+# Disabled because there is no reason to favor `find_by_id('id')`
+# over `find('#id')` (which is a little bit clearer anyways).
 Capybara/SpecificFinders:
   Enabled: false
 
@@ -255,7 +253,7 @@ Rails/ActionOrder:
 Rails/BulkChangeTable:
   Enabled: false
 
-# TODO: Investigate.
+# Disabled because it is unsafe by default.
 Rails/CompactBlank:
   Enabled: false
 
@@ -312,9 +310,8 @@ Rails/RedundantActiveRecordAllMethod:
 Rails/ReflectionClassName:
   Enabled: false
 
-# TODO: Investigate.
 Rails/RootPathnameMethods:
-  Enabled: false
+  Enabled: true
 
 # Disabled because it flags many false positives.
 Rails/SaveBang:
@@ -555,10 +552,6 @@ Style/RedundantConstantBase:
   Exclude:
     - 'config/environments/production.rb'
     - 'config/environments/staging.rb'
-
-# TODO: Investigate.
-Style/RedundantDoubleSplatHashBraces:
-  Enabled: false
 
 # TODO: Investigate.
 Style/RedundantInterpolationUnfreeze:

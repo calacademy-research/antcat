@@ -17,7 +17,7 @@ module Exporters
       def call
         references.map do |reference|
           formatter_class(reference).new(reference).call
-        end.select(&:present?).join("\n") + "\n"
+        end.compact_blank.join("\n") + "\n"
       end
 
       private
