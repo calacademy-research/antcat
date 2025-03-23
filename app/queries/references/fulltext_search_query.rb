@@ -61,9 +61,10 @@ module References
             solr.with(:doi).equal_to(doi)
           end
 
-          # TODO: Probably support `:book` and `:article`.
           case reference_type
-          when 'nested' then solr.with(:type, 'NestedReference')
+          when 'article' then solr.with(:type, 'ArticleReference')
+          when 'book'    then solr.with(:type, 'BookReference')
+          when 'nested'  then solr.with(:type, 'NestedReference')
           end
 
           solr.paginate(page: page, per_page: per_page)
