@@ -312,9 +312,8 @@ Rails/RedundantActiveRecordAllMethod:
 Rails/ReflectionClassName:
   Enabled: false
 
-# TODO: Investigate.
 Rails/RootPathnameMethods:
-  Enabled: false
+  Enabled: true
 
 # Disabled because it flags many false positives.
 Rails/SaveBang:
