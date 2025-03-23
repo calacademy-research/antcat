@@ -7,7 +7,7 @@ services:
       - MYSQL_ROOT_HOST=%
       - MYSQL_ROOT_PASSWORD=password
     expose:
-      - "3306" # Internal access within the Docker network
+      - "3306"
     container_name: antcat-db
     volumes:
       - ./sql-data:/docker-entrypoint-initdb.d
@@ -23,11 +23,13 @@ services:
       dockerfile: Dockerfile
     restart: unless-stopped
     environment:
+      RAILS_ENV: production
+      RAILS_SERVE_STATIC_FILES: "true"
       DB_USERNAME: root
       DB_PASSWORD: password
       DB_DATABASE: antcat
       DB_PORT: 3306
-      DB_HOST: db # Use service name for DNS resolution
+      DB_HOST: db
       NO_DEV_MONKEY_PATCHES: "y"
     volumes:
       - ..:/app

@@ -11,3 +11,11 @@ default: &default
 development:
   <<: *default
   database: <%= ENV['DB_DATABASE'] %>
+
+staging:
+  <<: *default
+  database: <%= ENV['DB_DATABASE'] %>
+
+production:
+  <<: *default
+  database: <%= ENV['DB_DATABASE'] %>
