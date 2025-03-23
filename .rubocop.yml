@@ -556,10 +556,6 @@ Style/RedundantConstantBase:
     - 'config/environments/staging.rb'
 
 # TODO: Investigate.
-Style/RedundantDoubleSplatHashBraces:
-  Enabled: false
-
-# TODO: Investigate.
 Style/RedundantInterpolationUnfreeze:
   Enabled: false
 
