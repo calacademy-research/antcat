@@ -50,7 +50,7 @@ module DatabaseScripts
 
           message = case taxa.size
                     when 0 then bold_warning('no matches')
-                    when 1 then bold_notice('convertable')
+                    when 1 then bold_notice('convertible')
                     else bold_warning('multiple matches')
                     end
 

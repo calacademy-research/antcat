@@ -18,7 +18,7 @@ module DatabaseScripts
         taxa_cleaned_name_check,
         name_count_checks,
         name_caches_sync,
-        no_harcoded_antcat_org_reference_documents
+        no_hardcoded_antcat_org_reference_documents
       ]
     end
 
@@ -98,7 +98,7 @@ module DatabaseScripts
         }
       end
 
-      def no_harcoded_antcat_org_reference_documents
+      def no_hardcoded_antcat_org_reference_documents
         {
           title: "No reference documents have hardcoded `antcat.org` URLs",
           ok?: !ReferenceDocument.where("url LIKE ?", "%antcat.org%").exists?

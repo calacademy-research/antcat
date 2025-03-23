@@ -69,7 +69,7 @@ describe FeedbacksController do
     let!(:feedback_params) do
       {
         comment: 'comment body',
-        page: 'referenes'
+        page: 'references'
       }
     end
 

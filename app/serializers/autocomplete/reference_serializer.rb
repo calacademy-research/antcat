@@ -17,7 +17,7 @@ module Autocomplete
         full_pagination: reference.full_pagination,
         url: "/references/#{reference.id}"
       }.tap do |hsh|
-        hsh[:search_query] = formated_search_query if include_search_query
+        hsh[:search_query] = formatted_search_query if include_search_query
       end
     end
 
@@ -29,7 +29,7 @@ module Autocomplete
 
       attr_reader :reference, :fulltext_params
 
-      def formated_search_query
+      def formatted_search_query
         return reference.title unless fulltext_params.searching_with_keywords?
         format_autosuggest_keywords
       end

@@ -6,7 +6,7 @@ describe Taxa::CopyAttributes do
   describe "#call" do
     let!(:taxon) { build_stubbed :species }
 
-    it "returns a hash with the copied attriutes" do
+    it "returns a hash with the copied attributes" do
       expect(described_class[taxon]).to eq(
         "status" => taxon.status,
         "homonym_replaced_by_id" => taxon.homonym_replaced_by_id,
