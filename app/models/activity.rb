@@ -62,7 +62,7 @@ class Activity < ApplicationRecord
   scope :issue_activities, -> { where(trackable_type: 'Issue') }
 
   has_paper_trail
-  serialize :parameters, type: Hash
+  serialize :parameters, coder: YAML, type: Hash
   strip_attributes only: [:edit_summary], replace_newlines: true
 
   class << self
