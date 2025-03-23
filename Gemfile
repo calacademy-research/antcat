@@ -96,11 +96,9 @@ group :development, :test do
 end
 
 group :test do
-  # TODO: To fix `Unexpected inner loop exception`, see https://github.com/twalpole/apparition/issues/81
-  # version must be above at least https://rubygems.org/gems/apparition/versions/0.6.0
-  gem 'apparition', github: 'twalpole/apparition', ref: 'ca86be4d54af835d531dbcd2b86e7b2c77f85f34'
   gem 'capybara'
   gem 'capybara-screenshot'
+  gem 'cuprite'
   gem 'database_cleaner'
   gem 'rails-controller-testing'
   gem 'shoulda-matchers'

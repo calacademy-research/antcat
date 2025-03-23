@@ -1,13 +1,4 @@
 GIT
-  remote: https://github.com/twalpole/apparition.git
-  revision: ca86be4d54af835d531dbcd2b86e7b2c77f85f34
-  ref: ca86be4d54af835d531dbcd2b86e7b2c77f85f34
-  specs:
-    apparition (0.6.0)
-      capybara (~> 3.13, < 4)
-      websocket-driver (>= 0.6.5)
-
-GIT
   remote: https://github.com/whitesmith/rubycritic.git
   revision: 27445832495742d45ee10b5a80ff33b0d86cd26d
   ref: 27445832495742d45ee10b5a80ff33b0d86cd26d
@@ -183,6 +174,9 @@ GEM
       bigdecimal
       rexml
     crass (1.0.6)
+    cuprite (0.15.1)
+      capybara (~> 3.0)
+      ferrum (~> 0.15.0)
     database_cleaner (2.1.0)
       database_cleaner-active_record (>= 2, < 3)
     database_cleaner-active_record (2.2.0)
@@ -257,6 +251,11 @@ GEM
       logger
     faraday-net_http (3.4.0)
       net-http (>= 0.5.0)
+    ferrum (0.15)
+      addressable (~> 2.5)
+      concurrent-ruby (~> 1.1)
+      webrick (~> 1.7)
+      websocket-driver (~> 0.7)
     ffi (1.17.1)
     flay (2.13.3)
       erubi (~> 1.10)
@@ -669,7 +668,6 @@ PLATFORMS
 
 DEPENDENCIES
   acts_as_list
-  apparition!
   attr_extras
   awesome_print
   aws-sdk-s3
@@ -680,6 +678,7 @@ DEPENDENCIES
   coffee-rails
   colorize
   config
+  cuprite
   database_cleaner
   devise
   diffy
