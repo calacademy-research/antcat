@@ -23,7 +23,6 @@ services:
     restart: unless-stopped
     environment:
       RAILS_ENV: production
-      RAILS_SERVE_STATIC_FILES: "true"
       DB_USERNAME: root
       DB_PASSWORD: password
       DB_DATABASE: antcat
@@ -59,7 +58,7 @@ services:
       - app
     networks:
       - antcat-network
-  
+
   certbot:
     image: certbot/certbot
     volumes:
