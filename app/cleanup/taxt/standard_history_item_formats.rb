@@ -124,7 +124,7 @@ module Taxt
     ]
 
     # [grep:history_type].
-    # NOTE: Regexes as MySQL-compatiable strings.
+    # NOTE: Regexes as MySQL-compatible strings.
     STANDARD_FORMATS = [
       {
         regex: "^#{CITATION} \\([#{FORMS}]+\\)\\.?$",

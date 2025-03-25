@@ -1,16 +1,9 @@
 # frozen_string_literal: true
 
-Capybara.register_driver :apparition do |app|
-  Capybara::Apparition::Driver.new(
-    app,
-    js_errors: false,
-    browser_options: [
-      :no_sandbox # For Docker, see https://stackoverflow.com/a/57508822.
-    ]
-  )
+Capybara.register_driver(:cuprite) do |app|
+  Capybara::Cuprite::Driver.new(app, js_errors: false, window_size: [1200, 800])
 end
-
-Capybara.javascript_driver = :apparition
+Capybara.javascript_driver = :cuprite
 Capybara.default_max_wait_time = 5
 Capybara.default_selector = :css
 

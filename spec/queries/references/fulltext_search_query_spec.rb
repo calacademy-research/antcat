@@ -161,10 +161,11 @@ describe References::FulltextSearchQuery, :search do
           before { Sunspot.commit }
 
           # TODO: We want this.
-          xit 'returns results with spacing between initials' do
-            expect(described_class[freetext: "Wheeler, W. M."]).to match_array [reference_1, reference_2, reference_3]
-            expect(described_class[freetext: "wheeler, w. m."]).to match_array [reference_1, reference_2, reference_3]
-          end
+          # NOTE: The spec is commented out out instead if skipped to avoid cluttering the test log.
+          # xit 'returns results with spacing between initials' do
+          #   expect(described_class[freetext: "Wheeler, W. M."]).to match_array [reference_1, reference_2, reference_3]
+          #   expect(described_class[freetext: "wheeler, w. m."]).to match_array [reference_1, reference_2, reference_3]
+          # end
 
           it 'returns results without spacing between initials' do
             expect(described_class[freetext: "Wheeler, W.M."]).to match_array [reference_1, reference_2]
@@ -174,9 +175,10 @@ describe References::FulltextSearchQuery, :search do
           end
 
           # TODO: We want this.
-          xit 'returns results with or without periods and spacing' do
-            expect(described_class[freetext: "wheeler wm"]).to match_array [reference_1, reference_2]
-          end
+          # NOTE: The spec is commented out out instead if skipped to avoid cluttering the test log.
+          # xit 'returns results with or without periods and spacing' do
+          #   expect(described_class[freetext: "wheeler wm"]).to match_array [reference_1, reference_2]
+          # end
         end
 
         # TODO: Investigate if we can use `ApostropheFilterFactory` (Solr 4.8) instead of `generateWordParts="0"`.

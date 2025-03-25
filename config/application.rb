@@ -21,7 +21,7 @@ module AntCat
     end
 
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 7.0
+    config.load_defaults 7.1
 
     config.middleware.insert_before(0, Rack::Cors) do
       allow do
@@ -38,6 +38,8 @@ module AntCat
     # See https://github.com/rails/rails/blob/7-0-stable/activerecord/CHANGELOG.md#rails-7031-july-12-2022
     # and also https://github.com/paper-trail-gem/paper_trail/blob/master/doc/pt_13_yaml_safe_load.md
     config.active_record.yaml_column_permitted_classes = [
+      ActiveSupport::HashWithIndifferentAccess,
+      ActiveSupport::SafeBuffer,
       ActiveSupport::TimeWithZone,
       ActiveSupport::TimeZone,
       Symbol,
@@ -53,13 +55,6 @@ module AntCat
         require Rails.root.join('lib/dev_monkey_patches')
         DevMonkeyPatches.enable
       end
-    end
-
-    # Don't precompile Turbo assets because they break the JS uglifier, see
-    # https://github.com/hotwired/turbo-rails/blob/3355f2fae0a2bd3653ccccc62d9395b677c4ee1f/lib/turbo/engine.rb#L23
-    # To reproduce in dev/test: `config.assets.js_compressor = Uglifier.new(harmony: true)`.
-    config.after_initialize do
-      config.assets.precompile -= Turbo::Engine::PRECOMPILE_ASSETS
     end
 
     # Configuration for the application, engines, and railties goes here.

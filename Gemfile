@@ -3,20 +3,20 @@
 source 'https://rubygems.org'
 ruby '3.2.1'
 
-gem 'rails', '7.0.4.3'
+gem 'rails', '7.1.5.1'
 
 gem 'coffee-rails'
 gem 'hamlit'
-gem 'importmap-rails'
 gem 'mysql2'
-gem 'puma', '< 6'
+gem 'puma', '< 7'
 gem 'rack'
 gem 'rack-cors'
 gem 'rake'
 gem 'sassc-rails'
 gem 'sprockets-rails', require: 'sprockets/railtie'
-gem 'uglifier'
+gem 'terser'
 gem 'webpacker', '6.0.0.rc.6'
+
 gem 'acts_as_list'
 gem 'attr_extras'
 gem 'aws-sdk-s3'
@@ -35,8 +35,9 @@ gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'ledermann-rails-settings'
 gem 'newrelic_rpm'
+gem 'nokogiri', force_ruby_platform: true
 gem 'paperclip'
-gem 'paper_trail', '~> 14.0'
+gem 'paper_trail', '~> 16.0'
 # WARNING: Both this and ruby-progressbar define `ProgressBar`; this one is for `rake sunspot:solr:reindex`.
 # progress_bar is hardcoded in sunspot_rails, and ruby-progressbar is a dependency of rubocop... hehe.
 gem 'progress_bar', require: false
@@ -47,8 +48,8 @@ gem 'stimulus-rails'
 gem 'strip_attributes'
 gem 'sunspot_rails'
 gem 'sunspot_solr', '2.2.0'
-gem 'tailwindcss-rails'
-gem 'twitter-typeahead-rails'
+# TODO: Upgrade guide: https://github.com/rails/tailwindcss-rails/blob/main/README.md#upgrading-your-application-from-tailwind-v3-to-v4
+gem 'tailwindcss-rails', '< 4'
 gem 'turbo-rails'
 gem 'unread'
 gem 'view_component'
@@ -61,7 +62,16 @@ group :development do
   gem 'awesome_print', require: 'ap'
   gem 'brakeman'
   gem 'bundler-audit'
-  gem 'rubycritic', '> 4', require: false
+  # TODO: Pinned to GitHub to fix dependency issue:
+  # Bundler could not find compatible versions for gem "parser":
+  #   In Gemfile:
+  #     rubycritic (> 4) was resolved to 4.9.1, which depends on
+  #       reek (~> 6.0, < 6.2) was resolved to 6.1.4, which depends on
+  #         parser (~> 3.2.0)
+  #
+  #     rubocop (~> 1.61.0) was resolved to 1.61.0, which depends on
+  #       parser (>= 3.3.0.2)
+  gem 'rubycritic', '> 4', require: false, github: 'whitesmith/rubycritic', ref: '27445832495742d45ee10b5a80ff33b0d86cd26d'
   gem 'tabulo'
 end
 
@@ -70,24 +80,25 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'guard-rspec'
   gem 'guard-rubocop'
+  gem 'guard-shell'
   gem 'haml_lint', require: false
   gem 'pry'
   gem 'rspec-rails'
-  gem 'rubocop', '~> 1.59.0', require: false
+  gem 'rubocop', '~> 1.74', require: false
   gem 'rubocop-capybara', require: false
+  gem 'rubocop-factory_bot', require: false
   gem 'rubocop-performance'
   gem 'rubocop-rails'
   gem 'rubocop-rake'
   gem 'rubocop-rspec'
+  gem 'rubocop-rspec_rails', require: false
   gem 'sunspot_test'
 end
 
 group :test do
-  # TODO: To fix `Unexpected inner loop exception`, see https://github.com/twalpole/apparition/issues/81
-  # version must be above at least https://rubygems.org/gems/apparition/versions/0.6.0
-  gem 'apparition', github: 'twalpole/apparition', ref: 'ca86be4d54af835d531dbcd2b86e7b2c77f85f34'
   gem 'capybara'
   gem 'capybara-screenshot'
+  gem 'cuprite'
   gem 'database_cleaner'
   gem 'rails-controller-testing'
   gem 'shoulda-matchers'

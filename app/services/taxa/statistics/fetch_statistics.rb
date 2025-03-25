@@ -49,7 +49,8 @@ module Taxa
 
         def massage_count by_fossil_and_status, rank, statistics
           by_fossil_and_status.each_key do |fossil, status|
-            extant_or_fossil = fossil == 1 ? :fossil : :extant # TODO: Improve.
+            # TODO: Improve. Something in Rails 7.0.5 changed `fossil` to be `true` instead of `1`.
+            extant_or_fossil = fossil.in?([1, true]) ? :fossil : :extant
             count = by_fossil_and_status[[fossil, status]]
 
             statistics[extant_or_fossil] ||= {}
