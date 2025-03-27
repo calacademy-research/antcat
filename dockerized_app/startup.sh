@@ -2,6 +2,8 @@
 rm -rf /app/app/tmp/pids/server.pid
 rm -f /app/tmp/pids/server.pid
 
+chown -R antcat:antcat /app
+
 cd /app
 bundle install --path=vendor/bundle
 yarn install

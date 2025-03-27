@@ -1,17 +1,16 @@
-version: "3.9"
 services:
   db:
-    image: mysql/mysql-server:latest
+    image: mysql/mysql-server:5.6
     restart: unless-stopped
     environment:
       - MYSQL_ROOT_HOST=%
       - MYSQL_ROOT_PASSWORD=password
     expose:
-      - "3306" # Internal access within the Docker network
+      - "3306"
     container_name: antcat-db
     volumes:
       - ./sql-data:/docker-entrypoint-initdb.d
-      - /mnt/volume_sfo3_01/mysql:/var/lib/mysql
+      #- /mnt/volume_sfo3_01/mysql:/var/lib/mysql
     networks:
       - antcat-network
 
@@ -23,18 +22,17 @@ services:
       dockerfile: Dockerfile
     restart: unless-stopped
     environment:
+      RAILS_ENV: production
       DB_USERNAME: root
       DB_PASSWORD: password
       DB_DATABASE: antcat
       DB_PORT: 3306
-      DB_HOST: db # Use service name for DNS resolution
+      DB_HOST: db
       NO_DEV_MONKEY_PATCHES: "y"
     volumes:
       - ..:/app
       - ./database.yml:/app/config/database.yml
       - ../config/server.yml.example:/app/config/server.yml
-    ports:
-      - "8080:8080"
     expose:
       - "8080"
     container_name: antcat-app
@@ -51,11 +49,25 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - /etc/localtime:/etc/localtime:ro
+      - ./nginx/certbot/conf:/etc/letsencrypt
+      - ./nginx/certbot/www:/var/www/certbot
+      - ./nginx/99-autoreload.sh:/docker-entrypoint.d/99-autoreload.sh
     depends_on:
       - app
     networks:
       - antcat-network
+
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./nginx/certbot/conf:/etc/letsencrypt
+      - ./nginx/certbot/www:/var/www/certbot
+    environment:
+      - APP_DOMAIN=antcat.org,www.antcat.org
+      - EMAIL=jrussack@calacademy.org
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
 
 networks:
   antcat-network:
