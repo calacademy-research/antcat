@@ -1,48 +1,59 @@
-#!/usr/bin/env bash
-echo "Starting download database inside docker..."
-cd /code
+#!/bin/bash
 
-bundle install
+set -e
 
-chmod 600 ./docker/id_rsa
+# Config
+REMOTE_USER=root
+REMOTE_HOST=antcat.org
+REMOTE_PATH=/tmp
+KEY=./docker/id_rsa_digitalocean
+LOCAL_EXPORT=/code/database_export
+LOCAL_ARCHIVE=/code/database_archive
 
-host_name="antcat.org"
-username="deploy"
-runcommand="ssh -i ././docker/id_rsa -o StrictHostKeyChecking=no $username@$host_name"
+# Timestamped filename
+TIMESTAMP=$(date +"%Y-%m-%dT%H-%M-%S")
+FILENAME="antcat.${TIMESTAMP}.sql.gz"
 
-# Get "backup index" and figure out filenames and such.
-# `most_recent_db_dump looks` like this: "9:antcat antcat.2019-10-11T10-15-04.sql.gz"
-most_recent_db_dump=$($runcommand sudo -i eybackup --list-backup antcat | grep -P "\d:antcat" | tail -n 1)
-download_id=$(echo "$most_recent_db_dump" | cut -d ' ' -f 1) # <-- "9:antcat".
-filename=$(echo "$most_recent_db_dump" | cut -d ' ' -f 2) # <-- "antcat.2019-10-11T10-15-04.sql.gz".
+echo "Creating gzipped database dump on remote server..."
+ssh -i "$KEY" -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} \
+  "docker exec antcat-db sh -c 'exec mysqldump -uroot -ppassword --single-transaction --quick --lock-tables=false antcat' | gzip > ${REMOTE_PATH}/${FILENAME}"
 
-$runcommand sudo -i eybackup -e mysql -d $download_id:antcat
-mkdir -p /code/database_export
-scp -i ././docker/id_rsa -o StrictHostKeyChecking=no $username@$host_name:/mnt/tmp/$filename /code/database_export
-$runcommand sudo rm /mnt/tmp/$filename
-mkdir -p /code/database_archive
-cp /code/database_export/$filename /code/database_archive
-gunzip -f /code/database_export/$filename
+echo "Downloading database dump..."
+mkdir -p "$LOCAL_EXPORT"
+scp -i "$KEY" -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_PATH}/${FILENAME} ${LOCAL_EXPORT}/
 
-unzipped=`echo $filename | rev | cut -c 4- | rev`
-echo "Unzipped: $unzipped"
+echo "Removing remote dump..."
+ssh -i "$KEY" -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} \
+  "rm -f ${REMOTE_PATH}/${FILENAME}"
 
-echo -e "development:\n\
-  adapter: mysql2\n\
-  encoding: utf8\n\
-  database: antcat\n\
-  username: root\n\
-  host: db\n\
-  port: 3306\n" > /code/config/database.yml
+echo "Archiving dump..."
+mkdir -p "$LOCAL_ARCHIVE"
+cp ${LOCAL_EXPORT}/${FILENAME} ${LOCAL_ARCHIVE}/
 
+echo "Unzipping dump..."
+gunzip -f ${LOCAL_EXPORT}/${FILENAME}
+UNZIPPED=$(echo "$FILENAME" | sed 's/\.gz$//')
+
+echo "Writing config/database.yml..."
+cat > /code/config/database.yml <<EOF
+development:
+  adapter: mysql2
+  encoding: utf8
+  database: antcat
+  username: root
+  host: db
+  port: 3306
+EOF
+
+echo "Resetting and loading database..."
 cd /code/script
-echo "Resetting database..."
 ./reset_database.sh
-echo "Loading new data..."
-./load.sh /code/database_export/$unzipped
+./load.sh ${LOCAL_EXPORT}/${UNZIPPED}
 
 cd /code
-echo "Starting export..."
+echo "Exporting antweb data..."
 bundle exec rake antweb:export
-cp /code/data/output/antcat.antweb.txt /code/database_export/antcat.antweb.txt
-rm /code/database_export/$unzipped
+cp /code/data/output/antcat.antweb.txt ${LOCAL_EXPORT}/antcat.antweb.txt
+
+rm ${LOCAL_EXPORT}/${UNZIPPED}
+
