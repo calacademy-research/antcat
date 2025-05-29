@@ -64,3 +64,5 @@ yarn-debug.log*
 !/app/assets/builds/.keep
 public/assets
 docker_migration/sql-data
+dockerized_app/nginx/certbot/conf/
+dockerized_app/sql-data/

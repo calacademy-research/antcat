@@ -8,7 +8,7 @@ class Institution < ApplicationRecord
   GRSCICOLL_IDENTIFIER_REGEX = %r{\A(institution|collection)/#{UUID_REGEX}\Z}
   GRSCICOLL_BASE_URL = "https://www.gbif.org/grscicoll/"
 
-  NAME_MAX_LENGTH = 200
+  NAME_MAX_LENGTH = 250
   ABBREVIATION_MAX_LENGTH = 10
 
   validates :name, presence: true, length: { maximum: NAME_MAX_LENGTH }

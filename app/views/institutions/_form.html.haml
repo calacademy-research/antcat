@@ -10,7 +10,7 @@
 
       .mb-4
         =f.label :name
-        =f.text_field :name, maxlength: Institution::NAME_MAX_LENGTH
+        =f.text_field :name, maxlength: Institution::NAME_MAX_LENGTH, class: 'max-w-full'
 
       .mb-4
         =f.label :grscicoll_identifier do
