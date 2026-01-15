@@ -4,7 +4,7 @@ set -e
 
 # Config
 REMOTE_USER=root
-REMOTE_HOST=antcat.org
+REMOTE_HOST=10.124.0.5
 REMOTE_PATH=/tmp
 KEY=./docker/id_rsa_digitalocean
 LOCAL_EXPORT=/code/database_export
