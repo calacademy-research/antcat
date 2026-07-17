@@ -11,7 +11,12 @@ module Api
         item = Taxon.find(params[:id])
         render json: Api::V1::TaxonSerializer.new(item)
       end
-
+      
+      def junior_synonyms
+        taxon = Taxon.find(params[:id])
+        render json: taxon.junior_synonyms.includes(:name).map { Api::V1::TaxonSerializer.new(_1) }
+      end
+      
       def search
         q = params[:string] || ''
 

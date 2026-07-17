@@ -144,6 +144,7 @@ Rails.application.routes.draw do
   scope module: 'api' do
     namespace :v1 do
       resources :taxa, only: [:index, :show]
+      get '/taxa/:id/junior_synonyms', to: 'taxa#junior_synonyms'
       get '/taxa/search/:string', to: 'taxa#search'
       resources :protonyms, only: [:index, :show]
       resources :authors, only: [:index, :show]
