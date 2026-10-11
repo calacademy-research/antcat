@@ -64,3 +64,10 @@ yarn-debug.log*
 !/app/assets/builds/.keep
 public/assets
 docker_migration/sql-data
+
+# AntWeb export droplet (antcat-export.antweb.org): SSH key and generated output
+/docker/id_rsa*
+/database_export/*
+!/database_export/ok.sh
+/database_archive/
+/run-results
