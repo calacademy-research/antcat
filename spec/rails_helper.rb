@@ -5,6 +5,7 @@ require 'spec_helper'
 ENV["RAILS_ENV"] ||= 'test'
 
 require 'sunspot_test/rspec' # Tag blocks with `:search` to enable Sunspot. Commit with `Sunspot.commit`.
+SunspotTest.solr_startup_timeout = 60 # default 15 s is sometimes too short on CI
 require_relative '../config/environment'
 require 'rspec/rails'
 require 'paper_trail/frameworks/rspec' # Tag blocks with `:versioning` to enable PaperTrail.
