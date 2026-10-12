@@ -18,15 +18,15 @@ env:
 jobs:
   rubocop:
     name: RuboCop
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           fetch-depth: 1
 
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v4
         with:
           node-version: "16.19.0"
 
@@ -46,12 +46,18 @@ jobs:
           bundle exec rubocop
 
   rspec:
-    name: RSpec
-    runs-on: ubuntu-20.04
+    name: RSpec (MySQL ${{ matrix.mysql }})
+    runs-on: ubuntu-24.04
+    # MySQL 8.4 is a trial run ahead of the planned upgrade; it may fail without blocking.
+    continue-on-error: ${{ matrix.mysql != '5.7' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        mysql: ['5.7', '8.4']
 
     services:
       mysql:
-        image: mysql:5.7
+        image: mysql:${{ matrix.mysql }}
         env:
           MYSQL_ROOT_PASSWORD: ${{ env.DB_PASSWORD }}
         ports:
@@ -60,11 +66,11 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           fetch-depth: 1
 
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v4
         with:
           node-version: "16.19.0"
 
@@ -79,7 +85,6 @@ jobs:
           cp config/database.github-actions.yml config/database.yml
           cp config/server.yml.example config/server.yml
 
-          sudo systemctl start mysql
 
           bundle exec rails db:create db:schema:load
 
@@ -91,7 +96,7 @@ jobs:
 
   migrations:
     name: Migrations
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
 
     services:
       mysql:
@@ -104,7 +109,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           fetch-depth: 1
 
@@ -119,7 +124,6 @@ jobs:
           cp config/database.github-actions.yml config/database.yml
           cp config/server.yml.example config/server.yml
 
-          sudo systemctl start mysql
 
       - name: Run migrations (up)
         run: |
