@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 Capybara.register_driver(:cuprite) do |app|
-  Capybara::Cuprite::Driver.new(app, js_errors: false, window_size: [1200, 800])
+  Capybara::Cuprite::Driver.new(app, js_errors: false, window_size: [1200, 800], process_timeout: 30)
 end
 Capybara.javascript_driver = :cuprite
 Capybara.default_max_wait_time = 5
