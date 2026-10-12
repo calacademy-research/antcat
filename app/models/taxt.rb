@@ -56,15 +56,15 @@ module Taxt
     module_function
 
     def taxon taxon
-      "{(#{TAXON_TAGS.join('|')}) #{taxon.id}}"
+      "\\{(#{TAXON_TAGS.join('|')}) #{taxon.id}\\}"
     end
 
     def protonym protonym
-      "{(#{PROTONYM_TAGS.join('|')}) #{protonym.id}}"
+      "\\{(#{PROTONYM_TAGS.join('|')}) #{protonym.id}\\}"
     end
 
     def reference reference
-      "{#{REFERENCE_TAGS.join('|')} #{reference.id}}"
+      "\\{#{REFERENCE_TAGS.join('|')} #{reference.id}\\}"
     end
   end
 

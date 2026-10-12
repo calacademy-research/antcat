@@ -12,7 +12,7 @@ module DatabaseScripts
 
     def results
       HistoryItem.taxts_only.
-        where("taxt REGEXP ?", "{#{Taxt::TAX_TAG} [0-9]+} {#{Taxt::REF_TAG} [0-9]+}").
+        where("taxt REGEXP ?", "\\{#{Taxt::TAX_TAG} [0-9]+\\} \\{#{Taxt::REF_TAG} [0-9]+\\}").
         where.not("taxt LIKE ?", "%nomen nudum%").
         limit(LIMIT)
     end

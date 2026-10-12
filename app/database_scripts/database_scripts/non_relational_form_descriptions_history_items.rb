@@ -13,13 +13,13 @@ module DatabaseScripts
     def results
       HistoryItem.taxts_only.
         where(<<~SQL.squish).limit(LIMIT)
-          taxt REGEXP '^{ref [0-9]+}: [0-9]+ \\\\(.+'
+          taxt REGEXP '^\\\\{ref [0-9]+\\\\}: [0-9]+ \\\\(.+'
           OR
-          taxt REGEXP '^{ref [0-9]+}: [0-9]+, [0-9]+ \\\\(.+'
+          taxt REGEXP '^\\\\{ref [0-9]+\\\\}: [0-9]+, [0-9]+ \\\\(.+'
           OR
-          taxt REGEXP '^{ref [0-9]+}: [clxvi]+ \\\\(.+'
+          taxt REGEXP '^\\\\{ref [0-9]+\\\\}: [clxvi]+ \\\\(.+'
           OR
-          taxt REGEXP '^{ref [0-9]+}: .{2,10} \\\\(.+'
+          taxt REGEXP '^\\\\{ref [0-9]+\\\\}: .{2,10} \\\\(.+'
         SQL
     end
 
