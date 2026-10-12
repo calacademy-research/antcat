@@ -71,3 +71,12 @@ docker_migration/sql-data
 !/database_export/ok.sh
 /database_archive/
 /run-results
+
+# antcat-prod server files (dockerized_app): secrets, certificates, DB init dumps
+/dockerized_app/.env
+/dockerized_app/nginx/certbot/conf/
+/dockerized_app/nginx/certbot/www/
+/dockerized_app/nginx/certbot/cloudflare/
+/dockerized_app/sql-data/
+/dockerized_app/sql-data-*/
+/dockerized_app/nginx/*.bak*

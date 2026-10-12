@@ -1,13 +1,15 @@
-version: "3.9"
+# Production stack for antcat.org (droplet antcat-prod, checkout at /var/www/antcat-2).
+# The database password comes from dockerized_app/.env (not in git):
+#   ANTCAT_DB_PASSWORD=...
 services:
   db:
-    image: mysql/mysql-server:latest
+    image: mysql/mysql-server:5.6
     restart: unless-stopped
     environment:
       - MYSQL_ROOT_HOST=%
-      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=${ANTCAT_DB_PASSWORD:?set ANTCAT_DB_PASSWORD in dockerized_app/.env}
     expose:
-      - "3306" # Internal access within the Docker network
+      - "3306"
     container_name: antcat-db
     volumes:
       - ./sql-data:/docker-entrypoint-initdb.d
@@ -23,18 +25,22 @@ services:
       dockerfile: Dockerfile
     restart: unless-stopped
     environment:
+      RAILS_ENV: production
       DB_USERNAME: root
-      DB_PASSWORD: password
+      DB_PASSWORD: ${ANTCAT_DB_PASSWORD:?set ANTCAT_DB_PASSWORD in dockerized_app/.env}
       DB_DATABASE: antcat
       DB_PORT: 3306
-      DB_HOST: db # Use service name for DNS resolution
+      DB_HOST: db
       NO_DEV_MONKEY_PATCHES: "y"
     volumes:
       - ..:/app
       - ./database.yml:/app/config/database.yml
       - ../config/server.yml.example:/app/config/server.yml
-    ports:
-      - "8080:8080"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "3"
     expose:
       - "8080"
     container_name: antcat-app
@@ -51,11 +57,28 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - /etc/localtime:/etc/localtime:ro
+      - ./nginx/certbot/conf:/etc/letsencrypt
+      - ./nginx/certbot/www:/var/www/certbot
+      - ./nginx/certbot/cloudflare/credentials.ini:/etc/cloudflare/credentials.ini:ro
+      - ./nginx/99-autoreload.sh:/docker-entrypoint.d/99-autoreload.sh
     depends_on:
       - app
     networks:
       - antcat-network
+
+  certbot:
+    restart: unless-stopped
+    image: certbot/dns-cloudflare
+    volumes:
+      - ./nginx/certbot/conf:/etc/letsencrypt
+      - ./nginx/certbot/www:/var/www/certbot
+      - ./nginx/certbot/cloudflare/credentials.ini:/etc/cloudflare/credentials.ini:ro
+    environment:
+      - APP_DOMAIN=antcat.org,www.antcat.org
+      - EMAIL=jrussack@calacademy.org
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew --dns-cloudflare --dns-cloudflare-credentials /etc/cloudflare/credentials.ini --dns-cloudflare-propagation-seconds 60; sleep 12h & wait $${!}; done;'"
 
 networks:
   antcat-network:
