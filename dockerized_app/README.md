@@ -18,3 +18,5 @@ Not in git (see `.gitignore`), only on the server:
 Deploy a code change: `cd /var/www/antcat-2 && git pull && docker restart antcat-app`
 (startup runs bundle install, yarn, asset precompile and Solr; allow a few minutes).
 Never edit tracked files on the server; commit to GitHub instead.
+
+Fresh setup (from the original README): `./setup_db.sh <sql file>`, then `docker compose build` and `docker compose up`.
