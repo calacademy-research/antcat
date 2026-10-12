@@ -15,8 +15,10 @@ TIMESTAMP=$(date +"%Y-%m-%dT%H-%M-%S")
 FILENAME="antcat.${TIMESTAMP}.sql.gz"
 
 echo "Creating gzipped database dump on remote server..."
+# The root password is read inside the antcat-db container (MYSQL_ROOT_PASSWORD, set from
+# antcat-prod dockerized_app/.env), so it is not stored in this repo.
 ssh -i "$KEY" -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} \
-  "docker exec antcat-db sh -c 'exec mysqldump -uroot -ppassword --single-transaction --quick --lock-tables=false antcat' | gzip > ${REMOTE_PATH}/${FILENAME}"
+  "docker exec antcat-db sh -c 'exec mysqldump -uroot -p\"\$MYSQL_ROOT_PASSWORD\" --single-transaction --quick --lock-tables=false antcat' | gzip > ${REMOTE_PATH}/${FILENAME}"
 
 echo "Downloading database dump..."
 mkdir -p "$LOCAL_EXPORT"
