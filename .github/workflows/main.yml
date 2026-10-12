@@ -43,7 +43,7 @@ jobs:
 
       - name: Run rubocop
         run: |
-          bundle exec rubocop
+          bundle exec rubocop --format progress --format github
 
   rspec:
     name: RSpec (MySQL ${{ matrix.mysql }})
@@ -92,7 +92,13 @@ jobs:
         run: |
           ./bin/yarn install
           ./bin/rails test:prepare
-          bundle exec rspec spec --tag ~pending --order rand
+          bundle exec rspec spec --tag ~pending --order rand --format progress --format failures --out tmp/rspec-failures.txt
+
+      - name: Show failing specs as annotations
+        if: failure()
+        run: |
+          echo "::error::$(wc -l < tmp/rspec-failures.txt) failing examples"
+          cut -c1-400 tmp/rspec-failures.txt | sort | uniq -c | sort -rn | head -9 | while read -r line; do echo "::error::$line"; done
 
   migrations:
     name: Migrations
