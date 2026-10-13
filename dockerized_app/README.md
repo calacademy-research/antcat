@@ -19,4 +19,9 @@ Deploy a code change: `cd /var/www/antcat-2 && git pull && docker restart antcat
 (startup runs bundle install, yarn, asset precompile and Solr; allow a few minutes).
 Never edit tracked files on the server; commit to GitHub instead.
 
+Deploy a change to `Dockerfile` (e.g. a Ruby upgrade): a restart is not enough, the image must be rebuilt.
+In this directory: `docker compose build app`, then `docker compose up -d app` (recreates `antcat-app`;
+the first start compiles all gems into `vendor/bundle/ruby/<version>`: about 3 minutes on a 4-CPU CI runner, allow 10+ on the droplet), then
+`docker compose exec web nginx -s reload` (nginx caches the old container's IP and returns 502 until reloaded).
+
 Fresh setup (from the original README): `./setup_db.sh <sql file>`, then `docker compose build` and `docker compose up`.
