@@ -92,16 +92,7 @@ jobs:
         run: |
           ./bin/yarn install
           ./bin/rails test:prepare
-          mkdir -p tmp
-          bundle exec rspec spec --tag ~pending --order rand --format progress --format json --out tmp/rspec.json 2>tmp/rspec-stderr.log
-
-      - name: TEMP deprecation summary
-        if: always()
-        run: |
-          echo "::warning::DEPRECATION lines: $(grep -c DEPRECATION tmp/rspec-stderr.log || true); stderr lines: $(wc -l < tmp/rspec-stderr.log)"
-          grep -h DEPRECATION tmp/rspec-stderr.log | sed -E 's/\(called from .*//' | cut -c1-400 | sort | uniq -c | sort -rn | head -9 | while read -r line; do echo "::warning::$line"; done
-          grep -oE 'called from [^ ]+' tmp/rspec-stderr.log | sort | uniq -c | sort -rn | head -9 | paste -sd'~' - | sed 's/^/::notice::callers: /'
-          grep -v DEPRECATION tmp/rspec-stderr.log | cut -c1-200 | sort | uniq -c | sort -rn | head -12 | paste -sd'~' - | cut -c1-1500 | sed 's/^/::notice::other stderr: /'
+          bundle exec rspec spec --tag ~pending --order rand --format progress --format json --out tmp/rspec.json
 
       - name: Show failing specs as annotations
         if: failure()
@@ -128,10 +119,6 @@ jobs:
         with:
           fetch-depth: 1
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "16.19.0"
-
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -147,22 +134,3 @@ jobs:
       - name: Run migrations (up)
         run: |
           RAILS_ENV=development ./spec/migrations/test_migrations_up
-
-      - name: TEMP schema diff
-        if: failure()
-        run: |
-          git diff db/schema.rb | grep -E '^[-+][^-+]' | sed -E 's/ +/ /g' | head -80 | paste -sd'~' - | fold -w 900 | head -10 | while read -r line; do echo "::error::$line"; done
-
-      - name: TEMP production boot and assets
-        if: always()
-        run: |
-          set +e
-          cp config/settings/production.secret.yml.example config/settings/production.secret.yml
-          sed -n '/^test:/,$p' config/database.github-actions.yml | sed 's/^test:/production:/' >> config/database.yml
-          mkdir -p tmp
-          emit() { tail -c 1500 "$2" | grep -v '^\s*$' | tail -8 | cut -c1-250 | paste -sd'~' - | sed "s/^/::$1::/"; }
-          ./bin/yarn install > tmp/b.log 2>&1; echo "::notice::yarn exit $? node $(node -v)"
-          RAILS_ENV=production bundle exec rails runner 'Rails.application.eager_load!; puts "production boot ok, Rails #{Rails.version}, #{Taxon.count} taxa"' > tmp/c.log 2>&1; echo "::notice::prod runner exit $?"; emit warning tmp/c.log
-          RAILS_ENV=production bundle exec rails assets:precompile > tmp/d.log 2>&1; echo "::notice::precompile exit $?"; grep -iE 'error|abort' tmp/d.log | head -3 | cut -c1-300 | sed 's/^/::warning::/'
-          echo "::notice::deprecations in prod boot/precompile: $(cat tmp/c.log tmp/d.log | grep -ci deprecat)"
-          grep -hi deprecat tmp/c.log tmp/d.log | cut -c1-300 | sort | uniq -c | head -3 | sed 's/^/::warning::/'
