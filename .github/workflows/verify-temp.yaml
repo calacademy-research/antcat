@@ -41,6 +41,7 @@ jobs:
           cp config/server.yml.example config/server.yml
           bundle exec rails db:create db:schema:load
       - name: RSpec with RUBYOPT=-W:deprecated
+        shell: bash {0}
         run: |
           ./bin/yarn install
           ./bin/rails test:prepare
@@ -48,7 +49,9 @@ jobs:
           RUBYOPT=-W:deprecated bundle exec rspec spec --tag ~pending --order rand --format progress --format json --out tmp/rspec.json 2> tmp/stderr.txt
           rc=$?
           set -e
+          ls -la tmp/rspec.json tmp/stderr.txt | while read -r l; do echo "::notice title=files::$l"; done
           echo "::notice title=rspec::$(jq -r '.summary_line' tmp/rspec.json) (exit $rc)"
+          jq -r '.examples[]|select(.status=="failed")|.full_description+" | "+.exception.class+": "+((.exception.message // "")|split("\n")|map(select(length>0))|.[0] // "")[0:300]' tmp/rspec.json | head -8 | while read -r l; do echo "::error title=failed spec::$l"; done
           echo "::notice title=stderr lines::$(wc -l < tmp/stderr.txt)"
           grep -iE "deprecat|warning" tmp/stderr.txt | sed -E 's/:[0-9]+:/:N:/' | sort | uniq -c | sort -rn | head -40 | while read -r l; do echo "::warning title=stderr::${l:0:400}"; done
           tail -15 tmp/stderr.txt | while read -r l; do echo "::warning title=stderr tail::${l:0:400}"; done
@@ -68,8 +71,8 @@ jobs:
           docker build -t antcat-app dockerized_app
           for i in $(seq 1 60); do docker exec antcat-db mysqladmin -uroot -ppw ping --silent && break; sleep 2; done
       - name: startup.sh steps in RAILS_ENV=production
+        shell: bash {0}
         run: |
-          set -o pipefail
           cp config/settings/production.secret.yml.example config/settings/production.secret.yml
           docker run -d --name antcat-app --network antcat \
             -e RAILS_ENV=production -e DB_USERNAME=root -e DB_PASSWORD=pw -e DB_DATABASE=antcat \
