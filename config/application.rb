@@ -23,6 +23,10 @@ module AntCat
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.1
 
+    # No Active Storage attachments/variants are used; avoids the Rails 8.1 boot warning
+    # about the missing `image_processing` gem.
+    config.active_storage.variant_processor = :disabled
+
     config.middleware.insert_before(0, Rack::Cors) do
       allow do
         origins '*'
