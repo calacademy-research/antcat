@@ -202,6 +202,7 @@ jobs:
           ruby -v; bundle -v; node -v; java -version 2>&1 | head -1; cat /etc/debian_version
           bundle install --path=vendor/bundle > tmp/bi.log 2>&1; echo "BUNDLE_INSTALL_EXIT=$?"
           tail -3 tmp/bi.log
+          grep -E 'Installing .* with native|BuildError|An error occurred|fatal error|not found|Gem files will remain|checking for .* no$' tmp/bi.log | head -12
           bundle config path vendor/bundle
           yarn install > tmp/yi.log 2>&1; echo "YARN_EXIT=$?"
           RAILS_ENV=development bundle exec rails db:schema:load > tmp/sl.log 2>&1; echo "SCHEMA_EXIT=$?"

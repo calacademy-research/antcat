@@ -20,6 +20,7 @@ RUN apt-get update -qq && apt-get install -y \
   vim \
   build-essential \
   default-libmysqlclient-dev \
+  libyaml-dev \
   default-mysql-client \
   default-jre-headless
 
