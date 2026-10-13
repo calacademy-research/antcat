@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 ruby '3.2.1'
 
-gem 'rails', '~> 8.0.5'
+gem 'rails', '~> 8.1.4'
 
 gem 'coffee-rails'
 gem 'hamlit'
@@ -37,7 +37,7 @@ gem 'ledermann-rails-settings'
 gem 'newrelic_rpm'
 gem 'nokogiri' # force_ruby_platform removed on antcat-prod so the precompiled gem is used
 gem 'paperclip'
-gem 'paper_trail', '~> 16.0'
+gem 'paper_trail', '~> 17.0'
 # WARNING: Both this and ruby-progressbar define `ProgressBar`; this one is for `rake sunspot:solr:reindex`.
 # progress_bar is hardcoded in sunspot_rails, and ruby-progressbar is a dependency of rubocop... hehe.
 gem 'progress_bar', require: false
