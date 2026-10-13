@@ -308,7 +308,7 @@ GEM
       thor
       tilt
     hashdiff (1.1.2)
-    high_voltage (4.0.0)
+    high_voltage (5.0.0)
     highline (3.1.2)
       reline
     htmlentities (4.3.4)
