@@ -66,7 +66,8 @@ jobs:
           cp config/settings/production.secret.yml.example config/settings/production.secret.yml
           sudo chown -R 1000:1001 .
           cat > "$RUNNER_TEMP/check.rb" <<'RB'
-          # Stub credentials only; presigning is local, no request is sent to S3.
+          # Stub credentials only; presigning is local, no request is sent to S3. Solr is not running yet.
+          Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session)
           Settings.s3.access_key_id = 'AKIASTUBSTUBSTUBSTUB'
           Settings.s3.secret_access_key = 'stubsecret'
           Settings.s3.bucket = 'antcat'
