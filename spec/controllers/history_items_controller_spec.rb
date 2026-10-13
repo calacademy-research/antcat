@@ -143,6 +143,19 @@ describe HistoryItemsController do
         expect(activity.edit_summary).to eq "Duplicate"
         expect(activity.parameters).to eq(protonym_id: history_item.protonym_id)
       end
+
+      it 'updates the history item via JSON (inline taxt editor)' do
+        put :update, params: { id: history_item.id, history_item: { taxt: 'content' }, edit_summary: 'Inline' }, as: :json
+
+        expect(response).to have_http_status :ok
+        expect(history_item.reload.taxt).to eq 'content'
+        expect(response.parsed_body['content']).to be_present
+      end
+
+      it 'raises when `history_item` has no permitted keys (rendered as 400 Bad Request)' do
+        expect { put(:update, params: { id: history_item.id, history_item: { unknown: 'x' } }) }.
+          to raise_error(ActionController::ParameterMissing)
+      end
     end
 
     describe "changing an items's position" do

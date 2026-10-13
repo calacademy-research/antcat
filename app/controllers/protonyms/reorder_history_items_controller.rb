@@ -23,11 +23,12 @@ module Protonyms
     private
 
       def find_protonym
-        Protonym.find(params[:protonym_id])
+        Protonym.find(params.expect(:protonym_id))
       end
 
       def new_order
-        params[:new_order].split(',')
+        # The form sends `new_order=""` when there is nothing to reorder; `expect` would reject that with 400.
+        params[:new_order].split(',') # rubocop:disable Rails/StrongParametersExpect
       end
   end
 end

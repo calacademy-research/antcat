@@ -39,7 +39,7 @@ module Taxa
     private
 
       def find_taxon
-        Taxon.find(params[:taxon_id])
+        Taxon.find(params.expect(:taxon_id))
       end
 
       def valid_parent_ranks taxon

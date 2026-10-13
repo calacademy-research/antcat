@@ -10,7 +10,7 @@ module Api
       end
 
       def show
-        item = AuthorName.find(params[:id])
+        item = AuthorName.find(params.expect(:id))
         render json: item.as_json(only: ATTRIBUTES, root: true)
       end
     end

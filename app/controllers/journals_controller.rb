@@ -42,10 +42,10 @@ class JournalsController < ApplicationController
   private
 
     def find_journal
-      Journal.find(params[:id])
+      Journal.find(params.expect(:id))
     end
 
     def journal_params
-      params.require(:journal).permit(:name)
+      params.expect(journal: [:name])
     end
 end

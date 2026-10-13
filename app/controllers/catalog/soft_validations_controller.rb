@@ -12,7 +12,7 @@ module Catalog
     private
 
       def find_taxon
-        Taxon.find(params[:id])
+        Taxon.find(params.expect(:id))
       end
   end
 end

@@ -23,11 +23,12 @@ module Taxa
     private
 
       def find_taxon
-        Taxon.find(params[:taxon_id])
+        Taxon.find(params.expect(:taxon_id))
       end
 
       def new_order
-        params[:new_order].split(',')
+        # The form sends `new_order=""` when there is nothing to reorder; `expect` would reject that with 400.
+        params[:new_order].split(',') # rubocop:disable Rails/StrongParametersExpect
       end
   end
 end

@@ -55,14 +55,14 @@ class AuthorNamesController < ApplicationController
   private
 
     def find_author_name
-      AuthorName.find(params[:id])
+      AuthorName.find(params.expect(:id))
     end
 
     def find_author
-      Author.find(params[:author_id])
+      Author.find(params.expect(:author_id))
     end
 
     def author_name_params
-      params.require(:author_name).permit(:name)
+      params.expect(author_name: [:name])
     end
 end

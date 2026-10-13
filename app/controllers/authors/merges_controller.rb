@@ -33,7 +33,7 @@ module Authors
     private
 
       def find_author
-        Author.find(params[:author_id])
+        Author.find(params.expect(:author_id))
       end
 
       def find_author_to_merge

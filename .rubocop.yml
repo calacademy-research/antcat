@@ -336,11 +336,6 @@ Rails/SkipsModelValidations:
     - update_column
     - update_columns
 
-# Disabled for now: `params.expect` (Rails 8) treats nested arrays/hashes differently from
-# `require.permit`, so converting the controllers is a separate change from the Rails upgrade.
-Rails/StrongParametersExpect:
-  Enabled: false
-
 Rails/UnknownEnv:
   Environments:
     - production

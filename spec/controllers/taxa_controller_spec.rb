@@ -285,6 +285,24 @@ describe TaxaController do
       activity = Activity.last
       expect(activity.edit_summary).to eq "Fix status"
     end
+
+    context 'with nested `name_attributes` (genus gender)' do
+      let!(:taxon) { create :genus }
+
+      it 'updates the name' do
+        taxon_params = { status: taxon.status, name_attributes: { gender: 'feminine' } }
+        put(:update, params: { id: taxon.id, taxon: taxon_params })
+
+        expect(taxon.name.reload.gender).to eq 'feminine'
+      end
+    end
+
+    context 'when `taxon` is not a hash' do
+      it 'raises (rendered as 400 Bad Request)' do
+        expect { put(:update, params: { id: taxon.id, taxon: 'x' }) }.
+          to raise_error(ActionController::ParameterMissing)
+      end
+    end
   end
 
   describe "DELETE destroy", as: :editor do

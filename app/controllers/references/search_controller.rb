@@ -23,7 +23,7 @@ module References
       def redirect_if_search_query_matches_reference_id
         return if params[:reference_q].blank?
 
-        id = params[:reference_q].strip
+        id = params.expect(:reference_q).strip
         return unless id =~ /^\d+$/ && Reference.exists?(id.to_i)
 
         redirect_to reference_path(id)

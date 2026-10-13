@@ -10,7 +10,7 @@ module Api
       end
 
       def show
-        item = HistoryItem.find(params[:id])
+        item = HistoryItem.find(params.expect(:id))
         render json: item.as_json(only: ATTRIBUTES, root: true)
       end
     end

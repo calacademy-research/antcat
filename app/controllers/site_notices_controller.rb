@@ -65,11 +65,11 @@ class SiteNoticesController < ApplicationController
   private
 
     def find_site_notice
-      SiteNotice.find(params[:id])
+      SiteNotice.find(params.expect(:id))
     end
 
     def site_notice_params
-      params.require(:site_notice).permit(:message, :title)
+      params.expect(site_notice: [:message, :title])
     end
 
     def mark_as_read

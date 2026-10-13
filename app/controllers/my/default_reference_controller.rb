@@ -14,7 +14,7 @@ module My
     private
 
       def find_reference
-        Reference.find(params[:id])
+        Reference.find(params.expect(:id))
       end
   end
 end

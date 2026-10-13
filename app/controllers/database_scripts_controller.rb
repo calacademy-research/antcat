@@ -53,7 +53,8 @@ class DatabaseScriptsController < ApplicationController
     end
 
     def check_if_empty?
-      params[:view].in?([CHECK_IF_EMPTY, NON_EMPTY_REGRESSION_TESTS])
+      # `view` is an optional query param; `expect` would turn a plain page view into 400 Bad Request.
+      params[:view].in?([CHECK_IF_EMPTY, NON_EMPTY_REGRESSION_TESTS]) # rubocop:disable Rails/StrongParametersExpect
     end
 
     def timed_render database_script

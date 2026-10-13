@@ -9,7 +9,7 @@ class ReferencesController < ApplicationController
   end
 
   def show
-    @reference = Reference.eager_load(:document, author_names: :author).find(params[:id])
+    @reference = Reference.eager_load(:document, author_names: :author).find(params.expect(:id))
     @editors_reference_presenter = Editors::ReferencePresenter.new(@reference, session: session)
     @citations_presenter = References::CitationsPresenter.new(@reference)
 
@@ -73,11 +73,11 @@ class ReferencesController < ApplicationController
   private
 
     def find_reference
-      Reference.find(params[:id])
+      Reference.find(params.expect(:id))
     end
 
     def reference_params
-      params.require(:reference).permit(ReferenceForm::PERMITTED_PARAMS)
+      params.expect(reference: ReferenceForm::PERMITTED_PARAMS)
     end
 
     def build_new_reference
@@ -89,7 +89,7 @@ class ReferencesController < ApplicationController
           nesting_reference_id: params[:nesting_reference_id]
         )
       elsif params[:reference_to_copy]
-        reference_to_copy = Reference.find(params[:reference_to_copy])
+        reference_to_copy = Reference.find(params.expect(:reference_to_copy))
         References::NewFromCopy[reference_to_copy]
       else
         ArticleReference.new
@@ -104,7 +104,7 @@ class ReferencesController < ApplicationController
     end
 
     def reference_type_from_params
-      raise("reference type is not supported") unless params[:reference_type].in?(Reference::CONCRETE_SUBCLASS_NAMES)
-      params[:reference_type].constantize
+      raise("reference type is not supported") unless params.expect(:reference_type).in?(Reference::CONCRETE_SUBCLASS_NAMES)
+      params.expect(:reference_type).constantize
     end
 end

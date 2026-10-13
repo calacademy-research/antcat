@@ -97,11 +97,11 @@ class FeedbacksController < ApplicationController
   private
 
     def find_feedback
-      Feedback.find(params[:id])
+      Feedback.find(params.expect(:id))
     end
 
     def feedback_params
-      params.require(:feedback).permit(:comment, :name, :email, :user, :page)
+      params.expect(feedback: [:comment, :name, :email, :user, :page])
     end
 
     def rate_throttle? remote_ip

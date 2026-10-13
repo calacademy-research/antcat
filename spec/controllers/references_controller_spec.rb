@@ -80,6 +80,33 @@ describe ReferencesController do
     end
   end
 
+  describe "POST create with an uploaded document", as: :helper do
+    let!(:params) do
+      {
+        reference_type: 'ArticleReference',
+        reference: {
+          title: 'New Ants',
+          year: 1999,
+          author_names_string: "Batiatus, B.",
+          pagination: '5',
+          journal_name: 'Zootaxa',
+          series_volume_issue: '6',
+          document_attributes: {
+            file: Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/test_pdf.pdf'), 'application/pdf')
+          }
+        }
+      }
+    end
+
+    it 'creates the reference with its document (multipart, nested `document_attributes`)' do
+      expect { post(:create, params: params) }.
+        to change { Reference.count }.by(1).
+        and change { ReferenceDocument.count }.by(1)
+
+      expect(Reference.last.document.file_file_name).to eq 'test_pdf.pdf'
+    end
+  end
+
   describe "PUT update", as: :helper do
     let!(:reference) { create :article_reference, :with_author_name }
     let!(:reference_params) do

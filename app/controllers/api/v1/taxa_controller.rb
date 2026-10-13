@@ -8,12 +8,12 @@ module Api
       end
 
       def show
-        item = Taxon.find(params[:id])
+        item = Taxon.find(params.expect(:id))
         render json: Api::V1::TaxonSerializer.new(item)
       end
 
       def junior_synonyms
-        taxon = Taxon.find(params[:id])
+        taxon = Taxon.find(params.expect(:id))
         render json: taxon.junior_synonyms.includes(:name).map { Api::V1::TaxonSerializer.new(it) }
       end
 

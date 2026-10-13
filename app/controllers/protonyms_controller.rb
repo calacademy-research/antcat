@@ -9,7 +9,7 @@ class ProtonymsController < ApplicationController
   end
 
   def show
-    @protonym = Protonym.eager_load(:name, :authorship).find(params[:id])
+    @protonym = Protonym.eager_load(:name, :authorship).find(params.expect(:id))
   end
 
   def new
@@ -67,14 +67,18 @@ class ProtonymsController < ApplicationController
   private
 
     def find_protonym
-      Protonym.find(params[:id])
+      Protonym.find(params.expect(:id))
     end
 
     def protonym_params
-      params.require(:protonym).permit(
-        *ProtonymForm::ATTRIBUTES.map(&:to_sym),
-        authorship_attributes: [:pages, :reference_id],
-        type_name_attributes: [:taxon_id, :fixation_method, :pages, :reference_id]
+      params.expect(
+        protonym: [
+          *ProtonymForm::ATTRIBUTES.map(&:to_sym),
+          {
+            authorship_attributes: [:pages, :reference_id],
+            type_name_attributes: [:taxon_id, :fixation_method, :pages, :reference_id]
+          }
+        ]
       )
     end
 

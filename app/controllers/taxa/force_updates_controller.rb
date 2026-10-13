@@ -30,22 +30,24 @@ module Taxa
     private
 
       def find_taxon
-        Taxon.find(params[:taxon_id])
+        Taxon.find(params.expect(:taxon_id))
       end
 
       def taxon_params
-        params.require(:taxon).permit(
-          :status,
-          :incertae_sedis_in,
-          :family_id,
-          :subfamily_id,
-          :tribe_id,
-          :genus_id,
-          :subgenus_id,
-          :species_id,
-          :subspecies_id,
-          :current_taxon_id,
-          :homonym_replaced_by_id
+        params.expect(
+          taxon: [
+            :status,
+            :incertae_sedis_in,
+            :family_id,
+            :subfamily_id,
+            :tribe_id,
+            :genus_id,
+            :subgenus_id,
+            :species_id,
+            :subspecies_id,
+            :current_taxon_id,
+            :homonym_replaced_by_id
+          ]
         )
       end
 

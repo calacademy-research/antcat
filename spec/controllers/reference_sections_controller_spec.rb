@@ -79,6 +79,14 @@ describe ReferenceSectionsController do
       expect(activity.edit_summary).to eq "Duplicate"
       expect(activity.parameters).to eq(taxon_id: reference_section.taxon_id)
     end
+
+    it 'updates the reference section via JSON (inline taxt editor)' do
+      put :update, params: { id: reference_section.id, reference_section: reference_section_params }, as: :json
+
+      expect(response).to have_http_status :ok
+      expect(reference_section.reload.title_taxt).to eq reference_section_params[:title_taxt]
+      expect(response.parsed_body['content']).to be_present
+    end
   end
 
   describe "DELETE destroy", as: :editor do

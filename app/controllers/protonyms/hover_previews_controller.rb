@@ -10,7 +10,7 @@ module Protonyms
     private
 
       def find_protonym
-        Protonym.find(params[:protonym_id])
+        Protonym.find(params.expect(:protonym_id))
       end
 
       def render_preview protonym

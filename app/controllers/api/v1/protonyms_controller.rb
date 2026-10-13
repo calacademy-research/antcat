@@ -26,7 +26,7 @@ module Api
       end
 
       def show
-        item = Protonym.find(params[:id])
+        item = Protonym.find(params.expect(:id))
         render json: item.as_json(only: ATTRIBUTES, root: true)
       end
     end
