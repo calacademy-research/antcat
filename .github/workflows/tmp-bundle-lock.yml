@@ -1,0 +1,31 @@
+# TEMPORARY one-time workflow: drops paperclip from Gemfile.lock and commits it. Removed before merge.
+name: tmp-bundle-lock
+on:
+  push:
+    branches: [chore/remove-paperclip]
+    paths: [.github/workflows/tmp-bundle-lock.yml]
+permissions:
+  contents: write
+jobs:
+  lock:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 4.0.7
+      - name: bundle lock (conservative; Gemfile no longer lists paperclip/webrick)
+        run: |
+          cp Gemfile.lock "$RUNNER_TEMP/Gemfile.lock.orig"
+          bundle lock --conservative 2>&1 | tee "$RUNNER_TEMP/lock.log" || bundle lock 2>&1 | tee "$RUNNER_TEMP/lock.log" || { sed 's/^/::error title=bundle lock::/' "$RUNNER_TEMP/lock.log" | tail -20; exit 1; }
+          diff "$RUNNER_TEMP/Gemfile.lock.orig" Gemfile.lock | grep -E '^[<>]' | sed 's/^/::notice title=Gemfile.lock diff::/' || true
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898299+github-actions[bot]@users.noreply.github.com"
+          git add Gemfile.lock
+          git diff --cached --quiet && { echo "::notice::Gemfile.lock unchanged"; exit 0; }
+          git commit -m "Update Gemfile.lock: remove paperclip and its dependencies" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" -m "Claude-Session: https://claude.ai/code/session_01XzaLvBxr2babToEVZYvM1Q"
+          git push origin HEAD:${{ github.ref_name }}
