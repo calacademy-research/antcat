@@ -1,0 +1,48 @@
+name: Update gems (one-time)
+
+on:
+  push:
+    branches:
+      - chore/ruby-3.4
+    paths:
+      - '.github/workflows/update-gems.yaml'
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: chore/ruby-3.4
+      - name: Versions available
+        run: |
+          echo "::notice::bundler versions: $(gem search -r -a '^bundler$' | grep -oE '[0-9.]+(, [0-9.]+){0,12}' | head -1)"
+          for t in 3.4.11-slim 3.4.11 3.4.12-slim 3.4.10-slim; do if docker manifest inspect ruby:$t >/dev/null 2>&1; then echo "::notice::docker ruby:$t exists"; else echo "::notice::docker ruby:$t MISSING"; fi; done
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.4.11
+          bundler-cache: false
+      - name: bundle update
+        run: |
+          gem install bundler -v 2.7.2
+          bundle _2.7.2_ config set --local frozen false
+          set +e
+          bundle _2.7.2_ update --bundler=2.7.2 > /tmp/bundle.log 2>&1
+          rc=$?
+          set -e
+          grep -iE 'warn|deprecat' /tmp/bundle.log | sort | uniq -c | head -5 | sed 's/^/::warning::/'
+          if [ $rc -ne 0 ]; then
+            grep -v '^\s*$' /tmp/bundle.log | tail -60 | cut -c1-200 | paste -sd'~' - | fold -w 950 | head -10 | sed 's/^/::error::/'
+            exit 1
+          fi
+          git diff Gemfile.lock | grep -E '^[-+] ' | paste -sd' ' - | fold -w 950 | head -5 | sed 's/^/::notice::/'
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Gemfile.lock
+          git commit -m "bundle update --bundler=2.7.2 (Ruby 3.4.11)"
+          git push origin HEAD:chore/ruby-3.4
