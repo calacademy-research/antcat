@@ -92,6 +92,7 @@ jobs:
         run: |
           ./bin/yarn install
           ./bin/rails test:prepare
+          mkdir -p tmp
           bundle exec rspec spec --tag ~pending --order rand --format progress --format json --out tmp/rspec.json 2>tmp/rspec-stderr.log
 
       - name: TEMP deprecation summary
