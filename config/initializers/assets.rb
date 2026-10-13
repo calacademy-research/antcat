@@ -16,7 +16,6 @@ Rails.application.config.assets.precompile += %w[*.svg *.eot *.woff *.ttf *.gif 
 Rails.application.config.assets.precompile += %w[*.png *.jpg *.jpeg *.gif *.ico]
 
 Rails.application.config.assets.precompile += %w[
-  jquery-ui/core.js
   jquery-ui/widgets/autocomplete.js
 
   jquery3.js
