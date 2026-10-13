@@ -705,7 +705,7 @@ DEPENDENCIES
   puma (< 7)
   rack
   rack-cors
-  rails (~> 8.0.0)
+  rails (~> 8.0.5)
   rails-controller-testing
   rake
   redcarpet
