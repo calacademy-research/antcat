@@ -53,10 +53,10 @@ class TooltipsController < ApplicationController
   private
 
     def find_tooltip
-      Tooltip.find(params[:id])
+      Tooltip.find(params.expect(:id))
     end
 
     def tooltip_params
-      params.require(:tooltip).permit(:key, :scope, :text)
+      params.expect(tooltip: [:key, :scope, :text])
     end
 end

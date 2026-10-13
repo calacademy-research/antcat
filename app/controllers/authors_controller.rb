@@ -29,6 +29,6 @@ class AuthorsController < ApplicationController
   private
 
     def find_author
-      Author.find(params[:id])
+      Author.find(params.expect(:id))
     end
 end

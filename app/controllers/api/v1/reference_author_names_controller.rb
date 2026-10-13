@@ -10,7 +10,7 @@ module Api
       end
 
       def show
-        item = ReferenceAuthorName.find(params[:id])
+        item = ReferenceAuthorName.find(params.expect(:id))
         render json: item.as_json(only: ATTRIBUTES, root: true)
       end
     end

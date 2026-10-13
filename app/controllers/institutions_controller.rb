@@ -60,11 +60,11 @@ class InstitutionsController < ApplicationController
   private
 
     def find_institution
-      Institution.find(params[:id])
+      Institution.find(params.expect(:id))
     end
 
     def institution_params
-      params.require(:institution).permit(:abbreviation, :name, :grscicoll_identifier)
+      params.expect(institution: [:abbreviation, :name, :grscicoll_identifier])
     end
 
     def trim_grscicoll_identifier grscicoll_identifier

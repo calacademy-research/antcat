@@ -10,7 +10,7 @@ module References
     private
 
       def find_reference
-        Reference.find(params[:reference_id])
+        Reference.find(params.expect(:reference_id))
       end
 
       def render_preview reference

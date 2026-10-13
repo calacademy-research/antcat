@@ -52,7 +52,7 @@ class ActivitiesController < ApplicationController
   private
 
     def find_activity
-      Activity.find(params[:id])
+      Activity.find(params.expect(:id))
     end
 
     def unpaginated_activities

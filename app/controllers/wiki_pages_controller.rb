@@ -55,10 +55,10 @@ class WikiPagesController < ApplicationController
   private
 
     def find_wiki_page
-      WikiPage.find(params[:id])
+      WikiPage.find(params.expect(:id))
     end
 
     def wiki_page_params
-      params.require(:wiki_page).permit(:content, :title, :featured)
+      params.expect(wiki_page: [:content, :title, :featured])
     end
 end

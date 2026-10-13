@@ -64,23 +64,27 @@ class TaxaController < ApplicationController
   private
 
     def find_taxon
-      Taxon.find(params[:id])
+      Taxon.find(params.expect(:id))
     end
 
     def taxon_params
-      params.require(:taxon).permit(
-        :collective_group_name,
-        :current_taxon_id,
-        :homonym_replaced_by_id,
-        :incertae_sedis_in,
-        :original_combination,
-        :protonym_id,
-        :status,
-        :unresolved_homonym,
-        name_attributes: [:gender],
-        protonym_attributes: [
-          *ProtonymForm::ATTRIBUTES.map(&:to_sym),
-          { authorship_attributes: [:pages, :reference_id] }
+      params.expect(
+        taxon: [
+          :collective_group_name,
+          :current_taxon_id,
+          :homonym_replaced_by_id,
+          :incertae_sedis_in,
+          :original_combination,
+          :protonym_id,
+          :status,
+          :unresolved_homonym,
+          {
+            name_attributes: [:gender],
+            protonym_attributes: [
+              *ProtonymForm::ATTRIBUTES.map(&:to_sym),
+              { authorship_attributes: [:pages, :reference_id] }
+            ]
+          }
         ]
       )
     end

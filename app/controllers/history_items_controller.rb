@@ -85,19 +85,21 @@ class HistoryItemsController < ApplicationController
   private
 
     def find_protonym
-      Protonym.find(params[:protonym_id])
+      Protonym.find(params.expect(:protonym_id))
     end
 
     def find_history_item
-      HistoryItem.find(params[:id])
+      HistoryItem.find(params.expect(:id))
     end
 
     def history_item_params
-      params.require(:history_item).permit(
-        :taxt, :rank, :position, :type,
-        :subtype, :picked_value, :text_value,
-        :reference_id, :pages, :object_protonym_id, :object_taxon_id,
-        :force_author_citation
+      params.expect(
+        history_item: [
+          :taxt, :rank, :position, :type,
+          :subtype, :picked_value, :text_value,
+          :reference_id, :pages, :object_protonym_id, :object_taxon_id,
+          :force_author_citation
+        ]
       )
     end
 

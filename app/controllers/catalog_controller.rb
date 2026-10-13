@@ -19,7 +19,7 @@ class CatalogController < ApplicationController
   end
 
   def show
-    @taxon = Taxon.eager_load(:name, protonym: [:name, { authorship: :reference }]).find(params[:id])
+    @taxon = Taxon.eager_load(:name, protonym: [:name, { authorship: :reference }]).find(params.expect(:id))
     @protonym = @taxon.protonym
     @catalog_presenter = CatalogPresenter.new(@taxon, params: params, session: session)
     @editors_catalog_presenter = Editors::CatalogPresenter.new(@taxon)

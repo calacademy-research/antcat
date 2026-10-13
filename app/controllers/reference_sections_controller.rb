@@ -79,15 +79,15 @@ class ReferenceSectionsController < ApplicationController
   private
 
     def find_taxon
-      Taxon.find(params[:taxon_id])
+      Taxon.find(params.expect(:taxon_id))
     end
 
     def find_reference_section
-      ReferenceSection.find(params[:id])
+      ReferenceSection.find(params.expect(:id))
     end
 
     def reference_section_params
-      params.require(:reference_section).permit(:references_taxt, :subtitle_taxt, :title_taxt)
+      params.expect(reference_section: [:references_taxt, :subtitle_taxt, :title_taxt])
     end
 
     def per_page

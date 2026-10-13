@@ -78,10 +78,10 @@ class IssuesController < ApplicationController
   private
 
     def find_issue
-      Issue.find(params[:id])
+      Issue.find(params.expect(:id))
     end
 
     def issue_params
-      params.require(:issue).permit(:description, :help_wanted, :title)
+      params.expect(issue: [:description, :help_wanted, :title])
     end
 end

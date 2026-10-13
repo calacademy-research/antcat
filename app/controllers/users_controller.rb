@@ -76,13 +76,15 @@ class UsersController < ApplicationController
   private
 
     def find_user
-      user_scope.find(params[:id])
+      user_scope.find(params.expect(:id))
     end
 
     def user_params
-      params.require(:user).permit(
-        :editor, :email, :author_id, :enable_email_notifications,
-        :helper, :hidden, :name, :locked, :password, :superadmin
+      params.expect(
+        user: [
+          :editor, :email, :author_id, :enable_email_notifications,
+          :helper, :hidden, :name, :locked, :password, :superadmin
+        ]
       )
     end
 

@@ -25,10 +25,10 @@ class NamesController < ApplicationController
   private
 
     def find_name
-      Name.find(params[:id])
+      Name.find(params.expect(:id))
     end
 
     def name_params
-      params.require(:name).permit(:name, :non_conforming)
+      params.expect(name: [:name, :non_conforming])
     end
 end

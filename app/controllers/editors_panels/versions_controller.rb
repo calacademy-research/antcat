@@ -46,7 +46,7 @@ module EditorsPanels
     end
 
     def show
-      @version = base_scope.find(params[:id])
+      @version = base_scope.find(params.expect(:id))
     end
 
     private

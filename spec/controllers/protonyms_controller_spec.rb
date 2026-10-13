@@ -158,6 +158,11 @@ describe ProtonymsController do
         }
       end
 
+      it 'raises when `protonym` is not a hash (rendered as 400 Bad Request)' do
+        expect { put(:update, params: { id: protonym.id, protonym: 'x' }) }.
+          to raise_error(ActionController::ParameterMissing)
+      end
+
       it 'updates the protonym' do
         put(:update, params: { id: protonym.id, protonym: protonym_params })
 

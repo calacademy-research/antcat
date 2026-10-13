@@ -57,7 +57,7 @@ module Taxa
     private
 
       def find_taxon
-        Species.find(params[:taxon_id])
+        Species.find(params.expect(:taxon_id))
       end
 
       def find_new_species

@@ -8,7 +8,7 @@ module Api
       end
 
       def show
-        item = Reference.find(params[:id])
+        item = Reference.find(params.expect(:id))
         render json: Api::V1::ReferenceSerializer.new(item)
       end
     end

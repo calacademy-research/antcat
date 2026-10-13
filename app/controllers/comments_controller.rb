@@ -47,11 +47,11 @@ class CommentsController < ApplicationController
   private
 
     def find_comment
-      current_user.comments.find(params[:id])
+      current_user.comments.find(params.expect(:id))
     end
 
     def comment_params
-      params.require(:comment).permit(:body, :commentable_id, :commentable_type)
+      params.expect(comment: [:body, :commentable_id, :commentable_type])
     end
 
     def commentable

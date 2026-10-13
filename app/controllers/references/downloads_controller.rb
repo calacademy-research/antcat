@@ -10,7 +10,7 @@ module References
     private
 
       def find_reference_document
-        ReferenceDocument.find(params[:id])
+        ReferenceDocument.find(params.expect(:id))
       end
   end
 end

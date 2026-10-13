@@ -8,7 +8,7 @@ class QuickAndDirtyFixesController < ApplicationController
   before_action :ensure_user_is_at_least_helper
 
   def convert_to_taxac_tags
-    history_item = HistoryItem.find(params[:history_item_id])
+    history_item = HistoryItem.find(params.expect(:history_item_id))
 
     old_taxt = history_item.taxt
     new_taxt = QuickAndDirtyFixes::ConvertTaxToTaxacTags[old_taxt]
@@ -24,7 +24,7 @@ class QuickAndDirtyFixesController < ApplicationController
   end
 
   def delete_history_item
-    history_item = HistoryItem.find(params[:history_item_id])
+    history_item = HistoryItem.find(params.expect(:history_item_id))
     edit_summary = params[:edit_summary]
 
     if history_item.destroy
@@ -37,7 +37,7 @@ class QuickAndDirtyFixesController < ApplicationController
 
   # TODO: Remove after clearing `ProtonymsWithoutAnOriginalCombination`.
   def flag_as_original_combination
-    taxon = Taxon.find(params[:taxon_id])
+    taxon = Taxon.find(params.expect(:taxon_id))
 
     if taxon.original_combination?
       render js: %(AntCat.notifyError("Taxon's is already flagged as 'original_combination'"))
@@ -52,7 +52,7 @@ class QuickAndDirtyFixesController < ApplicationController
   end
 
   def force_remove_pages_from_taxac_tags
-    history_item = HistoryItem.find(params[:history_item_id])
+    history_item = HistoryItem.find(params.expect(:history_item_id))
 
     old_taxt = history_item.taxt
     new_taxt = QuickAndDirtyFixes::ForceRemovePagesFromTaxacTags[old_taxt]
@@ -68,7 +68,7 @@ class QuickAndDirtyFixesController < ApplicationController
   end
 
   def remove_pages_from_taxac_tags
-    history_item = HistoryItem.find(params[:history_item_id])
+    history_item = HistoryItem.find(params.expect(:history_item_id))
 
     old_taxt = history_item.taxt
     new_taxt = QuickAndDirtyFixes::RemovePagesFromTaxacTags[old_taxt]
@@ -84,7 +84,7 @@ class QuickAndDirtyFixesController < ApplicationController
   end
 
   def replace_missing_tags
-    history_item = HistoryItem.find(params[:history_item_id])
+    history_item = HistoryItem.find(params.expect(:history_item_id))
 
     old_taxt = history_item.taxt
     new_taxt = QuickAndDirtyFixes::ReplaceMissingTags[old_taxt]
@@ -100,7 +100,7 @@ class QuickAndDirtyFixesController < ApplicationController
   end
 
   def strip_except_replacement_name_for
-    history_item = HistoryItem.find(params[:history_item_id])
+    history_item = HistoryItem.find(params.expect(:history_item_id))
     edit_summary = params[:edit_summary]
 
     old_taxt = history_item.taxt
@@ -120,8 +120,8 @@ class QuickAndDirtyFixesController < ApplicationController
   end
 
   def update_current_taxon_id
-    taxon = Taxon.find(params[:taxon_id])
-    new_current_taxon = Taxon.find(params[:new_current_taxon_id])
+    taxon = Taxon.find(params.expect(:taxon_id))
+    new_current_taxon = Taxon.find(params.expect(:new_current_taxon_id))
 
     if taxon.current_taxon == new_current_taxon
       render js: %(AntCat.notifyError("Updated current_taxon_id, but nothing was changed"))
