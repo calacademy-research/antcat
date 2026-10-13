@@ -42,7 +42,10 @@ jobs:
           RUBYOPT=-W:deprecated bundle exec rspec spec --tag ~pending --format progress --format json --out tmp/rspec.json > tmp/rspec.out 2> tmp/rspec.err
           status=$?
           set -e
-          jq -r '.summary_line' tmp/rspec.json | sed 's/^/::notice title=rspec summary::/'
+          echo "::notice title=rspec exit::status=$status json=$(ls -la tmp/rspec.json 2>&1 | cut -c1-120)"
+          echo "::notice title=rspec stdout tail::$(tail -c 1500 tmp/rspec.out | tr '\n' '|')"
+          echo "::notice title=rspec stderr tail::$(tail -c 1500 tmp/rspec.err | tr '\n' '|')"
+          jq -r '.summary_line' tmp/rspec.json | sed 's/^/::notice title=rspec summary::/' || true
           jq -r '.examples[]|select(.status=="failed")|.file_path+":"+(.line_number|tostring)+" "+(.exception.class // "")+": "+((.exception.message // "")|gsub("\n";" "))[0:250]' tmp/rspec.json | head -9 | sed 's/^/::error title=failed spec::/'
           count=$(cat tmp/rspec.out tmp/rspec.err | grep -ciE "deprecat" || true)
           echo "::notice title=deprecation lines::$count"
