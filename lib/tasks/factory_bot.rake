@@ -13,8 +13,7 @@ namespace :factory_bot do
         factory.name.in?(ABSTRACT_FACTORIES)
       end
 
-      conn = ActiveRecord::Base.connection
-      conn.transaction do
+      ActiveRecord::Base.transaction do
         if ENV['LINT_TRAITS']
           FactoryBot.lint factories_to_lint, traits: true
         else
