@@ -1,0 +1,47 @@
+name: Update gems (one-time)
+
+on:
+  push:
+    branches:
+      - chore/gem-updates-2026-10
+    paths:
+      - '.github/workflows/update-gems.yaml'
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: chore/gem-updates-2026-10
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 4.0.7
+          bundler-cache: false
+      - name: bundle update
+        run: |
+          gem install bundler -v 2.7.2
+          gem install bundler-audit
+          bundle _2.7.2_ config set --local frozen false
+          R=gem-update-report.txt
+          cp Gemfile.lock /tmp/Gemfile.lock.before
+          { echo "== bundle-audit BEFORE"; bundle-audit check --update 2>&1; } > $R || true
+          set +e
+          bundle _2.7.2_ update --minor --strict > /tmp/bundle.log 2>&1
+          rc=$?
+          set -e
+          { echo "== bundle update exit $rc"; grep -v '^Fetching\|^Using\|^Installing\|^Bundle updated' /tmp/bundle.log | tail -60; } >> $R
+          { echo "== bundle-audit AFTER"; bundle-audit check 2>&1; } >> $R || true
+          { echo "== bundle outdated (after)"; bundle _2.7.2_ outdated 2>&1; } >> $R || true
+          { echo "== lockfile diff"; diff /tmp/Gemfile.lock.before Gemfile.lock; } >> $R || true
+          echo "::notice::exit $rc; report lines $(wc -l < $R)"
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Gemfile.lock gem-update-report.txt
+          git commit -m "bundle update --minor --strict; bundle-audit report"
+          git push origin HEAD:chore/gem-updates-2026-10
