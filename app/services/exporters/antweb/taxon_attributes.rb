@@ -56,7 +56,10 @@ module Exporters
         end
 
         def current_valid_name
-          return unless (current_valid_name_name = taxon.current_taxon&.name&.name)
+          # Follow the chain to the terminal (valid) taxon: `current_taxon` alone can be a synonym,
+          # e.g. for an obsolete combination of a junior synonym.
+          return unless taxon.current_taxon
+          current_valid_name_name = taxon.now_taxon.name.name
           "#{taxonomic_attributes[:subfamily]} #{current_valid_name_name}"
         end
 
