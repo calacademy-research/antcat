@@ -39,6 +39,19 @@ describe CommentsController do
       comment = Comment.last
       expect(activity.trackable).to eq comment
     end
+
+    it 'redirects back to the referer, highlighting the comment' do
+      request.env["HTTP_REFERER"] = "http://test.host/site_notices/#{commentable.id}#comment-0"
+      post(:create, params: { comment: comment_params })
+
+      expect(response).to redirect_to "http://test.host/site_notices/#{commentable.id}#comment-#{Comment.last.id}"
+    end
+
+    it 'redirects to the commentable when there is no referer' do
+      post(:create, params: { comment: comment_params })
+
+      expect(response).to redirect_to "http://test.host/site_notices/#{commentable.id}#comment-#{Comment.last.id}"
+    end
   end
 
   describe 'PUT update', as: :current_user do
