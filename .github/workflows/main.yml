@@ -33,7 +33,7 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.4.11
+          ruby-version: 4.0.7
           bundler-cache: true
 
       - name: Run eslint
@@ -77,7 +77,7 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.4.11
+          ruby-version: 4.0.7
           bundler-cache: true
 
       - name: Setup database
@@ -137,7 +137,7 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.4.11
+          ruby-version: 4.0.7
           bundler-cache: true
 
       - name: Setup database
@@ -200,7 +200,7 @@ jobs:
           cd /app
           mkdir -p tmp
           ruby -v; bundle -v; node -v; java -version 2>&1 | head -1; cat /etc/debian_version
-          bundle install --path=vendor/bundle > tmp/bi.log 2>&1; echo "BUNDLE_INSTALL_EXIT=$?"
+          bundle config set --local path vendor/bundle; bundle install > tmp/bi.log 2>&1; echo "BUNDLE_INSTALL_EXIT=$?"
           tail -3 tmp/bi.log
           grep -E 'Installing .* with native|BuildError|An error occurred|fatal error|not found|Gem files will remain|checking for .* no$' tmp/bi.log | head -12
           bundle config path vendor/bundle
@@ -213,6 +213,8 @@ jobs:
           sleep 30; code=$(curl -s -o /dev/null -w '%{http_code}' -H 'X-Forwarded-Proto: https' http://127.0.0.1:8080/); echo "HTTP_ROOT=$code"
           code=$(curl -s -o /dev/null -w '%{http_code}' -H 'X-Forwarded-Proto: https' http://127.0.0.1:8080/catalog/search?qq=x); echo "HTTP_SEARCH=$code"
           cat tmp/ap.log tmp/rr.log tmp/server.log tmp/bi.log | grep -iE 'warning|deprecat' | sed -E 's/:[0-9]+:/:/' | sort | uniq -c | sort -rn | head -8
+          grep -hE 'Error|error' tmp/server.log | grep -v '^\s' | sort | uniq -c | head -5
+          grep -n -A12 'GET "/"' log/production.log 2>/dev/null | grep -iE 'error|\.rb:[0-9]' | head -8
           echo "ERRORS:"; grep -hiE '^\S*error|aborted' tmp/sl.log tmp/ap.log tmp/rr.log tmp/server.log tmp/solr.log | head -5
           EOS
           docker run --rm --network host -v "$PWD":/app -v /tmp/run.sh:/tmp/run.sh -w /app -e RAILS_ENV=production -e DB_USERNAME=root -e DB_PASSWORD=root -e DB_DATABASE=antcat -e DB_PORT=33306 -e DB_HOST=127.0.0.1 -e NO_DEV_MONKEY_PATCHES=y antcat-app bash /tmp/run.sh > /tmp/out.log 2>&1
