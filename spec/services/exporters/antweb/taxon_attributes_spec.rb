@@ -63,6 +63,16 @@ describe Exporters::Antweb::TaxonAttributes do
           expect(described_class[taxon][:current_valid_name]).to eq "#{taxon.subfamily.name.name} #{current_taxon.name.name}"
         end
       end
+
+      context "when `current_taxon` is itself not valid (obsolete combination of a junior synonym)" do
+        let(:valid_taxon) { create :genus }
+        let(:synonym) { create :genus, :synonym, current_taxon: valid_taxon }
+        let(:taxon) { create :genus, :obsolete_combination, current_taxon: synonym }
+
+        it "exports the terminal valid name, not the intermediate synonym" do
+          expect(described_class[taxon][:current_valid_name]).to eq "#{taxon.subfamily.name.name} #{valid_taxon.name.name}"
+        end
+      end
     end
 
     # So that AntWeb knows when to use parentheses around authorship.
