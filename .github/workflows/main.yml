@@ -92,7 +92,7 @@ jobs:
         run: |
           ./bin/yarn install
           ./bin/rails test:prepare
-          bundle exec rspec spec --tag ~pending --order rand --format progress --format json --out tmp/rspec.json 2> >(tee tmp/rspec-stderr.log >&2)
+          bundle exec rspec spec --tag ~pending --order rand --format progress --format json --out tmp/rspec.json 2>tmp/rspec-stderr.log
 
       - name: TEMP deprecation summary
         if: always()
@@ -142,3 +142,8 @@ jobs:
       - name: Run migrations (up)
         run: |
           RAILS_ENV=development ./spec/migrations/test_migrations_up
+
+      - name: TEMP schema diff
+        if: failure()
+        run: |
+          git diff db/schema.rb | grep -E '^[-+][^-+]' | sed -E 's/ +/ /g' | head -80 | paste -sd'~' - | fold -w 900 | head -10 | while read -r line; do echo "::error::$line"; done
