@@ -81,3 +81,6 @@ docker_migration/sql-data
 /dockerized_app/sql-data-*/
 /dockerized_app/mysql84-init/
 /dockerized_app/nginx/*.bak*
+
+# Local bundler settings (startup.sh writes one on the server)
+/.bundle/
