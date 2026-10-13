@@ -30,9 +30,9 @@ describe RevisionPresenter do
         specify do
           expect(comparer.selected.taxt).to eq "second version"
           expect { presenter.left_side_diff }.
-            to raise_error(NoMethodError, "undefined method `left' for nil:NilClass")
+            to raise_error(NoMethodError, /undefined method .left. for nil/)
           expect { presenter.right_side_diff }.
-            to raise_error(NoMethodError, "undefined method `right' for nil:NilClass")
+            to raise_error(NoMethodError, /undefined method .right. for nil/)
         end
       end
 

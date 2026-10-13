@@ -186,7 +186,7 @@ jobs:
         run: |
           set +e
           docker build -t antcat-app dockerized_app > /tmp/b1.log 2>&1; echo "::notice::build dockerized_app exit $?"; tail -5 /tmp/b1.log | cut -c1-200 | paste -sd'~' - | sed 's/^/::notice::/'
-          docker build -t antcat-export -f docker/antcat-database.docker . > /tmp/b2.log 2>&1; echo "::notice::build antcat-database.docker exit $?"; grep -iE 'error|warn' /tmp/b2.log | head -5 | cut -c1-250 | paste -sd'~' - | sed 's/^/::warning::export build: /'; tail -4 /tmp/b2.log | cut -c1-200 | paste -sd'~' - | sed 's/^/::notice::/'
+          docker build -t antcat-export -f docker/antcat-database.docker . > /tmp/b2.log 2>&1; echo "::notice::build antcat-database.docker exit $?"; grep -iE 'error|warn|chpasswd|mkdir|cannot' /tmp/b2.log | head -8 | cut -c1-250 | paste -sd'~' - | sed 's/^/::warning::export build: /'; tail -4 /tmp/b2.log | cut -c1-200 | paste -sd'~' - | sed 's/^/::notice::/'
           docker run --rm antcat-export bash -c 'cd /code && ruby -v && bundle -v && bundle exec ruby -e "puts :export_bundle_ok"' > /tmp/b3.log 2>&1; echo "::notice::export image run exit $? $(paste -sd' ' /tmp/b3.log | cut -c1-400)"
       - name: Startup as in dockerized_app/startup.sh
         run: |
@@ -198,7 +198,8 @@ jobs:
           cat > /tmp/run.sh <<'EOS'
           set -x
           cd /app
-          ruby -v; bundle -v; node -v
+          mkdir -p tmp
+          ruby -v; bundle -v; node -v; java -version 2>&1 | head -1; cat /etc/debian_version
           bundle install --path=vendor/bundle > tmp/bi.log 2>&1; echo "BUNDLE_INSTALL_EXIT=$?"
           tail -3 tmp/bi.log
           bundle config path vendor/bundle
