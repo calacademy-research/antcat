@@ -23,10 +23,6 @@ module AntCat
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.1
 
-    # Rails 8.0 deprecates the old value (`true`, from the 5.0 defaults); `:zone` is the only
-    # behavior in Rails 8.1. Only affects `#to_time` on `DateTime`/`TimeWithZone`.
-    config.active_support.to_time_preserves_timezone = :zone
-
     config.middleware.insert_before(0, Rack::Cors) do
       allow do
         origins '*'
