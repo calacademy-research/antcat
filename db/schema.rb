@@ -11,7 +11,7 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[8.1].define(version: 2022_04_13_170109) do
-  create_table "activities", id: :integer, charset: "utf8", force: :cascade do |t|
+  create_table "activities", id: :integer, charset: "utf8mb3", force: :cascade do |t|
     t.integer "trackable_id"
     t.string "trackable_type"
     t.integer "user_id"
@@ -27,7 +27,7 @@ ActiveRecord::Schema[8.1].define(version: 2022_04_13_170109) do
     t.index ["user_id"], name: "ix_activities__user_id"
   end
 
-  create_table "author_names", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+  create_table "author_names", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
@@ -37,12 +37,12 @@ ActiveRecord::Schema[8.1].define(version: 2022_04_13_170109) do
     t.index ["name"], name: "ix_author_names__name"
   end
 
-  create_table "authors", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+  create_table "authors", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "citations", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+  create_table "citations", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.integer "reference_id", null: false
     t.string "pages", null: false
     t.datetime "created_at", precision: nil, null: false
@@ -50,7 +50,7 @@ ActiveRecord::Schema[8.1].define(version: 2022_04_13_170109) do
     t.index ["reference_id"], name: "ix_citations__reference_id"
   end
 
-  create_table "comments", id: :integer, charset: "utf8", force: :cascade do |t|
+  create_table "comments", id: :integer, charset: "utf8mb3", force: :cascade do |t|
     t.integer "commentable_id"
     t.string "commentable_type"
     t.text "body", null: false
@@ -62,7 +62,7 @@ ActiveRecord::Schema[8.1].define(version: 2022_04_13_170109) do
     t.index ["user_id"], name: "ix_comments__user_id"
   end
 
-  create_table "feedbacks", id: :integer, charset: "utf8", force: :cascade do |t|
+  create_table "feedbacks", id: :integer, charset: "utf8mb3", force: :cascade do |t|
     t.integer "user_id"
     t.string "email"
     t.string "name"
@@ -75,7 +75,7 @@ ActiveRecord::Schema[8.1].define(version: 2022_04_13_170109) do
     t.index ["user_id"], name: "ix_feedbacks__user_id"
   end
 
-  create_table "history_items", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+  create_table "history_items", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.text "taxt"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
@@ -99,7 +99,7 @@ ActiveRecord::Schema[8.1].define(version: 2022_04_13_170109) do
     t.index ["type"], name: "ix_history_items__type"
   end
 
-  create_table "institutions", id: :integer, charset: "utf8", force: :cascade do |t|
+  create_table "institutions", id: :integer, charset: "utf8mb3", force: :cascade do |t|
     t.string "abbreviation", null: false
     t.string "name", null: false
     t.datetime "created_at", precision: nil, null: false
@@ -108,7 +108,7 @@ ActiveRecord::Schema[8.1].define(version: 2022_04_13_170109) do
     t.index ["abbreviation"], name: "ux_institutions__abbreviation", unique: true
   end
 
-  create_table "issues", id: :integer, charset: "utf8", force: :cascade do |t|
+  create_table "issues", id: :integer, charset: "utf8mb3", force: :cascade do |t|
     t.integer "closer_id"
     t.integer "user_id", null: false
     t.string "title", null: false
@@ -121,14 +121,14 @@ ActiveRecord::Schema[8.1].define(version: 2022_04_13_170109) do
     t.index ["user_id"], name: "ix_issues__user_id"
   end
 
-  create_table "journals", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+  create_table "journals", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.index ["name"], name: "ux_journals__name", unique: true
   end
 
-  create_table "names", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+  create_table "names", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.string "type", null: false
     t.string "name", null: false
     t.string "epithet", null: false
@@ -141,7 +141,7 @@ ActiveRecord::Schema[8.1].define(version: 2022_04_13_170109) do
     t.index ["name"], name: "ix_names__name"
   end
 
-  create_table "notifications", id: :integer, charset: "utf8", force: :cascade do |t|
+  create_table "notifications", id: :integer, charset: "utf8mb3", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "notifier_id"
     t.integer "attached_id"
@@ -155,7 +155,7 @@ ActiveRecord::Schema[8.1].define(version: 2022_04_13_170109) do
     t.index ["user_id"], name: "ix_notifications__user_id"
   end
 
-  create_table "protonyms", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+  create_table "protonyms", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.integer "authorship_id", null: false
@@ -179,7 +179,7 @@ ActiveRecord::Schema[8.1].define(version: 2022_04_13_170109) do
     t.index ["type_name_id"], name: "ux_protonyms__type_name_id", unique: true
   end
 
-  create_table "publishers", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+  create_table "publishers", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
@@ -188,7 +188,7 @@ ActiveRecord::Schema[8.1].define(version: 2022_04_13_170109) do
     t.index ["name"], name: "ix_publishers__name"
   end
 
-  create_table "read_marks", id: :integer, charset: "utf8", force: :cascade do |t|
+  create_table "read_marks", id: :integer, charset: "utf8mb3", force: :cascade do |t|
     t.integer "readable_id"
     t.string "readable_type", null: false
     t.integer "reader_id"
@@ -197,7 +197,7 @@ ActiveRecord::Schema[8.1].define(version: 2022_04_13_170109) do
     t.index ["reader_id", "reader_type", "readable_type", "readable_id"], name: "ix_x_read_marks__reader_readable_index"
   end
 
-  create_table "reference_author_names", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+  create_table "reference_author_names", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.integer "author_name_id", null: false
     t.integer "reference_id", null: false
     t.datetime "created_at", precision: nil, null: false
@@ -208,7 +208,7 @@ ActiveRecord::Schema[8.1].define(version: 2022_04_13_170109) do
     t.index ["reference_id"], name: "ix_reference_author_names__reference_id"
   end
 
-  create_table "reference_documents", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+  create_table "reference_documents", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.string "url"
     t.string "file_file_name"
     t.datetime "created_at", precision: nil, null: false
@@ -217,7 +217,7 @@ ActiveRecord::Schema[8.1].define(version: 2022_04_13_170109) do
     t.index ["reference_id"], name: "ux_reference_documents__reference_id", unique: true
   end
 
-  create_table "reference_sections", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+  create_table "reference_sections", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.integer "taxon_id", null: false
     t.integer "position", null: false
     t.string "title_taxt"
@@ -228,7 +228,7 @@ ActiveRecord::Schema[8.1].define(version: 2022_04_13_170109) do
     t.index ["taxon_id", "position"], name: "ix_reference_sections__taxon_id__position"
   end
 
-  create_table "references", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+  create_table "references", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.integer "year", null: false
     t.string "date"
     t.datetime "created_at", precision: nil, null: false
@@ -265,7 +265,7 @@ ActiveRecord::Schema[8.1].define(version: 2022_04_13_170109) do
     t.index ["updated_at"], name: "ix_references__updated_at"
   end
 
-  create_table "settings", charset: "utf8", force: :cascade do |t|
+  create_table "settings", charset: "utf8mb3", force: :cascade do |t|
     t.string "var", null: false
     t.text "value"
     t.string "target_type", null: false
@@ -276,7 +276,7 @@ ActiveRecord::Schema[8.1].define(version: 2022_04_13_170109) do
     t.index ["target_type", "target_id"], name: "ix_settings__target_type__target_id"
   end
 
-  create_table "site_notices", id: :integer, charset: "utf8", force: :cascade do |t|
+  create_table "site_notices", id: :integer, charset: "utf8mb3", force: :cascade do |t|
     t.string "title", null: false
     t.text "message", null: false
     t.integer "user_id", null: false
@@ -285,7 +285,7 @@ ActiveRecord::Schema[8.1].define(version: 2022_04_13_170109) do
     t.index ["user_id"], name: "ix_site_notices__user_id"
   end
 
-  create_table "taxa", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+  create_table "taxa", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.string "type", null: false
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
@@ -324,7 +324,7 @@ ActiveRecord::Schema[8.1].define(version: 2022_04_13_170109) do
     t.index ["type"], name: "ix_taxa__type"
   end
 
-  create_table "tooltips", id: :integer, charset: "utf8", force: :cascade do |t|
+  create_table "tooltips", id: :integer, charset: "utf8mb3", force: :cascade do |t|
     t.string "key", null: false
     t.text "text", null: false
     t.datetime "created_at", precision: nil, null: false
@@ -332,7 +332,7 @@ ActiveRecord::Schema[8.1].define(version: 2022_04_13_170109) do
     t.string "scope", null: false
   end
 
-  create_table "type_names", id: :integer, charset: "utf8", force: :cascade do |t|
+  create_table "type_names", id: :integer, charset: "utf8mb3", force: :cascade do |t|
     t.integer "taxon_id", null: false
     t.integer "reference_id"
     t.string "pages"
@@ -343,7 +343,7 @@ ActiveRecord::Schema[8.1].define(version: 2022_04_13_170109) do
     t.index ["taxon_id"], name: "ix_type_names__taxon_id"
   end
 
-  create_table "users", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+  create_table "users", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: ""
     t.string "password_salt", default: ""
@@ -374,7 +374,7 @@ ActiveRecord::Schema[8.1].define(version: 2022_04_13_170109) do
     t.index ["reset_password_token"], name: "ux_users__reset_password_token", unique: true
   end
 
-  create_table "versions", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+  create_table "versions", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.string "item_type", null: false
     t.integer "item_id", null: false
     t.string "event", null: false
@@ -390,7 +390,7 @@ ActiveRecord::Schema[8.1].define(version: 2022_04_13_170109) do
     t.index ["whodunnit"], name: "ix_versions__whodunnit"
   end
 
-  create_table "wiki_pages", charset: "utf8", force: :cascade do |t|
+  create_table "wiki_pages", charset: "utf8mb3", force: :cascade do |t|
     t.string "title", null: false
     t.text "content", null: false
     t.datetime "created_at", precision: nil, null: false

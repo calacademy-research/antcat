@@ -1,0 +1,376 @@
+== bundle install (old Gemfile)
+ * nokogiri-1.19.4-x86_64-linux-gnu
+ * tailwindcss-ruby-3.4.19-x86_64-linux
+ * ffi-1.17.4-x86_64-linux-gnu
+Please run `bundle lock --normalize-platforms` and commit the resulting lockfile.
+Alternatively, you may run `bundle lock --add-platform <list-of-platforms-that-you-want-to-support>`
+== bundle-audit BEFORE
+Download ruby-advisory-db ...
+Cloning into '/home/runner/.local/share/ruby-advisory-db'...
+ruby-advisory-db:
+  advisories:	1263 advisories
+  last updated:	2026-10-10 09:26:59 -0400
+  commit:	a6847b0651a702488f5844081e848dd1ec9dbf1d
+Name: jquery-ui-rails
+Version: 7.0.0
+CVE: CVE-2022-31160
+GHSA: GHSA-h6gj-6jjq-h8g9
+Criticality: Medium
+URL: https://github.com/jquery/jquery-ui/security/advisories/GHSA-h6gj-6jjq-h8g9
+Title: jQuery UI vulnerable to XSS when refreshing a checkboxradio with an HTML-like initial text label
+Solution: update to '>= 8.0.0'
+
+Name: puma
+Version: 6.6.1
+CVE: CVE-2026-47736
+GHSA: GHSA-qpgp-93vx-g8v8
+Criticality: High
+URL: https://www.cve.org/CVERecord?id=CVE-2026-47736
+Title: Puma PROXY Protocol v1 Parser Allows Remote Memory Exhaustion
+Solution: update to '~> 7.2.1', '>= 8.0.2'
+
+Name: puma
+Version: 6.6.1
+CVE: CVE-2026-47737
+GHSA: GHSA-2vqw-3mp8-cgmx
+Criticality: High
+URL: https://www.cve.org/CVERecord/SearchResults?query=CVE-2026-47737
+Title: Puma PROXY Protocol v1 Accepts Repeated Protocol Headers on Persistent Connections
+Solution: update to '~> 7.2.1', '>= 8.0.2'
+
+Name: rack-proxy
+Version: 0.8.3
+GHSA: GHSA-42qh-8mx8-7wqm
+Criticality: Unknown
+URL: https://github.com/ncr/rack-proxy/security/advisories/GHSA-42qh-8mx8-7wqm
+Title: HTTP response smuggling via ambiguous backend response framing in rack-proxy 1.x
+Solution: update to '>= 1.0.3'
+
+Vulnerabilities found!
+== bundle update --conservative puma jquery-ui-rails
+Fetching gem metadata from https://rubygems.org/........
+Resolving dependencies...
+Resolving dependencies...
+Fetching puma 7.2.1 (was 6.6.1)
+Fetching jquery-ui-rails 8.0.1 (was 7.0.0)
+Installing jquery-ui-rails 8.0.1 (was 7.0.0)
+Installing puma 7.2.1 (was 6.6.1) with native extensions
+Bundle updated!
+3 installed gems you directly depend on are looking for funding.
+  Run `bundle fund` for details
+== Gemfile.lock diff
+diff --git a/Gemfile.lock b/Gemfile.lock
+index ab19f3532..9740eef8b 100644
+--- a/Gemfile.lock
++++ b/Gemfile.lock
+@@ -335,7 +335,7 @@ GEM
+       rails-dom-testing (>= 1, < 3)
+       railties (>= 4.2.0)
+       thor (>= 0.14, < 2.0)
+-    jquery-ui-rails (7.0.0)
++    jquery-ui-rails (8.0.1)
+       railties (>= 3.2.16)
+     json (2.21.2)
+     language_server-protocol (3.17.0.6)
+@@ -432,7 +432,7 @@ GEM
+       date
+       stringio
+     public_suffix (6.0.2)
+-    puma (6.6.1)
++    puma (7.2.1)
+       nio4r (~> 2.0)
+     racc (1.8.1)
+     rack (3.2.7)
+@@ -714,7 +714,7 @@ DEPENDENCIES
+   inline_svg
+   jquery-atwho-rails
+   jquery-rails
+-  jquery-ui-rails
++  jquery-ui-rails (~> 8.0)
+   ledermann-rails-settings
+   mysql2
+   newrelic_rpm
+@@ -723,7 +723,7 @@ DEPENDENCIES
+   paperclip
+   progress_bar
+   pry
+-  puma (< 7)
++  puma (~> 7.2, >= 7.2.1)
+   rack
+   rack-cors
+   rails (~> 8.1.4)
+== bundle-audit AFTER
+Updating ruby-advisory-db ...
+From https://github.com/rubysec/ruby-advisory-db
+ * branch            master     -> FETCH_HEAD
+Already up to date.
+Updated ruby-advisory-db
+ruby-advisory-db:
+  advisories:	1263 advisories
+  last updated:	2026-10-10 09:26:59 -0400
+  commit:	a6847b0651a702488f5844081e848dd1ec9dbf1d
+Name: rack-proxy
+Version: 0.8.3
+GHSA: GHSA-42qh-8mx8-7wqm
+Criticality: Unknown
+URL: https://github.com/ncr/rack-proxy/security/advisories/GHSA-42qh-8mx8-7wqm
+Title: HTTP response smuggling via ambiguous backend response framing in rack-proxy 1.x
+Solution: update to '>= 1.0.3'
+
+Vulnerabilities found!
+== remote versions
+puma (8.0.2 ruby java, 8.0.1 ruby java, 8.0.0 ruby java, 7.2.1 ruby java, 7.2.0 ruby java, 7.1.0 ruby java, 7.0.4 ruby java, 7.0.3 ruby java, 7.0.2 ruby java, 7.0.1 ruby java, 7.0.0 ruby java, 6.6.1 ruby java, 6.6.0 ruby java, 6.5.0 ruby java, 6.4.3 ruby java, 6.4.2 ruby java, 6.4.1 ruby java, 6.4.0 ruby java, 6.3.1 ruby java, 6.3.0 ruby java, 6.2.2 ruby java, 6.2.1 ruby java, 6.2.0 ruby java, 6.1.1 ruby java, 6.1.0 ruby java, 6.0.2 ruby java, 6.0.1 ruby java, 6.0.0 ruby java, 5.6.9 ruby java, 5.6.8 ruby java, 5.6.7 ruby java, 5.6.6 ruby java, 5.6.5 ruby java, 5.6.4 ruby java, 5.6.2 ruby java, 5.6.1 ruby java, 5.6.0 ruby java, 5.5.2 ruby java, 5.5.1 ruby java, 5.5.0 ruby java, 5.4.0 ruby java, 5.3.2 ruby java, 5.3.1 ruby java, 5.3.0 ruby java, 5.2.2 ruby java, 5.2.1 ruby java, 5.2.0 ruby java, 5.1.1 ruby java, 5.1.0 ruby java, 5.0.4 ruby java, 5.0.3 ruby java, 5.0.2 ruby java, 5.0.1 ruby java, 5.0.0 ruby java, 4.3.12 ruby java, 4.3.11 ruby java, 4.3.10 ruby java, 4.3.9 ruby java, 4.3.8 ruby java, 4.3.7 ruby java, 4.3.6 ruby java, 4.3.5 ruby java, 4.3.4 ruby java, 4.3.3 ruby java, 4.3.1 ruby java, 4.3.0 ruby java, 4.2.1 ruby java, 4.2.0 ruby java, 4.1.1 ruby java, 4.1.0 ruby java, 4.0.1 ruby java, 4.0.0 ruby java, 3.12.6 ruby java, 3.12.5 ruby java, 3.12.4 ruby java, 3.12.2 ruby java, 3.12.1 ruby java, 3.12.0 ruby java, 3.11.4 ruby java, 3.11.3 ruby java, 3.11.2 ruby java, 3.11.1 ruby java, 3.11.0 ruby java, 3.10.0 ruby java, 3.9.1 ruby java, 3.9.0 ruby java, 3.8.2 ruby java, 3.8.1 ruby java, 3.8.0 ruby java, 3.7.1 ruby java, 3.7.0 ruby java, 3.6.2 ruby java, 3.6.1 ruby java, 3.6.0 ruby java, 3.5.2 ruby java, 3.5.1 ruby java, 3.5.0 ruby java, 3.4.0 ruby java, 3.3.0 ruby java, 3.2.0 ruby java, 3.1.1 ruby java, 3.1.0 ruby java, 3.0.2 ruby java, 3.0.1 ruby java, 3.0.0 ruby java, 2.16.0 ruby java, 2.15.3 ruby java, 2.15.2, 2.15.1, 2.15.0, 2.14.0 ruby java, 2.13.4 ruby java, 2.13.3 ruby java, 2.13.2 ruby java, 2.13.1 ruby java, 2.13.0 ruby java, 2.12.3 ruby java, 2.12.2 ruby java, 2.12.1 ruby java, 2.12.0 ruby java, 2.11.3 ruby java, 2.11.2 ruby java, 2.11.1 ruby java, 2.11.0 ruby java, 2.10.2 ruby java, 2.10.1 ruby java, 2.10.0 ruby java, 2.9.2 ruby java, 2.9.1 ruby java, 2.9.0 ruby java, 2.8.2 ruby java, 2.8.1 ruby java, 2.8.0 ruby java, 2.7.1 ruby java, 2.7.0 ruby java, 2.6.0 ruby java, 2.5.1 ruby java, 2.5.0 ruby java, 2.4.1 ruby java, 2.4.0 ruby java, 2.3.2 ruby java, 2.3.1 ruby java, 2.3.0 ruby java, 2.2.2 ruby java, 2.2.1 ruby java, 2.2.0 ruby java, 2.1.1 ruby java, 2.1.0 ruby java, 2.0.1 ruby java, 2.0.0 ruby java, 1.6.3 ruby java, 1.6.2 ruby java, 1.6.1 ruby java, 1.6.0 ruby java, 1.5.0 ruby java, 1.4.0 ruby java, 1.3.1 ruby java, 1.3.0 ruby java, 1.2.2 ruby java, 1.2.1 ruby java, 1.2.0 ruby java, 1.1.1 ruby java, 1.1.0 ruby java, 1.0.0 ruby java, 0.9.5 ruby java, 0.9.4 ruby java, 0.9.3 ruby java, 0.9.2 ruby java, 0.9.1 ruby java, 0.9.0 ruby java, 0.8.2 ruby java, 0.8.1, 0.8.0)
+jquery-ui-rails (8.0.1, 8.0.0, 7.0.0, 6.0.1, 6.0.0, 5.0.5, 5.0.4, 5.0.3, 5.0.2, 5.0.1, 5.0.0, 4.2.1, 4.2.0, 4.1.2, 4.1.1, 4.1.0, 4.0.5, 4.0.4, 4.0.3, 4.0.2, 4.0.1, 4.0.0, 3.0.1, 3.0.0, 2.0.2, 2.0.1, 2.0.0, 1.1.1, 1.1.0, 1.0.0, 0.5.0, 0.4.1, 0.4.0, 0.3.0, 0.2.2, 0.2.1, 0.2.0, 0.1.0, 0.0.2, 0.0.1)
+== migrations on MySQL 8.4
+Database 'antcat_test_ci' does not exist
+Database 'antcat_test_ci' does not exist
+Created database 'antcat_test_ci'
+Database 'antcat_test_ci' already exists
+== schema.rb diff on 8.4
+diff --git a/db/schema.rb b/db/schema.rb
+index c120314cc..025336af3 100644
+--- a/db/schema.rb
++++ b/db/schema.rb
+@@ -11,7 +11,7 @@
+ # It's strongly recommended that you check this file into your version control system.
+ 
+ ActiveRecord::Schema[8.1].define(version: 2022_04_13_170109) do
+-  create_table "activities", id: :integer, charset: "utf8", force: :cascade do |t|
++  create_table "activities", id: :integer, charset: "utf8mb3", force: :cascade do |t|
+     t.integer "trackable_id"
+     t.string "trackable_type"
+     t.integer "user_id"
+@@ -27,7 +27,7 @@
+     t.index ["user_id"], name: "ix_activities__user_id"
+   end
+ 
+-  create_table "author_names", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
++  create_table "author_names", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
+     t.string "name", null: false
+     t.datetime "created_at", precision: nil, null: false
+     t.datetime "updated_at", precision: nil, null: false
+@@ -37,12 +37,12 @@
+     t.index ["name"], name: "ix_author_names__name"
+   end
+ 
+-  create_table "authors", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
++  create_table "authors", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
+     t.datetime "created_at", precision: nil, null: false
+     t.datetime "updated_at", precision: nil, null: false
+   end
+ 
+-  create_table "citations", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
++  create_table "citations", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
+     t.integer "reference_id", null: false
+     t.string "pages", null: false
+     t.datetime "created_at", precision: nil, null: false
+@@ -50,7 +50,7 @@
+     t.index ["reference_id"], name: "ix_citations__reference_id"
+   end
+ 
+-  create_table "comments", id: :integer, charset: "utf8", force: :cascade do |t|
++  create_table "comments", id: :integer, charset: "utf8mb3", force: :cascade do |t|
+     t.integer "commentable_id"
+     t.string "commentable_type"
+     t.text "body", null: false
+@@ -62,7 +62,7 @@
+     t.index ["user_id"], name: "ix_comments__user_id"
+   end
+ 
+-  create_table "feedbacks", id: :integer, charset: "utf8", force: :cascade do |t|
++  create_table "feedbacks", id: :integer, charset: "utf8mb3", force: :cascade do |t|
+     t.integer "user_id"
+     t.string "email"
+     t.string "name"
+@@ -75,7 +75,7 @@
+     t.index ["user_id"], name: "ix_feedbacks__user_id"
+   end
+ 
+-  create_table "history_items", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
++  create_table "history_items", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
+     t.text "taxt"
+     t.datetime "created_at", precision: nil, null: false
+     t.datetime "updated_at", precision: nil, null: false
+@@ -99,7 +99,7 @@
+     t.index ["type"], name: "ix_history_items__type"
+   end
+ 
+-  create_table "institutions", id: :integer, charset: "utf8", force: :cascade do |t|
++  create_table "institutions", id: :integer, charset: "utf8mb3", force: :cascade do |t|
+     t.string "abbreviation", null: false
+     t.string "name", null: false
+     t.datetime "created_at", precision: nil, null: false
+@@ -108,7 +108,7 @@
+     t.index ["abbreviation"], name: "ux_institutions__abbreviation", unique: true
+   end
+ 
+-  create_table "issues", id: :integer, charset: "utf8", force: :cascade do |t|
++  create_table "issues", id: :integer, charset: "utf8mb3", force: :cascade do |t|
+     t.integer "closer_id"
+     t.integer "user_id", null: false
+     t.string "title", null: false
+@@ -121,14 +121,14 @@
+     t.index ["user_id"], name: "ix_issues__user_id"
+   end
+ 
+-  create_table "journals", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
++  create_table "journals", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
+     t.string "name", null: false
+     t.datetime "created_at", precision: nil, null: false
+     t.datetime "updated_at", precision: nil, null: false
+     t.index ["name"], name: "ux_journals__name", unique: true
+   end
+ 
+-  create_table "names", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
++  create_table "names", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
+     t.string "type", null: false
+     t.string "name", null: false
+     t.string "epithet", null: false
+@@ -141,7 +141,7 @@
+     t.index ["name"], name: "ix_names__name"
+   end
+ 
+-  create_table "notifications", id: :integer, charset: "utf8", force: :cascade do |t|
++  create_table "notifications", id: :integer, charset: "utf8mb3", force: :cascade do |t|
+     t.integer "user_id", null: false
+     t.integer "notifier_id"
+     t.integer "attached_id"
+@@ -155,7 +155,7 @@
+     t.index ["user_id"], name: "ix_notifications__user_id"
+   end
+ 
+-  create_table "protonyms", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
++  create_table "protonyms", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
+     t.datetime "created_at", precision: nil, null: false
+     t.datetime "updated_at", precision: nil, null: false
+     t.integer "authorship_id", null: false
+@@ -179,7 +179,7 @@
+     t.index ["type_name_id"], name: "ux_protonyms__type_name_id", unique: true
+   end
+ 
+-  create_table "publishers", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
++  create_table "publishers", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
+     t.string "name", null: false
+     t.datetime "created_at", precision: nil, null: false
+     t.datetime "updated_at", precision: nil, null: false
+@@ -188,7 +188,7 @@
+     t.index ["name"], name: "ix_publishers__name"
+   end
+ 
+-  create_table "read_marks", id: :integer, charset: "utf8", force: :cascade do |t|
++  create_table "read_marks", id: :integer, charset: "utf8mb3", force: :cascade do |t|
+     t.integer "readable_id"
+     t.string "readable_type", null: false
+     t.integer "reader_id"
+@@ -197,7 +197,7 @@
+     t.index ["reader_id", "reader_type", "readable_type", "readable_id"], name: "ix_x_read_marks__reader_readable_index"
+   end
+ 
+-  create_table "reference_author_names", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
++  create_table "reference_author_names", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
+     t.integer "author_name_id", null: false
+     t.integer "reference_id", null: false
+     t.datetime "created_at", precision: nil, null: false
+@@ -208,7 +208,7 @@
+     t.index ["reference_id"], name: "ix_reference_author_names__reference_id"
+   end
+ 
+-  create_table "reference_documents", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
++  create_table "reference_documents", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
+     t.string "url"
+     t.string "file_file_name"
+     t.datetime "created_at", precision: nil, null: false
+@@ -217,7 +217,7 @@
+     t.index ["reference_id"], name: "ux_reference_documents__reference_id", unique: true
+   end
+ 
+-  create_table "reference_sections", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
++  create_table "reference_sections", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
+     t.integer "taxon_id", null: false
+     t.integer "position", null: false
+     t.string "title_taxt"
+@@ -228,7 +228,7 @@
+     t.index ["taxon_id", "position"], name: "ix_reference_sections__taxon_id__position"
+   end
+ 
+-  create_table "references", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
++  create_table "references", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
+     t.integer "year", null: false
+     t.string "date"
+     t.datetime "created_at", precision: nil, null: false
+@@ -265,7 +265,7 @@
+     t.index ["updated_at"], name: "ix_references__updated_at"
+   end
+ 
+-  create_table "settings", charset: "utf8", force: :cascade do |t|
++  create_table "settings", charset: "utf8mb3", force: :cascade do |t|
+     t.string "var", null: false
+     t.text "value"
+     t.string "target_type", null: false
+@@ -276,7 +276,7 @@
+     t.index ["target_type", "target_id"], name: "ix_settings__target_type__target_id"
+   end
+ 
+-  create_table "site_notices", id: :integer, charset: "utf8", force: :cascade do |t|
++  create_table "site_notices", id: :integer, charset: "utf8mb3", force: :cascade do |t|
+     t.string "title", null: false
+     t.text "message", null: false
+     t.integer "user_id", null: false
+@@ -285,7 +285,7 @@
+     t.index ["user_id"], name: "ix_site_notices__user_id"
+   end
+ 
+-  create_table "taxa", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
++  create_table "taxa", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
+     t.string "type", null: false
+     t.datetime "created_at", precision: nil, null: false
+     t.datetime "updated_at", precision: nil, null: false
+@@ -324,7 +324,7 @@
+     t.index ["type"], name: "ix_taxa__type"
+   end
+ 
+-  create_table "tooltips", id: :integer, charset: "utf8", force: :cascade do |t|
++  create_table "tooltips", id: :integer, charset: "utf8mb3", force: :cascade do |t|
+     t.string "key", null: false
+     t.text "text", null: false
+     t.datetime "created_at", precision: nil, null: false
+@@ -332,7 +332,7 @@
+     t.string "scope", null: false
+   end
+ 
+-  create_table "type_names", id: :integer, charset: "utf8", force: :cascade do |t|
++  create_table "type_names", id: :integer, charset: "utf8mb3", force: :cascade do |t|
+     t.integer "taxon_id", null: false
+     t.integer "reference_id"
+     t.string "pages"
+@@ -343,7 +343,7 @@
+     t.index ["taxon_id"], name: "ix_type_names__taxon_id"
+   end
+ 
+-  create_table "users", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
++  create_table "users", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
+     t.string "email", default: "", null: false
+     t.string "encrypted_password", default: ""
+     t.string "password_salt", default: ""
+@@ -374,7 +374,7 @@
+     t.index ["reset_password_token"], name: "ux_users__reset_password_token", unique: true
+   end
+ 
+-  create_table "versions", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
++  create_table "versions", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
+     t.string "item_type", null: false
+     t.integer "item_id", null: false
+     t.string "event", null: false
+@@ -390,7 +390,7 @@
+     t.index ["whodunnit"], name: "ix_versions__whodunnit"
+   end
+ 
+-  create_table "wiki_pages", charset: "utf8", force: :cascade do |t|
++  create_table "wiki_pages", charset: "utf8mb3", force: :cascade do |t|
+     t.string "title", null: false
+     t.text "content", null: false
+     t.datetime "created_at", precision: nil, null: false
+== mysql version
+mysql: [Warning] Using a password on the command line interface can be insecure.
+version()	@@character_set_server	@@collation_server
+8.4.11	utf8mb4	utf8mb4_0900_ai_ci
