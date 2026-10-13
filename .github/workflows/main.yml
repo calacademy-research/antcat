@@ -98,7 +98,8 @@ jobs:
       - name: TEMP deprecation summary
         if: always()
         run: |
-          echo "::warning::DEPRECATION lines: $(grep -c DEPRECATION tmp/rspec-stderr.log || true)"
+          echo "::warning::DEPRECATION lines: $(grep -c DEPRECATION tmp/rspec-stderr.log || true); stderr lines: $(wc -l < tmp/rspec-stderr.log)"
+          head -c 800 tmp/rspec-stderr.log | paste -sd'~' - | sed 's/^/::notice::stderr head: /'
           grep -h DEPRECATION tmp/rspec-stderr.log | sed -E 's/\(called from .*//' | cut -c1-280 | sort | uniq -c | sort -rn | head -9 | while read -r line; do echo "::warning::$line"; done
           grep -h -A1 DEPRECATION tmp/rspec-stderr.log | grep -oE 'called from [^ ]+' | sort | uniq -c | sort -rn | head -9 | while read -r line; do echo "::notice::$line"; done
           grep -hv DEPRECATION tmp/rspec-stderr.log | grep -iE 'warn|deprecat' | cut -c1-280 | sort | uniq -c | sort -rn | head -9 | while read -r line; do echo "::notice::other: $line"; done
@@ -143,6 +144,16 @@ jobs:
       - name: Run migrations (up)
         run: |
           RAILS_ENV=development ./spec/migrations/test_migrations_up
+
+      - name: TEMP production boot and assets
+        run: |
+          cp config/settings/production.secret.yml.example config/settings/production.secret.yml
+          sed -n '/^test:/,$p' config/database.github-actions.yml | sed 's/^test:/production:/' >> config/database.yml
+          RAILS_ENV=development bundle exec rails db:create db:schema:load 2>&1 | grep -i deprecat | sed 's/^/::warning::dev schema load: /' | head -5 || true
+          ./bin/yarn install
+          RAILS_ENV=production bundle exec rails runner 'Rails.application.eager_load!; puts "::notice::production boot ok, Rails #{Rails.version}, #{Taxon.count} taxa"' 2>&1 | tee tmp/prod.log
+          RAILS_ENV=production bundle exec rails assets:precompile 2>&1 | tail -3 | sed 's/^/::notice::precompile: /'
+          grep -i deprecat tmp/prod.log | head -5 | sed 's/^/::warning::/' || true
 
       - name: TEMP schema diff
         if: failure()
