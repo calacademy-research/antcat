@@ -92,18 +92,7 @@ jobs:
         run: |
           ./bin/yarn install
           ./bin/rails test:prepare
-          mkdir -p tmp
-          RUBYOPT="-W:deprecated" bundle exec rspec spec --tag ~pending --order rand --format progress --format json --out tmp/rspec.json 2>tmp/rspec-stderr.log
-
-      - name: TEMP deprecation summary
-        if: always()
-        run: |
-          echo "::warning::DEPRECATION lines: $(grep -c DEPRECATION tmp/rspec-stderr.log || true); stderr lines: $(wc -l < tmp/rspec-stderr.log)"
-          grep -h DEPRECATION tmp/rspec-stderr.log | sed -E 's/\(called from .*//' | cut -c1-400 | sort | uniq -c | sort -rn | head -9 | while read -r line; do echo "::warning::$line"; done
-          grep -oE 'called from [^ ]+' tmp/rspec-stderr.log | sort | uniq -c | sort -rn | head -9 | paste -sd'~' - | sed 's/^/::notice::callers: /'
-          echo "::warning::ruby 'warning:' lines: $(grep -c 'warning:' tmp/rspec-stderr.log || true)"
-          grep -h 'warning:' tmp/rspec-stderr.log | sed -E 's#^.*/gems/##; s#^/home/runner/work/antcat/antcat/##; s/:[0-9]+: warning:/: warning:/' | cut -c1-250 | sort | uniq -c | sort -rn | head -40 | paste -sd'~' - | fold -w 950 | head -5 | sed 's/^/::warning::rw: /'
-          grep -v DEPRECATION tmp/rspec-stderr.log | grep -v 'warning:' | cut -c1-200 | sort | uniq -c | sort -rn | head -12 | paste -sd'~' - | cut -c1-1500 | sed 's/^/::notice::other stderr: /'
+          bundle exec rspec spec --tag ~pending --order rand --format progress --format json --out tmp/rspec.json
 
       - name: Show failing specs as annotations
         if: failure()
@@ -130,10 +119,6 @@ jobs:
         with:
           fetch-depth: 1
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "16.19.0"
-
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -149,77 +134,3 @@ jobs:
       - name: Run migrations (up)
         run: |
           RAILS_ENV=development ./spec/migrations/test_migrations_up
-
-      - name: TEMP schema diff
-        if: failure()
-        run: |
-          git diff db/schema.rb | grep -E '^[-+][^-+]' | sed -E 's/ +/ /g' | head -80 | paste -sd'~' - | fold -w 900 | head -10 | while read -r line; do echo "::error::$line"; done
-
-      - name: TEMP production boot and assets
-        if: always()
-        run: |
-          set +e
-          cp config/settings/production.secret.yml.example config/settings/production.secret.yml
-          sed -n '/^test:/,$p' config/database.github-actions.yml | sed 's/^test:/production:/' >> config/database.yml
-          mkdir -p tmp
-          emit() { tail -c 1500 "$2" | grep -v '^\s*$' | tail -8 | cut -c1-250 | paste -sd'~' - | sed "s/^/::$1::/"; }
-          ./bin/yarn install > tmp/b.log 2>&1; echo "::notice::yarn exit $? node $(node -v)"
-          RAILS_ENV=production bundle exec rails runner 'Rails.application.eager_load!; puts "production boot ok, Rails #{Rails.version}, #{Taxon.count} taxa"' > tmp/c.log 2>&1; echo "::notice::prod runner exit $?"; emit warning tmp/c.log
-          RAILS_ENV=production bundle exec rails assets:precompile > tmp/d.log 2>&1; echo "::notice::precompile exit $?"; grep -iE 'error|abort' tmp/d.log | head -3 | cut -c1-300 | sed 's/^/::warning::/'
-          echo "::notice::deprecations in prod boot/precompile: $(cat tmp/c.log tmp/d.log | grep -ci deprecat)"
-          grep -hi deprecat tmp/c.log tmp/d.log | cut -c1-300 | sort | uniq -c | head -3 | sed 's/^/::warning::/'
-
-  docker-prod:
-    name: TEMP production Docker image
-    runs-on: ubuntu-24.04
-    services:
-      mysql:
-        image: mysql:8.4
-        env:
-          MYSQL_ROOT_PASSWORD: root
-        ports:
-          - 33306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-    steps:
-      - uses: actions/checkout@v4
-      - name: Build images
-        run: |
-          set +e
-          docker build -t antcat-app dockerized_app > /tmp/b1.log 2>&1; echo "::notice::build dockerized_app exit $?"; tail -5 /tmp/b1.log | cut -c1-200 | paste -sd'~' - | sed 's/^/::notice::/'
-          docker build -t antcat-export -f docker/antcat-database.docker . > /tmp/b2.log 2>&1; echo "::notice::build antcat-database.docker exit $?"; grep -iE 'error|warn|chpasswd|mkdir|cannot' /tmp/b2.log | head -8 | cut -c1-250 | paste -sd'~' - | sed 's/^/::warning::export build: /'; tail -4 /tmp/b2.log | cut -c1-200 | paste -sd'~' - | sed 's/^/::notice::/'
-          docker run --rm antcat-export bash -c 'cd /code && ruby -v && bundle -v && bundle exec ruby -e "puts :export_bundle_ok"' > /tmp/b3.log 2>&1; echo "::notice::export image run exit $? $(paste -sd' ' /tmp/b3.log | cut -c1-400)"
-      - name: Startup as in dockerized_app/startup.sh
-        run: |
-          set +e
-          cp config/settings/production.secret.yml.example config/settings/production.secret.yml
-          cp config/server.yml.example config/server.yml
-          sed 's#^  socket:.*##' dockerized_app/database.yml > config/database.yml
-          mysql -h127.0.0.1 -P33306 -uroot -proot -e 'create database antcat' 2>/dev/null
-          cat > /tmp/run.sh <<'EOS'
-          set -x
-          cd /app
-          mkdir -p tmp
-          ruby -v; bundle -v; node -v; java -version 2>&1 | head -1; cat /etc/debian_version
-          bundle config set --local path vendor/bundle; bundle install > tmp/bi.log 2>&1; echo "BUNDLE_INSTALL_EXIT=$?"
-          tail -3 tmp/bi.log
-          grep -E 'Installing .* with native|BuildError|An error occurred|fatal error|not found|Gem files will remain|checking for .* no$' tmp/bi.log | head -12
-          bundle config path vendor/bundle
-          yarn install > tmp/yi.log 2>&1; echo "YARN_EXIT=$?"
-          RAILS_ENV=development bundle exec rails db:schema:load > tmp/sl.log 2>&1; echo "SCHEMA_EXIT=$?"
-          bundle exec rake assets:precompile > tmp/ap.log 2>&1; echo "PRECOMPILE_EXIT=$?"
-          bundle exec rails runner 'Rails.application.eager_load!; puts "BOOT_OK ruby #{RUBY_VERSION} rails #{Rails.version} taxa #{Taxon.count}"' > tmp/rr.log 2>&1; echo "RUNNER_EXIT=$?"; cat tmp/rr.log | tail -5
-          bundle exec rails sunspot:solr:start > tmp/solr.log 2>&1; echo "SOLR_EXIT=$?"; sleep 25
-          echo "SOLR_PING=$(curl -s -o /dev/null -w '%{http_code}' 'http://127.0.0.1:8983/solr/default/admin/ping?wt=json')"
-          echo "SOLR_VERSION=$(curl -s 'http://127.0.0.1:8983/solr/admin/info/system?wt=json' | grep -oE '"solr-spec-version":"[^"]+"')"
-          bundle exec rails runner 'puts "SOLR_SEARCH taxa=#{Taxon.search { fulltext "Formica" }.total} refs=#{Reference.search { fulltext "x" }.total}"' 2>&1 | grep -E 'SOLR_SEARCH|Error' | head -3
-          timeout 60 bundle exec rails s -p 8080 -b 0.0.0.0 > tmp/server.log 2>&1 &
-          sleep 30; code=$(curl -s -o /dev/null -w '%{http_code}' -H 'X-Forwarded-Proto: https' http://127.0.0.1:8080/); echo "HTTP_ROOT=$code"
-          code=$(curl -s -o /dev/null -w '%{http_code}' -H 'X-Forwarded-Proto: https' http://127.0.0.1:8080/catalog/search?qq=x); echo "HTTP_SEARCH=$code"
-          cat tmp/ap.log tmp/rr.log tmp/server.log tmp/bi.log | grep -iE 'warning|deprecat' | sed -E 's/:[0-9]+:/:/' | sort | uniq -c | sort -rn | head -8
-          grep -hE 'Error|error' tmp/server.log | grep -v '^\s' | sort | uniq -c | head -5
-          grep -n -A12 'GET "/"' log/production.log 2>/dev/null | grep -iE 'error|\.rb:[0-9]' | head -8
-          echo "ERRORS:"; grep -hiE '^\S*error|aborted' tmp/sl.log tmp/ap.log tmp/rr.log tmp/server.log tmp/solr.log | head -5
-          EOS
-          docker run --rm --network host -v "$PWD":/app -v /tmp/run.sh:/tmp/run.sh -w /app -e RAILS_ENV=production -e DB_USERNAME=root -e DB_PASSWORD=root -e DB_DATABASE=antcat -e DB_PORT=33306 -e DB_HOST=127.0.0.1 -e NO_DEV_MONKEY_PATCHES=y antcat-app bash /tmp/run.sh > /tmp/out.log 2>&1
-          echo "::notice::container exit $?"
-          grep -vE '^\+ ' /tmp/out.log | grep -v '^\s*$' | cut -c1-220 | paste -sd'~' - | fold -w 950 | head -8 | sed 's/^/::warning::prod: /'
