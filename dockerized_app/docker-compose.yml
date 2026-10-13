@@ -3,7 +3,9 @@
 #   ANTCAT_DB_PASSWORD=...
 services:
   db:
-    image: mysql/mysql-server:5.6
+    # MySQL 8.4 since 2026-10 (was mysql/mysql-server:5.6, data kept in /mnt/volume_sfo3_01/mysql).
+    image: mysql:8.4
+    command: --mysql-native-password=ON
     restart: unless-stopped
     environment:
       - MYSQL_ROOT_HOST=%
@@ -12,8 +14,9 @@ services:
       - "3306"
     container_name: antcat-db
     volumes:
-      - ./sql-data:/docker-entrypoint-initdb.d
-      - /mnt/volume_sfo3_01/mysql:/var/lib/mysql
+      # Only used when the data directory is empty (first start): load a dump placed in ./mysql84-init
+      - ./mysql84-init:/docker-entrypoint-initdb.d
+      - /mnt/volume_sfo3_01/mysql84:/var/lib/mysql
     networks:
       - antcat-network
 

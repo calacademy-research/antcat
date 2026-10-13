@@ -79,4 +79,5 @@ docker_migration/sql-data
 /dockerized_app/nginx/certbot/cloudflare/
 /dockerized_app/sql-data/
 /dockerized_app/sql-data-*/
+/dockerized_app/mysql84-init/
 /dockerized_app/nginx/*.bak*
