@@ -5,7 +5,7 @@ module Protonyms
     class MoveItems
       include Service
 
-      attr_private_initialize :to_protonym, [{history_items: []}]
+      attr_private_initialize :to_protonym, [{ history_items: [] }]
 
       def call
         move_history_items!

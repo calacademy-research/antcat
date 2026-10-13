@@ -28,7 +28,7 @@ module Taxa
 
     private
 
-      delegate :status, :protonym, :incertae_sedis_in, :homonym_replaced_by, :unresolved_homonym?, :ichnotaxon?,
+      delegate :status, :protonym, :incertae_sedis_in, :homonym_replaced_by, :unresolved_homonym?,
         :current_taxon, :collective_group_name?, to: :taxon, private: true
       delegate :ichnotaxon?, :nomen_nudum?, to: :protonym, private: true
 

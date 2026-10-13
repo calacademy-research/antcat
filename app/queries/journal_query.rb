@@ -20,7 +20,8 @@ class JournalQuery
 
       def with_order order_by
         if order_by == REFERENCE_COUNT_ORDER
-          order("reference_count DESC")
+          # `reference_count` is a SELECT alias, so the hash form (which table-qualifies it) would break.
+          order("reference_count DESC") # rubocop:disable Rails/OrderArguments
         else
           order(:name)
         end

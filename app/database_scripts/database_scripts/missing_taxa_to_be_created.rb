@@ -42,9 +42,7 @@ module DatabaseScripts
             hardcoded_name.gsub(%r{</?i>}, '')
           end
 
-          tally = all_hardcoded_names.each_with_object(Hash.new(0)) do |normalized_name, hsh|
-            hsh[normalized_name] += 1
-          end
+          tally = all_hardcoded_names.tally
 
           tally.sort_by(&:second).reverse
         end

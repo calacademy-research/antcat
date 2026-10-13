@@ -3,7 +3,7 @@
 if ENV["COVERAGE"]
   require 'simplecov'
 
-  puts "Starting SimpleCov for RSpec"
+  puts "Starting SimpleCov for RSpec" # rubocop:disable RSpec/Output
 
   SimpleCov.command_name "rspec"
   SimpleCov.start do

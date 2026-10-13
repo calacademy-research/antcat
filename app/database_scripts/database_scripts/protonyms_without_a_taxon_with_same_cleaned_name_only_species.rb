@@ -52,7 +52,7 @@ module DatabaseScripts
     private
 
       def protonyms_with_a_taxon_with_same_cleaned_name
-        Protonym.joins(:name, [{taxa: :name}]).
+        Protonym.joins(:name, [{ taxa: :name }]).
           group(:protonym_id).where("names.cleaned_name = names_taxa.cleaned_name")
       end
 

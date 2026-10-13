@@ -32,7 +32,7 @@ class DatabaseScript
 
     def with_tag tag_or_tags
       tags = Array.wrap(tag_or_tags)
-      all.reject { it.tags.intersection(tags).empty? }
+      all.select { it.tags.intersect?(tags) }
     end
 
     def non_empty_regression_tests

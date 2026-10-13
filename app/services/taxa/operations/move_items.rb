@@ -7,7 +7,7 @@ module Taxa
 
       include Service
 
-      attr_private_initialize :to_taxon, [{reference_sections: []}]
+      attr_private_initialize :to_taxon, [{ reference_sections: [] }]
 
       def call
         raise ReferenceSectionsNotSupportedForRank if cannot_move_reference_sections?
