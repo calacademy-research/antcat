@@ -41,6 +41,14 @@ jobs:
           ./bin/yarn install
           ./bin/yarn lint
 
+      - name: TEMP rubocop offense counts
+        if: always()
+        run: |
+          bundle exec rubocop --format offenses > /tmp/off.txt || true
+          grep -E '^[0-9]+ ' /tmp/off.txt | paste -sd'~' - | fold -w 950 | head -9 | sed 's/^/::warning::/'
+          bundle exec rubocop --format offenses --display-only-correctable > /tmp/offc.txt || true
+          grep -E '^[0-9]+ ' /tmp/offc.txt | paste -sd'~' - | fold -w 950 | head -1 | sed 's/^/::notice::correctable: /'
+
       - name: Run rubocop
         run: |
           bundle exec rubocop --format progress --format github
@@ -98,6 +106,7 @@ jobs:
         run: |
           echo "::warning::DEPRECATION lines: $(grep -c DEPRECATION tmp/rspec-stderr.log || true); stderr lines: $(wc -l < tmp/rspec-stderr.log)"
           grep -h DEPRECATION tmp/rspec-stderr.log | sed -E 's/\(called from .*//' | cut -c1-400 | sort | uniq -c | sort -rn | head -9 | while read -r line; do echo "::warning::$line"; done
+          grep -h -B2 -A14 'DEPRECATION WARNING ####' tmp/rspec-stderr.log | grep -v 'rspec-core' | cut -c1-200 | head -30 | paste -sd'~' - | fold -w 950 | head -4 | sed 's/^/::warning::banner: /'
           grep -oE 'called from [^ ]+' tmp/rspec-stderr.log | sort | uniq -c | sort -rn | head -9 | paste -sd'~' - | sed 's/^/::notice::callers: /'
           echo "::warning::ruby 'warning:' lines: $(grep -c 'warning:' tmp/rspec-stderr.log || true)"
           grep -h 'warning:' tmp/rspec-stderr.log | sed -E 's#^.*/gems/##; s#^/home/runner/work/antcat/antcat/##; s/:[0-9]+: warning:/: warning:/' | cut -c1-250 | sort | uniq -c | sort -rn | head -40 | paste -sd'~' - | fold -w 950 | head -5 | sed 's/^/::warning::rw: /'
