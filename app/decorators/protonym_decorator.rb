@@ -39,9 +39,9 @@ class ProtonymDecorator < Draper::Decorator
     if (first_parenthesis = locality.index("("))
       before = locality[0...first_parenthesis]
       rest = locality[first_parenthesis..]
-      before.mb_chars.upcase + rest
+      before.upcase + rest
     else
-      locality.mb_chars.upcase
+      locality.upcase
     end
   end
 
