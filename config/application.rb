@@ -21,7 +21,9 @@ module AntCat
     end
 
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 7.1
+    # 7.1 -> 8.1 (2026-10) needed no overrides; session/cookie settings are unchanged since 7.1.
+    # Notable: YJIT on outside dev/test, `Regexp.timeout = 1` (s), path-relative redirects raise.
+    config.load_defaults 8.1
 
     # No Active Storage attachments/variants are used; avoids the Rails 8.1 boot warning
     # about the missing `image_processing` gem.

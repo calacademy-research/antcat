@@ -19,7 +19,10 @@ class CommentsController < ApplicationController
     if @comment.save
       @comment.create_activity Activity::CREATE, current_user
       Notifications::NotifyUsersForComment[@comment]
-      highlighted_comment_url = "#{request.referer}#comment-#{@comment.id}"
+      # Fall back to the commented item when there is no referer; a bare "#comment-1" is a
+      # path-relative redirect, which raises with `action_on_path_relative_redirect = :raise` (Rails 8.1 default).
+      return_to_url = request.referer.presence&.split("#")&.first || url_for(@comment.commentable)
+      highlighted_comment_url = "#{return_to_url}#comment-#{@comment.id}"
       redirect_to highlighted_comment_url, notice: %(<a href="#comment-#{@comment.id}">Comment</a> was successfully added.)
     else
       redirect_back fallback_location: root_path, notice: "Something went wrong. Email us?"
