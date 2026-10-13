@@ -45,7 +45,7 @@ jobs:
         run: |
           ./bin/yarn install
           ./bin/rails test:prepare
-          set +e
+          mkdir -p tmp
           RUBYOPT=-W:deprecated bundle exec rspec spec --tag ~pending --order rand --format progress --format json --out tmp/rspec.json 2> tmp/stderr.txt
           rc=$?
           set -e
@@ -80,7 +80,7 @@ jobs:
             -v "$PWD":/app -v "$PWD/dockerized_app/database.yml":/app/config/database.yml \
             -v "$PWD/config/server.yml.example":/app/config/server.yml \
             antcat-app sleep infinity
-          x() { docker exec -e DISABLE_DATABASE_ENVIRONMENT_CHECK=1 antcat-app bash -c "$1" > out.txt 2>&1 || { grep -iE "error|fail|warn" out.txt | head -15 | while read -r l; do echo "::error title=$2 (grep)::${l:0:400}"; done; tail -25 out.txt | while read -r l; do echo "::error title=$2::${l:0:400}"; done; exit 1; }; tail -3 out.txt | while read -r l; do echo "::notice title=$2::${l:0:300}"; done; }
+          x() { docker exec -e DISABLE_DATABASE_ENVIRONMENT_CHECK=1 antcat-app bash -c "$1" > /tmp/out.txt 2>&1 || { grep -iE "error|fail|warn" /tmp/out.txt | head -15 | while read -r l; do echo "::error title=$2 (grep)::${l:0:400}"; done; tail -25 /tmp/out.txt | while read -r l; do echo "::error title=$2::${l:0:400}"; done; exit 1; }; tail -3 /tmp/out.txt | while read -r l; do echo "::notice title=$2::${l:0:300}"; done; }
           x "chown -R antcat:antcat /app && cd /app && bundle config set --local path vendor/bundle && bundle install" "bundle install"
           x "cd /app && yarn install" "yarn install"
           x "cd /app/app && bundle exec rake assets:precompile" "assets:precompile"
