@@ -192,7 +192,7 @@ describe ReferenceDocument do
     end
 
     context 'with `url` (no file)' do
-      let(:reference_document) { create :reference_document, :with_reference, :with_deprecated_url }
+      let!(:reference_document) { create :reference_document, :with_reference, :with_deprecated_url }
 
       it "simply is the `url`" do
         expect(reference_document.actual_url).to eq reference_document.url

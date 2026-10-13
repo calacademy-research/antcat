@@ -23,14 +23,12 @@ module References
 
       # Built on first use, so pages render on servers without S3 credentials (only document links fail).
       def client
-        @_client ||= begin
-          raise NotConfigured, "S3 settings (Settings.s3) are incomplete" unless configured?
+        raise NotConfigured, "S3 settings (Settings.s3) are incomplete" unless configured?
 
-          Aws::S3::Client.new(
-            region: Settings.s3.region,
-            credentials: Aws::Credentials.new(Settings.s3.access_key_id, Settings.s3.secret_access_key)
-          )
-        end
+        @_client ||= Aws::S3::Client.new(
+          region: Settings.s3.region,
+          credentials: Aws::Credentials.new(Settings.s3.access_key_id, Settings.s3.secret_access_key)
+        )
       end
 
       def reset_client!
