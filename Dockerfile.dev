@@ -1,7 +1,7 @@
-FROM ruby:3.2.1-slim
+FROM ruby:4.0.7-slim
 
 ENV APP_PATH /app
-ENV BUNDLER_VERSION 2.3.10
+ENV BUNDLER_VERSION 2.7.2
 
 ARG ANTCAT_UID=1000
 ARG ANTCAT_GID=1001
@@ -22,6 +22,7 @@ RUN apt-get update -qq && apt-get install -y \
   vim \
   build-essential \
   default-libmysqlclient-dev \
+  libyaml-dev \
   default-mysql-client \
   default-jre-headless
 

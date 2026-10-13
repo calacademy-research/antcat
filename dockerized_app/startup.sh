@@ -5,11 +5,10 @@ rm -f /app/tmp/pids/server.pid
 chown -R antcat:antcat /app
 
 cd /app
-bundle install --path=vendor/bundle
+# Install gems into vendor/bundle (`bundle install --path` is deprecated and removed in Bundler 4).
+bundle config set --local path vendor/bundle
+bundle install
 yarn install
-
-# Configure bundle to use a local path for gems
-bundle config path vendor/bundle
 
 cd /app/app
 bundle exec rake assets:precompile

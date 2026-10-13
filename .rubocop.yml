@@ -9,6 +9,9 @@ plugins:
 
 AllCops:
   NewCops: enable
+  # RuboCop 1.74 does not know Ruby 4.0 (it would read 4.0 from Gemfile.lock and abort).
+  # The code uses no 4.0-only syntax; raise this when RuboCop is upgraded.
+  TargetRubyVersion: 3.4
   ActiveSupportExtensionsEnabled: true
   Exclude:
     - 'bin/**/*'
