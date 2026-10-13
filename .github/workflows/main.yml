@@ -208,7 +208,10 @@ jobs:
           RAILS_ENV=development bundle exec rails db:schema:load > tmp/sl.log 2>&1; echo "SCHEMA_EXIT=$?"
           bundle exec rake assets:precompile > tmp/ap.log 2>&1; echo "PRECOMPILE_EXIT=$?"
           bundle exec rails runner 'Rails.application.eager_load!; puts "BOOT_OK ruby #{RUBY_VERSION} rails #{Rails.version} taxa #{Taxon.count}"' > tmp/rr.log 2>&1; echo "RUNNER_EXIT=$?"; cat tmp/rr.log | tail -5
-          bundle exec rails sunspot:solr:start > tmp/solr.log 2>&1; echo "SOLR_EXIT=$?"; sleep 15
+          bundle exec rails sunspot:solr:start > tmp/solr.log 2>&1; echo "SOLR_EXIT=$?"; sleep 25
+          echo "SOLR_PING=$(curl -s -o /dev/null -w '%{http_code}' 'http://127.0.0.1:8983/solr/default/admin/ping?wt=json')"
+          echo "SOLR_VERSION=$(curl -s 'http://127.0.0.1:8983/solr/admin/info/system?wt=json' | grep -oE '"solr-spec-version":"[^"]+"')"
+          bundle exec rails runner 'puts "SOLR_SEARCH taxa=#{Taxon.search { fulltext "Formica" }.total} refs=#{Reference.search { fulltext "x" }.total}"' 2>&1 | grep -E 'SOLR_SEARCH|Error' | head -3
           timeout 60 bundle exec rails s -p 8080 -b 0.0.0.0 > tmp/server.log 2>&1 &
           sleep 30; code=$(curl -s -o /dev/null -w '%{http_code}' -H 'X-Forwarded-Proto: https' http://127.0.0.1:8080/); echo "HTTP_ROOT=$code"
           code=$(curl -s -o /dev/null -w '%{http_code}' -H 'X-Forwarded-Proto: https' http://127.0.0.1:8080/catalog/search?qq=x); echo "HTTP_SEARCH=$code"
