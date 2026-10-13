@@ -129,6 +129,10 @@ jobs:
         with:
           fetch-depth: 1
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "16.19.0"
+
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -153,10 +157,10 @@ jobs:
           sed -n '/^test:/,$p' config/database.github-actions.yml | sed 's/^test:/production:/' >> config/database.yml
           mkdir -p tmp
           emit() { tail -c 1500 "$2" | grep -v '^\s*$' | tail -8 | cut -c1-250 | paste -sd'~' - | sed "s/^/::$1::/"; }
-          RAILS_ENV=development bundle exec rails db:create db:schema:load > tmp/a.log 2>&1; echo "::notice::schema load exit $?"; emit warning tmp/a.log
+          RAILS_ENV=development bundle exec rails db:create db:schema:load > tmp/a.log 2>&1; echo "::notice::schema load exit $?"; grep -iE 'error|abort' tmp/a.log | head -3 | cut -c1-300 | sed 's/^/::warning::/'
           ./bin/yarn install > tmp/b.log 2>&1; echo "::notice::yarn exit $? node $(node -v)"; emit warning tmp/b.log
           RAILS_ENV=production bundle exec rails runner 'Rails.application.eager_load!; puts "production boot ok, Rails #{Rails.version}, #{Taxon.count} taxa"' > tmp/c.log 2>&1; echo "::notice::prod runner exit $?"; emit warning tmp/c.log
-          RAILS_ENV=production bundle exec rails assets:precompile > tmp/d.log 2>&1; echo "::notice::precompile exit $?"; emit warning tmp/d.log
+          RAILS_ENV=production bundle exec rails assets:precompile > tmp/d.log 2>&1; echo "::notice::precompile exit $?"; emit warning tmp/d.log; grep -iE 'error|abort' tmp/d.log | head -3 | cut -c1-300 | sed 's/^/::warning::/'
           echo "::notice::deprecations: $(cat tmp/*.log | grep -ci deprecat)"
 
       - name: TEMP schema diff
