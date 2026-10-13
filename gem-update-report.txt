@@ -1,0 +1,736 @@
+== bundle-audit BEFORE
+Download ruby-advisory-db ...
+Cloning into '/home/runner/.local/share/ruby-advisory-db'...
+ruby-advisory-db:
+  advisories:	1263 advisories
+  last updated:	2026-10-10 09:26:59 -0400
+  commit:	a6847b0651a702488f5844081e848dd1ec9dbf1d
+Name: addressable
+Version: 2.8.7
+CVE: CVE-2026-35611
+GHSA: GHSA-h27x-rffw-24p4
+Criticality: High
+URL: https://github.com/sporkmonger/addressable/security/advisories/GHSA-h27x-rffw-24p4
+Title: Addressable has a Regular Expression Denial of Service in Addressable templates
+Solution: update to '>= 2.9.0'
+
+Name: aws-sdk-s3
+Version: 1.182.0
+CVE: CVE-2025-14762
+GHSA: GHSA-2xgq-q749-89fq
+Criticality: Medium
+URL: https://github.com/aws/aws-sdk-ruby/security/advisories/GHSA-2xgq-q749-89fq
+Title: AWS SDK for Ruby's S3 Encryption Client has a Key Commitment Issue
+Solution: update to '>= 1.208.0'
+
+Name: bcrypt
+Version: 3.1.20
+CVE: CVE-2026-33306
+GHSA: GHSA-f27w-vcwj-c954
+Criticality: Unknown
+URL: https://github.com/advisories/GHSA-f27w-vcwj-c954
+Title: bcrypt-ruby has an Integer Overflow that Causes Zero Key-Strengthening Iterations at Cost=31 on JRuby
+Solution: update to '>= 3.1.22'
+
+Name: jquery-ui-rails
+Version: 7.0.0
+CVE: CVE-2022-31160
+GHSA: GHSA-h6gj-6jjq-h8g9
+Criticality: Medium
+URL: https://github.com/jquery/jquery-ui/security/advisories/GHSA-h6gj-6jjq-h8g9
+Title: jQuery UI vulnerable to XSS when refreshing a checkboxradio with an HTML-like initial text label
+Solution: update to '>= 8.0.0'
+
+Name: json
+Version: 2.10.2
+CVE: CVE-2026-54696
+GHSA: GHSA-x2f5-4prf-w687
+Criticality: Low
+URL: https://nvd.nist.gov/vuln/detail/CVE-2026-54696
+Title: JSON generator heap buffer overflow when streaming to an IO
+Solution: update to '>= 2.19.9'
+
+Name: loofah
+Version: 2.24.0
+CVE: CVE-2026-73490
+GHSA: GHSA-9wjq-cp2p-hrgf
+Criticality: Medium
+URL: https://github.com/flavorjones/loofah/security/advisories/GHSA-9wjq-cp2p-hrgf
+Title: SVG `href` attribute bypasses local-reference restriction in Loofah
+Solution: update to '>= 2.25.2'
+
+Name: mail
+Version: 2.8.1
+CVE: CVE-2026-63435
+GHSA: GHSA-mvxr-6m87-mv2q
+Criticality: Medium
+URL: https://github.com/mikel/mail/security/advisories/GHSA-mvxr-6m87-mv2q
+Title: Email address spoofing via malformed RFC 2047 encoded-words in mail
+Solution: update to '>= 2.9.1'
+
+Name: puma
+Version: 6.6.0
+CVE: CVE-2026-47736
+GHSA: GHSA-qpgp-93vx-g8v8
+Criticality: High
+URL: https://www.cve.org/CVERecord?id=CVE-2026-47736
+Title: Puma PROXY Protocol v1 Parser Allows Remote Memory Exhaustion
+Solution: update to '~> 7.2.1', '>= 8.0.2'
+
+Name: puma
+Version: 6.6.0
+CVE: CVE-2026-47737
+GHSA: GHSA-2vqw-3mp8-cgmx
+Criticality: High
+URL: https://www.cve.org/CVERecord/SearchResults?query=CVE-2026-47737
+Title: Puma PROXY Protocol v1 Accepts Repeated Protocol Headers on Persistent Connections
+Solution: update to '~> 7.2.1', '>= 8.0.2'
+
+Name: rack-proxy
+Version: 0.7.7
+GHSA: GHSA-42qh-8mx8-7wqm
+Criticality: Unknown
+URL: https://github.com/ncr/rack-proxy/security/advisories/GHSA-42qh-8mx8-7wqm
+Title: HTTP response smuggling via ambiguous backend response framing in rack-proxy 1.x
+Solution: update to '>= 1.0.3'
+
+Name: rails-html-sanitizer
+Version: 1.6.2
+CVE: CVE-2026-73648
+GHSA: GHSA-cj75-f6xr-r4g7
+Criticality: Unknown
+URL: https://github.com/rails/rails-html-sanitizer/security/advisories/GHSA-cj75-f6xr-r4g7
+Title: Possible XSS vulnerability with certain configurations of rails-html-sanitizer
+Solution: update to '>= 1.7.1'
+
+Name: rexml
+Version: 3.4.1
+CVE: CVE-2025-58767
+GHSA: GHSA-c2f4-jgmc-q2r5
+Criticality: Unknown
+URL: https://github.com/ruby/rexml/security/advisories/GHSA-c2f4-jgmc-q2r5
+Title: REXML has DoS condition when parsing malformed XML file
+Solution: update to '>= 3.4.2'
+
+Vulnerabilities found!
+== bundle update exit 0
+Resolving dependencies...
+The following platform specific gems are getting installed, yet the lockfile includes only their generic ruby version:
+ * nokogiri-1.19.4-x86_64-linux-gnu
+ * tailwindcss-ruby-3.4.19-x86_64-linux
+ * ffi-1.17.4-x86_64-linux-gnu
+Please run `bundle lock --normalize-platforms` and commit the resulting lockfile.
+Alternatively, you may run `bundle lock --add-platform <list-of-platforms-that-you-want-to-support>`
+Post-install message from paperclip:
+##################################################
+#  NOTE FOR UPGRADING FROM 4.3.0 OR EARLIER      #
+##################################################
+
+Paperclip is now compatible with aws-sdk-s3.
+
+If you are using S3 storage, aws-sdk-s3 requires you to make a few small
+changes:
+
+* You must set the `s3_region`
+* If you are explicitly setting permissions anywhere, such as in an initializer,
+  note that the format of the permissions changed from using an underscore to
+  using a hyphen. For example, `:public_read` needs to be changed to
+  `public-read`.
+
+For a walkthrough of upgrading from 4 to *5* (not 6) and aws-sdk >= 2.0 you can watch
+http://rubythursday.com/episodes/ruby-snack-27-upgrade-paperclip-and-aws-sdk-in-prep-for-rails-5
+3 installed gems you directly depend on are looking for funding.
+  Run `bundle fund` for details
+== bundle-audit AFTER
+Name: jquery-ui-rails
+Version: 7.0.0
+CVE: CVE-2022-31160
+GHSA: GHSA-h6gj-6jjq-h8g9
+Criticality: Medium
+URL: https://github.com/jquery/jquery-ui/security/advisories/GHSA-h6gj-6jjq-h8g9
+Title: jQuery UI vulnerable to XSS when refreshing a checkboxradio with an HTML-like initial text label
+Solution: update to '>= 8.0.0'
+
+Name: puma
+Version: 6.6.1
+CVE: CVE-2026-47736
+GHSA: GHSA-qpgp-93vx-g8v8
+Criticality: High
+URL: https://www.cve.org/CVERecord?id=CVE-2026-47736
+Title: Puma PROXY Protocol v1 Parser Allows Remote Memory Exhaustion
+Solution: update to '~> 7.2.1', '>= 8.0.2'
+
+Name: puma
+Version: 6.6.1
+CVE: CVE-2026-47737
+GHSA: GHSA-2vqw-3mp8-cgmx
+Criticality: High
+URL: https://www.cve.org/CVERecord/SearchResults?query=CVE-2026-47737
+Title: Puma PROXY Protocol v1 Accepts Repeated Protocol Headers on Persistent Connections
+Solution: update to '~> 7.2.1', '>= 8.0.2'
+
+Name: rack-proxy
+Version: 0.8.3
+GHSA: GHSA-42qh-8mx8-7wqm
+Criticality: Unknown
+URL: https://github.com/ncr/rack-proxy/security/advisories/GHSA-42qh-8mx8-7wqm
+Title: HTTP response smuggling via ambiguous backend response framing in rack-proxy 1.x
+Solution: update to '>= 1.0.3'
+
+Vulnerabilities found!
+== bundle outdated (after)
+Fetching gem metadata from https://rubygems.org/.........
+Resolving dependencies...
+
+Gem                  Current  Latest  Requested  Groups
+bigdecimal           3.3.1    4.1.3
+brakeman             7.1.2    8.1.0   >= 0       development
+climate_control      0.2.0    1.2.0
+connection_pool      2.5.5    3.0.2
+diff-lcs             1.6.2    2.0.0
+dry-schema           1.13.4   1.16.0
+faraday-net_http     3.4.4    3.5.0
+flay                 2.13.3   2.14.4
+flog                 4.8.0    4.9.4
+grape-swagger-rails  0.7.0    2.0.1   >= 0       default
+haml                 6.4.0    7.5.1
+hamlit               3.0.3    4.0.0   >= 0       default
+jquery-ui-rails      7.0.0    8.0.1   >= 0       default
+json                 2.21.2   3.1.0
+lumberjack           1.4.2    2.1.0
+marcel               1.2.1    2.1.0
+mimemagic            0.3.10   0.4.3
+newrelic_rpm         9.24.0   10.9.1  >= 0       default
+parallel             1.28.0   2.3.0
+path_expander        1.1.3    2.0.1
+public_suffix        6.0.2    7.0.5
+puma                 6.6.1    8.0.2   < 7        default
+rack-cors            2.0.2    3.0.0   >= 0       default
+rack-proxy           0.8.3    2.0.1
+rdoc                 6.17.0   8.1.0
+reek                 6.3.0    6.6.0
+rsolr                2.6.0    3.0.0
+rspec-rails          7.1.1    8.0.4   >= 0       development, test
+rubocop-capybara     2.23.0   3.0.0   >= 0       development, test
+shoulda-matchers     6.5.0    8.0.1   >= 0       test
+simplecov            0.22.0   1.3.2   >= 0       test
+sunspot_solr         2.2.0    2.7.1   = 2.2.0    default
+tailwindcss-rails    3.3.2    4.6.0   < 4        default
+tailwindcss-ruby     3.4.19   4.3.3
+terrapin             0.6.0    1.1.1
+== lockfile diff
+100c100
+<     acts_as_list (1.2.4)
+---
+>     acts_as_list (1.2.6)
+103,104c103,104
+<     addressable (2.8.7)
+<       public_suffix (>= 2.0.2, < 7.0)
+---
+>     addressable (2.9.0)
+>       public_suffix (>= 2.0.2, < 8.0)
+108,110c108,110
+<     aws-eventstream (1.3.2)
+<     aws-partitions (1.1072.0)
+<     aws-sdk-core (3.220.2)
+---
+>     aws-eventstream (1.4.0)
+>     aws-partitions (1.1295.0)
+>     aws-sdk-core (3.257.0)
+114a115
+>       bigdecimal
+116,117c117,120
+<     aws-sdk-kms (1.99.0)
+<       aws-sdk-core (~> 3, >= 3.216.0)
+---
+>       logger
+>       rexml (~> 3.4, >= 3.4.2)
+>     aws-sdk-kms (1.132.0)
+>       aws-sdk-core (~> 3, >= 3.256.0)
+119,120c122,123
+<     aws-sdk-s3 (1.182.0)
+<       aws-sdk-core (~> 3, >= 3.216.0)
+---
+>     aws-sdk-s3 (1.233.2)
+>       aws-sdk-core (~> 3, >= 3.256.0)
+123c126
+<     aws-sigv4 (1.11.0)
+---
+>     aws-sigv4 (1.12.1)
+129,132c132,135
+<     base64 (0.2.0)
+<     bcrypt (3.1.20)
+<     bigdecimal (3.1.9)
+<     brakeman (7.0.0)
+---
+>     base64 (0.3.0)
+>     bcrypt (3.1.22)
+>     bigdecimal (3.3.1)
+>     brakeman (7.1.2)
+135,136c138,139
+<     bundler-audit (0.9.2)
+<       bundler (>= 1.2.0, < 3)
+---
+>     bundler-audit (0.9.3)
+>       bundler (>= 1.2.0)
+147c150
+<     capybara-screenshot (1.0.26)
+---
+>     capybara-screenshot (1.0.27)
+165c168
+<     config (5.5.2)
+---
+>     config (5.6.1)
+168,169c171,172
+<     connection_pool (2.5.0)
+<     crack (1.0.0)
+---
+>     connection_pool (2.5.5)
+>     crack (1.0.1)
+173c176
+<     cuprite (0.15.1)
+---
+>     cuprite (0.18)
+175c178
+<       ferrum (~> 0.15.0)
+---
+>       ferrum (~> 0.18.0)
+178c181
+<     database_cleaner-active_record (2.2.0)
+---
+>     database_cleaner-active_record (2.2.2)
+180,182c183,185
+<       database_cleaner-core (~> 2.0.0)
+<     database_cleaner-core (2.0.1)
+<     date (3.4.1)
+---
+>       database_cleaner-core (~> 2.0)
+>     database_cleaner-core (2.1.0)
+>     date (3.6.0)
+192,193c195,196
+<     diff-lcs (1.6.0)
+<     diffy (3.4.3)
+---
+>     diff-lcs (1.6.2)
+>     diffy (3.4.4)
+195c198
+<     draper (4.0.4)
+---
+>     draper (4.0.6)
+202,204c205,207
+<     drb (2.2.1)
+<     dry-configurable (1.3.0)
+<       dry-core (~> 1.1)
+---
+>     drb (2.2.3)
+>     dry-configurable (1.4.0)
+>       dry-core (~> 1.0)
+206c209
+<     dry-core (1.1.0)
+---
+>     dry-core (1.2.0)
+210c213
+<     dry-inflector (1.2.0)
+---
+>     dry-inflector (1.3.1)
+225,226c228,229
+<     dry-types (1.8.2)
+<       bigdecimal (~> 3.0)
+---
+>     dry-types (1.9.1)
+>       bigdecimal (>= 3.0)
+232,233c235,236
+<     email_spec (2.3.0)
+<       htmlentities (~> 4.3.3)
+---
+>     email_spec (2.3.1)
+>       htmlentities (~> 4.3)
+235a239
+>     erb (6.0.7)
+237c241,242
+<     execjs (2.10.0)
+---
+>     execjs (2.10.2)
+>       json (>= 2)
+239c244
+<     factory_bot (6.5.1)
+---
+>     factory_bot (6.6.0)
+241c246
+<     factory_bot_rails (6.4.4)
+---
+>     factory_bot_rails (6.5.1)
+243c248
+<       railties (>= 5.0.0)
+---
+>       railties (>= 6.1.0)
+248,250c253,255
+<     faraday-net_http (3.4.0)
+<       net-http (>= 0.5.0)
+<     ferrum (0.15)
+---
+>     faraday-net_http (3.4.4)
+>       net-http (~> 0.5)
+>     ferrum (0.18.0)
+251a257
+>       base64 (~> 0.2)
+253d258
+<       webrick (~> 1.7)
+255c260
+<     ffi (1.17.1)
+---
+>     ffi (1.17.4)
+265,266c270,272
+<     formatador (1.1.0)
+<     globalid (1.2.1)
+---
+>     formatador (1.2.3)
+>       reline
+>     globalid (1.4.0)
+268c274
+<     grape-swagger-rails (0.6.0)
+---
+>     grape-swagger-rails (0.7.0)
+271c277
+<     gretel (5.0.1)
+---
+>     gretel (5.1.0)
+274c280
+<     guard (2.19.1)
+---
+>     guard (2.20.2)
+281d286
+<       ostruct (~> 0.6)
+296c301
+<     haml (6.3.0)
+---
+>     haml (6.4.0)
+300c305
+<     haml_lint (0.61.1)
+---
+>     haml_lint (0.78.0)
+302c307
+<       parallel (~> 1.10)
+---
+>       parallel (>= 1.10)
+310c315
+<     hashdiff (1.1.2)
+---
+>     hashdiff (1.2.1)
+314,315c319,320
+<     htmlentities (4.3.4)
+<     i18n (1.14.7)
+---
+>     htmlentities (4.4.2)
+>     i18n (1.15.2)
+321,322c326,327
+<     io-console (0.8.0)
+<     irb (1.15.1)
+---
+>     io-console (0.9.4)
+>     irb (1.18.0)
+323a329
+>       prism (>= 1.3.0)
+328c334
+<     jquery-rails (4.6.0)
+---
+>     jquery-rails (4.6.1)
+334,335c340,341
+<     json (2.10.2)
+<     language_server-protocol (3.17.0.4)
+---
+>     json (2.21.2)
+>     language_server-protocol (3.17.0.6)
+343c349,350
+<     listen (3.9.0)
+---
+>     listen (3.10.1)
+>       logger
+346,347c353,354
+<     logger (1.6.6)
+<     loofah (2.24.0)
+---
+>     logger (1.7.0)
+>     loofah (2.25.2)
+350,351c357,359
+<     lumberjack (1.2.10)
+<     mail (2.8.1)
+---
+>     lumberjack (1.4.2)
+>     mail (2.9.1)
+>       logger
+356,357c364,365
+<     marcel (1.0.4)
+<     matrix (0.4.2)
+---
+>     marcel (1.2.1)
+>     matrix (0.4.3)
+359c367
+<     mime-types (3.6.1)
+---
+>     mime-types (3.7.0)
+361,362c369,370
+<       mime-types-data (~> 3.2015)
+<     mime-types-data (3.2025.0318)
+---
+>       mime-types-data (~> 3.2025, >= 3.2025.0507)
+>     mime-types-data (3.2026.1006)
+367c375
+<     mini_portile2 (2.8.8)
+---
+>     mini_portile2 (2.8.9)
+371c379,380
+<     mysql2 (0.5.6)
+---
+>     mysql2 (0.5.7)
+>       bigdecimal
+373,374c382,384
+<     net-http (0.6.0)
+<       uri
+---
+>     net-http (0.10.0)
+>       net-protocol (>= 0.3.0)
+>       uri (>= 0.11.1)
+380c390
+<     net-protocol (0.2.2)
+---
+>     net-protocol (0.4.0)
+382c392
+<     net-smtp (0.5.1)
+---
+>     net-smtp (0.5.2)
+384,385c394,395
+<     newrelic_rpm (9.17.0)
+<     nio4r (2.7.4)
+---
+>     newrelic_rpm (9.24.0)
+>     nio4r (2.7.5)
+394c404
+<     ostruct (0.6.1)
+---
+>     ostruct (0.6.3)
+404,405c414,415
+<     parallel (1.26.3)
+<     parser (3.3.7.2)
+---
+>     parallel (1.28.0)
+>     parser (3.3.12.0)
+409c419
+<     pp (0.6.2)
+---
+>     pp (0.6.4)
+412c422
+<     prettyprint (0.2.0)
+---
+>     prettyprint (0.2.1)
+417c427
+<     pry (0.15.2)
+---
+>     pry (0.16.0)
+420c430,431
+<     psych (5.2.3)
+---
+>       reline (>= 0.6.0)
+>     psych (5.5.0)
+423,424c434,435
+<     public_suffix (6.0.1)
+<     puma (6.6.0)
+---
+>     public_suffix (6.0.2)
+>     puma (6.6.1)
+430c441
+<     rack-proxy (0.7.7)
+---
+>     rack-proxy (0.8.3)
+437c448
+<     rackup (2.2.1)
+---
+>     rackup (2.3.1)
+457c468
+<     rails-dom-testing (2.2.0)
+---
+>     rails-dom-testing (2.3.0)
+461,462c472,473
+<     rails-html-sanitizer (1.6.2)
+<       loofah (~> 2.21)
+---
+>     rails-html-sanitizer (1.7.1)
+>       loofah (~> 2.25, >= 2.25.2)
+474c485
+<     rake (13.2.1)
+---
+>     rake (13.4.2)
+478c489,490
+<     rdoc (6.12.0)
+---
+>     rdoc (6.17.0)
+>       erb
+479a492
+>       tsort
+486,487c499,500
+<     regexp_parser (2.10.0)
+<     reline (0.6.0)
+---
+>     regexp_parser (2.13.1)
+>     reline (0.7.0)
+491,494c504,507
+<     responders (3.1.1)
+<       actionpack (>= 5.2)
+<       railties (>= 5.2)
+<     rexml (3.4.1)
+---
+>     responders (3.2.1)
+>       actionpack (>= 7.0)
+>       railties (>= 7.0)
+>     rexml (3.4.4)
+498c511
+<     rspec (3.13.0)
+---
+>     rspec (3.13.2)
+502c515
+<     rspec-core (3.13.3)
+---
+>     rspec-core (3.13.6)
+504c517
+<     rspec-expectations (3.13.3)
+---
+>     rspec-expectations (3.13.5)
+507c520
+<     rspec-mocks (3.13.2)
+---
+>     rspec-mocks (3.13.8)
+518,520c531,533
+<     rspec-support (3.13.2)
+<     rubocop (1.74.0)
+<       json (~> 2.3)
+---
+>     rspec-support (3.13.7)
+>     rubocop (1.92.0)
+>       json (>= 2.3)
+523c536
+<       parallel (~> 1.10)
+---
+>       parallel (>= 1.10)
+526,527c539,540
+<       regexp_parser (>= 2.9.3, < 3.0)
+<       rubocop-ast (>= 1.38.0, < 2.0)
+---
+>       regexp_parser (>= 2.11.3, < 3.0)
+>       rubocop-ast (>= 1.49.0, < 2.0)
+530c543
+<     rubocop-ast (1.41.0)
+---
+>     rubocop-ast (1.50.0)
+532c545,546
+<     rubocop-capybara (2.22.1)
+---
+>       prism (~> 1.7)
+>     rubocop-capybara (2.23.0)
+534,535c548,549
+<       rubocop (~> 1.72, >= 1.72.1)
+<     rubocop-factory_bot (2.27.1)
+---
+>       rubocop (~> 1.81)
+>     rubocop-factory_bot (2.28.0)
+538c552
+<     rubocop-performance (1.24.0)
+---
+>     rubocop-performance (1.27.0)
+540,542c554,556
+<       rubocop (>= 1.72.1, < 2.0)
+<       rubocop-ast (>= 1.38.0, < 2.0)
+<     rubocop-rails (2.30.3)
+---
+>       rubocop (>= 1.89.0, < 2.0)
+>       rubocop-ast (>= 1.47.1, < 2.0)
+>     rubocop-rails (2.38.0)
+546,547c560,561
+<       rubocop (>= 1.72.1, < 2.0)
+<       rubocop-ast (>= 1.38.0, < 2.0)
+---
+>       rubocop (>= 1.89.0, < 2.0)
+>       rubocop-ast (>= 1.44.0, < 2.0)
+551c565
+<     rubocop-rspec (3.5.0)
+---
+>     rubocop-rspec (3.10.2)
+553,554c567,569
+<       rubocop (~> 1.72, >= 1.72.1)
+<     rubocop-rspec_rails (2.31.0)
+---
+>       regexp_parser (>= 2.0)
+>       rubocop (~> 1.86, >= 1.86.2)
+>     rubocop-rspec_rails (2.33.0)
+556c571
+<       rubocop (~> 1.72, >= 1.72.1)
+---
+>       rubocop (~> 1.89)
+572c587
+<     semantic_range (3.1.0)
+---
+>     semantic_range (3.1.1)
+575c590
+<     shoulda-matchers (6.4.0)
+---
+>     shoulda-matchers (6.5.0)
+581c596
+<     simplecov-html (0.13.1)
+---
+>     simplecov-html (0.13.2)
+583,584c598,600
+<     sprockets (4.2.1)
+<       concurrent-ruby (~> 1.0)
+---
+>     sprockets (4.4.1)
+>       concurrent-ruby (~> 1.1)
+>       logger
+593c609
+<     strip_attributes (2.0.0)
+---
+>     strip_attributes (2.0.1)
+610c626
+<     tailwindcss-rails (3.3.1)
+---
+>     tailwindcss-rails (3.3.2)
+613,614c629,630
+<     tailwindcss-ruby (3.4.17)
+<     temple (0.10.3)
+---
+>     tailwindcss-ruby (3.4.19)
+>     temple (0.10.7)
+617c633
+<     terser (1.2.5)
+---
+>     terser (1.2.8)
+619c635
+<     thor (1.3.2)
+---
+>     thor (1.5.0)
+621,622c637,638
+<     tilt (2.6.0)
+<     timeout (0.4.3)
+---
+>     tilt (2.9.0)
+>     timeout (0.6.1)
+626c642
+<     turbo-rails (2.0.13)
+---
+>     turbo-rails (2.0.23)
+631,632c647,648
+<     unicode-display_width (3.1.4)
+<       unicode-emoji (~> 4.0, >= 4.0.4)
+---
+>     unicode-display_width (3.3.0)
+>       unicode-emoji (~> 4.3)
+648c664
+<     webmock (3.25.1)
+---
+>     webmock (3.30.0)
+657c673
+<     webrick (1.9.1)
+---
+>     webrick (1.9.2)
+665c681
+<     zeitwerk (2.7.2)
+---
+>     zeitwerk (2.8.3)
