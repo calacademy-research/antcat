@@ -4,7 +4,7 @@ module References
   class FindDuplicates
     include Service
 
-    attr_private_initialize :target, [min_similarity: 0.5]
+    attr_private_initialize :target, [{ min_similarity: 0.5 }]
 
     def call
       match

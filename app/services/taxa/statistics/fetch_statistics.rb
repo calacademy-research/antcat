@@ -5,7 +5,7 @@ module Taxa
     class FetchStatistics
       include Service
 
-      attr_private_initialize :taxon, [valid_only: false]
+      attr_private_initialize :taxon, [{ valid_only: false }]
 
       def call
         return unless ranks

@@ -30,7 +30,7 @@ class ReferencesController < ApplicationController
       redirect_to reference_path(@reference), notice: "Reference was successfully added."
     else
       @reference_form.collect_errors
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -48,7 +48,7 @@ class ReferencesController < ApplicationController
       redirect_to reference_path(@reference), notice: "Reference was successfully updated."
     else
       @reference_form.collect_errors
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 

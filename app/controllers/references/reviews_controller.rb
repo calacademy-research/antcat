@@ -11,7 +11,7 @@ module References
       reference.update!(review_state: Reference::REVIEW_STATE_REVIEWING)
       reference.create_activity Activity::START_REVIEWING, current_user
 
-      redirect_back fallback_location: references_path
+      redirect_back_or_to(references_path)
     end
 
     def finish
@@ -20,7 +20,7 @@ module References
       reference.update!(review_state: Reference::REVIEW_STATE_REVIEWED)
       reference.create_activity Activity::FINISH_REVIEWING, current_user
 
-      redirect_back fallback_location: references_path
+      redirect_back_or_to(references_path)
     end
 
     def restart
@@ -29,7 +29,7 @@ module References
       reference.update!(review_state: Reference::REVIEW_STATE_REVIEWING)
       reference.create_activity Activity::RESTART_REVIEWING, current_user
 
-      redirect_back fallback_location: references_path
+      redirect_back_or_to(references_path)
     end
 
     def approve_all

@@ -24,7 +24,7 @@ class JournalsController < ApplicationController
       References::Cache::Invalidate[@journal.references]
       redirect_to @journal, notice: "Successfully updated journal."
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 

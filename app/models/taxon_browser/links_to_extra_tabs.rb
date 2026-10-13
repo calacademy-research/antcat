@@ -26,9 +26,9 @@ module TaxonBrowser
           links << ["Without tribe",  Tab::GENERA_WITHOUT_TRIBE]
           links << ["Incertae sedis", Tab::INCERTAE_SEDIS_IN_SUBFAMILY] if taxon.genera_incertae_sedis_in.exists?
         when Tribe
-          links << ["Subtribes",      Tab::SUBTRIBES_IN_TRIBE] if taxon.subtribes.exists?
+          links << ["Subtribes", Tab::SUBTRIBES_IN_TRIBE] if taxon.subtribes.exists?
         when Genus
-          links << ["All taxa",       Tab::ALL_TAXA_IN_GENUS]
+          links << ["All taxa", Tab::ALL_TAXA_IN_GENUS]
           if taxon.subgenera.exists?
             links << ["Subgenera",        Tab::SUBGENERA_IN_GENUS]
             links << ["Without subgenus", Tab::SPECIES_WITHOUT_SUBGENUS]

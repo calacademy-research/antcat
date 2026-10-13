@@ -48,12 +48,10 @@ jobs:
   rspec:
     name: RSpec (MySQL ${{ matrix.mysql }})
     runs-on: ubuntu-24.04
-    # MySQL 8.4 is a trial run ahead of the planned upgrade; it may fail without blocking.
-    continue-on-error: ${{ matrix.mysql != '5.7' }}
     strategy:
       fail-fast: false
       matrix:
-        mysql: ['5.7', '8.4']
+        mysql: ['8.4']
 
     services:
       mysql:

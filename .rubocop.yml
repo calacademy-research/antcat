@@ -9,9 +9,6 @@ plugins:
 
 AllCops:
   NewCops: enable
-  # RuboCop 1.74 does not know Ruby 4.0 (it would read 4.0 from Gemfile.lock and abort).
-  # The code uses no 4.0-only syntax; raise this when RuboCop is upgraded.
-  TargetRubyVersion: 3.4
   ActiveSupportExtensionsEnabled: true
   Exclude:
     - 'bin/**/*'
@@ -218,6 +215,14 @@ Naming/BlockForwarding:
 
 Naming/MemoizedInstanceVariableName:
   EnforcedStyleForLeadingUnderscores: required
+
+# Renaming would change existing APIs: form objects' `save` returns true/false like
+# ActiveRecord's, and `ReferenceDocument#pdf` is existing model API.
+Naming/PredicateMethod:
+  AllowedMethods:
+    - call
+    - pdf
+    - save
 
 Naming/VariableNumber:
   Exclude:
@@ -481,6 +486,11 @@ Style/ClassEqualityComparison:
 
 Style/CollectionMethods:
   Enabled: true
+
+# Disabled because it is unsafe: on Active Record relations `count == 1` -> `one?` changes the
+# SQL that runs, and on arrays `one?`/`many?` ignore falsy elements.
+Style/CollectionQuerying:
+  Enabled: false
 
 Style/CommentAnnotation:
   Keywords:

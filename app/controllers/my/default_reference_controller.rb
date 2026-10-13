@@ -8,8 +8,7 @@ module My
       reference = find_reference
       References::DefaultReference.set(session, reference)
 
-      redirect_back fallback_location: references_path,
-        notice: "#{reference.key_with_suffixed_year} was successfully set as the default reference."
+      redirect_back_or_to(references_path, notice: "#{reference.key_with_suffixed_year} was successfully set as the default reference.")
     end
 
     private

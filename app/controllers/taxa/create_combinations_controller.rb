@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # TODO: Disabled because `new` is step 1 and `show` step 2.
-# rubocop:disable Rails/ActionOrder
+# rubocop:disable-next Rails/ActionOrder
 module Taxa
   class CreateCombinationsController < ApplicationController
     before_action :ensure_user_is_editor
@@ -36,7 +36,7 @@ module Taxa
         redirect_to catalog_path(new_combination), notice: "Successfully created new combination."
       else
         flash.now[:alert] = operation.context.errors.to_sentence
-        render :show, status: :unprocessable_entity
+        render :show, status: :unprocessable_content
       end
     end
 
@@ -65,4 +65,3 @@ module Taxa
       end
   end
 end
-# rubocop:enable Rails/ActionOrder

@@ -28,7 +28,7 @@ class SiteNoticesController < ApplicationController
       Notifications::NotifyMentionedUsers[@site_notice.message, attached: @site_notice, notifier: current_user]
       redirect_to @site_notice, notice: "Successfully created site notice."
     else
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -44,7 +44,7 @@ class SiteNoticesController < ApplicationController
       Notifications::NotifyMentionedUsers[@site_notice.message, attached: @site_notice, notifier: current_user]
       redirect_to @site_notice, notice: "Successfully updated site notice."
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 
@@ -59,8 +59,7 @@ class SiteNoticesController < ApplicationController
 
   def mark_all_as_read
     SiteNotice.mark_as_read! :all, for: current_user
-    redirect_back fallback_location: root_path,
-      notice: "All site notices successfully marked as read."
+    redirect_back_or_to(root_path, notice: "All site notices successfully marked as read.")
   end
 
   private

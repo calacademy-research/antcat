@@ -30,20 +30,20 @@ module FeatureHelpers
   def i_should_see content, within_scope: nil
     if within_scope
       within within_scope do
-        expect(page).to have_content content
+        expect(page).to have_text content
       end
     else
-      expect(page).to have_content content
+      expect(page).to have_text content
     end
   end
 
   def i_should_not_see content, within_scope: nil
     if within_scope
       within within_scope do
-        expect(page).to have_no_content content
+        expect(page).to have_no_text content
       end
     else
-      expect(page).to have_no_content content
+      expect(page).to have_no_text content
     end
   end
 

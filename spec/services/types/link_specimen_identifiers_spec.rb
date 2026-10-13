@@ -7,7 +7,7 @@ describe Types::LinkSpecimenIdentifiers do
     subject(:prefixes) { described_class::SPECIMEN_IDENTIFIER_PREFIXES }
 
     it 'does not contain clashing prefixes' do
-      expect(prefixes.any? { |prefix| prefixes.excluding(prefix).any? { _1.starts_with?(prefix) } }).to eq false
+      expect(prefixes.any? { |prefix| prefixes.excluding(prefix).any? { it.starts_with?(prefix) } }).to eq false
     end
   end
 

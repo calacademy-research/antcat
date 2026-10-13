@@ -34,7 +34,7 @@ class UsersController < ApplicationController
     if @user.save
       redirect_to @user, notice: "Successfully added user."
     else
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -51,7 +51,7 @@ class UsersController < ApplicationController
     if @user.update_without_password user_params.except(:current_password)
       redirect_to @user, notice: "Successfully updated user."
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 

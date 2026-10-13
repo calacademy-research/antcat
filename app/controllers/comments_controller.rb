@@ -25,7 +25,7 @@ class CommentsController < ApplicationController
       highlighted_comment_url = "#{return_to_url}#comment-#{@comment.id}"
       redirect_to highlighted_comment_url, notice: %(<a href="#comment-#{@comment.id}">Comment</a> was successfully added.)
     else
-      redirect_back fallback_location: root_path, notice: "Something went wrong. Email us?"
+      redirect_back_or_to(root_path, notice: "Something went wrong. Email us?")
     end
   end
 
@@ -40,7 +40,7 @@ class CommentsController < ApplicationController
       Notifications::NotifyUsersForComment[@comment]
       redirect_to @comment.commentable, notice: %(<a href="#comment-#{@comment.id}">Comment</a> was successfully updated.)
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 
