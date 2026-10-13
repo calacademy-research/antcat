@@ -30,6 +30,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: chore/puma7-jqueryui-ci84
+          fetch-depth: 0
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: 4.0.7
@@ -37,9 +38,10 @@ jobs:
           bundler-cache: false
       - name: Report
         run: |
+          set +e
           mkdir -p ci-report
           R=ci-report/update-gems.txt
-          git show HEAD~1:Gemfile > /tmp/Gemfile.orig
+          git show origin/master:Gemfile > /tmp/Gemfile.orig
           cp Gemfile /tmp/Gemfile.new
           cp /tmp/Gemfile.orig Gemfile
           bundle config set --local path vendor/bundle
@@ -57,6 +59,7 @@ jobs:
           { echo "== mysql version"; mysql -h127.0.0.1 -P33306 -uroot -proot -e 'select version(), @@character_set_server, @@collation_server' 2>&1; } >> $R || true
           git checkout -- config/database.yml config/server.yml 2>/dev/null || rm -f config/database.yml config/server.yml
       - name: Commit
+        if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
