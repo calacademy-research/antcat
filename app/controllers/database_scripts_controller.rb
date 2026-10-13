@@ -20,7 +20,7 @@ class DatabaseScriptsController < ApplicationController
   def show
     # :nocov:
     if FLUSH_QUERY_CACHE_DEBUG && Rails.env.development?
-      ActiveRecord::Base.connection.execute('FLUSH QUERY CACHE;')
+      ActiveRecord::Base.lease_connection.execute('FLUSH QUERY CACHE;')
     end
     # :nocov:
 

@@ -92,7 +92,15 @@ jobs:
         run: |
           ./bin/yarn install
           ./bin/rails test:prepare
-          bundle exec rspec spec --tag ~pending --order rand --format progress --format json --out tmp/rspec.json
+          bundle exec rspec spec --tag ~pending --order rand --format progress --format json --out tmp/rspec.json 2> >(tee tmp/rspec-stderr.log >&2)
+
+      - name: TEMP deprecation summary
+        if: always()
+        run: |
+          echo "::warning::DEPRECATION lines: $(grep -c DEPRECATION tmp/rspec-stderr.log || true)"
+          grep -h DEPRECATION tmp/rspec-stderr.log | sed -E 's/\(called from .*//' | cut -c1-280 | sort | uniq -c | sort -rn | head -9 | while read -r line; do echo "::warning::$line"; done
+          grep -h -A1 DEPRECATION tmp/rspec-stderr.log | grep -oE 'called from [^ ]+' | sort | uniq -c | sort -rn | head -9 | while read -r line; do echo "::notice::$line"; done
+          grep -hv DEPRECATION tmp/rspec-stderr.log | grep -iE 'warn|deprecat' | cut -c1-280 | sort | uniq -c | sort -rn | head -9 | while read -r line; do echo "::notice::other: $line"; done
 
       - name: Show failing specs as annotations
         if: failure()
