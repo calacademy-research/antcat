@@ -3,7 +3,8 @@
 class ApplicationController < ActionController::Base
   include HttpBasicAuth
 
-  NotAuthorized = Class.new(StandardError)
+  class NotAuthorized < StandardError
+  end
 
   protect_from_forgery with: :exception
 

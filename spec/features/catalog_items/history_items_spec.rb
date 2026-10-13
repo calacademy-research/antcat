@@ -27,12 +27,12 @@ feature "History items" do
   feature "Editing history items", as: :editor do
     def the_history_should_be content
       element = find('[data-taxt-editor-target=presenter]')
-      expect(element).to have_content(content)
+      expect(element).to have_text(content)
     end
 
     def the_history_item_field_should_be content
       element = find('[data-taxt-editor-target=editor]').find('textarea')
-      expect(element).to have_content(content)
+      expect(element).to have_text(content)
     end
 
     scenario "Adding a history item (with edit summary)" do

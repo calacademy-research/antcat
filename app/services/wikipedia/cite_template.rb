@@ -16,7 +16,7 @@ module Wikipedia
     private
 
       def cite_template
-        <<-TEMPLATE.squish
+        <<~TEMPLATE.squish
           {{AntCat|#{taxon.id}|#{taxon_name}|#{year}|accessdate=#{accessdate}}}
         TEMPLATE
       end

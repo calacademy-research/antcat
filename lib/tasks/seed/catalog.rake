@@ -11,6 +11,7 @@ if Rails.env.development? || Rails.env.test?
       require 'sunspot_test'
 
       include FactoryBot::Syntax::Methods
+
       SunspotTest.stub
 
       create :family # Formicidae, the family of all ants.

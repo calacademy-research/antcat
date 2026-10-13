@@ -16,7 +16,7 @@ module Taxa
 
       if @new_parent.nil? && !@taxon.is_a?(Genus)
         flash.now[:alert] = "A parent must be set."
-        render :show, status: :unprocessable_entity
+        render :show, status: :unprocessable_content
         return
       end
 
@@ -25,15 +25,15 @@ module Taxa
         redirect_to catalog_path(@taxon), notice: "Successfully changed the parent."
       else
         flash.now[:alert] = "Something went wrong... ?"
-        render :show, status: :unprocessable_entity
+        render :show, status: :unprocessable_content
       end
     rescue Taxa::InvalidParent, Taxa::TaxonHasSubspecies, Taxa::TaxonHasInfrasubspecies => e
       flash.now[:alert] = e.message
-      render :show, status: :unprocessable_entity
+      render :show, status: :unprocessable_content
     rescue Taxa::TaxonExists => e
       name_links = e.names.map { |name| view_context.link_to(name.name_html, name_path(name)) }
       flash.now[:alert] = "Name conflict: #{name_links.join}"
-      render :show, status: :unprocessable_entity
+      render :show, status: :unprocessable_content
     end
 
     private

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # TODO: Disabled because `new` is step 1 and `show` step 2.
-# rubocop:disable Rails/ActionOrder
+# rubocop:disable-next Rails/ActionOrder
 module Authors
   class MergesController < ApplicationController
     before_action :ensure_user_is_editor
@@ -41,4 +41,3 @@ module Authors
       end
   end
 end
-# rubocop:enable Rails/ActionOrder

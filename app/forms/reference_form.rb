@@ -28,7 +28,7 @@ class ReferenceForm
     { document_attributes: [:id, :file, :url] }
   ]
 
-  attr_private_initialize :reference, :params, [ignore_duplicates: false]
+  attr_private_initialize :reference, :params, [{ignore_duplicates: false}]
 
   def save
     save_reference

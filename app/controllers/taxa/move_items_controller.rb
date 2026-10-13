@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # TODO: Disabled because `new` is step 1 and `show` step 2.
-# rubocop:disable Rails/ActionOrder
+# rubocop:disable-next Rails/ActionOrder
 module Taxa
   class MoveItemsController < ApplicationController
     before_action :ensure_user_is_editor
@@ -25,7 +25,7 @@ module Taxa
 
       if reference_sections.empty?
         flash.now[:alert] = "At least one item must be selected."
-        render :show, status: :unprocessable_entity
+        render :show, status: :unprocessable_content
         return
       end
 
@@ -35,11 +35,11 @@ module Taxa
           notice: "Successfully moved items. Items can be re-ordered at the taxon's edit page."
       else
         flash.now[:alert] = "Something went wrong... ?"
-        render :show, status: :unprocessable_entity
+        render :show, status: :unprocessable_content
       end
     rescue Taxa::Operations::MoveItems::ReferenceSectionsNotSupportedForRank
       flash.now[:alert] = "Rank of target does not support reference sections."
-      render :show, status: :unprocessable_entity
+      render :show, status: :unprocessable_content
     end
 
     private
@@ -57,4 +57,3 @@ module Taxa
       end
   end
 end
-# rubocop:enable Rails/ActionOrder

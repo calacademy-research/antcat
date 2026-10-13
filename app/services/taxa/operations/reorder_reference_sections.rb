@@ -42,7 +42,7 @@ module Taxa
           end
 
           unless current_ids.sort == reordered_ids.sort
-            errors.add :reference_sections, <<-ERROR.squish
+            errors.add :reference_sections, <<~ERROR.squish
               Reordered IDs '#{reordered_ids}' doesn't match current IDs #{current_ids}.
             ERROR
           end

@@ -42,7 +42,7 @@ module Protonyms
           end
 
           unless current_ids.sort == reordered_ids.sort
-            errors.add :history_items, <<-ERROR.squish
+            errors.add :history_items, <<~ERROR.squish
               Reordered IDs '#{reordered_ids}' doesn't match current IDs #{current_ids}.
             ERROR
           end

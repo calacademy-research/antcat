@@ -5,7 +5,8 @@ require_relative 'operation/errors'
 require_relative 'operation/results'
 
 module Operation
-  Failure = Class.new(StandardError)
+  class Failure < StandardError
+  end
 
   def self.included base
     base.instance_eval do

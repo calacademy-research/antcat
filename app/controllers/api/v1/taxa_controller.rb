@@ -4,7 +4,7 @@ module Api
   module V1
     class TaxaController < Api::ApiController
       def index
-        render json: with_limit(Taxon.includes(:name)).map { Api::V1::TaxonSerializer.new(_1) }
+        render json: with_limit(Taxon.includes(:name)).map { Api::V1::TaxonSerializer.new(it) }
       end
 
       def show
@@ -14,7 +14,7 @@ module Api
 
       def junior_synonyms
         taxon = Taxon.find(params[:id])
-        render json: taxon.junior_synonyms.includes(:name).map { Api::V1::TaxonSerializer.new(_1) }
+        render json: taxon.junior_synonyms.includes(:name).map { Api::V1::TaxonSerializer.new(it) }
       end
 
       def search

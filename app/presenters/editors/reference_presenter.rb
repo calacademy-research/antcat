@@ -6,7 +6,7 @@ module Editors
     include ActionView::Helpers
     include IconHelper
 
-    attr_private_initialize :reference, [session: nil]
+    attr_private_initialize :reference, [{session: nil}]
 
     def review_reference_button
       if can_finish_reviewing?

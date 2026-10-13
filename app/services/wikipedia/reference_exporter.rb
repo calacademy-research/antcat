@@ -69,7 +69,7 @@ module Wikipedia
   # |url= |journal= |publisher= |volume= |issue= |pages= |doi= }}
   class ArticleReference < ReferenceExporter
     def format
-      <<-TEMPLATE.squish
+      <<~TEMPLATE.squish
         <ref name="#{reference_name}">{{cite journal
         #{author_params}
         |year=#{reference.year}
@@ -108,7 +108,7 @@ module Wikipedia
       location = reference.publisher.place
       publisher = reference.publisher.name
 
-      <<-TEMPLATE.squish
+      <<~TEMPLATE.squish
         <ref name="#{reference_name}">{{cite book
         #{author_params}
         |year=#{reference.year}

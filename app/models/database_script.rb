@@ -7,7 +7,8 @@ class DatabaseScript
 
   SCRIPTS_DIR = "app/database_scripts/database_scripts"
 
-  ScriptNotFound = Class.new StandardError
+  class ScriptNotFound < StandardError
+  end
 
   attr_accessor :results_runtime
 
@@ -31,7 +32,7 @@ class DatabaseScript
 
     def with_tag tag_or_tags
       tags = Array.wrap(tag_or_tags)
-      all.reject { _1.tags.intersection(tags).empty? }
+      all.reject { it.tags.intersection(tags).empty? }
     end
 
     def non_empty_regression_tests

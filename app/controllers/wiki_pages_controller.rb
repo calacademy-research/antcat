@@ -24,7 +24,7 @@ class WikiPagesController < ApplicationController
       @wiki_page.create_activity Activity::CREATE, current_user, edit_summary: params[:edit_summary]
       redirect_to @wiki_page, notice: "Successfully created wiki page."
     else
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -39,7 +39,7 @@ class WikiPagesController < ApplicationController
       @wiki_page.create_activity Activity::UPDATE, current_user, edit_summary: params[:edit_summary]
       redirect_to @wiki_page, notice: "Successfully updated wiki page."
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 

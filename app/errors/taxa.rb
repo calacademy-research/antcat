@@ -2,8 +2,10 @@
 
 # :nocov:
 module Taxa
-  TaxonHasSubspecies = Class.new(StandardError)
-  TaxonHasInfrasubspecies = Class.new(StandardError)
+  class TaxonHasSubspecies < StandardError
+  end
+  class TaxonHasInfrasubspecies < StandardError
+  end
 
   class TaxonExists < StandardError
     attr_reader :names

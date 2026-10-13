@@ -46,8 +46,7 @@ class ActivitiesController < ApplicationController
     activity = find_activity
     activity.destroy!
 
-    redirect_back fallback_location: root_path,
-      notice: "Activity item ##{activity.id} was successfully deleted."
+    redirect_back_or_to(root_path, notice: "Activity item ##{activity.id} was successfully deleted.")
   end
 
   private

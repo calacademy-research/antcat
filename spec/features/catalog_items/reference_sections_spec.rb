@@ -27,7 +27,7 @@ feature "Reference sections" do
   feature "Editing references sections", as: :editor do
     def the_reference_section_should_be content
       element = first('[data-taxt-editor-target=presenter]')
-      expect(element).to have_content(content)
+      expect(element).to have_text(content)
     end
 
     scenario "Adding a reference section (with edit summary)" do
