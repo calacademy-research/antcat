@@ -1,11 +1,11 @@
-FROM ruby:3.2.1
+FROM ruby:3.4.11
 
 RUN apt-get update -qq && apt-get install -y \
   default-mysql-client \
   nodejs \
   openssh-server
 
-RUN gem install bundler -v '2.3.10'
+RUN gem install bundler -v '2.7.2'
 
 RUN mkdir /var/run/sshd \
   && echo 'root:root' | chpasswd \
