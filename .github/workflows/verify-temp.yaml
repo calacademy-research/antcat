@@ -51,6 +51,7 @@ jobs:
           echo "::notice title=rspec::$(jq -r '.summary_line' tmp/rspec.json) (exit $rc)"
           echo "::notice title=stderr lines::$(wc -l < tmp/stderr.txt)"
           grep -iE "deprecat|warning" tmp/stderr.txt | sed -E 's/:[0-9]+:/:N:/' | sort | uniq -c | sort -rn | head -40 | while read -r l; do echo "::warning title=stderr::${l:0:400}"; done
+          tail -15 tmp/stderr.txt | while read -r l; do echo "::warning title=stderr tail::${l:0:400}"; done
           n=$(grep -ciE "deprecat" tmp/stderr.txt || true)
           echo "::notice title=deprecation lines::$n"
           [ "$rc" = 0 ] && [ "$n" = 0 ]
@@ -76,9 +77,8 @@ jobs:
             -v "$PWD":/app -v "$PWD/dockerized_app/database.yml":/app/config/database.yml \
             -v "$PWD/config/server.yml.example":/app/config/server.yml \
             antcat-app sleep infinity
-          x() { docker exec -e DISABLE_DATABASE_ENVIRONMENT_CHECK=1 antcat-app bash -c "$1" > out.txt 2>&1 || { tail -25 out.txt | while read -r l; do echo "::error title=$2::${l:0:400}"; done; exit 1; }; tail -3 out.txt | while read -r l; do echo "::notice title=$2::${l:0:300}"; done; }
+          x() { docker exec -e DISABLE_DATABASE_ENVIRONMENT_CHECK=1 antcat-app bash -c "$1" > out.txt 2>&1 || { grep -iE "error|fail|warn" out.txt | head -15 | while read -r l; do echo "::error title=$2 (grep)::${l:0:400}"; done; tail -25 out.txt | while read -r l; do echo "::error title=$2::${l:0:400}"; done; exit 1; }; tail -3 out.txt | while read -r l; do echo "::notice title=$2::${l:0:300}"; done; }
           x "chown -R antcat:antcat /app && cd /app && bundle config set --local path vendor/bundle && bundle install" "bundle install"
-          x "cd /app && bundle exec puma --version && ruby -v" "versions"
           x "cd /app && yarn install" "yarn install"
           x "cd /app/app && bundle exec rake assets:precompile" "assets:precompile"
           x "cd /app && ls public/assets/jquery-ui/widgets/ && grep -l 'jQuery UI Autocomplete 1.14.2\|autocomplete' public/assets/jquery-ui/widgets/autocomplete-*.js && grep -o 'jQuery UI [A-Za-z]* 1\.[0-9.]*' public/assets/jquery-ui/widgets/autocomplete-*.js | sort -u; ls public/assets/jquery-ui/core-* 2>&1 || true" "jquery-ui asset"
