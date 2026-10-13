@@ -38,6 +38,7 @@ jobs:
         run: |
           ./bin/yarn install > /dev/null
           ./bin/rails test:prepare > /dev/null
+          mkdir -p tmp
           set +e
           RUBYOPT=-W:deprecated bundle exec rspec spec --tag ~pending --format progress --format json --out tmp/rspec.json > tmp/rspec.out 2> tmp/rspec.err
           status=$?
