@@ -37,3 +37,18 @@
     #taxon-browser-tab-6:checked ~ #taxon-browser-tab-6-content,
     #taxon-browser-tab-7:checked ~ #taxon-browser-tab-7-content
       display: block
+
+  // Long status labels ("unavailable misspelling", "unresolved homonym") are wider than a
+  // 9rem column; with nowrap they spilled over the next column's names. Let such an item
+  // wrap inside its own column (label drops to its own line) and keep it in one column.
+  ul li
+    break-inside: avoid
+  a.unavailable-misspelling, a.unresolved-homonym
+    white-space: normal
+  .unavailable-misspelling::after, .unresolved-homonym::after
+    display: inline-block
+    white-space: nowrap
+    font-size: 0.75rem
+    line-height: 1.2
+    padding: 0 0.25rem
+    border-radius: 3px
