@@ -1,0 +1,143 @@
+# TEMPORARY: deprecation-warning RSpec run and production-image check for chore/remove-paperclip. Removed before merge.
+name: tmp-checks
+on:
+  push:
+    branches: [chore/remove-paperclip]
+env:
+  RAILS_ENV: test
+  NODE_ENV: test
+  DB_PORT: 33306
+  DB_USER: root
+  DB_PASSWORD: root
+jobs:
+  rspec-deprecations:
+    runs-on: ubuntu-24.04
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 33306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "16.19.0"
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 4.0.7
+          bundler-cache: true
+      - name: Setup database
+        run: |
+          cp config/database.github-actions.yml config/database.yml
+          cp config/server.yml.example config/server.yml
+          bundle exec rails db:create db:schema:load
+      - name: RSpec with RUBYOPT=-W:deprecated
+        run: |
+          ./bin/yarn install > /dev/null
+          ./bin/rails test:prepare > /dev/null
+          set +e
+          RUBYOPT=-W:deprecated bundle exec rspec spec --tag ~pending --format progress --format json --out tmp/rspec.json > tmp/rspec.out 2> tmp/rspec.err
+          status=$?
+          set -e
+          jq -r '.summary_line' tmp/rspec.json | sed 's/^/::notice title=rspec summary::/'
+          jq -r '.examples[]|select(.status=="failed")|.file_path+":"+(.line_number|tostring)+" "+.exception.class+": "+((.exception.message // "")|split("\n")|map(select(length>0))|.[0] // "")[0:250]' tmp/rspec.json | head -15 | sed 's/^/::error title=failed spec::/'
+          count=$(cat tmp/rspec.out tmp/rspec.err | grep -ciE "deprecat" || true)
+          echo "::notice title=deprecation lines::$count"
+          cat tmp/rspec.out tmp/rspec.err | grep -iE "deprecat" | sed -E 's/[0-9]+//g' | sort | uniq -c | sort -rn | head -10 | cut -c1-300 | sed 's/^/::error title=deprecation::/'
+          grep -iE "warning" tmp/rspec.err | sort | uniq -c | sort -rn | head -10 | cut -c1-300 | sed 's/^/::warning title=stderr warning::/'
+          [ "$status" -eq 0 ] && [ "$count" -eq 0 ]
+
+  prod-image:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build image
+        run: docker build -t antcat-app:check -f dockerized_app/Dockerfile dockerized_app 2>&1 | tail -20
+      - name: Start MySQL 8.4
+        run: |
+          docker network create antcat
+          docker run -d --name db --network antcat -e MYSQL_ROOT_PASSWORD=root mysql:8.4 --mysql-native-password=ON
+          for i in $(seq 1 60); do docker exec db mysqladmin ping -uroot -proot --silent && break; sleep 2; done
+      - name: Run startup.sh steps (RAILS_ENV=production) and check ReferenceDocument
+        run: |
+          cp config/settings/production.secret.yml.example config/settings/production.secret.yml
+          sudo chown -R 1000:1001 .
+          cat > "$RUNNER_TEMP/check.rb" <<'RB'
+          # Stub credentials only; presigning is local, no request is sent to S3.
+          Settings.s3.access_key_id = 'AKIASTUBSTUBSTUBSTUB'
+          Settings.s3.secret_access_key = 'stubsecret'
+          Settings.s3.bucket = 'antcat'
+          Settings.s3.region = 'us-east-1'
+          References::DocumentStorage.reset_client!
+          puts "gems: paperclip=#{Gem.loaded_specs.key?('paperclip')} webrick=#{Gem.loaded_specs.key?('webrick')} mimemagic=#{Gem.loaded_specs.key?('mimemagic')}"
+          reference = ArticleReference.new(title: 'Check', year: 2000, pagination: '1', series_volume_issue: '1',
+            journal: Journal.create!(name: 'Check Journal'), author_names: [AuthorName.new(name: 'Check, A.', author: Author.new)])
+          reference.save!(validate: false)
+          document = ReferenceDocument.create!(reference: reference, file_file_name: 'check.pdf')
+          puts "routed_url: #{document.routed_url}"
+          url = document.actual_url
+          puts "presigned: #{url.sub(/Signature=\h+/, 'Signature=...')}"
+          uri = URI.parse(url)
+          query = Rack::Utils.parse_query(uri.query)
+          abort "bad presigned URL" unless uri.scheme == 'https' && uri.host == 'antcat.s3.amazonaws.com' &&
+            uri.path == "/#{document.id}/check.pdf" && query['X-Amz-Expires'] == '86400'
+          File.write('/tmp/doc_id', document.id.to_s)
+          puts "presigned ok"
+          RB
+          cat > "$RUNNER_TEMP/steps.sh" <<'SH'
+          set -o pipefail
+          cd /app
+          step() { echo "=== $1"; }
+          step "bundle install"
+          bundle config set --local path vendor/bundle
+          bundle install 2>&1 | tail -3 || exit 11
+          step "yarn install"
+          yarn install > /tmp/yarn.log 2>&1 || { tail -20 /tmp/yarn.log; exit 12; }
+          step "db"
+          DISABLE_DATABASE_ENVIRONMENT_CHECK=1 bundle exec rails db:create db:schema:load 2>&1 | tail -3 || exit 13
+          step "assets:precompile"
+          (cd /app/app && bundle exec rake assets:precompile) > /tmp/precompile.log 2>&1 || { tail -40 /tmp/precompile.log; exit 14; }
+          step "eager load + ReferenceDocument presign"
+          bundle exec rails runner 'Rails.application.eager_load!; puts "eager_load ok #{Rails.env}"' 2>&1 | tail -5 || exit 15
+          RUBYOPT=-W:deprecated bundle exec rails runner /check.rb 2>&1 | tee /tmp/check.log || exit 16
+          grep -q "presigned ok" /tmp/check.log || exit 16
+          step "unconfigured S3 (empty keys, as in production.secret.yml.example)"
+          bundle exec rails runner 'd = ReferenceDocument.last; begin; d.actual_url; puts "UNEXPECTED"; rescue References::DocumentStorage::NotConfigured => e; puts "not configured ok: #{e.message}"; end' 2>&1 | tail -3 | tee /tmp/unconf.log
+          grep -q "not configured ok" /tmp/unconf.log || exit 17
+          step "solr"
+          bundle exec rails sunspot:solr:start 2>&1 | tail -3 || exit 18
+          step "rails s"
+          bundle exec rails s -p 8080 -b 0.0.0.0 > /tmp/server.log 2>&1 &
+          for i in $(seq 1 60); do curl -s -o /dev/null localhost:8080 && break; sleep 2; done
+          fail=0
+          id=$(cat /tmp/doc_id 2>/dev/null || echo 1)
+          for path in / /references /references/$(bundle exec rails runner 'print ReferenceDocument.last.reference_id' 2>/dev/null); do
+            code=$(curl -s -o /dev/null -w '%{http_code}' -H 'X-Forwarded-Proto: https' "localhost:8080$path")
+            echo "$path -> $code"
+            case "$code" in 2*|3*) ;; *) fail=1;; esac
+          done
+          code=$(curl -s -o /tmp/doc.txt -w '%{http_code}' -H 'X-Forwarded-Proto: https' "localhost:8080/documents/$id/check.pdf")
+          echo "/documents/$id/check.pdf (no S3 keys) -> $code $(cat /tmp/doc.txt)"
+          [ "$code" = "503" ] || fail=1
+          grep -ciE "deprecat" /tmp/precompile.log /tmp/server.log /tmp/check.log || true
+          grep -iE "deprecat" /tmp/precompile.log /tmp/server.log /tmp/check.log | head -10
+          grep -iE "error|exception" /tmp/server.log | head -10
+          exit $fail
+          SH
+          set +e
+          docker run --name app --network antcat \
+            -v "$PWD":/app -v "$PWD/dockerized_app/database.yml":/app/config/database.yml \
+            -v "$PWD/config/server.yml.example":/app/config/server.yml \
+            -v "$RUNNER_TEMP/steps.sh":/steps.sh:ro -v "$RUNNER_TEMP/check.rb":/check.rb:ro \
+            -e RAILS_ENV=production -e DB_USERNAME=root -e DB_PASSWORD=root -e DB_DATABASE=antcat \
+            -e DB_PORT=3306 -e DB_HOST=db -e NO_DEV_MONKEY_PATCHES=y \
+            antcat-app:check bash /steps.sh > "$RUNNER_TEMP/out.log" 2>&1
+          status=$?
+          set -e
+          cat "$RUNNER_TEMP/out.log"
+          grep -E "^(===|/| -> )|eager_load|gems:|routed_url|presigned|not configured|-> [0-9]{3}" "$RUNNER_TEMP/out.log" | head -40 | cut -c1-400 | sed 's/^/::notice title=prod check::/'
+          grep -iE "deprecat|error" "$RUNNER_TEMP/out.log" | head -20 | cut -c1-300 | sed 's/^/::warning title=prod check log::/'
+          if [ $status -ne 0 ]; then tail -25 "$RUNNER_TEMP/out.log" | cut -c1-300 | sed 's/^/::error title=prod check failed (exit '$status')::/'; exit 1; fi
