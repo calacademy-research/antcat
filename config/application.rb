@@ -19,16 +19,6 @@ Bundler.require(*Rails.groups)
 
 module AntCat
   class Application < Rails::Application
-    config.before_configuration do
-      # TODO: Fix for gems that still use `File.exists?`.
-      # See https://docs.ruby-lang.org/en/master/NEWS/NEWS-3_2_0_md.html#label-Removed+methods
-      unless File.respond_to?(:exists?)
-        class << File
-          alias_method :exists?, :exist?
-        end
-      end
-    end
-
     # Initialize configuration defaults for originally generated Rails version.
     # 7.1 -> 8.1 (2026-10) needed no overrides; session/cookie settings are unchanged since 7.1.
     # Notable: YJIT on outside dev/test, `Regexp.timeout = 1` (s), path-relative redirects raise.

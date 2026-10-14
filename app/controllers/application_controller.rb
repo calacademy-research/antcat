@@ -15,6 +15,13 @@ class ApplicationController < ActionController::Base
   delegate :editor?, :at_least_helper?, :superadmin?, :developer?, to: :current_user, prefix: 'user_is', allow_nil: true
   helper_method :user_is_editor?, :user_is_at_least_helper?, :user_is_superadmin?, :user_is_developer?
 
+  # Bots ask for HTML-only pages as JSON or XML (e.g. `/` with `Accept: application/json`).
+  # Answer "406 Not Acceptable" instead of a 500 from the missing template.
+  rescue_from ActionView::MissingTemplate do |exception|
+    raise exception if request.format.html?
+    head :not_acceptable
+  end
+
   rescue_from NotAuthorized do |exception|
     render plain: "You need the '#{exception.message}' permission to do that :(", status: :forbidden
   end

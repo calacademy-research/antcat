@@ -57,6 +57,8 @@ services:
       DB_PORT: 3306
       DB_HOST: db
       NO_DEV_MONKEY_PATCHES: "y"
+      # Puma worker processes (config/puma.rb); 0 = single process. Set ANTCAT_WEB_CONCURRENCY in .env.
+      WEB_CONCURRENCY: ${ANTCAT_WEB_CONCURRENCY:-0}
     volumes:
       - ..:/app
       - ./database.yml:/app/config/database.yml

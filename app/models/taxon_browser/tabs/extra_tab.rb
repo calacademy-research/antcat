@@ -10,8 +10,25 @@ module TaxonBrowser
     class ExtraTab < Tab
       attr_reader :title
 
+      # The taxon method each view needs. `?view=` is a URL param, so it can name a view
+      # that does not apply to the taxon's rank (e.g. `all_taxa_in_genus` on a species).
+      REQUIRED_TAXON_METHOD = {
+        INCERTAE_SEDIS_IN_FAMILY => :genera_incertae_sedis_in,
+        INCERTAE_SEDIS_IN_SUBFAMILY => :genera_incertae_sedis_in,
+        GENERA_WITHOUT_TRIBE => :genera_without_tribe,
+        ALL_GENERA_IN_FAMILY => :genera,
+        ALL_GENERA_IN_SUBFAMILY => :genera,
+        ALL_TAXA_IN_GENUS => :species_group_children,
+        SUBGENERA_IN_GENUS => :subgenera,
+        SUBGENERA_IN_PARENT_GENUS => :genus,
+        SPECIES_WITHOUT_SUBGENUS => :species_without_subgenus,
+        SUBTRIBES_IN_TRIBE => :subtribes,
+        SUBTRIBES_IN_PARENT_TRIBE => :tribe
+      }.freeze
+
       def self.create taxon, view, taxon_browser
         return if view.blank?
+        return unless applies_to?(taxon, view)
 
         name_html = taxon.name_with_fossil
 
@@ -45,12 +62,17 @@ module TaxonBrowser
 
           when SUBTRIBES_IN_PARENT_TRIBE # Like above, but for subtribe catalog pages.
             ["#{taxon.tribe.name_with_fossil} subtribes", taxon.tribe.subtribes]
-
-          else
-            raise "Unknown view option '#{view}' for <#{taxon.type} id: #{taxon.id}>"
           end
 
         new(title, taxa_in_tab, taxon_browser)
+      end
+
+      def self.applies_to? taxon, view
+        method = REQUIRED_TAXON_METHOD[view]
+        return false unless method && taxon.respond_to?(method)
+        # Views that go through the parent need a parent (e.g. a subgenus whose genus is missing).
+        return taxon.public_send(method).present? if method.in?([:genus, :tribe])
+        true
       end
 
       def initialize title, taxa_in_tab, taxon_browser
