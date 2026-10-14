@@ -96,7 +96,7 @@ export default class extends ApplicationController {
   delete(event) {
     event.preventDefault()
 
-    if (!confirm("Are you sure?")) { // eslint-disable-line no-restricted-globals
+    if (!confirm("Are you sure?")) {
       return
     }
 
