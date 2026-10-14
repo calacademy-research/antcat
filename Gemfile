@@ -36,7 +36,6 @@ gem 'jquery-ui-rails', '~> 8.0'
 gem 'ledermann-rails-settings'
 gem 'newrelic_rpm'
 gem 'nokogiri' # force_ruby_platform removed on antcat-prod so the precompiled gem is used
-gem 'paperclip'
 gem 'paper_trail', '~> 17.0'
 # WARNING: Both this and ruby-progressbar define `ProgressBar`; this one is for `rake sunspot:solr:reindex`.
 # progress_bar is hardcoded in sunspot_rails, and ruby-progressbar is a dependency of rubocop... hehe.
@@ -53,9 +52,6 @@ gem 'tailwindcss-rails', '< 4'
 gem 'turbo-rails'
 gem 'unread'
 gem 'view_component'
-# NOTE: webrick is required for `ReferenceDocument#actual_url`, but specs may incorrectly pass even after removing
-# webrick from here if it happens to be loaded as a dependency for gems in the :test group (for example cucumber-rails).
-gem 'webrick'
 gem 'will_paginate'
 
 group :development do

@@ -103,7 +103,68 @@ describe ReferencesController do
         to change { Reference.count }.by(1).
         and change { ReferenceDocument.count }.by(1)
 
-      expect(Reference.last.document.file_file_name).to eq 'test_pdf.pdf'
+      document = Reference.last.document
+      expect(document.file_file_name).to eq 'test_pdf.pdf'
+
+      put_requests = s3_requests(:put_object)
+      expect(put_requests.size).to eq 1
+      expect(put_requests.first[:params]).to include(
+        bucket: 'antcat_test',
+        key: "#{document.id}/test_pdf.pdf",
+        acl: 'authenticated-read',
+        content_type: 'application/pdf'
+      )
+      expect(put_requests.first[:params][:body].path).to be_present
+    end
+  end
+
+  describe "PUT update with a document", as: :helper do
+    let!(:reference) { create :article_reference, :with_author_name }
+    let(:base_params) do
+      {
+        title: reference.title,
+        author_names_string: reference.author_names_string,
+        journal_name: reference.journal.name,
+        pagination: reference.pagination
+      }
+    end
+
+    context 'when the document only has a `url`' do
+      let!(:document) { create :reference_document, :with_deprecated_url, reference: reference }
+
+      it 'updates the `url` without touching S3' do
+        params = {
+          reference_type: reference.type,
+          id: reference.id,
+          reference: base_params.merge(document_attributes: { id: document.id, url: 'http://localhost/updated.pdf' })
+        }
+
+        put(:update, params: params)
+
+        expect(document.reload.url).to eq 'http://localhost/updated.pdf'
+        expect(document.file_file_name).to eq nil
+        expect(s3_requests(:put_object).size).to eq 1 # Only the factory's upload (before `url` replaced the file).
+      end
+
+      it 'replaces the `url` with an uploaded file' do
+        params = {
+          reference_type: reference.type,
+          id: reference.id,
+          reference: base_params.merge(
+            document_attributes: {
+              id: document.id,
+              url: document.url,
+              file: Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/test_pdf.pdf'), 'application/pdf')
+            }
+          )
+        }
+
+        put(:update, params: params)
+
+        expect(document.reload.url).to eq nil
+        expect(document.file_file_name).to eq 'test_pdf.pdf'
+        expect(s3_requests(:put_object).last[:params][:key]).to eq "#{document.id}/test_pdf.pdf"
+      end
     end
   end
 
