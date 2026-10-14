@@ -47,7 +47,8 @@ jobs:
           log="$RUNNER_TEMP/build-assets.log"
           ./bin/yarn build --log-level=warning 2> "$log" || true
           ./bin/yarn build:css 2>> "$log" || true
-          if [ -s "$log" ]; then
+          # Tailwind prints a banner and timing to stderr, so look for actual warnings/errors.
+          if grep -qiE "warning|error|deprecat" "$log"; then
             cat "$log"
             grep -m 10 -iE "warning|error" "$log" | sed 's/^/::error title=Asset build::/'
             exit 1
