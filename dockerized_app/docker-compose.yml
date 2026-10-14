@@ -31,7 +31,8 @@ services:
     container_name: antcat-solr
     environment:
       SOLR_MODE: user-managed
-      SOLR_HEAP: 512m
+      # The index is ~50 MB; 256 MB heap leaves memory for Puma workers (antcat-prod has 4 GB).
+      SOLR_HEAP: ${ANTCAT_SOLR_HEAP:-256m}
     volumes:
       - ../solr/configsets/antcat:/configsets/antcat:ro
       - solr-data:/var/solr
@@ -57,6 +58,8 @@ services:
       DB_PORT: 3306
       DB_HOST: db
       NO_DEV_MONKEY_PATCHES: "y"
+      # Puma worker processes (config/puma.rb); 0 = single process. Set ANTCAT_WEB_CONCURRENCY in .env.
+      WEB_CONCURRENCY: ${ANTCAT_WEB_CONCURRENCY:-0}
     volumes:
       - ..:/app
       - ./database.yml:/app/config/database.yml
