@@ -1,4 +1,4 @@
 web: bin/rails server -p ${SERVER_PORT:-3000}
 js: yarn build --watch
-css: bin/rails tailwindcss:watch
-sass: yarn build:css --watch
+sass: yarn build:sass --watch
+tailwind: yarn build:tailwind --watch

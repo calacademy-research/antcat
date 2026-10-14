@@ -18,9 +18,10 @@ window.AntCat.notifyError = (message) => { window.AntCat.notifier.alert(message,
 
 window.Turbo = Turbo
 
-Turbo.setProgressBarDelay(50)
-
-Turbo.session.drive = false
+// Turbo 8 settings. Drive is off site-wide, so Turbo 8's hover prefetching never runs either
+// (it is also switched off in the layout with `<meta name="turbo-prefetch" content="false">`).
+Turbo.config.drive.progressBarDelay = 50
+Turbo.config.drive.enabled = false
 const DEV_LOG_TURBO_EVENTS = false
 // const DEV_LOG_TURBO_EVENTS = true // Uncomment for debugging.
 

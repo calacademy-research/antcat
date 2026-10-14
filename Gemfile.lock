@@ -595,10 +595,6 @@ GEM
     tabulo (3.0.3)
       tty-screen (= 0.8.2)
       unicode-display_width (~> 3.0)
-    tailwindcss-rails (3.3.2)
-      railties (>= 7.0.0)
-      tailwindcss-ruby (~> 3.0)
-    tailwindcss-ruby (3.4.19)
     temple (0.10.7)
     terser (1.2.8)
       execjs (>= 0.3.0, < 3)
@@ -715,7 +711,6 @@ DEPENDENCIES
   sunspot_solr (= 2.2.0)
   sunspot_test
   tabulo
-  tailwindcss-rails (< 4)
   terser
   turbo-rails
   unread

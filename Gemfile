@@ -46,8 +46,6 @@ gem 'stimulus-rails'
 gem 'strip_attributes'
 gem 'sunspot_rails'
 gem 'sunspot_solr', '2.2.0'
-# TODO: Upgrade guide: https://github.com/rails/tailwindcss-rails/blob/main/README.md#upgrading-your-application-from-tailwind-v3-to-v4
-gem 'tailwindcss-rails', '< 4'
 gem 'turbo-rails'
 gem 'unread'
 gem 'view_component'
