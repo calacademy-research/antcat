@@ -29,8 +29,7 @@ Rails.application.configure do
 
   config.assets.js_compressor = :terser
 
-  # Compress CSS using a preprocessor.
-  # TODO: Disabled `:sass` because it conflicts with Tailwind, see https://github.com/rails/tailwindcss-rails#conflict-with-sassc-rails
+  # CSS is built by dart-sass (`yarn build:css`) and Tailwind before Sprockets sees it; no Sprockets CSS compressor.
   config.assets.css_compressor = nil
 
   # Do not fall back to assets pipeline if a precompiled asset is missed.

@@ -52,9 +52,7 @@
 .idea
 *.DS_Store
 
-# Webpacker.
-/public/packs
-/public/packs-test
+# JavaScript and CSS builds go to app/assets/builds (ignored below).
 /node_modules
 /yarn-error.log
 yarn-debug.log*

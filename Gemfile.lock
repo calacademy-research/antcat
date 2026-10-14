@@ -155,13 +155,6 @@ GEM
     coderay (1.1.3)
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
-    coffee-rails (5.0.0)
-      coffee-script (>= 2.2.0)
-      railties (>= 5.2.0)
-    coffee-script (2.4.1)
-      coffee-script-source
-      execjs
-    coffee-script-source (1.12.2)
     colorize (1.1.0)
     concurrent-ruby (1.3.8)
     config (5.6.1)
@@ -172,6 +165,8 @@ GEM
       bigdecimal
       rexml
     crass (1.0.7)
+    cssbundling-rails (1.4.3)
+      railties (>= 6.0.0)
     cuprite (0.18)
       capybara (~> 3.0)
       ferrum (~> 0.18.0)
@@ -336,6 +331,8 @@ GEM
       thor (>= 0.14, < 2.0)
     jquery-ui-rails (8.0.1)
       railties (>= 3.2.16)
+    jsbundling-rails (1.3.1)
+      railties (>= 6.0.0)
     json (2.21.2)
     language_server-protocol (3.17.0.6)
     launchy (3.1.1)
@@ -424,8 +421,6 @@ GEM
     rack (3.2.7)
     rack-cors (2.0.2)
       rack (>= 2.0.0)
-    rack-proxy (0.8.3)
-      rack
     rack-session (2.1.2)
       base64 (>= 0.1.0)
       rack (>= 3.0.0)
@@ -561,16 +556,7 @@ GEM
     ruby_parser (3.22.0)
       racc (~> 1.5)
       sexp_processor (~> 4.16)
-    sassc (2.4.0)
-      ffi (~> 1.9)
-    sassc-rails (2.1.2)
-      railties (>= 4.0.0)
-      sassc (>= 2.0)
-      sprockets (> 3.0)
-      sprockets-rails
-      tilt
     securerandom (0.4.1)
-    semantic_range (3.1.1)
     sexp_processor (4.17.6)
     shellany (0.0.1)
     shoulda-matchers (6.5.0)
@@ -649,11 +635,6 @@ GEM
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
-    webpacker (6.0.0.rc.6)
-      activesupport (>= 5.2)
-      rack-proxy (>= 0.6.1)
-      railties (>= 5.2)
-      semantic_range (>= 2.3.0)
     websocket-driver (0.8.2)
       base64
       websocket-extensions (>= 0.1.0)
@@ -675,9 +656,9 @@ DEPENDENCIES
   bundler-audit
   capybara
   capybara-screenshot
-  coffee-rails
   colorize
   config
+  cssbundling-rails
   cuprite
   database_cleaner
   devise
@@ -698,6 +679,7 @@ DEPENDENCIES
   jquery-atwho-rails
   jquery-rails
   jquery-ui-rails (~> 8.0)
+  jsbundling-rails
   ledermann-rails-settings
   mysql2
   newrelic_rpm
@@ -724,7 +706,6 @@ DEPENDENCIES
   rubocop-rspec_rails
   ruby-progressbar
   rubycritic (> 4)!
-  sassc-rails
   shoulda-matchers
   simplecov
   sprockets-rails
@@ -740,7 +721,6 @@ DEPENDENCIES
   unread
   view_component
   webmock
-  webpacker (= 6.0.0.rc.6)
   will_paginate
 
 RUBY VERSION

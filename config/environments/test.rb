@@ -25,7 +25,7 @@ Rails.application.configure do
     "Cache-Control" => "public, max-age=#{1.hour.to_i}"
   }
 
-  # TODO: Disabled `:sass` because it conflicts with Tailwind, see https://github.com/rails/tailwindcss-rails#conflict-with-sassc-rails
+  # CSS is built by dart-sass (`yarn build:css`) and Tailwind before Sprockets sees it; no Sprockets CSS compressor.
   config.assets.css_compressor = nil
 
   # Show full error reports and disable caching.

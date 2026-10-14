@@ -1,23 +1,25 @@
 {
   "env": {
     "browser": true,
-    "es2021": true
+    "es2022": true
   },
   "extends": [
     "airbnb-base"
   ],
   "parserOptions": {
-    "ecmaVersion": 12,
+    "ecmaVersion": 2022,
     "sourceType": "module"
   },
-  "parser": "@babel/eslint-parser",
   "globals": {
     "AntCat": "readonly"
   },
   "rules": {
     "consistent-return": "off",
     "class-methods-use-this": "off",
-    "dot-location": ["error", "object"],
+    "dot-location": [
+      "error",
+      "object"
+    ],
     "func-names": "off",
     "import/no-unresolved": "off",
     "key-spacing": "off",
@@ -27,12 +29,52 @@
     "no-else-return": "off",
     "no-param-reassign": "off",
     "no-underscore-dangle": "off",
-    "no-unused-expressions": ["error", { "allowShortCircuit": true }],
-    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "no-unused-expressions": [
+      "error",
+      {
+        "allowShortCircuit": true
+      }
+    ],
+    "no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_"
+      }
+    ],
     "operator-linebreak": "off",
     "quotes": "off",
     "radix": "off",
-    "semi": ["error", "never"],
+    "semi": [
+      "error",
+      "never"
+    ],
     "space-before-function-paren": "off"
-  }
+  },
+  "overrides": [
+    {
+      "files": [
+        "app/assets/javascripts/**/*.js"
+      ],
+      "parserOptions": {
+        "sourceType": "script"
+      },
+      "env": {
+        "jquery": true
+      },
+      "globals": {
+        "Bloodhound": "readonly"
+      }
+    },
+    {
+      "files": [
+        "app/javascript/controllers/application.js",
+        "app/javascript/controllers/index.js"
+      ],
+      "rules": {
+        "import/first": "off",
+        "import/newline-after-import": "off",
+        "import/prefer-default-export": "off"
+      }
+    }
+  ]
 }

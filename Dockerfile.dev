@@ -15,8 +15,6 @@ RUN useradd --uid ${ANTCAT_UID} --system --create-home --no-log-init --gid ${ANT
 RUN mkdir -p /usr/share/man/man1
 
 RUN apt-get update -qq && apt-get install -y \
-  nodejs \
-  npm \
   git \
   curl \
   vim \
@@ -25,6 +23,11 @@ RUN apt-get update -qq && apt-get install -y \
   libyaml-dev \
   default-mysql-client \
   default-jre-headless
+
+# Node.js 22 LTS, for the asset build (esbuild, dart-sass) and as the ExecJS runtime for terser.
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
+    && apt-get install -y nodejs \
+    && node --version
 
 # TODO: Do not use apt-get.
 # Install Chromedriver (for RSpec Capybara specs).
