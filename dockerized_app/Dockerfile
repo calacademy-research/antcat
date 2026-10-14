@@ -24,13 +24,11 @@ RUN apt-get update -qq && apt-get install -y \
   default-mysql-client \
   default-jre-headless
 
-# Explicitly install Node.js 16.19.0
-RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - \
+# Node.js 22 LTS, for the asset build (esbuild, dart-sass) and as the ExecJS runtime for terser.
+# package.json `engines` rejects any other major version.
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
     && apt-get install -y nodejs \
-    && npm install -g n \
-    && n 16.19.0 \
-    && apt-get purge -y nodejs \
-    && apt-get install -y nodejs=16.19.0-1nodesource1
+    && node --version
 
 RUN gem install bundler --version "$BUNDLER_VERSION"
 RUN npm install -g yarn

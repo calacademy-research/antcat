@@ -1,3 +1,6 @@
+@use "sass:color";
+@use "variables" as *;
+
 #awn-popup-wrapper {
   position: fixed;
   left: 0;
@@ -82,7 +85,7 @@
       background: $awn-success-color;
 
       &:hover {
-        background: darken($awn-success-color, 5%);
+        background: color.adjust($awn-success-color, $lightness: -5%);
       }
     }
 
@@ -90,7 +93,7 @@
       background: $awn-info-color;
 
       &:hover {
-        background: darken($awn-info-color, 5%);
+        background: color.adjust($awn-info-color, $lightness: -5%);
       }
     }
   }

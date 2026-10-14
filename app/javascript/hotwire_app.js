@@ -1,8 +1,11 @@
-import { Application } from "@hotwired/stimulus"
 import { Turbo } from "@hotwired/turbo-rails"
-import { definitionsFromContext } from "@hotwired/stimulus-webpack-helpers"
 
 import AWN from "awesome-notifications"
+
+// Starts Stimulus (exposed as `window.Stimulus`) and registers all controllers. Controllers connect
+// once the DOM is ready, after this file has run. `controllers/index.js` is generated: run
+// `./bin/rails stimulus:manifest:update` after adding a controller.
+import "./controllers"
 
 window.AntCat = window.AntCat || {}
 window.AntCat.notifier = new AWN({
@@ -14,14 +17,6 @@ window.AntCat.notifySuccess = (message) => { window.AntCat.notifier.success(mess
 window.AntCat.notifyError = (message) => { window.AntCat.notifier.alert(message, {}) }
 
 window.Turbo = Turbo
-
-const application = Application.start()
-
-application.debug = false
-window.Stimulus = application
-
-const context = require.context("./controllers", true, /\.js$/)
-Stimulus.load(definitionsFromContext(context)) // eslint-disable-line no-undef
 
 Turbo.setProgressBarDelay(50)
 

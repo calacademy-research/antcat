@@ -6,12 +6,11 @@ module.exports = {
   content: [
     './public/*.html',
     './app/assets/images/icons/**/*.svg',
-    './app/assets/javascripts/**/*.{js,coffee}',
+    './app/assets/javascripts/**/*.js',
     './app/components/**/*.{erb,haml,html,slim,rb}',
     './app/decorators/**/*.rb',
     './app/helpers/**/*.rb',
     './app/javascript/**/*.js',
-    './app/javascript/**/*.{js,coffee}',
     './app/presenters/**/*.rb',
     './app/views/**/*.{erb,haml,html,slim}'
   ],

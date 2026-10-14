@@ -1,3 +1,5 @@
+@use "colors" as *
+
 .references-controller
   #reference-type-css-tabs
     input.tab-input
@@ -21,5 +23,5 @@
 
   #article-tab:checked ~ #article-tab-content,
   #book-tab:checked    ~ #book-tab-content,
-  #nested-tab:checked  ~ #nested-tab-content,
+  #nested-tab:checked  ~ #nested-tab-content
     display: block
