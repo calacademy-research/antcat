@@ -677,6 +677,7 @@ DEPENDENCIES
   jquery-ui-rails (~> 8.0)
   jsbundling-rails
   ledermann-rails-settings
+  marcel
   mysql2
   newrelic_rpm
   nokogiri

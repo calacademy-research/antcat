@@ -4,6 +4,9 @@
 @config '../../../config/tailwind.config.js';
 @import './_tailwind_v3_palette.css';
 
+/* Was a `raw` screen in the JS config (v3). */
+@custom-variant nottiny (@media (min-height: 640px) and (min-width: 640px));
+
 /* v3 font-size line heights were absolute (rem); v4 uses ratios, which children with a different
    font size inherit differently. Keep the v3 values. */
 @theme {

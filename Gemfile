@@ -33,6 +33,8 @@ gem 'jquery-atwho-rails'
 gem 'jquery-rails'
 gem 'jquery-ui-rails', '~> 8.0'
 gem 'ledermann-rails-settings'
+# File type detection for uploaded reference PDFs (no longer loaded via Active Storage).
+gem 'marcel'
 gem 'newrelic_rpm'
 gem 'nokogiri' # force_ruby_platform removed on antcat-prod so the precompiled gem is used
 gem 'paper_trail', '~> 17.0'
