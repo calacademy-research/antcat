@@ -33,6 +33,8 @@ gem 'jquery-atwho-rails'
 gem 'jquery-rails'
 gem 'jquery-ui-rails', '~> 8.0'
 gem 'ledermann-rails-settings'
+# File type detection for uploaded reference PDFs (no longer loaded via Active Storage).
+gem 'marcel'
 gem 'newrelic_rpm'
 gem 'nokogiri' # force_ruby_platform removed on antcat-prod so the precompiled gem is used
 gem 'paper_trail', '~> 17.0'
@@ -46,8 +48,6 @@ gem 'stimulus-rails'
 gem 'strip_attributes'
 gem 'sunspot_rails'
 gem 'sunspot_solr', '2.2.0'
-# TODO: Upgrade guide: https://github.com/rails/tailwindcss-rails/blob/main/README.md#upgrading-your-application-from-tailwind-v3-to-v4
-gem 'tailwindcss-rails', '< 4'
 gem 'turbo-rails'
 gem 'unread'
 gem 'view_component'

@@ -1,94 +1,183 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss' source(none);
 
-@layer components {
-  /* Buttons */
-  .base__btn {
-    @apply box-border whitespace-nowrap cursor-pointer
-           border rounded
-           btn-sm;
+/* Theme (colors, fonts, `nottiny` screen) and plugins stay in the v3-style JS config. */
+@config '../../../config/tailwind.config.js';
+@import './_tailwind_v3_palette.css';
+
+/* Was a `raw` screen in the JS config (v3). */
+@custom-variant nottiny (@media (min-height: 640px) and (min-width: 640px));
+
+/* v3 font-size line heights were absolute (rem); v4 uses ratios, which children with a different
+   font size inherit differently. Keep the v3 values. */
+@theme {
+  --text-xs--line-height: 1rem;
+  --text-sm--line-height: 1.25rem;
+  --text-base--line-height: 1.5rem;
+  --text-lg--line-height: 1.75rem;
+  --text-xl--line-height: 1.75rem;
+  --text-2xl--line-height: 2rem;
+  --text-3xl--line-height: 2.25rem;
+  --text-4xl--line-height: 2.5rem;
+}
+
+/* Same files as the v3 `content` list; paths are relative to this file. */
+@source '../../../public/*.html';
+@source '../images/icons/**/*.svg';
+@source '../javascripts/**/*.js';
+@source '../../components/**/*.{erb,haml,html,slim,rb}';
+@source '../../decorators/**/*.rb';
+@source '../../helpers/**/*.rb';
+@source '../../javascript/**/*.js';
+@source '../../presenters/**/*.rb';
+@source '../../views/**/*.{erb,haml,html,slim}';
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
   }
 
-  .btn-default {
-    @apply base__btn
-           text-white hover:text-white
-           bg-ac-blue hover:bg-ac-blue-darker
-           border-ac-blue-darker;
+  /* v4 Preflight zeroes padding on every element; v3 left <option> with the browser default. */
+  option {
+    padding: revert;
   }
 
-  .btn-neutral {
-    @apply base__btn
-           !text-black hover:text-black
-           bg-white hover:bg-slate-200
-           border-black;
+  /* v4 Preflight also strips the browser's look from the file input's "Choose file" button. */
+  ::file-selector-button {
+    margin: revert;
+    padding: revert;
+    border: revert;
+    border-radius: revert;
+    background-color: revert;
+    color: revert;
   }
 
-  .btn-saves {
-    @apply base__btn
-           text-white hover:text-white
-           bg-ac-blue-saves hover:bg-ac-blue-saves-darker
-           border-ac-blue-darker;
-  }
-
-  .btn-danger {
-    @apply base__btn
-           text-white hover:text-white
-           bg-ac-red-danger hover:bg-ac-red-danger-darker
-           border-ac-red-danger;
-  }
-
-  .btn-orange {
-    @apply base__btn
-           text-white hover:text-white
-           bg-orange-500 hover:bg-orange-600
-           border-orange-500;
-  }
-
-  button[disabled=disabled], a[disabled=disabled] {
-    @apply pointer-events-none opacity-40;
-  }
-
-  /* Badges */
-  .base__badge {
-    @apply whitespace-nowrap py-1 px-2
-           text-sm rounded-full
-           leading-7;
-  }
-
-  .badge-blue {
-    @apply base__badge
-           text-white hover:text-white
-           bg-ac-blue;
-  }
-
-  .badge-white {
-    @apply base__badge
-           text-black hover:text-black
-           bg-white
-           border border-black;
-  }
-
-  .badge-danger {
-    @apply base__badge
-           text-white hover:text-white
-           bg-ac-red-danger;
-  }
-
-  .badge-green {
-    @apply base__badge
-           text-white hover:text-white
-           bg-green-600;
-  }
-
-  .badge-orange {
-    @apply base__badge
-           text-white hover:text-white
-           bg-orange-500;
+  /* v3 Preflight gave buttons a pointer cursor; v4 uses the browser default. */
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
   }
 }
 
-@layer base {
+@utility base__callout {
+  @apply rounded-md p-4 mb-4 *:last:mb-0;
+}
+
+@utility base__btn {
+  /* Buttons */
+  @apply box-border whitespace-nowrap cursor-pointer
+           border rounded-sm
+           btn-sm;
+}
+
+@utility btn-default {
+  @apply base__btn
+           text-white hover:text-white
+           bg-ac-blue hover:bg-ac-blue-darker
+           border-ac-blue-darker;
+}
+
+@utility btn-neutral {
+  @apply base__btn
+           text-black! hover:text-black
+           bg-white hover:bg-slate-200
+           border-black;
+}
+
+@utility btn-saves {
+  @apply base__btn
+           text-white hover:text-white
+           bg-ac-blue-saves hover:bg-ac-blue-saves-darker
+           border-ac-blue-darker;
+}
+
+@utility btn-danger {
+  @apply base__btn
+           text-white hover:text-white
+           bg-ac-red-danger hover:bg-ac-red-danger-darker
+           border-ac-red-danger;
+}
+
+@utility btn-orange {
+  @apply base__btn
+           text-white hover:text-white
+           bg-orange-500 hover:bg-orange-600
+           border-orange-500;
+}
+
+@utility base__badge {
+  /* Badges */
+  @apply whitespace-nowrap py-1 px-2
+           text-sm rounded-full
+           leading-7;
+}
+
+@utility badge-blue {
+  @apply base__badge
+           text-white hover:text-white
+           bg-ac-blue;
+}
+
+@utility badge-white {
+  @apply base__badge
+           text-black hover:text-black
+           bg-white
+           border border-black;
+}
+
+@utility badge-danger {
+  @apply base__badge
+           text-white hover:text-white
+           bg-ac-red-danger;
+}
+
+@utility badge-green {
+  @apply base__badge
+           text-white hover:text-white
+           bg-green-600;
+}
+
+@utility badge-orange {
+  @apply base__badge
+           text-white hover:text-white
+           bg-orange-500;
+}
+
+@utility btn-sm {
+  @apply py-1 px-2 text-sm;
+  @apply inline-block my-[0.1rem];
+
+  /* Fix for `button` elements which become too tall without this. */
+  line-height: 1rem;
+}
+
+@utility btn-md {
+  @apply py-2 px-3 text-sm;
+
+  /* Fix for `button` elements which become too tall without this. */
+  line-height: 1rem;
+}
+
+@layer components {
+  button[disabled=disabled], a[disabled=disabled] {
+    @apply pointer-events-none opacity-40;
+  }
+}
+
+/* Site-wide element styles. In v3 these came after the @tailwindcss/forms base styles; in v4 the
+   plugin's base styles come later in the same layer, so these live one layer up to keep winning. */
+@layer components {
   html {
     @apply h-full;
   }
@@ -173,7 +262,7 @@
   }
 
   code {
-    @apply px-1 py-[0.0625rem] bg-gray-100 border border-gray-300;
+    @apply px-1 py-0.25 bg-gray-100 border border-gray-300;
   }
 
   pre {
@@ -230,7 +319,7 @@
   }
 
   [type='text'], [type='password'], [type='email'], [type='number'], [type='search'], textarea, select {
-    @apply rounded border border-gray-300;
+    @apply rounded-sm border border-gray-300;
   }
 
   input:disabled, input[readonly],
@@ -274,7 +363,7 @@
   }
 
   .table-striped thead, .table-striped tbody,
-  .table-unstriped thead, .table-unstriped tbody, {
+  .table-unstriped thead, .table-unstriped tbody {
     @apply border border-gray-100;
   }
 
@@ -312,51 +401,32 @@
     width: 1px;
   }
 
-  /* Callouts */
-  /* TODO: Cleanup  Zurb Foundation relics. */
-  .callout-responsive {
-    @apply w-full lg:w-9/12;
-  }
 
-  .base__callout {
-    @apply rounded-md p-4 mb-4 last:[&>*]:mb-0;
-  }
-
-  .callout-white {
-    @apply base__callout border border-gray-300;
-  }
-
-  .callout-blue {
-    @apply base__callout border border-gray-400 bg-ac-blue-pale;
-  }
-
-  .callout-danger {
-    @apply base__callout border border-gray-400 bg-danger-pale;
-  }
-
-  .callout-warning {
-    @apply base__callout border border-gray-400;
-    background-color: #fff3d9;
-  }
-
-  .bluebox {
-    @apply base__callout bg-logged-in-only;
-  }
 }
 
-@layer utilities {
-  .btn-sm {
-    @apply py-1 px-2 text-sm;
-    @apply inline-block my-[0.1rem];
+/* Callouts: utilities (not components) so that, as in v3, their child rules can beat plain
+   spacing utilities such as `mb-2` on the last child. */
+@utility callout-responsive {
+  @apply w-full lg:w-9/12;
+}
 
-    /* Fix for `button` elements which become too tall without this. */
-    line-height: 1rem;
-  }
+@utility callout-white {
+  @apply base__callout border border-gray-300;
+}
 
-  .btn-md {
-    @apply py-2 px-3 text-sm;
+@utility callout-blue {
+  @apply base__callout border border-gray-400 bg-ac-blue-pale;
+}
 
-    /* Fix for `button` elements which become too tall without this. */
-    line-height: 1rem;
-  }
+@utility callout-danger {
+  @apply base__callout border border-gray-400 bg-danger-pale;
+}
+
+@utility callout-warning {
+  @apply base__callout border border-gray-400;
+  background-color: #fff3d9;
+}
+
+@utility bluebox {
+  @apply base__callout bg-logged-in-only;
 }

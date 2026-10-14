@@ -6,6 +6,7 @@
     =description_meta_tag
     %meta{content: "width=device-width, initial-scale=1.0", name: "viewport"}
     %meta{content: "#0071f4", name: "theme-color"}
+    %meta{content: "false", name: "turbo-prefetch"}
 
     =yield :meta_tags
 
@@ -20,7 +21,7 @@
 
     =javascript_include_tag 'hotwire_app', defer: true
 
-    =stylesheet_link_tag 'tailwind', 'inter-font'
+    =stylesheet_link_tag 'tailwind'
     =stylesheet_link_tag 'application'
     =stylesheet_link_tag 'logged_in_only' if current_user
     =stylesheet_link_tag "env_specific"

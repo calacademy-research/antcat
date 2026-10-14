@@ -37,9 +37,7 @@ module.exports = {
         courier: ['"Courier New"', 'Courier', 'serif', 'monospace'],
         heading: ['Montserrat', '"Helvetica Neue"', 'Helvetica', 'Roboto', 'Arial', 'sans-serif'],
       },
-      screens: {
-        'nottiny': { 'raw': '(min-height: 640px) and (min-width: 640px)' },
-      }
+      // The `nottiny` screen is a custom variant in application.tailwind.css (v4 rejects raw screens).
     },
   },
   plugins: [

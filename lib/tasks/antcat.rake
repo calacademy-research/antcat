@@ -5,8 +5,7 @@ task :antcat do
   puts "### Dev commands".green
   puts <<~STR
     ./bin/dev
-    ./bin/webpack-dev-server
-    ./bin/rails tailwindcss:watch
+    yarn build:tailwind --watch
     brakeman --interactive-ignore
     bundle audit check --update
     cat docker_dev/README.md
