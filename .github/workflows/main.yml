@@ -55,7 +55,7 @@ jobs:
           fi
 
       - name: List outdated gems (temporary, for review)
-        run: bundle outdated --only-explicit || true
+        run: BUNDLE_DEPLOYMENT=false BUNDLE_FROZEN=false bundle outdated --only-explicit || true
 
       - name: Run rubocop
         run: |
