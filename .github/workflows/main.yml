@@ -92,10 +92,6 @@ jobs:
           ruby-version: 4.0.7
           bundler-cache: true
 
-      - name: TEMP list gems that still call File.exists?
-        run: |
-          grep -rln "File\.exists?" $(bundle list --paths) | sed 's|^|::warning title=File.exists::|' || true
-
       - name: Setup database
         run: |
           cp config/database.github-actions.yml config/database.yml

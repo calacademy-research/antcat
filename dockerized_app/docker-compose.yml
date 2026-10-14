@@ -31,7 +31,8 @@ services:
     container_name: antcat-solr
     environment:
       SOLR_MODE: user-managed
-      SOLR_HEAP: 512m
+      # The index is ~50 MB; 256 MB heap leaves memory for Puma workers (antcat-prod has 4 GB).
+      SOLR_HEAP: ${ANTCAT_SOLR_HEAP:-256m}
     volumes:
       - ../solr/configsets/antcat:/configsets/antcat:ro
       - solr-data:/var/solr
