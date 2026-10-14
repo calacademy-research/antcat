@@ -24,9 +24,9 @@ RUN apt-get update -qq && apt-get install -y \
   default-mysql-client \
   default-jre-headless
 
-# Node.js 22 LTS, for the asset build (esbuild, dart-sass) and as the ExecJS runtime for terser.
+# Node.js 24 LTS, for the asset build (esbuild, dart-sass) and as the ExecJS runtime for terser.
 # package.json `engines` rejects any other major version.
-RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
+RUN curl -fsSL https://deb.nodesource.com/setup_24.x | bash - \
     && apt-get install -y nodejs \
     && node --version
 

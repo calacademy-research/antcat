@@ -1,14 +1,14 @@
 {
   "private": true,
   "engines": {
-    "node": ">=22.12.0 <23"
+    "node": ">=24 <25"
   },
   "scripts": {
     "build": "esbuild app/javascript/hotwire_app.js --bundle --sourcemap --format=iife --target=es2020 --outdir=app/assets/builds --public-path=/assets",
     "build:css": "yarn build:sass && yarn build:tailwind",
     "build:sass": "sass --no-source-map --load-path=app/assets/stylesheets app/assets/stylesheets/application.sass:app/assets/builds/application.css app/assets/stylesheets/logged_in_only.sass:app/assets/builds/logged_in_only.css app/assets/stylesheets/env_specific.sass:app/assets/builds/env_specific.css",
     "build:tailwind": "tailwindcss -i app/assets/stylesheets/application.tailwind.css -o app/assets/builds/tailwind.css --minify",
-    "lint": "eslint 'app/javascript/**/*.js' 'app/assets/javascripts/**/*.js'"
+    "lint": "eslint app/javascript app/assets/javascripts"
   },
   "browserslist": [
     "defaults"
@@ -28,8 +28,9 @@
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
-    "eslint": "~8.57.1",
-    "eslint-config-airbnb-base": "~15.0.0",
-    "eslint-plugin-import": "~2.32.0"
+    "@eslint/js": "~10.0.1",
+    "@stylistic/eslint-plugin": "~5.10.0",
+    "eslint": "~10.12.0",
+    "globals": "~17.13.0"
   }
 }

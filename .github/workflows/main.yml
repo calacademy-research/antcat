@@ -54,6 +54,9 @@ jobs:
             exit 1
           fi
 
+      - name: List outdated gems (temporary, for review)
+        run: bundle outdated --only-explicit || true
+
       - name: Run rubocop
         run: |
           bundle exec rubocop --format progress --format github
