@@ -16,6 +16,29 @@ env:
   DB_PASSWORD: root
 
 jobs:
+  update-gems:
+    name: Update gems (temporary)
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.ref }}
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 4.0.7
+      - name: bundle update and commit Gemfile.lock
+        run: |
+          sudo apt-get install -y libmariadb-dev >/dev/null 2>&1 || true
+          bundle config set frozen false
+          bundle lock --update brakeman grape-swagger-rails hamlit marcel newrelic_rpm puma rack-cors rspec-rails rubocop-capybara shoulda-matchers simplecov webmock
+          git diff --stat
+          bundle outdated --only-explicit || true
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "Gemfile.lock: gem updates (generated in CI)" && git push
+
   rubocop:
     name: RuboCop
     runs-on: ubuntu-24.04
@@ -53,9 +76,6 @@ jobs:
             grep -m 10 -iE "warning|error" "$log" | sed 's/^/::error title=Asset build::/'
             exit 1
           fi
-
-      - name: List outdated gems (temporary, for review)
-        run: BUNDLE_DEPLOYMENT=false BUNDLE_FROZEN=false bundle outdated --only-explicit || true
 
       - name: Run rubocop
         run: |
