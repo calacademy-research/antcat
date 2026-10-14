@@ -25,6 +25,9 @@ exit
 docker-compose run -p 3000:3000 app /bin/bash
 
 bundle config path vendor/bundle
-bundle exec rails sunspot:solr:start
+# Search: Solr 10 in Docker (cores `development` and `test`, ports from config/sunspot.yml):
+#   docker run -d --name antcat-solr-dev -p 8982:8983 -p 8981:8983 -e SOLR_MODE=user-managed \
+#     -v "$PWD/solr/configsets/antcat:/configsets/antcat:ro" solr:10.0 \
+#     bash -c 'precreate-core development /configsets/antcat; precreate-core test /configsets/antcat; exec solr-foreground'
 bundle exec rails s -p 3000 -b '0.0.0.0'
 ```

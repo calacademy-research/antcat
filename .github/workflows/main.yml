@@ -100,6 +100,18 @@ jobs:
 
           bundle exec rails db:create db:schema:load
 
+      - name: Start Solr 10 (core `test` from solr/configsets/antcat)
+        run: |
+          docker run -d --name solr -p 8981:8983 -e SOLR_MODE=user-managed \
+            -v "$GITHUB_WORKSPACE/solr/configsets/antcat:/configsets/antcat:ro" \
+            solr:10.0 solr-precreate test /configsets/antcat
+          for i in $(seq 1 60); do curl -fs http://localhost:8981/solr/test/admin/ping > /dev/null && break; sleep 2; done
+          if ! curl -fs http://localhost:8981/solr/test/admin/ping; then
+            docker logs solr 2>&1 | tail -60
+            docker logs solr 2>&1 | grep -E "ERROR|Exception|Caused by" | head -10 | sed 's/^/::error title=Solr::/'
+            exit 1
+          fi
+
       - name: Run rspec
         run: |
           ./bin/yarn install --frozen-lockfile
@@ -109,8 +121,11 @@ jobs:
       - name: Show failing specs as annotations
         if: failure()
         run: |
+          docker logs solr 2>&1 | grep -E "ERROR|Caused by" | sort | uniq -c | sort -rn | head -5 | sed 's/^/::error title=Solr::/' || true
           jq -r '.summary_line' tmp/rspec.json | sed 's/^/::error::/'
           jq -r '.examples[]|select(.status=="failed")|.exception.class+": "+((.exception.message // "")|split("\n")|map(select(length>0))|.[0] // "")[0:300]' tmp/rspec.json | sort | uniq -c | sort -rn | head -8 | while read -r line; do echo "::error::$line"; done
+          jq -r '.examples[]|select(.status=="failed")|"\(.file_path):\(.line_number) \(.full_description)"[0:400]' tmp/rspec.json | head -8 | while read -r line; do echo "::error title=Failed spec::$line"; done
+          jq -r '.examples[]|select(.status=="failed")|(.exception.message // "")|gsub("\n";" ")|.[300:1500]' tmp/rspec.json | head -3 | while read -r line; do echo "::error title=Failure detail::$line"; done
 
   migrations:
     name: Migrations
