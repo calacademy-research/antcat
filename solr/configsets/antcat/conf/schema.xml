@@ -4,12 +4,12 @@
 
   Kept the same as Solr 4 so search results match:
   - schema version 1.0 (same query-parsing defaults, e.g. autoGeneratePhraseQueries);
-  - the same analyzers for `text` and `antcat_text`;
+  - the same analyzers for `text` and `antcat_text` (incl. the classic WordDelimiterFilter: the graph
+    version changes how initials such as "W.M." match);
   - ClassicSimilarity (TF-IDF), the Solr 4 scoring, instead of Solr's newer BM25 default.
   Changed because Solr 10 no longer has them:
   - Trie*/Sortable*/DateField numeric types -> *PointField (docValues for sorting/ranges);
   - LatLonType -> LatLonPointSpatialField; StandardFilterFactory removed (it was a no-op);
-  - WordDelimiterFilterFactory -> WordDelimiterGraphFilterFactory (+ FlattenGraph at index time);
   - EdgeNGram `side` attribute removed (front was the only option);
   - defaultSearchField / solrQueryParser moved to the /select handler (df, q.op) in solrconfig.xml.
 -->
@@ -29,8 +29,7 @@
       <analyzer type="index">
         <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-ISOLatin1Accent.txt"/>
         <tokenizer class="solr.StandardTokenizerFactory"/>
-        <filter class="solr.WordDelimiterGraphFilterFactory" catenateWords="1" catenateNumbers="1" preserveOriginal="1" splitOnCaseChange="0" generateWordParts="0"/>
-        <filter class="solr.FlattenGraphFilterFactory"/>
+        <filter class="solr.WordDelimiterFilterFactory" catenateWords="1" catenateNumbers="1" preserveOriginal="1" splitOnCaseChange="0" generateWordParts="0"/>
         <filter class="solr.LowerCaseFilterFactory"/>
         <filter class="solr.PorterStemFilterFactory"/>
         <filter class="solr.EdgeNGramFilterFactory" minGramSize="1" maxGramSize="45"/>
@@ -38,7 +37,7 @@
       <analyzer type="query">
         <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-ISOLatin1Accent.txt"/>
         <tokenizer class="solr.StandardTokenizerFactory"/>
-        <filter class="solr.WordDelimiterGraphFilterFactory" catenateWords="1" catenateNumbers="1" preserveOriginal="1" splitOnCaseChange="0" generateWordParts="0"/>
+        <filter class="solr.WordDelimiterFilterFactory" catenateWords="1" catenateNumbers="1" preserveOriginal="1" splitOnCaseChange="0" generateWordParts="0"/>
         <filter class="solr.LowerCaseFilterFactory"/>
         <filter class="solr.PorterStemFilterFactory"/>
       </analyzer>
@@ -49,8 +48,7 @@
       <analyzer type="index">
         <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-ISOLatin1Accent.txt"/>
         <tokenizer class="solr.StandardTokenizerFactory"/>
-        <filter class="solr.WordDelimiterGraphFilterFactory" catenateWords="1" catenateNumbers="1" preserveOriginal="1" splitOnCaseChange="0" generateWordParts="1"/>
-        <filter class="solr.FlattenGraphFilterFactory"/>
+        <filter class="solr.WordDelimiterFilterFactory" catenateWords="1" catenateNumbers="1" preserveOriginal="1" splitOnCaseChange="0" generateWordParts="1"/>
         <filter class="solr.LowerCaseFilterFactory"/>
         <filter class="solr.PorterStemFilterFactory"/>
         <filter class="solr.EdgeNGramFilterFactory" minGramSize="1" maxGramSize="45"/>
@@ -58,7 +56,7 @@
       <analyzer type="query">
         <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-ISOLatin1Accent.txt"/>
         <tokenizer class="solr.StandardTokenizerFactory"/>
-        <filter class="solr.WordDelimiterGraphFilterFactory" catenateWords="1" catenateNumbers="1" preserveOriginal="1" splitOnCaseChange="0" generateWordParts="1"/>
+        <filter class="solr.WordDelimiterFilterFactory" catenateWords="1" catenateNumbers="1" preserveOriginal="1" splitOnCaseChange="0" generateWordParts="1"/>
         <filter class="solr.LowerCaseFilterFactory"/>
         <filter class="solr.PorterStemFilterFactory"/>
       </analyzer>
