@@ -709,7 +709,6 @@ DEPENDENCIES
   stimulus-rails
   strip_attributes
   sunspot_rails
-  sunspot_solr (= 2.2.0)
   sunspot_test
   tabulo
   terser

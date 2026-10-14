@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- AntCat Sunspot core config for Solr 10 (standalone / user-managed mode). -->
+<config>
+  <luceneMatchVersion>10.0.0</luceneMatchVersion>
+
+  <dataDir>${solr.data.dir:}</dataDir>
+  <directoryFactory name="DirectoryFactory" class="${solr.directoryFactory:solr.NRTCachingDirectoryFactory}"/>
+  <schemaFactory class="ClassicIndexSchemaFactory"/>
+  <codecFactory class="solr.SchemaCodecFactory"/>
+
+  <updateHandler class="solr.DirectUpdateHandler2">
+    <updateLog>
+      <str name="dir">${solr.ulog.dir:}</str>
+    </updateLog>
+    <autoCommit>
+      <maxTime>15000</maxTime>
+      <openSearcher>false</openSearcher>
+    </autoCommit>
+    <autoSoftCommit>
+      <maxTime>5000</maxTime>
+    </autoSoftCommit>
+  </updateHandler>
+
+  <query>
+    <maxBooleanClauses>1024</maxBooleanClauses>
+    <filterCache size="512" initialSize="512" autowarmCount="0"/>
+    <queryResultCache size="512" initialSize="512" autowarmCount="0"/>
+    <documentCache size="512" initialSize="512" autowarmCount="0"/>
+    <enableLazyFieldLoading>true</enableLazyFieldLoading>
+    <useColdSearcher>false</useColdSearcher>
+  </query>
+
+  <requestDispatcher>
+    <httpCaching never304="true"/>
+  </requestDispatcher>
+
+  <!-- Solr 4 took these from schema.xml (defaultSearchField, solrQueryParser defaultOperator="AND").
+       sow=true keeps Solr 4's split-on-whitespace query parsing for edismax. -->
+  <requestHandler name="/select" class="solr.SearchHandler">
+    <lst name="defaults">
+      <str name="echoParams">explicit</str>
+      <str name="df">text</str>
+      <str name="q.op">AND</str>
+      <str name="sow">true</str>
+    </lst>
+  </requestHandler>
+</config>

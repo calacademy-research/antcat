@@ -20,9 +20,31 @@ services:
     networks:
       - antcat-network
 
+  # Search engine for Sunspot (catalog/reference searches and autocompletes). Solr 10 since 2026-10;
+  # was Solr 4 started inside the app container by the sunspot_solr gem.
+  # The core `default` is created from ../solr/configsets/antcat on the first start only. After a
+  # schema change: `docker compose rm -sf solr && docker volume rm dockerized_app_solr-data`,
+  # `docker compose up -d solr`, then reindex (`bundle exec rake sunspot:reindex` in the app container).
+  solr:
+    image: solr:10.0
+    restart: unless-stopped
+    container_name: antcat-solr
+    environment:
+      SOLR_MODE: user-managed
+      SOLR_HEAP: 512m
+    volumes:
+      - ../solr/configsets/antcat:/configsets/antcat:ro
+      - solr-data:/var/solr
+    command: ["solr-precreate", "default", "/configsets/antcat"]
+    expose:
+      - "8983"
+    networks:
+      - antcat-network
+
   app:
     depends_on:
       - db
+      - solr
     build:
       context: .
       dockerfile: Dockerfile
@@ -82,6 +104,9 @@ services:
       - APP_DOMAIN=antcat.org,www.antcat.org
       - EMAIL=jrussack@calacademy.org
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew --dns-cloudflare --dns-cloudflare-credentials /etc/cloudflare/credentials.ini --dns-cloudflare-propagation-seconds 60; sleep 12h & wait $${!}; done;'"
+
+volumes:
+  solr-data:
 
 networks:
   antcat-network:

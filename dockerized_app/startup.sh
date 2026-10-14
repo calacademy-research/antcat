@@ -13,8 +13,7 @@ yarn install
 cd /app/app
 bundle exec rake assets:precompile
 
-# Start the Solr service for Sunspot
-bundle exec rails sunspot:solr:start
+# Search runs in its own container (service `solr`, Solr 10); see docker-compose.yml.
 
 # Start the Rails server, binding it to all network interfaces
 bundle exec rails s -p 8080 -b '0.0.0.0'

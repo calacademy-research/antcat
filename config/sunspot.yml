@@ -1,6 +1,7 @@
+# Production (antcat.org and antcat-staging): the `solr` container in dockerized_app/docker-compose.yml.
 production:
   solr:
-    hostname: localhost
+    hostname: solr
     port: 8983
     log_level: WARNING
     path: /solr/default
