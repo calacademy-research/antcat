@@ -32,7 +32,7 @@ jobs:
         run: |
           sudo apt-get install -y libmariadb-dev >/dev/null 2>&1 || true
           bundle config set frozen false
-          bundle lock --update brakeman grape-swagger-rails hamlit marcel newrelic_rpm puma rack-cors rspec-rails rubocop-capybara shoulda-matchers simplecov webmock
+          bundle lock --update brakeman hamlit marcel newrelic_rpm puma rack-cors rspec-rails rubocop-capybara shoulda-matchers simplecov webmock
           git diff --stat
           bundle outdated --only-explicit || true
           git config user.name "github-actions[bot]"
