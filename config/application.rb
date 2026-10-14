@@ -2,7 +2,16 @@
 
 require_relative "boot"
 
-require "rails/all"
+require "rails"
+# Only the frameworks AntCat uses. Not loaded (so their routes such as /rails/active_storage/* and
+# /cable are gone): Active Storage, Action Cable, Action Mailbox, Action Text.
+require "active_model/railtie"
+require "active_job/railtie"
+require "active_record/railtie"
+require "action_controller/railtie"
+require "action_mailer/railtie"
+require "action_view/railtie"
+require "rails/test_unit/railtie"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -24,10 +33,6 @@ module AntCat
     # 7.1 -> 8.1 (2026-10) needed no overrides; session/cookie settings are unchanged since 7.1.
     # Notable: YJIT on outside dev/test, `Regexp.timeout = 1` (s), path-relative redirects raise.
     config.load_defaults 8.1
-
-    # No Active Storage attachments/variants are used; avoids the Rails 8.1 boot warning
-    # about the missing `image_processing` gem.
-    config.active_storage.variant_processor = :disabled
 
     config.middleware.insert_before(0, Rack::Cors) do
       allow do
