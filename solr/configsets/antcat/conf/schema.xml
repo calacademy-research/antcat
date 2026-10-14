@@ -6,7 +6,8 @@
   - schema version 1.0 (same query-parsing defaults, e.g. autoGeneratePhraseQueries);
   - the same analyzers for `text` and `antcat_text` (incl. the classic WordDelimiterFilter: the graph
     version changes how initials such as "W.M." match);
-  - ClassicSimilarity (TF-IDF), the Solr 4 scoring, instead of Solr's newer BM25 default.
+  - ClassicSimilarity (TF-IDF), the Solr 4 scoring, instead of Solr's newer BM25 default, with
+    discountOverlaps=false so name length still counts each n-gram (see <similarity> below).
   Changed because Solr 10 no longer has them:
   - Trie*/Sortable*/DateField numeric types -> *PointField (docValues for sorting/ranges);
   - LatLonType -> LatLonPointSpatialField; StandardFilterFactory removed (it was a no-op);
@@ -143,7 +144,13 @@
 
   <uniqueKey>id</uniqueKey>
 
-  <similarity class="solr.ClassicSimilarityFactory"/>
+  <!-- TF-IDF as in Solr 4. discountOverlaps=false: count every edge n-gram in the length norm.
+       Solr 4 (luceneMatchVersion 4.1) gave each n-gram its own position, so shorter names
+       ("Camponotus") outranked longer ones ("Campostigmacros") for the same prefix; newer
+       Lucene puts n-grams at one position, which made such names tie. -->
+  <similarity class="solr.ClassicSimilarityFactory">
+    <bool name="discountOverlaps">false</bool>
+  </similarity>
 
   <copyField source="*_text" dest="textSpell"/>
   <copyField source="*_s" dest="textSpell"/>
