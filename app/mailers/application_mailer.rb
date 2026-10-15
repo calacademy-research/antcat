@@ -4,6 +4,6 @@ class ApplicationMailer < ActionMailer::Base
   include Rails.application.routes.url_helpers
 
   append_view_path Rails.root.join('app/views/mailers')
-  default from: "no-reply@antcat.org"
+  default from: "AntCat <admin@antcat.org>"
   layout 'mailer'
 end
