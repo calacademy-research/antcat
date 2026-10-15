@@ -1,0 +1,23 @@
+# Build context for images built from the repository root (the AntWeb export image,
+# docker/antcat-database.docker, and the dev image). Their containers mount the
+# checkout at /code, so generated data does not need to be copied into the image.
+# Copying it filled the antcat-export disk on 2026-10-15 ("no space left on device").
+# antcat.org's own image (dockerized_app/) has its own build context and is not affected.
+.git
+node_modules
+log
+tmp
+coverage
+public/assets
+public/packs
+public/packs-test
+data/output
+data/db_dumps
+data/gbif_exports
+data/antweb_exports
+database_export
+database_archive
+run-results
+solr/*/data
+dockerized_app/sql-data*
+docker_migration/sql-data
