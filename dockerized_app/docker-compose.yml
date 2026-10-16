@@ -52,8 +52,10 @@ services:
     restart: unless-stopped
     environment:
       RAILS_ENV: production
-      DB_USERNAME: root
-      DB_PASSWORD: ${ANTCAT_DB_PASSWORD:?set ANTCAT_DB_PASSWORD in dockerized_app/.env}
+      # The app's own MySQL account when ANTCAT_APP_DB_USER/PASSWORD are set in .env
+      # (rights on the antcat database only); falls back to root until then.
+      DB_USERNAME: ${ANTCAT_APP_DB_USER:-root}
+      DB_PASSWORD: ${ANTCAT_APP_DB_PASSWORD:-${ANTCAT_DB_PASSWORD:?set ANTCAT_DB_PASSWORD in dockerized_app/.env}}
       DB_DATABASE: antcat
       DB_PORT: 3306
       DB_HOST: db
