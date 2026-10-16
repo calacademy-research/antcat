@@ -7,15 +7,30 @@ module Users
     SIGN_IN_ATTEMPTS_WITHIN = 3.minutes
     TOO_MANY_ATTEMPTS_MESSAGE = "Too many sign-in attempts. Please wait a few minutes and try again."
 
-    # NOTE: Counters are kept in the controller cache store (`Rails.cache` unless configured otherwise).
-    rate_limit to: SIGN_IN_ATTEMPTS_PER_IP, within: SIGN_IN_ATTEMPTS_WITHIN, only: :create, name: "ip",
-      by: -> { client_ip },
-      with: -> { redirect_to new_user_session_path, alert: TOO_MANY_ATTEMPTS_MESSAGE }
-    rate_limit to: SIGN_IN_ATTEMPTS_PER_EMAIL, within: SIGN_IN_ATTEMPTS_WITHIN, only: :create, name: "email",
-      by: -> { params.dig(:user, :email).to_s.strip.downcase },
-      with: -> { redirect_to new_user_session_path, alert: TOO_MANY_ATTEMPTS_MESSAGE }
+    # Checked at the top of `create`, before Devise authenticates, so a throttled attempt never
+    # reaches the password check. Counters live in `Rails.cache` (shared by the Puma workers).
+    def create
+      if sign_in_throttled?
+        redirect_to new_user_session_path, alert: TOO_MANY_ATTEMPTS_MESSAGE
+        return
+      end
+
+      super
+    end
 
     private
+
+      def sign_in_throttled?
+        email = params.dig(:user, :email).to_s.strip.downcase
+        ip_over = over_limit?("sign_in:ip:#{client_ip}", SIGN_IN_ATTEMPTS_PER_IP)
+        email_over = email.present? && over_limit?("sign_in:email:#{email}", SIGN_IN_ATTEMPTS_PER_EMAIL)
+        ip_over || email_over
+      end
+
+      def over_limit? key, limit
+        count = Rails.cache.increment(key, 1, expires_in: SIGN_IN_ATTEMPTS_WITHIN)
+        count.to_i > limit
+      end
 
       # Production is behind Cloudflare -> nginx -> Puma. nginx appends Cloudflare's edge IP to
       # X-Forwarded-For, so `request.remote_ip` is Cloudflare's address, not the visitor's.
