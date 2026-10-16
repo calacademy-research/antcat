@@ -20,7 +20,7 @@ module RecaptchaHelper
 
     raw <<~HTML
       <input name="recaptcha_token" type="hidden" id="#{id}"/>
-      <script>
+      <script nonce="#{content_security_policy_nonce}">
         grecaptcha.ready(function() {
           grecaptcha.execute('#{RECAPTCHA_V3_SITE_KEY}', { action: '#{action}' }).then(function(token) {
             document.getElementById("#{id}").value = token;

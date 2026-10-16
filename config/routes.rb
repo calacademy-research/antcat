@@ -240,6 +240,9 @@ Rails.application.routes.draw do
 
   resources :database_scripts, only: [:index, :show]
 
+  # Content Security Policy violation reports (see `config/initializers/content_security_policy.rb`).
+  post 'csp_reports', to: 'csp_reports#create', as: :csp_reports
+
   scope :quick_and_dirty_fixes do
     post 'convert_to_taxac_tags_quick_and_dirty_fix', to: 'quick_and_dirty_fixes#convert_to_taxac_tags'
     post 'delete_history_item_quick_and_dirty_fix', to: 'quick_and_dirty_fixes#delete_history_item'
