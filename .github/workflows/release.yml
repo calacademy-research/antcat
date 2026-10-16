@@ -1,0 +1,32 @@
+name: Release
+
+# Publishes a GitHub release when a new version number reaches master.
+# The version comes from VERSION; the notes from release-notes/<version>.md,
+# followed by GitHub's list of merged pull requests since the previous release.
+on:
+  push:
+    branches: [master]
+    paths: [VERSION]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - name: Create the release if it does not exist yet
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          v=$(tr -d '[:space:]' < VERSION)
+          tag="v$v"
+          if gh release view "$tag" >/dev/null 2>&1; then
+            echo "Release $tag already exists."; exit 0
+          fi
+          notes="release-notes/$v.md"
+          [ -f "$notes" ] || { echo "::error::$notes is missing"; exit 1; }
+          gh release create "$tag" --target "$GITHUB_SHA" --title "AntCat $v" \
+            --notes-file "$notes" --generate-notes

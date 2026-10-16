@@ -22,6 +22,7 @@
         %li=link_to 'API', grape_swagger_rails_path
         %li=link_to 'Help pages', wiki_pages_path
         %li=external_link_to 'GitHub', Settings.github.repo_url
+        %li=external_link_to "Version #{AntCat::VERSION}", "#{Settings.github.repo_url}/releases"
 
     .w-full.flex.items-center.justify-around.ml-auto.mt-4{class: " lg:w-5/12 lg:mt-0"}
       %div
