@@ -37,7 +37,8 @@ describe Users::SessionsController do
       it 'does not sign in the user' do
         post(:create, params: sign_in_params)
 
-        expect(controller.current_user).to eq nil
+        # Not `current_user`: that would run Devise's params strategy again inside the test.
+        expect(session["warden.user.user.key"]).to eq nil
         expect(response).to redirect_to new_user_session_path
         expect(flash[:alert]).to eq described_class::TOO_MANY_ATTEMPTS_MESSAGE
       end
