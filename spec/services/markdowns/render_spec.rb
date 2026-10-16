@@ -16,6 +16,80 @@ describe Markdowns::Render do
       end
     end
 
+    context 'with links and images' do
+      it "renders http, https, mailto, relative and anchor links" do
+        expect(described_class['[a](https://example.com "T")']).
+          to eq %(<p><a href="https://example.com" title="T">a</a></p>\n)
+        expect(described_class['[a](http://example.com)']).to eq %(<p><a href="http://example.com">a</a></p>\n)
+        expect(described_class['[a](mailto:x@example.com)']).to eq %(<p><a href="mailto:x@example.com">a</a></p>\n)
+        expect(described_class['[a](/catalog/1)']).to eq %(<p><a href="/catalog/1">a</a></p>\n)
+        expect(described_class['[a](#section)']).to eq %(<p><a href="#section">a</a></p>\n)
+      end
+
+      it "does not render links with unsafe schemes" do
+        [
+          '[a](javascript:alert`1`)',
+          '[a](JavaScript:alert`1`)',
+          '[a]( javascript:alert`1`)',
+          '[a](data:text/html;base64,PHNjcmlwdD4=)',
+          '[a](vbscript:msgbox)'
+        ].each do |markdown|
+          expect(described_class[markdown]).to eq "<p>a</p>\n"
+        end
+      end
+
+      it "does not render reference-style links with unsafe schemes" do
+        markdown = "[a][x]\n\n[x]: javascript:alert`1`"
+        expect(described_class[markdown]).not_to include 'javascript'
+      end
+
+      it "does not double-escape ampersands in URLs" do
+        expect(described_class['[a](https://example.com/?a=1&b=2)']).
+          to eq %(<p><a href="https://example.com/?a=1&amp;b=2">a</a></p>\n)
+      end
+
+      it "renders images with safe URLs" do
+        expect(described_class['![alt](https://example.com/a.png)']).
+          to eq %(<p><img src="https://example.com/a.png" alt="alt"></p>\n)
+      end
+
+      it "does not render images with unsafe schemes" do
+        expect(described_class['![alt](javascript:alert`1`)']).to eq "<p>alt</p>\n"
+        expect(described_class['![alt](data:image/svg+xml;base64,PHN2Zz4=)']).to eq "<p>alt</p>\n"
+      end
+
+      it "autolinks URLs and email addresses" do
+        expect(described_class['see https://example.com']).
+          to eq %(<p>see <a href="https://example.com">https://example.com</a></p>\n)
+        expect(described_class['x@example.com']).
+          to eq %(<p><a href="mailto:x@example.com">x@example.com</a></p>\n)
+      end
+    end
+
+    describe Markdowns::Render::AntCatMarkdown do
+      describe '#link and #image' do
+        let(:renderer) { described_class.new }
+
+        it 'escapes attributes' do
+          expect(renderer.link('/x?a=1&b=2', 'a"b', 'c')).to eq %(<a href="/x?a=1&amp;b=2" title="a&quot;b">c</a>)
+          expect(renderer.link('/x?a=1&amp;b=2', nil, 'c')).to eq %(<a href="/x?a=1&amp;b=2">c</a>)
+          expect(renderer.image('/x.png', nil, '"><script>')).to eq %(<img src="/x.png" alt="&quot;&gt;&lt;script&gt;">)
+        end
+      end
+
+      describe '.safe_url?' do
+        it 'allows only safe schemes and scheme-less URLs' do
+          %w[http://a https://a mailto:a@b /a a/b ?q=1 #anchor].each do |url|
+            expect(described_class.safe_url?(url)).to be(true), url
+          end
+
+          ['javascript:x', 'JAVASCRIPT:x', "java\tscript:x", 'data:x', 'vbscript:x', 'file:///etc', '', nil].each do |url|
+            expect(described_class.safe_url?(url)).to be(false), url.inspect
+          end
+        end
+      end
+    end
+
     it "formats basic markdown" do
       markdown = <<~MARKDOWN
         ###Header

@@ -43,8 +43,44 @@ module Markdowns
       end
 
       class AntCatMarkdown < Redcarpet::Render::HTML
+        SAFE_SCHEMES = %w[http https mailto].freeze
+        # Matches a URI scheme ("javascript:", "data:", ...) at the start of a URL.
+        SCHEME_REGEX = /\A([a-z][a-z0-9+.-]*):/i
+
+        def self.safe_url? url
+          return false if url.blank?
+
+          # Decode entities and drop whitespace/control characters that browsers ignore,
+          # so that e.g. "java&#09;script:" or " javascript:" are caught too.
+          normalized = CGI.unescapeHTML(url.to_s).gsub(/[[:space:][:cntrl:]]/, '')
+          return true unless (match = normalized.match(SCHEME_REGEX))
+
+          SAFE_SCHEMES.include?(match[1].downcase)
+        end
+
         def postprocess content
           Markdowns::ParseAllTags[content]
+        end
+
+        # Only http(s), mailto, relative URLs and anchors are rendered as links;
+        # anything else (e.g. `javascript:`) is rendered as plain text.
+        def link link, title, content
+          return content unless self.class.safe_url?(link)
+
+          %(<a href="#{escape_attribute(link)}"#{title_attribute(title)}>#{content}</a>)
+        end
+
+        def image link, title, alt_text
+          return escape_attribute(alt_text) unless self.class.safe_url?(link)
+
+          %(<img src="#{escape_attribute(link)}" alt="#{escape_attribute(alt_text)}"#{title_attribute(title)}>)
+        end
+
+        def autolink link, link_type
+          url = link_type == :email ? "mailto:#{link}" : link
+          return escape_attribute(link) unless self.class.safe_url?(url)
+
+          %(<a href="#{escape_attribute(url)}">#{escape_attribute(link)}</a>)
         end
 
         def table header, body
@@ -55,6 +91,19 @@ module Markdowns
             </table>
           HTML
         end
+
+        private
+
+          # Content has already been sanitized (which turns "&" into "&amp;"), so unescape
+          # first to avoid double-escaping.
+          def escape_attribute value
+            ERB::Util.html_escape(CGI.unescapeHTML(value.to_s)).to_str
+          end
+
+          def title_attribute title
+            return '' if title.blank?
+            %( title="#{escape_attribute(title)}")
+          end
       end
   end
 end

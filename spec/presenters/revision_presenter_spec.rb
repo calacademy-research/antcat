@@ -64,4 +64,41 @@ describe RevisionPresenter do
       end
     end
   end
+
+  describe "#render_revision" do
+    # Built, not created, so that callbacks do not clean up the taxt.
+    let(:item) { build :history_item, :taxt, taxt: "<script>alert(1)</script>" }
+    let(:comparer) { instance_double(RevisionComparer) }
+
+    context "without a template" do
+      let(:presenter) { described_class.new(comparer: comparer) }
+
+      it "escapes the revision" do
+        rendered = presenter.render_revision(item, view_context: nil)
+
+        expect(rendered).to be_html_safe
+        expect(rendered).to start_with "<pre>"
+        expect(rendered).to include "alert(1)"
+        expect(rendered).not_to include "<script>"
+      end
+    end
+
+    context "when rendering the template raises" do
+      let(:presenter) { described_class.new(comparer: comparer, template: "some/template") }
+      let(:view_context) { instance_double(ActionView::Base) }
+
+      before do
+        allow(view_context).to receive(:render).and_raise(StandardError, "<img src=x onerror=alert(1)>")
+      end
+
+      it "escapes the error message and the revision" do
+        rendered = presenter.render_revision(item, view_context: view_context)
+
+        expect(rendered).to include "&lt;img src=x onerror=alert(1)&gt;"
+        expect(rendered).to include "<br><br><pre>"
+        expect(rendered).not_to include "<img"
+        expect(rendered).not_to include "<script>"
+      end
+    end
+  end
 end

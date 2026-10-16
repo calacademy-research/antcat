@@ -93,7 +93,15 @@
       delay: 300,
       insertTpl: '%wiki${id}',
       displayTpl: '<li><small>#${id}</small> ${title}</li>',
-      callbacks: reuseCallbacks("/wiki/autocomplete.json"),
+      callbacks: {
+        ...reuseCallbacks("/wiki/autocomplete.json"),
+        // Wiki page titles are plain text; escape them since at.js does not.
+        remoteFilter: (query, callback) => {
+          $.getJSON("/wiki/autocomplete.json", { q: query }, (data) => {
+            callback(data.map((page) => ({ ...page, id: AntCat.escapeHtml(page.id), title: AntCat.escapeHtml(page.title) })))
+          })
+        },
+      },
     })
 
     textareas.atwho({
