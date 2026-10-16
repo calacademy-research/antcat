@@ -34,11 +34,13 @@ describe Users::SessionsController do
         allow(rate_limit_store).to receive(:increment).and_return(described_class::SIGN_IN_ATTEMPTS_PER_IP + 1)
       end
 
-      it 'does not sign in the user' do
+      it 'does not try the password' do
+        warden = request.env['warden']
+        allow(warden).to receive(:authenticate!).and_call_original
+
         post(:create, params: sign_in_params)
 
-        # Not `current_user`: in a controller spec that would run Devise's params strategy itself.
-        expect(session["warden.user.user.key"]).to eq nil
+        expect(warden).not_to have_received(:authenticate!)
         expect(response).to redirect_to new_user_session_path
         expect(flash[:alert]).to eq described_class::TOO_MANY_ATTEMPTS_MESSAGE
       end
