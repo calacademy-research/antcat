@@ -16,6 +16,34 @@ env:
   DB_PASSWORD: root
 
 jobs:
+
+  security:
+    name: Security scan (brakeman, bundler-audit)
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 4.0.7
+          bundler-cache: true
+
+      - name: Brakeman (report)
+        run: |
+          bundle exec brakeman --no-pager --quiet --format text --output /tmp/brakeman.txt || true
+          { echo '### Brakeman'; echo '```'; cat /tmp/brakeman.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          cat /tmp/brakeman.txt
+
+      - name: bundler-audit (report)
+        run: |
+          bundle exec bundle-audit check --update > /tmp/audit.txt 2>&1 || true
+          { echo '### bundler-audit'; echo '```'; cat /tmp/audit.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          cat /tmp/audit.txt
   rubocop:
     name: RuboCop
     runs-on: ubuntu-24.04
