@@ -3,6 +3,12 @@
 require 'rails_helper'
 
 describe CommentsController do
+  describe "COMMENTABLE_TYPES" do
+    it "only contains commentable models" do
+      expect(described_class::COMMENTABLE_TYPES.map(&:constantize)).to all(satisfy { |klass| klass < Commentable })
+    end
+  end
+
   describe "forbidden actions" do
     context "when not signed in", as: :visitor do
       specify { expect(get(:index)).to redirect_to_signin_form }
@@ -51,6 +57,21 @@ describe CommentsController do
       post(:create, params: { comment: comment_params })
 
       expect(response).to redirect_to "http://test.host/site_notices/#{commentable.id}#comment-#{Comment.last.id}"
+    end
+
+    context 'when commentable type is not commentable' do
+      it 'does not create a comment' do
+        params = { comment: comment_params.merge(commentable_type: 'User', commentable_id: current_user.id) }
+
+        expect { post(:create, params: params) }.to raise_error(ActiveRecord::RecordNotFound)
+        expect(Comment.count).to eq 0
+      end
+
+      it 'does not constantize arbitrary class names' do
+        params = { comment: comment_params.merge(commentable_type: 'Kernel') }
+
+        expect { post(:create, params: params) }.to raise_error(ActiveRecord::RecordNotFound)
+      end
     end
   end
 

@@ -3,6 +3,13 @@ window.AntCat = window.AntCat || {}
 
 AntCat.escapeRegExp = (string) => string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 
+// Escapes a value for use in HTML. at.js does not escape `${field}` values in `displayTpl`,
+// so values from the server that are plain text must be escaped before they reach at.js.
+AntCat.escapeHtml = (value) => {
+  const escapes = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }
+  return String(value ?? '').replace(/[&<>"']/g, (char) => escapes[char])
+}
+
 // For at.js. Super comlicated way of saying "allow spaces and some other characters".
 // Based on https://github.com/ichord/At.js/blob/a627b5fcac22c35d52b7fb6d8a93181d2546f3c0/src/default.coffee#L46-L58
 AntCat.allowSpacesWhileAutocompleting = (flag, subtext) => {

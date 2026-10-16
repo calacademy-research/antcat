@@ -109,21 +109,23 @@ describe UsersController do
     end
   end
 
-  describe "GET mentionables", as: :visitor do
-    let!(:user) { create :user }
+  describe "GET mentionables" do
+    context "when not signed in", as: :visitor do
+      it "requires login" do
+        get :mentionables, params: { format: :json }
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
 
-    specify do
-      get :mentionables, params: { format: :json }
+    context "when signed in", as: :user do
+      let!(:user) { create :user }
 
-      expect(json_response).to eq(
-        [
-          {
-            "id" => user.id,
-            "name" => user.name,
-            "email" => user.email
-          }
-        ]
-      )
+      it "returns ids and names but not emails" do
+        get :mentionables, params: { format: :json }
+
+        expect(json_response).to include({ "id" => user.id, "name" => user.name })
+        expect(json_response.flat_map(&:keys).uniq).to contain_exactly("id", "name")
+      end
     end
   end
 end

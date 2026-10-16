@@ -4,6 +4,7 @@ class UsersController < ApplicationController
   SHOW_USER_STATS_PARAM = :show_user_stats
 
   before_action :ensure_user_is_superadmin, except: [:index, :show, :mentionables]
+  before_action :authenticate_user!, only: :mentionables
 
   def index
     @active_users = User.active.non_hidden.order_by_name
@@ -68,7 +69,8 @@ class UsersController < ApplicationController
   def mentionables
     respond_to do |format|
       format.json do
-        render json: User.active.all.to_json(only: [:id, :email, :name])
+        # Only what @mention autocompletion needs; do not expose emails.
+        render json: User.active.all.to_json(only: [:id, :name])
       end
     end
   end

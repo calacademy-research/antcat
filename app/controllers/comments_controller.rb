@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class CommentsController < ApplicationController
+  # Models that include `Commentable`. `commentable_type` from params must be one of these.
+  COMMENTABLE_TYPES = %w[Feedback Issue SiteNotice].freeze
+
   before_action :authenticate_user!
   before_action :ensure_unconfirmed_user_is_not_over_edit_limit, except: [:index]
 
@@ -55,6 +58,9 @@ class CommentsController < ApplicationController
     end
 
     def commentable
-      comment_params[:commentable_type].constantize.find(comment_params[:commentable_id])
+      commentable_type = comment_params[:commentable_type]
+      raise ActiveRecord::RecordNotFound, "Unknown commentable type" unless commentable_type.in?(COMMENTABLE_TYPES)
+
+      commentable_type.constantize.find(comment_params[:commentable_id])
     end
 end

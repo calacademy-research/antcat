@@ -8,7 +8,8 @@
       at: "@",
       searchKey: "search_key",
       insertTpl: "@user${id}",
-      displayTpl: '<li><small>#${id}</small> ${name} <small>${email}</small></li>',
+      // Values are HTML-escaped in `remoteFilter` (at.js does not escape them).
+      displayTpl: '<li><small>#${id}</small> ${name}</li>',
       callbacks: {
         matcher: AntCat.allowSpacesWhileAutocompleting,
 
@@ -21,7 +22,11 @@
           }
 
           $.getJSON("/users/mentionables.json", (data) => {
-            const users = data.map((user) => ({ ...user, search_key: `${user.id} ${user.name} ${user.email}` }))
+            const users = data.map((user) => ({
+              id: AntCat.escapeHtml(user.id),
+              name: AntCat.escapeHtml(user.name),
+              search_key: AntCat.escapeHtml(`${user.id} ${user.name}`),
+            }))
 
             AntCat._cachedMentionableUsers = users
             callback(users)

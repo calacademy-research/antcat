@@ -35,7 +35,7 @@ class RevisionPresenter
     if template
       render_revision_with_template(item, view_context: view_context)
     else
-      "<pre>#{revision_as_json(item)}</pre>".html_safe
+      revision_as_json_pre(item)
     end
   end
 
@@ -47,8 +47,13 @@ class RevisionPresenter
     rescue ActionView::MissingTemplate
       raise
     rescue StandardError => e
-      "Failed to render revision. Thrown error: #{e.message}".html_safe <<
-        "<br><br><pre>#{revision_as_json(item)}</pre>".html_safe
+      # Escaped, since both the error message and the revision may contain user-controlled text.
+      ERB::Util.html_escape("Failed to render revision. Thrown error: #{e.message}") <<
+        "<br><br>".html_safe << revision_as_json_pre(item)
+    end
+
+    def revision_as_json_pre item
+      "<pre>".html_safe << revision_as_json(item) << "</pre>".html_safe
     end
 
     def html_split_diff
