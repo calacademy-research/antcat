@@ -18,6 +18,30 @@ describe CommentsController do
     end
   end
 
+  describe "GET index" do
+    let!(:issue_comment) { create :comment, commentable: create(:issue) }
+    let!(:feedback_comment) { create :comment, commentable: create(:feedback) }
+
+    context "when signed in as a user", as: :user do
+      it "does not list comments on feedback items" do
+        get :index
+        expect(assigns(:comments)).to contain_exactly(issue_comment)
+      end
+
+      it "does not list comments on feedback items when filtering by user" do
+        get :index, params: { user_id: feedback_comment.user_id }
+        expect(assigns(:comments)).to be_empty
+      end
+    end
+
+    context "when signed in as a helper", as: :helper do
+      it "lists all comments" do
+        get :index
+        expect(assigns(:comments)).to contain_exactly(issue_comment, feedback_comment)
+      end
+    end
+  end
+
   describe "POST create", as: :current_user do
     let(:current_user) { create :user }
     let!(:commentable) { create :site_notice }
@@ -71,6 +95,31 @@ describe CommentsController do
         params = { comment: comment_params.merge(commentable_type: 'Kernel') }
 
         expect { post(:create, params: params) }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+  end
+
+  describe "POST create on a feedback item" do
+    let!(:feedback) { create :feedback }
+    let!(:comment_params) do
+      {
+        commentable_type: 'Feedback',
+        commentable_id: feedback.id,
+        body: 'Let me check.'
+      }
+    end
+
+    context "when signed in as a user", as: :user do
+      it 'does not create a comment' do
+        expect { post(:create, params: { comment: comment_params }) }.not_to change { Comment.count }
+        expect(response).to have_http_status :forbidden
+      end
+    end
+
+    context "when signed in as a helper", as: :helper do
+      it 'creates a comment' do
+        expect { post(:create, params: { comment: comment_params }) }.to change { Comment.count }.by(1)
+        expect(Comment.last.commentable).to eq feedback
       end
     end
   end

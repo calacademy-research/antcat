@@ -70,18 +70,78 @@ describe Users::RegistrationsController do
     describe 'updating user details' do
       let!(:user_params) do
         {
-          email: 'pizza2@example.com',
-          name: 'Quintus Batiatus II'
+          name: 'Quintus Batiatus II',
+          enable_email_notifications: '0'
         }
       end
 
-      it 'updates the user' do
+      it 'updates the user without requiring the current password' do
         put(:update, params: { id: current_user.id, user: user_params })
 
         current_user.reload
-
-        expect(current_user.email).to eq user_params[:email]
         expect(current_user.name).to eq user_params[:name]
+        expect(current_user.enable_email_notifications).to eq false
+      end
+    end
+
+    describe 'changing email' do
+      let!(:original_email) { current_user.email }
+
+      context 'without the current password' do
+        it 'does not change the email' do
+          put(:update, params: { id: current_user.id, user: { email: 'pizza2@example.com', name: 'New name' } })
+
+          current_user.reload
+          expect(current_user.email).to eq original_email
+          expect(current_user.name).not_to eq 'New name'
+        end
+      end
+
+      context 'with an incorrect current password' do
+        it 'does not change the email' do
+          user_params = { email: 'pizza2@example.com', current_password: 'wrong-password' }
+          put(:update, params: { id: current_user.id, user: user_params })
+
+          expect(current_user.reload.email).to eq original_email
+        end
+      end
+
+      context 'with the current password' do
+        it 'changes the email' do
+          put(:update, params: { id: current_user.id, user: { email: 'pizza2@example.com', current_password: 'secret' } })
+
+          expect(current_user.reload.email).to eq 'pizza2@example.com'
+        end
+      end
+
+      context 'when the submitted email is unchanged (different case)' do
+        it 'does not require the current password' do
+          put(:update, params: { id: current_user.id, user: { email: original_email.upcase, name: 'New name' } })
+
+          current_user.reload
+          expect(current_user.email).to eq original_email
+          expect(current_user.name).to eq 'New name'
+        end
+      end
+    end
+
+    describe 'changing password' do
+      context 'without the current password' do
+        it 'does not change the password' do
+          user_params = { password: 'newsecret123', password_confirmation: 'newsecret123' }
+          put(:update, params: { id: current_user.id, user: user_params })
+
+          expect(current_user.reload.valid_password?('secret')).to eq true
+        end
+      end
+
+      context 'with the current password' do
+        it 'changes the password' do
+          user_params = { password: 'newsecret123', password_confirmation: 'newsecret123', current_password: 'secret' }
+          put(:update, params: { id: current_user.id, user: user_params })
+
+          expect(current_user.reload.valid_password?('newsecret123')).to eq true
+        end
       end
     end
 
@@ -100,6 +160,31 @@ describe Users::RegistrationsController do
         expect { put(:update, params: { id: current_user.id, user: user_params }) }.
           to change { current_user.reload.settings(:editing_helpers).create_combination }.
           from(false).to(true)
+      end
+    end
+
+    describe 'updating unknown settings keys' do
+      let!(:user_params) do
+        {
+          settings: {
+            editing_helpers: {
+              create_combination: "1",
+              id: "999",
+              var: "other",
+              target_id: "999"
+            }
+          }
+        }
+      end
+
+      it 'ignores keys that are not in the allowlist' do
+        put(:update, params: { id: current_user.id, user: user_params })
+
+        setting_object = current_user.reload.settings(:editing_helpers)
+        expect(setting_object.create_combination).to eq true
+        expect(setting_object.var).to eq 'editing_helpers'
+        expect(setting_object.target_id).to eq current_user.id
+        expect(setting_object.id).not_to eq 999
       end
     end
   end

@@ -13,6 +13,7 @@ class CommentsController < ApplicationController
                 else
                   Comment.all
                 end
+    @comments = @comments.visible_to(current_user)
     @comments = @comments.most_recent_first.include_associations.paginate(page: params[:page])
   end
 
@@ -60,6 +61,9 @@ class CommentsController < ApplicationController
     def commentable
       commentable_type = comment_params[:commentable_type]
       raise ActiveRecord::RecordNotFound, "Unknown commentable type" unless commentable_type.in?(COMMENTABLE_TYPES)
+      if commentable_type.in?(Comment::HELPER_ONLY_COMMENTABLE_TYPES) && !user_is_at_least_helper?
+        raise NotAuthorized, User::HELPER
+      end
 
       commentable_type.constantize.find(comment_params[:commentable_id])
     end

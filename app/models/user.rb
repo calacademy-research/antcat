@@ -13,7 +13,9 @@ class User < ApplicationRecord
   UNCONFIRMED_USER_EDIT_LIMIT_COUNT = 5
   UNCONFIRMED_USER_EDIT_LIMIT_PERIOD = 24.hours
 
-  IGNORE_PAPER_TRAIL_COLUMNS = %i[
+  # Not stored in PaperTrail versions at all (`skip:`), since they hold password hashes, tokens and sign-in data.
+  # Existing versions can be cleaned with `rake antcat:users:scrub_sensitive_version_data`.
+  SKIP_PAPER_TRAIL_COLUMNS = %i[
     current_sign_in_at
     current_sign_in_ip
     encrypted_password
@@ -48,7 +50,7 @@ class User < ApplicationRecord
 
   acts_as_reader
   devise :database_authenticatable, :recoverable, :registerable, :rememberable, :trackable, :validatable
-  has_paper_trail ignore: IGNORE_PAPER_TRAIL_COLUMNS
+  has_paper_trail skip: SKIP_PAPER_TRAIL_COLUMNS
   has_settings do |s|
     s.key :editing_helpers, defaults: { create_combination: false }
   end

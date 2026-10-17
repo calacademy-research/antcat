@@ -58,7 +58,10 @@ class WikiPagesController < ApplicationController
       WikiPage.find(params.expect(:id))
     end
 
+    # Only editors may feature wiki pages (featured pages are linked from the Editor's Panel).
     def wiki_page_params
-      params.expect(wiki_page: [:content, :title, :featured])
+      permitted_keys = [:content, :title]
+      permitted_keys << :featured if user_is_editor? || user_is_superadmin?
+      params.expect(wiki_page: permitted_keys)
     end
 end

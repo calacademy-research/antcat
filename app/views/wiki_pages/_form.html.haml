@@ -16,10 +16,11 @@
       =f.label :title
       =f.text_field :title, maxlength: WikiPage::TITLE_MAX_LENGTH
 
-  .mb-4
-    =f.check_box :featured
-    =f.label :featured do
-      Featured (show in Editor's Panel)
+  -if user_is_editor? || user_is_superadmin?
+    .mb-4
+      =f.check_box :featured
+      =f.label :featured do
+        Featured (show in Editor's Panel)
 
   .mb-4
     =f.text_area :content, rows: 20, data: { has_mentionables: true, has_linkables: true, previewable: true, previewable_title: "Content" }

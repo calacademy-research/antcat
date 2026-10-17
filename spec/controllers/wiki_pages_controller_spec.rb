@@ -82,6 +82,32 @@ describe WikiPagesController do
     end
   end
 
+  describe "setting featured" do
+    let!(:wiki_page) { create :wiki_page }
+
+    context "when signed in as a user", as: :user do
+      it 'does not feature the wiki page on update' do
+        put(:update, params: { id: wiki_page.id, wiki_page: { title: 'Title', featured: '1' } })
+
+        wiki_page.reload
+        expect(wiki_page.title).to eq 'Title'
+        expect(wiki_page.featured).to eq false
+      end
+
+      it 'does not feature the wiki page on create' do
+        post(:create, params: { wiki_page: { title: 'New title', content: 'content', featured: '1' } })
+        expect(WikiPage.last.featured).to eq false
+      end
+    end
+
+    context "when signed in as an editor", as: :editor do
+      it 'features the wiki page' do
+        put(:update, params: { id: wiki_page.id, wiki_page: { featured: '1' } })
+        expect(wiki_page.reload.featured).to eq true
+      end
+    end
+  end
+
   describe "DELETE destroy", as: :current_user do
     let(:current_user) { create(:user, :superadmin, :editor) }
     let!(:wiki_page) { create :wiki_page }
