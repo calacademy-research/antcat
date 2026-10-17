@@ -101,11 +101,11 @@ class ApplicationController < ActionController::Base
       options.select { |option| option <= MAX_PER_PAGE_FOR_VISITORS }
     end
 
-    # `params[:per_page]` capped by the largest allowed option; the smallest option when missing or invalid.
+    # `params[:per_page]` capped at the largest allowed option; the smallest option when missing or invalid.
     def per_page_from_params options
       allowed = per_page_options_for_current_user(options)
       requested = params[:per_page].to_i
-      requested.between?(1, allowed.max) ? requested : allowed.min
+      requested.positive? ? [requested, allowed.max].min : allowed.min
     end
 
     def regexp_search_allowed?

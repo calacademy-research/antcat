@@ -34,7 +34,9 @@ describe References::ExportsController do
   end
 
   describe "GET endnote, limits for visitors" do
-    let!(:references) { [create(:any_reference), create(:any_reference)] }
+    let!(:reference) { create :any_reference }
+    let!(:other_reference) { create :any_reference }
+    let(:references) { [reference, other_reference] }
 
     before { stub_const("ApplicationController::MAX_EXPORT_RECORDS_FOR_VISITORS", 1) }
 
