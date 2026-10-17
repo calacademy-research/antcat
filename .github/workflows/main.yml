@@ -146,6 +146,26 @@ jobs:
           ./bin/rails test:prepare
           bundle exec rspec spec --tag ~pending --order rand --format progress --format json --out tmp/rspec.json
 
+      # `:js` specs run in headless Chrome via Cuprite (Google Chrome is preinstalled on GitHub's Ubuntu
+      # runners). Shows how many ran and fails the job if none passed, so they cannot be skipped silently.
+      - name: Report browser specs (headless Chrome)
+        if: always()
+        run: |
+          chrome="$(google-chrome --version 2>/dev/null || echo 'Google Chrome not found')"
+          passed=0
+          summary="no browser specs ran"
+          if [ -s tmp/js_example_ids.txt ] && [ -f tmp/rspec.json ]; then
+            filter='($ids | split("\n") | map(select(length > 0))) as $js | [.examples[] | select(.id | IN($js[]))]'
+            summary="$(jq -r --rawfile ids tmp/js_example_ids.txt "$filter | group_by(.status) | map(\"\(length) \(.[0].status)\") | join(\", \")" tmp/rspec.json)"
+            passed="$(jq -r --rawfile ids tmp/js_example_ids.txt "$filter | map(select(.status == \"passed\")) | length" tmp/rspec.json)"
+          fi
+          echo "::notice title=Browser specs::${chrome}: ${summary}"
+          { echo '### Browser specs (headless Chrome)'; echo "${chrome}: ${summary}"; } >> "$GITHUB_STEP_SUMMARY"
+          if [ "$passed" -eq 0 ]; then
+            echo "::error title=Browser specs::No browser (:js) spec passed; is Chrome available to Cuprite?"
+            exit 1
+          fi
+
       - name: Show failing specs as annotations
         if: failure()
         run: |

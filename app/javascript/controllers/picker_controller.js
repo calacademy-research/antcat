@@ -148,10 +148,15 @@ export default class extends Controller {
   }
 
   _setSearchResults = async (query) => {
+    // One request per keystroke; responses can arrive out of order, so only the latest may render.
+    this._latestSearch = (this._latestSearch || 0) + 1
+    const searchNumber = this._latestSearch
+
     const url = `${this.urlValue}&q=${encodeURIComponent(query)}`
     const response = await fetch(url)
     const html = await response.text()
 
+    if (searchNumber !== this._latestSearch) return
     this.searchResultsTarget.innerHTML = html
   }
 
