@@ -27,7 +27,8 @@
   .medium-4
     %h5 AntCat administration
     %ul.no-bullet
-      %li=link_to 'Database scripts', database_scripts_path
+      -if user_is_at_least_helper?
+        %li=link_to 'Database scripts', database_scripts_path
       -if current_user
         %li=link_to "My notifications", notifications_path
       %li=link_to "Site notices", site_notices_path

@@ -49,7 +49,9 @@ module DatabaseScripts
 
     def history_item_link_and_taxt history_item
       return '' unless history_item
-      link_to("##{history_item.id}", history_item_path(history_item)) << ":<br>#{history_item.taxt}".html_safe
+      link_to("##{history_item.id}", history_item_path(history_item)) <<
+        ":<br>".html_safe <<
+        DatabaseScripts::Renderers::AsTable.sanitize_html(history_item.taxt)
     end
 
     def color_span string, css_class

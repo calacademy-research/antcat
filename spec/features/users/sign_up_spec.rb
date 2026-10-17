@@ -8,8 +8,8 @@ feature "Signing up", as: :visitor do
     i_follow "Sign up", within_scope: "#desktop-only-header"
     fill_in "user_email", with: "pizza@example.com"
     fill_in "user_name", with: "Quintus Batiatus"
-    fill_in "user_password", with: "secret123"
-    fill_in "user_password_confirmation", with: "secret123"
+    fill_in "user_password", with: "secret123-password"
+    fill_in "user_password_confirmation", with: "secret123-password"
     click_button "Sign Up"
     i_should_be_on root_path
     i_should_see "Welcome! You have signed up successfully."

@@ -138,6 +138,19 @@ describe Exporters::Antweb::TaxonAttributes do
       end
     end
 
+    describe "[17]: `taxonomic history html` (locality)" do
+      let(:taxon) { create :species }
+
+      before { taxon.protonym.update!(locality: 'Madagascar (<img src=x onerror=alert(1)>)') }
+
+      it "escapes HTML in the protonym locality" do
+        history_html = described_class[taxon][:taxonomic_history_html]
+
+        expect(history_html).to include "MADAGASCAR (&lt;img src=x onerror=alert(1)&gt;)."
+        expect(history_html).not_to include "<img"
+      end
+    end
+
     describe "[17]: `taxonomic history html`", :relational_hi do
       let(:taxon) { create :genus, hol_id: 9999 }
       let!(:type_species) { create :species, genus: taxon }

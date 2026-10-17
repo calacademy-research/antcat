@@ -15,6 +15,13 @@ describe User do
     it { is_expected.to validate_presence_of :name }
     it { is_expected.not_to allow_values('<', '>').for(:name) }
 
+    describe "password length" do
+      it "requires at least 12 characters" do
+        expect(build(:user, password: 'a' * 11, password_confirmation: 'a' * 11)).not_to be_valid
+        expect(build(:user, password: 'a' * 12, password_confirmation: 'a' * 12)).to be_valid
+      end
+    end
+
     describe "uniqueness validation" do
       subject { create :user }
 

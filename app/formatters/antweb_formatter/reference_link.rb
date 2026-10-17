@@ -8,7 +8,7 @@ module AntwebFormatter
     attr_private_initialize :reference
 
     def call
-      [reference_link, document_links].compact.join(' ').html_safe
+      safe_join([reference_link, document_links].compact, ' ')
     end
 
     private

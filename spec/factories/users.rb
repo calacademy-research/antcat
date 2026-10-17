@@ -4,7 +4,7 @@ FactoryBot.define do
   factory :user do
     sequence(:name) { |n| "User #{n}" }
     sequence(:email) { |n| "user#{n}@antcat.org" }
-    password { 'secret' }
+    password { 'secret-password-1' }
 
     trait :user
 

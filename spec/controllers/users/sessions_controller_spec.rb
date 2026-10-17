@@ -8,8 +8,8 @@ describe Users::SessionsController do
   end
 
   describe "POST create", as: :visitor do
-    let!(:user) { create :user, password: 'secret123', password_confirmation: 'secret123' }
-    let(:sign_in_params) { { user: { email: user.email, password: 'secret123' } } }
+    let!(:user) { create :user, password: 'secret123-password', password_confirmation: 'secret123-password' }
+    let(:sign_in_params) { { user: { email: user.email, password: 'secret123-password' } } }
     # Counters live in Rails.cache (a `NullStore` in tests), so stub `increment`.
     let(:rate_limit_store) { Rails.cache }
 

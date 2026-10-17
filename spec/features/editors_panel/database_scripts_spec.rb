@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-feature "Database scripts", as: :user do
+feature "Database scripts", as: :helper do
   def there_is_an_extant_species_lasius_niger_in_a_fossil_genus
     genus = create :genus, protonym: create(:protonym, :genus_group, :fossil)
     create :species, name_string: "Lasius niger", genus: genus
