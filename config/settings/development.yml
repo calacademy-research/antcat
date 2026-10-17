@@ -27,6 +27,3 @@ smtp_settings:
   authentication:
   enable_starttls_auto:
 
-google_analytics:
-  enabled: false
-  tracking_id: 'UA-11111111-1'
