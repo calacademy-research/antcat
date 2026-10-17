@@ -169,8 +169,7 @@ describe Exporters::Antweb::TaxonAttributes do
 
               # Links.
               %(#{antweb_taxon_link_with_label(taxon, 'AntCat')} ) +
-              %(<a class="external-link" href="https://www.antwiki.org/wiki/#{taxon.name_cache}">AntWiki</a> ) +
-              %(<a class="external-link" href="http://hol.osu.edu/index.html?id=#{taxon.hol_id}">HOL</a>) +
+              %(<a class="external-link" href="https://www.antwiki.org/wiki/#{taxon.name_cache}">AntWiki</a>) +
             %(</div>) +
 
             # History items.

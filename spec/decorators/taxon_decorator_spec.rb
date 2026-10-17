@@ -49,25 +49,6 @@ describe TaxonDecorator do
     end
   end
 
-  describe "#link_to_hol" do
-    context "without a `#hol_id`" do
-      let(:taxon) { build_stubbed :subfamily }
-
-      it 'does not render a link' do
-        expect(decorated.link_to_hol).to eq nil
-      end
-    end
-
-    context "with a `#hol_id`" do
-      let(:taxon) { build_stubbed :subfamily, hol_id: 1234 }
-
-      specify do
-        expect(decorated.link_to_hol).
-          to eq '<a class="external-link" href="http://hol.osu.edu/index.html?id=1234">HOL</a>'
-      end
-    end
-  end
-
   describe "#link_to_antweb" do
     [:family, :tribe, :subtribe, :subgenus, :infrasubspecies].each do |rank|
       context "when taxon is a #{rank}" do

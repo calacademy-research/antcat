@@ -17,8 +17,7 @@ module Exporters
               TypeNameLine[taxon.protonym],
               TypeFields[taxon.protonym],
               link_to_antcat,
-              taxon.decorate.link_to_antwiki,
-              taxon.decorate.link_to_hol
+              taxon.decorate.link_to_antwiki
             ].compact.join(' ').html_safe
           end
         end

@@ -2,7 +2,6 @@
 
 class TaxonDecorator < Draper::Decorator
   ANTWIKI_BASE_URL = "https://www.antwiki.org/wiki/"
-  HOL_BASE_URL = "http://hol.osu.edu/index.html?id="
   ANTWEB_BASE_URL = "https://www.antweb.org/description.do?"
   GOOGLE_SCHOLAR_BASE_URL = "//scholar.google.com/scholar?"
 
@@ -43,11 +42,6 @@ class TaxonDecorator < Draper::Decorator
                    taxon.name_cache.tr(" ", '_')
                  end
     h.external_link_to 'AntWiki', "#{ANTWIKI_BASE_URL}#{page_title}"
-  end
-
-  def link_to_hol
-    return unless (hol_id = taxon.hol_id)
-    h.external_link_to 'HOL', "#{HOL_BASE_URL}#{hol_id}"
   end
 
   def link_to_antweb
