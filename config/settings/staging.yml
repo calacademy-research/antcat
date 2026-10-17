@@ -1,9 +1,5 @@
 site_url: http://ec2-35-165-205-57.us-west-2.compute.amazonaws.com
 
-google_analytics:
-  enabled: false
-  tracking_id:
-
 recaptcha:
   enabled: false
   v3:

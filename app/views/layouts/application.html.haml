@@ -54,6 +54,3 @@
 
         %footer.bg-ac-blue.text-white{class: "[&_a]:text-white [&_a:hover]:font-bold"}
           =render "footer"
-
-      -if Settings.google_analytics.enabled
-        =render "google_analytics", tracking_id: Settings.google_analytics.tracking_id, logged_in: current_user.present?.to_s
