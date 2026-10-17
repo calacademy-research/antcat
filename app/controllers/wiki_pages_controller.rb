@@ -2,6 +2,8 @@
 
 class WikiPagesController < ApplicationController
   before_action :ensure_unconfirmed_user_is_not_over_edit_limit, except: [:index, :show]
+  # Wiki pages and issues: helpers and editors only (Brian, 2026-10-16).
+  before_action :ensure_user_is_at_least_helper, except: [:index, :show]
   before_action :ensure_user_is_superadmin, only: :destroy
 
   def index

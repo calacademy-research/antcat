@@ -13,6 +13,13 @@ describe IssuesController do
       specify { expect(post(:reopen, params: { id: 1 })).to redirect_to_signin_form }
     end
 
+    context "when signed in as a user who is not a helper or editor", as: :user do
+      specify { expect(get(:new)).to have_http_status :forbidden }
+      specify { expect(post(:create)).to have_http_status :forbidden }
+      specify { expect(get(:edit, params: { id: 1 })).to have_http_status :forbidden }
+      specify { expect(put(:update, params: { id: 1 })).to have_http_status :forbidden }
+    end
+
     context "when signed in as an editor", as: :editor do
       specify { expect(delete(:destroy, params: { id: 1 })).to have_http_status :forbidden }
     end
@@ -28,11 +35,11 @@ describe IssuesController do
     specify { expect(get(:show, params: { id: issue.id })).to render_template :show }
   end
 
-  describe "GET new", as: :user do
+  describe "GET new", as: :helper do
     specify { expect(get(:new)).to render_template :new }
   end
 
-  describe "POST create", as: :user do
+  describe "POST create", as: :helper do
     let!(:issue_params) do
       {
         title: 'title',
@@ -62,13 +69,13 @@ describe IssuesController do
     end
   end
 
-  describe "GET edit", as: :user do
+  describe "GET edit", as: :helper do
     let!(:issue) { create :issue }
 
     specify { expect(get(:edit, params: { id: issue.id })).to render_template :edit }
   end
 
-  describe "PUT update", as: :user do
+  describe "PUT update", as: :helper do
     let!(:issue) { create :issue }
     let!(:issue_params) do
       {

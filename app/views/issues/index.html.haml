@@ -1,7 +1,7 @@
 -page_title "Issues"
 -breadcrumb :issues
 
--if current_user
+-if user_is_at_least_helper?
   -content_for :breadcrumbs_right do
     =link_to "New", new_issue_path, class: "btn-default"
 
