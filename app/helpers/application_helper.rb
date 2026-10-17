@@ -18,12 +18,19 @@ module ApplicationHelper
     AddPeriodIfNecessary[string]
   end
 
+  # Only http(s) URLs (absolute or protocol-relative) are linked; anything else (or `nil`) is shown as plain text.
   def external_link_to label, url
+    return tag.span(label) unless http_url?(url)
     link_to label, url, class: 'external-link'
   end
 
   def pdf_link_to label, url
+    return tag.span(label) unless http_url?(url)
     link_to label, url, class: 'pdf-link', rel: 'nofollow'
+  end
+
+  def http_url? url
+    url.to_s.match?(%r{\A(https?:)?//[^/\s]}i)
   end
 
   def yes_no_options_for_select value

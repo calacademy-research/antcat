@@ -115,7 +115,7 @@
         return
       }
 
-      button.get(0).innerHTML = reference.referenceKey
+      button.get(0).textContent = reference.referenceKey
       button.click((event) => {
         event.preventDefault()
         this.insertAtCaret(this.textarea, `{ref ${reference.id}}: `)

@@ -20,7 +20,7 @@ $(() => {
     source: localities,
     templates: {
       empty: 'No results',
-      suggestion: (locality) => `<p>${locality}</p>`,
+      suggestion: (locality) => `<p>${AntCat.escapeHtml(locality)}</p>`,
     },
   })
 })

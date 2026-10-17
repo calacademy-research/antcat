@@ -16,7 +16,7 @@ $(() => {
     templates: {
       header: '<h5 class="text-base font-bold">Author results <small>(first 5)</small></h5>',
       empty: '<div class="text-sm p-2">Unable to find any authors that match the current query</div>',
-      suggestion: (authorName) => `<p>${authorName.label}</p>`,
+      suggestion: (authorName) => `<p>${AntCat.escapeHtml(authorName.label)}</p>`,
     },
   }
 
@@ -41,7 +41,12 @@ $(() => {
         + '<div class="mb-2">Unable to find any references that match the current query</div>'
         + '<div class="text-blue-800">Maybe try with a keyword? Examples: "author:bolton", "year:2003"</div>'
         + '</div>',
-      suggestion: (reference) => `<p>${reference.author} (${reference.year})<br><small>${reference.title}</small></p>`,
+      suggestion: (reference) => {
+        const author = AntCat.escapeHtml(reference.author)
+        const year = AntCat.escapeHtml(reference.year)
+        const title = AntCat.escapeHtml(reference.title)
+        return `<p>${author} (${year})<br><small>${title}</small></p>`
+      },
     },
   }
 

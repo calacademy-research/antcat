@@ -39,5 +39,16 @@ describe References::DownloadsController do
         expect(response).to redirect_to 'http://localhost/document.pdf'
       end
     end
+
+    context 'with a url-only document whose `url` is not http(s) (data from before the validation)' do
+      let!(:reference_document) { create :reference_document, :with_reference, :with_deprecated_url }
+
+      before { reference_document.update_column(:url, 'javascript:alert(1)') }
+
+      it "does not redirect" do
+        get :show, params: { id: reference_document.id, file_name: "document.pdf" }
+        expect(response).to have_http_status :not_found
+      end
+    end
   end
 end

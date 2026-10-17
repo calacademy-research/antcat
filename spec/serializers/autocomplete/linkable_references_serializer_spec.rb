@@ -22,5 +22,14 @@ describe Autocomplete::LinkableReferencesSerializer do
         end
       end
     end
+
+    describe "title" do
+      let(:reference) { create :any_reference, title: %(*Atta* <img src="x" onerror="alert(1)">) }
+
+      it "is escaped HTML with italics" do
+        expect(described_class[[reference]].first[:title]).
+          to eq %(<i>Atta</i> &lt;img src=&quot;x&quot; onerror=&quot;alert(1)&quot;&gt;.)
+      end
+    end
   end
 end

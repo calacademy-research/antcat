@@ -35,11 +35,11 @@ describe ReferenceDecorator do
     context 'when reference has a document' do
       before do
         allow(reference).to receive(:downloadable?).and_return true
-        allow(reference).to receive(:routed_url).and_return 'example.com'
+        allow(reference).to receive(:routed_url).and_return 'https://example.com/doc.pdf'
       end
 
       it "creates a link" do
-        expect(decorated.format_document_links).to eq '<a class="pdf-link" rel="nofollow" href="example.com">PDF</a>'
+        expect(decorated.format_document_links).to eq '<a class="pdf-link" rel="nofollow" href="https://example.com/doc.pdf">PDF</a>'
       end
     end
   end

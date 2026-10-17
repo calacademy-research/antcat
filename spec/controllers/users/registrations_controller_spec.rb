@@ -62,6 +62,33 @@ describe Users::RegistrationsController do
         expect(user.superadmin).to eq false
       end
     end
+
+    describe 'throttling' do
+      # Counters live in Rails.cache (a `NullStore` in tests), so stub `increment`.
+      let(:rate_limit_store) { Rails.cache }
+
+      it 'counts sign-ups per IP and per email' do
+        allow(rate_limit_store).to receive(:increment).and_call_original
+
+        request.env['REMOTE_ADDR'] = '203.0.113.7'
+        post(:create, params: { user: user_params })
+
+        expect(rate_limit_store).to have_received(:increment).with("sign_up:ip:203.0.113.7", any_args)
+        expect(rate_limit_store).to have_received(:increment).with("sign_up:email:pizza@example.com", any_args)
+      end
+
+      context 'when over the limit' do
+        before do
+          allow(rate_limit_store).to receive(:increment).and_return(described_class::SIGN_UPS_PER_IP + 1)
+        end
+
+        it 'does not create a user' do
+          expect { post(:create, params: { user: user_params }) }.not_to change { User.count }
+          expect(response).to redirect_to new_user_registration_path
+          expect(flash[:alert]).to eq described_class::TOO_MANY_SIGN_UPS_MESSAGE
+        end
+      end
+    end
   end
 
   describe "PUT update", as: :current_user do

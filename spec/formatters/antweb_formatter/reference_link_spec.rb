@@ -18,7 +18,7 @@ describe AntwebFormatter::ReferenceLink do
     context "when reference is not downloadable" do
       specify do
         allow(reference).to receive(:downloadable?).and_return false
-        allow(reference).to receive(:routed_url).and_return 'example.com'
+        allow(reference).to receive(:routed_url).and_return 'https://example.com/doc.pdf'
 
         expect(described_class[reference]).to eq(
           %{<a title="Latreille, P. A. 1809. Atta. Science (1):3." } +
@@ -31,13 +31,13 @@ describe AntwebFormatter::ReferenceLink do
     context "when reference is downloadable" do
       it "includes the PDF link" do
         allow(reference).to receive(:downloadable?).and_return true
-        allow(reference).to receive(:routed_url).and_return 'example.com'
+        allow(reference).to receive(:routed_url).and_return 'https://example.com/doc.pdf'
 
         expect(described_class[reference]).to eq(
           %{<a title="Latreille, P. A. 1809. Atta. Science (1):3." } +
           %(href="https://antcat.org/references/#{reference.id}">Latreille, 1809</a>) +
           %( <a class="external-link" href="https://doi.org/#{reference.doi}">#{reference.doi}</a>) +
-          %( <a class="pdf-link" rel="nofollow" href="example.com">PDF</a>)
+          %( <a class="pdf-link" rel="nofollow" href="https://example.com/doc.pdf">PDF</a>)
         )
       end
     end

@@ -33,6 +33,28 @@ describe References::ExportsController do
     end
   end
 
+  describe "GET endnote, limits for visitors" do
+    let!(:reference) { create :any_reference }
+    let!(:other_reference) { create :any_reference }
+    let(:references) { [reference, other_reference] }
+
+    before { stub_const("ApplicationController::MAX_EXPORT_RECORDS_FOR_VISITORS", 1) }
+
+    context 'when not signed in', as: :visitor do
+      it 'refuses exports over the limit' do
+        get :endnote, params: { id: references.map(&:id) }
+        expect(response).to have_http_status :forbidden
+      end
+    end
+
+    context 'when signed in', as: :user do
+      it 'exports all references' do
+        get :endnote, params: { id: references.map(&:id) }
+        expect(response).to have_http_status :ok
+      end
+    end
+  end
+
   describe "GET wikipedia", as: :visitor do
     describe "with `id` in params" do
       let!(:reference) { create :any_reference }

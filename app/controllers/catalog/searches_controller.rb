@@ -29,11 +29,15 @@ module Catalog
       respond_to do |format|
         format.html do
           @taxa = TaxonQuery.new(taxa).with_common_includes_and_current_taxon_includes.
-            paginate(page: params[:page], per_page: params[:per_page])
+            paginate(page: params[:page], per_page: per_page)
         end
 
         format.text do
-          send_data Exporters::Taxa::TaxaAsTxt[taxa], filename: download_filename, type: 'text/plain'
+          if export_too_large_for_visitor?(taxa)
+            render plain: TOO_LARGE_EXPORT_MESSAGE, status: :forbidden
+          else
+            send_data Exporters::Taxa::TaxaAsTxt[taxa], filename: download_filename, type: 'text/plain'
+          end
         end
       end
     end
@@ -45,7 +49,12 @@ module Catalog
       end
 
       def per_page
-        params[:per_page] if params[:per_page].to_i <= PER_PAGE_OPTIONS.max
+        per_page_from_params PER_PAGE_OPTIONS
+      end
+
+      def export_too_large_for_visitor? taxa
+        return false if current_user
+        taxa.limit(MAX_EXPORT_RECORDS_FOR_VISITORS + 1).count(:all) > MAX_EXPORT_RECORDS_FOR_VISITORS
       end
 
       def not_searching_yet?

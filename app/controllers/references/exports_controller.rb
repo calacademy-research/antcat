@@ -2,14 +2,20 @@
 
 module References
   class ExportsController < ApplicationController
+    MAX_RECORDS = 999_999
+
     def endnote
       references =
         if params[:id]
           Reference.where(id: params[:id])
         else
           fulltext_params = References::Search::ExtractKeywords[params[:reference_q]]
-          References::FulltextSearchQuery[**fulltext_params.to_solr, per_page: 999_999]
+          References::FulltextSearchQuery[**fulltext_params.to_solr, per_page: max_records + 1]
         end
+
+      if !current_user && references.size > max_records
+        return render plain: TOO_LARGE_EXPORT_MESSAGE, status: :forbidden
+      end
 
       render plain: Exporters::Endnote::Formatter[references]
     end
@@ -20,6 +26,10 @@ module References
     end
 
     private
+
+      def max_records
+        current_user ? MAX_RECORDS : MAX_EXPORT_RECORDS_FOR_VISITORS
+      end
 
       def find_reference
         Reference.find(params.expect(:id))

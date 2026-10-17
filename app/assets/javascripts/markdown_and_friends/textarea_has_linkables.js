@@ -3,7 +3,20 @@
 // at.js templates use `${field}` placeholders in plain strings.
 /* eslint-disable no-template-curly-in-string */
 (() => {
-  const reuseCallbacks = (url) => ({
+  // at.js does not escape `${field}` values in `displayTpl`. Plain-text fields from the
+  // server must be escaped before they reach at.js. Fields that are left out are HTML
+  // built server-side from validated or escaped data (`name_with_fossil`, reference `title`).
+  const escapeFields = (fields) => (data) => data.map((item) => {
+    const escaped = { ...item }
+    fields.forEach((field) => { escaped[field] = AntCat.escapeHtml(item[field]) })
+    return escaped
+  })
+
+  const TAXON_TEXT_FIELDS = ['id', 'css_classes', 'author_citation']
+  const REFERENCE_TEXT_FIELDS = ['id', 'author', 'year', 'bolton_key', 'full_pagination']
+  const WIKI_PAGE_TEXT_FIELDS = ['id', 'title']
+
+  const reuseCallbacks = (url, textFields) => ({
     matcher: AntCat.allowSpacesWhileAutocompleting,
 
     // Added to make queries with parentheses work (subgenus names).
@@ -31,7 +44,7 @@
 
     remoteFilter: (query, callback) => {
       $.getJSON(url, { q: query }, (data) => {
-        callback(data)
+        callback(escapeFields(textFields)(data))
       })
     },
 
@@ -58,7 +71,7 @@
         "  <span class='discreet-author-citation'>${author_citation}</span>",
         '</li>',
       ].join('\n'),
-      callbacks: reuseCallbacks("/catalog/autocomplete.json"),
+      callbacks: reuseCallbacks("/catalog/autocomplete.json", TAXON_TEXT_FIELDS),
     })
 
     textareas.atwho({
@@ -68,7 +81,7 @@
       maxLen: 50,
       insertTpl: '{ref ${id}}:',
       displayTpl: referenceDisplayTpl,
-      callbacks: reuseCallbacks("/references/linkable_autocomplete.json"),
+      callbacks: reuseCallbacks("/references/linkable_autocomplete.json", REFERENCE_TEXT_FIELDS),
     })
 
     textareas.atwho({
@@ -84,7 +97,7 @@
         "  <span class='discreet-author-citation'>${author_citation}</span>",
         '</li>',
       ].join('\n'),
-      callbacks: reuseCallbacks("/protonyms/autocomplete.json"),
+      callbacks: reuseCallbacks("/protonyms/autocomplete.json", TAXON_TEXT_FIELDS),
     })
 
     textareas.atwho({
@@ -93,15 +106,7 @@
       delay: 300,
       insertTpl: '%wiki${id}',
       displayTpl: '<li><small>#${id}</small> ${title}</li>',
-      callbacks: {
-        ...reuseCallbacks("/wiki/autocomplete.json"),
-        // Wiki page titles are plain text; escape them since at.js does not.
-        remoteFilter: (query, callback) => {
-          $.getJSON("/wiki/autocomplete.json", { q: query }, (data) => {
-            callback(data.map((page) => ({ ...page, id: AntCat.escapeHtml(page.id), title: AntCat.escapeHtml(page.title) })))
-          })
-        },
-      },
+      callbacks: reuseCallbacks("/wiki/autocomplete.json", WIKI_PAGE_TEXT_FIELDS),
     })
 
     textareas.atwho({
@@ -111,7 +116,7 @@
       maxLen: 50,
       insertTpl: '{ref ${id}}:',
       displayTpl: referenceDisplayTpl,
-      callbacks: reuseCallbacks("/my/recently_used_references"),
+      callbacks: reuseCallbacks("/my/recently_used_references", REFERENCE_TEXT_FIELDS),
     })
   }
 

@@ -61,7 +61,14 @@ export default class extends Controller {
     const element = document.createElement('div')
     element.classList.add('hidden')
     element.classList.add('external-preview-modal')
-    element.innerHTML = `<h6>Preview of <a href="${url}" class="external-link">${url}</a></h6>`
+
+    const heading = document.createElement('h6')
+    const link = document.createElement('a')
+    link.href = url
+    link.classList.add('external-link')
+    link.textContent = url
+    heading.append('Preview of ', link)
+    element.appendChild(heading)
 
     return element
   }
