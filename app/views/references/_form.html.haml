@@ -143,7 +143,7 @@
             .mb-4
               =f.label :document_url do
                 Source URL (legacy)
-              =document_form.text_field :url
+              =document_form.url_field :url, pattern: "https?://.+", title: "Must start with http:// or https://"
 
           .mb-4
             =succeed ":" do

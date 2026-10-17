@@ -7,15 +7,29 @@ class ReferenceDocument < ApplicationRecord
   # `#transliterated_file_name` ran. Kept so that new file names look like old ones.
   RESTRICTED_FILE_NAME_CHARACTERS = %r{[&$+,/:;=?@<>\[\]{}|\\^~%# ]}
 
+  # Legacy source URLs must be plain web links.
+  HTTP_URL_REGEX = %r{\Ahttps?://[^\s<>"]+\z}i
+
   belongs_to :reference
 
   validates :url, absence: true, on: :create
+  validates :url, format: { with: HTTP_URL_REGEX, message: "must start with http:// or https://" }, allow_blank: true
   validate :ensure_file_or_url_present
 
   after_save :upload_file
 
   has_paper_trail
   strip_attributes only: [:url]
+
+  def self.http_url? value
+    value.is_a?(String) && HTTP_URL_REGEX.match?(value)
+  end
+
+  # Data check (report only): legacy documents whose `url` is not a plain http(s) link.
+  # See `rake antcat:references:documents_with_non_http_urls`.
+  def self.with_non_http_url
+    where.not(url: [nil, '']).order(:id).reject { |document| http_url?(document.url) }
+  end
 
   # The uploaded file waiting to be stored on S3 (`nil` unless a file was assigned).
   attr_reader :file
@@ -30,12 +44,13 @@ class ReferenceDocument < ApplicationRecord
     file_file_name_will_change! # Make sure that re-uploading a file with the same name is saved and uploaded.
   end
 
+  # Legacy URLs that are not http(s) (existing data from before the validation) are never returned.
   def actual_url
-    hosted_on_s3? ? References::DocumentStorage.presigned_url(s3_key) : url
+    hosted_on_s3? ? References::DocumentStorage.presigned_url(s3_key) : http_url
   end
 
   def routed_url
-    hosted_on_s3? ? url_via_file_file_name : url
+    hosted_on_s3? ? url_via_file_file_name : http_url
   end
 
   private
@@ -75,6 +90,10 @@ class ReferenceDocument < ApplicationRecord
 
     def hosted_on_s3?
       file_file_name.present?
+    end
+
+    def http_url
+      url if self.class.http_url?(url)
     end
 
     def s3_key

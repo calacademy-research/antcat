@@ -57,4 +57,42 @@ describe Catalog::SearchesController do
       end
     end
   end
+
+  describe "GET show, limits for visitors" do
+    before do
+      create :species, name_string: 'Lasius niger'
+      create :species, name_string: 'Lasius flavus'
+    end
+
+    context 'when not signed in', as: :visitor do
+      it 'caps `per_page`' do
+        get :show, params: { qq: 'Lasius', per_page: 1000 }
+        expect(assigns(:taxa).per_page).to eq ApplicationController::MAX_PER_PAGE_FOR_VISITORS
+      end
+
+      it 'refuses large text exports' do
+        stub_const("ApplicationController::MAX_EXPORT_RECORDS_FOR_VISITORS", 1)
+        get :show, params: { qq: 'Lasius' }, format: :text
+        expect(response).to have_http_status :forbidden
+      end
+
+      it 'allows small text exports' do
+        get :show, params: { qq: 'Lasius' }, format: :text
+        expect(response).to have_http_status :ok
+      end
+    end
+
+    context 'when signed in', as: :user do
+      it 'allows larger pages' do
+        get :show, params: { qq: 'Lasius', per_page: 1000 }
+        expect(assigns(:taxa).per_page).to eq 1000
+      end
+
+      it 'allows large text exports' do
+        stub_const("ApplicationController::MAX_EXPORT_RECORDS_FOR_VISITORS", 1)
+        get :show, params: { qq: 'Lasius' }, format: :text
+        expect(response).to have_http_status :ok
+      end
+    end
+  end
 end

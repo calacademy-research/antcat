@@ -13,7 +13,7 @@
 =form_with url: request.path, method: :get do |f|
   .row.mb-4
     .small-6.medium-2
-      =f.select :search_type, options_for_select([["LIKE (default)", "LIKE"], ["REGEXP", "REGEXP"]], params[:search_type]), prompt: "Search type"
+      =f.select :search_type, options_for_select([["LIKE (default)", "LIKE"], *([["REGEXP", "REGEXP"]] if regexp_search_allowed?)], params[:search_type]), prompt: "Search type"
     .small-6.medium-4
       =f.text_field :q, value: params[:q], placeholder: "Search query", class: 'w-full'
     .small-6.medium-4
@@ -25,7 +25,7 @@
     .small-6.medium-2
       =f.select :taxon_status, options_for_select(Status::STATUSES, params[:taxon_status]), { include_blank: "Taxon status" }, { class: 'w-full' }
     .small-6.medium-2
-      =per_page_select HistoryItemsController::PER_PAGE_OPTIONS, params[:per_page]
+      =per_page_select per_page_options_for_current_user(HistoryItemsController::PER_PAGE_OPTIONS), params[:per_page]
     .small-6.medium-2
       =f.select :type, options_for_history_item_types(params[:type]), include_blank: 'Any item type'
   .row.mb-8

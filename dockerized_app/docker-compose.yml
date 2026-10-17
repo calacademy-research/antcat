@@ -1,6 +1,8 @@
 # Production stack for antcat.org (droplet antcat-prod, checkout at /var/www/antcat-2).
-# The database password comes from dockerized_app/.env (not in git):
-#   ANTCAT_DB_PASSWORD=...
+# Database passwords come from dockerized_app/.env (not in git):
+#   ANTCAT_DB_PASSWORD=...        (MySQL root, used only by the db container)
+#   ANTCAT_APP_DB_USER=...        (the app's own MySQL account)
+#   ANTCAT_APP_DB_PASSWORD=...
 services:
   db:
     # MySQL 8.4 since 2026-10 (was mysql/mysql-server:5.6, data kept in /mnt/volume_sfo3_01/mysql).
@@ -52,10 +54,10 @@ services:
     restart: unless-stopped
     environment:
       RAILS_ENV: production
-      # The app's own MySQL account when ANTCAT_APP_DB_USER/PASSWORD are set in .env
-      # (rights on the antcat database only); falls back to root until then.
-      DB_USERNAME: ${ANTCAT_APP_DB_USER:-root}
-      DB_PASSWORD: ${ANTCAT_APP_DB_PASSWORD:-${ANTCAT_DB_PASSWORD:?set ANTCAT_DB_PASSWORD in dockerized_app/.env}}
+      # The app's own MySQL account (rights on the antcat database only), from dockerized_app/.env.
+      # There is no fallback to the MySQL root account: compose refuses to start without them.
+      DB_USERNAME: ${ANTCAT_APP_DB_USER:?set ANTCAT_APP_DB_USER in dockerized_app/.env}
+      DB_PASSWORD: ${ANTCAT_APP_DB_PASSWORD:?set ANTCAT_APP_DB_PASSWORD in dockerized_app/.env}
       DB_DATABASE: antcat
       DB_PORT: 3306
       DB_HOST: db
@@ -91,7 +93,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ./nginx/certbot/conf:/etc/letsencrypt
       - ./nginx/certbot/www:/var/www/certbot
-      - ./nginx/certbot/cloudflare/credentials.ini:/etc/cloudflare/credentials.ini:ro
       - ./nginx/99-autoreload.sh:/docker-entrypoint.d/99-autoreload.sh
     depends_on:
       - app

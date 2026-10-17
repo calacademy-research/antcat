@@ -49,13 +49,24 @@ describe Users::SessionsController do
     it 'counts attempts per IP and per email' do
       allow(rate_limit_store).to receive(:increment).and_call_original
 
-      request.headers['CF-Connecting-IP'] = '203.0.113.7'
+      request.env['REMOTE_ADDR'] = '203.0.113.7'
       post(:create, params: { user: { email: " #{user.email.upcase} ", password: 'wrong' } })
 
       expect(rate_limit_store).to have_received(:increment).
         with(a_string_including('203.0.113.7'), any_args)
       expect(rate_limit_store).to have_received(:increment).
         with(a_string_including(user.email.downcase), any_args)
+    end
+
+    it 'does not trust a client-sent `CF-Connecting-IP` header (nginx sets the real IP)' do
+      allow(rate_limit_store).to receive(:increment).and_call_original
+
+      request.env['REMOTE_ADDR'] = '203.0.113.7'
+      request.headers['CF-Connecting-IP'] = '198.51.100.9'
+      post(:create, params: sign_in_params)
+
+      expect(rate_limit_store).to have_received(:increment).with("sign_in:ip:203.0.113.7", any_args)
+      expect(rate_limit_store).not_to have_received(:increment).with(a_string_including('198.51.100.9'), any_args)
     end
   end
 

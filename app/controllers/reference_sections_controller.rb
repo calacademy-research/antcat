@@ -5,6 +5,7 @@ class ReferenceSectionsController < ApplicationController
 
   before_action :ensure_user_is_at_least_helper, except: [:index, :show]
   before_action :ensure_user_is_editor, only: [:destroy]
+  before_action :ensure_regexp_search_allowed, only: [:index]
 
   def index
     scope = ReferenceSection.all.joins(:taxon)
@@ -91,7 +92,7 @@ class ReferenceSectionsController < ApplicationController
     end
 
     def per_page
-      params[:per_page] if params[:per_page].to_i <= PER_PAGE_OPTIONS.max
+      per_page_from_params PER_PAGE_OPTIONS
     end
 
     def render_json reference_section

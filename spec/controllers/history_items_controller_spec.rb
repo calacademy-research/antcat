@@ -249,4 +249,30 @@ describe HistoryItemsController do
       expect(activity.parameters).to eq(protonym_id: history_item.protonym_id)
     end
   end
+
+  describe "GET index, limits for visitors" do
+    context 'when not signed in', as: :visitor do
+      it 'caps `per_page`' do
+        get :index, params: { per_page: 500 }
+        expect(assigns(:history_items).per_page).to eq ApplicationController::MAX_PER_PAGE_FOR_VISITORS
+      end
+
+      it 'requires signing in for REGEXP searches' do
+        get :index, params: { q: 'a.*b', search_type: 'REGEXP' }
+        expect(response).to redirect_to new_user_session_path
+      end
+
+      it 'allows LIKE searches' do
+        get :index, params: { q: 'pizza', search_type: 'LIKE' }
+        expect(response).to have_http_status :ok
+      end
+    end
+
+    context 'when signed in', as: :user do
+      it 'allows REGEXP searches' do
+        get :index, params: { q: 'a.*b', search_type: 'REGEXP' }
+        expect(response).to have_http_status :ok
+      end
+    end
+  end
 end

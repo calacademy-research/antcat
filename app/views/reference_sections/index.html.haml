@@ -10,7 +10,7 @@
 =form_with url: request.path, method: :get do |f|
   .row.mb-4
     .small-6.medium-2
-      =f.select :search_type, options_for_select([["LIKE (default)", "LIKE"], ["REGEXP", "REGEXP"]], params[:search_type]), prompt: "Search type"
+      =f.select :search_type, options_for_select([["LIKE (default)", "LIKE"], *([["REGEXP", "REGEXP"]] if regexp_search_allowed?)], params[:search_type]), prompt: "Search type"
     .small-6.medium-2
       =f.text_field :q, value: params[:q], placeholder: "Search query", class: 'w-full'
     .small-6.medium-2
@@ -18,7 +18,7 @@
     .small-6.medium-2
       =f.select :taxon_status, options_for_select(Status::STATUSES, params[:taxon_status]), { include_blank: "Taxon status" }, { class: 'w-full' }
     .small-6.medium-2
-      =per_page_select ReferenceSectionsController::PER_PAGE_OPTIONS, params[:per_page]
+      =per_page_select per_page_options_for_current_user(ReferenceSectionsController::PER_PAGE_OPTIONS), params[:per_page]
     .small-6.medium-2
       =button_tag "Search ".html_safe + search_icon, name: nil, class: "btn-default btn-md"
       =link_to "Clear", request.path, class: "btn-neutral btn-md"

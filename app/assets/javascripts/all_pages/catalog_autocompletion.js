@@ -21,7 +21,7 @@ $(() => {
   <div class="mb-2">Unable to find any taxa that match the current query</div>
   <a class="!text-ac-blue-text" href="/catalog/search">Show advanced search form</a>
 </div>`,
-      suggestion: (taxon) => `<p><span class='${taxon.css_classes}'>${taxon.name_with_fossil}</span> <small>${taxon.author_citation}</small></p>`,
+      suggestion: (taxon) => `<p><span class='${taxon.css_classes}'>${taxon.name_with_fossil}</span> <small>${AntCat.escapeHtml(taxon.author_citation)}</small></p>`,
     },
   }
 
@@ -42,7 +42,7 @@ $(() => {
     templates: {
       header: '<h5 class="text-base font-bold mt-4">Protonym results <small>(first 10)</small></h5>',
       empty: '<div class="text-sm p-2">Unable to find any protonyms that match the current query</div>',
-      suggestion: (protonym) => `<p><span class='protonym'>${protonym.name_with_fossil}</span> <small>${protonym.author_citation}</small></p>`,
+      suggestion: (protonym) => `<p><span class='protonym'>${protonym.name_with_fossil}</span> <small>${AntCat.escapeHtml(protonym.author_citation)}</small></p>`,
     },
   }
 

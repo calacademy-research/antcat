@@ -12,6 +12,26 @@ describe ReferenceDocument do
   describe 'validations' do
     it { is_expected.to validate_absence_of(:url).on(:create) }
 
+    describe '`url` format (on update)' do
+      let(:document) { create :reference_document, :with_reference, :with_deprecated_url }
+
+      it 'allows http and https URLs' do
+        expect(document.update(url: 'https://example.com/a.pdf')).to eq true
+        expect(document.update(url: 'HTTP://example.com/a.pdf')).to eq true
+      end
+
+      it 'rejects other URLs' do
+        bad_urls = [
+          'javascript:alert(1)', 'JavaScript:alert(1)', 'data:text/html,x', 'example.com/a.pdf',
+          "https://example.com/\njavascript:x", '//example.com/a.pdf'
+        ]
+        bad_urls.each do |url|
+          expect(document.update(url: url)).to eq(false), url
+          expect(document.errors[:url]).to include "must start with http:// or https://"
+        end
+      end
+    end
+
     describe '#ensure_file_or_url_present' do
       context 'when `url` and `file_file_name` are both blank' do
         let(:document) { described_class.new(url: nil, file_file_name: nil) }
@@ -33,6 +53,21 @@ describe ReferenceDocument do
     end
   end
 
+  describe '.with_non_http_url' do
+    let!(:http_document) { create :reference_document, :with_reference, :with_deprecated_url }
+    let!(:bad_document) { create :reference_document, :with_reference, :with_deprecated_url }
+
+    before do
+      create :reference_document, :with_reference, :with_file
+      bad_document.update_column(:url, 'javascript:alert(1)')
+    end
+
+    it 'returns only documents with a `url` that is not http(s)' do
+      expect(described_class.with_non_http_url).to eq [bad_document]
+      expect(described_class.with_non_http_url).not_to include http_document
+    end
+  end
+
   describe 'callbacks' do
     it { is_expected.to strip_attributes(:url) }
   end
@@ -44,11 +79,20 @@ describe ReferenceDocument do
     end
 
     context "when the file isn't hosted by us" do
-      let(:document) { described_class.new(url: 'foo') }
+      let(:document) { described_class.new(url: 'https://example.com/foo.pdf') }
 
       specify do
-        expect(document.url).to eq 'foo'
-        expect(document.routed_url).to eq 'foo'
+        expect(document.url).to eq 'https://example.com/foo.pdf'
+        expect(document.routed_url).to eq 'https://example.com/foo.pdf'
+      end
+    end
+
+    context "when the legacy `url` is not http(s) (data from before the validation)" do
+      let(:document) { described_class.new(url: 'javascript:alert(1)') }
+
+      specify do
+        expect(document.routed_url).to eq nil
+        expect(document.actual_url).to eq nil
       end
     end
 
