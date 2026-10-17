@@ -10,7 +10,7 @@ class EditorsPanelPresenter
   end
 
   def recent_comments
-    Comment.most_recent_first.limit(5)
+    Comment.visible_to(current_user).most_recent_first.limit(5)
   end
 
   def recent_unconfirmed_activities

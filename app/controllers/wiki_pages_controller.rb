@@ -2,6 +2,8 @@
 
 class WikiPagesController < ApplicationController
   before_action :ensure_unconfirmed_user_is_not_over_edit_limit, except: [:index, :show]
+  # Wiki pages and issues: helpers and editors only (Brian, 2026-10-16).
+  before_action :ensure_user_is_at_least_helper, except: [:index, :show]
   before_action :ensure_user_is_superadmin, only: :destroy
 
   def index
@@ -58,7 +60,10 @@ class WikiPagesController < ApplicationController
       WikiPage.find(params.expect(:id))
     end
 
+    # Only editors may feature wiki pages (featured pages are linked from the Editor's Panel).
     def wiki_page_params
-      params.expect(wiki_page: [:content, :title, :featured])
+      permitted_keys = [:content, :title]
+      permitted_keys << :featured if user_is_editor? || user_is_superadmin?
+      params.expect(wiki_page: permitted_keys)
     end
 end

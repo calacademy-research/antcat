@@ -3,6 +3,8 @@
 module Users
   class RegistrationsController < Devise::RegistrationsController
     RECAPTCHA_V3_ACTION = 'registration'
+    # Settings keys users may change via `user[settings][editing_helpers][<key>]`.
+    EDITING_HELPERS_SETTINGS_KEYS = %w[create_combination].freeze
 
     prepend_before_action :check_recaptcha, only: [:create]
     before_action :configure_permitted_parameters
@@ -26,21 +28,14 @@ module Users
         )
       end
 
+      # Changing the email or password requires the current password (Devise's `update_with_password`).
+      # Other account details and preferences can be updated without it.
       def update_resource resource, params
-        # Require current password if user is trying to change password.
-        return super if params[:password].present?
+        assign_editing_helpers_settings resource
 
-        # Allows user to update registration information without password.
-        if params[:password].blank?
-          params.except!(:password, :password_confirmation, :current_password)
-        end
+        return super if params[:password].present? || email_changing?(resource, params)
 
-        if settings_params
-          settings_params[:editing_helpers]&.each do |key, value|
-            resource.settings(:editing_helpers).public_send(:"#{key}=", ActiveModel::Type::Boolean.new.cast(value))
-          end
-        end
-
+        params.except!(:password, :password_confirmation, :current_password)
         resource.update(params)
       end
 
@@ -58,8 +53,22 @@ module Users
 
     private
 
-      def settings_params
-        params.dig(:user, :settings)
+      def email_changing? resource, params
+        return false unless params.key?(:email)
+        params[:email].to_s.strip.downcase != resource.email.to_s.downcase
+      end
+
+      # Only keys in `EDITING_HELPERS_SETTINGS_KEYS` are used; others are ignored.
+      def assign_editing_helpers_settings resource
+        editing_helpers = params.dig(:user, :settings, :editing_helpers)
+        return unless editing_helpers.is_a?(ActionController::Parameters)
+
+        EDITING_HELPERS_SETTINGS_KEYS.each do |key|
+          value = editing_helpers[key]
+          next unless value.is_a?(String)
+
+          resource.settings(:editing_helpers).public_send(:"#{key}=", ActiveModel::Type::Boolean.new.cast(value))
+        end
       end
 
       # Via https://github.com/heartcombo/devise/wiki/How-To:-Use-Recaptcha-with-Devise

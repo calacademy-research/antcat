@@ -2,7 +2,7 @@
 -breadcrumb :wiki_pages
 
 -content_for :breadcrumbs_right do
-  -if current_user
+  -if user_is_at_least_helper?
     =link_to "New", new_wiki_page_path, class: "btn-default"
 
 %h5 All wiki pages
