@@ -11,4 +11,11 @@ describe MarkdownHelper do
       helper.markdown content
     end
   end
+
+  describe "#user_markdown" do
+    it "renders without `class` attributes" do
+      expect(helper.user_markdown(%(<span class="callout-danger" title="t">x</span>))).
+        to eq %(<p><span title="t">x</span></p>\n)
+    end
+  end
 end

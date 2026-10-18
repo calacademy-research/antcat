@@ -14,8 +14,8 @@ module Markdowns
     CLOSE = "\u{E001}"
     MARKERS_REGEX = /[#{OPEN}#{CLOSE}]/o
     PLACEHOLDER_REGEX = /#{OPEN}(\d+)#{CLOSE}/o
-    ATTRIBUTE_ESCAPES = { '&' => '&amp;', '"' => '&quot;', '<' => '&lt;', '>' => '&gt;', " " => '&nbsp;' }.freeze
-    ATTRIBUTE_ESCAPES_REGEX = /[&"<> ]/
+    ATTRIBUTE_ESCAPES = { '&' => '&amp;', '"' => '&quot;', '<' => '&lt;', '>' => '&gt;', " " => '&nbsp;', '{' => '&#123;', '}' => '&#125;' }.freeze
+    ATTRIBUTE_ESCAPES_REGEX = /[&"<> {}]/
 
     def self.call html
       expander = new(html)
@@ -29,6 +29,8 @@ module Markdowns
       @masked = mask(String.new(html.to_s).gsub(MARKERS_REGEX, ''))
     end
 
+    # Braces are escaped too, so that running catalog tag expansion again over the output (as database
+    # script tables do) cannot expand a tag inside an attribute value either.
     def unmask html
       return html if values.empty?
 

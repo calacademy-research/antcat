@@ -183,7 +183,7 @@ module Users
           SignUpMailer.already_registered(existing_user).deliver_now unless existing_user.deleted?
         else
           token = self.class.sign_up_token(email: user.email, name: user.name)
-          SignUpMailer.finish_sign_up(email: user.email, name: user.name, token: token).deliver_now
+          SignUpMailer.finish_sign_up(email: user.email, token: token).deliver_now
         end
       end
 

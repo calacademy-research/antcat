@@ -17,7 +17,7 @@ module References
         return render plain: TOO_LARGE_EXPORT_MESSAGE, status: :forbidden
       end
 
-      render plain: Exporters::Endnote::Formatter[references]
+      render plain: Exporters::Endnote::Formatter[references, include_taxonomic_notes: current_user.present?]
     end
 
     def wikipedia

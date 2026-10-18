@@ -22,12 +22,12 @@ module Api
       ]
 
       def index
-        render json: with_limit(Protonym.all).as_json(only: ATTRIBUTES, root: true)
+        render json: without_hidden_notes(with_limit(Protonym.all).as_json(only: ATTRIBUTES, root: true))
       end
 
       def show
         item = Protonym.find(params.expect(:id))
-        render json: item.as_json(only: ATTRIBUTES, root: true)
+        render json: without_hidden_notes(item.as_json(only: ATTRIBUTES, root: true))
       end
     end
   end

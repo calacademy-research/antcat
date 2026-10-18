@@ -14,4 +14,4 @@
         -if current_user == comment.user
           %span.text-sm=link_to "edit", edit_comment_path(comment), class: "discreet"
 
-  %p=markdown comment.body
+  %p=user_markdown comment.body

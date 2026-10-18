@@ -23,10 +23,9 @@ module Api
         :series_volume_issue,
         :nesting_reference_id,
 
-        # Notes.
+        # Notes. `editor_notes` and `taxonomic_notes` are shown on the site to signed-in users only,
+        # so they are not in the (open) API.
         :public_notes,
-        :editor_notes,
-        :taxonomic_notes,
 
         # Caches.
         :author_names_string_cache,

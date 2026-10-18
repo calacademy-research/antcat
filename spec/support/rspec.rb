@@ -91,6 +91,9 @@ RSpec.configure do |config|
     Config.reload!
   end
 
+  # Controller specs run without the Rails executor, which resets `Current` after each request.
+  config.after { Current.reset }
+
   # Allows RSpec to persist some state between runs in order to support
   # the `--only-failures` and `--next-failure` CLI options.
   config.example_status_persistence_file_path = "spec/examples.txt"

@@ -8,7 +8,17 @@ describe Markdowns::ExpandOutsideAttributes do
       html = %(<b title="{x}">{x}</b>)
       result = described_class.call(html) { |masked| masked.gsub('{x}', '<a href="/y">y</a>') }
 
-      expect(result).to eq %(<b title="{x}"><a href="/y">y</a></b>)
+      expect(result).to eq %(<b title="&#123;x&#125;"><a href="/y">y</a></b>)
+    end
+
+    it 'escapes braces in attribute values, so a second expansion pass leaves them alone too' do
+      expand = ->(html) { described_class.call(html) { |masked| masked.gsub('{x}', '<a href="/y">y</a>') } }
+      once = expand.call(%(<b title="{x}">x</b>))
+
+      expect(once).to eq %(<b title="&#123;x&#125;">x</b>)
+      expect(once.gsub('{x}', '<a href="/y">y</a>')).to eq once
+      expect(expand.call(once)).to eq once
+      expect(Nokogiri::HTML5.fragment(once).at('b')['title']).to eq '{x}'
     end
 
     it 'escapes markup in attribute values when putting them back' do

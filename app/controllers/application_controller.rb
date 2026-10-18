@@ -10,6 +10,7 @@ class ApplicationController < ActionController::Base
 
   before_action :store_location_for_devise, if: :storable_location?
   before_action :set_paper_trail_whodunnit, :set_current_request_uuid
+  before_action :set_current_signed_in
 
   # Visitors who are not signed in get smaller result pages and exports, since large pages and
   # REGEXP searches are expensive (full table scans on a small server).
@@ -57,6 +58,11 @@ class ApplicationController < ActionController::Base
 
     def set_current_request_uuid
       RequestStore.store[:current_request_uuid] = SecureRandom.uuid
+    end
+
+    # Logged-in-only content (`{hiddennote ...}`) is only rendered for signed-in users; see `Current`.
+    def set_current_signed_in
+      Current.signed_in = user_signed_in?
     end
 
     def ensure_unconfirmed_user_is_not_over_edit_limit

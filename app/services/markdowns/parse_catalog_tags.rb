@@ -177,7 +177,10 @@ module Markdowns
       end
 
       # Hidden editor notes (logged-in only) "{hiddennote string}".
+      # Left out entirely for visitors (see `Current.signed_in`), so the note is not in the page source.
       def parse_hiddennotes_tags
+        return content.gsub!(Taxt::HIDDENNOTE_TAG_WITH_SPACE_BEFORE_REGEX, '') unless Current.signed_in
+
         content.gsub!(Taxt::HIDDENNOTE_TAG_REGEX) do
           %(<span class="taxt-hidden-note"><b>Hidden editor note:</b> #{$LAST_MATCH_INFO[:note_content]}</span>)
         end
