@@ -6,8 +6,12 @@ module Users
   # 1. `create` (the sign-up form: email and name) always answers with the same message. A new address
   #    gets an email with a signed link (valid for `SIGN_UP_LINK_VALID_FOR`); an address that already has
   #    an account gets a notice with links to sign in or reset the password. Nothing is saved.
-  # 2. `complete` / `finish` (from the emailed link): the person chooses a password, the account is
-  #    created and signed in.
+  #    Only checks that do not depend on who has an account run here (email format, name present and
+  #    without `<>`). "Name has already been taken" is checked in step 2: checked here, it would stop
+  #    a person with an account who types their own name from getting the notice, and an error shown
+  #    for a new address but not for a registered one would tell anyone which addresses are registered.
+  # 2. `complete` / `finish` (from the emailed link): the person chooses a password (and can change the
+  #    name, for example when it was taken in the meantime), the account is created and signed in.
   #
   # The account is only created by someone who can read the address's email.
   class RegistrationsController < Devise::RegistrationsController
@@ -43,8 +47,8 @@ module Users
       Rails.application.message_verifier(:user_sign_up)
     end
 
-    # Step 1. Same response for new and already registered addresses (unless the form has other errors,
-    # which do not depend on the address being registered).
+    # Step 1. Same response for new and already registered addresses. The form's errors (blank or invalid
+    # email, blank name) do not depend on the address being registered, so they are shown for both.
     def create
       self.resource = build_sign_up_resource
       if resource.errors.any?
@@ -61,6 +65,7 @@ module Users
     # Step 2: the page the emailed link opens.
     def complete
       self.resource = resource_class.new(email: @sign_up[:email], name: @sign_up[:name])
+      resource.errors.add(:name, :taken) if name_taken?(resource.name)
       set_minimum_password_length
     end
 
@@ -159,12 +164,14 @@ module Users
       end
 
       # The sign-up form's user, validated without the password (chosen in step 2) and without the
-      # "email has already been taken" check (which would tell anyone whether the address has an account).
+      # "has already been taken" checks for email and name (see the class comment): the email check
+      # would tell anyone whether the address has an account, and the name is checked in step 2.
       def build_sign_up_resource
         user = resource_class.new(sign_up_params.slice(:email, :name))
         user.password = user.password_confirmation = Devise.friendly_token(32)
         user.validate
         user.errors.delete(:email, :taken)
+        user.errors.delete(:name, :taken)
         user.password = user.password_confirmation = nil
         user
       end
@@ -200,10 +207,15 @@ module Users
         resource_class.find_for_authentication(email: email).present?
       end
 
+      def name_taken? name
+        name.present? && resource_class.exists?(name: name)
+      end
+
+      # A unique index violation means the email or the name was taken after validation (race).
       def save_new_user user
         user.save
       rescue ActiveRecord::RecordNotUnique
-        user.errors.add(:email, :taken)
+        user.errors.add(email_registered?(user.email) ? :email : :name, :taken)
         false
       end
   end

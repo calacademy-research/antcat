@@ -88,6 +88,29 @@ describe "Signing up" do
       expect(response.body).to match(/Name can(&#39;|')t be blank/)
     end
 
+    # Regression: someone with an account who signs up again with their own name got
+    # "Name has already been taken" and no email.
+    it "emails the notice to an address that has an account, even if the name is taken" do
+      create :user, name: 'Someone Else'
+
+      ['Existing User', 'Someone Else'].each do |taken_name|
+        deliveries.clear
+        sign_up email: 'existing@example.com', name: taken_name
+
+        expect(response).to redirect_to root_path
+        expect(flash[:notice]).to eq Users::RegistrationsController::SIGN_UP_EMAIL_SENT_MESSAGE
+        expect(deliveries.map(&:subject)).to eq ['You already have an account - antcat.org']
+      end
+    end
+
+    it "does not check whether the name is taken (the same response for registered and new addresses)" do
+      sign_up email: new_email, name: 'Existing User'
+
+      expect(response).to redirect_to root_path
+      expect(flash[:notice]).to eq Users::RegistrationsController::SIGN_UP_EMAIL_SENT_MESSAGE
+      expect(deliveries.last.subject).to eq 'Finish signing up - antcat.org'
+    end
+
     it "still validates the email format" do
       sign_up email: 'not-an-email'
 
@@ -164,6 +187,44 @@ describe "Signing up" do
         params: { token: token, user: { email: 'other@example.com', password: password, password_confirmation: password } }
 
       expect(User.last.email).to eq new_email
+    end
+
+    context "when the name was taken before the link is used" do
+      before { create :user, name: 'Quintus Batiatus' }
+
+      it "shows the error on the password form" do
+        get path
+
+        expect(response).to have_http_status :ok
+        expect(response.body).to include "Name has already been taken"
+      end
+
+      it "does not create the account with that name, and accepts another name" do
+        expect do
+          post complete_user_sign_up_path,
+            params: { token: token, user: { password: password, password_confirmation: password } }
+        end.not_to change { User.count }
+        expect(response).to have_http_status :unprocessable_content
+        expect(response.body).to include "Name has already been taken"
+
+        post complete_user_sign_up_path,
+          params: { token: token, user: { name: 'Q. Batiatus', password: password, password_confirmation: password } }
+        expect(User.find_by!(email: new_email).name).to eq 'Q. Batiatus'
+      end
+    end
+
+    it "shows an error (not a crash) when the name is taken at the moment of saving" do
+      allow(User).to receive(:new).and_wrap_original do |original, *args|
+        original.call(*args).tap do |user|
+          allow(user).to receive(:save).and_raise(ActiveRecord::RecordNotUnique)
+        end
+      end
+
+      post complete_user_sign_up_path,
+        params: { token: token, user: { password: password, password_confirmation: password } }
+
+      expect(response).to have_http_status :unprocessable_content
+      expect(response.body).to include "Name has already been taken"
     end
 
     it "requires a valid password" do
