@@ -23,7 +23,7 @@ describe Markdowns::MentionedUsers do
     end
 
     it "only returns the first #{described_class::MAX_MENTIONED_USERS} distinct users mentioned" do
-      other_users = described_class::MAX_MENTIONED_USERS.times.map { create :user }
+      other_users = Array.new(described_class::MAX_MENTIONED_USERS) { create :user }
       content = [user_1, *other_users, user_2].map { |user| "@user#{user.id}" }.join(' ')
 
       result = described_class[content]

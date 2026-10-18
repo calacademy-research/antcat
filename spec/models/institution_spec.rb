@@ -13,8 +13,8 @@ describe Institution do
 
     describe '#abbreviation' do
       it 'allows abbreviations in use' do
-        ['CASC', 'MCZC', 'ZMUC', 'NHMW', 'MZSP', 'BMNH', 'NHM-UK', 'Mus. Gen.', 'A&M', "D'Orb", 'LACM/ENT', 'MNHN_P',
-         'ÖMUS', 'UFV-LABEC'].each do |abbreviation|
+        abbreviations = ['CASC', 'MCZC', 'ZMUC', 'NHMW', 'MZSP', 'BMNH', 'NHM-UK', 'Mus. Gen.', 'A&M', "D'Orb", 'LACM/ENT']
+        (abbreviations + ['MNHN_P', 'ÖMUS', 'UFV-LABEC']).each do |abbreviation|
           is_expected.to allow_value(abbreviation).for(:abbreviation)
         end
       end
