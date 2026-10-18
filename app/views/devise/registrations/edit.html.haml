@@ -8,11 +8,13 @@
     .medium-6
       =f.label :email
       =f.email_field :email, class: 'w-full'
+      =render 'devise/registrations/email_hint'
 
       .mb-4
 
-      =f.label :name
+      =f.label :name, "Full name"
       =f.text_field :name, class: 'w-full'
+      =render 'devise/registrations/name_hint'
 
       .mb-4
 

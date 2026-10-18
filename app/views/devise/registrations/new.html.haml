@@ -8,16 +8,17 @@
 
   .row
     .medium-6.mb-4
-      =f.label :email do
-        Email (public)
+      =f.label :email, "Email"
       =f.email_field :email, autofocus: true, class: 'w-full'
+      =render 'devise/registrations/email_hint'
 
       .mb-4
 
       =f.label :name do
-        Name (full name, public)
+        Full name
         =tooltip_icon "Please use your real name, or your account may be deactivated."
       =f.text_field :name, class: 'w-full'
+      =render 'devise/registrations/name_hint'
 
   .row.mb-4
     .medium-6
