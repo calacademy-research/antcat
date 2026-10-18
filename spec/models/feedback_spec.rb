@@ -8,6 +8,15 @@ describe Feedback do
   describe 'validations' do
     it { is_expected.to validate_presence_of :comment }
     it { is_expected.to validate_length_of(:comment).is_at_most(described_class::COMMENT_MAX_LENGTH) }
+    it { is_expected.to validate_length_of(:name).is_at_most(described_class::NAME_MAX_LENGTH) }
+    it { is_expected.to validate_length_of(:email).is_at_most(described_class::EMAIL_MAX_LENGTH) }
+
+    it "shortens a long page instead of rejecting the feedback" do
+      feedback = build :feedback, page: "/catalog/1?#{'x' * 500}"
+
+      expect(feedback).to be_valid
+      expect(feedback.page.length).to eq described_class::PAGE_MAX_LENGTH
+    end
   end
 
   describe ".submitted_by_ip" do

@@ -214,6 +214,29 @@ describe Markdowns::ParseCatalogTags do
 
           expect(described_class["Lasius{#{Taxt::HIDDENNOTE_TAG} check reference}"]).to eq 'Lasius'
         end
+
+        it 'leaves out notes containing other tags, including broken ones, completely' do
+          reference = create :any_reference
+          taxt = "Lasius {#{Taxt::HIDDENNOTE_TAG} see {ref #{reference.id}}: 45, wrong {tax 0} here} and Formica"
+
+          Current.set(signed_in: false) do
+            expect(described_class[taxt]).to eq 'Lasius and Formica'
+          end
+        end
+      end
+
+      context "when a signed-in user is viewing a note with other tags in it" do
+        it 'renders the whole note, with the tags expanded' do
+          reference = create :any_reference
+          taxt = "Lasius {#{Taxt::HIDDENNOTE_TAG} see {ref #{reference.id}}: 45, wrong here} and Formica"
+
+          Current.set(signed_in: true) do
+            result = described_class[taxt]
+            expect(result).to start_with 'Lasius <span class="taxt-hidden-note"><b>Hidden editor note:</b> see '
+            expect(result).to include %(href="/references/#{reference.id}")
+            expect(result).to end_with ': 45, wrong here</span> and Formica'
+          end
+        end
       end
     end
   end

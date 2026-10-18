@@ -113,6 +113,11 @@ describe AntwebFormatter::Detax do
         expect(described_class["Synonym of Lasius{#{Taxt::HIDDENNOTE_TAG} check reference} and Formica"]).
           to eq "Synonym of Lasius and Formica"
       end
+
+      it 'removes notes containing other tags completely' do
+        expect(described_class["Lasius {#{Taxt::HIDDENNOTE_TAG} see {tax 0}: wrong here} and Formica"]).
+          to eq "Lasius and Formica"
+      end
     end
   end
 end

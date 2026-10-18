@@ -6,5 +6,8 @@
 # Use this to limit dissemination of sensitive information.
 # See the ActiveSupport::ParameterFilter documentation for supported notations and behaviors.
 Rails.application.config.filter_parameters += [
-  :passw, :secret, :token, :_key, :crypt, :salt, :certificate, :otp, :ssn
+  :passw, :secret, :token, :_key, :crypt, :salt, :certificate, :otp, :ssn, :email,
+  # People's names in the sign-up/account and feedback forms. Not plain `:name`, which would also hide
+  # taxon and author names in search parameters (partial match).
+  'user.name', 'feedback.name'
 ]

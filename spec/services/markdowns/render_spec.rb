@@ -17,6 +17,15 @@ describe Markdowns::Render do
         expect(described_class[content, user_content: true]).not_to include 'class='
       end
 
+      it "does not turn the info string of fenced code blocks into a `class` attribute" do
+        content = "```{.callout-danger .fixed}\ncode <b>\n```"
+
+        [described_class[content], described_class[content, user_content: true]].each do |rendered|
+          expect(rendered).not_to include 'class='
+          expect(rendered).to include "<pre><code>"
+        end
+      end
+
       it "does not remove <i> tags" do
         content = "<i>italics<i><i><script>xss</script></i>"
         expect(described_class[content]).to eq "<p><i>italics<i><i>xss</i></i></i></p>\n"
