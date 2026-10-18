@@ -233,7 +233,6 @@ GEM
     erubi (1.13.1)
     execjs (2.10.2)
       json (>= 2)
-    ey_config (0.0.8)
     factory_bot (6.6.0)
       activesupport (>= 6.1.0)
     factory_bot_rails (6.5.1)
@@ -656,7 +655,6 @@ DEPENDENCIES
   diffy
   draper
   email_spec
-  ey_config
   factory_bot_rails
   grape-swagger-rails (~> 0.7)
   gretel

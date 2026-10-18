@@ -24,7 +24,6 @@ gem 'config'
 gem 'devise'
 gem 'diffy'
 gem 'draper'
-gem 'ey_config' # Required for accessing service configurations through `EY::Config` on EngineYard.
 gem 'grape-swagger-rails', '~> 0.7' # 1.x+ pulls in haml-rails alongside hamlit
 gem 'gretel'
 gem 'high_voltage'
