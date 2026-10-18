@@ -27,7 +27,7 @@ module Notifications
 
         UserMailer.new_notification(user, notification).deliver_now
       rescue StandardError => e
-        NewRelic::Agent.notice_error(e)
+        Rails.logger.error "Notification email to user #{user.id} failed: #{e.class}: #{e.message}"
       end
   end
 end

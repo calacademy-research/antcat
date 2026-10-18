@@ -22,6 +22,13 @@ Deploy a code change: `cd /var/www/antcat-2 && git pull && docker restart antcat
 (startup runs bundle install, yarn, asset precompile and Solr; allow a few minutes).
 Never edit tracked files on the server; commit to GitHub instead.
 
+The app runs as the user `antcat` (uid 1000, gid 1001), not root. `startup.sh` starts as root only to
+hand `tmp/`, `log/`, `public/assets/` and `app/assets/builds/` to that user (and make
+`config/settings/*.secret.yml` readable by group `antcat`, mode 640), and to run `bundle install` and
+`yarn install` (gems and packages stay root-owned); the asset build and Puma then run as `antcat`
+(`setpriv`). `docker exec antcat-app ...` still defaults to root; run Rails tasks and pipeline
+scripts as the app user: `docker exec -u antcat antcat-app bundle exec rails runner ...`.
+
 Deploy a change to `Dockerfile` (e.g. a Ruby upgrade): a restart is not enough, the image must be rebuilt.
 In this directory: `docker compose build app`, then `docker compose up -d app` (recreates `antcat-app`;
 the first start compiles all gems into `vendor/bundle/ruby/<version>`: about 3 minutes on a 4-CPU CI runner, allow 10+ on the droplet), then

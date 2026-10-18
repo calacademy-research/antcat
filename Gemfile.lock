@@ -233,7 +233,6 @@ GEM
     erubi (1.13.1)
     execjs (2.10.2)
       json (>= 2)
-    ey_config (0.0.8)
     factory_bot (6.6.0)
       activesupport (>= 6.1.0)
     factory_bot_rails (6.5.1)
@@ -379,8 +378,6 @@ GEM
       timeout
     net-smtp (0.5.2)
       net-protocol
-    newrelic_rpm (10.9.1)
-      logger
     nio4r (2.7.5)
     nokogiri (1.19.4)
       mini_portile2 (~> 2.8.2)
@@ -658,7 +655,6 @@ DEPENDENCIES
   diffy
   draper
   email_spec
-  ey_config
   factory_bot_rails
   grape-swagger-rails (~> 0.7)
   gretel
@@ -676,7 +672,6 @@ DEPENDENCIES
   ledermann-rails-settings
   marcel
   mysql2
-  newrelic_rpm
   nokogiri
   paper_trail (~> 17.0)
   progress_bar

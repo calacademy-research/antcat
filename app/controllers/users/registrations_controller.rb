@@ -1,6 +1,15 @@
 # frozen_string_literal: true
 
 module Users
+  # Sign-up in two steps, so the response never shows whether an email address already has an account:
+  #
+  # 1. `create` (the sign-up form: email and name) always answers with the same message. A new address
+  #    gets an email with a signed link (valid for `SIGN_UP_LINK_VALID_FOR`); an address that already has
+  #    an account gets a notice with links to sign in or reset the password. Nothing is saved.
+  # 2. `complete` / `finish` (from the emailed link): the person chooses a password, the account is
+  #    created and signed in.
+  #
+  # The account is only created by someone who can read the address's email.
   class RegistrationsController < Devise::RegistrationsController
     include RequestThrottle
 
@@ -11,16 +20,69 @@ module Users
     SIGN_UPS_PER_EMAIL = 3
     SIGN_UPS_WITHIN = 1.hour
     TOO_MANY_SIGN_UPS_MESSAGE = "Too many sign-up attempts. Please wait a while and try again."
+    SIGN_UP_LINK_VALID_FOR = 24.hours
+    SIGN_UP_TOKEN_PURPOSE = :sign_up
+    SIGN_UP_EMAIL_SENT_MESSAGE = "Thank you. If this email address can be used for a new account, you will receive an email with a link to finish signing up in a few minutes."
+    INVALID_SIGN_UP_LINK_MESSAGE = "This sign-up link is invalid or has expired. Please sign up again."
+    ALREADY_REGISTERED_MESSAGE = 'This email address already has an account. Please log in, or use "Forgot password?" on the login page.'
 
+    prepend_before_action :require_no_authentication, only: [:complete, :finish]
     prepend_before_action :check_recaptcha, only: [:create]
     prepend_before_action :throttle_sign_up, only: [:create] # Prepended last, so it runs first.
     before_action :configure_permitted_parameters
+    before_action :load_sign_up_from_token, only: [:complete, :finish]
 
+    def self.sign_up_token email:, name:
+      sign_up_verifier.generate(
+        { 'email' => email, 'name' => name },
+        purpose: SIGN_UP_TOKEN_PURPOSE, expires_in: SIGN_UP_LINK_VALID_FOR
+      )
+    end
+
+    def self.sign_up_verifier
+      Rails.application.message_verifier(:user_sign_up)
+    end
+
+    # Step 1. Same response for new and already registered addresses (unless the form has other errors,
+    # which do not depend on the address being registered).
     def create
-      super do |user|
-        if user.persisted?
-          user.create_activity Activity::CREATE, current_user
-        end
+      self.resource = build_sign_up_resource
+      if resource.errors.any?
+        clean_up_passwords resource
+        set_minimum_password_length
+        render :new, status: :unprocessable_content
+        return
+      end
+
+      send_sign_up_email resource
+      redirect_to root_path, notice: SIGN_UP_EMAIL_SENT_MESSAGE
+    end
+
+    # Step 2: the page the emailed link opens.
+    def complete
+      self.resource = resource_class.new(email: @sign_up[:email], name: @sign_up[:name])
+      set_minimum_password_length
+    end
+
+    def finish
+      self.resource = resource_class.new(
+        email: @sign_up[:email],
+        name: params.dig(:user, :name).presence || @sign_up[:name],
+        password: params.dig(:user, :password),
+        password_confirmation: params.dig(:user, :password_confirmation)
+      )
+
+      if save_new_user(resource)
+        resource.create_activity Activity::CREATE, nil
+        set_flash_message! :notice, :signed_up
+        sign_up resource_name, resource
+        redirect_to after_sign_up_path_for(resource)
+      elsif email_registered?(resource.email)
+        redirect_to new_user_session_path, alert: ALREADY_REGISTERED_MESSAGE
+      else
+        clean_up_passwords resource
+        set_minimum_password_length
+        render :complete, status: :unprocessable_content
       end
     end
 
@@ -89,12 +151,60 @@ module Users
 
       # Via https://github.com/heartcombo/devise/wiki/How-To:-Use-Recaptcha-with-Devise
       def check_recaptcha
-        unless recaptcha_v3_valid?(params[:recaptcha_token], Users::RegistrationsController::RECAPTCHA_V3_ACTION)
-          self.resource = resource_class.new(sign_up_params)
-          resource.validate # Look for any other validation errors besides reCAPTCHA.
-          set_minimum_password_length
-          respond_with_navigational(resource) { render :new }
+        return if recaptcha_v3_valid?(params[:recaptcha_token], Users::RegistrationsController::RECAPTCHA_V3_ACTION)
+
+        self.resource = build_sign_up_resource # Look for any other validation errors besides reCAPTCHA.
+        set_minimum_password_length
+        respond_with_navigational(resource) { render :new, status: :unprocessable_content }
+      end
+
+      # The sign-up form's user, validated without the password (chosen in step 2) and without the
+      # "email has already been taken" check (which would tell anyone whether the address has an account).
+      def build_sign_up_resource
+        user = resource_class.new(sign_up_params.slice(:email, :name))
+        user.password = user.password_confirmation = Devise.friendly_token(32)
+        user.validate
+        user.errors.delete(:email, :taken)
+        user.password = user.password_confirmation = nil
+        user
+      end
+
+      def send_sign_up_email user
+        existing_user = resource_class.find_for_authentication(email: user.email)
+
+        if existing_user
+          SignUpMailer.already_registered(existing_user).deliver_now unless existing_user.deleted?
+        else
+          token = self.class.sign_up_token(email: user.email, name: user.name)
+          SignUpMailer.finish_sign_up(email: user.email, name: user.name, token: token).deliver_now
         end
+      end
+
+      def load_sign_up_from_token
+        data = self.class.sign_up_verifier.verified(params[:token].to_s, purpose: SIGN_UP_TOKEN_PURPOSE)
+        unless data.is_a?(Hash) && data['email'].present?
+          redirect_to new_user_registration_path, alert: INVALID_SIGN_UP_LINK_MESSAGE
+          return
+        end
+
+        if email_registered?(data['email'])
+          redirect_to new_user_session_path, alert: ALREADY_REGISTERED_MESSAGE
+          return
+        end
+
+        @sign_up = { email: data['email'], name: data['name'] }
+        @sign_up_token = params[:token]
+      end
+
+      def email_registered? email
+        resource_class.find_for_authentication(email: email).present?
+      end
+
+      def save_new_user user
+        user.save
+      rescue ActiveRecord::RecordNotUnique
+        user.errors.add(:email, :taken)
+        false
       end
   end
 end

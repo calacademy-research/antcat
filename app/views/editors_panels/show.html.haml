@@ -77,9 +77,6 @@
 .mb-8
   %h5 External links
   %ul
-    %li
-      =external_link_to 'New Relic', Settings.new_relic.apm_url
-      (analytics, account required)
     %li=external_link_to 'AntWeb import log', "https://www.antweb.org/query.do?name=worldantsUploads"
     -if user_is_superadmin?
       %li
