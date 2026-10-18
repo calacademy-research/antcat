@@ -110,7 +110,10 @@ describe "Logged-in only content" do
 
     it "leaves hidden notes out for visitors" do
       get "/history_items/#{history_item.id}/history"
+      expect(response).to have_http_status :ok
+      expect(response.body).not_to include note
 
+      get "/history_items/#{history_item.id}"
       expect(response).to have_http_status :ok
       expect(response.body).not_to include note
     end

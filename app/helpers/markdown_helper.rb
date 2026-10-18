@@ -12,6 +12,11 @@ module MarkdownHelper
     Markdowns::Render[content.dup, user_content: true]
   end
 
+  # Raw taxt as shown in "show raw" and source views: without hidden notes for visitors (see `Current`).
+  def raw_taxt_for_viewer taxt
+    Current.signed_in ? taxt : Taxt.remove_hidden_notes(taxt)
+  end
+
   def markdown_without_wrapping content
     return unless content
     Markdowns::RenderWithoutWrappingP[content.dup]

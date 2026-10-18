@@ -18,4 +18,13 @@ describe MarkdownHelper do
         to eq %(<p><span title="t">x</span></p>\n)
     end
   end
+
+  describe "#raw_taxt_for_viewer" do
+    let(:taxt) { "Lasius {#{Taxt::HIDDENNOTE_TAG} note}" }
+
+    it "removes hidden notes for visitors only" do
+      expect(helper.raw_taxt_for_viewer(taxt)).to eq "Lasius"
+      Current.set(signed_in: true) { expect(helper.raw_taxt_for_viewer(taxt)).to eq taxt }
+    end
+  end
 end

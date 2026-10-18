@@ -10,7 +10,7 @@ describe "Markup in comments" do
 
     expect(response).to have_http_status :ok
     expect(response.body).to include "Official-looking notice"
-    page = Nokogiri::HTML5(response.body)
+    page = Nokogiri::HTML5(response.parsed_body.to_s)
     expect(page.css('div[title="t"]').map(&:text)).to eq ["Official-looking notice"]
     expect(page.css('.user-made-class')).to be_empty
   end
