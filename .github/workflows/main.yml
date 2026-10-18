@@ -275,3 +275,9 @@ jobs:
       - name: Container log
         if: always()
         run: docker logs antcat-app-ci 2>&1 | tail -100 || true
+
+      # Job logs are not always readable from outside; also report the end of the log as annotations.
+      - name: Container log (annotations)
+        if: failure()
+        run: |
+          echo "::error title=antcat-app log::$(docker logs antcat-app-ci 2>&1 | grep -v '^\s*$' | tail -60 | cut -c1-300 | sed ':a;N;$!ba;s/%/%25/g;s/\r//g;s/\n/%0A/g')" || true

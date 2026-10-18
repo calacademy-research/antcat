@@ -32,6 +32,17 @@ module Users
     before_action :configure_permitted_parameters
     before_action :load_sign_up_from_token, only: [:complete, :finish]
 
+    def self.sign_up_token email:, name:
+      sign_up_verifier.generate(
+        { 'email' => email, 'name' => name },
+        purpose: SIGN_UP_TOKEN_PURPOSE, expires_in: SIGN_UP_LINK_VALID_FOR
+      )
+    end
+
+    def self.sign_up_verifier
+      Rails.application.message_verifier(:user_sign_up)
+    end
+
     # Step 1. Same response for new and already registered addresses (unless the form has other errors,
     # which do not depend on the address being registered).
     def create
@@ -73,17 +84,6 @@ module Users
         set_minimum_password_length
         render :complete, status: :unprocessable_content
       end
-    end
-
-    def self.sign_up_token email:, name:
-      sign_up_verifier.generate(
-        { 'email' => email, 'name' => name },
-        purpose: SIGN_UP_TOKEN_PURPOSE, expires_in: SIGN_UP_LINK_VALID_FOR
-      )
-    end
-
-    def self.sign_up_verifier
-      Rails.application.message_verifier(:user_sign_up)
     end
 
     protected
