@@ -26,8 +26,5 @@ catalog:
 editors_panel:
   max_featured_wiki_pages_links: 6
 
-new_relic:
-  apm_url: "https://example.com/set-url-in-settings-configs"
-
 contact_us_email_address: "bfisher@calacademy.org"
 suggest_edit_email_address: "bfisher@calacademy.org"

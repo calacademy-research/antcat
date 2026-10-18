@@ -32,13 +32,16 @@ describe Notifications::NotifyUser do
         end
 
         context 'when mailier raises errors' do
-          it 'logs the error to NewRelic without re-raising' do
+          it 'logs the error without re-raising' do
             error = StandardError.new('whoops')
 
             expect(UserMailer).to receive(:new_notification).and_raise(error)
-            expect(NewRelic::Agent).to receive(:notice_error).with(error)
+            allow(Rails.logger).to receive(:error)
 
-            described_class[user, Notification::CREATOR_OF_COMMENTABLE, attached: attached, notifier: notifier]
+            expect do
+              described_class[user, Notification::CREATOR_OF_COMMENTABLE, attached: attached, notifier: notifier]
+            end.not_to raise_error
+            expect(Rails.logger).to have_received(:error).with(/whoops/)
           end
         end
       end

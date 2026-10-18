@@ -379,8 +379,6 @@ GEM
       timeout
     net-smtp (0.5.2)
       net-protocol
-    newrelic_rpm (10.9.1)
-      logger
     nio4r (2.7.5)
     nokogiri (1.19.4)
       mini_portile2 (~> 2.8.2)
@@ -676,7 +674,6 @@ DEPENDENCIES
   ledermann-rails-settings
   marcel
   mysql2
-  newrelic_rpm
   nokogiri
   paper_trail (~> 17.0)
   progress_bar
