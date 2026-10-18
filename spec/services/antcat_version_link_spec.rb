@@ -2,12 +2,28 @@
 
 require 'rails_helper'
 
-# NOTE: This outputs "fatal: No names found, cannot describe anything"
-# on CI when git is not installed (it's ok).
 describe AntCatVersionLink do
   describe "#call" do
-    specify do
-      expect(described_class.new.call).to include %(href="https://github.com/calacademy-research/antcat/commit/)
+    context "when the commit is known" do
+      let(:sha) { "5166c5a2#{'0' * 32}" }
+
+      before { stub_const("AntCat::COMMIT", sha) }
+
+      it "links the version and short hash to the commit" do
+        html = described_class.new.call
+        expect(html).to include %(href="https://github.com/calacademy-research/antcat/commit/#{sha}")
+        expect(html).to include "Version #{AntCat::VERSION} (5166c5a)"
+      end
+    end
+
+    context "when the commit is not known" do
+      before { stub_const("AntCat::COMMIT", nil) }
+
+      it "links the version to the release notes" do
+        html = described_class.new.call
+        expect(html).to include %(href="https://github.com/calacademy-research/antcat/releases")
+        expect(html).not_to include "/commit/"
+      end
     end
   end
 end

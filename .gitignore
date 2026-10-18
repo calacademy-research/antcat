@@ -82,3 +82,6 @@ docker_migration/sql-data
 
 # Local bundler settings (startup.sh writes one on the server)
 /.bundle/
+
+# Deployed commit, optional (config/initializers/antcat_version.rb reads it)
+/REVISION
