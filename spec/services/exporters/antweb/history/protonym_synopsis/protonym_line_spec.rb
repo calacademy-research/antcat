@@ -21,5 +21,14 @@ describe Exporters::Antweb::History::ProtonymSynopsis::ProtonymLine do
         "#{protonym.decorate.format_locality}."
       )
     end
+
+    context "when locality contains HTML" do
+      let(:protonym) { create :protonym, :species_group, locality: 'Madagascar (<img src=x onerror=alert(1)>)' }
+
+      it "escapes the locality" do
+        expect(described_class[protonym]).to include "MADAGASCAR (&lt;img src=x onerror=alert(1)&gt;)."
+        expect(described_class[protonym]).not_to include "<img"
+      end
+    end
   end
 end

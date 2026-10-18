@@ -8,7 +8,7 @@ class DatabaseScriptsController < ApplicationController
     NON_EMPTY_REGRESSION_TESTS = 'non_empty_regression_tests'
   ]
 
-  before_action :authenticate_user!
+  before_action :ensure_user_is_at_least_helper
 
   def index
     @total_number_of_database_scripts = database_scripts_scope.size

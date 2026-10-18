@@ -30,7 +30,7 @@ describe UsersController do
       {
         name: 'Captain Flynn',
         email: 'captain@flynn.com',
-        password: 'secret123',
+        password: 'secret123-password',
         helper: true,
         editor: true,
         superadmin: true,

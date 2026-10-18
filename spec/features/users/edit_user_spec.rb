@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 feature "Editing a user", as: :current_user, skip_ci: true do
-  let(:current_user) { create :user, email: "quintus@antcat.org", name: "Batiatus", password: "secret" }
+  let(:current_user) { create :user, email: "quintus@antcat.org", name: "Batiatus", password: "secret-password-1" }
 
   scenario "Changing password" do
     visit root_path
@@ -11,7 +11,7 @@ feature "Editing a user", as: :current_user, skip_ci: true do
     i_follow "My account"
     fill_in "user_password", with: "new password"
     fill_in "user_password_confirmation", with: "new password"
-    fill_in "user_current_password", with: "secret"
+    fill_in "user_current_password", with: "secret-password-1"
     click_button "Save"
     i_should_see "Your account has been updated"
 
@@ -35,7 +35,7 @@ feature "Editing a user", as: :current_user, skip_ci: true do
     i_follow "Batiatus", within_scope: "#desktop-only-header"
     i_follow "My account"
     fill_in "user_name", with: "Quintus, B."
-    fill_in "user_current_password", with: "secret"
+    fill_in "user_current_password", with: "secret-password-1"
     click_button "Save"
 
     i_should_be_on edit_user_registration_path

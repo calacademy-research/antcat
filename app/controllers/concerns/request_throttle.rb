@@ -11,13 +11,15 @@ module RequestThrottle
 
   private
 
-    # Returns true when this request is over the per-IP or the per-email limit. Both counters are
-    # always incremented, so changing the email does not reset the IP counter and vice versa.
+    # Returns true when this request is over the per-IP or the per-email limit. The IP counter is
+    # always incremented, so changing the email does not reset it. The email counter is only
+    # incremented while the IP is under its limit, so a throttled IP cannot create new cache
+    # entries by sending a different email with every request.
     def request_throttled? name, per_ip:, per_email:, within:, email: nil
+      return true if over_throttle_limit?("#{name}:ip:#{request.remote_ip}", per_ip, within)
+
       email = normalized_throttle_email(email)
-      ip_over = over_throttle_limit?("#{name}:ip:#{request.remote_ip}", per_ip, within)
-      email_over = email.present? && over_throttle_limit?("#{name}:email:#{email}", per_email, within)
-      ip_over || email_over
+      email.present? && over_throttle_limit?("#{name}:email:#{email}", per_email, within)
     end
 
     def over_throttle_limit? key, limit, within

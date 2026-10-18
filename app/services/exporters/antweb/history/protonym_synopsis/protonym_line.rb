@@ -18,13 +18,17 @@ module Exporters
           private
 
             def protonym_line
-              [
-                protonym_name,
-                format_authorship,
-                (AntwebFormatter.detax(protonym.notes_taxt) if protonym.notes_taxt),
-                ('[sic]' if protonym.sic?),
-                protonym.decorate.format_locality
-              ].compact.join(" ").html_safe
+              # `safe_join` escapes the parts that are plain strings (the locality is user-entered text).
+              safe_join(
+                [
+                  protonym_name,
+                  format_authorship,
+                  (AntwebFormatter.detax(protonym.notes_taxt) if protonym.notes_taxt),
+                  ('[sic]' if protonym.sic?),
+                  protonym.decorate.format_locality
+                ].compact,
+                " "
+              )
             end
 
             def protonym_name

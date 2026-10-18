@@ -17,8 +17,8 @@ describe Users::RegistrationsController do
       {
         email: 'pizza@example.com',
         name: 'Quintus Batiatus',
-        password: 'secret123',
-        password_confirmation: 'secret123'
+        password: 'secret123-password',
+        password_confirmation: 'secret123-password'
       }
     end
 
@@ -88,6 +88,22 @@ describe Users::RegistrationsController do
           expect(flash[:alert]).to eq described_class::TOO_MANY_SIGN_UPS_MESSAGE
         end
       end
+
+      context 'when the IP is over its limit' do
+        before do
+          allow(rate_limit_store).to receive(:increment).and_call_original
+          allow(rate_limit_store).to receive(:increment).
+            with("sign_up:ip:203.0.113.7", any_args).and_return(described_class::SIGN_UPS_PER_IP + 1)
+        end
+
+        it 'does not count (or store) the email' do
+          request.env['REMOTE_ADDR'] = '203.0.113.7'
+
+          expect { post(:create, params: { user: user_params }) }.not_to change { User.count }
+          expect(response).to redirect_to new_user_registration_path
+          expect(rate_limit_store).not_to have_received(:increment).with("sign_up:email:pizza@example.com", any_args)
+        end
+      end
     end
   end
 
@@ -135,7 +151,7 @@ describe Users::RegistrationsController do
 
       context 'with the current password' do
         it 'changes the email' do
-          put(:update, params: { id: current_user.id, user: { email: 'pizza2@example.com', current_password: 'secret' } })
+          put(:update, params: { id: current_user.id, user: { email: 'pizza2@example.com', current_password: 'secret-password-1' } })
 
           expect(current_user.reload.email).to eq 'pizza2@example.com'
         end
@@ -158,13 +174,13 @@ describe Users::RegistrationsController do
           user_params = { password: 'newsecret123', password_confirmation: 'newsecret123' }
           put(:update, params: { id: current_user.id, user: user_params })
 
-          expect(current_user.reload.valid_password?('secret')).to eq true
+          expect(current_user.reload.valid_password?('secret-password-1')).to eq true
         end
       end
 
       context 'with the current password' do
         it 'changes the password' do
-          user_params = { password: 'newsecret123', password_confirmation: 'newsecret123', current_password: 'secret' }
+          user_params = { password: 'newsecret123', password_confirmation: 'newsecret123', current_password: 'secret-password-1' }
           put(:update, params: { id: current_user.id, user: user_params })
 
           expect(current_user.reload.valid_password?('newsecret123')).to eq true

@@ -4,14 +4,14 @@ require 'rails_helper'
 
 feature "Logging in", as: :visitor do
   scenario "Logging and returning to previous page" do
-    create :user, email: "quintus@antcat.org", password: "secret"
+    create :user, email: "quintus@antcat.org", password: "secret-password-1"
 
     visit references_path
     i_should_not_see "Logout"
 
     i_follow "Login", within_scope: "#desktop-only-header"
     fill_in "user_email", with: "quintus@antcat.org"
-    fill_in "user_password", with: "secret"
+    fill_in "user_password", with: "secret-password-1"
     click_button "Login"
     i_should_be_on references_path
     i_should_see "Logout"
@@ -27,12 +27,12 @@ feature "Logging in", as: :visitor do
   end
 
   scenario "Logging with a locked account" do
-    create :user, email: "quintus@antcat.org", password: "secret", locked: true
+    create :user, email: "quintus@antcat.org", password: "secret-password-1", locked: true
 
     visit root_path
     i_follow "Login", within_scope: "#desktop-only-header"
     fill_in "user_email", with: "quintus@antcat.org"
-    fill_in "user_password", with: "secret"
+    fill_in "user_password", with: "secret-password-1"
     click_button "Login"
     i_should_be_on new_user_session_path
     i_should_see "Your account has not been activated yet, or it been deactivated"

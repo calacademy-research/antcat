@@ -11,6 +11,21 @@ describe Institution do
     it { is_expected.to validate_length_of(:name).is_at_most(described_class::NAME_MAX_LENGTH) }
     it { is_expected.to validate_length_of(:abbreviation).is_at_most(described_class::ABBREVIATION_MAX_LENGTH) }
 
+    describe '#abbreviation' do
+      it 'allows abbreviations in use' do
+        abbreviations = ['CASC', 'MCZC', 'ZMUC', 'NHMW', 'MZSP', 'BMNH', 'NHM-UK', 'Mus. Gen.', 'A&M', "D'Orb", 'LACM/ENT']
+        (abbreviations + ['MNHN_P', 'ÖMUS', 'UFV-LABEC']).each do |abbreviation|
+          is_expected.to allow_value(abbreviation).for(:abbreviation)
+        end
+      end
+
+      it 'disallows regex and HTML characters' do
+        ['\w+', '|', '(', 'A*', '<b>', '"x"', ' CASC'].each do |abbreviation|
+          is_expected.not_to allow_value(abbreviation).for(:abbreviation)
+        end
+      end
+    end
+
     describe '#grscicoll_identifier' do
       let(:valid_v4_uuid) { 'e6e9d21b-faf8-4698-95e6-bacc55860a95' }
 

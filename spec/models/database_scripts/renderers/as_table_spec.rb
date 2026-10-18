@@ -72,6 +72,64 @@ describe DatabaseScripts::Renderers::AsTable do
       end
     end
 
+    context 'with HTML in plain strings' do
+      let(:payload) { %(Lasius <img src=x onerror="alert(1)"> <script>alert(2)</script>) }
+
+      it 'removes active content from cells, headers and captions' do
+        rendered =
+          dummy.as_table do |t|
+            t.caption payload
+            t.header payload
+
+            t.rows(['pizza']) do |_string|
+              [payload, %(<a href="javascript:alert(3)" onclick="alert(4)">link</a>)]
+            end
+          end
+
+        expect(rendered).not_to include '<img', '<script', 'onerror', 'onclick', 'javascript:', 'alert(2)'
+        expect(rendered).to include 'Lasius', '>link</a>'
+      end
+
+      it 'keeps formatting tags and links built by the app' do
+        taxon = create :any_taxon
+        cell = "<i>#{taxon.name.name}</i><br>#{CatalogFormatter.link_to_taxon(taxon)}"
+
+        rendered = dummy.as_table { |t| t.rows(['pizza']) { [cell] } }
+
+        expect(rendered).to include "<i>#{taxon.name.name}</i><br>", %(data-controller="hover-preview"),
+          %(data-hover-preview-url-value="/catalog/#{taxon.id}/hover_preview.json"), %(href="/catalog/#{taxon.id}")
+      end
+
+      it 'does not change values marked as html_safe' do
+        cell = %(<span data-testid="x">trusted</span>).html_safe
+
+        rendered = dummy.as_table { |t| t.rows(['pizza']) { [cell] } }
+
+        expect(rendered).to include cell
+      end
+
+      it 'keeps `data-method` only on quick-fix links' do
+        quick_fix = %(<a data-method="post" data-remote="true" rel="nofollow" ) +
+          %(href="/quick_and_dirty_fixes/delete_history_item_quick_and_dirty_fix?history_item_id=1">Fix</a>)
+        other = %(<a data-method="patch" href="/users/1?user%5Bsuperadmin%5D=1">Other</a>)
+
+        rendered = dummy.as_table { |t| t.rows(['pizza']) { [quick_fix, other] } }
+
+        expect(rendered).to include 'data-method="post"', 'data-remote="true"', '<a href="/users/1?user%5Bsuperadmin%5D=1">Other</a>'
+        expect(rendered).not_to include 'data-method="patch"'
+      end
+
+      it 'drops attributes containing catalog tags' do
+        taxon = create :any_taxon
+        cell = %(<span title="{#{Taxt::TAX_TAG} #{taxon.id}}<img src=x onerror=alert(1)>">x</span>)
+
+        rendered = dummy.as_table { |t| t.rows(['pizza']) { [cell] } }
+
+        expect(rendered).not_to include 'onerror'
+        expect(rendered).to include '<span>x</span>'
+      end
+    end
+
     context 'when the block yields a falsey value' do
       let!(:taxon_1) { create :any_taxon }
       let!(:taxon_2) { create :any_taxon }

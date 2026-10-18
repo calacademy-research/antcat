@@ -35,6 +35,21 @@ describe Types::ExpandInstitutionAbbreviations do
         expect(described_class['CASC-1']).to eq "CASC-1"
       end
 
+      context 'when abbreviations contain regex special characters (e.g. records saved before validation)' do
+        before do
+          ['\w+', '|', '(', 'A.C'].each do |abbreviation|
+            build(:institution, abbreviation: abbreviation).save!(validate: false)
+          end
+        end
+
+        it 'matches abbreviations literally' do
+          expect(described_class['CASC text (ABC)']).to eq(
+            "<abbr title='California Academy of Sciences'>CASC</abbr> text (ABC)"
+          )
+          expect(described_class['ABC']).to eq "ABC"
+        end
+      end
+
       context 'when institution name contains apostrophes' do
         before { create :institution, abbreviation: 'MH', name: "Musee d'Histoire" }
 

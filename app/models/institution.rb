@@ -10,10 +10,13 @@ class Institution < ApplicationRecord
 
   NAME_MAX_LENGTH = 250
   ABBREVIATION_MAX_LENGTH = 10
+  # Letters (including accented), digits, and a few separators seen in museum acronyms.
+  ABBREVIATION_REGEX = %r{\A[\p{L}\p{N}][\p{L}\p{N}\-. &'/_]*\z}
 
   validates :name, presence: true, length: { maximum: NAME_MAX_LENGTH }
   validates :abbreviation, presence: true, uniqueness: { case_sensitive: true },
-    length: { maximum: ABBREVIATION_MAX_LENGTH }
+    length: { maximum: ABBREVIATION_MAX_LENGTH },
+    format: { with: ABBREVIATION_REGEX, message: "can only contain letters, digits, spaces and - . & ' / _", allow_blank: true }
   validates :grscicoll_identifier, format: { with: GRSCICOLL_IDENTIFIER_REGEX, allow_nil: true }
 
   has_paper_trail

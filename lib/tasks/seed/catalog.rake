@@ -27,8 +27,8 @@ if Rails.env.development? || Rails.env.test?
       end
       puts "Created taxa."
 
-      user = User.create!(email: 'editor@example.com', name: 'Test Editor', password: 'secret123', editor: true, superadmin: true)
-      puts "Created user '#{user.email}' with password 'secret123'."
+      user = User.create!(email: 'editor@example.com', name: 'Test Editor', password: 'secret123-password', editor: true, superadmin: true)
+      puts "Created user '#{user.email}' with password 'secret123-password'."
     end
   end
 end
