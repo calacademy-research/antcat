@@ -141,6 +141,7 @@ describe "Logged-in only content" do
       expect(response.body).not_to include note
     end
   end
+
   describe "keyword searches on taxt" do
     let(:taxt_with_note) { "Myrmicinae {#{Taxt::HIDDENNOTE_TAG} zymurgical {ref 1}: 5 more}" }
 

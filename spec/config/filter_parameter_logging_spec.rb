@@ -2,8 +2,9 @@
 
 require 'rails_helper'
 
-describe "Parameter filtering in logs" do
-  let(:filter) { ActiveSupport::ParameterFilter.new(Rails.application.config.filter_parameters) }
+# Parameters filtered from logs (config/initializers/filter_parameter_logging.rb).
+describe ActiveSupport::ParameterFilter do
+  let(:filter) { described_class.new(Rails.application.config.filter_parameters) }
 
   it "filters email addresses and people's names from sign-up, account and feedback forms" do
     params = {
