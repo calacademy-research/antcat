@@ -232,13 +232,28 @@ jobs:
           chmod 600 config/settings/production.secret.yml
           sudo chown root:root config/settings/production.secret.yml
 
-      # Same command and mount as `app` in dockerized_app/docker-compose.yml. There is no database:
-      # Puma boots without one, and the check below only needs an HTTP response (force_ssl redirect).
+      - name: Start MySQL and load the schema
+        run: |
+          docker network create antcat-ci
+          docker run -d --name db --network antcat-ci -e MYSQL_ROOT_PASSWORD=ci-root \
+            -e MYSQL_DATABASE=antcat -e MYSQL_USER=antcat -e MYSQL_PASSWORD=ci-app \
+            mysql:8.4 --mysql-native-password=ON
+          for i in $(seq 1 60); do
+            docker exec db mysqladmin ping -h 127.0.0.1 -uroot -pci-root --silent 2>/dev/null && break
+            sleep 2
+          done
+          # One-off container (as root, like the old setup) only to create the tables.
+          docker run --rm --network antcat-ci -v "$PWD:/app" -e RAILS_ENV=production \
+            -e DB_HOST=db -e DB_PORT=3306 -e DB_DATABASE=antcat -e DB_USERNAME=antcat -e DB_PASSWORD=ci-app \
+            -e NO_DEV_MONKEY_PATCHES=y -e DISABLE_DATABASE_ENVIRONMENT_CHECK=1 antcat-app-ci \
+            bash -c 'cd /app && bundle config set --local path vendor/bundle && bundle install --quiet && bundle exec rails db:schema:load'
+
+      # Same command and mount as `app` in dockerized_app/docker-compose.yml.
       - name: Start the container (bundle install, yarn, asset build, Puma)
         run: |
-          docker run -d --name antcat-app-ci -v "$PWD:/app" \
-            -e RAILS_ENV=production -e DB_HOST=127.0.0.1 -e DB_PORT=3306 -e DB_DATABASE=antcat \
-            -e DB_USERNAME=antcat -e DB_PASSWORD=unused -e NO_DEV_MONKEY_PATCHES=y -e WEB_CONCURRENCY=0 \
+          docker run -d --name antcat-app-ci --network antcat-ci -v "$PWD:/app" \
+            -e RAILS_ENV=production -e DB_HOST=db -e DB_PORT=3306 -e DB_DATABASE=antcat \
+            -e DB_USERNAME=antcat -e DB_PASSWORD=ci-app -e NO_DEV_MONKEY_PATCHES=y -e WEB_CONCURRENCY=0 \
             antcat-app-ci /bin/bash -c dockerized_app/startup.sh
 
       - name: Wait for Puma
@@ -280,4 +295,5 @@ jobs:
       - name: Container log (annotations)
         if: failure()
         run: |
-          echo "::error title=antcat-app log::$(docker logs antcat-app-ci 2>&1 | grep -v '^\s*$' | tail -60 | cut -c1-300 | sed ':a;N;$!ba;s/%/%25/g;s/\r//g;s/\n/%0A/g')" || true
+          { docker logs antcat-app-ci 2>&1 | grep -v '^\s*from ' | grep -v '^\s*$' | tail -40; } > /tmp/app-log.txt || true
+          echo "::error title=antcat-app log::$(cut -c1-300 /tmp/app-log.txt | sed ':a;N;$!ba;s/%/%25/g;s/\r//g;s/\n/%0A/g')"
