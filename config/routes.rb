@@ -135,6 +135,11 @@ Rails.application.routes.draw do
   end
 
   devise_for :users, controllers: { registrations: "users/registrations", sessions: "users/sessions", passwords: "users/passwords" }
+  devise_scope :user do
+    # Second step of signing up, from the link in the sign-up email (see `Users::RegistrationsController`).
+    get 'users/sign_up/complete' => 'users/registrations#complete', as: :complete_user_sign_up
+    post 'users/sign_up/complete' => 'users/registrations#finish'
+  end
   resources :users do
     collection do
       get :mentionables

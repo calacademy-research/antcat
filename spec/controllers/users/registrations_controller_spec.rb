@@ -16,51 +16,14 @@ describe Users::RegistrationsController do
     let!(:user_params) do
       {
         email: 'pizza@example.com',
-        name: 'Quintus Batiatus',
-        password: 'secret123-password',
-        password_confirmation: 'secret123-password'
+        name: 'Quintus Batiatus'
       }
     end
 
-    it 'creates a user' do
-      expect { post(:create, params: { user: user_params }) }.to change { User.count }.by(1)
-
-      user = User.last
-      expect(user.email).to eq user_params[:email]
-      expect(user.name).to eq user_params[:name]
-      expect(user.helper).to eq false
-      expect(user.editor).to eq false
-      expect(user.superadmin).to eq false
-    end
-
-    it 'creates an activity' do
-      expect { post(:create, params: { user: user_params }) }.
-        to change { Activity.where(event: Activity::CREATE).count }.by(1)
-      expect(Activity.last.parameters).to eq(user_id: User.last.id)
-    end
-
-    context "when the New contributors' help page exists" do
-      let!(:wiki_page) { create :wiki_page, :new_contributors_help_page }
-
-      it 'redirects to it' do
-        post(:create, params: { user: user_params })
-        expect(response).to redirect_to "/wiki/#{wiki_page.id}"
-      end
-    end
-
-    context 'when submitting unpermitted attributes' do
-      let!(:with_unpermitted_params) do
-        user_params.merge(helper: true, editor: true, superadmin: true)
-      end
-
-      it 'ignores them' do
-        expect { post(:create, params: { user: with_unpermitted_params }) }.to change { User.count }.by(1)
-
-        user = User.last
-        expect(user.helper).to eq false
-        expect(user.editor).to eq false
-        expect(user.superadmin).to eq false
-      end
+    # The sign-up flow itself is in spec/requests/users/sign_up_spec.rb.
+    it 'does not create a user (that happens after the emailed link)' do
+      expect { post(:create, params: { user: user_params }) }.not_to change { User.count }
+      expect(response).to redirect_to root_path
     end
 
     describe 'throttling' do

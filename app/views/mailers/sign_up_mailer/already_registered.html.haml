@@ -1,0 +1,11 @@
+%p="Hello #{@user.name}!"
+
+%p Someone (hopefully you) tried to sign up for AntCat with this email address, but it already has an account.
+
+%p
+  =link_to 'Log in', @login_url
+  with your existing account, or
+  =link_to 'reset your password', @forgot_password_url
+  if you have forgotten it.
+
+%p If this was not you, please ignore this email. Your account has not been changed.

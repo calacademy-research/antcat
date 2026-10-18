@@ -209,3 +209,69 @@ jobs:
       - name: Run migrations (up)
         run: |
           RAILS_ENV=development ./spec/migrations/test_migrations_up
+
+  production-container:
+    name: Production container (dockerized_app, app runs as non-root)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+
+      - name: Build the app image
+        run: docker build -t antcat-app-ci dockerized_app
+
+      - name: Prepare server-only files (as on the server)
+        run: |
+          cp dockerized_app/database.yml config/database.yml
+          cp config/server.yml.example config/server.yml
+          cp config/settings/production.secret.yml.example config/settings/production.secret.yml
+          chmod 600 config/settings/production.secret.yml
+          sudo chown root:root config/settings/production.secret.yml
+
+      # Same command and mount as `app` in dockerized_app/docker-compose.yml. There is no database:
+      # Puma boots without one, and the check below only needs an HTTP response (force_ssl redirect).
+      - name: Start the container (bundle install, yarn, asset build, Puma)
+        run: |
+          docker run -d --name antcat-app-ci -v "$PWD:/app" \
+            -e RAILS_ENV=production -e DB_HOST=127.0.0.1 -e DB_PORT=3306 -e DB_DATABASE=antcat \
+            -e DB_USERNAME=antcat -e DB_PASSWORD=unused -e NO_DEV_MONKEY_PATCHES=y -e WEB_CONCURRENCY=0 \
+            antcat-app-ci /bin/bash -c dockerized_app/startup.sh
+
+      - name: Wait for Puma
+        run: |
+          for i in $(seq 1 120); do
+            code=$(docker exec antcat-app-ci curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8080/ || true)
+            if [ "$code" != "" ] && [ "$code" != "000" ]; then echo "HTTP $code after $((i * 10)) s"; exit 0; fi
+            if [ "$(docker inspect -f '{{.State.Running}}' antcat-app-ci)" != "true" ]; then break; fi
+            sleep 10
+          done
+          docker logs antcat-app-ci 2>&1 | tail -80
+          exit 1
+
+      - name: Check users and file ownership
+        run: |
+          set -x
+          # Puma is PID 1 (startup.sh execs it) and must not run as root.
+          test "$(docker exec antcat-app-ci stat -c %U /proc/1)" = antcat
+          test "$(docker exec antcat-app-ci id -u antcat)" = 1000
+          # Writable directories belong to the app user; built assets exist.
+          for dir in tmp log public/assets app/assets/builds; do
+            test "$(docker exec antcat-app-ci stat -c %U /app/$dir)" = antcat
+          done
+          docker exec antcat-app-ci sh -c 'test -n "$(ls -A /app/public/assets)" && test -s /app/app/assets/builds/hotwire_app.js'
+          # Code and dependencies stay root-owned and are not writable by the app user.
+          test "$(docker exec antcat-app-ci stat -c %U /app/app)" != antcat
+          ! docker exec -u antcat antcat-app-ci sh -c 'touch /app/app/ci-write-test' 2>/dev/null
+          ! docker exec -u antcat antcat-app-ci sh -c 'touch /app/vendor/bundle/ci-write-test' 2>/dev/null
+          # The settings file is readable by the app user only.
+          test "$(stat -c '%a %g' config/settings/production.secret.yml)" = "640 1001"
+          # Rails tasks run as the app user (how pipelines should run them).
+          docker exec -u antcat antcat-app-ci bundle exec rails runner 'puts Rails.env' | grep -x production
+
+      - name: Container log
+        if: always()
+        run: docker logs antcat-app-ci 2>&1 | tail -100 || true
