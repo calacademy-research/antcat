@@ -108,15 +108,25 @@ describe DatabaseScripts::Renderers::AsTable do
         expect(rendered).to include cell
       end
 
-      it 'keeps `data-method` only on quick-fix links' do
+      it 'drops `data-method` and `data-remote` from plain strings, also on quick-fix links' do
         quick_fix = %(<a data-method="post" data-remote="true" rel="nofollow" ) +
           %(href="/quick_and_dirty_fixes/delete_history_item_quick_and_dirty_fix?history_item_id=1">Fix</a>)
         other = %(<a data-method="patch" href="/users/1?user%5Bsuperadmin%5D=1">Other</a>)
 
         rendered = dummy.as_table { |t| t.rows(['pizza']) { [quick_fix, other] } }
 
-        expect(rendered).to include 'data-method="post"', 'data-remote="true"', '<a href="/users/1?user%5Bsuperadmin%5D=1">Other</a>'
-        expect(rendered).not_to include 'data-method="patch"'
+        expect(rendered).to include '<a href="/users/1?user%5Bsuperadmin%5D=1">Other</a>',
+          'href="/quick_and_dirty_fixes/delete_history_item_quick_and_dirty_fix?history_item_id=1">Fix</a>'
+        expect(rendered).not_to include 'data-method', 'data-remote'
+      end
+
+      it 'keeps `data-method` and `data-remote` on html_safe quick-fix links' do
+        quick_fix = %(<a data-method="post" data-remote="true" rel="nofollow" ) +
+          %(href="/quick_and_dirty_fixes/delete_history_item_quick_and_dirty_fix?history_item_id=1">Fix</a>)
+
+        rendered = dummy.as_table { |t| t.rows(['pizza']) { [quick_fix.html_safe] } }
+
+        expect(rendered).to include 'data-method="post"', 'data-remote="true"'
       end
 
       it 'drops attributes containing catalog tags' do

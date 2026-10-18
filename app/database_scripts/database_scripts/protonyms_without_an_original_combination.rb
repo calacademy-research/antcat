@@ -33,17 +33,18 @@ module DatabaseScripts
         @_quick_fix_stats ||= Hash.new(0)
       end
 
+      # Built `html_safe` (names escaped) so that the quick-fix link keeps its `data-method`/`data-remote`.
       def taxa_quick_fix_links protonym
         protonym.taxa.map do |taxon|
           <<~STR.squish
-            <i>#{protonym.name.cleaned_name}</i> &nbsp;&nbsp;<small>protonym cleaned name</small><br>
-            <i>#{taxon.name.cleaned_name}</i> &nbsp;&nbsp;<small>taxon cleaned name</small><br>
+            <i>#{ERB::Util.html_escape(protonym.name.cleaned_name)}</i> &nbsp;&nbsp;<small>protonym cleaned name</small><br>
+            <i>#{ERB::Util.html_escape(taxon.name.cleaned_name)}</i> &nbsp;&nbsp;<small>taxon cleaned name</small><br>
 
             #{CatalogFormatter.link_to_taxon(taxon)}<br>
 
             #{quick_fix_link(taxon, protonym)}<br><br>
           STR
-        end.join('<br>')
+        end.join('<br>').html_safe
       end
 
       def quick_fix_link taxon, protonym

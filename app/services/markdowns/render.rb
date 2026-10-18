@@ -6,11 +6,12 @@ module Markdowns
     include Service
 
     def initialize content
-      @content = sanitize(content)
+      @content = sanitize(content).to_s.to_str
     end
 
+    # Tags are expanded in `AntCatMarkdown#postprocess`; attribute values from the content are kept out of that.
     def call
-      markdowner.render(content).html_safe
+      Markdowns::ExpandOutsideAttributes.call(content) { |masked| markdowner.render(masked) }.html_safe
     end
 
     private
@@ -46,6 +47,8 @@ module Markdowns
         SAFE_SCHEMES = %w[http https mailto].freeze
         # Matches a URI scheme ("javascript:", "data:", ...) at the start of a URL.
         SCHEME_REGEX = /\A([a-z][a-z0-9+.-]*):/i
+        # Characters that start an AntCat tag; encoded in attributes built here so `postprocess` leaves them alone.
+        TAG_TRIGGER_REGEX = /[{}]|@(?=user\d)|%(?=github\d|wiki\d|dbscript:)/
 
         def self.safe_url? url
           return false if url.blank?
@@ -67,20 +70,20 @@ module Markdowns
         def link link, title, content
           return content unless self.class.safe_url?(link)
 
-          %(<a href="#{escape_attribute(link)}"#{title_attribute(title)}>#{content}</a>)
+          %(<a href="#{attribute_value(link)}"#{title_attribute(title)}>#{content}</a>)
         end
 
         def image link, title, alt_text
           return escape_attribute(alt_text) unless self.class.safe_url?(link)
 
-          %(<img src="#{escape_attribute(link)}" alt="#{escape_attribute(alt_text)}"#{title_attribute(title)}>)
+          %(<img src="#{attribute_value(link)}" alt="#{attribute_value(alt_text)}"#{title_attribute(title)}>)
         end
 
         def autolink link, link_type
           url = link_type == :email ? "mailto:#{link}" : link
           return escape_attribute(link) unless self.class.safe_url?(url)
 
-          %(<a href="#{escape_attribute(url)}">#{escape_attribute(link)}</a>)
+          %(<a href="#{attribute_value(url)}">#{escape_attribute(link)}</a>)
         end
 
         def table header, body
@@ -100,9 +103,13 @@ module Markdowns
             ERB::Util.html_escape(CGI.unescapeHTML(value.to_s)).to_str
           end
 
+          def attribute_value value
+            escape_attribute(value).gsub(TAG_TRIGGER_REGEX) { |char| "&##{char.ord};" }
+          end
+
           def title_attribute title
             return '' if title.blank?
-            %( title="#{escape_attribute(title)}")
+            %( title="#{attribute_value(title)}")
           end
       end
   end

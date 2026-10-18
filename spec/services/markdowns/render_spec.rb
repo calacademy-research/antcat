@@ -90,6 +90,45 @@ describe Markdowns::Render do
       end
     end
 
+    context 'with AntCat and catalog tags inside attribute values' do
+      let(:user) { create :user }
+      let(:taxon) { create :family }
+
+      def expect_no_injected_elements rendered
+        fragment = Nokogiri::HTML5.fragment(rendered)
+        expect(fragment.css('img, [onerror]')).to be_empty
+        expect(rendered).not_to include '<img'
+      end
+
+      it 'does not expand them inside attributes of raw HTML' do
+        [
+          %(<div title="@user#{user.id} <img src=x onerror=alert(1)>">ok</div>),
+          %(<b title="{#{Taxt::TAX_TAG} #{taxon.id}} <img src=x onerror=alert(1)>">x</b>),
+          %(<b title="%github1 <img src=x onerror=alert(1)>">x</b>),
+          %(<b title="%wiki1 {missing <img src=x onerror=alert(1)>}">x</b>)
+        ].each do |content|
+          rendered = described_class[content]
+
+          expect_no_injected_elements rendered
+          expect(Nokogiri::HTML5.fragment(rendered).css('a')).to be_empty
+        end
+      end
+
+      it 'does not expand them inside attributes built from markdown' do
+        rendered = described_class[%([x](https://example.com/@user#{user.id} "{#{Taxt::TAX_TAG} #{taxon.id}} %github1"))]
+
+        expect(rendered).to eq %(<p><a href="https://example.com/&#64;user#{user.id}" ) +
+          %(title="&#123;#{Taxt::TAX_TAG} #{taxon.id}&#125; &#37;github1">x</a></p>\n)
+      end
+
+      it 'still expands them in text' do
+        rendered = described_class[%(<b title="hint">@user#{user.id} {#{Taxt::TAX_TAG} #{taxon.id}} %github1</b>)]
+
+        expect(rendered).to include %(<b title="hint">), %(href="/users/#{user.id}"), %(href="/catalog/#{taxon.id}"),
+          "GitHub #1"
+      end
+    end
+
     it "formats basic markdown" do
       markdown = <<~MARKDOWN
         ###Header

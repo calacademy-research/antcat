@@ -12,10 +12,12 @@ module Types
     def call
       return if content.blank?
 
-      formatted = sanitize(content).to_str
-      formatted = Types::ExpandInstitutionAbbreviations[formatted]
-      formatted = Types::LinkSpecimenIdentifiers[formatted]
-      formatted = Markdowns::ParseCatalogTags[formatted].html_safe
+      # Expansions insert HTML, so they must not run inside attribute values.
+      formatted = Markdowns::ExpandOutsideAttributes.call(sanitize(content).to_str) do |masked|
+        masked = Types::ExpandInstitutionAbbreviations[masked]
+        masked = Types::LinkSpecimenIdentifiers[masked]
+        Markdowns::ParseCatalogTags[masked]
+      end
       formatted.html_safe
     end
 

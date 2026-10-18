@@ -30,6 +30,13 @@ describe Detax do
         expect(results).not_to include "<a"
       end
 
+      it "escapes markup in kept tooltips" do
+        results = described_class[%(<span tooltip2="a <img src=x onerror=1>">x</span> #{Taxt.tax(taxon.id)})]
+
+        expect(Nokogiri::HTML5.fragment(results).css('img, [onerror]')).to be_empty
+        expect(results).to include taxon_link(taxon)
+      end
+
       it "keeps a tooltip without catalog tags" do
         expect(described_class[%(<span tooltip2="hint">x</span>)]).to eq %(<span tooltip2="hint">x</span>)
       end

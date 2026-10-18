@@ -11,7 +11,6 @@ module DatabaseScripts
       ALLOWED_TAGS = Set.new(%w[a abbr b br code del div em i ins li ol p pre s small span strong sub sup u ul]).freeze
       ALLOWED_ATTRIBUTES = Set.new(%w[class href rel target title tooltip2]).freeze
       HOVER_PREVIEW_URL_REGEX = %r{\A/(catalog|protonyms|references)/\d+/hover_preview\.json\z}
-      QUICK_FIX_PATH_REGEX = %r{\A/[a-z_/]*quick_and_dirty_fix(\?|\z)}
 
       CELL_SCRUBBER = Loofah::Scrubber.new do |node|
         next unless node.element?
@@ -22,7 +21,7 @@ module DatabaseScripts
         end
 
         node.attribute_nodes.each do |attribute|
-          attribute.remove unless allowed_attribute?(node, attribute)
+          attribute.remove unless allowed_attribute?(attribute)
         end
       end
 
@@ -36,14 +35,14 @@ module DatabaseScripts
       end
 
       # Catalog tags (`{tax 1}`) are expanded into HTML after sanitizing, so attribute values must not contain them.
-      def self.allowed_attribute? node, attribute
+      # `data-method`/`data-remote` are never kept here; the app's own quick-fix links are built `html_safe`.
+      def self.allowed_attribute? attribute
         value = attribute.value.to_s
         return false if value.include?("{") || value.include?("}")
 
         case attribute.name
         when 'data-controller' then value == 'hover-preview'
         when 'data-hover-preview-url-value' then value.match?(HOVER_PREVIEW_URL_REGEX)
-        when 'data-method', 'data-remote' then node['href'].to_s.match?(QUICK_FIX_PATH_REGEX)
         else ALLOWED_ATTRIBUTES.include?(attribute.name)
         end
       end
