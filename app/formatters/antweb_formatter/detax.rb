@@ -6,7 +6,8 @@ module AntwebFormatter
     include Service
 
     def initialize content
-      @content = content.try(:dup)
+      # Hidden notes go first, before other tags are expanded (the AntWeb export is public).
+      @content = Taxt.remove_hidden_notes(content).try(:dup)
       @formatter = AntwebFormatter
     end
 
@@ -27,8 +28,6 @@ module AntwebFormatter
 
       parse_missing_or_unmissing_tags
       parse_misspelling_tags
-
-      parse_hiddennotes_tags
 
       sanitize content.html_safe
     end
@@ -119,13 +118,6 @@ module AntwebFormatter
       def parse_misspelling_tags
         content.gsub!(Taxt::MISSPELLING_TAG_REGEX) do
           $LAST_MATCH_INFO[:hardcoded_name]
-        end
-      end
-
-      # Hidden editor notes (logged-in only) "{hiddennote string}".
-      def parse_hiddennotes_tags
-        content.gsub!(Taxt::HIDDENNOTE_TAG_REGEX) do
-          ''
         end
       end
   end

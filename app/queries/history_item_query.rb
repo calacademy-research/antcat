@@ -15,6 +15,7 @@ class HistoryItemQuery
 
     case search_type
     when LIKE
+      return visible_text_search.matching(relation, search_query) unless Current.signed_in
       relation.where("taxt LIKE :q", q: "%#{search_query}%")
     when REGEXP
       relation.where("taxt REGEXP :q", q: search_query)
@@ -28,6 +29,7 @@ class HistoryItemQuery
 
     case search_type
     when LIKE
+      return visible_text_search.not_matching(relation, search_query) unless Current.signed_in
       relation.where.not("taxt LIKE :q", q: "%#{search_query}%")
     when REGEXP
       relation.where.not("taxt REGEXP :q", q: search_query)
@@ -39,4 +41,10 @@ class HistoryItemQuery
   private
 
     attr_reader :relation
+
+    # Visitors (not signed in) search the text without hidden notes; see `VisibleTaxtLikeSearch`.
+    # REGEXP searches need a signed-in user (`ensure_regexp_search_allowed`).
+    def visible_text_search
+      VisibleTaxtLikeSearch.new(HistoryItem, ['history_items.taxt'])
+    end
 end

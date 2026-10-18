@@ -101,7 +101,7 @@ class FeedbacksController < ApplicationController
     end
 
     def feedback_params
-      params.expect(feedback: [:comment, :name, :email, :user, :page])
+      params.expect(feedback: [:comment, :name, :email, :page])
     end
 
     def rate_throttle? remote_ip

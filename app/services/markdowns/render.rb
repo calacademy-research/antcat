@@ -91,6 +91,12 @@ module Markdowns
           %(<a href="#{attribute_value(url)}">#{escape_attribute(link)}</a>)
         end
 
+        # Fenced code blocks without the info string ("```lang") as a `class` attribute, so code blocks
+        # cannot be given the site's CSS classes.
+        def block_code code, _language
+          %(<pre><code>#{ERB::Util.html_escape(code)}</code></pre>\n)
+        end
+
         def table header, body
           <<-HTML
             <table data-controller="tablesort">

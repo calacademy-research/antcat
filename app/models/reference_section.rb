@@ -15,11 +15,16 @@ class ReferenceSection < ApplicationRecord
   strip_attributes only: [:title_taxt, :subtitle_taxt, :references_taxt], replace_newlines: true
   trackable parameters: proc { { taxon_id: taxon_id } }
 
+  TAXT_COLUMNS = %w[reference_sections.title_taxt reference_sections.references_taxt reference_sections.subtitle_taxt]
+
   def self.search search_query, search_type
     search_type = search_type.presence || 'LIKE'
 
     case search_type
     when 'LIKE'
+      # Visitors (not signed in) search the text without hidden notes; see `VisibleTaxtLikeSearch`.
+      return VisibleTaxtLikeSearch.new(self, TAXT_COLUMNS).matching(all, search_query) unless Current.signed_in
+
       where(<<~SQL.squish, q: "%#{search_query}%")
         title_taxt LIKE :q
           OR references_taxt LIKE :q

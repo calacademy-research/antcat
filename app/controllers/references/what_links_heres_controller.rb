@@ -4,7 +4,10 @@ module References
   class WhatLinksHeresController < ApplicationController
     def show
       @reference = find_reference
-      @what_links_here_items = References::WhatLinksHere.new(@reference).all.paginate(page: params[:page])
+      items = References::WhatLinksHere.new(@reference).all
+      # Visitors do not see links that exist only inside hidden notes.
+      items = WhatLinksHereVisibleItems[items, @reference, :reference] unless Current.signed_in
+      @what_links_here_items = items.paginate(page: params[:page])
     end
 
     private

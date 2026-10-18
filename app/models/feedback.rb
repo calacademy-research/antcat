@@ -5,10 +5,19 @@ class Feedback < ApplicationRecord
   include Trackable
 
   COMMENT_MAX_LENGTH = 10_000
+  NAME_MAX_LENGTH = User::NAME_MAX_LENGTH
+  EMAIL_MAX_LENGTH = User::EMAIL_MAX_LENGTH
+  PAGE_MAX_LENGTH = 255 # Column size.
 
   belongs_to :user, optional: true
 
+  # The page is filled in from the URL the visitor came from; a long URL is shortened rather than rejected.
+  before_validation { self.page = page.truncate(PAGE_MAX_LENGTH, omission: '') if page }
+
   validates :comment, presence: true, length: { maximum: COMMENT_MAX_LENGTH }
+  validates :name, length: { maximum: NAME_MAX_LENGTH }
+  validates :email, length: { maximum: EMAIL_MAX_LENGTH }
+  validates :page, length: { maximum: PAGE_MAX_LENGTH }
   validate :comment_has_not_previously_been_submitted, on: :create
 
   scope :pending, -> { where(open: true) }

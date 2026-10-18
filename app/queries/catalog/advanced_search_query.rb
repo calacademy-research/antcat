@@ -43,6 +43,11 @@ module Catalog
       CANNOT_HAVE_HISTORY_ITEMS = 'cannot_have'
     ]
     BIOREGION_NONE = 'None'
+    TYPE_INFORMATION_COLUMNS = %w[
+      protonyms.primary_type_information_taxt
+      protonyms.secondary_type_information_taxt
+      protonyms.type_notes_taxt
+    ]
 
     def initialize params
       @params = params.compact_blank!
@@ -144,6 +149,11 @@ module Catalog
 
       def type_information_clause relation
         return relation unless (type_information = params[:type_information])
+
+        # Visitors (not signed in) search the text without hidden notes; see `VisibleTaxtLikeSearch`.
+        unless Current.signed_in
+          return VisibleTaxtLikeSearch.new(Protonym, TYPE_INFORMATION_COLUMNS).matching(relation, type_information)
+        end
 
         relation.where(<<~SQL.squish, search_term: "%#{type_information}%")
           protonyms.primary_type_information_taxt LIKE :search_term

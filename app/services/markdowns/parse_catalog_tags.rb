@@ -12,6 +12,10 @@ module Markdowns
     end
 
     def call
+      # Visitors: notes go first, before other tags are expanded, so nothing from inside a note
+      # (including "CANNOT FIND ..." messages for broken tags in it) reaches the output.
+      remove_hiddennotes_tags unless Current.signed_in
+
       parse_tax_tags
       parse_taxac_tags
 
@@ -26,7 +30,7 @@ module Markdowns
       parse_unmissing_tags
       parse_misspelling_tags
 
-      parse_hiddennotes_tags
+      parse_hiddennotes_tags if Current.signed_in
 
       content
     end
@@ -176,13 +180,21 @@ module Markdowns
         end
       end
 
-      # Hidden editor notes (logged-in only) "{hiddennote string}".
+      # Hidden editor notes (logged-in only) "{hiddennote string}", which may contain other tags.
       # Left out entirely for visitors (see `Current.signed_in`), so the note is not in the page source.
-      def parse_hiddennotes_tags
-        return content.gsub!(Taxt::HIDDENNOTE_TAG_WITH_SPACE_BEFORE_REGEX, '') unless Current.signed_in
+      def remove_hiddennotes_tags
+        @content = Taxt.remove_hidden_notes(content)
+      end
 
-        content.gsub!(Taxt::HIDDENNOTE_TAG_REGEX) do
-          %(<span class="taxt-hidden-note"><b>Hidden editor note:</b> #{$LAST_MATCH_INFO[:note_content]}</span>)
+      # Signed-in users: other tags inside the note have been expanded by now. A note without a closing
+      # brace is left as typed, so editors can see and fix it.
+      def parse_hiddennotes_tags
+        @content = Taxt.replace_hidden_notes(content) do |note_content, closed|
+          if closed
+            %(<span class="taxt-hidden-note"><b>Hidden editor note:</b> #{note_content}</span>)
+          else
+            "#{Taxt::HIDDENNOTE_OPENING}#{note_content}"
+          end
         end
       end
 

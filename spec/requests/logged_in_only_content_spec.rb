@@ -141,4 +141,112 @@ describe "Logged-in only content" do
       expect(response.body).not_to include note
     end
   end
+
+  describe "keyword searches on taxt" do
+    let(:taxt_with_note) { "Myrmicinae {#{Taxt::HIDDENNOTE_TAG} zymurgical {ref 1}: 5 more}" }
+
+    let!(:history_item) { create :history_item, :taxt, taxt: taxt_with_note }
+    let!(:plain_history_item) { create :history_item, :taxt, taxt: "zymurgical in plain text" }
+    let!(:reference_section) { create :reference_section, references_taxt: taxt_with_note }
+    let!(:species) do
+      create :species, protonym: create(:protonym, :species_group, primary_type_information_taxt: taxt_with_note)
+    end
+
+    it "do not match text inside hidden notes for visitors" do
+      get "/history_items", params: { q: "zymurgical" }
+      expect(response).to have_http_status :ok
+      expect(response.body).not_to include %(href="#{history_item_path(history_item)}")
+      expect(response.body).to include %(href="#{history_item_path(plain_history_item)}")
+
+      get "/history_items", params: { q: "{#{Taxt::HIDDENNOTE_TAG}" }
+      expect(response.body).not_to include %(href="#{history_item_path(history_item)}")
+
+      get "/history_items", params: { q: "5 more" }
+      expect(response.body).not_to include %(href="#{history_item_path(history_item)}")
+
+      get "/reference_sections", params: { q: "zymurgical" }
+      expect(response).to have_http_status :ok
+      expect(response.body).not_to include %(href="#{reference_section_path(reference_section)}")
+
+      expect(Catalog::AdvancedSearchQuery[type_information: "zymurgical"]).to eq []
+    end
+
+    it "still match the visible text for visitors" do
+      get "/history_items", params: { q: "myrmicinae" }
+      expect(response.body).to include %(href="#{history_item_path(history_item)}")
+
+      get "/reference_sections", params: { q: "Myrmicinae" }
+      expect(response.body).to include %(href="#{reference_section_path(reference_section)}")
+
+      expect(Catalog::AdvancedSearchQuery[type_information: "Myrmicinae"]).to eq [species]
+    end
+
+    it "use the visible text for exclusions for visitors" do
+      get "/history_items", params: { nq: "zymurgical" }
+      expect(response.body).to include %(href="#{history_item_path(history_item)}")
+      expect(response.body).not_to include %(href="#{history_item_path(plain_history_item)}")
+
+      get "/history_items", params: { nq: "Myrmicinae" }
+      expect(response.body).not_to include %(href="#{history_item_path(history_item)}")
+    end
+
+    it "match hidden notes for signed-in users" do
+      sign_in create(:user)
+
+      get "/history_items", params: { q: "zymurgical" }
+      expect(response.body).to include %(href="#{history_item_path(history_item)}")
+
+      get "/reference_sections", params: { q: "zymurgical" }
+      expect(response.body).to include %(href="#{reference_section_path(reference_section)}")
+
+      Current.set(signed_in: true) do
+        expect(Catalog::AdvancedSearchQuery[type_information: "zymurgical"]).to eq [species]
+      end
+    end
+  end
+
+  describe "wiki page histories", :versioning do
+    let!(:wiki_page) { create :wiki_page, content: "Visible wiki text #{hidden_note}" }
+
+    it "leave hidden notes out of the raw content for visitors" do
+      get "/wiki/#{wiki_page.id}/history"
+
+      expect(response).to have_http_status :ok
+      expect(response.body).to include "Visible wiki text"
+      expect(response.body).not_to include note
+    end
+
+    it "show them to signed-in users" do
+      sign_in create(:user)
+      get "/wiki/#{wiki_page.id}/history"
+
+      expect(response.body).to include note
+    end
+  end
+
+  describe "what links here" do
+    let!(:reference) { create :any_reference }
+    let!(:linked_in_note) do
+      create :history_item, :taxt, taxt: "Text {#{Taxt::HIDDENNOTE_TAG} see {ref #{reference.id}}}"
+    end
+    let!(:linked_in_text) do
+      create :history_item, :taxt, taxt: "{ref #{reference.id}}: 3 {#{Taxt::HIDDENNOTE_TAG} see {ref #{reference.id}}}"
+    end
+
+    it "does not list links that exist only inside hidden notes for visitors" do
+      get reference_what_links_here_path(reference)
+
+      expect(response).to have_http_status :ok
+      expect(response.body).not_to include %(href="#{history_item_path(linked_in_note)}")
+      expect(response.body).to include %(href="#{history_item_path(linked_in_text)}")
+    end
+
+    it "lists them for signed-in users" do
+      sign_in create(:user)
+      get reference_what_links_here_path(reference)
+
+      expect(response.body).to include %(href="#{history_item_path(linked_in_note)}")
+      expect(response.body).to include %(href="#{history_item_path(linked_in_text)}")
+    end
+  end
 end

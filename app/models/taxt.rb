@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'strscan'
+
 module Taxt
   # A "taxtable" is a plaintext database column which may contain "taxt" tags,
   # which render with special markup and/or resolves to a `Taxon`, `Reference`, or `Protonym` record.
@@ -50,9 +52,12 @@ module Taxt
   MISSPELLING_TAG_REGEX = /\{#{MISSPELLING_TAG} (?<hardcoded_name>.*?)\}/
 
   HIDDENNOTE_TAG = 'hiddennote' # Hidden editor notes, logged-in only.
-  HIDDENNOTE_TAG_REGEX = /\{#{HIDDENNOTE_TAG} (?<note_content>.*?)\}/
-  # A hidden note with the space before it, for removing notes where visitors could see them.
-  HIDDENNOTE_TAG_WITH_SPACE_BEFORE_REGEX = / ?#{HIDDENNOTE_TAG_REGEX}/
+  # A hidden note runs to its matching closing brace, so tags inside it ("{hiddennote see {ref 1}: 2}")
+  # are part of the note. A note without a matching closing brace runs to the end of the text.
+  # Parsed with a linear scanner (`split_hidden_notes`) rather than a regex.
+  HIDDENNOTE_OPENING = "{#{HIDDENNOTE_TAG} "
+  HIDDENNOTE_OPENING_REGEX = /#{Regexp.escape(HIDDENNOTE_OPENING)}/
+  BRACE_REGEX = /[{}]/
 
   module RecordToTagRegex
     module_function
@@ -104,10 +109,65 @@ module Taxt
     "{#{tag} #{content}}"
   end
 
-  # For output that visitors can see without signing in (the API, revision histories).
+  # For output that visitors can see without signing in (the API, revision histories, rendered taxt).
+  # Removes each hidden note (including any tags inside it) and the space before it.
   def remove_hidden_notes taxt
-    return taxt unless taxt.is_a?(String) && taxt.include?("{#{HIDDENNOTE_TAG} ")
-    taxt.gsub(HIDDENNOTE_TAG_WITH_SPACE_BEFORE_REGEX, '')
+    return taxt unless hidden_notes?(taxt)
+
+    split_hidden_notes(taxt).each_with_object(+'') do |(kind, text), output|
+      if kind == :note
+        output.delete_suffix!(' ')
+      else
+        output << text
+      end
+    end
+  end
+
+  # Replaces each hidden note with the block's result. The block gets the note's content and whether
+  # the note was closed; an unclosed note is passed with the rest of the text as its content.
+  def replace_hidden_notes taxt
+    return taxt unless hidden_notes?(taxt)
+
+    split_hidden_notes(taxt).each_with_object(+'') do |(kind, text, closed), output|
+      output << (kind == :note ? yield(text, closed).to_s : text)
+    end
+  end
+
+  def hidden_notes? taxt
+    taxt.is_a?(String) && taxt.include?(HIDDENNOTE_OPENING)
+  end
+
+  # Splits taxt into `[:text, string]` and `[:note, content, closed]` parts. Braces inside a note are
+  # balanced, so the note ends at the brace that closes the "{hiddennote" opening. Linear time.
+  def split_hidden_notes taxt
+    scanner = StringScanner.new(taxt)
+    parts = []
+
+    until scanner.eos?
+      unless (before_and_opening = scanner.scan_until(HIDDENNOTE_OPENING_REGEX))
+        parts << [:text, scanner.rest]
+        break
+      end
+
+      parts << [:text, before_and_opening.delete_suffix(HIDDENNOTE_OPENING)]
+
+      content = +''
+      depth = 1
+      while depth.positive? && (chunk = scanner.scan_until(BRACE_REGEX))
+        depth += chunk.end_with?('{') ? 1 : -1
+        content << chunk
+      end
+
+      if depth.zero?
+        parts << [:note, content.delete_suffix('}'), true]
+      else
+        content << scanner.rest
+        scanner.terminate
+        parts << [:note, content, false]
+      end
+    end
+
+    parts
   end
 
   # Taxon-related tags.
