@@ -16,6 +16,6 @@ class Detax
   def call
     return unless taxt
     sanitized = sanitize(taxt.dup, attributes: %w[tooltip2]).to_str.gsub(TOOLTIP_WITH_BRACE, "")
-    Markdowns::ParseCatalogTags[sanitized].html_safe
+    Markdowns::ExpandOutsideAttributes.call(sanitized) { |masked| Markdowns::ParseCatalogTags[masked] }.html_safe
   end
 end
