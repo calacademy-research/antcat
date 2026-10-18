@@ -10,7 +10,9 @@ module References
           Reference.where(id: params[:id])
         else
           fulltext_params = References::Search::ExtractKeywords[params[:reference_q]]
-          References::FulltextSearchQuery[**fulltext_params.to_solr, per_page: max_records + 1]
+          References::FulltextSearchQuery[
+            **fulltext_params.to_solr, per_page: max_records + 1, include_logged_in_only_fields: current_user.present?
+          ]
         end
 
       if !current_user && references.size > max_records

@@ -7,10 +7,17 @@ module References
     # Hyphens and colons makes Solr go bananas.
     UNFRIENDLY_SOLR_CHARACTERS_REGEX = /-|:/
     FREETEXT_SUBSTRINGS_TO_REMOVE = ['<i>', '</i>', '\*'] # Titles may contain these.
+    # Free text searches these fields; `editor_notes` and `taxonomic_notes` (shown to signed-in users only)
+    # are added with `include_logged_in_only_fields: true`.
+    PUBLIC_TEXT_FIELDS = %i[
+      author_names_string suffixed_year stated_year title journal_name publisher_name
+      year_as_string public_notes bolton_key authors_for_key
+    ]
+    LOGGED_IN_ONLY_TEXT_FIELDS = %i[editor_notes taxonomic_notes]
 
     def initialize(
       freetext: '', title: nil, author: nil, year: nil, start_year: nil, end_year: nil,
-      doi: nil, reference_type: nil, page: 1, per_page: 30
+      doi: nil, reference_type: nil, page: 1, per_page: 30, include_logged_in_only_fields: false
     )
       @freetext = freetext
       @title = title.dup.gsub(UNFRIENDLY_SOLR_CHARACTERS_REGEX, ' ').tr('*', ' ') if title # Asterixes too.
@@ -22,6 +29,7 @@ module References
       @reference_type = reference_type
       @page = page
       @per_page = per_page
+      @include_logged_in_only_fields = include_logged_in_only_fields
     end
 
     def call
@@ -31,11 +39,15 @@ module References
     private
 
       attr_reader :freetext, :title, :author, :year, :start_year, :end_year, :doi,
-        :reference_type, :page, :per_page
+        :reference_type, :page, :per_page, :include_logged_in_only_fields
 
       def search_results
+        freetext_fields = include_logged_in_only_fields ? PUBLIC_TEXT_FIELDS + LOGGED_IN_ONLY_TEXT_FIELDS : PUBLIC_TEXT_FIELDS
+
         Reference.solr_search(include: [:document]) do |solr|
-          solr.keywords(normalized_freetext)
+          solr.keywords(normalized_freetext) do
+            fields(*freetext_fields)
+          end
 
           if title
             solr.keywords(title) do

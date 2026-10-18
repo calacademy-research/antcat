@@ -103,6 +103,29 @@ describe "Logged-in only content" do
     end
   end
 
+  describe "reference search", :search do
+    let!(:reference) { create :any_reference, editor_notes: "zymurgical", taxonomic_notes: "quixotical" }
+
+    before { Sunspot.commit }
+
+    it "does not match words in editor or taxonomic notes for visitors" do
+      %w[zymurgical quixotical].each do |word|
+        get "/references/search", params: { reference_q: word }
+        expect(response.body).not_to include reference_path(reference)
+
+        get "/references/autocomplete.json", params: { reference_q: word }
+        expect(response.parsed_body).to eq []
+      end
+    end
+
+    it "matches them for signed-in users" do
+      sign_in create(:user)
+
+      get "/references/search", params: { reference_q: "zymurgical" }
+      expect(response.body).to include reference_path(reference)
+    end
+  end
+
   describe "revision histories", :versioning do
     let!(:history_item) { create :history_item, :taxt, taxt: "First #{hidden_note}" }
 
