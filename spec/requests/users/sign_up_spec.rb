@@ -22,6 +22,16 @@ describe "Signing up" do
     Rack::Utils.parse_query(URI.parse(path).query)['token']
   end
 
+  describe "GET /users/sign_up" do
+    it "says which fields are public" do
+      get new_user_registration_path
+
+      expect(response.body).to include "Not public. Only AntCat helpers and editors can see it"
+      expect(response.body).to include "Public. Shown on your user page, in the users list"
+      expect(response.body).not_to include "Email (public)"
+    end
+  end
+
   describe "POST /users (sign-up form)" do
     let!(:existing_user) { create :user, email: 'existing@example.com', name: 'Existing User' }
 
