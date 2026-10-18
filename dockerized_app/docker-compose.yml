@@ -68,6 +68,15 @@ services:
       - ..:/app
       - ./database.yml:/app/config/database.yml
       - ../config/server.yml.example:/app/config/server.yml
+      # The checkout also holds server secrets the app does not need: the MySQL root password (.env)
+      # and, under nginx/certbot, the Cloudflare DNS token and the TLS keys. They are covered here, so
+      # the app container sees an empty .env and an empty nginx/certbot. Compose itself still reads the
+      # real .env on the host; nginx and certbot mount their files directly.
+      - /dev/null:/app/dockerized_app/.env:ro
+      - type: tmpfs
+        target: /app/dockerized_app/nginx/certbot
+        tmpfs:
+          size: 65536
     logging:
       driver: "json-file"
       options:
@@ -83,7 +92,9 @@ services:
       - antcat-network
 
   web:
-    image: nginx:latest
+    # Pinned to a stable release (was nginx:latest). To update: change the version here (stable
+    # branch, nginx.org/en/download.html), then recreate `web` (see README.md in this directory).
+    image: nginx:1.30.6
     restart: unless-stopped
     ports:
       - "80:80"

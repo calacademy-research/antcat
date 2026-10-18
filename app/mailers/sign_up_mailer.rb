@@ -3,8 +3,9 @@
 # Emails sent from the sign-up form (see `Users::RegistrationsController`). The form shows the same
 # message whether or not the address already has an account; only the email says which it is.
 class SignUpMailer < ApplicationMailer
-  def finish_sign_up email:, name:, token:
-    @name = name
+  # The name typed in the form is not put in this email: anyone can type any name and any address,
+  # so it would let them send their own text from antcat.org to anyone.
+  def finish_sign_up email:, token:
     @url = complete_user_sign_up_url(token: token)
     @valid_for_hours = (Users::RegistrationsController::SIGN_UP_LINK_VALID_FOR / 1.hour).to_i
 

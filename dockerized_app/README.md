@@ -13,10 +13,26 @@ Not in git (see `.gitignore`), only on the server:
 - `.env` with `ANTCAT_DB_PASSWORD=...` (MySQL root password, db container only) and
   `ANTCAT_APP_DB_USER=...` / `ANTCAT_APP_DB_PASSWORD=...` (the app's MySQL account); compose
   refuses to start without them
-- `nginx/certbot/conf/` (certificates; also holds the CAS IT dmz-shield include files)
+- `nginx/certbot/conf/` (certificates and TLS keys; also holds the CAS IT dmz-shield include files;
+  mounted into `web` and `certbot`)
 - `nginx/certbot/cloudflare/credentials.ini` (Cloudflare API token for DNS validation; mounted
-  only into `certbot`, not into nginx)
-- database data on the attached volume `/mnt/volume_sfo3_01/mysql`
+  only into `certbot`)
+- database data on the attached volume `/mnt/volume_sfo3_01/mysql84`
+
+The app container mounts the whole checkout at `/app`, so `docker-compose.yml` covers `.env` (with
+`/dev/null`) and `nginx/certbot/` (with an empty tmpfs) inside that container: the app cannot read the
+MySQL root password, the Cloudflare token or the TLS keys. On the host these files are for root only:
+
+```
+chown root:root .env nginx/certbot/cloudflare/credentials.ini
+chmod 600 .env nginx/certbot/cloudflare/credentials.ini
+chmod 700 nginx/certbot/cloudflare nginx/certbot/conf/archive
+```
+
+Check: `stat -c '%a %U:%G %n' .env nginx/certbot/cloudflare/credentials.ini nginx/certbot/conf/archive`
+shows `600 root:root`, `600 root:root`, `700 root:root`. A change to the app's mounts in `docker-compose.yml`
+needs the container recreated (`docker compose up -d app`, then `docker compose exec web nginx -s reload`);
+`docker restart antcat-app` keeps the old mounts.
 
 Deploy a code change: `cd /var/www/antcat-2 && git pull && docker restart antcat-app`
 (startup runs bundle install, yarn, asset precompile and Solr; allow a few minutes).
@@ -35,6 +51,10 @@ the first start compiles all gems into `vendor/bundle/ruby/<version>`: about 3 m
 `docker compose exec web nginx -s reload` (nginx caches the old container's IP and returns 502 until reloaded).
 
 Fresh setup (from the original README): `./setup_db.sh <sql file>`, then `docker compose build` and `docker compose up`.
+
+nginx runs a pinned stable release (`image:` of `web` in `docker-compose.yml`). nginx applies a
+per-visitor limit (10 requests/s with bursts of 60, 20 connections; over it: 429), and Rails sends
+Strict-Transport-Security (`config.force_ssl`).
 
 nginx config change (`nginx/default.conf` or the `web` service in `docker-compose.yml`): the file is
 bind-mounted, and `git pull` replaces it, so a reload alone may keep the old file. Check and apply with

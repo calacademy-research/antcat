@@ -913,11 +913,7 @@ definitions:
         type: string
       author_names_string_cache:
         type: string
-      editor_notes:
-        type: string
       public_notes:
-        type: string
-      taxonomic_notes:
         type: string
       title:
         type: string

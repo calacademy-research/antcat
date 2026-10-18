@@ -38,8 +38,21 @@ describe Exporters::Endnote::Formatter do
           title: '*A title*', series_volume_issue: '1(2)'
       end
 
-      it "exports notes" do
+      it "exports public notes, and taxonomic notes only when asked (signed-in users)" do
         expect(described_class[[reference]]).to eq <<~STRING
+          %0 Journal Article
+          %A MacKay, W.
+          %D #{reference.year}
+          %T A title
+          %J #{reference.journal.name}
+          %N 1(2)
+          %P #{reference.pagination}
+          %Z #{reference.public_notes}
+          %~ AntCat
+
+        STRING
+
+        expect(described_class[[reference], include_taxonomic_notes: true]).to eq <<~STRING
           %0 Journal Article
           %A MacKay, W.
           %D #{reference.year}

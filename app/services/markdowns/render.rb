@@ -5,8 +5,13 @@ module Markdowns
     include ActionView::Helpers::SanitizeHelper
     include Service
 
-    def initialize content
-      @content = sanitize(content).to_s.to_str
+    # Attributes kept in content from any signed-in user (comments): no `class`, so a comment cannot be
+    # styled like the site's own notices and warnings.
+    USER_CONTENT_ATTRIBUTES = (ActionView::Helpers::SanitizeHelper.sanitizer_vendor.safe_list_sanitizer.allowed_attributes.to_a - %w[class]).freeze
+
+    def initialize content, user_content: false
+      sanitize_options = user_content ? { attributes: USER_CONTENT_ATTRIBUTES } : {}
+      @content = sanitize(content, **sanitize_options).to_s.to_str
     end
 
     # Tags are expanded in `AntCatMarkdown#postprocess`; attribute values from the content are kept out of that.

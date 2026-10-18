@@ -65,5 +65,31 @@ describe Markdowns::BoltonKeysToRefTags do
         end
       end
     end
+
+    it "looks up all keys in one query" do
+      create :any_reference, bolton_key: "Fisher et al. 2002"
+      content = "Latreille, 1802c: 236; Fisher, et al. 2002: 37; Unknown, 1900: 1; Latreille, 1802c: 1"
+
+      queries = []
+      callback = ->(*, payload) { queries << payload[:sql] if payload[:sql].include?("bolton_key") }
+      ActiveSupport::Notifications.subscribed(callback, "sql.active_record") { described_class[content] }
+
+      expect(queries.size).to eq 1
+    end
+
+    it "matches keys case-insensitively, like the database" do
+      expect(described_class["latreille, 1802C: 236"]).to eq "#{Taxt.ref(latreille.id)}: 236"
+    end
+
+    context "when the content is too large" do
+      it "raises without querying the database" do
+        expect(Reference).not_to receive(:where)
+
+        expect { described_class["a" * (described_class::MAX_CONTENT_LENGTH + 1)] }.
+          to raise_error described_class::TooLarge
+        expect { described_class["a:" * (described_class::MAX_BOLTON_KEYS + 1)] }.
+          to raise_error described_class::TooLarge
+      end
+    end
   end
 end

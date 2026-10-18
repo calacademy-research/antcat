@@ -129,6 +129,44 @@ describe "Signing up" do
       expect(deliveries).to be_empty
     end
 
+    it "does not put the name typed in the form into the sign-up email" do
+      sign_up email: new_email, name: 'Win a prize at example dot com'
+
+      body = deliveries.last.body.decoded
+      expect(body).to include 'Hello!'
+      expect(body).not_to include 'Win a prize'
+    end
+
+    it "greets an existing account by its own name, not the name typed in the form" do
+      sign_up email: 'existing@example.com', name: 'Win a prize at example dot com'
+
+      body = deliveries.last.body.decoded
+      expect(body).to include 'Hello Existing User!'
+      expect(body).not_to include 'Win a prize'
+    end
+
+    it "rejects names that are too long or contain a web address, and sends no email" do
+      sign_up email: new_email, name: 'a' * (User::NAME_MAX_LENGTH + 1)
+      expect(response).to have_http_status :unprocessable_content
+      expect(response.body).to include "Name is too long"
+
+      sign_up email: new_email, name: 'Visit https://example.com'
+      expect(response).to have_http_status :unprocessable_content
+      expect(response.body).to include "Name cannot contain a web address"
+
+      sign_up email: new_email, name: 'Visit www.example.com'
+      expect(response).to have_http_status :unprocessable_content
+
+      expect(deliveries).to be_empty
+    end
+
+    it "rejects email addresses that are too long" do
+      sign_up email: "#{'a' * User::EMAIL_MAX_LENGTH}@example.com"
+
+      expect(response).to have_http_status :unprocessable_content
+      expect(deliveries).to be_empty
+    end
+
     it "ignores unpermitted attributes" do
       post user_registration_path, params: { user: { email: new_email, name: 'Quintus Batiatus', editor: true } }
       path = link_from_last_email

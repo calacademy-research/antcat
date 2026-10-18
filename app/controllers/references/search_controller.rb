@@ -8,7 +8,9 @@ module References
       return redirect_to references_path unless user_is_searching?
 
       fulltext_params = References::Search::ExtractKeywords[params[:reference_q]]
-      @references = References::FulltextSearchQuery[**fulltext_params.to_solr, page: params[:page]]
+      @references = References::FulltextSearchQuery[
+        **fulltext_params.to_solr, page: params[:page], include_logged_in_only_fields: current_user.present?
+      ]
     end
 
     def help

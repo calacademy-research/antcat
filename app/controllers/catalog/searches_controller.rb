@@ -10,7 +10,7 @@ module Catalog
 
       if redirect_if_single_exact_match? && (single_match = Catalog::Search::SingleMatchToRedirectTo[params[:qq]])
         return redirect_to catalog_path(single_match, qq: params[:qq]), notice: <<~MSG
-          You were redirected to an exact match. <a href='/catalog/search?qq=#{params[:qq]}'>Show more results.</a>
+          You were redirected to an exact match. <a href='/catalog/search?qq=#{ERB::Util.url_encode(params[:qq])}'>Show more results.</a>
         MSG
       end
 

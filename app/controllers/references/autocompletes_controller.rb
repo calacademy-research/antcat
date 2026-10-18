@@ -22,7 +22,9 @@ module References
       end
 
       def references
-        Autocomplete::ReferencesQuery[search_query, fulltext_params.to_solr]
+        Autocomplete::ReferencesQuery[
+          search_query, fulltext_params.to_solr.merge(include_logged_in_only_fields: current_user.present?)
+        ]
       end
 
       def search_query

@@ -7,13 +7,13 @@
   .row.mb-8
     .medium-6
       =f.label :email
-      =f.email_field :email, class: 'w-full'
+      =f.email_field :email, maxlength: User::EMAIL_MAX_LENGTH, class: 'w-full'
       =render 'devise/registrations/email_hint'
 
       .mb-4
 
       =f.label :name, "Full name"
-      =f.text_field :name, class: 'w-full'
+      =f.text_field :name, maxlength: User::NAME_MAX_LENGTH, class: 'w-full'
       =render 'devise/registrations/name_hint'
 
       .mb-4

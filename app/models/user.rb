@@ -10,6 +10,11 @@ class User < ApplicationRecord
     DEVELOPER = 'developer'
   ]
 
+  NAME_MAX_LENGTH = 100
+  EMAIL_MAX_LENGTH = 254 # The longest address SMTP allows.
+  # Names are public and were shown in emails; a full name never needs a web address.
+  NAME_URL_REGEX = %r{://|\bwww\.}i
+
   UNCONFIRMED_USER_EDIT_LIMIT_COUNT = 5
   UNCONFIRMED_USER_EDIT_LIMIT_PERIOD = 24.hours
 
@@ -39,7 +44,10 @@ class User < ApplicationRecord
     foreign_key: :whodunnit, dependent: false
 
   validates :author, uniqueness: true, allow_nil: true
-  validates :name, presence: true, uniqueness: { case_sensitive: true }, format: { with: /\A[^<>]*\z/ }
+  validates :name, presence: true, uniqueness: { case_sensitive: true }, format: { with: /\A[^<>]*\z/ },
+    length: { maximum: NAME_MAX_LENGTH }
+  validates :name, format: { without: NAME_URL_REGEX, message: "cannot contain a web address" }
+  validates :email, length: { maximum: EMAIL_MAX_LENGTH }
 
   scope :order_by_name, -> { order(:name) }
   scope :unconfirmed, -> { where(editor: false, helper: false) }

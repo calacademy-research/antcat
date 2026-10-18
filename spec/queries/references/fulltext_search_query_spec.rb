@@ -105,10 +105,14 @@ describe References::FulltextSearchQuery, :search do
           Sunspot.commit
         end
 
-        specify do
+        it "searches editor and taxonomic notes only when asked (signed-in users)" do
           expect(described_class[freetext: 'public']).to eq [with_public_notes]
-          expect(described_class[freetext: 'editor']).to eq [with_editor_notes]
-          expect(described_class[freetext: 'taxonomic']).to eq [with_taxonomic_notes]
+          expect(described_class[freetext: 'editor']).to eq []
+          expect(described_class[freetext: 'taxonomic']).to eq []
+
+          expect(described_class[freetext: 'public', include_logged_in_only_fields: true]).to eq [with_public_notes]
+          expect(described_class[freetext: 'editor', include_logged_in_only_fields: true]).to eq [with_editor_notes]
+          expect(described_class[freetext: 'taxonomic', include_logged_in_only_fields: true]).to eq [with_taxonomic_notes]
         end
       end
 

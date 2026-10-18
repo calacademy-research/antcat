@@ -8,6 +8,8 @@ class RevisionPresenter
     expandable_reference_cache
   ]
   ATTRIBUTES_IGNORED_IN_DIFF = REMOVED_REFERENCE_CACHE_COLUMNS + Reference::CACHE_COLUMNS
+  # Shown on the site to signed-in users only; revision histories are open to visitors.
+  LOGGED_IN_ONLY_ATTRIBUTES = %i[editor_notes taxonomic_notes]
 
   attr_private_initialize [:comparer, { template: nil }]
 
@@ -67,7 +69,10 @@ class RevisionPresenter
     end
 
     def revision_as_json item
-      as_json = item.as_json(except: ATTRIBUTES_IGNORED_IN_DIFF)
+      return JSON.pretty_generate(item.as_json(except: ATTRIBUTES_IGNORED_IN_DIFF).compact_blank) if Current.signed_in
+
+      as_json = item.as_json(except: ATTRIBUTES_IGNORED_IN_DIFF + LOGGED_IN_ONLY_ATTRIBUTES).
+        transform_values { Taxt.remove_hidden_notes(it) }
       JSON.pretty_generate(as_json.compact_blank)
     end
 end

@@ -67,4 +67,18 @@ describe Taxt do
       end
     end
   end
+
+  describe '.remove_hidden_notes' do
+    it 'removes hidden notes and the space before them' do
+      expect(described_class.remove_hidden_notes("Lasius {#{Taxt::HIDDENNOTE_TAG} check} and {tax 1}")).
+        to eq "Lasius and {tax 1}"
+      expect(described_class.remove_hidden_notes("{#{Taxt::HIDDENNOTE_TAG} a}{#{Taxt::HIDDENNOTE_TAG} b}x")).to eq "x"
+    end
+
+    it 'returns other values as they are' do
+      expect(described_class.remove_hidden_notes("Lasius")).to eq "Lasius"
+      expect(described_class.remove_hidden_notes(nil)).to eq nil
+      expect(described_class.remove_hidden_notes(1)).to eq 1
+    end
+  end
 end

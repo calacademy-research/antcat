@@ -8,7 +8,8 @@ module Exporters
       # NOTE: `NestedReference` is not included because it just renders a blank string.
       EXPORTABLE_TYPES = [ArticleReference, BookReference]
 
-      attr_private_initialize :references
+      # `taxonomic_notes` are shown on the site to signed-in users only.
+      attr_private_initialize :references, [{ include_taxonomic_notes: false }]
 
       def self.exportable? reference
         reference.class.in?(EXPORTABLE_TYPES)
@@ -16,7 +17,7 @@ module Exporters
 
       def call
         references.map do |reference|
-          formatter_class(reference).new(reference).call
+          formatter_class(reference).new(reference, include_taxonomic_notes: include_taxonomic_notes).call
         end.compact_blank.join("\n") + "\n"
       end
 
@@ -33,8 +34,9 @@ module Exporters
     end
 
     class BaseFormatter
-      def initialize reference
+      def initialize reference, include_taxonomic_notes: false
         @reference = reference
+        @include_taxonomic_notes = include_taxonomic_notes
         @string = []
       end
 
@@ -45,7 +47,7 @@ module Exporters
         add 'T', title
         add_contents
         add 'Z', public_notes
-        add 'K', taxonomic_notes
+        add 'K', taxonomic_notes if include_taxonomic_notes
         add 'U', routed_url
         add '~', 'AntCat'
         string.join("\n") + "\n"
@@ -53,7 +55,7 @@ module Exporters
 
       private
 
-        attr_reader :reference
+        attr_reader :reference, :include_taxonomic_notes
         attr_accessor :string
 
         delegate :author_names, :year, :title, :public_notes, :taxonomic_notes, to: :reference

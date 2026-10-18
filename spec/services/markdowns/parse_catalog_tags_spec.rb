@@ -196,9 +196,24 @@ describe Markdowns::ParseCatalogTags do
     end
 
     describe "tag: `HIDDENNOTE_TAG`" do
-      it 'wraps the note content in a span only visible to logged-in users' do
-        expect(described_class["Synonym of Lasius{#{Taxt::HIDDENNOTE_TAG} check reference} and Formica"]).
-          to eq 'Synonym of Lasius<span class="taxt-hidden-note"><b>Hidden editor note:</b> check reference</span> and Formica'
+      context "when a signed-in user is viewing" do
+        it 'wraps the note content in a span' do
+          Current.set(signed_in: true) do
+            expect(described_class["Synonym of Lasius{#{Taxt::HIDDENNOTE_TAG} check reference} and Formica"]).
+              to eq 'Synonym of Lasius<span class="taxt-hidden-note"><b>Hidden editor note:</b> check reference</span> and Formica'
+          end
+        end
+      end
+
+      context "when a visitor is viewing (or nobody: rake tasks, console)" do
+        it 'leaves the note out of the output' do
+          Current.set(signed_in: false) do
+            expect(described_class["Synonym of Lasius {#{Taxt::HIDDENNOTE_TAG} check reference} and Formica"]).
+              to eq 'Synonym of Lasius and Formica'
+          end
+
+          expect(described_class["Lasius{#{Taxt::HIDDENNOTE_TAG} check reference}"]).to eq 'Lasius'
+        end
       end
     end
   end

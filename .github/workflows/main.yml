@@ -231,6 +231,10 @@ jobs:
           cp config/settings/production.secret.yml.example config/settings/production.secret.yml
           chmod 600 config/settings/production.secret.yml
           sudo chown root:root config/settings/production.secret.yml
+          # Stand-ins for the server secrets that must not be visible in the app container.
+          echo 'ANTCAT_DB_PASSWORD=ci-secret-root' > dockerized_app/.env
+          mkdir -p dockerized_app/nginx/certbot/cloudflare
+          echo 'dns_cloudflare_api_token = ci-secret-token' > dockerized_app/nginx/certbot/cloudflare/credentials.ini
 
       - name: Start MySQL and load the schema
         run: |
@@ -252,6 +256,7 @@ jobs:
       - name: Start the container (bundle install, yarn, asset build, Puma)
         run: |
           docker run -d --name antcat-app-ci --network antcat-ci -v "$PWD:/app" \
+            -v /dev/null:/app/dockerized_app/.env:ro --mount type=tmpfs,destination=/app/dockerized_app/nginx/certbot \
             -e RAILS_ENV=production -e DB_HOST=db -e DB_PORT=3306 -e DB_DATABASE=antcat \
             -e DB_USERNAME=antcat -e DB_PASSWORD=ci-app -e NO_DEV_MONKEY_PATCHES=y -e WEB_CONCURRENCY=0 \
             antcat-app-ci /bin/bash -c dockerized_app/startup.sh
@@ -280,10 +285,15 @@ jobs:
           docker exec antcat-app-ci sh -c 'test -n "$(ls -A /app/public/assets)" && test -s /app/app/assets/builds/hotwire_app.js'
           # Code and dependencies stay root-owned and are not writable by the app user.
           test "$(docker exec antcat-app-ci stat -c %U /app/app)" != antcat
-          ! docker exec -u antcat antcat-app-ci sh -c 'touch /app/app/ci-write-test' 2>/dev/null
-          ! docker exec -u antcat antcat-app-ci sh -c 'touch /app/vendor/bundle/ci-write-test' 2>/dev/null
+          # (`if`, not `! cmd`: bash -e does not stop on a failed `! cmd`.)
+          if docker exec -u antcat antcat-app-ci sh -c 'touch /app/app/ci-write-test' 2>/dev/null; then exit 1; fi
+          if docker exec -u antcat antcat-app-ci sh -c 'touch /app/vendor/bundle/ci-write-test' 2>/dev/null; then exit 1; fi
           # The settings file is readable by the app user only.
           test "$(stat -c '%a %g' config/settings/production.secret.yml)" = "640 1001"
+          # Server secrets in the checkout are not visible in the app container (also not as root).
+          test -z "$(docker exec antcat-app-ci cat /app/dockerized_app/.env)"
+          test -z "$(docker exec antcat-app-ci ls -A /app/dockerized_app/nginx/certbot)"
+          if docker exec antcat-app-ci grep -rq ci-secret /app/dockerized_app; then exit 1; fi
           # Rails tasks run as the app user (how pipelines should run them).
           docker exec -u antcat antcat-app-ci bundle exec rails runner 'puts Rails.env' | grep -x production
 

@@ -10,6 +10,13 @@ describe Markdowns::Render do
         expect(described_class[content]).to eq "<p>xss</p>\n"
       end
 
+      it "keeps `class` attributes, except in user content" do
+        content = %(<div class="callout-danger">x</div>)
+
+        expect(described_class[content]).to include 'class="callout-danger"'
+        expect(described_class[content, user_content: true]).not_to include 'class='
+      end
+
       it "does not remove <i> tags" do
         content = "<i>italics<i><i><script>xss</script></i>"
         expect(described_class[content]).to eq "<p><i>italics<i><i>xss</i></i></i></p>\n"

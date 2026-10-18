@@ -3,4 +3,4 @@
     %h6=field.to_s
     %p
       =Detax[item[field]]
-      =inline_expandable("show raw") { item[field] }
+      =inline_expandable("show raw") { raw_taxt_for_viewer(item[field]) }

@@ -51,6 +51,8 @@ module Taxt
 
   HIDDENNOTE_TAG = 'hiddennote' # Hidden editor notes, logged-in only.
   HIDDENNOTE_TAG_REGEX = /\{#{HIDDENNOTE_TAG} (?<note_content>.*?)\}/
+  # A hidden note with the space before it, for removing notes where visitors could see them.
+  HIDDENNOTE_TAG_WITH_SPACE_BEFORE_REGEX = / ?#{HIDDENNOTE_TAG_REGEX}/
 
   module RecordToTagRegex
     module_function
@@ -100,6 +102,12 @@ module Taxt
 
   def tag tag, content
     "{#{tag} #{content}}"
+  end
+
+  # For output that visitors can see without signing in (the API, revision histories).
+  def remove_hidden_notes taxt
+    return taxt unless taxt.is_a?(String) && taxt.include?("{#{HIDDENNOTE_TAG} ")
+    taxt.gsub(HIDDENNOTE_TAG_WITH_SPACE_BEFORE_REGEX, '')
   end
 
   # Taxon-related tags.

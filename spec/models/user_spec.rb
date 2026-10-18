@@ -14,6 +14,10 @@ describe User do
   describe 'validations' do
     it { is_expected.to validate_presence_of :name }
     it { is_expected.not_to allow_values('<', '>').for(:name) }
+    it { is_expected.to validate_length_of(:name).is_at_most(User::NAME_MAX_LENGTH) }
+    it { is_expected.to validate_length_of(:email).is_at_most(User::EMAIL_MAX_LENGTH) }
+    it { is_expected.not_to allow_values('See https://example.com', 'www.example.com', 'WWW.example.org').for(:name) }
+    it { is_expected.to allow_values('Barry Bolton', 'Brian L. Fisher', "Rosa O'Neill").for(:name) }
 
     describe "password length" do
       it "requires at least 12 characters" do
