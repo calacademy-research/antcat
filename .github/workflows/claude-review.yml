@@ -5,7 +5,7 @@ name: Claude review
 # request and posts the answer as one PR comment ("Claude review"), edited on every new push.
 # Skipped for drafts, for "Do not merge" PRs (temporary combined staging builds), for PRs
 # from forks, and when the ANTHROPIC_API_KEY repository secret is missing.
-# Cost guard: one API request per push (diff capped at 150k characters, answer at 4000
+# Cost guard: one API request per push (diff capped at 150k characters, answer at 16,000
 # tokens); a new push cancels the review still running for the older commit. Editing the PR
 # reruns the review (one paid request) only when the title changed, for example when "Do not
 # merge" is removed, or when the PR was retargeted to master; description-only edits are
@@ -37,7 +37,7 @@ jobs:
       group: claude-review-${{ github.event.pull_request.number }}
       cancel-in-progress: true
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 12
 
     steps:
       - name: Check that the API key secret exists
@@ -70,8 +70,8 @@ jobs:
       - name: Review
         id: review
         if: steps.key.outputs.present == 'true'
-        # Below the job's 10 minutes, so the last step still has time to post a notice.
-        timeout-minutes: 8
+        # Below the job's 12 minutes, so the last step still has time to post a notice.
+        timeout-minutes: 10
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -107,7 +107,7 @@ jobs:
           grep -q -- '--mark-not-reviewed' "$f" 2>/dev/null || { echo "Script missing or too old; no notice."; exit 0; }
           case "$OUTCOME" in
             cancelled) reason="The review was cancelled." ;;
-            failure)   reason="The review step failed or ran out of time (8-minute limit)." ;;
+            failure)   reason="The review step failed or ran out of time (10-minute limit)." ;;
             *)         reason="The job failed before the review ran." ;;
           esac
           python3 -I "$f" --mark-not-reviewed "$reason"
