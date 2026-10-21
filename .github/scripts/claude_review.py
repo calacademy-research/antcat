@@ -31,6 +31,8 @@ import urllib.request
 MODEL = "claude-opus-5-5"
 PRICE_IN, PRICE_OUT = 4.00, 20.00
 
+START = time.monotonic()  # the 9-minute budget counts from the script's start
+COMMENT_LIMIT = 60_000  # GitHub rejects comments over 65,536 characters; room left for the footer
 MAX_TOKENS = 16000  # answer budget; includes any thinking the model does before writing
 DIFF_CAP = 150_000  # characters of diff sent to the model
 MARKER = "<!-- claude-review -->"
@@ -167,10 +169,12 @@ def call_claude(api_key, user_content):
         "messages": [{"role": "user", "content": user_content}],
     }).encode()
     # One request may take several minutes for a large answer (no streaming), so the whole call
-    # gets a 9-minute budget, inside the review step's 10 minutes. A request that timed out is
+    # gets what is left of 9 minutes from the script's start, inside the review step's 10
+    # minutes (the timeout applies to each socket wait, which for a non-streaming answer is
+    # mostly the single wait for the response). A request that timed out is
     # not retried: it may still have been processed and billed. Quick errors (rate limit,
     # overloaded, 5xx) are retried once if time remains.
-    deadline = time.monotonic() + 540
+    deadline = START + 540
     last_error = None
     for attempt in range(2):
         remaining = deadline - time.monotonic()
@@ -206,7 +210,7 @@ def extract_text(result):
     """The review text: every "text" block, in order. Thinking blocks ("thinking",
     "redacted_thinking") and any other block types are left out."""
     parts = [b.get("text") or "" for b in result.get("content") or [] if b.get("type") == "text"]
-    return "\n\n".join(p.strip() for p in parts if p.strip())
+    return "".join(parts).strip()
 
 
 def describe_blocks(content):
@@ -352,9 +356,14 @@ def review(api_key, token, repo, pr, sha):
     footer = [f"Automatic review of {pull['head']['sha'][:7]} by `{MODEL}`"]
     if notes and notes[0].startswith("The diff is"):
         footer.append(notes[0])
-    if cut_short:
-        text += ("\n\n> **This review was cut short**: it reached the answer limit of "
-                 f"{MAX_TOKENS:,} tokens, so findings after this point are missing.")
+    cut_note = (f"it reached the answer limit of {MAX_TOKENS:,} tokens" if cut_short else "")
+    if len(text) > COMMENT_LIMIT:
+        text = text[:COMMENT_LIMIT].rsplit("\n", 1)[0]
+        cut_note = "it was too long for a GitHub comment"
+    if text.count("```") % 2:  # stopped inside a code block: close it so the note shows as text
+        text += "\n```"
+    if cut_note:
+        text += f"\n\n> **This review was cut short**: {cut_note}, so findings after this point are missing."
     if os.environ.get("RUN_URL"):
         footer.append(f"[run]({os.environ['RUN_URL']})")
     body = f"{MARKER}\n### Claude review\n\n{text}\n\n<sub>{'. '.join(footer)}. Updated on every push.</sub>"
