@@ -19,6 +19,7 @@ Environment (set by the workflow):
 import http.client
 import json
 import os
+import re
 import secrets
 import sys
 import time
@@ -31,7 +32,9 @@ import urllib.request
 MODEL = "claude-opus-5-5"
 PRICE_IN, PRICE_OUT = 4.00, 20.00
 
-MAX_TOKENS = 4000
+START = time.monotonic()  # the 9-minute budget counts from the script's start
+COMMENT_LIMIT = 60_000  # GitHub rejects comments over 65,536 characters; room left for the footer
+MAX_TOKENS = 16000  # answer budget; includes any thinking the model does before writing
 DIFF_CAP = 150_000  # characters of diff sent to the model
 MARKER = "<!-- claude-review -->"
 PLACEHOLDER = "### Claude review\n\nNo review yet."
@@ -166,16 +169,26 @@ def call_claude(api_key, user_content):
         "system": SYSTEM,
         "messages": [{"role": "user", "content": user_content}],
     }).encode()
-    # Worst case 2 x 240 s + 20 s stays inside the job's 10-minute timeout.
+    # One request may take several minutes for a large answer (no streaming), so the whole call
+    # gets what is left of 9 minutes from the script's start, inside the review step's 10
+    # minutes (the timeout applies to each socket wait, which for a non-streaming answer is
+    # mostly the single wait for the response). A request that timed out is
+    # not retried: it may still have been processed and billed. Quick errors (rate limit,
+    # overloaded, 5xx) are retried once if time remains.
+    deadline = START + 540
     last_error = None
     for attempt in range(2):
+        remaining = deadline - time.monotonic()
+        if remaining < 60:
+            last_error = last_error or "No time left for the API request"
+            break
         req = urllib.request.Request(API_URL, data=payload, method="POST", headers={
             "x-api-key": api_key,
             "anthropic-version": "2023-06-01",
             "content-type": "application/json",
         })
         try:
-            with urllib.request.urlopen(req, timeout=240) as resp:
+            with urllib.request.urlopen(req, timeout=remaining) as resp:
                 return json.loads(resp.read().decode()), None
         except urllib.error.HTTPError as e:
             text = e.read().decode("utf-8", "replace")
@@ -187,10 +200,30 @@ def call_claude(api_key, user_content):
             if e.code not in (429, 500, 502, 503, 529):
                 break
         except (OSError, http.client.HTTPException) as e:  # URLError, timeouts, dropped connections
+            if isinstance(e, TimeoutError) or isinstance(getattr(e, "reason", None), TimeoutError):
+                return None, f"No answer within {int(remaining)} s (request timed out)"
             last_error = f"Network error: {e!r}"
         if attempt == 0:
             time.sleep(20)
     return None, last_error
+
+
+def extract_text(result):
+    """The review text: every "text" block, in order. Thinking blocks ("thinking",
+    "redacted_thinking") and any other block types are left out."""
+    parts = [b.get("text") or "" for b in result.get("content") or [] if b.get("type") == "text"]
+    return "".join(parts).strip()
+
+
+def describe_blocks(content):
+    if not content:
+        return "none"
+    out = []
+    for b in content:
+        kind = b.get("type", "?")
+        size = len(b.get("text") or b.get("thinking") or b.get("data") or "")
+        out.append(f"{kind}({size} chars)" if size else kind)
+    return ", ".join(out)
 
 
 def summary(lines):
@@ -304,19 +337,36 @@ def review(api_key, token, repo, pr, sha):
     lines.append(f"- Model reported: `{result.get('model', '?')}`; stop reason: {result.get('stop_reason')}")
     lines.append(f"- Tokens: {tin:,} input, {tout:,} output")
     lines.append(f"- Estimated cost: {cost} (at ${PRICE_IN}/${PRICE_OUT} per million input/output tokens)")
+    # Which content blocks came back (type and size only, never their content): shows whether
+    # the output budget went to thinking or to the review text.
+    blocks = describe_blocks(result.get("content", []))
+    lines.append(f"- Content blocks: {blocks}")
     summary(lines)
-    print(f"::notice::Claude review: {result.get('model', MODEL)}, {tin} input + {tout} output tokens, estimated {cost}")
+    print(f"::notice::Claude review: {result.get('model', MODEL)}, {tin} input + {tout} output tokens, "
+          f"estimated {cost}, stop {result.get('stop_reason')}, blocks: {blocks}")
 
-    text = "".join(b.get("text", "") for b in result.get("content", []) if b.get("type") == "text").strip()
+    text = extract_text(result)
+    cut_short = result.get("stop_reason") == "max_tokens"
     if not text:
-        print("::error::Claude returned an empty review")
-        mark_not_reviewed(repo, pr, token, sha, "Claude returned an empty review.")
+        reason = (f"Claude used the whole answer budget ({tout:,} tokens) before writing any review text "
+                  f"(content blocks: {blocks})." if cut_short
+                  else f"Claude returned no review text (stop reason {result.get('stop_reason')}, "
+                       f"content blocks: {blocks}).")
+        print(f"::error::{reason}")
+        mark_not_reviewed(repo, pr, token, sha, reason)
         return 1
     footer = [f"Automatic review of {pull['head']['sha'][:7]} by `{MODEL}`"]
     if notes and notes[0].startswith("The diff is"):
         footer.append(notes[0])
-    if result.get("stop_reason") == "max_tokens":
-        footer.append("The review hit the length limit and may be cut off")
+    cut_note = (f"it reached the answer limit of {MAX_TOKENS:,} tokens" if cut_short else "")
+    if len(text) > COMMENT_LIMIT:
+        text = text[:COMMENT_LIMIT].rsplit("\n", 1)[0]
+        cut_note = "it was too long for a GitHub comment"
+    # A cut-short answer can stop inside a code block: close it so the note shows as text.
+    if cut_note and len(re.findall(r"^\s*(```|~~~)", text, re.M)) % 2:
+        text += "\n```"
+    if cut_note:
+        text += f"\n\n> **This review was cut short**: {cut_note}, so findings after this point are missing."
     if os.environ.get("RUN_URL"):
         footer.append(f"[run]({os.environ['RUN_URL']})")
     body = f"{MARKER}\n### Claude review\n\n{text}\n\n<sub>{'. '.join(footer)}. Updated on every push.</sub>"
