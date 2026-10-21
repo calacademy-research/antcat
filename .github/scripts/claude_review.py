@@ -12,7 +12,7 @@ Environment (set by the workflow):
   REPO               owner/name
   PR                 pull request number
   REPO_CONTEXT       one paragraph describing the repository
-  MODEL              optional, default claude-opus-5-5
+  HEAD_SHA           head commit of the pull request
   RUN_URL            link to the workflow run (for the comment footer)
 """
 
@@ -25,13 +25,16 @@ import time
 import urllib.error
 import urllib.request
 
-MODEL = os.environ.get("MODEL") or "claude-opus-5-5"
+# The model is set here and only here. When you change it, update the two prices next to it
+# (US dollars per million input/output tokens, used only for the cost estimate in the job
+# summary; see https://platform.claude.com/docs/en/about-claude/pricing).
+MODEL = "claude-opus-5-5"
+PRICE_IN, PRICE_OUT = 4.00, 20.00
+
 MAX_TOKENS = 4000
 DIFF_CAP = 150_000  # characters of diff sent to the model
 MARKER = "<!-- claude-review -->"
-# Estimated list prices in US dollars per million tokens, used only for the job summary.
-# Check against https://platform.claude.com/docs/en/about-claude/pricing and update if they change.
-PRICES = {"claude-opus-5-5": (4.00, 20.00)}
+STALE_START, STALE_END = "<!-- claude-review-stale -->", "<!-- /claude-review-stale -->"
 
 API_URL = "https://api.anthropic.com/v1/messages"
 GH_API = "https://api.github.com"
@@ -199,23 +202,40 @@ def summary(lines):
 def main():
     api_key, token = env("ANTHROPIC_API_KEY"), env("GITHUB_TOKEN")
     repo, pr = env("REPO"), env("PR")
-    context = os.environ.get("REPO_CONTEXT", "")
+    sha = os.environ.get("HEAD_SHA", "")[:7] or "?"
+    try:
+        return review(api_key, token, repo, pr, sha)
+    except Exception as e:  # anything unexpected: say so on the PR instead of leaving an old review
+        print(f"::error::Claude review failed: {e!r}")
+        mark_not_reviewed(repo, pr, token, sha, f"The review script failed: {type(e).__name__}.")
+        return 1
 
+
+def review(api_key, token, repo, pr, sha):
+    context = os.environ.get("REPO_CONTEXT", "")
     try:
         pull, _ = gh("GET", f"/repos/{repo}/pulls/{pr}", token)
         files = gh_paged(f"/repos/{repo}/pulls/{pr}/files", token)
     except (OSError, http.client.HTTPException, ValueError) as e:
         print(f"::error::Could not read the pull request from GitHub: {e!r}")
+        mark_not_reviewed(repo, pr, token, sha, "Could not read the pull request from GitHub.")
         return 1
     diff, notes = build_diff(files)
     file_list = "\n".join(
         f"{f['status']:9} +{f['additions']:<5} -{f['deletions']:<5} {f['filename']}" for f in files
     )
 
-    if not diff.strip():
-        msg = "Nothing to review: no file in this PR fits the diff size limit or has a textual diff."
-        print(f"::warning::{msg}")
+    # No paid request when there is no text to review (binary-only PR, or every file too large).
+    if not any(f.get("patch") for f in files):
+        msg = "This push has no text changes (binary files only, or diffs GitHub does not show), so it was not reviewed."
+    elif not any(f.get("patch") and f"diff --git a/{f['filename']} " in diff for f in files):
+        msg = "No changed file fits the review size limit, so this push was not reviewed."
+    else:
+        msg = ""
+    if msg:
+        print(f"::notice::{msg}")
         summary(["### Claude review", "", f"- {msg}"])
+        mark_not_reviewed(repo, pr, token, sha, msg, error=False)
         return 0
 
     # Random tag suffix: PR text cannot guess it, so it cannot close an untrusted section early.
@@ -239,24 +259,22 @@ def main():
         lines.append(f"- API error: {error}")
         summary(lines)
         print(f"::error::Anthropic API error: {error}")
+        mark_not_reviewed(repo, pr, token, sha, f"Anthropic API error: {error}")
         return 1
 
     usage = result.get("usage", {})
     tin, tout = usage.get("input_tokens", 0), usage.get("output_tokens", 0)
+    cost = f"${tin / 1e6 * PRICE_IN + tout / 1e6 * PRICE_OUT:.3f}"
     lines.append(f"- Model reported: `{result.get('model', '?')}`; stop reason: {result.get('stop_reason')}")
     lines.append(f"- Tokens: {tin:,} input, {tout:,} output")
-    cost = ""
-    if MODEL in PRICES:
-        pin, pout = PRICES[MODEL]
-        cost = f"${tin / 1e6 * pin + tout / 1e6 * pout:.3f}"
-        lines.append(f"- Estimated cost: {cost} (at ${pin}/${pout} per million input/output tokens)")
+    lines.append(f"- Estimated cost: {cost} (at ${PRICE_IN}/${PRICE_OUT} per million input/output tokens)")
     summary(lines)
-    print(f"::notice::Claude review: {result.get('model', MODEL)}, {tin} input + {tout} output tokens"
-          + (f", estimated {cost}" if cost else ""))
+    print(f"::notice::Claude review: {result.get('model', MODEL)}, {tin} input + {tout} output tokens, estimated {cost}")
 
-    review = "".join(b.get("text", "") for b in result.get("content", []) if b.get("type") == "text").strip()
-    if not review:
+    text = "".join(b.get("text", "") for b in result.get("content", []) if b.get("type") == "text").strip()
+    if not text:
         print("::error::Claude returned an empty review")
+        mark_not_reviewed(repo, pr, token, sha, "Claude returned an empty review.")
         return 1
     footer = [f"Automatic review of {pull['head']['sha'][:7]} by `{MODEL}`"]
     if notes and notes[0].startswith("The diff is"):
@@ -265,31 +283,54 @@ def main():
         footer.append("The review hit the length limit and may be cut off")
     if os.environ.get("RUN_URL"):
         footer.append(f"[run]({os.environ['RUN_URL']})")
-    body = f"{MARKER}\n### Claude review\n\n{review}\n\n<sub>{'. '.join(footer)}. Updated on every push.</sub>"
-
+    body = f"{MARKER}\n### Claude review\n\n{text}\n\n<sub>{'. '.join(footer)}. Updated on every push.</sub>"
     try:
-        post_comment(repo, pr, token, body)
+        existing = find_comment(repo, pr, token)
+        write_comment(repo, pr, token, body, existing)
     except urllib.error.HTTPError as e:
         print(f"::error::Could not post the review comment: HTTP {e.code} "
               f"{e.read().decode('utf-8', 'replace')[:300]}")
         return 1
-    except (OSError, http.client.HTTPException, ValueError) as e:
-        print(f"::error::Could not post the review comment: {e!r}")
-        return 1
     return 0
 
 
-def post_comment(repo, pr, token, body):
-    existing = [
-        c for c in gh_paged(f"/repos/{repo}/issues/{pr}/comments", token)
-        if c.get("user", {}).get("login") == "github-actions[bot]" and (c.get("body") or "").startswith(MARKER)
-    ]
+def find_comment(repo, pr, token):
+    for c in gh_paged(f"/repos/{repo}/issues/{pr}/comments", token):
+        if c.get("user", {}).get("login") == "github-actions[bot]" and (c.get("body") or "").startswith(MARKER):
+            return c
+    return None
+
+
+def write_comment(repo, pr, token, body, existing):
     if existing:
-        gh("PATCH", f"/repos/{repo}/issues/comments/{existing[0]['id']}", token, {"body": body})
-        print(f"Updated comment {existing[0]['id']}")
+        gh("PATCH", f"/repos/{repo}/issues/comments/{existing['id']}", token, {"body": body})
+        print(f"Updated comment {existing['id']}")
     else:
         gh("POST", f"/repos/{repo}/issues/{pr}/comments", token, {"body": body})
         print("Posted a new comment")
+
+
+def mark_not_reviewed(repo, pr, token, sha, reason, error=True):
+    """Put a notice at the top of the "Claude review" comment that the latest push was not
+    reviewed, keeping the earlier review below it; post the notice if there is no comment yet.
+    Never raises: this runs on the failure path."""
+    run = f" ([run]({os.environ['RUN_URL']}))" if os.environ.get("RUN_URL") else ""
+    lead = "The latest push was not reviewed" if error else "Not reviewed"
+    banner = f"{STALE_START}\n> **{lead} ({sha}).** {reason}{run}\n{STALE_END}\n"
+    try:
+        existing = find_comment(repo, pr, token)
+        if existing:
+            old = existing["body"][len(MARKER):].lstrip("\n")
+            if old.startswith(STALE_START) and STALE_END in old:
+                old = old.split(STALE_END, 1)[1].lstrip("\n")
+            if old.startswith("### Claude review\n") and "No review yet." not in old:
+                old = "### Claude review (earlier push)\n" + old[len("### Claude review\n"):]
+            body = f"{MARKER}\n{banner}\n{old}"
+        else:
+            body = f"{MARKER}\n{banner}\n### Claude review\n\nNo review yet."
+        write_comment(repo, pr, token, body, existing)
+    except Exception as e:
+        print(f"::warning::Could not update the review comment: {e!r}")
 
 
 if __name__ == "__main__":
