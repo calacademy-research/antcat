@@ -7,8 +7,9 @@ name: Claude review
 # from forks, and when the ANTHROPIC_API_KEY repository secret is missing.
 # Cost guard: one API request per push (diff capped at 150k characters, answer at 4000
 # tokens); a new push cancels the review still running for the older commit. Editing the PR
-# reruns the review only when the title or base branch changed (for example when "Do not
-# merge" is removed); description-only edits are skipped and cost nothing.
+# reruns the review (one paid request) only when the title changed, for example when "Do not
+# merge" is removed, or when the PR was retargeted to master; description-only edits are
+# skipped and cost nothing.
 # The model is set in the script (MODEL). Model, tokens and estimated cost are in the run's
 # job summary.
 
@@ -51,8 +52,11 @@ jobs:
             echo "::notice::ANTHROPIC_API_KEY secret is not set; skipping the Claude review."
           fi
 
-      # The script is taken from the base commit (master), never from the PR, so a PR cannot
-      # change its own reviewer or reach the API key. The PR itself is read through the API.
+      # The script is taken from the base commit (master), so changing the script in a PR does
+      # not change how that PR is reviewed. The PR itself is read through the API.
+      # This workflow file, however, runs from the PR, so a PR that edits it can still use the
+      # API key. The fork check in the job's `if:` is what keeps the key away from outsiders
+      # (anyone who can push a branch here already has write access). Do not remove it.
       - name: Checkout the review script (base commit)
         if: steps.key.outputs.present == 'true'
         uses: actions/checkout@v5

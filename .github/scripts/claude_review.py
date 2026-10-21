@@ -34,6 +34,7 @@ PRICE_IN, PRICE_OUT = 4.00, 20.00
 MAX_TOKENS = 4000
 DIFF_CAP = 150_000  # characters of diff sent to the model
 MARKER = "<!-- claude-review -->"
+PLACEHOLDER = "### Claude review\n\nNo review yet."
 STALE_START, STALE_END = "<!-- claude-review-stale -->", "<!-- /claude-review-stale -->"
 
 API_URL = "https://api.anthropic.com/v1/messages"
@@ -121,7 +122,8 @@ def gh_paged(path, token):
 
 
 def build_diff(files):
-    """Return (diff text, notes). Largest changes first when the diff is over the cap."""
+    """Return (diff text, notes, number of included files that have a textual diff).
+    Largest changes first when the diff is over the cap."""
     def block(f):
         head = f"diff --git a/{f['filename']} b/{f['filename']}\n"
         if f.get("previous_filename"):
@@ -153,7 +155,8 @@ def build_diff(files):
     for f in files:
         if f.get("patch") and "\r" in f["patch"]:
             notes.append(f"{f['filename']}: the diff contains CR characters (CRLF line endings).")
-    return "".join(b for _, b in chosen), notes
+    with_text = sum(1 for f, _ in chosen if f.get("patch"))
+    return "".join(b for _, b in chosen), notes, with_text
 
 
 def call_claude(api_key, user_content):
@@ -220,7 +223,7 @@ def review(api_key, token, repo, pr, sha):
         print(f"::error::Could not read the pull request from GitHub: {e!r}")
         mark_not_reviewed(repo, pr, token, sha, "Could not read the pull request from GitHub.")
         return 1
-    diff, notes = build_diff(files)
+    diff, notes, with_text = build_diff(files)
     file_list = "\n".join(
         f"{f['status']:9} +{f['additions']:<5} -{f['deletions']:<5} {f['filename']}" for f in files
     )
@@ -228,7 +231,7 @@ def review(api_key, token, repo, pr, sha):
     # No paid request when there is no text to review (binary-only PR, or every file too large).
     if not any(f.get("patch") for f in files):
         msg = "This push has no text changes (binary files only, or diffs GitHub does not show), so it was not reviewed."
-    elif not any(f.get("patch") and f"diff --git a/{f['filename']} " in diff for f in files):
+    elif with_text == 0:
         msg = "No changed file fits the review size limit, so this push was not reviewed."
     else:
         msg = ""
@@ -290,6 +293,7 @@ def review(api_key, token, repo, pr, sha):
     except urllib.error.HTTPError as e:
         print(f"::error::Could not post the review comment: HTTP {e.code} "
               f"{e.read().decode('utf-8', 'replace')[:300]}")
+        mark_not_reviewed(repo, pr, token, sha, f"The review was written but could not be posted (HTTP {e.code}).")
         return 1
     return 0
 
@@ -323,11 +327,11 @@ def mark_not_reviewed(repo, pr, token, sha, reason, error=True):
             old = existing["body"][len(MARKER):].lstrip("\n")
             if old.startswith(STALE_START) and STALE_END in old:
                 old = old.split(STALE_END, 1)[1].lstrip("\n")
-            if old.startswith("### Claude review\n") and "No review yet." not in old:
+            if old.startswith("### Claude review\n") and old.strip() != PLACEHOLDER:
                 old = "### Claude review (earlier push)\n" + old[len("### Claude review\n"):]
             body = f"{MARKER}\n{banner}\n{old}"
         else:
-            body = f"{MARKER}\n{banner}\n### Claude review\n\nNo review yet."
+            body = f"{MARKER}\n{banner}\n{PLACEHOLDER}"
         write_comment(repo, pr, token, body, existing)
     except Exception as e:
         print(f"::warning::Could not update the review comment: {e!r}")
