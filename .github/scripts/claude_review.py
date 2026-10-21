@@ -203,6 +203,8 @@ def summary(lines):
 
 
 def main():
+    if len(sys.argv) == 3 and sys.argv[1] == "--mark-not-reviewed":
+        return mark_only(sys.argv[2])
     api_key, token = env("ANTHROPIC_API_KEY"), env("GITHUB_TOKEN")
     repo, pr = env("REPO"), env("PR")
     sha = os.environ.get("HEAD_SHA", "")[:7] or "?"
@@ -214,6 +216,28 @@ def main():
         return 1
 
 
+def mark_only(reason):
+    """Run by the workflow's last step when the job timed out, was cancelled or failed before
+    the review step could report it. Does nothing when a newer push is already being reviewed
+    or when this commit already has a notice (the review step wrote a more specific one)."""
+    token, repo, pr = env("GITHUB_TOKEN"), env("REPO"), env("PR")
+    full = os.environ.get("HEAD_SHA", "")
+    sha = full[:7] or "?"
+    try:
+        pull, _ = gh("GET", f"/repos/{repo}/pulls/{pr}", token)
+        if full and pull["head"]["sha"] != full:
+            print("A newer push exists; its own run will update the comment.")
+            return 0
+        existing = find_comment(repo, pr, token)
+        if existing and STALE_START in existing["body"] and f"({sha}).**" in existing["body"]:
+            print("This commit already has a notice.")
+            return 0
+    except Exception as e:
+        print(f"::warning::Could not check the PR: {e!r}")
+    mark_not_reviewed(repo, pr, token, sha, reason)
+    return 0
+
+
 def review(api_key, token, repo, pr, sha):
     context = os.environ.get("REPO_CONTEXT", "")
     try:
@@ -223,6 +247,7 @@ def review(api_key, token, repo, pr, sha):
         print(f"::error::Could not read the pull request from GitHub: {e!r}")
         mark_not_reviewed(repo, pr, token, sha, "Could not read the pull request from GitHub.")
         return 1
+    sha = pull["head"]["sha"][:7]  # the commit actually read, used in every notice from here on
     diff, notes, with_text = build_diff(files)
     file_list = "\n".join(
         f"{f['status']:9} +{f['additions']:<5} -{f['deletions']:<5} {f['filename']}" for f in files
@@ -230,7 +255,8 @@ def review(api_key, token, repo, pr, sha):
 
     # No paid request when there is no text to review (binary-only PR, or every file too large).
     if not any(f.get("patch") for f in files):
-        msg = "This push has no text changes (binary files only, or diffs GitHub does not show), so it was not reviewed."
+        msg = ("This push has no text changes to review (only renames, mode changes, empty or binary "
+               "files, or diffs GitHub does not show), so it was not reviewed.")
     elif with_text == 0:
         msg = "No changed file fits the review size limit, so this push was not reviewed."
     else:
