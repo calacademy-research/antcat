@@ -110,31 +110,44 @@ jobs:
               (for example "user input reaches the SQL string in X:42 without a bound parameter")
               and do not include exploit payloads, attack steps or working proof-of-concept code.
               Never write any secret, password, token or key value into the review.
-            - Do not post comments yourself and do not change any files. Return the full review
-              text (GitHub Markdown) in the `review` field of your structured output, and set
-              `blocking` to true only if you listed a Blocking finding.
+            - Do not post comments yourself and do not change any files. Your final message must
+              be the review itself (GitHub Markdown) and nothing else: no preamble such as
+              "Here is the review"; the workflow posts that message as the PR comment.
           claude_args: |
             --max-turns 20
             --allowedTools "Read,Glob,Grep,Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(gh pr view:*),Bash(gh pr diff:*)"
-            --json-schema '{"type":"object","properties":{"review":{"type":"string"},"blocking":{"type":"boolean"}},"required":["review","blocking"]}'
+
+      - name: Run summary (model, turns, cost)
+        if: always() && steps.key.outputs.present == 'true'
+        run: |
+          f="$RUNNER_TEMP/claude-execution-output.json"
+          [ -f "$f" ] || { echo "::warning::No execution file; Claude did not run."; exit 0; }
+          model=$(jq -r '[.[] | select(.type=="system" and .subtype=="init")][0].model // "?"' "$f")
+          jq -r --arg m "$model" '[.[] | select(.type=="result")][-1] |
+            "::notice::Claude review: model \($m), \(.num_turns) turns, \((.duration_ms/1000|floor))s, cost $\(.total_cost_usd), error=\(.is_error)"' "$f"
+          if [ "$(jq -r '[.[] | select(.type=="result")][-1].is_error' "$f")" = "true" ]; then
+            jq -r '[.[] | select(.type=="result")][-1].result // "" | "::error::Claude run failed: " + (.[0:500] | gsub("\n"; " "))' "$f"
+          fi
 
       - name: Post or update the review comment
-        if: steps.key.outputs.present == 'true' && steps.review.outputs.structured_output != ''
+        if: steps.review.outcome == 'success'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REVIEW_JSON: ${{ steps.review.outputs.structured_output }}
           PR: ${{ github.event.pull_request.number }}
           REPO: ${{ github.repository }}
           SHA: ${{ github.event.pull_request.head.sha }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           set -euo pipefail
+          f="$RUNNER_TEMP/claude-execution-output.json"
           marker='<!-- claude-review -->'
+          review=$(jq -r '[.[] | select(.type=="result")][-1].result // ""' "$f")
+          [ -n "$review" ] || { echo "::error::Claude returned an empty review."; exit 1; }
           {
             echo "$marker"
             echo "### Claude review"
             echo
-            printf '%s\n' "$REVIEW_JSON" | jq -r '.review'
+            printf '%s\n' "$review"
             echo
             echo "<sub>Automatic review of ${SHA:0:7} ([run]($RUN_URL)). Updated on every push.</sub>"
           } > "$RUNNER_TEMP/review.md"
