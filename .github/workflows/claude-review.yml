@@ -88,8 +88,9 @@ jobs:
 
       # Timeouts, cancellations and failures the script could not report itself (for example a
       # missing script): mark the "Claude review" comment so an earlier review does not look
-      # current. The script skips this when a newer push exists or this commit already has a
-      # notice. Older copies of the script without this mode are not run (they would start a
+      # current. The script skips this when a newer push exists, when the run was cancelled with
+      # no new push (a newer run for the same commit, e.g. after a title edit, will post), when
+      # this commit already has a notice, or when it cannot check the PR. Older copies of the script without this mode are not run (they would start a
       # paid review).
       - name: Mark the review comment when this push was not reviewed
         if: (failure() || cancelled()) && steps.key.outputs.present == 'true'
@@ -105,8 +106,8 @@ jobs:
           f=.github/scripts/claude_review.py
           grep -q -- '--mark-not-reviewed' "$f" 2>/dev/null || { echo "Script missing or too old; no notice."; exit 0; }
           case "$OUTCOME" in
-            cancelled) reason="The review was cancelled or ran out of time." ;;
-            failure)   reason="The review step failed." ;;
+            cancelled) reason="The review was cancelled." ;;
+            failure)   reason="The review step failed or ran out of time (8-minute limit)." ;;
             *)         reason="The job failed before the review ran." ;;
           esac
           python3 -I "$f" --mark-not-reviewed "$reason"

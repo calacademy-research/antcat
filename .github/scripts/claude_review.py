@@ -218,8 +218,10 @@ def main():
 
 def mark_only(reason):
     """Run by the workflow's last step when the job timed out, was cancelled or failed before
-    the review step could report it. Does nothing when a newer push is already being reviewed
-    or when this commit already has a notice (the review step wrote a more specific one)."""
+    the review step could report it. Does nothing when a newer push is already being reviewed,
+    when the run was cancelled with no new push (a newer run for the same commit, for example
+    after a title edit, cancelled it and will post), when this commit already has a notice (the
+    review step wrote a more specific one), or when the PR cannot be checked."""
     token, repo, pr = env("GITHUB_TOKEN"), env("REPO"), env("PR")
     full = os.environ.get("HEAD_SHA", "")
     sha = full[:7] or "?"
@@ -228,12 +230,17 @@ def mark_only(reason):
         if full and pull["head"]["sha"] != full:
             print("A newer push exists; its own run will update the comment.")
             return 0
+        if os.environ.get("OUTCOME") == "cancelled":
+            print("Cancelled with no new push: a newer run for this commit will update the comment.")
+            return 0
         existing = find_comment(repo, pr, token)
-        if existing and STALE_START in existing["body"] and f"({sha}).**" in existing["body"]:
+        if existing and existing["body"][len(MARKER):].lstrip().startswith(STALE_START) \
+                and f"({sha}).**" in existing["body"]:
             print("This commit already has a notice.")
             return 0
     except Exception as e:
-        print(f"::warning::Could not check the PR: {e!r}")
+        print(f"::warning::Could not check the PR, so no notice was written: {e!r}")
+        return 0
     mark_not_reviewed(repo, pr, token, sha, reason)
     return 0
 
@@ -262,7 +269,7 @@ def review(api_key, token, repo, pr, sha):
     else:
         msg = ""
     if msg:
-        print(f"::notice::{msg}")
+        print(f"::warning::{msg}")
         summary(["### Claude review", "", f"- {msg}"])
         mark_not_reviewed(repo, pr, token, sha, msg, error=False)
         return 0
@@ -320,6 +327,10 @@ def review(api_key, token, repo, pr, sha):
         print(f"::error::Could not post the review comment: HTTP {e.code} "
               f"{e.read().decode('utf-8', 'replace')[:300]}")
         mark_not_reviewed(repo, pr, token, sha, f"The review was written but could not be posted (HTTP {e.code}).")
+        return 1
+    except (OSError, http.client.HTTPException, ValueError) as e:
+        print(f"::error::Could not post the review comment: {e!r}")
+        mark_not_reviewed(repo, pr, token, sha, f"The review was written but could not be posted ({type(e).__name__}).")
         return 1
     return 0
 
