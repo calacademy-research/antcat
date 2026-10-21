@@ -16,6 +16,7 @@ Environment (set by the workflow):
   RUN_URL            link to the workflow run (for the comment footer)
 """
 
+import http.client
 import json
 import os
 import sys
@@ -146,6 +147,16 @@ def build_diff(files):
     return "".join(b for _, b in chosen), notes
 
 
+TAGS = ("pr_title", "pr_description", "changed_files", "diff")
+
+
+def untrusted(text):
+    """Stop PR text from closing the tags that mark it as untrusted data."""
+    for tag in TAGS:
+        text = text.replace(f"</{tag}>", f"</ {tag}>")
+    return text
+
+
 def call_claude(api_key, user_content):
     payload = json.dumps({
         "model": MODEL,
@@ -153,15 +164,16 @@ def call_claude(api_key, user_content):
         "system": SYSTEM,
         "messages": [{"role": "user", "content": user_content}],
     }).encode()
+    # Worst case 2 x 240 s + 20 s stays inside the job's 10-minute timeout.
     last_error = None
-    for attempt in range(3):
+    for attempt in range(2):
         req = urllib.request.Request(API_URL, data=payload, method="POST", headers={
             "x-api-key": api_key,
             "anthropic-version": "2023-06-01",
             "content-type": "application/json",
         })
         try:
-            with urllib.request.urlopen(req, timeout=420) as resp:
+            with urllib.request.urlopen(req, timeout=240) as resp:
                 return json.loads(resp.read().decode()), None
         except urllib.error.HTTPError as e:
             text = e.read().decode("utf-8", "replace")
@@ -172,9 +184,10 @@ def call_claude(api_key, user_content):
                 last_error = f"HTTP {e.code}: {text[:500]}"
             if e.code not in (429, 500, 502, 503, 529):
                 break
-        except (urllib.error.URLError, TimeoutError) as e:
-            last_error = f"Network error: {e}"
-        time.sleep(15 * (attempt + 1))
+        except (OSError, http.client.HTTPException) as e:  # URLError, timeouts, dropped connections
+            last_error = f"Network error: {e!r}"
+        if attempt == 0:
+            time.sleep(20)
     return None, last_error
 
 
@@ -192,8 +205,12 @@ def main():
     repo, pr = env("REPO"), env("PR")
     context = os.environ.get("REPO_CONTEXT", "")
 
-    pull, _ = gh("GET", f"/repos/{repo}/pulls/{pr}", token)
-    files = gh_paged(f"/repos/{repo}/pulls/{pr}/files", token)
+    try:
+        pull, _ = gh("GET", f"/repos/{repo}/pulls/{pr}", token)
+        files = gh_paged(f"/repos/{repo}/pulls/{pr}/files", token)
+    except urllib.error.HTTPError as e:
+        print(f"::error::Could not read the pull request from GitHub: HTTP {e.code}")
+        return 1
     diff, notes = build_diff(files)
     file_list = "\n".join(
         f"{f['status']:9} +{f['additions']:<5} -{f['deletions']:<5} {f['filename']}" for f in files
@@ -201,11 +218,11 @@ def main():
 
     user_content = (
         f"About this repository: {context}\n\n"
-        f"<pr_title>{pull.get('title') or ''}</pr_title>\n\n"
-        f"<pr_description>\n{pull.get('body') or ''}\n</pr_description>\n\n"
-        f"<changed_files>\n{file_list}\n</changed_files>\n\n"
+        f"<pr_title>{untrusted(pull.get('title') or '')}</pr_title>\n\n"
+        f"<pr_description>\n{untrusted(pull.get('body') or '')}\n</pr_description>\n\n"
+        f"<changed_files>\n{untrusted(file_list)}\n</changed_files>\n\n"
         + ("Notes from the workflow:\n- " + "\n- ".join(notes) + "\n\n" if notes else "")
-        + f"<diff>\n{diff}\n</diff>"
+        + f"<diff>\n{untrusted(diff)}\n</diff>"
     )
 
     result, error = call_claude(api_key, user_content)
@@ -223,11 +240,14 @@ def main():
     tin, tout = usage.get("input_tokens", 0), usage.get("output_tokens", 0)
     lines.append(f"- Model reported: `{result.get('model', '?')}`; stop reason: {result.get('stop_reason')}")
     lines.append(f"- Tokens: {tin:,} input, {tout:,} output")
+    cost = ""
     if MODEL in PRICES:
         pin, pout = PRICES[MODEL]
-        lines.append(f"- Estimated cost: ${tin / 1e6 * pin + tout / 1e6 * pout:.3f} "
-                     f"(at ${pin}/${pout} per million input/output tokens)")
+        cost = f"${tin / 1e6 * pin + tout / 1e6 * pout:.3f}"
+        lines.append(f"- Estimated cost: {cost} (at ${pin}/${pout} per million input/output tokens)")
     summary(lines)
+    print(f"::notice::Claude review: {result.get('model', MODEL)}, {tin} input + {tout} output tokens"
+          + (f", estimated {cost}" if cost else ""))
 
     review = "".join(b.get("text", "") for b in result.get("content", []) if b.get("type") == "text").strip()
     if not review:
@@ -242,6 +262,16 @@ def main():
         footer.append(f"[run]({os.environ['RUN_URL']})")
     body = f"{MARKER}\n### Claude review\n\n{review}\n\n<sub>{'. '.join(footer)}. Updated on every push.</sub>"
 
+    try:
+        post_comment(repo, pr, token, body)
+    except urllib.error.HTTPError as e:
+        print(f"::error::Could not post the review comment: HTTP {e.code} "
+              f"{e.read().decode('utf-8', 'replace')[:300]}")
+        return 1
+    return 0
+
+
+def post_comment(repo, pr, token, body):
     existing = [
         c for c in gh_paged(f"/repos/{repo}/issues/{pr}/comments", token)
         if c.get("user", {}).get("login") == "github-actions[bot]" and (c.get("body") or "").startswith(MARKER)
@@ -252,7 +282,6 @@ def main():
     else:
         gh("POST", f"/repos/{repo}/issues/{pr}/comments", token, {"body": body})
         print("Posted a new comment")
-    return 0
 
 
 if __name__ == "__main__":

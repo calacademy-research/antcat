@@ -55,6 +55,9 @@ jobs:
           fetch-depth: 1
           persist-credentials: false
 
+      # The script comes from the PR itself and receives the API key. That is acceptable only
+      # because PRs from forks are skipped above (anyone who can push a branch here already has
+      # write access). Do not remove the fork check.
       - name: Review
         if: steps.key.outputs.present == 'true'
         env:
