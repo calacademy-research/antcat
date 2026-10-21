@@ -6,18 +6,18 @@ name: Claude review
 # Skipped for drafts, for "Do not merge" PRs (temporary combined staging builds), for PRs
 # from forks, and when the ANTHROPIC_API_KEY repository secret is missing.
 # Cost guard: one API request per push (diff capped at 150k characters, answer at 4000
-# tokens); a new push cancels the review still running for the older commit.
-# Model, tokens and estimated cost are in the run's job summary.
+# tokens); a new push cancels the review still running for the older commit. Editing the PR
+# reruns the review (one paid request) only when the title changed, for example when "Do not
+# merge" is removed, or when the PR was retargeted to master; description-only edits are
+# skipped and cost nothing.
+# The model is set in the script (MODEL). Model, tokens and estimated cost are in the run's
+# job summary.
 
 on:
   pull_request:
-    types: [opened, synchronize, ready_for_review, reopened]
+    types: [opened, synchronize, ready_for_review, reopened, edited]
     branches:
       - master
-
-concurrency:
-  group: claude-review-${{ github.event.pull_request.number }}
-  cancel-in-progress: true
 
 permissions:
   contents: read
@@ -30,7 +30,12 @@ jobs:
     if: >-
       github.event.pull_request.draft == false &&
       !startsWith(github.event.pull_request.title, 'Do not merge') &&
-      github.event.pull_request.head.repo.full_name == github.repository
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      (github.event.action != 'edited' || github.event.changes.title != null || github.event.changes.base != null)
+    # At job level, so a skipped run (draft, description-only edit) does not cancel a running review.
+    concurrency:
+      group: claude-review-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
     runs-on: ubuntu-24.04
     timeout-minutes: 10
 
@@ -47,25 +52,32 @@ jobs:
             echo "::notice::ANTHROPIC_API_KEY secret is not set; skipping the Claude review."
           fi
 
-      - name: Checkout the review script
+      # The script is taken from the tip of the base branch (master), so changing the script in
+      # a PR does not change how that PR is reviewed, and script fixes on master apply to open
+      # PRs at once. The PR itself is read through the API.
+      # This workflow file, however, runs from the PR, so a PR that edits it can still use the
+      # API key. The fork check in the job's `if:` is what keeps the key away from outsiders
+      # (anyone who can push a branch here already has write access). Do not remove it.
+      - name: Checkout the review script (base commit)
         if: steps.key.outputs.present == 'true'
         uses: actions/checkout@v5
         with:
+          ref: ${{ github.event.pull_request.base.ref }}
           sparse-checkout: .github/scripts
           fetch-depth: 1
           persist-credentials: false
 
-      # The script comes from the PR itself and receives the API key. That is acceptable only
-      # because PRs from forks are skipped above (anyone who can push a branch here already has
-      # write access). Do not remove the fork check.
       - name: Review
+        id: review
         if: steps.key.outputs.present == 'true'
+        # Below the job's 10 minutes, so the last step still has time to post a notice.
+        timeout-minutes: 8
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
           PR: ${{ github.event.pull_request.number }}
-          MODEL: claude-opus-5-5
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           REPO_CONTEXT: >-
             AntCat (www.antcat.org), the global ant taxonomic catalog. Ruby 4, Rails 8.1, MySQL 8.4,
@@ -73,3 +85,29 @@ jobs:
             export feeds AntWeb, so a change to the export format or to taxon/name data can break
             AntWeb's import. Tests are RSpec; RuboCop and Brakeman run in CI.
         run: python3 -I .github/scripts/claude_review.py
+
+      # Timeouts, cancellations and failures the script could not report itself (for example a
+      # missing script): mark the "Claude review" comment so an earlier review does not look
+      # current. The script skips this when a newer push exists, when the run was cancelled with
+      # no new push (a newer run for the same commit, e.g. after a title edit, will post), when
+      # this commit already has a notice, or when it cannot check the PR. Older copies of the script without this mode are not run (they would start a
+      # paid review).
+      - name: Mark the review comment when this push was not reviewed
+        if: (failure() || cancelled()) && steps.key.outputs.present == 'true'
+        timeout-minutes: 1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          OUTCOME: ${{ steps.review.outcome }}
+        run: |
+          f=.github/scripts/claude_review.py
+          grep -q -- '--mark-not-reviewed' "$f" 2>/dev/null || { echo "Script missing or too old; no notice."; exit 0; }
+          case "$OUTCOME" in
+            cancelled) reason="The review was cancelled." ;;
+            failure)   reason="The review step failed or ran out of time (8-minute limit)." ;;
+            *)         reason="The job failed before the review ran." ;;
+          esac
+          python3 -I "$f" --mark-not-reviewed "$reason"
