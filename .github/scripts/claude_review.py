@@ -19,6 +19,7 @@ Environment (set by the workflow):
 import http.client
 import json
 import os
+import re
 import secrets
 import sys
 import time
@@ -179,6 +180,7 @@ def call_claude(api_key, user_content):
     for attempt in range(2):
         remaining = deadline - time.monotonic()
         if remaining < 60:
+            last_error = last_error or "No time left for the API request"
             break
         req = urllib.request.Request(API_URL, data=payload, method="POST", headers={
             "x-api-key": api_key,
@@ -219,7 +221,7 @@ def describe_blocks(content):
     out = []
     for b in content:
         kind = b.get("type", "?")
-        size = len(b.get("text") or b.get("thinking") or "")
+        size = len(b.get("text") or b.get("thinking") or b.get("data") or "")
         out.append(f"{kind}({size} chars)" if size else kind)
     return ", ".join(out)
 
@@ -360,7 +362,8 @@ def review(api_key, token, repo, pr, sha):
     if len(text) > COMMENT_LIMIT:
         text = text[:COMMENT_LIMIT].rsplit("\n", 1)[0]
         cut_note = "it was too long for a GitHub comment"
-    if text.count("```") % 2:  # stopped inside a code block: close it so the note shows as text
+    # A cut-short answer can stop inside a code block: close it so the note shows as text.
+    if cut_note and len(re.findall(r"^\s*(```|~~~)", text, re.M)) % 2:
         text += "\n```"
     if cut_note:
         text += f"\n\n> **This review was cut short**: {cut_note}, so findings after this point are missing."
