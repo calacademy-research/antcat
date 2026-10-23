@@ -24,10 +24,12 @@ RUN apt-get update -qq && apt-get install -y \
   default-mysql-client \
   default-jre-headless
 
-# Node.js 26 (LTS from late October 2026), for the asset build (esbuild, dart-sass) and as the ExecJS runtime for terser.
+# Node.js 26 (LTS from late October 2026), at least 26.12.1 (October 2026 security release; the build fails on an
+# older one), for the asset build (esbuild, dart-sass) and as the ExecJS runtime for terser.
 RUN curl -fsSL https://deb.nodesource.com/setup_26.x | bash - \
     && apt-get install -y nodejs \
-    && node --version
+    && node --version \
+    && node -e 'const v = process.versions.node.split(".").map(Number); if (v[0] * 1e6 + v[1] * 1e3 + v[2] < 26012001) { console.error("Node " + process.versions.node + " is older than 26.12.1 (Brotli out-of-bounds write fixed in the October 2026 security release)"); process.exit(1); }'
 
 # TODO: Do not use apt-get.
 # Install Chromedriver (for RSpec Capybara specs).
