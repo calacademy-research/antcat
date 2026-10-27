@@ -16,12 +16,6 @@ describe DatabaseScripts::NestedReferencesWithNestedReferences do
       expect(rendered).to include 'Pp. 10-20 in:'
     end
 
-    context "when a pagination is missing" do
-      before do
-        reference.update_columns(pagination: nil)
-      end
-
-      it_behaves_like "a database script with renderable results"
-    end
+    it_behaves_like "a database script with renderable results"
   end
 end

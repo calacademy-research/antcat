@@ -65,7 +65,7 @@ describe References::ReviewsController do
     context 'when one reference cannot be updated' do
       before do
         invalid_reference = create :any_reference, review_state: Reference::REVIEW_STATE_NONE
-        invalid_reference.update_columns(title: nil) # Created last, so it is updated after the valid one.
+        invalid_reference.update_columns(title: '') # Created last, so it is updated after the valid one.
       end
 
       it 'approves none of them and creates no activity' do
