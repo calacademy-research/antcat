@@ -4,6 +4,8 @@
 # rubocop:disable-next Rails/ActionOrder
 module Authors
   class MergesController < ApplicationController
+    CANNOT_MERGE_INTO_ITSELF = "An author cannot be merged into itself."
+
     before_action :ensure_user_is_editor
 
     def new
@@ -16,12 +18,27 @@ module Authors
 
       unless @author_to_merge
         redirect_to({ action: :new }, alert: "Author to merge must be specified.")
+        return
+      end
+
+      if @author_to_merge == @author
+        redirect_to({ action: :new }, alert: CANNOT_MERGE_INTO_ITSELF)
       end
     end
 
     def create
       author = find_author
       author_to_merge = find_author_to_merge
+
+      unless author_to_merge
+        redirect_to({ action: :new }, alert: "Author to merge must be specified.")
+        return
+      end
+
+      if author_to_merge == author
+        redirect_to({ action: :new }, alert: CANNOT_MERGE_INTO_ITSELF)
+        return
+      end
 
       names_for_activity = author_to_merge.names.map(&:name).join(", ")
       Authors::Merge[author, author_to_merge]

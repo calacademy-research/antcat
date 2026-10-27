@@ -15,14 +15,22 @@ module My
 
     private
 
+      # Most recent first. IDs of references that no longer exist are skipped.
       def recently_used_references
-        Reference.find(session[:recently_used_reference_ids] || [])
+        ids = recently_used_reference_ids
+        Reference.where(id: ids).index_by(&:id).values_at(*ids).compact
       end
 
       def update_most_recently_used_references
-        reference_ids = session[:recently_used_reference_ids] || []
-        reference_ids.prepend params[:id]
+        id = Integer(params[:id].to_s, exception: false)
+        return unless id && Reference.exists?(id)
+
+        reference_ids = recently_used_reference_ids.prepend(id)
         session[:recently_used_reference_ids] = reference_ids.uniq[0...NUMBER_OF_RECENT_REFERENCES]
+      end
+
+      def recently_used_reference_ids
+        Array.wrap(session[:recently_used_reference_ids]).filter_map { |id| Integer(id.to_s, exception: false) }
       end
   end
 end

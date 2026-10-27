@@ -33,6 +33,7 @@ module Taxa
       end
 
       def taxon_class
+        raise ArgumentError, "unknown rank #{rank_to_create.inspect}" unless rank_to_create.to_s.in?(Rank::TYPES)
         rank_to_create.to_s.constantize
       end
   end

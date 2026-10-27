@@ -1,9 +1,9 @@
 =activity.event_to_verb
 the
 =activity.parameters[:rank]
-=activity.link_taxon_trackable_if_exists deleted_label: activity.parameters[:name].html_safe
+=activity.link_taxon_trackable_if_exists deleted_label: sanitize(activity.parameters[:name])
 
 -if activity.event == Activity::CREATE && (parent = activity.parameters[:parent])
   to the
   =parent[:rank]
-  =ActivityDecorator.link_taxon_if_exists parent[:id], deleted_label: parent[:name].html_safe
+  =ActivityDecorator.link_taxon_if_exists parent[:id], deleted_label: sanitize(parent[:name])

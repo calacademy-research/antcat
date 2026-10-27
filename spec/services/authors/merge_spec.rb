@@ -7,6 +7,11 @@ describe Authors::Merge do
     let!(:target_author) { create(:author_name).author }
     let!(:author_to_merge) { create(:author_name).author }
 
+    it "refuses to merge an author into itself" do
+      expect { described_class[target_author, target_author] }.to raise_error(ArgumentError)
+      expect(target_author.reload.names.count).to eq 1
+    end
+
     it "makes all the names of the passed in authors belong to the same author" do
       expect(Author.count).to eq 2
       expect(AuthorName.count).to eq 2

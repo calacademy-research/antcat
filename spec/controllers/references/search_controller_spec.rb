@@ -14,6 +14,15 @@ describe References::SearchController do
         end
       end
 
+      context "when the query is an ID followed by other lines" do
+        let!(:reference) { create :any_reference }
+
+        it "does not redirect" do
+          get :index, params: { reference_q: "#{reference.id}\nfoo" }
+          expect(response).to render_template "references/search/index"
+        end
+      end
+
       context "when reference does not exists" do
         it "does not redirect" do
           get :index, params: { reference_q: "11111" }

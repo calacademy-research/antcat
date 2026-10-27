@@ -8,6 +8,11 @@ module Catalog
 
     def show
       @taxon = find_taxon
+      unless @taxon.type.in?(SUPPORTED_TYPES)
+        head :not_found
+        return
+      end
+
       @taxa = taxa(@taxon).paginate(page: params[:page])
       @collected_references = collected_references @taxon
     end

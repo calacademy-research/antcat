@@ -18,7 +18,7 @@ module DevMonkeyPatches
         link += "?#{name_cache.tr(' ', '_')}" if include_name
 
         def link.open
-          `xdg-open "#{self}"`
+          system("xdg-open", to_s) # No shell, so the value is never interpreted.
         end
 
         link
@@ -47,7 +47,7 @@ module DevMonkeyPatches
         link = +"#{base_url}/protonyms/#{id}"
 
         def link.open
-          `xdg-open "#{self}"`
+          system("xdg-open", to_s) # No shell, so the value is never interpreted.
         end
 
         link
@@ -66,7 +66,7 @@ module DevMonkeyPatches
         link = +"#{base_url}/references/#{id}?#{key_with_suffixed_year.tr(' ', '_')}"
 
         def link.open
-          `xdg-open "#{self}"`
+          system("xdg-open", to_s) # No shell, so the value is never interpreted.
         end
 
         link

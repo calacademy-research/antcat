@@ -28,6 +28,11 @@ module Taxa
 
     def destroy
       taxon = find_taxon
+      unless taxon.subgenus
+        redirect_to({ action: :show }, alert: "Species has no subgenus.")
+        return
+      end
+
       activity_parameters = { removed_subgenus_id: taxon.subgenus.id }
 
       if taxon.update(subgenus: nil)

@@ -15,9 +15,12 @@ export default class extends Controller {
 
   connect() {
     useDebounce(this)
+    this.requestSequence = 0
   }
 
   check(event) {
+    // Responses can arrive out of order; only the answer to the latest request is shown.
+    const sequence = ++this.requestSequence
     const queryParams = {
       qq: this.inputTarget.value,
       name_scope: event.params?.nameScope ? event.params.nameScope : "",
@@ -36,8 +39,14 @@ export default class extends Controller {
         }
         return response.json()
       }).
-      then((names) => { this.resultsTarget.innerHTML = this._formatResults(names) }).
-      catch(() => { AntCat.notifyError("Error checking for name conflicts") })
+      then((names) => {
+        if (sequence !== this.requestSequence) return
+        this.resultsTarget.innerHTML = this._formatResults(names)
+      }).
+      catch(() => {
+        if (sequence !== this.requestSequence) return
+        AntCat.notifyError("Error checking for name conflicts")
+      })
   }
 
   _formatResults(names) {

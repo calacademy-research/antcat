@@ -44,5 +44,23 @@ describe Protonyms::MoveItemsController do
       activity = Activity.last
       expect(activity.parameters).to eq(to_protonym_id: to_protonym.id)
     end
+
+    it "does not move items that belong to another protonym" do
+      other_item = create :history_item, :taxt, protonym: to_protonym
+
+      post :create, params: { protonym_id: protonym.id, to_protonym_id: create(:protonym).id, history_item_ids: [other_item.id] }
+
+      expect(response).to have_http_status :unprocessable_content
+      expect(other_item.reload.protonym).to eq to_protonym
+    end
+
+    it "redirects when the target is missing or the same protonym" do
+      post :create, params: { protonym_id: protonym.id, history_item_ids: [history_item.id] }
+      expect(response).to redirect_to new_protonym_move_items_path(protonym)
+
+      post :create, params: { protonym_id: protonym.id, to_protonym_id: protonym.id, history_item_ids: [history_item.id] }
+      expect(response).to redirect_to new_protonym_move_items_path(protonym)
+      expect(history_item.reload.protonym).to eq protonym
+    end
   end
 end

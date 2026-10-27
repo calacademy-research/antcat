@@ -61,5 +61,18 @@ describe References::ReviewsController do
       expect(activity.event).to eq Activity::APPROVE_ALL_REFERENCES
       expect(activity.parameters).to eq(count: 1)
     end
+
+    context 'when one reference cannot be updated' do
+      before do
+        invalid_reference = create :any_reference, review_state: Reference::REVIEW_STATE_NONE
+        invalid_reference.update_columns(title: nil) # Created last, so it is updated after the valid one.
+      end
+
+      it 'approves none of them and creates no activity' do
+        expect { put :approve_all }.to raise_error(ActiveRecord::RecordInvalid)
+        expect(Reference.unreviewed.count).to eq 2
+        expect(Activity.where(event: Activity::APPROVE_ALL_REFERENCES).count).to eq 0
+      end
+    end
   end
 end

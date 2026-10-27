@@ -28,6 +28,23 @@ describe Authors::AutocompletesController do
       end
     end
 
+    context 'with a large or missing `limit`' do
+      before do
+        stub_const "#{described_class}::MAX_RESULTS", 2
+        create :author_name, name: 'Bolton, A.'
+        create :author_name, name: 'Bolton, B.'
+        create :author_name, name: 'Bolton, C.'
+      end
+
+      it 'returns at most `MAX_RESULTS` names' do
+        get :show, params: { term: 'bol', limit: 1000, format: :json }
+        expect(json_response.size).to eq 2
+
+        get :show, params: { term: 'bol', format: :json }
+        expect(json_response.size).to eq 2
+      end
+    end
+
     context 'with `limit` in params' do
       before do
         create :author_name, name: 'Bolton, A.'

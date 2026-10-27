@@ -2,6 +2,8 @@
 
 module Authors
   class AutocompletesController < ApplicationController
+    MAX_RESULTS = 50
+
     def show
       render json: serialized_author_names
     end
@@ -19,7 +21,11 @@ module Authors
       end
 
       def author_names
-        Autocomplete::AuthorNamesQuery[params[:term]].limit(params[:limit])
+        Autocomplete::AuthorNamesQuery[params[:term]].limit(limit)
+      end
+
+      def limit
+        (Integer(params[:limit].to_s, exception: false) || MAX_RESULTS).clamp(1, MAX_RESULTS)
       end
   end
 end

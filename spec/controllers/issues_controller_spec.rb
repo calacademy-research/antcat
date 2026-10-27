@@ -35,6 +35,18 @@ describe IssuesController do
     specify { expect(get(:show, params: { id: issue.id })).to render_template :show }
   end
 
+  describe "GET show (delete link)", as: :current_user do
+    let(:current_user) { create :user, :superadmin, :developer }
+    let!(:issue) { create :issue }
+
+    it "points the delete link at the issue" do
+      get :show, params: { id: issue.id }
+
+      page = Nokogiri::HTML5(response.body)
+      expect(page.css('a.btn-danger[data-method="delete"]').map { |link| link['href'] }).to eq ["/issues/#{issue.id}"]
+    end
+  end
+
   describe "GET new", as: :helper do
     specify { expect(get(:new)).to render_template :new }
   end
