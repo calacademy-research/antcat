@@ -95,9 +95,11 @@ module Users
 
       def configure_permitted_parameters
         devise_parameter_sanitizer.permit(:sign_up, keys: [:email, :name, :password, :password_confirmation])
+        # `author_id` (the link from an account to an AntCat author) is not here: only a superadmin sets it,
+        # in `UsersController`, so that nobody can present their account as an author's.
         devise_parameter_sanitizer.permit(
           :account_update, keys: [
-            :email, :name, :author_id, :enable_email_notifications, :password, :password_confirmation, :current_password
+            :email, :name, :enable_email_notifications, :password, :password_confirmation, :current_password
           ]
         )
       end

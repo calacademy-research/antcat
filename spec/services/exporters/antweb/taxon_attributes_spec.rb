@@ -41,10 +41,54 @@ describe Exporters::Antweb::TaxonAttributes do
         specify { expect(described_class[taxon][:available]).to eq true }
       end
 
-      context "when taxon is not valid" do
-        let(:taxon) { create :family, :synonym }
+      context "when taxon is a junior synonym (available but not valid)" do
+        let(:taxon) { create :genus, :synonym, current_taxon: create(:genus) }
+
+        specify { expect(described_class[taxon][:available]).to eq true }
+      end
+
+      context "when taxon is a homonym" do
+        let(:taxon) { create :genus, :homonym }
+
+        specify { expect(described_class[taxon][:available]).to eq true }
+      end
+
+      context "when taxon is unidentifiable" do
+        let(:taxon) { create :species, :unidentifiable }
+
+        specify { expect(described_class[taxon][:available]).to eq true }
+      end
+
+      context "when taxon is unavailable" do
+        let(:taxon) { create :species, :unavailable }
 
         specify { expect(described_class[taxon][:available]).to eq false }
+      end
+
+      context "when taxon is an unavailable misspelling" do
+        let(:taxon) { create :species, :unavailable_misspelling, current_taxon: create(:species) }
+
+        specify { expect(described_class[taxon][:available]).to eq false }
+      end
+
+      context "when the protonym is a nomen nudum" do
+        let(:taxon) { create :species, protonym: create(:protonym, :species_group, :nomen_nudum) }
+
+        specify { expect(described_class[taxon][:available]).to eq false }
+      end
+
+      context "when taxon is an obsolete combination" do
+        context "when the name it belongs to is available" do
+          let(:taxon) { create :species, :obsolete_combination, current_taxon: create(:species) }
+
+          specify { expect(described_class[taxon][:available]).to eq true }
+        end
+
+        context "when the name it belongs to is unavailable" do
+          let(:taxon) { create :species, :obsolete_combination, current_taxon: create(:species, :unavailable) }
+
+          specify { expect(described_class[taxon][:available]).to eq false }
+        end
       end
     end
 
@@ -59,8 +103,38 @@ describe Exporters::Antweb::TaxonAttributes do
         let(:current_taxon) { create :genus }
         let(:taxon) { create :genus, :synonym, current_taxon: current_taxon }
 
-        it "exports the current valid name of the taxon" do
-          expect(described_class[taxon][:current_valid_name]).to eq "#{taxon.subfamily.name.name} #{current_taxon.name.name}"
+        it "exports the current valid name with the subfamily of the current valid taxon" do
+          expect(taxon.subfamily).not_to eq current_taxon.subfamily
+          expect(described_class[taxon][:current_valid_name]).
+            to eq "#{current_taxon.subfamily.name.name} #{current_taxon.name.name}"
+        end
+      end
+
+      context "when the current valid taxon is in another subfamily (species moved to another genus)" do
+        let(:valid_species) { create :species }
+        let(:taxon) { create :species, :synonym, current_taxon: valid_species }
+
+        it "uses the subfamily of the valid species' genus" do
+          expect(described_class[taxon][:current_valid_name]).
+            to eq "#{valid_species.genus.subfamily.name.name} #{valid_species.name.name}"
+        end
+      end
+
+      context "when the current valid taxon is a genus incertae sedis in Formicidae" do
+        let(:valid_genus) { create :genus, :incertae_sedis_in_family, tribe: nil }
+        let(:taxon) { create :genus, :synonym, current_taxon: valid_genus }
+
+        specify do
+          expect(described_class[taxon][:current_valid_name]).to eq "incertae_sedis #{valid_genus.name.name}"
+        end
+      end
+
+      context "when the current valid taxon is a subfamily" do
+        let(:valid_subfamily) { create :subfamily }
+        let(:taxon) { create :subfamily, :synonym, current_taxon: valid_subfamily }
+
+        it "exports the subfamily name alone" do
+          expect(described_class[taxon][:current_valid_name]).to eq valid_subfamily.name.name
         end
       end
 
@@ -70,7 +144,8 @@ describe Exporters::Antweb::TaxonAttributes do
         let(:taxon) { create :genus, :obsolete_combination, current_taxon: synonym }
 
         it "exports the terminal valid name, not the intermediate synonym" do
-          expect(described_class[taxon][:current_valid_name]).to eq "#{taxon.subfamily.name.name} #{valid_taxon.name.name}"
+          expect(described_class[taxon][:current_valid_name]).
+            to eq "#{valid_taxon.subfamily.name.name} #{valid_taxon.name.name}"
         end
       end
     end
@@ -307,7 +382,26 @@ describe Exporters::Antweb::TaxonAttributes do
         end
       end
 
-      context 'when taxon is a synonym' do
+      context 'when taxon is a junior synonym species' do
+        let(:valid_species) { create :species }
+        let(:taxon) { create :species, :synonym, current_taxon: valid_species }
+
+        it "returns the genus of the current valid species (the same taxon as column 13)" do
+          expect(described_class[taxon][:current_valid_parent]).to eq valid_species.genus.name_cache
+        end
+      end
+
+      context 'when taxon is an obsolete combination of a junior synonym' do
+        let(:valid_species) { create :species }
+        let(:synonym) { create :species, :synonym, current_taxon: valid_species }
+        let(:taxon) { create :species, :obsolete_combination, current_taxon: synonym }
+
+        it "returns the genus of the terminal valid species" do
+          expect(described_class[taxon][:current_valid_parent]).to eq valid_species.genus.name_cache
+        end
+      end
+
+      context 'when taxon is in a junior synonym genus' do
         let(:senior) { create :genus }
         let(:taxon) do
           junior = create :genus, :synonym, current_taxon: senior

@@ -8,6 +8,10 @@ module Exporters
       include Service
 
       FORMICIDAE = 'Formicidae'
+      UNAVAILABLE_STATUSES = [Status::UNAVAILABLE, Status::UNAVAILABLE_MISSPELLING]
+      MAX_CHAIN_LENGTH = 20
+
+      # The meaning of each column and how AntWeb reads it: docs/antweb_export.md.
 
       attr_private_initialize :taxon
 
@@ -31,7 +35,7 @@ module Exporters
             authors:                  taxon.authorship_reference.key.authors_for_key,
             year:                     taxon.authorship_reference.year,
             status:                   taxon.status,
-            available:                taxon.valid_status?,
+            available:                available?,
             current_valid_name:       current_valid_name,
             original_combination:     taxon.original_combination?,
             was_original_combination: original_combination&.name&.name,
@@ -55,12 +59,45 @@ module Exporters
           tag.span reference.key_with_suffixed_year, title: reference.decorate.plain_text
         end
 
+        # Nomenclatural availability, not validity: junior synonyms, homonyms and unidentifiable
+        # names are available. Not available: a nomen nudum protonym, the statuses "unavailable"
+        # and "unavailable misspelling", and an obsolete combination of an unavailable name.
+        def available?
+          return false if taxon.protonym.nomen_nudum?
+
+          name_bearer = taxon
+          MAX_CHAIN_LENGTH.times do
+            break unless name_bearer.status == Status::OBSOLETE_COMBINATION && name_bearer.current_taxon
+            name_bearer = name_bearer.current_taxon
+          end
+
+          !name_bearer.status.in?(UNAVAILABLE_STATUSES)
+        end
+
+        # The taxon this name now belongs to: `current_taxon` followed to the end (a synonym's
+        # `current_taxon` can itself be an obsolete combination or a synonym). The taxon itself
+        # when it has no `current_taxon`.
+        def now_taxon
+          @_now_taxon ||= taxon.now_taxon
+        end
+
+        # Column 13. Empty when the taxon has no `current_taxon`. Otherwise the now taxon's name
+        # in the form AntWeb builds its taxon names from: the subfamily of the now taxon (not of the
+        # exported taxon), a space, then the full name. Family and subfamily: the name alone.
         def current_valid_name
-          # Follow the chain to the terminal (valid) taxon: `current_taxon` alone can be a synonym,
-          # e.g. for an obsolete combination of a junior synonym.
           return unless taxon.current_taxon
-          current_valid_name_name = taxon.now_taxon.name.name
-          "#{taxonomic_attributes[:subfamily]} #{current_valid_name_name}"
+
+          valid_taxon = now_taxon
+          return valid_taxon.name.name if valid_taxon.is_a?(Family) || valid_taxon.is_a?(Subfamily)
+
+          "#{subfamily_of(valid_taxon)} #{valid_taxon.name.name}"
+        end
+
+        # Ranks that `TaxonomicAttributes` does not export (subtribe, infrasubspecies) fall back to the
+        # exported taxon's own subfamily.
+        def subfamily_of valid_taxon
+          return taxonomic_attributes[:subfamily] if valid_taxon.is_a?(Subtribe) || valid_taxon.is_a?(Infrasubspecies)
+          Exporters::Antweb::TaxonomicAttributes[valid_taxon][:subfamily]
         end
 
         def original_combination
@@ -80,11 +117,15 @@ module Exporters
           end
         end
 
+        # Column 23. The parent of the now taxon (the same taxon as column 13; the taxon itself when
+        # it has no `current_taxon`), with subgenera skipped, followed to its own now taxon.
+        # `nil` (exported as Formicidae) at the top.
         def current_valid_parent
-          return unless taxon.parent
+          parent = now_taxon.parent
+          return unless parent
 
-          parent = taxon.parent.is_a?(Subgenus) ? taxon.parent.parent : taxon.parent
-          parent.current_taxon || parent
+          parent = parent.parent if parent.is_a?(Subgenus)
+          parent&.now_taxon
         end
     end
   end

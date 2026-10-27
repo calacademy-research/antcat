@@ -76,6 +76,27 @@ describe UsersController do
       expect(user.locked).to eq user_params[:locked]
     end
 
+    context 'when linking the user to an author' do
+      let(:author) { create :author }
+
+      it 'sets the author' do
+        put(:update, params: { id: user.id, user: { author_id: author.id } })
+
+        expect(user.reload.author).to eq author
+      end
+
+      context 'when the author is already linked to another user' do
+        before { create :user, author: author }
+
+        it 'does not link a second user' do
+          put(:update, params: { id: user.id, user: { author_id: author.id } })
+
+          expect(response).to have_http_status :unprocessable_content
+          expect(user.reload.author_id).to eq nil
+        end
+      end
+    end
+
     context 'when a new password is included' do
       let!(:user_params) do
         {
