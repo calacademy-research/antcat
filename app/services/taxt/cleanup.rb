@@ -12,7 +12,7 @@ module Taxt
 
       taxt.
         gsub(/ +:/, ': ').     # Spaces before colons.
-        gsub(/:(?!= )/, ': '). # Colons not followed by a space.
+        gsub(%r{:(?!//)}, ': '). # Colons (not in "http://"); doubled spaces are squished below.
         gsub(/(; +;)+/, ';').  # Double semicolons separated by spacing.
         gsub(/(: +:)+/, ':').  # Double colons separated by spacing.
         gsub(/(::)+/, ':').    # Double colons.

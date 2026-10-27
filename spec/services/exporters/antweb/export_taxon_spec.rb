@@ -36,6 +36,23 @@ describe Exporters::Antweb::ExportTaxon do
   end
 
   describe "#call" do
+    describe "values containing tabs or newlines" do
+      let(:protonym) { create :protonym, :species_group }
+      let(:taxon) { create :species, protonym: protonym }
+
+      before do
+        protonym.update_columns(locality: "Costa\tRica\nSouth") # Skip attribute stripping.
+      end
+
+      it "keeps one row with the right number of columns" do
+        row = described_class[taxon]
+
+        expect(row).not_to include "\n"
+        expect(row.split("\t", -1).size).to eq described_class::HEADER.split("\t").size
+        expect(row.split("\t", -1)[20]).to eq "Costa RicaSouth"
+      end
+    end
+
     describe "exporting a subspecies`" do
       let(:taxon) { create :subspecies }
 

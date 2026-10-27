@@ -22,17 +22,24 @@ module Exporters
 
         attr_reader :filename, :progress
 
+        # Written to a temporary file that replaces the export only when complete, so a failed run
+        # leaves the previous export in place instead of a partial file.
         def export
-          File.open(filename, 'w') do |file|
+          temp_filename = "#{filename}.tmp"
+
+          File.open(temp_filename, 'w') do |file|
             file.puts Exporters::Antweb::ExportTaxon::HEADER
 
             taxon_ids.each_slice(1000) do |chunk|
               taxon_chunk(chunk).each do |taxon|
                 progress.increment
-                file.puts taxon_row(taxon)
+                row = taxon_row(taxon)
+                file.puts row if row # `nil` when an exception was ignored.
               end
             end
           end
+
+          File.rename(temp_filename, filename)
         end
 
         def taxon_ids

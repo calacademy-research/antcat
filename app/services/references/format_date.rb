@@ -17,6 +17,8 @@ module References
 
       def format_date
         match = reference_date.match(/(.*?)(\d{4,8})(.*)/)
+        return reference_date unless match
+
         prefix = match[1]
         digits = match[2]
         suffix = match[3]

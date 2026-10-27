@@ -35,13 +35,14 @@ module Exporters
       attr_private_initialize :taxon
 
       def call
-        remove_newlines antweb_array.join("\t")
+        antweb_array.map { |value| clean_value(value) }.join("\t")
       end
 
       private
 
-        def remove_newlines string
-          string.delete("\n").delete("\r")
+        # Newlines would end the row and tabs would shift the columns after them, so tabs become spaces.
+        def clean_value value
+          value.to_s.delete("\n").delete("\r").tr("\t", ' ')
         end
 
         def antweb_array

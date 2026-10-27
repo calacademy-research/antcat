@@ -32,6 +32,20 @@ describe Exporters::Endnote::Formatter do
       end
     end
 
+    context 'when a value contains newlines' do
+      let(:reference) do
+        create :article_reference, author_string: 'MacKay, W.', title: 'A title', series_volume_issue: '1(2)'
+      end
+
+      before do
+        reference.update_columns(title: "A\r\ntitle")
+      end
+
+      it "keeps the value on one line" do
+        expect(described_class[[reference]]).to include "%T A title\n"
+      end
+    end
+
     context 'when reference has public or taxonomic notes' do
       let(:reference) do
         create :article_reference, :with_notes, author_string: 'MacKay, W.',

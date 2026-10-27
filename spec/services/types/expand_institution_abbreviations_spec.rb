@@ -10,6 +10,17 @@ describe Types::ExpandInstitutionAbbreviations do
       end
     end
 
+    context 'when an institution has a blank abbreviation (legacy data)' do
+      before do
+        create :institution, :casc
+        create(:institution).update_columns(abbreviation: '')
+      end
+
+      it 'ignores it' do
+        expect(described_class['CASC x']).to eq "<abbr title='California Academy of Sciences'>CASC</abbr> x"
+      end
+    end
+
     context 'when there are institutions in the database' do
       before do
         create :institution, :casc

@@ -47,7 +47,7 @@ module Exporters
         end
 
         def taxonomic_attributes
-          @_taxonomic_attributes = Exporters::Antweb::TaxonomicAttributes[taxon]
+          @_taxonomic_attributes ||= Exporters::Antweb::TaxonomicAttributes[taxon]
         end
 
         def authorship_html_string
