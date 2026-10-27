@@ -143,5 +143,18 @@ describe Genus do
       expect(genus_with_tribe.reload.species.first.subfamily).to eq new_subfamily
       expect(genus_with_tribe.reload.subspecies.first.subfamily).to eq new_subfamily
     end
+
+    it "assigns the subfamily of its infrasubspecies" do
+      species = create :species, genus: genus_with_tribe, subfamily: subfamily
+      subspecies = create :subspecies, species: species, genus: genus_with_tribe, subfamily: subfamily
+      infrasubspecies = create :infrasubspecies, subspecies: subspecies, species: species, genus: genus_with_tribe,
+        subfamily: subfamily
+
+      new_subfamily = create :subfamily
+      genus_with_tribe.update_parent new_subfamily
+      genus_with_tribe.save!
+
+      expect(infrasubspecies.reload.subfamily).to eq new_subfamily
+    end
   end
 end

@@ -10,7 +10,7 @@ class RestartAndReindexSolr
     return if Rails.env.test?
 
     $stdout.puts "Executing '#{SCRIPT_PATH}' in a new process..."
-    Process.fork { system(restart_and_reindex_command) }
+    Process.detach(Process.fork { system(restart_and_reindex_command) }) # Detached, so no zombie process is left.
   end
 
   private

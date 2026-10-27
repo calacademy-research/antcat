@@ -4,6 +4,10 @@ require 'rails_helper'
 
 describe Taxa::BuildTaxon do
   describe "#call" do
+    it "refuses classes that are not ranks" do
+      expect { described_class['User', create(:subfamily)] }.to raise_error(ArgumentError)
+    end
+
     context 'when `rank_to_create` is `Rank::GENUS`' do
       let(:parent) { create :subfamily }
 

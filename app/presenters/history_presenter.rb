@@ -24,7 +24,10 @@ class HistoryPresenter
         [
           item.definition.group_order,
           (item.reference_year || -1),
-          (Integer(item.reference_date, exception: false) || -1).to_s
+          (Integer(item.reference_date, exception: false) || -1).to_s,
+          # Ruby's sort is not stable, so ties are broken by the order editors set.
+          item.position || 0,
+          item.id
         ]
       end.group_by { |item| item.group_key(template_name) }.values
     end

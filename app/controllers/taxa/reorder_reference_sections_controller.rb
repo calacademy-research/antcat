@@ -28,7 +28,7 @@ module Taxa
 
       def new_order
         # The form sends `new_order=""` when there is nothing to reorder; `expect` would reject that with 400.
-        params[:new_order].split(',') # rubocop:disable Rails/StrongParametersExpect
+        params[:new_order].to_s.split(',') # rubocop:disable Rails/StrongParametersExpect
       end
   end
 end

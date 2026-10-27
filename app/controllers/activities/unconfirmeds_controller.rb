@@ -5,7 +5,7 @@ module Activities
     before_action :authenticate_user!
 
     def show
-      @activities = Activity.unconfirmed.includes(:user).paginate(page: params[:per_page])
+      @activities = Activity.unconfirmed.includes(:user).paginate(page: params[:page])
     end
   end
 end

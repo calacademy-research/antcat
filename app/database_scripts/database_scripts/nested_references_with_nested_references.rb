@@ -14,8 +14,8 @@ module DatabaseScripts
           second_nesting_reference = nesting_reference.try :nesting_reference
 
           [
-            reference_link(reference) + ' ' + reference.pagination,
-            reference_link(nesting_reference) + ' ' + reference.pagination,
+            reference_link(reference) + ' ' + reference.pagination.to_s,
+            reference_link(nesting_reference) + ' ' + nesting_reference.pagination.to_s,
             reference_link_with_type(second_nesting_reference)
           ]
         end

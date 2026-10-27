@@ -61,7 +61,8 @@ module Exporters
         delegate :author_names, :year, :title, :public_notes, :taxonomic_notes, to: :reference
 
         def add tag, value
-          string << "%#{tag} #{value.to_s.gsub(/[|*]/, '')}" if value.present?
+          # A newline would start a new field.
+          string << "%#{tag} #{value.to_s.gsub(/[|*]/, '').gsub(/[\r\n]+/, ' ')}" if value.present?
         end
 
         def add_author_names

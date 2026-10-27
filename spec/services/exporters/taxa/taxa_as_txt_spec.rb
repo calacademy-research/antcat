@@ -41,5 +41,14 @@ describe Exporters::Taxa::TaxaAsTxt do
         expect(described_class[[taxon]]).to include "#{taxon.name_cache} valid USA. Nearctic.\n"
       end
     end
+
+    context "when the locality contains characters that are special in HTML" do
+      let!(:protonym) { create :protonym, :species_group, locality: "Côte d'Ivoire & <Ghana>" }
+      let(:taxon) { create :species, protonym: protonym }
+
+      it "exports them as plain text" do
+        expect(described_class[[taxon]]).to include "Côte d'Ivoire & <Ghana>."
+      end
+    end
   end
 end

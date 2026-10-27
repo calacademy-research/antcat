@@ -12,6 +12,18 @@ describe HistoryPresenter, :relational_hi do
       specify { expect(presenter.grouped_items).to eq [] }
     end
 
+    describe 'ordering items with equal sort keys' do
+      let!(:items) { Array.new(12) { create :history_item, :taxt, protonym: protonym } }
+
+      before do
+        items.shuffle.each_with_index { |item, index| item.update_columns(position: index + 1) }
+      end
+
+      it 'follows the positions set by editors' do
+        expect(presenter.grouped_items.flat_map(&:items)).to eq items.sort_by { |item| item.reload.position }
+      end
+    end
+
     describe 'grouping items into taxts' do
       context 'with `TAXT` items' do
         let!(:item_1) { create :history_item, :taxt, protonym: protonym }

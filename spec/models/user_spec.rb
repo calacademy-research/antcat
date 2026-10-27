@@ -58,6 +58,17 @@ describe User do
           to change { user.remaining_edits_for_unconfirmed_user }.by(-1)
       end
     end
+
+    context 'when user has more activities than the limit' do
+      before do
+        create_list :activity, User::UNCONFIRMED_USER_EDIT_LIMIT_COUNT + 1, user: user
+      end
+
+      it 'returns zero instead of raising' do
+        expect(user.remaining_edits_for_unconfirmed_user).to eq 0
+        expect(user.unconfirmed_user_over_edit_limit?).to be true
+      end
+    end
   end
 
   describe "#mark_all_notifications_as_seen" do

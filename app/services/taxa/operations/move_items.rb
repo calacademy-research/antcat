@@ -23,11 +23,13 @@ module Taxa
         end
 
         def move_reference_sections!
-          reference_sections.each do |reference_section|
-            reference_section.reload # Reload to make sure positions are updated correctly.
+          ReferenceSection.transaction do
+            reference_sections.each do |reference_section|
+              reference_section.reload # Reload to make sure positions are updated correctly.
 
-            reference_section.taxon = to_taxon
-            reference_section.save!
+              reference_section.taxon = to_taxon
+              reference_section.save!
+            end
           end
         end
     end

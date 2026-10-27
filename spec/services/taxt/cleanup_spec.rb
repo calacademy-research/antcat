@@ -32,6 +32,10 @@ describe Taxt::Cleanup do
       expect(described_class[':pizza']).to eq ': pizza'
     end
 
+    it 'leaves URLs alone' do
+      expect(described_class['see http://antcat.org']).to eq 'see http://antcat.org'
+    end
+
     it 'can beat the final boss and his minions' do
       expect(described_class['  Pi; ;   zz : : a pescatore :1:']).to eq 'Pi; zz: a pescatore: 1:'
     end

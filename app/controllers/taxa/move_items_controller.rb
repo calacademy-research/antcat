@@ -23,6 +23,11 @@ module Taxa
       @taxon = find_taxon
       @to_taxon = find_to_taxon
 
+      if @to_taxon.nil? || @to_taxon == @taxon
+        redirect_to({ action: :new }, alert: "Target must be specified, and must not be the same taxon.")
+        return
+      end
+
       if reference_sections.empty?
         flash.now[:alert] = "At least one item must be selected."
         render :show, status: :unprocessable_content
@@ -53,7 +58,8 @@ module Taxa
       end
 
       def reference_sections
-        @_reference_sections ||= ReferenceSection.where(id: params[:reference_section_ids]).order(:position)
+        # Only sections of this taxon, so a stale or edited form cannot move another taxon's sections.
+        @_reference_sections ||= @taxon.reference_sections.where(id: params[:reference_section_ids]).reorder(:position)
       end
   end
 end

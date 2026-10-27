@@ -40,5 +40,20 @@ describe Taxa::MoveItemsController do
       activity = Activity.last
       expect(activity.parameters).to eq(to_taxon_id: to_taxon.id)
     end
+
+    it "does not move reference sections that belong to another taxon" do
+      other_section = create :reference_section, taxon: to_taxon
+
+      post :create, params: { taxon_id: taxon.id, to_taxon_id: create(:any_taxon).id, reference_section_ids: [other_section.id] }
+
+      expect(response).to have_http_status :unprocessable_content
+      expect(other_section.reload.taxon).to eq to_taxon
+    end
+
+    it "redirects when the target is missing" do
+      post :create, params: { taxon_id: taxon.id, reference_section_ids: [reference_section.id] }
+      expect(response).to redirect_to new_taxon_move_items_path(taxon)
+      expect(reference_section.reload.taxon).to eq taxon
+    end
   end
 end

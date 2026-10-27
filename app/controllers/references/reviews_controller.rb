@@ -36,11 +36,14 @@ module References
       count = Reference.unreviewed.count
 
       # Manually update since Workflow does not allow approving unreviewed references of any state.
-      Reference.unreviewed.find_each do |reference|
-        reference.update!(review_state: Reference::REVIEW_STATE_REVIEWED)
-      end
+      # All or nothing: one failed update rolls back the others.
+      Reference.transaction do
+        Reference.unreviewed.find_each do |reference|
+          reference.update!(review_state: Reference::REVIEW_STATE_REVIEWED)
+        end
 
-      Activity.create_without_trackable Activity::APPROVE_ALL_REFERENCES, current_user, parameters: { count: count }
+        Activity.create_without_trackable Activity::APPROVE_ALL_REFERENCES, current_user, parameters: { count: count }
+      end
       redirect_to references_latest_changes_path, notice: "Approved all references."
     end
 

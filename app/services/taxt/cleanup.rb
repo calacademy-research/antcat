@@ -11,12 +11,12 @@ module Taxt
       raise unless taxt.is_a?(String)
 
       taxt.
-        gsub(/ +:/, ': ').     # Spaces before colons.
-        gsub(/:(?!= )/, ': '). # Colons not followed by a space.
-        gsub(/(; +;)+/, ';').  # Double semicolons separated by spacing.
-        gsub(/(: +:)+/, ':').  # Double colons separated by spacing.
-        gsub(/(::)+/, ':').    # Double colons.
-        squish                 # Consecutive, and leading/trailing spaces.
+        gsub(/ +:/, ': ').       # Spaces before colons.
+        gsub(%r{:(?!//)}, ': '). # Colons (not in "http://"); doubled spaces are squished below.
+        gsub(/(; +;)+/, ';').    # Double semicolons separated by spacing.
+        gsub(/(: +:)+/, ':').    # Double colons separated by spacing.
+        gsub(/(::)+/, ':').      # Double colons.
+        squish                   # Consecutive, and leading/trailing spaces.
     end
   end
 end

@@ -125,6 +125,11 @@ describe ReferenceDocument do
       expect(document.file_file_name).to eq 'fisher___bolton_menage.pdf'
     end
 
+    it 'handles extensions with regular expression characters' do
+      expect { described_class.new(file: uploaded_pdf('x.(')) }.not_to raise_error
+      expect(described_class.new(file: uploaded_pdf('a.b*')).file_file_name).to eq 'a.b'
+    end
+
     it 'uses the basename of a `File`' do
       document = described_class.new(file: File.new(Rails.root.join('spec/fixtures/test_pdf.pdf')))
       expect(document.file_file_name).to eq 'test_pdf.pdf'

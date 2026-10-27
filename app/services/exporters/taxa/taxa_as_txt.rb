@@ -18,7 +18,8 @@ module Exporters
         def format_taxon taxon
           type_localities = format_type_localities(taxon)
 
-          string = format_name(taxon).html_safe
+          # A copy, so `<<` does not change the taxon's `name_cache`. Plain text: nothing is HTML-escaped.
+          string = format_name(taxon).to_s.dup
           string << ' '
           string << format_status(taxon)
           string << (' ' + type_localities) if type_localities.present?
@@ -59,14 +60,14 @@ module Exporters
         def format_protonym taxon
           reference = taxon.authorship_reference
 
-          string = ''.html_safe
-          string << reference.decorate.plain_text
+          string = +''
+          string << reference.decorate.plain_text.to_s
           string << "   #{reference.id}"
           string
         end
 
         def format_type_localities taxon
-          string = ''.html_safe
+          string = +''
           if taxon.protonym.locality
             string << AddPeriodIfNecessary[taxon.protonym.locality]
           end

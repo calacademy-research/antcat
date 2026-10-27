@@ -94,6 +94,8 @@ module Catalog
           relation.distinct.joins(:protonym_history_items)
         when CANNOT_HAVE_HISTORY_ITEMS
           relation.left_joins(:protonym_history_items).where(history_items: { protonym_id: nil })
+        else
+          relation
         end
       end
 

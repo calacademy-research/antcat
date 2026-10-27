@@ -1,13 +1,13 @@
 converted the species
 
 -if activity.parameters[:original_species_id]
-  =ActivityDecorator.link_taxon_if_exists activity.parameters[:original_species_id], deleted_label: activity.parameters[:name_was].html_safe
+  =ActivityDecorator.link_taxon_if_exists activity.parameters[:original_species_id], deleted_label: activity_name_html(activity.parameters[:name_was])
 -else
-  =activity.parameters[:name_was].html_safe
+  =activity_name_html(activity.parameters[:name_was])
 
 to a subspecies (now
 =succeed ")" do
-  =activity.link_taxon_trackable_if_exists deleted_label: activity.parameters[:name].html_safe
+  =activity.link_taxon_trackable_if_exists deleted_label: activity_name_html(activity.parameters[:name])
 
 -unless activity.parameters[:original_species_id]
   %span.bold-warning please see note

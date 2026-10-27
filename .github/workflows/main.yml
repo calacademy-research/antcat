@@ -7,6 +7,9 @@ on:
     tags-ignore:
       - '**'
 
+permissions:
+  contents: read
+
 env:
   RAILS_ENV: test
   NODE_ENV: test

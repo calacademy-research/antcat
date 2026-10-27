@@ -20,12 +20,20 @@ module DatabaseScripts
         t.rows do |reference|
           [
             reference_link(reference),
-            link_to(reference.document.url, reference.document.url),
+            document_url_cell(reference.document.url),
             ('Yes' if reference.citations.any?)
           ]
         end
       end
     end
+
+    private
+
+      # Legacy URLs that are not plain http(s) links are shown as text, never as links.
+      def document_url_cell url
+        return url unless ReferenceDocument.http_url?(url)
+        link_to(url, url)
+      end
   end
 end
 

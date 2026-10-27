@@ -183,6 +183,23 @@ describe ActivityDecorator do
       end
     end
 
+    context 'when a deleted taxon is shown by the name stored in the activity' do
+      let(:activity) do
+        create(:species).create_activity(Activity::DESTROY, user).tap do |activity|
+          activity.update_columns(
+            trackable_id: 99_999_999,
+            parameters: { rank: 'species', name: '<img src=x onerror=alert(1)><i>Lasius niger</i>' }
+          )
+        end
+      end
+
+      it 'keeps the italics and removes other markup' do
+        html = decorated.did_something
+        expect(html).to include '<i>Lasius niger</i>'
+        expect(html).not_to include '<img'
+      end
+    end
+
     context 'when there is no trackable' do
       context 'when event is `Activity::EXECUTE_SCRIPT`' do
         let(:activity) { Activity.execute_script_activity(user, "an edit summary") }

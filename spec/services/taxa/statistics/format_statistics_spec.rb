@@ -32,6 +32,16 @@ describe Taxa::Statistics::FormatStatistics do
       end
     end
 
+    context "when called twice with the same statistics" do
+      let(:statistics) { { extant: { genera: { 'valid' => 2, 'synonym' => 1 } } } }
+
+      it "does not change the statistics" do
+        first = described_class[statistics]
+        expect(described_class[statistics]).to eq first
+        expect(statistics).to eq(extant: { genera: { 'valid' => 2, 'synonym' => 1 } })
+      end
+    end
+
     context "when statistics contains only fossil statistics" do
       specify do
         expect(described_class[fossil: { subfamilies: { 'valid' => 2 } }]).to eq '<p>Fossil: 2 valid subfamilies</p>'

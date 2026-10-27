@@ -19,6 +19,8 @@ module Markdowns
 
       def strip_wrapping_p rendered
         return rendered unless (match = rendered.match(P_HTML_ELEMENT_REGEX))
+        return rendered if match[1].include?('<p>') # Several paragraphs: stripping would unbalance the tags.
+
         match[1]
       end
   end

@@ -63,7 +63,7 @@ class ReferenceDocument < ApplicationRecord
 
     def transliterated_file_name file_name
       extension = File.extname(file_name).gsub(/^\.+/, '')
-      filename = file_name.gsub(/\.#{extension}$/, '')
+      filename = file_name.delete_suffix(".#{extension}")
       "#{ActiveSupport::Inflector.parameterize(filename)}.#{ActiveSupport::Inflector.parameterize(extension)}"
     end
 

@@ -54,5 +54,15 @@ describe Taxa::SetSubgeneraController do
         removed the subgenus from #{taxon_link(taxon)} (subgenus was #{taxon_link(subgenus)})
       HTML
     end
+
+    context "when the species has no subgenus" do
+      let!(:species_without_subgenus) { create :species, genus: genus }
+
+      it "redirects without an error" do
+        delete :destroy, params: { taxon_id: species_without_subgenus.id }
+        expect(response).to redirect_to taxon_set_subgenus_path(species_without_subgenus)
+        expect(flash[:alert]).to eq "Species has no subgenus."
+      end
+    end
   end
 end

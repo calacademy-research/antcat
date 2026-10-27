@@ -27,6 +27,11 @@ describe Catalog::AdvancedSearchQuery do
         expect(described_class[history_items: described_class::CANNOT_HAVE_HISTORY_ITEMS, dummy: 'see NOTE']).
           to eq [without_history]
       end
+
+      it "ignores unknown values" do
+        expect(described_class[history_items: 'pizza', dummy: 'see NOTE']).
+          to match_array [with_history, without_history]
+      end
     end
 
     describe "searching by year" do

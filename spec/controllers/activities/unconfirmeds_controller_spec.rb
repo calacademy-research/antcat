@@ -11,5 +11,10 @@ describe Activities::UnconfirmedsController do
 
   describe "GET show", as: :user do
     specify { expect(get(:show)).to render_template :show }
+
+    it "paginates with the `page` param" do
+      get :show, params: { page: 2 }
+      expect(assigns(:activities).current_page).to eq 2
+    end
   end
 end

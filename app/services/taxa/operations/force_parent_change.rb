@@ -16,7 +16,10 @@ module Taxa
         def update_parent_and_save
           taxon.transaction do
             taxon.update_parent new_parent
-            taxon.save
+            # A failed save also rolls back what `update_parent` already saved (such as the new name).
+            raise ActiveRecord::Rollback unless taxon.save
+
+            true
           end
         end
     end

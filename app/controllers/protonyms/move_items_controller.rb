@@ -23,6 +23,11 @@ module Protonyms
       @protonym = find_protonym
       @to_protonym = find_to_protonym
 
+      if @to_protonym.nil? || @to_protonym == @protonym
+        redirect_to({ action: :new }, alert: "Target must be specified, and must not be the same protonym.")
+        return
+      end
+
       if history_items.empty?
         flash.now[:alert] = "At least one item must be selected."
         render :show, status: :unprocessable_content
@@ -51,7 +56,8 @@ module Protonyms
       end
 
       def history_items
-        @_history_items ||= HistoryItem.where(id: params[:history_item_ids]).order(:position)
+        # Only items of this protonym, so a stale or edited form cannot move another protonym's items.
+        @_history_items ||= @protonym.history_items.where(id: params[:history_item_ids]).reorder(:position)
       end
   end
 end

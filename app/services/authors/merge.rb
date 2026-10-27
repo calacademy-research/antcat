@@ -10,6 +10,8 @@ module Authors
     end
 
     def call
+      raise ArgumentError, "cannot merge an author into itself" if target_author == author_to_merge
+
       Author.transaction do
         author_to_merge.names.each do |name|
           name.update!(author: target_author)

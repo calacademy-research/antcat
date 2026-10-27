@@ -21,7 +21,7 @@ module Protonyms
       end
 
       def search_query
-        (params[:q] || params[:qq]).lstrip
+        (params[:q] || params[:qq]).to_s.lstrip
       end
 
       def include_terminal_taxon?

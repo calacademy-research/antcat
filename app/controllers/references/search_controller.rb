@@ -26,7 +26,7 @@ module References
         return if params[:reference_q].blank?
 
         id = params.expect(:reference_q).strip
-        return unless id =~ /^\d+$/ && Reference.exists?(id.to_i)
+        return unless id.match?(/\A\d+\z/) && Reference.exists?(id.to_i)
 
         redirect_to reference_path(id)
       end

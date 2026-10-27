@@ -22,5 +22,13 @@ describe Catalog::ToggleViewsController do
           to change { session[:show_invalid] }.to(true)
       end
     end
+
+    context 'when the value is unknown' do
+      specify do
+        put :update, params: { show: 'pizza' }
+        expect(response).to have_http_status :bad_request
+        expect(session[:show_invalid]).to be_nil
+      end
+    end
   end
 end

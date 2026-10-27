@@ -13,6 +13,21 @@ describe Taxa::Operations::ForceParentChange do
         expect { described_class[subspecies, new_parent] }.
           to change { subspecies.reload.species }.from(old_species).to(new_parent)
       end
+
+      context "when the taxon cannot be saved" do
+        let!(:species) { create :species, name_string: 'Atta major' }
+        let!(:new_genus) { create :genus, name_string: 'Eciton' }
+
+        before do
+          allow(species).to receive(:save).and_return(false)
+        end
+
+        it "rolls back the name change too" do
+          expect(described_class[species, new_genus]).to be_nil
+          expect(species.name.reload.name).to eq 'Atta major'
+          expect(Species.find(species.id).genus).not_to eq new_genus
+        end
+      end
     end
 
     context "when there is a name collision" do

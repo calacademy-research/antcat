@@ -33,15 +33,14 @@ module DatabaseScripts
           return bold_warning("status of current_taxon is not allowed for obsolete combinations!")
         end
 
-        description = quick_fix_description(very_obsolete_combination, current_taxon)
-
         url = update_current_taxon_id_quick_and_dirty_fix_path(
           taxon_id: very_obsolete_combination.id,
           new_current_taxon_id: current_taxon.id
         )
         link = link_to "Set as CT for VOC!", url, method: :post, remote: true, class: 'btn-default'
 
-        description + link
+        # The description only holds escaped links, so it can be marked safe; the quick-fix link then keeps `data-method`.
+        quick_fix_description(very_obsolete_combination, current_taxon).html_safe + link
       end
 
       def quick_fix_description very_obsolete_combination, current_taxon

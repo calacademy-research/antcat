@@ -42,7 +42,7 @@ module Types
       end
 
       def institution_names_by_abbreviation
-        @_institution_names_by_abbreviation ||= Institution.pluck(:abbreviation, :name).to_h
+        @_institution_names_by_abbreviation ||= Institution.where.not(abbreviation: [nil, '']).pluck(:abbreviation, :name).to_h
       end
 
       # `Regexp.union` escapes each abbreviation, so they are matched literally.

@@ -30,6 +30,21 @@ describe My::RecentlyUsedReferencesController do
         get :show
         expect(json_response).to eq Autocomplete::LinkableReferencesSerializer[[reference]].map(&:stringify_keys)
       end
+
+      context 'when a stored reference has been deleted' do
+        let!(:deleted_reference) { create :any_reference }
+
+        before do
+          post :create, params: { id: deleted_reference.id }
+          deleted_reference.destroy!
+        end
+
+        it 'returns the remaining references' do
+          get :show
+          expect(response).to have_http_status :ok
+          expect(json_response).to eq Autocomplete::LinkableReferencesSerializer[[reference]].map(&:stringify_keys)
+        end
+      end
     end
   end
 
@@ -39,7 +54,18 @@ describe My::RecentlyUsedReferencesController do
     it "stores the reference in the user's session" do
       expect { post :create, params: { id: reference.id } }.
         to change { session[:recently_used_reference_ids] }.
-        from(nil).to([reference.id.to_s])
+        from(nil).to([reference.id])
+    end
+
+    it 'ignores a missing or unknown ID' do
+      post :create, params: { id: reference.id }
+      post :create
+      post :create, params: { id: 'abc' }
+      post :create, params: { id: reference.id + 1000 }
+
+      expect(session[:recently_used_reference_ids]).to eq [reference.id]
+      get :show
+      expect(response).to have_http_status :ok
     end
 
     describe 'adding multiple references' do
@@ -50,10 +76,10 @@ describe My::RecentlyUsedReferencesController do
         post :create, params: { id: reference.id }
         post :create, params: { id: second.id }
         post :create, params: { id: third.id }
-        expect(session[:recently_used_reference_ids]).to eq [third.id.to_s, second.id.to_s, reference.id.to_s]
+        expect(session[:recently_used_reference_ids]).to eq [third.id, second.id, reference.id]
 
         post :create, params: { id: second.id }
-        expect(session[:recently_used_reference_ids]).to eq [second.id.to_s, third.id.to_s, reference.id.to_s]
+        expect(session[:recently_used_reference_ids]).to eq [second.id, third.id, reference.id]
       end
     end
   end

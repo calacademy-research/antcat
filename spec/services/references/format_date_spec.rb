@@ -18,6 +18,10 @@ describe References::FormatDate do
       specify { expect(described_class['2010']).to eq '2010' }
     end
 
+    context 'when date has no run of four digits' do
+      specify { expect(described_class['abcd']).to eq 'abcd' }
+    end
+
     context 'when date is blank' do
       specify { expect(described_class['']).to eq '' }
       specify { expect(described_class[nil]).to eq nil }
