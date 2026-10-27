@@ -120,17 +120,25 @@ class Taxon < ApplicationRecord
   end
 
   # TODO: Experimental.
+  # Stops at the last taxon before a repeat if `current_taxon`s form a cycle (bad data).
   def now_taxon
-    return self unless current_taxon
-    current_taxon.now_taxon
+    taxon = self
+    seen_ids = Set[id]
+
+    while (next_taxon = taxon.current_taxon) && seen_ids.add?(next_taxon.id)
+      taxon = next_taxon
+    end
+
+    taxon
   end
 
   # TODO: Experimental. We may want to stop doing this. Used for expanding type taxa (see `TypeNameDecorator`).
   def most_recent_before_now_taxon
     taxa = []
+    seen_ids = Set[id]
     iteratred_current_taxon = current_taxon
 
-    while iteratred_current_taxon
+    while iteratred_current_taxon && seen_ids.add?(iteratred_current_taxon.id)
       taxa << iteratred_current_taxon
       iteratred_current_taxon = iteratred_current_taxon.current_taxon
     end

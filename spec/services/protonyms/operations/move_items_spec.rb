@@ -11,6 +11,18 @@ describe Protonyms::Operations::MoveItems do
       let!(:history_item_2) { create :history_item, :taxt, protonym: from_protonym }
       let!(:history_item_3) { create :history_item, :taxt, protonym: from_protonym }
 
+      context 'when one of the items cannot be saved' do
+        before do
+          history_item_2.update_columns(taxt: '') # Invalid: a taxt item needs a taxt.
+        end
+
+        it 'moves none of them' do
+          expect { described_class[to_protonym, history_items: [history_item_1, history_item_2]] }.
+            to raise_error(ActiveRecord::RecordInvalid)
+          expect(history_item_1.reload.protonym).to eq from_protonym
+        end
+      end
+
       context 'when moving all history items belonging to a taxon' do
         let(:history_items) { [history_item_1, history_item_2, history_item_3] }
 

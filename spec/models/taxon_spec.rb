@@ -170,6 +170,33 @@ describe Taxon do
     end
   end
 
+  describe "#now_taxon and #most_recent_before_now_taxon" do
+    context "when `current_taxon`s form a chain" do
+      let!(:valid_taxon) { create :genus }
+      let!(:middle_taxon) { create :genus, :synonym, current_taxon: valid_taxon }
+      let!(:taxon) { create :genus, :synonym, current_taxon: middle_taxon }
+
+      specify do
+        expect(taxon.now_taxon).to eq valid_taxon
+        expect(taxon.most_recent_before_now_taxon).to eq middle_taxon
+      end
+    end
+
+    context "when `current_taxon`s form a cycle (bad data)" do
+      let!(:taxon) { create :genus }
+      let!(:other_taxon) { create :genus, :synonym, current_taxon: taxon }
+
+      before do
+        taxon.update_columns(current_taxon_id: other_taxon.id, status: Status::SYNONYM)
+      end
+
+      it "stops instead of looping forever" do
+        expect(taxon.reload.now_taxon).to eq other_taxon
+        expect(taxon.most_recent_before_now_taxon).to eq taxon
+      end
+    end
+  end
+
   describe "#author_citation" do
     let!(:reference) { create :any_reference, author_string: 'Bolton', year: 2005 }
     let(:taxon) { create :species, protonym: create(:protonym, :species_group, authorship_reference: reference) }
