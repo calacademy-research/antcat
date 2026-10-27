@@ -52,5 +52,6 @@ class Genus < GenusGroupTaxon
       species.each { |s| s.update!(subfamily: subfamily) }
       subspecies.each { |s| s.update!(subfamily: subfamily) }
       subgenera.each { |s| s.update!(subfamily: subfamily) }
+      Infrasubspecies.where(genus_id: id).find_each { |s| s.update!(subfamily: subfamily) }
     end
 end
