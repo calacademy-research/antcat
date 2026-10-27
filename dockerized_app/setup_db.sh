@@ -2,17 +2,18 @@
 
 # Variables
 BASE_DIR=$(dirname "$0")
-SQL_DATA_DIR="${BASE_DIR}/sql-data"
+# MySQL loads the files in this directory on first start (empty data directory); see docker-compose.yml.
+SQL_DATA_DIR="${BASE_DIR}/mysql84-init"
 DB_DUMP=$1
 DB_NAME="antcat"
-
-rm -rf $SQL_DATA_DIR
 
 # Ensure the argument is provided
 if [ -z "$DB_DUMP" ]; then
   echo "Usage: $0 <path-to-database-dump>"
   exit 1
 fi
+
+rm -rf "$SQL_DATA_DIR"
 
 # Create sql-data directory if it doesn't exist
 mkdir -p "$SQL_DATA_DIR"
