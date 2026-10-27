@@ -24,7 +24,7 @@ module DatabaseScripts
             taxon_link(taxon),
             taxon.author_citation,
             taxon.status,
-            taxon_link(taxon),
+            taxon_link(current_taxon),
             current_taxon.author_citation,
             current_taxon.status
           ]

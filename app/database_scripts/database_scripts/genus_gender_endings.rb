@@ -91,7 +91,7 @@ module DatabaseScripts
       all_endings_as_plaintext <<
         section_table(first_pass_feminine, :feminine, first_pass_endings[:feminine], "Feminine endings (first pass)") <<
         section_table(first_pass_masculine, :masculine, first_pass_endings[:masculine], "Masculine endings (first pass)") <<
-        section_table(first_pass_neuter, :neuter, second_pass_endings[:neuter], "Neuter endings (first pass)") <<
+        section_table(first_pass_neuter, :neuter, first_pass_endings[:neuter], "Neuter endings (first pass)") <<
         section_table(second_pass_feminine, :feminine, second_pass_endings[:feminine], "Feminine endings (second pass)") <<
         section_table(second_pass_masculine, :masculine, second_pass_endings[:masculine], "Masculine endings (second pass)") <<
         section_table(second_pass_neuter, :neuter, second_pass_endings[:neuter], "Neuter endings (second pass)") <<
