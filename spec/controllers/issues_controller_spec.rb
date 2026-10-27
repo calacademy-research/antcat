@@ -42,8 +42,8 @@ describe IssuesController do
     it "points the delete link at the issue" do
       get :show, params: { id: issue.id }
 
-      page = Nokogiri::HTML5(response.body)
-      expect(page.css('a.btn-danger[data-method="delete"]').map { |link| link['href'] }).to eq ["/issues/#{issue.id}"]
+      links = response.parsed_body.css('a.btn-danger[data-method="delete"]')
+      expect(links.pluck('href')).to eq ["/issues/#{issue.id}"]
     end
   end
 

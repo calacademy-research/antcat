@@ -1,10 +1,10 @@
 elevated the subspecies
 
 -if activity.parameters[:original_subspecies_id]
-  =ActivityDecorator.link_taxon_if_exists activity.parameters[:original_subspecies_id], deleted_label: sanitize(activity.parameters[:name_was])
+  =ActivityDecorator.link_taxon_if_exists activity.parameters[:original_subspecies_id], deleted_label: activity_name_html(activity.parameters[:name_was])
 -else
-  =sanitize(activity.parameters[:name_was])
+  =activity_name_html(activity.parameters[:name_was])
 
 to the rank of species (now
 =succeed ")" do
-  =activity.link_taxon_trackable_if_exists deleted_label: sanitize(activity.parameters[:name])
+  =activity.link_taxon_trackable_if_exists deleted_label: activity_name_html(activity.parameters[:name])

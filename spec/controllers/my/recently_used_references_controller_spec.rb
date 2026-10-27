@@ -36,7 +36,7 @@ describe My::RecentlyUsedReferencesController do
 
         before do
           post :create, params: { id: deleted_reference.id }
-          deleted_reference.delete
+          deleted_reference.destroy!
         end
 
         it 'returns the remaining references' do

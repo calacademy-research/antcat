@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 module ActivitiesHelper
+  # Names stored in activity parameters may contain italics; any other markup is removed.
+  def activity_name_html name
+    sanitize(name, tags: %w[i], attributes: [])
+  end
+
   def activities_link_for_trackable trackable
     activities_link trackable.class.name, trackable.id
   end
