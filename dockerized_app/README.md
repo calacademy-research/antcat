@@ -34,8 +34,22 @@ shows `600 root:root`, `600 root:root`, `700 root:root`. A change to the app's m
 needs the container recreated (`docker compose up -d app`, then `docker compose exec web nginx -s reload`);
 `docker restart antcat-app` keeps the old mounts.
 
-Deploy a code change: `cd /var/www/antcat-2 && git pull && docker restart antcat-app`
-(startup runs bundle install, yarn, asset precompile and Solr; allow a few minutes).
+Deploy a code change (antcat-staging first, then antcat-prod):
+
+```
+cd /var/www/antcat-2 && git rev-parse HEAD > /root/antcat-rollback-commit.txt && git pull -q \
+  && bash dockerized_app/migrate_and_restart.sh
+```
+
+`migrate_and_restart.sh` checks `db:migrate:status`. With no pending migration it only restarts the app
+(the old `docker restart antcat-app`). With pending migrations it first dumps the database to
+`/root/antcat-db-backups/antcat-before-migrate-<date>.sql.gz`, checks the dump (stops if it is empty or
+incomplete), runs `bin/rails db:migrate` in `antcat-app` as the app user, then restarts. If the new code
+needs new gems, it restarts the app first and waits for it before asking the migration status. Startup
+runs bundle install, yarn and the asset build; allow a few minutes. Rollback: see the comment at the top of
+the script (code: `git checkout -q $(cat /root/antcat-rollback-commit.txt) && docker restart antcat-app`;
+database: restore the dump, only when a migration cannot be reversed with `db:rollback`). Old dumps are not
+deleted automatically: `ls -lh /root/antcat-db-backups`.
 Never edit tracked files on the server; commit to GitHub instead.
 
 The app runs as the user `antcat` (uid 1000, gid 1001), not root. `startup.sh` starts as root only to

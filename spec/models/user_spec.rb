@@ -31,6 +31,23 @@ describe User do
 
       it { is_expected.to validate_uniqueness_of(:name).ignoring_case_sensitivity }
     end
+
+    describe "author link" do
+      let(:author) { create :author }
+
+      it "allows one account per author" do
+        create :user, author: author
+        other_user = build :user, author: author
+
+        expect(other_user).not_to be_valid
+        expect(other_user.errors[:author]).to include "is already linked to another account"
+      end
+
+      it "allows any number of accounts without an author" do
+        create :user, author: nil
+        expect(build(:user, author: nil)).to be_valid
+      end
+    end
   end
 
   describe "#valid_for_authentication?" do

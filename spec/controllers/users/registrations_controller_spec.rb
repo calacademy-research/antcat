@@ -90,6 +90,18 @@ describe Users::RegistrationsController do
       end
     end
 
+    describe 'linking the account to an author' do
+      let(:author) { create :author }
+
+      it 'ignores `author_id` (only superadmins set it, on the users page)' do
+        put(:update, params: { id: current_user.id, user: { name: 'New name', author_id: author.id } })
+
+        current_user.reload
+        expect(current_user.name).to eq 'New name'
+        expect(current_user.author_id).to eq nil
+      end
+    end
+
     describe 'changing email' do
       let!(:original_email) { current_user.email }
 

@@ -36,17 +36,28 @@ jobs:
           ruby-version: 4.0.7
           bundler-cache: true
 
+      # Report only for now (decided 2026-10-27). TODO: refresh the baseline in config/brakeman.ignore
+      # (it reads that file already; review the current warnings, then `bundle exec brakeman -I` to
+      # mark the accepted ones, or `bundle exec brakeman -o tmp/brakeman.json` and copy the reviewed
+      # fingerprints), then remove `|| true` so new warnings fail the build.
       - name: Brakeman (report)
         run: |
           bundle exec brakeman --no-pager --quiet --format text --output /tmp/brakeman.txt || true
           { echo '### Brakeman'; echo '```'; cat /tmp/brakeman.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
           cat /tmp/brakeman.txt
 
-      - name: bundler-audit (report)
+      # Fails the build when a gem in Gemfile.lock has a known advisory. To accept one for a while
+      # (no fixed version yet), add its id to `ignore:` in .bundler-audit.yml with a dated reason.
+      - name: bundler-audit (fails on a known vulnerable gem)
         run: |
-          bundle exec bundle-audit check --update > /tmp/audit.txt 2>&1 || true
+          status=0
+          bundle exec bundle-audit check --update > /tmp/audit.txt 2>&1 || status=$?
           { echo '### bundler-audit'; echo '```'; cat /tmp/audit.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
           cat /tmp/audit.txt
+          if [ "$status" -ne 0 ]; then
+            echo "::error title=bundler-audit::A gem has a known vulnerability (see the step output). Update the gem, or add the advisory to .bundler-audit.yml with a reason."
+            exit "$status"
+          fi
   rubocop:
     name: RuboCop
     runs-on: ubuntu-24.04

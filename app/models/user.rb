@@ -43,7 +43,8 @@ class User < ApplicationRecord
   has_many :created_paper_trail_versions, -> { base_scope }, class_name: "PaperTrail::Version",
     foreign_key: :whodunnit, dependent: false
 
-  validates :author, uniqueness: true, allow_nil: true
+  # One account per author at most (also a unique index, `ux_users__author_id`). Set by superadmins only.
+  validates :author, uniqueness: { message: "is already linked to another account" }, allow_nil: true
   validates :name, presence: true, uniqueness: { case_sensitive: true }, format: { with: /\A[^<>]*\z/ },
     length: { maximum: NAME_MAX_LENGTH }
   validates :name, format: { without: NAME_URL_REGEX, message: "cannot contain a web address" }

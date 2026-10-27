@@ -1,0 +1,5 @@
+---
+# Advisories accepted for now, read by `bundle-audit check` in CI (.github/workflows/main.yml).
+# Each entry: the advisory id and a comment with the date, the reason and when to look again, e.g.
+#   - GHSA-xxxx-xxxx-xxxx # 2026-10-27: no fixed version yet; check monthly
+ignore: []
