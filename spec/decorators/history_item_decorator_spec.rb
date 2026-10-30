@@ -22,4 +22,12 @@ describe HistoryItemDecorator, :relational_hi do
       end
     end
   end
+
+  describe "#params_for_add_another_of_same_type" do
+    let(:history_item) { build_stubbed :history_item, :junior_synonym_of, position: nil }
+
+    it "does not fail without a position" do
+      expect(decorated.params_for_add_another_of_same_type).not_to have_key(:position)
+    end
+  end
 end

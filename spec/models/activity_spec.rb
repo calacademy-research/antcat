@@ -110,4 +110,17 @@ describe Activity do
       end
     end
   end
+
+  describe "edit summary length" do
+    it "is invalid over the maximum length" do
+      activity = build :activity, edit_summary: 'a' * (Activity::EDIT_SUMMARY_MAX_LENGTH + 1)
+      expect(activity.valid?).to eq false
+    end
+
+    it "keeps the activity of a longer summary, shortened" do
+      activity = described_class.create_for_trackable(nil, Activity::EXECUTE_SCRIPT, user: create(:user),
+        edit_summary: 'a' * 300)
+      expect(activity.edit_summary.length).to eq Activity::EDIT_SUMMARY_MAX_LENGTH
+    end
+  end
 end

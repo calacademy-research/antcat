@@ -71,4 +71,25 @@ describe Taxa::CollectReferences do
       end
     end
   end
+
+  describe "hidden notes and reference section titles" do
+    let(:taxon) { create :genus }
+    let(:hidden_reference) { create :any_reference }
+    let(:title_reference) { create :any_reference }
+
+    before do
+      create :reference_section, taxon: taxon,
+        title_taxt: Taxt.ref(title_reference.id),
+        references_taxt: "Visible text {hiddennote see #{Taxt.ref(hidden_reference.id)}}"
+    end
+
+    it "lists a reference cited only in a hidden note to signed-in users only" do
+      Current.set(signed_in: false) { expect(described_class[taxon]).not_to include hidden_reference }
+      Current.set(signed_in: true) { expect(described_class[taxon]).to include hidden_reference }
+    end
+
+    it "lists references in section titles" do
+      expect(described_class[taxon]).to include title_reference
+    end
+  end
 end

@@ -17,7 +17,7 @@ module Autocomplete
           left_joins(:references).
           where('journals.name LIKE ?', search_expression).
           group('journals.id').
-          order(Arel.sql('COUNT(*) DESC'))
+          order(Arel.sql('COUNT(references.id) DESC')) # `COUNT(*)` counted a journal without references as 1.
       end
 
       def search_expression

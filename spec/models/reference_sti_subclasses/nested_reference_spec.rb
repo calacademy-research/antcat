@@ -47,4 +47,17 @@ describe NestedReference do
       expect(reference.full_pagination).to eq "#{reference.pagination} (#{reference.nesting_reference.pagination})"
     end
   end
+
+  describe "a loop in existing data" do
+    it "ends the check with an error" do
+      b = create :nested_reference
+      c = create :nested_reference, nesting_reference: b
+      b.update_columns(nesting_reference_id: c.id)
+
+      new_reference = build :nested_reference, nesting_reference: b
+      expect(new_reference.valid?).to eq false
+      expect(new_reference.errors.where(:nesting_reference_id).map(&:message)).
+        to include("is part of a loop of nested references")
+    end
+  end
 end

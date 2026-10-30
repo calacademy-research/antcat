@@ -13,9 +13,15 @@ class NestedReference < Reference
 
     def validate_nested_reference_doesnt_point_to_itself
       comparison = self
+      visited = Set.new
       while comparison&.nesting_reference_id
         if comparison.nesting_reference_id == id
           errors.add :nesting_reference_id, "can't point to itself"
+          break
+        end
+        # A loop in the existing data that does not pass through this reference would never end.
+        unless visited.add?(comparison.nesting_reference_id)
+          errors.add :nesting_reference_id, "is part of a loop of nested references"
           break
         end
         comparison = Reference.find_by(id: comparison.nesting_reference_id)

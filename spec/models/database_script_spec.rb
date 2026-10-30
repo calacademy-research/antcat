@@ -146,4 +146,15 @@ describe DatabaseScript do
       end
     end
   end
+
+  describe "lookups and instances" do
+    it "does not find classes in the namespace that are not database scripts" do
+      expect { described_class.new_from_basename("render") }.to raise_error DatabaseScript::ScriptNotFound
+      expect(described_class.safe_new_from_basename("empty_status")).to be_a DatabaseScripts::UnfoundDatabaseScript
+    end
+
+    it "builds new instances on every call (results are not kept between requests)" do
+      expect(described_class.all.first).not_to equal described_class.all.first
+    end
+  end
 end

@@ -22,6 +22,10 @@ module Exporters
 
         attr_reader :filename, :progress
 
+        def skipped_taxon_ids
+          @_skipped_taxon_ids ||= []
+        end
+
         # Written to a temporary file that replaces the export only when complete, so a failed run
         # leaves the previous export in place instead of a partial file.
         def export
@@ -40,13 +44,21 @@ module Exporters
           end
 
           File.rename(temp_filename, filename)
+          report_skipped
+        end
+
+        # With `AW_EXPORT_IGNORE_EXCEPTIONS`, taxa that could not be exported are left out of the file: say how many.
+        def report_skipped
+          return if skipped_taxon_ids.empty?
+          warn "Left out #{skipped_taxon_ids.size} taxa that could not be exported: #{skipped_taxon_ids.first(50).join(', ')}"
         end
 
         def taxon_ids
           @_taxon_ids ||= begin
             ids = Taxon.where(type: EXPORTABLE_TYPES).order(:status).pluck(:id).reverse
 
-            if (limit = ENV['AW_EXPORT_LIMIT']&.to_i)
+            # A blank `AW_EXPORT_LIMIT` is no limit (it gave 0, a file with only the header).
+            if (limit = ENV['AW_EXPORT_LIMIT'].presence&.to_i)
               ids[0...limit]
             else
               ids
@@ -68,6 +80,7 @@ module Exporters
             raise
           end
 
+          skipped_taxon_ids << taxon.id
           warn "========================#{taxon.id}===================="
           warn "An error of type #{e} happened, message is #{e.message}"
           warn e.backtrace

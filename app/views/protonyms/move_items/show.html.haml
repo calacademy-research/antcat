@@ -1,7 +1,7 @@
 -page_title "Move items"
 -breadcrumb :move_protonym_items_to, @protonym, @to_protonym
 
-=form_with path: protonym_move_items_path, data: { controller: 'checkbox-select-all' } do |f|
+=form_with url: protonym_move_items_path, data: { controller: 'checkbox-select-all' } do |f|
   =hidden_field_tag :to_protonym_id, @to_protonym.id
   .row
     .medium-6

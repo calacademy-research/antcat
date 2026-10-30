@@ -27,15 +27,19 @@ module Taxa
         Taxt.extract_ids_from_reference_tags(taxt_content).sort
       end
 
+      # Every taxt shown on the catalog page, reference sections' titles and subtitles included. For visitors
+      # without the hidden notes, so that a reference cited only in a hidden note is not listed.
       def taxt_content
-        string = []
-        string << taxon.history_items_for_taxon.pluck(:taxt).join
-        string << taxon.reference_sections.pluck(:references_taxt).join
-        string << (taxon.protonym.primary_type_information_taxt || '')
-        string << (taxon.protonym.secondary_type_information_taxt || '')
-        string << (taxon.protonym.type_notes_taxt || '')
-        string << (taxon.protonym.notes_taxt || '')
-        string.join
+        taxts = []
+        taxts.concat taxon.history_items_for_taxon.pluck(:taxt)
+        taxts.concat taxon.reference_sections.pluck(:title_taxt, :subtitle_taxt, :references_taxt).flatten
+        taxts << taxon.protonym.primary_type_information_taxt
+        taxts << taxon.protonym.secondary_type_information_taxt
+        taxts << taxon.protonym.type_notes_taxt
+        taxts << taxon.protonym.notes_taxt
+        taxts.compact!
+        taxts.map! { Taxt.remove_hidden_notes(it) } unless Current.signed_in
+        taxts.join(' ')
       end
   end
 end

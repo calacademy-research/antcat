@@ -21,6 +21,7 @@ class Species < SpeciesGroupTaxon
       self.genus = parent_taxon.genus
     when Genus
       self.genus = parent_taxon
+      self.subgenus = nil # A subgenus of the old genus would remain the parent (`#parent`).
     else
       raise Taxa::InvalidParent.new(self, parent_taxon)
     end
@@ -33,7 +34,9 @@ class Species < SpeciesGroupTaxon
     raise Taxa::TaxonHasSubspecies, 'Species has subspecies' if subspecies.any?
     raise Taxa::TaxonHasInfrasubspecies, 'Species has infrasubspecies' if infrasubspecies.any?
 
-    change_name!(new_parent.name) unless new_parent == parent
+    # The name changes only with the genus (a subgenus has no genus epithet; its genus gives it).
+    new_genus = new_parent.is_a?(Subgenus) ? new_parent.genus : new_parent
+    change_name!(new_genus.name) unless new_genus == genus
     self.parent = new_parent
   end
 

@@ -43,4 +43,13 @@ describe References::Key do
       expect(key.key_with_year).to eq 'Bolton, 1885'
     end
   end
+
+  describe "#authors_for_key" do
+    let(:reference) { create :any_reference, author_string: 'Bolton, B.', year: 1970 }
+
+    it "escapes markup in an older author name" do
+      reference.author_names.first.update_columns(name: 'O<b>x, A.')
+      expect(described_class.new(reference.reload).key_with_year).to eq 'O&lt;b&gt;x, 1970'
+    end
+  end
 end
