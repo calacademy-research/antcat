@@ -19,6 +19,15 @@ describe ProtonymsController do
       specify { expect(put(:update, params: { id: 1 })).to have_http_status :forbidden }
       specify { expect(delete(:destroy, params: { id: 1 })).to have_http_status :forbidden }
     end
+
+    context "when signed in as a helper editor", as: :helper do
+      let!(:protonym) { create :protonym }
+
+      it "cannot delete a protonym, even one that nothing links to" do
+        expect { delete(:destroy, params: { id: protonym.id }) }.not_to change { Protonym.count }
+        expect(response).to have_http_status :forbidden
+      end
+    end
   end
 
   describe "GET new", as: :helper do
@@ -229,7 +238,7 @@ describe ProtonymsController do
     end
   end
 
-  describe "DELETE destroy", as: :helper do
+  describe "DELETE destroy", as: :editor do
     let!(:protonym) { create :protonym }
 
     it 'deletes the protonym' do

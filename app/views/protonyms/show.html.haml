@@ -7,7 +7,7 @@
   -if current_user
     =link_to "History", protonym_history_path(@protonym), class: "btn-default"
     =link_to "What Links Here", protonym_what_links_here_path(@protonym), class: "btn-default"
-  -if user_is_at_least_helper?
+  -if user_is_editor?
     -if !@protonym.taxa.exists?
       =link_to "Delete", protonym_path(@protonym), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-danger"
 
