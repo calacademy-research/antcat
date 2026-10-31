@@ -14,7 +14,8 @@ module Taxa
       private
 
         def update_parent_and_save
-          taxon.transaction do
+          # `requires_new`: the rollback below also undoes this change when the caller has a transaction open.
+          taxon.transaction(requires_new: true) do
             taxon.update_parent new_parent
             # A failed save also rolls back what `update_parent` already saved (such as the new name).
             raise ActiveRecord::Rollback unless taxon.save

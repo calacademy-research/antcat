@@ -29,7 +29,7 @@ module Exporters
         end
 
         def format_name taxon
-          taxon.name_cache
+          taxon&.name_cache || '[missing]'
         end
 
         def format_status taxon

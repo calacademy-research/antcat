@@ -272,4 +272,12 @@ describe ActivityDecorator do
       expect(decorated.event_to_verb).to eq "BAKE_A_CAKE"
     end
   end
+
+  describe "#locked_or_deleted_user_registration?" do
+    let(:activity) { build_stubbed :activity, trackable_type: "User", trackable_id: 999_999_999 }
+
+    it "is false when the user row no longer exists" do
+      expect(decorated.locked_or_deleted_user_registration?).to eq false
+    end
+  end
 end

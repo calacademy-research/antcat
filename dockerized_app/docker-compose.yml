@@ -12,6 +12,12 @@ services:
     environment:
       - MYSQL_ROOT_HOST=%
       - MYSQL_ROOT_PASSWORD=${ANTCAT_DB_PASSWORD:?set ANTCAT_DB_PASSWORD in dockerized_app/.env}
+      # Fresh setup only: on its first start with an empty data directory, MySQL creates the database `antcat`
+      # and the app's account (the same .env values the app uses) with all rights on that database, before it
+      # loads mysql84-init. With an existing data directory (production) MySQL ignores these three.
+      - MYSQL_DATABASE=antcat
+      - MYSQL_USER=${ANTCAT_APP_DB_USER:?set ANTCAT_APP_DB_USER in dockerized_app/.env}
+      - MYSQL_PASSWORD=${ANTCAT_APP_DB_PASSWORD:?set ANTCAT_APP_DB_PASSWORD in dockerized_app/.env}
     expose:
       - "3306"
     container_name: antcat-db

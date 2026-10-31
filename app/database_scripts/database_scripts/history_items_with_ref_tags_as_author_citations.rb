@@ -49,7 +49,7 @@ module DatabaseScripts
       def check_usage taxt
         matches = true
 
-        ids = taxt.scan(/\{#{Taxt::TAX_TAG} (?<tax_id>[0-9]+\}) \{#{Taxt::REF_TAG} (?<ref_id>[0-9]+)\}/o)
+        ids = taxt.scan(/\{#{Taxt::TAX_TAG} (?<tax_id>[0-9]+)\} \{#{Taxt::REF_TAG} (?<ref_id>[0-9]+)\}/o)
 
         string = +''
         ids.each do |(tax_id, ref_id)|

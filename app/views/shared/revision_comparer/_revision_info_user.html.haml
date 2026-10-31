@@ -4,7 +4,8 @@
   -originator = revision.try(:paper_trail_originator)
 -else
   -originator = revision.try(:paper_trail).try(:originator)
--if originator
-  =User.find(originator).decorate.user_page_link
+-user = User.find_by(id: originator) if originator
+-if user
+  =user.decorate.user_page_link
 -else
   [system/unknown]

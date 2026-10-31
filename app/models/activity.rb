@@ -46,6 +46,7 @@ class Activity < ApplicationRecord
   belongs_to :user, optional: true # NOTE: Only optional for a few events.
 
   validates :event, inclusion: { in: EVENTS }
+  validates :edit_summary, length: { maximum: EDIT_SUMMARY_MAX_LENGTH }
   validates :user, presence: true, unless: -> { trackable_type.in?(OPTIONAL_USER_TRACKABLE_TYPES) }
 
   scope :filter_where, ->(filter_params) do
@@ -71,7 +72,8 @@ class Activity < ApplicationRecord
         trackable: trackable,
         event: event,
         user: user,
-        edit_summary: edit_summary,
+        # The form field has a maxlength, but a longer summary (or a prefixed one) must not lose the activity.
+        edit_summary: edit_summary&.truncate(EDIT_SUMMARY_MAX_LENGTH),
         parameters: parameters
       )
     end

@@ -1,15 +1,29 @@
 #!/bin/bash
+# Stops at the first failed step (a truncated .gz must not become a half-restored database).
+set -euo pipefail
 
 # Variables
 BASE_DIR=$(dirname "$0")
 # MySQL loads the files in this directory on first start (empty data directory); see docker-compose.yml.
 SQL_DATA_DIR="${BASE_DIR}/mysql84-init"
-DB_DUMP=$1
+DB_DUMP=${1:-}
 DB_NAME="antcat"
 
 # Ensure the argument is provided
 if [ -z "$DB_DUMP" ]; then
   echo "Usage: $0 <path-to-database-dump>"
+  exit 1
+fi
+
+# Check the dump before the old init directory is removed.
+if [ ! -f "$DB_DUMP" ]; then
+  echo "No such file: $DB_DUMP"
+  exit 1
+fi
+if [[ "$DB_DUMP" == *.gz ]]; then
+  gunzip -t "$DB_DUMP" || { echo "The .gz file is damaged or incomplete; nothing was changed."; exit 1; }
+elif [[ "$DB_DUMP" != *.sql ]]; then
+  echo "Unsupported file type. Provide a .sql or .gz file."
   exit 1
 fi
 
