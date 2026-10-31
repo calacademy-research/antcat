@@ -118,8 +118,9 @@ describe Activity do
     end
 
     it "keeps the activity of a longer summary, shortened" do
-      activity = described_class.create_for_trackable(nil, Activity::EXECUTE_SCRIPT, user: create(:user),
-        edit_summary: 'a' * 300)
+      activity = described_class.create_for_trackable(
+        nil, Activity::EXECUTE_SCRIPT, user: create(:user), edit_summary: 'a' * 300
+      )
       expect(activity.edit_summary.length).to eq Activity::EDIT_SUMMARY_MAX_LENGTH
     end
   end

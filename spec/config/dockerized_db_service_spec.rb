@@ -4,7 +4,7 @@ require 'rails_helper'
 
 # A fresh setup (empty MySQL data directory) creates the app's own MySQL account from dockerized_app/.env, the same
 # values the app connects with. The values come from the environment; no password is kept in the repo.
-describe "dockerized_app db service" do
+describe "dockerized_app db service" do # rubocop:disable RSpec/DescribeClass
   let(:compose) { YAML.safe_load_file(Rails.root.join('dockerized_app/docker-compose.yml')) }
   let(:db_environment) { compose['services']['db']['environment'] }
   let(:app_environment) { compose['services']['app']['environment'] }
