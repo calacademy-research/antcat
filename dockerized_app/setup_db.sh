@@ -54,11 +54,16 @@ CREATE DATABASE IF NOT EXISTS $DB_NAME;
 USE $DB_NAME;
 EOF
 
-# Append the original dump content to the init file
-cat "$DUMP_FILE" >> "$INIT_FILE"
+# Append the original dump content to the init file. MySQL has already created the database and the app's account
+# (MYSQL_DATABASE / MYSQL_USER in docker-compose.yml) when it loads this file, so a CREATE DATABASE or CREATE USER in
+# the dump gets IF NOT EXISTS; otherwise the first start stops at that line.
+sed -E '/^CREATE (DATABASE|USER) /{/IF NOT EXISTS/!s/^CREATE (DATABASE|USER) /CREATE \1 IF NOT EXISTS /}' "$DUMP_FILE" >> "$INIT_FILE"
 
 # Remove the original unzipped dump file to avoid duplicate execution
 rm "$DUMP_FILE"
+
+# MySQL settings for a fresh data directory (e.g. root on mysql_native_password); `00-` runs before `1-init.sql`.
+cp "${BASE_DIR}"/mysql84/*.sh "$SQL_DATA_DIR"/
 
 echo "Setup complete. Initialization scripts are in $SQL_DATA_DIR."
 

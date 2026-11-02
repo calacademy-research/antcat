@@ -13,7 +13,7 @@ describe Autocomplete::TaxonSerializer do
           id: taxon.id,
           plaintext_name: taxon.name_cache,
           name_with_fossil: "<i>†</i><i>#{taxon.name_cache}</i>",
-          author_citation: taxon.author_citation,
+          author_citation: taxon.plain_text_author_citation,
           css_classes: CatalogFormatter.taxon_disco_mode_css(taxon),
           url: "/catalog/#{taxon.id}"
         }

@@ -43,6 +43,8 @@ class DatabaseScript
     end
 
     # NOTE: `DatabaseScriptDecorator#empty?` is true for a script that is *not* empty (see its comment).
+    # Runs every regression test, so not memoized across requests (the results would go stale). Only the database
+    # scripts index with `view=non_empty_regression_tests` (helpers and up) calls it, once per request.
     def non_empty_regression_tests
       all.map(&:decorate).select(&:regression_test?).select(&:empty?).map(&:undecorate)
     end

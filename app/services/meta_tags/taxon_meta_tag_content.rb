@@ -26,7 +26,7 @@ module MetaTags
       end
 
       def taxon_with_author_citation
-        "#{taxon.type}: #{taxon.name_cache} #{taxon.author_citation}"
+        "#{taxon.type}: #{taxon.name_cache} #{taxon.plain_text_author_citation}"
       end
 
       def status

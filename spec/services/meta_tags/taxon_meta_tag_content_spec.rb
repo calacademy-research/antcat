@@ -9,7 +9,7 @@ describe MetaTags::TaxonMetaTagContent do
 
       specify do
         expect(described_class[taxon]).
-          to eq "Family: Formicidae. Subfamily: Peligrosinae #{taxon.author_citation}. Status: valid."
+          to eq "Family: Formicidae. Subfamily: Peligrosinae #{taxon.plain_text_author_citation}. Status: valid."
       end
     end
 
@@ -18,7 +18,7 @@ describe MetaTags::TaxonMetaTagContent do
 
       specify do
         expect(described_class[taxon]).
-          to eq "Excluded from Formicidae. Subfamily: Peligrosinae #{taxon.author_citation}. Status: excluded from Formicidae."
+          to eq "Excluded from Formicidae. Subfamily: Peligrosinae #{taxon.plain_text_author_citation}. Status: excluded from Formicidae."
       end
     end
   end

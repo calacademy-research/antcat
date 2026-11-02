@@ -35,5 +35,15 @@ describe Autocomplete::JournalsQuery do
 
       expect(described_class['']).to eq [most_used, rarely_used, never_used]
     end
+
+    it "runs with a journal without references and a journal with several" do
+      never_used = create :journal, name: 'Aa never used'
+      used = create :journal, name: 'Ab used'
+      2.times { create :article_reference, journal: used }
+
+      results = described_class['A']
+      expect(results.to_a).to eq [used, never_used]
+      expect(results.to_sql).to include 'COUNT(`references`.`id`) DESC'
+    end
   end
 end

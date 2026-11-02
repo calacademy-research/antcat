@@ -41,5 +41,30 @@ describe Exporters::Antweb::Exporter do
       expect { described_class[filename] }.to raise_error(StandardError, "boom")
       expect(File.read(filename)).to eq "previous export\n"
     end
+
+    describe "`AW_EXPORT_LIMIT`" do
+      before do
+        create :family
+        create :subfamily
+      end
+
+      def exported_rows limit
+        allow(ENV).to receive(:[]).and_call_original
+        allow(ENV).to receive(:[]).with('AW_EXPORT_LIMIT').and_return(limit)
+        described_class[filename]
+        File.readlines(filename, chomp: true).size - 1
+      end
+
+      it "limits the export to that many taxa" do
+        expect(exported_rows('1')).to eq 1
+      end
+
+      it "exports all taxa when blank or not a number" do
+        all_rows = exported_rows(nil)
+        expect(all_rows).to be > 1
+        expect(exported_rows('')).to eq all_rows
+        expect(exported_rows('all')).to eq all_rows
+      end
+    end
   end
 end

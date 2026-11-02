@@ -33,6 +33,19 @@ describe Exporters::Antweb::TaxonomicAttributes do
         end
       end
 
+      context 'when taxon is a tribe without a subfamily' do
+        let(:taxon) { create :tribe, subfamily: subfamily }
+
+        # As for a genus: AntWeb takes `incertae_sedis` as the subfamily (and leaves tribe rows out of its import).
+        it "exports the subfamily as 'incertae_sedis'" do
+          taxon.update_columns(subfamily_id: nil)
+          expect(described_class[taxon.reload]).to eq(
+            subfamily: described_class::INCERTAE_SEDIS,
+            tribe: taxon.name_cache
+          )
+        end
+      end
+
       context 'when taxon is a genus' do
         context 'when genus has a subfamily and a tribe' do
           let(:taxon) { create :genus, subfamily: subfamily, tribe: tribe }

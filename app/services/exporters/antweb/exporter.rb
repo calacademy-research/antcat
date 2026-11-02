@@ -57,8 +57,8 @@ module Exporters
           @_taxon_ids ||= begin
             ids = Taxon.where(type: EXPORTABLE_TYPES).order(:status).pluck(:id).reverse
 
-            # A blank `AW_EXPORT_LIMIT` is no limit (it gave 0, a file with only the header).
-            if (limit = ENV['AW_EXPORT_LIMIT'].presence&.to_i)
+            # A blank or non-numeric `AW_EXPORT_LIMIT` is no limit (`to_i` gave 0, a file with only the header).
+            if (limit = Integer(ENV['AW_EXPORT_LIMIT'].to_s, 10, exception: false))
               ids[0...limit]
             else
               ids

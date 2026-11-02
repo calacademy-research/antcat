@@ -46,7 +46,8 @@ class Activity < ApplicationRecord
   belongs_to :user, optional: true # NOTE: Only optional for a few events.
 
   validates :event, inclusion: { in: EVENTS }
-  validates :edit_summary, length: { maximum: EDIT_SUMMARY_MAX_LENGTH }
+  # New activities only: an older activity with a longer summary can still be saved.
+  validates :edit_summary, length: { maximum: EDIT_SUMMARY_MAX_LENGTH }, on: :create
   validates :user, presence: true, unless: -> { trackable_type.in?(OPTIONAL_USER_TRACKABLE_TYPES) }
 
   scope :filter_where, ->(filter_params) do

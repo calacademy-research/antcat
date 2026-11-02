@@ -14,7 +14,7 @@ describe Autocomplete::ProtonymSerializer do
           id: protonym.id,
           plaintext_name: 'Lasius var. niger',
           name_with_fossil: "<i>†</i><i>Lasius var. niger</i>",
-          author_citation: protonym.author_citation,
+          author_citation: protonym.plain_text_author_citation,
           css_classes: 'protonym',
           url: "/protonyms/#{protonym.id}"
         }

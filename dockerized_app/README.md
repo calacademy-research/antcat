@@ -50,7 +50,7 @@ In this directory: `docker compose build app`, then `docker compose up -d app` (
 the first start compiles all gems into `vendor/bundle/ruby/<version>`: about 3 minutes on a 4-CPU CI runner, allow 10+ on the droplet), then
 `docker compose exec web nginx -s reload` (nginx caches the old container's IP and returns 502 until reloaded).
 
-Fresh setup (from the original README): `./setup_db.sh <sql file>` (writes `mysql84-init/1-init.sql`, which MySQL loads on its first start with an empty data directory), then `docker compose build` and `docker compose up`.
+Fresh setup (from the original README): `./setup_db.sh <sql file>` (writes `mysql84-init/1-init.sql`, which MySQL loads on its first start with an empty data directory, and copies `mysql84/*.sh` there; a `CREATE DATABASE` or `CREATE USER` in the dump gets `IF NOT EXISTS`), then `docker compose build` and `docker compose up`.
 On that first start MySQL also creates the database `antcat` and the app's account from `.env`
 (`ANTCAT_APP_DB_USER` / `ANTCAT_APP_DB_PASSWORD`, all rights on `antcat` only; `MYSQL_USER` / `MYSQL_PASSWORD`
 of the `db` service), so write `.env` first. An existing data directory is not changed by these settings.

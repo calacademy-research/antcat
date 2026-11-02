@@ -17,7 +17,9 @@ module Autocomplete
           left_joins(:references).
           where('journals.name LIKE ?', search_expression).
           group('journals.id').
-          order(Arel.sql('COUNT(references.id) DESC')) # `COUNT(*)` counted a journal without references as 1.
+          # Number of references, so a journal without references counts 0 (`COUNT(*)` gave 1). Arel quotes the
+          # table name: `references` is a reserved word in MySQL.
+          order(Reference.arel_table[:id].count.desc)
       end
 
       def search_expression

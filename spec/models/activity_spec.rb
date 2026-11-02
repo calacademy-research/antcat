@@ -123,5 +123,13 @@ describe Activity do
       )
       expect(activity.edit_summary.length).to eq Activity::EDIT_SUMMARY_MAX_LENGTH
     end
+
+    it "still saves an older activity with a longer summary" do
+      activity = create :activity
+      activity.update_columns(edit_summary: 'a' * 300)
+
+      expect(activity.reload.valid?).to eq true
+      expect(activity.update(parameters: { name: 'x' })).to eq true
+    end
   end
 end

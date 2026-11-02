@@ -144,6 +144,17 @@ describe Protonym do
     end
   end
 
+  describe "#plain_text_author_citation" do
+    let!(:reference) { create :any_reference, author_string: 'Bolton', year: 2005, year_suffix: 'b' }
+    let!(:protonym) { create :protonym, authorship: create(:citation, reference: reference) }
+
+    it "keeps an older author name as it is" do
+      reference.author_names.first.update_columns(name: 'O&Brien')
+      expect(protonym.reload.plain_text_author_citation).to eq 'O&Brien, 2005'
+      expect(protonym.author_citation).to eq 'O&amp;Brien, 2005'
+    end
+  end
+
   describe "changeable / unchangeable names" do
     context 'when `gender_agreement_type` is `ADJECTIVE`' do
       let(:protonym) { build_stubbed :protonym, :adjective_gender_agreement_type }
