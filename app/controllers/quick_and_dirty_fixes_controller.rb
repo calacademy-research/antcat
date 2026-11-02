@@ -106,7 +106,7 @@ class QuickAndDirtyFixesController < ApplicationController
     edit_summary = params[:edit_summary]
 
     old_taxt = history_item.taxt
-    new_taxt = old_taxt[/^Replacement name for {\w+ [0-9]+}/]
+    new_taxt = old_taxt[/\AReplacement name for {\w+ [0-9]+}/] # At the start of the taxt only (`^` is any line).
 
     if new_taxt.blank?
       notify_error "Could not strip item (blank taxt?)"

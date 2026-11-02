@@ -68,4 +68,33 @@ describe Species do
       end
     end
   end
+
+  describe "moving between a genus and its subgenera" do
+    let(:genus) { create :genus, name_string: 'Camponotus' }
+    let(:subgenus) { create :subgenus, genus: genus, subfamily: genus.subfamily, name_string: 'Camponotus (Myrmentoma)' }
+    let(:species) do
+      create :species, genus: genus, subgenus: subgenus, subfamily: genus.subfamily, name_string: 'Camponotus foo'
+    end
+
+    it "clears the subgenus when the parent becomes a genus" do
+      other_genus = create :genus, name_string: 'Colobopsis'
+
+      species.update_parent other_genus
+      species.save!
+
+      expect(species.reload.subgenus).to eq nil
+      expect(species.parent).to eq other_genus
+      expect(species.name.name).to eq 'Colobopsis foo'
+    end
+
+    it "moves into a subgenus of its genus without renaming" do
+      species_without_subgenus = create :species, genus: genus, subfamily: genus.subfamily, name_string: 'Camponotus bar'
+
+      expect { species_without_subgenus.update_parent subgenus }.not_to raise_error
+      species_without_subgenus.save!
+
+      expect(species_without_subgenus.reload.subgenus).to eq subgenus
+      expect(species_without_subgenus.name.name).to eq 'Camponotus bar'
+    end
+  end
 end

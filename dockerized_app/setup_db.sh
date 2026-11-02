@@ -1,15 +1,29 @@
 #!/bin/bash
+# Stops at the first failed step (a truncated .gz must not become a half-restored database).
+set -euo pipefail
 
 # Variables
 BASE_DIR=$(dirname "$0")
 # MySQL loads the files in this directory on first start (empty data directory); see docker-compose.yml.
 SQL_DATA_DIR="${BASE_DIR}/mysql84-init"
-DB_DUMP=$1
+DB_DUMP=${1:-}
 DB_NAME="antcat"
 
 # Ensure the argument is provided
 if [ -z "$DB_DUMP" ]; then
   echo "Usage: $0 <path-to-database-dump>"
+  exit 1
+fi
+
+# Check the dump before the old init directory is removed.
+if [ ! -f "$DB_DUMP" ]; then
+  echo "No such file: $DB_DUMP"
+  exit 1
+fi
+if [[ "$DB_DUMP" == *.gz ]]; then
+  gunzip -t "$DB_DUMP" || { echo "The .gz file is damaged or incomplete; nothing was changed."; exit 1; }
+elif [[ "$DB_DUMP" != *.sql ]]; then
+  echo "Unsupported file type. Provide a .sql or .gz file."
   exit 1
 fi
 
@@ -40,11 +54,16 @@ CREATE DATABASE IF NOT EXISTS $DB_NAME;
 USE $DB_NAME;
 EOF
 
-# Append the original dump content to the init file
-cat "$DUMP_FILE" >> "$INIT_FILE"
+# Append the original dump content to the init file. MySQL has already created the database and the app's account
+# (MYSQL_DATABASE / MYSQL_USER in docker-compose.yml) when it loads this file, so a CREATE DATABASE or CREATE USER in
+# the dump gets IF NOT EXISTS; otherwise the first start stops at that line.
+sed -E '/^CREATE (DATABASE|USER) /{/IF NOT EXISTS/!s/^CREATE (DATABASE|USER) /CREATE \1 IF NOT EXISTS /}' "$DUMP_FILE" >> "$INIT_FILE"
 
 # Remove the original unzipped dump file to avoid duplicate execution
 rm "$DUMP_FILE"
+
+# MySQL settings for a fresh data directory (e.g. root on mysql_native_password); `00-` runs before `1-init.sql`.
+cp "${BASE_DIR}"/mysql84/*.sh "$SQL_DATA_DIR"/
 
 echo "Setup complete. Initialization scripts are in $SQL_DATA_DIR."
 

@@ -64,6 +64,15 @@ describe HistoryItemsController do
             expect(response).to redirect_to(redirect_back_url)
           end
         end
+
+        context 'with `redirect_back_url` on another site' do
+          let(:redirect_back_url) { 'https://example.com/elsewhere' }
+
+          it 'goes to the protonym and saves the item once' do
+            expect { post :create, params: params }.to change { HistoryItem.count }.by(1)
+            expect(response).to redirect_to(protonym_path(protonym))
+          end
+        end
       end
     end
 
@@ -228,6 +237,15 @@ describe HistoryItemsController do
         specify do
           post :update, params: params
           expect(response).to redirect_to(redirect_back_url)
+        end
+      end
+
+      context 'with `redirect_back_url` on another site' do
+        let(:redirect_back_url) { 'javascript:alert(1)' }
+
+        specify do
+          post :update, params: params
+          expect(response).to redirect_to(history_item_path(history_item))
         end
       end
     end

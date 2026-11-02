@@ -16,7 +16,9 @@ class DatabaseScript
 
   class << self
     def new_from_basename basename
-      raise ScriptNotFound unless (script_class = "DatabaseScripts::#{basename.camelize}".safe_constantize)
+      script_class = "DatabaseScripts::#{basename.camelize}".safe_constantize
+      # Only database scripts: other classes in the namespace (`Render`, `EmptyStatus`, ...) are not found.
+      raise ScriptNotFound unless script_class.is_a?(Class) && script_class < DatabaseScript
       script_class.new
     end
 
@@ -26,8 +28,13 @@ class DatabaseScript
       DatabaseScripts::UnfoundDatabaseScript.new(basename)
     end
 
+    # New instances on every call: an instance keeps its results and statistics, which must not outlive a request.
     def all
-      @_all ||= Dir["#{SCRIPTS_DIR}/*"].map { |path| new_from_basename(File.basename(path, ".rb")) }
+      basenames.map { new_from_basename(it) }
+    end
+
+    def basenames
+      @_basenames ||= Dir["#{SCRIPTS_DIR}/*"].map { |path| File.basename(path, ".rb") }.freeze
     end
 
     def with_tag tag_or_tags
@@ -35,9 +42,11 @@ class DatabaseScript
       all.select { it.tags.intersect?(tags) }
     end
 
+    # NOTE: `DatabaseScriptDecorator#empty?` is true for a script that is *not* empty (see its comment).
+    # Runs every regression test, so not memoized across requests (the results would go stale). Only the database
+    # scripts index with `view=non_empty_regression_tests` (helpers and up) calls it, once per request.
     def non_empty_regression_tests
-      @_non_empty_regression_tests ||=
-        all.map(&:decorate).select(&:regression_test?).select(&:empty?).map(&:undecorate)
+      all.map(&:decorate).select(&:regression_test?).select(&:empty?).map(&:undecorate)
     end
 
     def record_in_results? record

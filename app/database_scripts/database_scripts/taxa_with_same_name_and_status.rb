@@ -30,10 +30,12 @@ module DatabaseScripts
     ]
 
     def results
-      name_and_status = Taxon.joins(:name).group('names.name, status').having('COUNT(*) > 1')
+      # The (name, status) pairs that occur more than once; matched as pairs, not name and status separately.
+      name_and_status = Taxon.joins(:name).group('names.name, taxa.status').having('COUNT(*) > 1').
+        select('names.name, taxa.status')
 
       Taxon.joins(:name).
-        where(names: { name: name_and_status.select(:name) }, status: name_and_status.select(:status)).
+        where("(names.name, taxa.status) IN (#{name_and_status.to_sql})").
         order('names.name').
         includes(protonym: { authorship: :reference })
     end

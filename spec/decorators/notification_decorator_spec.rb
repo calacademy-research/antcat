@@ -33,4 +33,13 @@ describe NotificationDecorator do
       end
     end
   end
+
+  describe "a deleted comment" do
+    let(:notification) { build_stubbed :notification, attached: nil }
+
+    specify do
+      expect(decorated.link_comment("commented")).to eq "[deleted]"
+      expect(decorated.link_commentable).to eq "[deleted]"
+    end
+  end
 end

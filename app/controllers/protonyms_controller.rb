@@ -2,6 +2,7 @@
 
 class ProtonymsController < ApplicationController
   before_action :ensure_user_is_at_least_helper, except: [:index, :show]
+  before_action :ensure_user_is_editor, only: [:destroy]
 
   def index
     @protonyms = Protonym.includes(:name, authorship: :reference).order_by_name.

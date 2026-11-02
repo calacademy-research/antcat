@@ -80,7 +80,7 @@ class Taxon < ApplicationRecord
   searchable do
     string :type
     text :name_cache
-    text(:authors) { authorship_reference.key.authors_for_key }
+    text(:authors) { authorship_reference.key.plain_text_authors_for_key }
     text(:year_as_string) { authorship_reference.year.to_s }
   end
 
@@ -117,6 +117,14 @@ class Taxon < ApplicationRecord
     return citation unless is_a?(SpeciesGroupTaxon) && recombination?
 
     '('.html_safe + citation + ')'
+  end
+
+  # As `author_citation`, without markup (page meta tags, autocomplete JSON shown as text).
+  def plain_text_author_citation
+    citation = authorship_reference.key.plain_text_key_with_year
+    return citation unless is_a?(SpeciesGroupTaxon) && recombination?
+
+    "(#{citation})"
   end
 
   # TODO: Experimental.

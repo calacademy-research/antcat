@@ -72,7 +72,7 @@ class Protonym < ApplicationRecord
 
   searchable do
     text(:name) { name.name }
-    text(:authors) { authorship_reference.key.authors_for_key }
+    text(:authors) { authorship_reference.key.plain_text_authors_for_key }
     text(:year_as_string) { authorship_reference.year.to_s }
   end
 
@@ -83,6 +83,11 @@ class Protonym < ApplicationRecord
 
   def author_citation
     authorship_reference.key_with_year
+  end
+
+  # As `author_citation`, without markup (autocomplete JSON shown as text).
+  def plain_text_author_citation
+    authorship_reference.key.plain_text_key_with_year
   end
 
   def changeable_name?

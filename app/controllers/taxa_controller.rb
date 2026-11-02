@@ -53,11 +53,13 @@ class TaxaController < ApplicationController
       return
     end
 
+    # A taxon without a parent (a family, or a genus without one) goes back to the catalog's start.
+    back = taxon.parent ? catalog_path(taxon.parent) : root_path
     if taxon.destroy
       taxon.create_activity Activity::DESTROY, current_user
-      redirect_to catalog_path(taxon.parent), notice: "Taxon was successfully deleted."
+      redirect_to back, notice: "Taxon was successfully deleted."
     else
-      redirect_to catalog_path(taxon.parent), alert: taxon.errors.full_messages.to_sentence
+      redirect_to back, alert: taxon.errors.full_messages.to_sentence
     end
   end
 

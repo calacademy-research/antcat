@@ -33,7 +33,7 @@ module DatabaseScripts
           original_combination = protonym.original_combination
 
           [
-            protonym.decorate.link_to_protonym + "<br>#{cleaned_name}".html_safe,
+            protonym.decorate.link_to_protonym + "<br>".html_safe + cleaned_name,
             protonym.author_citation,
 
             (original_combination ? taxon_link(original_combination) : 'No original combination'),

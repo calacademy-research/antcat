@@ -95,6 +95,7 @@ class ActivityDecorator < Draper::Decorator
 
   def locked_or_deleted_user_registration?
     return false unless trackable_type == "User"
+    return false unless trackable # A user row that no longer exists ("[deleted user]").
     trackable.locked? || trackable.deleted?
   end
 

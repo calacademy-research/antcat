@@ -19,6 +19,8 @@ export default class extends Controller {
     useHover(this, { element: this.element })
 
     this.url = this.linkTarget.href
+    // Only web pages are previewed (an older stored URL may have another scheme, e.g. `javascript:`).
+    if (!this._isWebUrl(this.url)) return
 
     this.container = this._createContainer(this.url)
     this.iframe = this._createIframe()
@@ -44,6 +46,7 @@ export default class extends Controller {
   }
 
   show() {
+    if (!this.iframe) return
     if (!this.iframe.hasAttribute("src")) {
       this.iframe.src = this.url
     }
@@ -54,7 +57,16 @@ export default class extends Controller {
   }
 
   hide() {
-    this.container.classList.add("hidden")
+    if (this.container) this.container.classList.add("hidden")
+  }
+
+  _isWebUrl(url) {
+    try {
+      const protocol = new URL(url, window.location.href).protocol
+      return protocol === "http:" || protocol === "https:"
+    } catch {
+      return false
+    }
   }
 
   _createContainer(url) {

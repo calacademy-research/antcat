@@ -7,7 +7,12 @@ export default class extends Controller {
     event.preventDefault()
     event.stopPropagation()
 
-    navigator.clipboard.writeText(this.stringToCopyValue)
-    AntCat.notifySuccess(`Copied "${this.stringToCopyValue}" to clipboard`)
+    const copied = this.stringToCopyValue
+    // The notification is HTML: the copied text is shown as text. Success is said only once the copy worked.
+    const shown = document.createElement("span")
+    shown.textContent = copied
+    navigator.clipboard.writeText(copied).
+      then(() => AntCat.notifySuccess(`Copied "${shown.innerHTML}" to clipboard`)).
+      catch(() => AntCat.notifyError("Could not copy to the clipboard"))
   }
 }

@@ -18,6 +18,7 @@ module DatabaseScripts
           ON (
             history_items_protonyms.protonym_id = object_protonyms.id
             AND history_items_protonyms.type = 'JuniorSynonymOf'
+            AND history_items_protonyms.object_protonym_id = history_items.protonym_id
           )
         SQL
     end

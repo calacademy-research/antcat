@@ -223,4 +223,17 @@ describe Taxon do
       end
     end
   end
+
+  describe "#plain_text_author_citation" do
+    let!(:reference) { create :any_reference, author_string: ['Bolton, B.', 'Fisher, B.', 'Ward, P.S.'], year: 2005 }
+    let(:taxon) { create :species, protonym: create(:protonym, :species_group, authorship_reference: reference) }
+
+    it "has no markup, in parentheses for a recombination" do
+      allow(taxon).to receive(:recombination?).and_return(true)
+
+      expect(taxon.plain_text_author_citation).to eq '(Bolton et al., 2005)'
+      expect(taxon.plain_text_author_citation.html_safe?).to eq false
+      expect(taxon.author_citation).to eq '(Bolton <i>et al.</i>, 2005)'
+    end
+  end
 end

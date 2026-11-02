@@ -12,8 +12,9 @@ module ActivitiesHelper
 
   def activities_link trackable_type, trackable_id
     return unless trackable_type
+    return unless (trackable_class = trackable_type.safe_constantize) # A class removed since (e.g. "Task").
 
-    sti_aware_type = trackable_type.constantize.base_class
+    sti_aware_type = trackable_class.base_class
     link_to 'Activities', activities_path(trackable_type: sti_aware_type, trackable_id: trackable_id), class: "btn-default"
   end
 end

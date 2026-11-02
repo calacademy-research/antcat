@@ -18,7 +18,7 @@ class Reference < ApplicationRecord
   SOLR_IGNORE_ATTRIBUTE_CHANGES_OF = CACHE_COLUMNS
 
   delegate :routed_url, to: :document
-  delegate :key_with_suffixed_year, :key_with_year, to: :key
+  delegate :key_with_suffixed_year, :key_with_year, :plain_text_key_with_suffixed_year, to: :key
 
   has_many :reference_author_names, -> { order(:position) }, inverse_of: :reference, dependent: :destroy
   has_many :author_names, -> { order('reference_author_names.position') }, through: :reference_author_names
@@ -67,7 +67,7 @@ class Reference < ApplicationRecord
     text(:editor_notes)
     text(:taxonomic_notes)
     text(:bolton_key)
-    text(:authors_for_key) { key.authors_for_key } # To find "et al".
+    text(:authors_for_key) { key.plain_text_authors_for_key } # To find "et al".
     string(:suffixed_year)
     string(:stated_year)
     string(:doi)

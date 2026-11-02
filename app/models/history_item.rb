@@ -149,6 +149,7 @@ class HistoryItem < ApplicationRecord
     end
 
     def validate_subtype
+      return unless type.in?(TYPES) # An unknown type fails `validates :type` (it has no definition).
       return unless (subtypes = definition.subtypes)
       validates_inclusion_of :subtype, in: subtypes
     end
@@ -159,6 +160,7 @@ class HistoryItem < ApplicationRecord
     end
 
     def validate_optional_reference_and_pages
+      return unless type.in?(TYPES)
       return unless optional_attributes.include?(:reference) || optional_attributes.include?(:pages)
       return if reference_and_pages_both_blank_or_present?
 

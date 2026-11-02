@@ -41,7 +41,7 @@ module Exporters
 
         def tribe_attributes
           {
-            subfamily: subfamily.name.name,
+            subfamily: subfamily&.name&.name || INCERTAE_SEDIS,
             tribe: name.name
           }
         end

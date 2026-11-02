@@ -622,4 +622,14 @@ describe HistoryItem, :relational_hi do
       end
     end
   end
+
+  describe "unknown type" do
+    it "is invalid instead of raising" do
+      history_item = build :history_item, :taxt
+      history_item.type = 'Bogus'
+
+      expect { history_item.valid? }.not_to raise_error
+      expect(history_item.errors[:type]).to be_present
+    end
+  end
 end

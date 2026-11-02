@@ -108,8 +108,11 @@ class HistoryItemsController < ApplicationController
       params.permit(:position, :type, :subtype, :object_protonym_id, :object_taxon_id)
     end
 
+    # Only a page of this site: another host (or a "javascript:" URL) is ignored, so the save is never
+    # followed by an error page (Rails refuses such a redirect after the item was saved).
     def redirect_back_url
-      params[:redirect_back_url].presence
+      url = params[:redirect_back_url].presence
+      url && url_from(url)
     end
 
     def history_item_link history_item

@@ -834,6 +834,36 @@ definitions:
       taxt:
         type: string
         description: Long field with text and notes. Contains references to taxaon and reference ids with format {ref *}:.
+      type:
+        type: string
+        description: History item type. Taxt items keep their content in taxt; the other (relational) types use the fields below.
+      subtype:
+        type: string
+        description: Subtype of some relational types (for example LectotypeDesignation)
+      rank:
+        type: string
+        description: Rank the item applies to, or null for all ranks
+      picked_value:
+        type: string
+        description: Value picked from a fixed list, for types that use one
+      text_value:
+        type: string
+        description: Free text value, for types that use one
+      reference_id:
+        type: integer
+        description: fk to reference
+      pages:
+        type: string
+        description: Pages in the reference
+      object_protonym_id:
+        type: integer
+        description: fk to protonyms, the protonym the item refers to
+      object_taxon_id:
+        type: integer
+        description: fk to taxa, the taxon the item refers to
+      force_author_citation:
+        type: boolean
+        description: Show the author citation of the object even where it would normally be left out
       created_at:
         type: string
         format: date-time

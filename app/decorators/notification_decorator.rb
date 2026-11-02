@@ -3,11 +3,13 @@
 class NotificationDecorator < Draper::Decorator
   def link_comment label
     comment = notification.attached
+    return "[deleted]" unless comment
     comment.decorate.link_comment label
   end
 
   def link_commentable
     comment = notification.attached
+    return "[deleted]" unless comment
     link_item_or_deleted comment.commentable
   end
 
