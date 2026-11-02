@@ -30,7 +30,7 @@ describe "dockerized_app db service" do # rubocop:disable RSpec/DescribeClass
     before do
       FileUtils.cp(Rails.root.join('dockerized_app/setup_db.sh'), dir)
       FileUtils.cp_r(Rails.root.join('dockerized_app/mysql84'), dir)
-      File.write(dump, <<~SQL)
+      File.write(dump, <<~SQL) # rubocop:disable Rails/SquishedSQLHeredocs -- a dump file: its lines must stay lines
         CREATE DATABASE antcat;
         CREATE DATABASE /*!32312 IF NOT EXISTS*/ `antcat`;
         CREATE USER 'app'@'%' IDENTIFIED BY 'x';
