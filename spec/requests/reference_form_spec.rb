@@ -16,8 +16,8 @@ describe "Reference form" do
     it "is blank for a new reference, with the existing suffixes to choose from" do
       get new_reference_path
 
-      options = Nokogiri::HTML(response.body).css('#reference_author_names_suffix option')
-      expect(options.map { it['value'] }).to eq ['', '(ed.)']
+      options = response.parsed_body.css('#reference_author_names_suffix option')
+      expect(options.pluck('value')).to eq ['', '(ed.)']
       expect(options.select { it['selected'] }).to eq []
     end
   end
