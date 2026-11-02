@@ -3,7 +3,7 @@
 module DatabaseScripts
   class ReplacementNameForHistoryItemsWithDuplicatedForeignData < DatabaseScript
     def results
-      HistoryItem.where("taxt REGEXP ?", "^Replacement name for {(taxac|prottac) [0-9]+}.+junior")
+      HistoryItem.where("taxt REGEXP ?", "^Replacement name for \\{(taxac|prottac) [0-9]+\\}.+junior")
     end
 
     def render

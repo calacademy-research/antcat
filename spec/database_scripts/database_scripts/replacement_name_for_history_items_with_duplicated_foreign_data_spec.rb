@@ -10,6 +10,22 @@ describe DatabaseScripts::ReplacementNameForHistoryItemsWithDuplicatedForeignDat
     DatabaseScripts::Render.new(script, {}).call
   end
 
+  context "when the replaced homonym belongs to another protonym with the same homonym item" do
+    let(:replacement) { create :species }
+    let(:replaced) { create :species }
+
+    before do
+      create :history_item, :taxt, protonym: replacement.protonym,
+        taxt: "Replacement name for {taxac #{replaced.id}} [Junior primary homonym of {taxac #{senior.id}}.]"
+      create :history_item, :taxt, protonym: replaced.protonym, taxt: "[Junior primary homonym of {taxac #{senior.id}}.]"
+    end
+
+    it "offers to strip the identical data" do
+      expect(script.results.size).to eq 1
+      expect(rendered).to include 'Yes! Strip identical data!'
+    end
+  end
+
   context "when the tag points to a taxon of the item's own protonym" do
     let(:taxon) { create :species }
 
