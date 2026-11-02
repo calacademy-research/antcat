@@ -26,6 +26,11 @@ describe Markdowns::Render do
         end
       end
 
+      it "escapes code blocks once" do
+        content = "```\na < b && c\n```"
+        expect(described_class[content]).to include "<pre><code>a &lt; b &amp;&amp; c\n</code></pre>"
+      end
+
       it "does not remove <i> tags" do
         content = "<i>italics<i><i><script>xss</script></i>"
         expect(described_class[content]).to eq "<p><i>italics<i><i>xss</i></i></i></p>\n"

@@ -9,6 +9,15 @@ describe JournalsController do
       specify { expect(put(:update, params: { id: 1 })).to have_http_status :forbidden }
       specify { expect(delete(:destroy, params: { id: 1 })).to have_http_status :forbidden }
     end
+
+    context "when signed in as a helper editor", as: :helper do
+      let!(:journal) { create :journal }
+
+      it "cannot delete a journal" do
+        expect { delete(:destroy, params: { id: journal.id }) }.not_to change { Journal.count }
+        expect(response).to have_http_status :forbidden
+      end
+    end
   end
 
   describe "PUT update", as: :helper do
@@ -49,7 +58,7 @@ describe JournalsController do
     end
   end
 
-  describe "DELETE destroy", as: :helper do
+  describe "DELETE destroy", as: :editor do
     let!(:journal) { create :journal }
 
     it 'deletes the journal' do

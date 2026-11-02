@@ -76,12 +76,19 @@ jobs:
       - name: Build JavaScript and CSS (fails on any warning, including Sass deprecations)
         run: |
           log="$RUNNER_TEMP/build-assets.log"
-          ./bin/yarn build --log-level=warning 2> "$log" || true
-          ./bin/yarn build:css 2>> "$log" || true
+          status=0
+          ./bin/yarn build --log-level=warning 2> "$log" || status=1
+          ./bin/yarn build:css 2>> "$log" || status=1
           # Tailwind prints a banner and timing to stderr, so look for actual warnings/errors.
           if grep -qiE "warning|error|deprecat" "$log"; then
             cat "$log"
             grep -m 10 -iE "warning|error" "$log" | sed 's/^/::error title=Asset build::/'
+            exit 1
+          fi
+          # A build that stops without any of those words (killed, out of memory) also fails the step.
+          if [ "$status" -ne 0 ]; then
+            cat "$log"
+            echo "::error title=Asset build::a build command exited with an error"
             exit 1
           fi
 
@@ -232,7 +239,8 @@ jobs:
           cp dockerized_app/database.yml config/database.yml
           cp config/server.yml.example config/server.yml
           cp config/settings/production.secret.yml.example config/settings/production.secret.yml
-          chmod 600 config/settings/production.secret.yml
+          # Group-writable on purpose: startup.sh must still end at 640.
+          chmod 664 config/settings/production.secret.yml
           sudo chown root:root config/settings/production.secret.yml
           # Stand-ins for the server secrets that must not be visible in the app container.
           echo 'ANTCAT_DB_PASSWORD=ci-secret-root' > dockerized_app/.env

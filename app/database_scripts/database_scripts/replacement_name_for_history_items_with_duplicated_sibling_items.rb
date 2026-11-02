@@ -18,7 +18,7 @@ module DatabaseScripts
 
           proper_owner_id = rep_name_for_item.ids_from_taxon_tags.first
           proper_owner = Taxon.find_by(id: proper_owner_id)
-          proper_homonym_of_item = if proper_owner
+          proper_homonym_of_item = if foreign_owner?(rep_name_for_item, proper_owner)
                                      proper_owner.protonym.history_items.find_by("taxt REGEXP '^.?Junior (secondary |primary )?homonym'")
                                    end
 
@@ -39,8 +39,15 @@ module DatabaseScripts
 
     private
 
+      # A tag to a taxon of the item's own protonym (a data error) would find the same "Junior homonym" item twice
+      # and offer to delete the only copy: such rows get no delete link.
+      def foreign_owner? rep_name_for_item, proper_owner
+        proper_owner.present? && proper_owner.protonym_id != rep_name_for_item.protonym_id
+      end
+
       def identical? own_homonym_of_item, proper_homonym_of_item
         return false unless own_homonym_of_item && proper_homonym_of_item
+        return false if own_homonym_of_item.id == proper_homonym_of_item.id
         normalize_taxt(own_homonym_of_item.taxt) == normalize_taxt(proper_homonym_of_item.taxt)
       end
 

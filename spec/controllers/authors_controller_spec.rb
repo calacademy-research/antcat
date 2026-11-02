@@ -7,9 +7,18 @@ describe AuthorsController do
     context "when signed in as a user", as: :user do
       specify { expect(delete(:destroy, params: { id: 1 })).to have_http_status :forbidden }
     end
+
+    context "when signed in as a helper editor", as: :helper do
+      let!(:author) { create :author }
+
+      it "cannot delete an author" do
+        expect { delete(:destroy, params: { id: author.id }) }.not_to change { Author.count }
+        expect(response).to have_http_status :forbidden
+      end
+    end
   end
 
-  describe "DELETE destroy", as: :helper do
+  describe "DELETE destroy", as: :editor do
     let!(:author) { create :author }
 
     it 'deletes the author' do

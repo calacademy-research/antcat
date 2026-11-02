@@ -93,8 +93,9 @@ module Markdowns
 
         # Fenced code blocks without the info string ("```lang") as a `class` attribute, so code blocks
         # cannot be given the site's CSS classes.
+        # The content was sanitized first (`<` became `&lt;`): unescape, then escape once.
         def block_code code, _language
-          %(<pre><code>#{ERB::Util.html_escape(code)}</code></pre>\n)
+          %(<pre><code>#{ERB::Util.html_escape(CGI.unescapeHTML(code))}</code></pre>\n)
         end
 
         def table header, body

@@ -20,7 +20,7 @@ class VerifyRecaptchaV3
     def recaptcha_valid?
       json = JSON.parse(verify_response.body)
       json['success'] == true && json['score'].to_f > Settings.recaptcha.v3.minimum_score && json['action'] == recaptcha_action
-    rescue JSON::ParserError, Net::OpenTimeout, Net::ReadTimeout, SocketError, SystemCallError, OpenSSL::SSL::SSLError
+    rescue JSON::ParserError, Net::OpenTimeout, Net::ReadTimeout, Net::HTTPBadResponse, Net::ProtocolError, EOFError, SocketError, SystemCallError, OpenSSL::SSL::SSLError
       false
     end
 
