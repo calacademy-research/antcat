@@ -44,8 +44,10 @@ module Catalog
 
     private
 
+      # Single values only: an array (`name[]=x`) is left out instead of raising in the query (a 500).
       def advanced_search_params
-        params.slice(*Catalog::AdvancedSearchQuery::PERMITTED_PARAMS)
+        permitted = Catalog::AdvancedSearchQuery::PERMITTED_PARAMS
+        params.slice(*permitted).permit(*permitted)
       end
 
       def per_page

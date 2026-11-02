@@ -4,6 +4,13 @@ require 'rails_helper'
 
 describe Catalog::SearchesController do
   describe "GET show", as: :visitor do
+    context 'when a search field is sent as a list' do
+      it 'leaves the field out instead of failing' do
+        get :show, params: { name: ['Atta'], fossil: 'true' }
+        expect(response).to have_http_status :ok
+      end
+    end
+
     context 'when not searching yet' do
       context 'when just visiting the page' do
         it 'renders the search form' do

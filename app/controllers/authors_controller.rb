@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class AuthorsController < ApplicationController
-  before_action :ensure_user_is_at_least_helper, only: [:destroy]
+  # Deleting is editor-only, as for protonyms, references and history items (an author's names go with it).
+  before_action :ensure_user_is_editor, only: [:destroy]
 
   def index
     @authors = Author.order_by_name.paginate(page: params[:page], per_page: 60).preload(:names)

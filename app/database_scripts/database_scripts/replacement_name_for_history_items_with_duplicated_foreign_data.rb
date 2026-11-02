@@ -3,7 +3,7 @@
 module DatabaseScripts
   class ReplacementNameForHistoryItemsWithDuplicatedForeignData < DatabaseScript
     def results
-      HistoryItem.where("taxt REGEXP ?", "^Replacement name for {(taxac|prottac) [0-9]+}.+junior")
+      HistoryItem.where("taxt REGEXP ?", "^Replacement name for \\{(taxac|prottac) [0-9]+\\}.+junior")
     end
 
     def render
@@ -17,7 +17,8 @@ module DatabaseScripts
 
           proper_owner_id = rep_name_for_item.ids_from_taxon_tags.first
           proper_owner = Taxon.find_by(id: proper_owner_id)
-          proper_homonym_of_item = if proper_owner
+          # Not for a tag to a taxon of the item's own protonym (a data error): nothing foreign to strip.
+          proper_homonym_of_item = if proper_owner && proper_owner.protonym_id != rep_name_for_item.protonym_id
                                      proper_owner.protonym.history_items.find_by("taxt REGEXP '^.?Junior (secondary |primary )?homonym'")
                                    end
           proper_homonym_of_taxt = proper_homonym_of_item ? normalize_taxt(proper_homonym_of_item.taxt) : ''

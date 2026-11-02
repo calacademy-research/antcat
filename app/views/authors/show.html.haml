@@ -2,7 +2,7 @@
 -breadcrumb :author, @author
 
 -content_for :breadcrumbs_right do
-  -if user_is_at_least_helper? && @author.references.empty?
+  -if user_is_editor? && @author.references.empty?
     =link_to "Delete", author_path(@author), method: :delete, data: { confirm: "Are you sure?" }, class: "btn-danger"
   -if user_is_editor?
     =link_to "Merge", new_author_merges_path(@author), class: "btn-default"

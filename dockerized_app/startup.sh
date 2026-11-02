@@ -39,7 +39,7 @@ chown -R "$APP_USER:$APP_USER" $APP_WRITABLE_DIRS
 for secret_file in /app/config/settings/*.secret.yml; do
   [ -f "$secret_file" ] || continue
   chgrp "$APP_USER" "$secret_file"
-  chmod g+r,o-rwx "$secret_file"
+  chmod 640 "$secret_file" # Also removes group write if the file had it.
 done
 
 cd /app

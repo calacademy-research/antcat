@@ -79,5 +79,15 @@ describe VerifyRecaptchaV3 do
 
       specify { expect(service.call).to eq false }
     end
+
+    context 'when the connection to Google ends early' do
+      let(:response_success) { true }
+
+      before do
+        stub_request(:post, url).to_raise(EOFError)
+      end
+
+      specify { expect(service.call).to eq false }
+    end
   end
 end

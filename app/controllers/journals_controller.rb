@@ -2,6 +2,7 @@
 
 class JournalsController < ApplicationController
   before_action :ensure_user_is_at_least_helper, except: [:index, :show]
+  before_action :ensure_user_is_editor, only: [:destroy] # As for protonyms, references and history items.
 
   def index
     @journals = JournalQuery.new.includes_reference_count.with_order(params[:order]).paginate(page: params[:page], per_page: 100)
