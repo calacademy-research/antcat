@@ -182,4 +182,11 @@ describe Reference do
       end
     end
   end
+
+  describe "author_names_suffix" do
+    it "stores a blank suffix (the form's empty choice) as nil, like older references" do
+      reference = create :any_reference, author_names_suffix: ''
+      expect(reference.reload.author_names_suffix).to eq nil
+    end
+  end
 end
