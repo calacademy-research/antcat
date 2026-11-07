@@ -114,6 +114,27 @@ describe HistoryPresenter, :relational_hi do
           it 'groups them by `protonym` (subject protonym)' do
             expect(presenter.grouped_items.map(&:items)).to eq [[item_2, item_1]]
           end
+
+          # Positions are per protonym, so items from different protonyms are not
+          # ordered by position but by type, then chronologically.
+          context 'with items from more than one protonym' do
+            let(:other_protonym) { create :protonym }
+            let!(:other_item) do
+              create :history_item, :junior_synonym_of, :with_1758_reference,
+                protonym: other_protonym, object_protonym: object_protonym
+            end
+
+            before do
+              item_1.update_columns(position: 1)
+              item_2.update_columns(position: 2)
+              other_item.update_columns(position: 1)
+              Reference.where(id: [item_1.reference_id, item_2.reference_id]).update_all(year: 2000)
+            end
+
+            it 'orders the groups chronologically, not by position' do
+              expect(presenter.grouped_items.map(&:items)).to eq [[other_item], [item_1, item_2]]
+            end
+          end
         end
       end
 

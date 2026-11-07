@@ -23,14 +23,28 @@ class HistoryPresenter
     # Editors' order is used for groups, not the type's `group_order`, because most
     # history items are still free text. Sorting structured items by type put them
     # above all free-text items, so converting a line moved it on the page.
+    #
+    # `position` is scoped per protonym, so it only means something when all items
+    # belong to one protonym. Lists that mix protonyms (items shown "as object" on
+    # another taxon's page) keep the type-then-chronological order.
     def grouped_items_array
       items = history_items.left_joins(:reference).
         select('history_items.*, references.year AS reference_year, references.date AS reference_date')
 
       groups = items.group_by { |item| item.group_key(template_name) }.values
 
+      group_sort_key = single_protonym?(items) ? method(:editor_sort_key) : method(:type_sort_key)
+
       groups.map { |group| group.sort_by { |item| chronological_sort_key(item) } }.
-        sort_by { |group| group.map { |item| editor_sort_key(item) }.min }
+        sort_by { |group| group.map(&group_sort_key).min }
+    end
+
+    def single_protonym? items
+      items.map(&:protonym_id).uniq.size <= 1
+    end
+
+    def type_sort_key item
+      [item.definition.group_order, *chronological_sort_key(item)]
     end
 
     def chronological_sort_key item
