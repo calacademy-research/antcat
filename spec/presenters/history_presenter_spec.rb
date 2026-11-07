@@ -216,7 +216,7 @@ describe HistoryPresenter, :relational_hi do
         let!(:item_2) { create :history_item, :homonym_replaced_by, protonym: protonym }
 
         it 'can be sorted when compared with items with non-nil references' do
-          expect(presenter.grouped_items.map(&:items)).to eq [[item_2], [item_1]]
+          expect(presenter.grouped_items.map(&:items)).to eq [[item_1], [item_2]]
         end
       end
 
@@ -275,11 +275,46 @@ describe HistoryPresenter, :relational_hi do
         end
         let!(:item_2) { create :history_item, :form_descriptions, protonym: protonym }
 
-        it 'sort grouped taxts by their sort definitions' do
+        it 'sorts grouped taxts by the positions set by editors, not by type' do
           expect(presenter.grouped_items.map(&:taxt)).to eq [
-            "#{item_2.citation_taxt} (#{item_2.text_value}).",
-            "Senior synonym of #{Taxt.prott(object_protonym.id)}: #{item_1.citation_taxt}."
+            "Senior synonym of #{Taxt.prott(object_protonym.id)}: #{item_1.citation_taxt}.",
+            "#{item_2.citation_taxt} (#{item_2.text_value})."
           ]
+        end
+      end
+
+      context 'with relational items among `TAXT` items' do
+        let(:object_taxon) { create :genus }
+
+        let!(:item_1) { create :history_item, :taxt, taxt: 'pos 1', protonym: protonym }
+        let!(:item_2) { create :history_item, :taxt, taxt: 'pos 2', protonym: protonym }
+        let!(:item_3) do
+          create :history_item, :combination_in, :with_2000_reference,
+            protonym: protonym, object_taxon: object_taxon
+        end
+        let!(:item_4) { create :history_item, :taxt, taxt: 'pos 4', protonym: protonym }
+
+        it 'keeps relational items where editors put them' do
+          expect(presenter.grouped_items.map(&:items)).to eq [[item_1], [item_2], [item_3], [item_4]]
+        end
+      end
+
+      context 'with a group whose items are not next to each other' do
+        let(:object_taxon) { create :genus }
+
+        let!(:item_1) { create :history_item, :taxt, taxt: 'pos 1', protonym: protonym }
+        let!(:item_2) do
+          create :history_item, :combination_in, :with_2000_reference,
+            protonym: protonym, object_taxon: object_taxon
+        end
+        let!(:item_3) { create :history_item, :taxt, taxt: 'pos 3', protonym: protonym }
+        let!(:item_4) do
+          create :history_item, :combination_in, :with_1758_reference,
+            protonym: protonym, object_taxon: object_taxon
+        end
+
+        it 'places the group at its earliest item, with citations in chronological order' do
+          expect(presenter.grouped_items.map(&:items)).to eq [[item_1], [item_4, item_2], [item_3]]
         end
       end
     end
