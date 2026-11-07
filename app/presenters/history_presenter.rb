@@ -43,7 +43,8 @@ class HistoryPresenter
       ]
     end
 
+    # `position` is NOT NULL in the schema; a missing one would sort last rather than first.
     def editor_sort_key item
-      [item.position || 0, item.id]
+      [item.position.nil? ? 1 : 0, item.position || 0, item.id]
     end
 end

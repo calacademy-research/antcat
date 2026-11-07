@@ -211,11 +211,13 @@ describe HistoryPresenter, :relational_hi do
         end
       end
 
+      # No groupable type has an optional reference, so a group never mixes items with
+      # and without one; these two items are separate groups ordered by position.
       context 'when item references are optional (not required)' do
         let!(:item_1) { create :history_item, :homonym_replaced_by, :with_reference, protonym: protonym }
         let!(:item_2) { create :history_item, :homonym_replaced_by, protonym: protonym }
 
-        it 'can be sorted when compared with items with non-nil references' do
+        it 'orders items with and without references by position' do
           expect(presenter.grouped_items.map(&:items)).to eq [[item_1], [item_2]]
         end
       end
@@ -294,8 +296,16 @@ describe HistoryPresenter, :relational_hi do
         end
         let!(:item_4) { create :history_item, :taxt, taxt: 'pos 4', protonym: protonym }
 
+        # Positions differ from creation (id) order, so the spec fails if the code sorts by id.
+        before do
+          item_3.update_columns(position: 1)
+          item_1.update_columns(position: 2)
+          item_4.update_columns(position: 3)
+          item_2.update_columns(position: 4)
+        end
+
         it 'keeps relational items where editors put them' do
-          expect(presenter.grouped_items.map(&:items)).to eq [[item_1], [item_2], [item_3], [item_4]]
+          expect(presenter.grouped_items.map(&:items)).to eq [[item_3], [item_1], [item_4], [item_2]]
         end
       end
 
@@ -315,6 +325,19 @@ describe HistoryPresenter, :relational_hi do
 
         it 'places the group at its earliest item, with citations in chronological order' do
           expect(presenter.grouped_items.map(&:items)).to eq [[item_1], [item_4, item_2], [item_3]]
+        end
+
+        context 'when the group\'s earliest item comes after the other items' do
+          before do
+            item_1.update_columns(position: 4)
+            item_2.update_columns(position: 2)
+            item_3.update_columns(position: 1)
+            item_4.update_columns(position: 3)
+          end
+
+          it 'places the group at its earliest item, not by id' do
+            expect(presenter.grouped_items.map(&:items)).to eq [[item_3], [item_4, item_2], [item_1]]
+          end
         end
       end
     end
