@@ -34,7 +34,7 @@ describe HistoryPresenter, '#grouped_items with the types of #1598' do
   end
 
   it 'renders an unsaved item with a blank subtype instead of raising' do
-    item = build :history_item, :incertae_sedis_in, subtype: nil
+    item = build :history_item, :incertae_sedis_in, subtype: nil, object_taxon: taxon_a
     expect(item).not_to be_valid
     expect { item.to_taxt }.not_to raise_error
   end
