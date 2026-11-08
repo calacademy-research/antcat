@@ -218,14 +218,77 @@ describe HistoryPresenter, :relational_hi do
           create :history_item, :form_descriptions, protonym: protonym, reference: reference
         end
 
-        it 'uses reference date as the tie-breaker' do
+        before do
+          item_20001201.update_columns(position: 1)
+          item_20001116.update_columns(position: 2)
+          item_200012.update_columns(position: 3)
+        end
+
+        it "keeps the editors' order within a year (reference dates are not used)" do
           expect(presenter.grouped_items.map(&:items)).to eq [
             [
+              item_20001201,
               item_20001116,
-              item_200012,
-              item_20001201
+              item_200012
             ]
           ]
+        end
+
+        context 'when editors reordered them' do
+          before do
+            item_200012.update_columns(position: 1)
+            item_20001201.update_columns(position: 2)
+            item_20001116.update_columns(position: 3)
+          end
+
+          it "follows the editors' order" do
+            expect(presenter.grouped_items.map(&:items)).to eq [
+              [
+                item_200012,
+                item_20001201,
+                item_20001116
+              ]
+            ]
+          end
+        end
+
+        context 'with items of several protonyms (shown "as object")' do
+          subject(:presenter) { described_class.new(HistoryItem.where(id: items.map(&:id))) }
+
+          let(:items) { [item_20001201, item_20001116, item_200012, other_item] }
+          let!(:other_item) do
+            reference = create :any_reference, year: 2000, date: '20001120'
+            create :history_item, :form_descriptions, reference: reference
+          end
+
+          it 'uses reference date as the tie-breaker' do
+            expect(presenter.grouped_items.map(&:items)).to eq [
+              [
+                item_20001116,
+                other_item,
+                item_200012,
+                item_20001201
+              ]
+            ]
+          end
+        end
+      end
+
+      context 'when item references have different years' do
+        let!(:item_2001) do
+          create :history_item, :form_descriptions, protonym: protonym, reference: create(:any_reference, year: 2001)
+        end
+        let!(:item_1999) do
+          create :history_item, :form_descriptions, protonym: protonym, reference: create(:any_reference, year: 1999)
+        end
+
+        before do
+          item_2001.update_columns(position: 1)
+          item_1999.update_columns(position: 2)
+        end
+
+        it "sorts them by year, whatever the editors' order" do
+          expect(presenter.grouped_items.map(&:items)).to eq [[item_1999, item_2001]]
         end
       end
 
@@ -239,11 +302,16 @@ describe HistoryPresenter, :relational_hi do
           create :history_item, :form_descriptions, protonym: protonym, reference: reference
         end
 
-        it 'uses reference ID as the tie-breaker' do
+        before do
+          item_200011_2.update_columns(position: 1)
+          item_200011_1.update_columns(position: 2)
+        end
+
+        it "uses the editors' order as the tie-breaker" do
           expect(presenter.grouped_items.map(&:items)).to eq [
             [
-              item_200011_1,
-              item_200011_2
+              item_200011_2,
+              item_200011_1
             ]
           ]
         end
