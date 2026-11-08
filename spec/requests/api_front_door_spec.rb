@@ -13,7 +13,7 @@ describe "API front door" do
     expect(json["documentation"]).to eq "https://www.antcat.org/api_docs"
     expect(json["guide_for_programs"]).to eq "https://www.antcat.org/llms.txt"
     expect(json["license"]["name"]).to eq "CC BY 4.0"
-    expect(json["terms"].join(" ")).to include "not to copy the catalog"
+    expect(json["terms"].join(" ")).to include "arranged in advance"
   end
 
   it "answers the same at /v1/" do
