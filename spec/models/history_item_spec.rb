@@ -354,11 +354,22 @@ describe HistoryItem, :relational_hi do
     end
 
     context 'when `type` is `COMBINATION_IN`' do
-      let(:history_item) { create :history_item, :combination_in }
+      context 'without `force_author_citation`' do
+        let(:history_item) { create :history_item, :combination_in }
 
-      specify do
-        expect(history_item.to_taxt).
-          to eq "Combination in #{Taxt.tax(history_item.object_taxon.id)}: #{history_item.citation_taxt}."
+        specify do
+          expect(history_item.to_taxt).
+            to eq "Combination in #{Taxt.tax(history_item.object_taxon.id)}: #{history_item.citation_taxt}."
+        end
+      end
+
+      context 'with `force_author_citation`' do
+        let(:history_item) { create :history_item, :combination_in, :force_author_citation }
+
+        specify do
+          expect(history_item.to_taxt).
+            to eq "Combination in #{Taxt.taxac(history_item.object_taxon.id)}: #{history_item.citation_taxt}."
+        end
       end
     end
 

@@ -88,6 +88,23 @@ describe HistoryPresenter, :relational_hi do
         end
       end
 
+      context 'with `COMBINATION_IN` items in the same genus, with and without `force_author_citation`' do
+        let(:object_taxon) { create :genus }
+
+        let!(:item_1) do
+          create :history_item, :combination_in, :with_2000_reference,
+            protonym: protonym, object_taxon: object_taxon
+        end
+        let!(:item_2) do
+          create :history_item, :combination_in, :with_1758_reference, :force_author_citation,
+            protonym: protonym, object_taxon: object_taxon
+        end
+
+        it 'does not group them' do
+          expect(presenter.grouped_items.map(&:items)).to eq [[item_1], [item_2]]
+        end
+      end
+
       context 'with `JUNIOR_SYNONYM_OF` items' do
         let(:object_protonym) { create :protonym }
 
