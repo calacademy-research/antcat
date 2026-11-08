@@ -147,6 +147,8 @@ Rails.application.routes.draw do
   end
 
   scope module: 'api' do
+    # The API's front door (2026-11-08): what it is, its terms and where the docs are; see Api::V1::RootController.
+    get '/v1', to: 'v1/root#show', as: :api_v1_root
     namespace :v1 do
       resources :taxa, only: [:index, :show]
       get '/taxa/:id/junior_synonyms', to: 'taxa#junior_synonyms'
