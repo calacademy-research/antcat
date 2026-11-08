@@ -462,6 +462,76 @@ describe HistoryItem, :relational_hi do
       end
     end
 
+    context 'when `type` is `FIRST_AVAILABLE_USE_UNAVAILABLE_INFRASUBSPECIFIC`' do
+      context 'without a citation' do
+        let(:history_item) { create :history_item, :first_available_use_unavailable_infrasubspecific }
+
+        specify do
+          expect(history_item.to_taxt).to eq "[First available use of #{Taxt.taxac(history_item.object_taxon.id)}; " \
+                                             "unavailable (infrasubspecific) name.]"
+        end
+      end
+
+      context 'with a citation' do
+        let(:history_item) { create :history_item, :first_available_use_unavailable_infrasubspecific, :with_reference }
+
+        specify do
+          expect(history_item.to_taxt).to eq "[First available use of #{Taxt.taxac(history_item.object_taxon.id)}; " \
+                                             "unavailable (infrasubspecific) name (#{history_item.citation_taxt}).]"
+        end
+      end
+    end
+
+    context 'when `type` is `ALSO_DESCRIBED_AS_NEW`' do
+      let(:history_item) { create :history_item, :also_described_as_new }
+
+      specify { expect(history_item.to_taxt).to eq "[Also described as new by #{history_item.citation_taxt}.]" }
+    end
+
+    context 'when `type` is `MISSPELLED_AS`' do
+      let(:history_item) { create :history_item, :misspelled_as }
+
+      specify do
+        expect(history_item.to_taxt).
+          to eq "[Misspelled as {misspelling <i>atrata</i>} by #{history_item.citation_taxt}.]"
+      end
+    end
+
+    context 'when `type` is `INCERTAE_SEDIS_IN`' do
+      History::Definitions::INCERTAE_SEDIS_IN_PREFIXES.each do |subtype, prefix|
+        context "with subtype `#{subtype}`" do
+          let(:history_item) { create :history_item, :incertae_sedis_in, subtype: subtype }
+
+          specify do
+            expect(history_item.to_taxt).
+              to eq "#{prefix} in #{Taxt.tax(history_item.object_taxon.id)}: #{history_item.citation_taxt}."
+          end
+        end
+      end
+
+      it 'requires a known subtype' do
+        expect(build(:history_item, :incertae_sedis_in, subtype: 'Other')).not_to be_valid
+      end
+    end
+
+    context 'when `type` is `MATERIAL_REFERRED_TO`' do
+      let(:history_item) { create :history_item, :material_referred_to }
+
+      specify do
+        expect(history_item.to_taxt).
+          to eq "Material referred to #{Taxt.tax(history_item.object_taxon.id)} by #{history_item.citation_taxt}."
+      end
+    end
+
+    context 'when `type` is `MATERIAL_OF_UNAVAILABLE_NAME_REFERRED_HERE`' do
+      let(:history_item) { create :history_item, :material_of_unavailable_name_referred_here }
+
+      specify do
+        expect(history_item.to_taxt).to eq "Material of the unavailable name #{Taxt.tax(history_item.object_taxon.id)} " \
+                                           "referred here by #{history_item.citation_taxt}."
+      end
+    end
+
     context 'when `type` is `UNAVAILABLE_INFRASUBSPECIFIC_NAME`' do
       let(:history_item) { create :history_item, :unavailable_infrasubspecific_name }
 

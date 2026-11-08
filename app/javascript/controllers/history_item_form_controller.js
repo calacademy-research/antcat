@@ -122,6 +122,48 @@ export default class extends Controller {
         inputsToShow.push(this.typeSpecificReferenceTarget, this.typeSpecificPagesTarget)
         break
 
+      case 'FirstAvailableUseUnavailableInfrasubspecific':
+        this.typeLabelObjectTaxonTarget.textContent = "First available use of"
+        this._markCitationAsOptional()
+        inputsToShow.push(this.typeSpecificReferenceTarget, this.typeSpecificPagesTarget, this.typeSpecificObjectTaxonTarget)
+        break
+
+      case 'AlsoDescribedAsNew':
+        inputsToShow.push(this.typeSpecificReferenceTarget, this.typeSpecificPagesTarget)
+        break
+
+      case 'MisspelledAs':
+        this.typeLabelTextValueTarget.textContent = "Misspelling"
+        inputsToShow.push(this.typeSpecificReferenceTarget, this.typeSpecificPagesTarget, this.typeSpecificTextValueTarget)
+        break
+
+      case 'IncertaeSedisIn':
+        this.typeLabelSubtypeTarget.textContent = "Form"
+        this._setupSelect(this.subtypeSelectTarget, [
+          { label: "(none)", value: "" },
+          { label: "Incertae sedis in", value: "IncertaeSedis" },
+          { label: "Unidentifiable taxon; incertae sedis in", value: "UnidentifiableTaxon" },
+          { label: "Unidentifiable to genus; incertae sedis in", value: "UnidentifiableToGenus" },
+        ])
+        this.typeLabelObjectTaxonTarget.textContent = "Incertae sedis in"
+        inputsToShow.push(
+          this.typeSpecificSubtypeTarget,
+          this.typeSpecificReferenceTarget,
+          this.typeSpecificPagesTarget,
+          this.typeSpecificObjectTaxonTarget,
+        )
+        break
+
+      case 'MaterialReferredTo':
+        this.typeLabelObjectTaxonTarget.textContent = "Material referred to"
+        inputsToShow.push(this.typeSpecificReferenceTarget, this.typeSpecificPagesTarget, this.typeSpecificObjectTaxonTarget)
+        break
+
+      case 'MaterialOfUnavailableNameReferredHere':
+        this.typeLabelObjectTaxonTarget.textContent = "Material of the unavailable name"
+        inputsToShow.push(this.typeSpecificReferenceTarget, this.typeSpecificPagesTarget, this.typeSpecificObjectTaxonTarget)
+        break
+
       case 'UnavailableInfrasubspecificName':
       case 'DeclaredUnavailableInfrasubspecificName':
         inputsToShow.push(this.typeSpecificReferenceTarget, this.typeSpecificPagesTarget)

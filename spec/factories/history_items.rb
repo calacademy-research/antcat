@@ -84,6 +84,47 @@ FactoryBot.define do
       with_reference
     end
 
+    trait :first_available_use_unavailable_infrasubspecific do
+      type { History::Definitions::FIRST_AVAILABLE_USE_UNAVAILABLE_INFRASUBSPECIFIC }
+
+      with_object_taxon
+    end
+
+    trait :also_described_as_new do
+      type { History::Definitions::ALSO_DESCRIBED_AS_NEW }
+
+      with_reference
+    end
+
+    trait :misspelled_as do
+      type { History::Definitions::MISSPELLED_AS }
+      text_value { '<i>atrata</i>' }
+
+      with_reference
+    end
+
+    trait :incertae_sedis_in do
+      type { History::Definitions::INCERTAE_SEDIS_IN }
+      subtype { History::Definitions::UNIDENTIFIABLE_TAXON }
+
+      with_reference
+      with_object_taxon
+    end
+
+    trait :material_referred_to do
+      type { History::Definitions::MATERIAL_REFERRED_TO }
+
+      with_reference
+      with_object_taxon
+    end
+
+    trait :material_of_unavailable_name_referred_here do
+      type { History::Definitions::MATERIAL_OF_UNAVAILABLE_NAME_REFERRED_HERE }
+
+      with_reference
+      with_object_taxon
+    end
+
     trait :subspecies_of do
       type { History::Definitions::SUBSPECIES_OF }
 

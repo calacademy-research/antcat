@@ -11,6 +11,12 @@ module History
       SPECIES_GROUP_LABEL = 'Species-group'
     ]
 
+    INCERTAE_SEDIS_IN_PREFIXES = {
+      'IncertaeSedis' => '<i>Incertae sedis</i>',
+      'UnidentifiableTaxon' => 'Unidentifiable taxon; <i>incertae sedis</i>',
+      'UnidentifiableToGenus' => 'Unidentifiable to genus; <i>incertae sedis</i>'
+    }.freeze
+
     TYPE_DEFINITIONS = {
       TAXT = 'Taxt' => {
         type_name: TAXT,
@@ -220,6 +226,146 @@ module History
         groupable_template_vars: ->(o) { { citation: o.citation } },
 
         validates_presence_of: [:reference, :pages]
+      },
+      FIRST_AVAILABLE_USE_UNAVAILABLE_INFRASUBSPECIFIC = 'FirstAvailableUseUnavailableInfrasubspecific' => {
+        type_name: FIRST_AVAILABLE_USE_UNAVAILABLE_INFRASUBSPECIFIC,
+        type_label: 'First available use of; unavailable (infrasubspecific) name',
+        ranks: SPECIES_GROUP_LABEL,
+
+        group_order: 12,
+
+        templates: {
+          default: {
+            content: '[First available use of {taxac %<object_taxon_id>i}; unavailable (infrasubspecific) name%<citation>s.]',
+            vars: ->(o) {
+              {
+                object_taxon_id: o.object_taxon_id,
+                citation: (" (#{o.citation})" if o.citation)
+              }
+            }
+          }
+        },
+
+        validates_presence_of: [:object_taxon],
+        optional_attributes: [:reference, :pages]
+      },
+      ALSO_DESCRIBED_AS_NEW = 'AlsoDescribedAsNew' => {
+        type_name: ALSO_DESCRIBED_AS_NEW,
+        type_label: 'Also described as new',
+        ranks: ANY_RANK_GROUP_LABEL,
+
+        group_order: 14,
+        group_key: ->(o) { [o.type] },
+
+        templates: {
+          default: {
+            content: '[Also described as new by %<grouped_item_taxts>s.]'
+          }
+        },
+
+        groupable_template_content: '%<citation>s',
+        groupable_template_vars: ->(o) { { citation: o.citation } },
+
+        validates_presence_of: [:reference, :pages]
+      },
+      MISSPELLED_AS = 'MisspelledAs' => {
+        type_name: MISSPELLED_AS,
+        type_label: 'Misspelled as',
+        ranks: ANY_RANK_GROUP_LABEL,
+
+        group_order: 16,
+        # One line per misspelt spelling (`text_value`, e.g. "<i>atrata</i>").
+        group_key: ->(o) { [o.type, 'text_value', o.text_value] },
+
+        templates: {
+          default: {
+            content: '[Misspelled as {misspelling %<spelling>s} by %<grouped_item_taxts>s.]',
+            vars: ->(o) { { spelling: o.text_value } }
+          }
+        },
+
+        groupable_template_content: '%<citation>s',
+        groupable_template_vars: ->(o) { { citation: o.citation } },
+
+        validates_presence_of: [:text_value, :reference, :pages]
+      },
+      INCERTAE_SEDIS_IN = 'IncertaeSedisIn' => {
+        type_name: INCERTAE_SEDIS_IN,
+        type_label: 'Incertae sedis in (and unidentifiable)',
+        ranks: ANY_RANK_GROUP_LABEL,
+
+        # After the status lines (canonical order: unidentifiable / incertae sedis).
+        group_order: 65,
+        group_key: ->(o) { [o.type, 'subtype', o.subtype, 'object_taxon_id', o.object_taxon_id] },
+
+        templates: {
+          default: {
+            content: '%<prefix>s in {tax %<object_taxon_id>i}: %<grouped_item_taxts>s.',
+            vars: ->(o) {
+              {
+                # Validation requires a known subtype; the fallback only keeps an unsaved, invalid item renderable.
+                prefix: INCERTAE_SEDIS_IN_PREFIXES.fetch(o.subtype.to_s, INCERTAE_SEDIS_IN_PREFIXES['IncertaeSedis']),
+                object_taxon_id: o.object_taxon_id
+              }
+            }
+          }
+        },
+
+        groupable_template_content: '%<citation>s',
+        groupable_template_vars: ->(o) { { citation: o.citation } },
+
+        subtypes: INCERTAE_SEDIS_IN_SUBTYPES = [
+          INCERTAE_SEDIS = 'IncertaeSedis',
+          UNIDENTIFIABLE_TAXON = 'UnidentifiableTaxon',
+          UNIDENTIFIABLE_TO_GENUS = 'UnidentifiableToGenus'
+        ],
+        subtype_options: [
+          ['Incertae sedis in', INCERTAE_SEDIS],
+          ['Unidentifiable taxon; incertae sedis in', UNIDENTIFIABLE_TAXON],
+          ['Unidentifiable to genus; incertae sedis in', UNIDENTIFIABLE_TO_GENUS]
+        ],
+
+        validates_presence_of: [:subtype, :object_taxon, :reference, :pages]
+      },
+      MATERIAL_REFERRED_TO = 'MaterialReferredTo' => {
+        type_name: MATERIAL_REFERRED_TO,
+        type_label: 'Material referred to',
+        ranks: ANY_RANK_GROUP_LABEL,
+
+        group_order: 110,
+        group_key: ->(o) { [o.type, 'object_taxon_id', o.object_taxon_id] },
+
+        templates: {
+          default: {
+            content: 'Material referred to {tax %<object_taxon_id>i} by %<grouped_item_taxts>s.',
+            vars: ->(o) { { object_taxon_id: o.object_taxon_id } }
+          }
+        },
+
+        groupable_template_content: '%<citation>s',
+        groupable_template_vars: ->(o) { { citation: o.citation } },
+
+        validates_presence_of: [:object_taxon, :reference, :pages]
+      },
+      MATERIAL_OF_UNAVAILABLE_NAME_REFERRED_HERE = 'MaterialOfUnavailableNameReferredHere' => {
+        type_name: MATERIAL_OF_UNAVAILABLE_NAME_REFERRED_HERE,
+        type_label: 'Material of the unavailable name referred here',
+        ranks: ANY_RANK_GROUP_LABEL,
+
+        group_order: 111,
+        group_key: ->(o) { [o.type, 'object_taxon_id', o.object_taxon_id] },
+
+        templates: {
+          default: {
+            content: 'Material of the unavailable name {tax %<object_taxon_id>i} referred here by %<grouped_item_taxts>s.',
+            vars: ->(o) { { object_taxon_id: o.object_taxon_id } }
+          }
+        },
+
+        groupable_template_content: '%<citation>s',
+        groupable_template_vars: ->(o) { { citation: o.citation } },
+
+        validates_presence_of: [:object_taxon, :reference, :pages]
       },
       SUBSPECIES_OF = 'SubspeciesOf' => {
         type_name: SUBSPECIES_OF,
