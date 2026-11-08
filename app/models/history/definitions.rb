@@ -292,7 +292,7 @@ module History
       INCERTAE_SEDIS_IN = 'IncertaeSedisIn' => {
         type_name: INCERTAE_SEDIS_IN,
         type_label: 'Incertae sedis in (and unidentifiable)',
-        ranks: SPECIES_GROUP_LABEL,
+        ranks: ANY_RANK_GROUP_LABEL,
 
         # After the status lines (canonical order: unidentifiable / incertae sedis).
         group_order: 65,
@@ -303,7 +303,8 @@ module History
             content: '%<prefix>s in {tax %<object_taxon_id>i}: %<grouped_item_taxts>s.',
             vars: ->(o) {
               {
-                prefix: INCERTAE_SEDIS_IN_PREFIXES.fetch(o.subtype),
+                # Validation requires a known subtype; the fallback only keeps an unsaved, invalid item renderable.
+                prefix: INCERTAE_SEDIS_IN_PREFIXES.fetch(o.subtype.to_s, INCERTAE_SEDIS_IN_PREFIXES['IncertaeSedis']),
                 object_taxon_id: o.object_taxon_id
               }
             }

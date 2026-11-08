@@ -121,6 +121,24 @@ describe GroupedHistoryItem, :relational_hi do
       end
     end
 
+    context 'with `INCERTAE_SEDIS_IN` items' do
+      let(:item) { create :history_item, :incertae_sedis_in }
+
+      specify do
+        expect(grouped_history_item.taxt).to eq "Unidentifiable taxon; <i>incertae sedis</i> in " \
+                                                "#{Taxt.tax(item.object_taxon.id)}: #{item.citation_taxt}; #{item.citation_taxt}."
+      end
+    end
+
+    context 'with `MATERIAL_REFERRED_TO` items' do
+      let(:item) { create :history_item, :material_referred_to }
+
+      specify do
+        expect(grouped_history_item.taxt).
+          to eq "Material referred to #{Taxt.tax(item.object_taxon.id)} by #{item.citation_taxt}; #{item.citation_taxt}."
+      end
+    end
+
     context 'with `ALSO_DESCRIBED_AS_NEW` items' do
       let(:item) { create :history_item, :also_described_as_new }
 
