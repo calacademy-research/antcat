@@ -1,0 +1,24 @@
+-# Grouped history lines for signed-in users: one block per line as on the catalog page; a grouped line
+-# (several items, e.g. the citations of one "Status as species" line) has a toggle that shows its items,
+-# each with its editor for helpers. Locals: `grouped_items` (from HistoryPresenter).
+-grouped_items.each do |grouped_item|
+  .mb-2
+    -if grouped_item.grouped?
+      .border.p-4.rounded
+        %p=Detax[grouped_item.taxt]
+        %button.btn-neutral.mr-4{"data-action" => "click->toggler#toggle", "data-toggler-target" => grouped_item.toggler_key} Show/hide grouped
+        %span.text-sm.font-bold.text-gray-500 #{grouped_item.underscored_type} x #{grouped_item.number_of_items}
+        .mb-2
+        %ul.no-bullet.hidden{data: { toggler_name: grouped_item.toggler_key }}
+          -grouped_item.items.each do |history_item|
+            %li.mb-2
+              -if user_is_at_least_helper?
+                =render 'taxt_editors/history_item_taxt_editor', history_item: history_item
+              -else
+                =Detax[history_item.to_taxt]
+    -else
+      -history_item = grouped_item.items.first
+      -if user_is_at_least_helper?
+        =render 'taxt_editors/history_item_taxt_editor', history_item: history_item
+      -else
+        %p=Detax[history_item.to_taxt]
