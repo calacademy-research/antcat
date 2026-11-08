@@ -218,6 +218,12 @@ describe HistoryPresenter, :relational_hi do
           create :history_item, :form_descriptions, protonym: protonym, reference: reference
         end
 
+        before do
+          item_20001201.update_columns(position: 1)
+          item_20001116.update_columns(position: 2)
+          item_200012.update_columns(position: 3)
+        end
+
         it "keeps the editors' order within a year (reference dates are not used)" do
           expect(presenter.grouped_items.map(&:items)).to eq [
             [
@@ -276,6 +282,11 @@ describe HistoryPresenter, :relational_hi do
           create :history_item, :form_descriptions, protonym: protonym, reference: create(:any_reference, year: 1999)
         end
 
+        before do
+          item_2001.update_columns(position: 1)
+          item_1999.update_columns(position: 2)
+        end
+
         it "sorts them by year, whatever the editors' order" do
           expect(presenter.grouped_items.map(&:items)).to eq [[item_1999, item_2001]]
         end
@@ -291,11 +302,16 @@ describe HistoryPresenter, :relational_hi do
           create :history_item, :form_descriptions, protonym: protonym, reference: reference
         end
 
+        before do
+          item_200011_2.update_columns(position: 1)
+          item_200011_1.update_columns(position: 2)
+        end
+
         it "uses the editors' order as the tie-breaker" do
           expect(presenter.grouped_items.map(&:items)).to eq [
             [
-              item_200011_1,
-              item_200011_2
+              item_200011_2,
+              item_200011_1
             ]
           ]
         end

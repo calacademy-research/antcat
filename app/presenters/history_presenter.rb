@@ -35,9 +35,9 @@ class HistoryPresenter
 
       groups = items.group_by { |item| item.group_key(template_name) }.values
 
-      group_sort_key = single_protonym?(items) ? method(:editor_sort_key) : method(:type_sort_key)
-
-      item_sort_key = single_protonym?(items) ? method(:year_then_editor_sort_key) : method(:chronological_sort_key)
+      one_protonym = single_protonym?(items)
+      group_sort_key = one_protonym ? method(:editor_sort_key) : method(:type_sort_key)
+      item_sort_key = one_protonym ? method(:year_then_editor_sort_key) : method(:chronological_sort_key)
 
       groups.map { |group| group.sort_by(&item_sort_key) }.
         sort_by { |group| group.map(&group_sort_key).min }
