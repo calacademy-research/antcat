@@ -94,6 +94,24 @@ describe GroupedHistoryItem, :relational_hi do
       end
     end
 
+    context 'with `UNAVAILABLE_INFRASUBSPECIFIC_NAME` items' do
+      let(:item) { create :history_item, :unavailable_infrasubspecific_name }
+
+      specify do
+        expect(grouped_history_item.taxt).
+          to eq "As unavailable (infrasubspecific) name: #{item.citation_taxt}; #{item.citation_taxt}."
+      end
+    end
+
+    context 'with `DECLARED_UNAVAILABLE_INFRASUBSPECIFIC_NAME` items' do
+      let(:item) { create :history_item, :declared_unavailable_infrasubspecific_name }
+
+      specify do
+        expect(grouped_history_item.taxt).
+          to eq "Declared as unavailable (infrasubspecific) name: #{item.citation_taxt}; #{item.citation_taxt}."
+      end
+    end
+
     context 'with `SUBSPECIES_OF` items' do
       let(:item) { create :history_item, :subspecies_of }
 

@@ -122,6 +122,11 @@ export default class extends Controller {
         inputsToShow.push(this.typeSpecificReferenceTarget, this.typeSpecificPagesTarget)
         break
 
+      case 'UnavailableInfrasubspecificName':
+      case 'DeclaredUnavailableInfrasubspecificName':
+        inputsToShow.push(this.typeSpecificReferenceTarget, this.typeSpecificPagesTarget)
+        break
+
       case 'JuniorPrimaryHomonymOf':
         this.typeLabelObjectTaxonTarget.textContent = "Junior primary homonym of"
         this._markCitationAsOptional()

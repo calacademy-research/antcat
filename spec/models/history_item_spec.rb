@@ -193,6 +193,38 @@ describe HistoryItem, :relational_hi do
       end
     end
 
+    context 'when `type` is `UNAVAILABLE_INFRASUBSPECIFIC_NAME`' do
+      subject { build_stubbed :history_item, :unavailable_infrasubspecific_name }
+
+      it do
+        is_expected.to validate_absence_of :taxt
+        is_expected.to validate_absence_of :subtype
+        is_expected.to validate_absence_of :picked_value
+        is_expected.to validate_absence_of :text_value
+
+        is_expected.to validate_presence_of :reference
+        is_expected.to validate_presence_of :pages
+        is_expected.to validate_absence_of :object_protonym
+        is_expected.to validate_absence_of :object_taxon
+      end
+    end
+
+    context 'when `type` is `DECLARED_UNAVAILABLE_INFRASUBSPECIFIC_NAME`' do
+      subject { build_stubbed :history_item, :declared_unavailable_infrasubspecific_name }
+
+      it do
+        is_expected.to validate_absence_of :taxt
+        is_expected.to validate_absence_of :subtype
+        is_expected.to validate_absence_of :picked_value
+        is_expected.to validate_absence_of :text_value
+
+        is_expected.to validate_presence_of :reference
+        is_expected.to validate_presence_of :pages
+        is_expected.to validate_absence_of :object_protonym
+        is_expected.to validate_absence_of :object_taxon
+      end
+    end
+
     context 'when `type` is `SUBSPECIES_OF`' do
       subject { build_stubbed :history_item, :subspecies_of }
 
@@ -427,6 +459,24 @@ describe HistoryItem, :relational_hi do
 
       specify do
         expect(history_item.to_taxt).to eq "Status as species: #{history_item.citation_taxt}."
+      end
+    end
+
+    context 'when `type` is `UNAVAILABLE_INFRASUBSPECIFIC_NAME`' do
+      let(:history_item) { create :history_item, :unavailable_infrasubspecific_name }
+
+      specify do
+        expect(history_item.to_taxt).
+          to eq "As unavailable (infrasubspecific) name: #{history_item.citation_taxt}."
+      end
+    end
+
+    context 'when `type` is `DECLARED_UNAVAILABLE_INFRASUBSPECIFIC_NAME`' do
+      let(:history_item) { create :history_item, :declared_unavailable_infrasubspecific_name }
+
+      specify do
+        expect(history_item.to_taxt).
+          to eq "Declared as unavailable (infrasubspecific) name: #{history_item.citation_taxt}."
       end
     end
 

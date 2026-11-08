@@ -72,6 +72,18 @@ FactoryBot.define do
       with_reference
     end
 
+    trait :unavailable_infrasubspecific_name do
+      type { History::Definitions::UNAVAILABLE_INFRASUBSPECIFIC_NAME }
+
+      with_reference
+    end
+
+    trait :declared_unavailable_infrasubspecific_name do
+      type { History::Definitions::DECLARED_UNAVAILABLE_INFRASUBSPECIFIC_NAME }
+
+      with_reference
+    end
+
     trait :subspecies_of do
       type { History::Definitions::SUBSPECIES_OF }
 
