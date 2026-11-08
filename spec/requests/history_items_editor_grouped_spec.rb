@@ -25,6 +25,8 @@ describe "Grouped history items in editor views" do
       expect(response.body).to match(/data-toggler-target=['"]grouped-StatusAsSpecies['"]/)
       expect(response.body).to include 'status_as_species x 3'
       expect(response.body).to include 'A free-text line'
+      expect(response.body).to include 'history-item taxt-history-item'
+      expect(response.body).to include 'history-item status_as_species-history-item'
     end
   end
 
