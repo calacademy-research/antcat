@@ -1,0 +1,27 @@
+# AntCat
+
+> AntCat (https://www.antcat.org) is the online catalog of the ants of the world: valid names, synonyms, taxonomic history and references. AntWeb (https://www.antweb.org), the specimen and image database, uses AntCat's names.
+
+This file is for programs and AI agents that want AntCat's data. Please read it before you send requests. The same guidance is at https://www.antcat.org/v1 in JSON.
+
+## How to get data
+
+- Use the API, not the web pages. Do not crawl or scrape the website for data; robots.txt applies.
+- API: https://www.antcat.org/v1 (for example https://www.antcat.org/v1/taxa/429011)
+- Documentation: https://www.antcat.org/api_docs
+- Wait for each answer before sending the next request. Free registered API keys are coming; they will raise the limits. When you reach a limit the API answers HTTP 429 with how long to wait; please slow down instead of retrying at once.
+
+## What we ask
+
+- Use the API to answer research questions. Systematic extraction of the whole catalog, a mirror or full synchronization must be arranged in advance with antcat@antcat.org.
+- Bulk data is not available automatically. For a larger project, write to antcat@antcat.org; AntCat is developed under the scientific leadership of Brian L. Fisher, who welcomes collaboration.
+- Cite AntCat: Bolton, B. <year>. An online catalog of the ants of the world. Available from https://antcat.org. (accessed <date>)
+- AntCat data are licensed CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). The access limits do not change the rights the licence grants.
+
+## Specimens and images
+
+- For specimens, images and distribution, use AntWeb: https://www.antweb.org/llms.txt
+
+## Contact
+
+- antcat@antcat.org
