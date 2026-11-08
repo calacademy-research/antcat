@@ -77,19 +77,27 @@ module History
         ranks: SPECIES_GROUP_LABEL,
 
         group_order: 30,
-        group_key: ->(o) { [o.type, 'object_taxon_id', o.object_taxon_id] },
+        # `force_author_citation` is part of the key so that lines with and without
+        # an author citation for the same genus are not merged under one tag.
+        group_key: ->(o) { [o.type, 'object_taxon_id', o.object_taxon_id, o.force_author_citation?] },
 
         templates: {
           default: {
-            content: 'Combination in {tax %<object_taxon_id>i}: %<grouped_item_taxts>s.',
-            vars: ->(o) { o.slice(:object_taxon_id) }
+            content: 'Combination in {%<object_taxon_tag>s %<object_taxon_id>i}: %<grouped_item_taxts>s.',
+            vars: ->(o) {
+              {
+                object_taxon_id: o.object_taxon_id,
+                object_taxon_tag: o.force_author_citation? ? 'taxac' : 'tax'
+              }
+            }
           }
         },
 
         groupable_template_content: '%<citation>s',
         groupable_template_vars: ->(o) { { citation: o.citation } },
 
-        validates_presence_of: [:object_taxon, :reference, :pages]
+        validates_presence_of: [:object_taxon, :reference, :pages],
+        allow_force_author_citation: true
       },
       # Plan: To be merged with `SeniorSynonymOf` once migrated and synced, probably as `SubjectiveSynonym`.
       JUNIOR_SYNONYM_OF = 'JuniorSynonymOf' => {

@@ -75,7 +75,12 @@ export default class extends Controller {
 
       case 'CombinationIn':
         this.typeLabelObjectTaxonTarget.textContent = "Combination in"
-        inputsToShow.push(this.typeSpecificReferenceTarget, this.typeSpecificPagesTarget, this.typeSpecificObjectTaxonTarget)
+        inputsToShow.push(
+          this.typeSpecificReferenceTarget,
+          this.typeSpecificPagesTarget,
+          this.typeSpecificObjectTaxonTarget,
+          this.typeSpecificForceAuthorCitationTarget,
+        )
         break
 
       case 'JuniorSynonymOf':
