@@ -112,6 +112,24 @@ describe GroupedHistoryItem, :relational_hi do
       end
     end
 
+    context 'with `MISSPELLED_AS` items (one line per spelling)' do
+      let(:item) { create :history_item, :misspelled_as }
+
+      specify do
+        expect(grouped_history_item.taxt).
+          to eq "[Misspelled as {misspelling <i>atrata</i>} by #{item.citation_taxt}; #{item.citation_taxt}.]"
+      end
+    end
+
+    context 'with `ALSO_DESCRIBED_AS_NEW` items' do
+      let(:item) { create :history_item, :also_described_as_new }
+
+      specify do
+        expect(grouped_history_item.taxt).
+          to eq "[Also described as new by #{item.citation_taxt}; #{item.citation_taxt}.]"
+      end
+    end
+
     context 'with `SUBSPECIES_OF` items' do
       let(:item) { create :history_item, :subspecies_of }
 
