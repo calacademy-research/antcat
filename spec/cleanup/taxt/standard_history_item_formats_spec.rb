@@ -352,7 +352,7 @@ describe Taxt::StandardHistoryItemFormats do
       end
 
       specify do
-        expect(service.identified_type).to eq described_class::AS_UNAVAILABLE_INFRASUBSPECIFIC_NAME
+        expect(service.identified_type).to eq History::Definitions::UNAVAILABLE_INFRASUBSPECIFIC_NAME
       end
     end
 
@@ -362,7 +362,7 @@ describe Taxt::StandardHistoryItemFormats do
       end
 
       specify do
-        expect(service.identified_type).to eq described_class::DECLARED_AS_UNAVAILABLE_INFRASUBSPECIFIC_NAME
+        expect(service.identified_type).to eq History::Definitions::DECLARED_UNAVAILABLE_INFRASUBSPECIFIC_NAME
       end
     end
 

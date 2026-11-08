@@ -268,12 +268,12 @@ module Taxt
       {
         regex: "^As unavailable \\(infrasubspecific\\) name: #{CITATIONS}\\.?$",
         name: AS_UNAVAILABLE_INFRASUBSPECIFIC_NAME,
-        type: AS_UNAVAILABLE_INFRASUBSPECIFIC_NAME
+        type: History::Definitions::UNAVAILABLE_INFRASUBSPECIFIC_NAME
       },
       {
         regex: "^Declared as unavailable \\(infrasubspecific\\) name: #{CITATIONS}\\.?$",
         name: DECLARED_AS_UNAVAILABLE_INFRASUBSPECIFIC_NAME,
-        type: DECLARED_AS_UNAVAILABLE_INFRASUBSPECIFIC_NAME
+        type: History::Definitions::DECLARED_UNAVAILABLE_INFRASUBSPECIFIC_NAME
       },
       {
         regex: "^\\[First available use of #{TAXAC}; unavailable \\(infrasubspecific\\) name\\.?\\]$",

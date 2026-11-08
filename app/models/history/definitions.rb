@@ -182,6 +182,45 @@ module History
 
         validates_presence_of: [:reference, :pages]
       },
+      UNAVAILABLE_INFRASUBSPECIFIC_NAME = 'UnavailableInfrasubspecificName' => {
+        type_name: UNAVAILABLE_INFRASUBSPECIFIC_NAME,
+        type_label: 'As unavailable (infrasubspecific) name',
+        ranks: SPECIES_GROUP_LABEL,
+
+        # After "Combination in", before the status lines (canonical order, claude/HISTORY_ORDER.md).
+        group_order: 35,
+        group_key: ->(o) { [o.type] },
+
+        templates: {
+          default: {
+            content: 'As unavailable (infrasubspecific) name: %<grouped_item_taxts>s.'
+          }
+        },
+
+        groupable_template_content: '%<citation>s',
+        groupable_template_vars: ->(o) { { citation: o.citation } },
+
+        validates_presence_of: [:reference, :pages]
+      },
+      DECLARED_UNAVAILABLE_INFRASUBSPECIFIC_NAME = 'DeclaredUnavailableInfrasubspecificName' => {
+        type_name: DECLARED_UNAVAILABLE_INFRASUBSPECIFIC_NAME,
+        type_label: 'Declared as unavailable (infrasubspecific) name',
+        ranks: SPECIES_GROUP_LABEL,
+
+        group_order: 36,
+        group_key: ->(o) { [o.type] },
+
+        templates: {
+          default: {
+            content: 'Declared as unavailable (infrasubspecific) name: %<grouped_item_taxts>s.'
+          }
+        },
+
+        groupable_template_content: '%<citation>s',
+        groupable_template_vars: ->(o) { { citation: o.citation } },
+
+        validates_presence_of: [:reference, :pages]
+      },
       SUBSPECIES_OF = 'SubspeciesOf' => {
         type_name: SUBSPECIES_OF,
         type_label: 'Subspecies of',
