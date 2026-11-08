@@ -20,6 +20,12 @@ describe GroupedHistoryItem, :relational_hi do
 
       specify { expect(grouped_history_item.toggler_key).to eq 'grouped-StatusAsSpecies' }
     end
+
+    context 'with form descriptions (also grouped by type alone)' do
+      let(:item) { create :history_item, :form_descriptions }
+
+      specify { expect(grouped_history_item.toggler_key).to eq 'grouped-FormDescriptions' }
+    end
   end
 
   describe '#taxt' do
