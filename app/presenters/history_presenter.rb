@@ -18,7 +18,9 @@ class HistoryPresenter
 
     # Groups follow the order editors set (`position`): a group is placed where its
     # earliest item is. Inside a group (e.g. several citations of "Combination in X"),
-    # items are sorted chronologically by reference year and date.
+    # items are sorted by reference year; within one year they keep the editors' order.
+    # Reference dates are not used there: many are missing or less precise than a day
+    # (YYYY, YYYYMM), so they cannot decide the order reliably.
     #
     # Editors' order is used for groups, not the type's `group_order`, because most
     # history items are still free text. Sorting structured items by type put them
@@ -26,7 +28,7 @@ class HistoryPresenter
     #
     # `position` is scoped per protonym, so it only means something when all items
     # belong to one protonym. Lists that mix protonyms (items shown "as object" on
-    # another taxon's page) keep the type-then-chronological order.
+    # another taxon's page) keep the type, year, date order.
     def grouped_items_array
       items = history_items.left_joins(:reference).
         select('history_items.*, references.year AS reference_year, references.date AS reference_date')
@@ -35,7 +37,9 @@ class HistoryPresenter
 
       group_sort_key = single_protonym?(items) ? method(:editor_sort_key) : method(:type_sort_key)
 
-      groups.map { |group| group.sort_by { |item| chronological_sort_key(item) } }.
+      item_sort_key = single_protonym?(items) ? method(:year_then_editor_sort_key) : method(:chronological_sort_key)
+
+      groups.map { |group| group.sort_by(&item_sort_key) }.
         sort_by { |group| group.map(&group_sort_key).min }
     end
 
@@ -55,6 +59,10 @@ class HistoryPresenter
         item.position || 0,
         item.id
       ]
+    end
+
+    def year_then_editor_sort_key item
+      [(item.reference_year || -1), *editor_sort_key(item)]
     end
 
     # `position` is NOT NULL in the schema; a missing one would sort last rather than first.
