@@ -5,6 +5,23 @@ require 'rails_helper'
 describe GroupedHistoryItem, :relational_hi do
   subject(:grouped_history_item) { described_class.new([item, item]) }
 
+  describe '#toggler_key' do
+    context 'when the group key is an array' do
+      let(:item) { create :history_item, :junior_synonym_of }
+
+      specify do
+        expect(grouped_history_item.toggler_key).
+          to eq "grouped-JuniorSynonymOf_object_protonym_id_#{item.object_protonym_id}"
+      end
+    end
+
+    context 'when the group key is the type name alone' do
+      let(:item) { create :history_item, :status_as_species }
+
+      specify { expect(grouped_history_item.toggler_key).to eq 'grouped-StatusAsSpecies' }
+    end
+  end
+
   describe '#taxt' do
     context 'with `TAXT` items' do
       let(:item) { create :history_item, :taxt }

@@ -29,6 +29,13 @@ class GroupedHistoryItem
     items.size
   end
 
+  # For the editors' "Show/hide grouped" toggle. `group_key` is an array for most types
+  # (e.g. `["JuniorSynonymOf", "object_protonym_id", 156572]`) but just the type name for
+  # types grouped by type alone (StatusAsSpecies, FormDescriptions).
+  def toggler_key
+    "grouped-#{Array(group_key).join('_')}"
+  end
+
   def params_for_add_another_of_same_type
     any_item_in_group.decorate.params_for_add_another_of_same_type
   end
