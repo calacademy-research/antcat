@@ -3,6 +3,9 @@
 # API requests, records sent and refused requests (429) per UTC day: one row per key, and one per
 # hashed visitor IP for requests without a key (`api_key_id` 0, see `ApiAccess.ip_hash`).
 class ApiUsageDay < ApplicationRecord
+  # Keys of each key's totals in `.summary_by_key`.
+  SUMMARY_COUNTS = [:today, :last_7_days, :last_30_days, :records, :rejected]
+
   belongs_to :api_key, optional: true
 
   scope :with_key, -> { where.not(api_key_id: ApiAccess::NO_KEY_ID) }
@@ -21,8 +24,6 @@ class ApiUsageDay < ApplicationRecord
 
   # Totals per key for the admin page: `{ api_key_id => { today:, last_7_days:, last_30_days:, records:, rejected: } }`
   # (records and refused requests over the last 30 days).
-  SUMMARY_COUNTS = [:today, :last_7_days, :last_30_days, :records, :rejected]
-
   def self.summary_by_key today: Time.current.utc.to_date
     with_key.where(day: (today - 29.days)..today).group(:api_key_id).pluck(
       :api_key_id,
