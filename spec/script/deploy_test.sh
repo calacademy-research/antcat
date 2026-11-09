@@ -146,6 +146,7 @@ export FAKE_MIGRATE_RC=1
 run
 check "exits non-zero" [ "$RC" -ne 0 ]
 check "prints the manual rollback command" out_has "git checkout -q $A && docker restart antcat-app"
+check "suggests --rollback --yes" out_has "script/deploy --rollback --yes"
 check "warns that migrations ran" out_has "MIGRATIONS RAN"
 check "did not roll back by itself" head_is "$B"
 teardown
@@ -314,6 +315,31 @@ check "exits 0" [ "$RC" -eq 0 ]
 check "says the last deploy failed" out_has "the last deploy failed"
 check "rebuilt the image" docker_called "compose .*build app"
 check "rollback file still holds A" [ "$(cat "$ANTCAT_ROLLBACK_FILE")" = "$A" ]
+teardown
+
+setup "a failed rollback can be run again"
+B="$(push_change dockerized_app/Dockerfile "B: new Ruby")"
+run
+export FAKE_BUILD_RC=1
+run --rollback
+check "rollback fails" [ "$RC" -ne 0 ]
+check "logged rollback FAILED" grep -q "rollback FAILED" "$ANTCAT_DEPLOY_LOG"
+unset FAKE_BUILD_RC
+: > "$DOCKER_LOG"
+run --rollback
+check "retry exits 0" [ "$RC" -eq 0 ]
+check "retry rebuilt the image" docker_called "compose .*build app"
+check "HEAD is A" head_is "$A"
+teardown
+
+setup "on a branch checkout the failure message gives only script/deploy --rollback"
+git -C "$SERVER" checkout -q master
+B="$(push_change app/models/taxon.rb "B: broken")"
+export FAKE_HTTP=500
+run --timeout 2
+check "exits non-zero" [ "$RC" -ne 0 ]
+check "no manual git checkout line" not out_has "git checkout -q $A"
+check "points to script/deploy --rollback" out_has "script/deploy --rollback"
 teardown
 
 echo

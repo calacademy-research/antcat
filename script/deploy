@@ -70,7 +70,7 @@ main() {
   command -v docker > /dev/null || die "docker not found"
 
   if command -v flock > /dev/null; then
-    exec 9> "$LOCK_FILE"
+    { exec 9> "$LOCK_FILE"; } 2> /dev/null || die "cannot open the lock file $LOCK_FILE (run as root)"
     flock -n 9 || die "another deploy is running (lock $LOCK_FILE)"
   else
     say "WARNING: flock not found; not protected against two deploys at once"
@@ -166,7 +166,7 @@ container_running() {
 # Waits until Puma answers at all (any HTTP status). Used before migrations: the new code may
 # not serve pages until its tables exist.
 wait_for_puma() {
-  local timeout="$1" waited=0 code
+  local timeout="$1" waited=0 code start=$SECONDS
   say "waiting for Puma to start (startup.sh installs gems and builds assets first; a few minutes)"
   while [ "$waited" -lt "$timeout" ]; do
     code="$(http_code /)"
@@ -175,7 +175,7 @@ wait_for_puma() {
       return 0
     fi
     sleep "$HEALTH_INTERVAL"
-    waited=$((waited + HEALTH_INTERVAL))
+    waited=$((SECONDS - start))
   done
   return 1
 }
@@ -183,7 +183,7 @@ wait_for_puma() {
 # Waits until every health path answers 200 and the home page footer shows the expected commit.
 wait_healthy() {
   # The footer links the running commit as .../commit/<full hash> (app/views/application/_footer.html.haml).
-  local timeout="$1" commit="$2" commit7="${2:0:7}" waited=0 ok path code next_report=0
+  local timeout="$1" commit="$2" commit7="${2:0:7}" waited=0 ok path code next_report=0 start=$SECONDS
   say "waiting for the health check (local port ${APP_PORT}: ${HEALTH_PATHS[*]}), up to ${timeout}s"
   while [ "$waited" -lt "$timeout" ]; do
     ok=1
@@ -210,7 +210,7 @@ wait_healthy() {
       next_report=$((next_report + 60))
     fi
     sleep "$HEALTH_INTERVAL"
-    waited=$((waited + HEALTH_INTERVAL))
+    waited=$((SECONDS - start))
   done
   return 1
 }
@@ -239,8 +239,10 @@ print_failure() {
   docker logs --tail 40 "$APP_CONTAINER" 2>&1 | sed 's/^/    /' >&2 || true
   echo >&2
   echo "deploy: to roll back the code to $(short "$prev"):" >&2
-  echo "    cd $APP_DIR && script/deploy --rollback" >&2
-  if has dockerfile "${CHANGES:-}" || has compose "${CHANGES:-}"; then
+  echo "    cd $APP_DIR && script/deploy --rollback$([ "$migrated" = 1 ] && echo ' --yes')" >&2
+  if [ -n "${ON_BRANCH:-}" ]; then
+    echo "deploy: (use script/deploy --rollback here: it remembers that this checkout was on branch master)" >&2
+  elif has dockerfile "${CHANGES:-}" || has compose "${CHANGES:-}"; then
     echo "deploy: (the image or container changed: use script/deploy --rollback, which rebuilds/recreates" >&2
     echo "        and reloads nginx; a plain git checkout + docker restart would keep the new image)" >&2
   else
@@ -289,6 +291,8 @@ do_deploy() {
     die "cannot find $ref on origin"
   fi
   branch="$(git symbolic-ref -q --short HEAD || true)"
+  ON_BRANCH="$branch"
+  [ -s "$BRANCH_MARK" ] && ON_BRANCH=master
 
   # After a failed deploy (or one that was interrupted: a "start" line with no OK or FAILED after it)
   # the running commit is not a good one: go back to the commit saved before
@@ -405,14 +409,26 @@ do_rollback() {
   target="$(tr -d '[:space:]' < "$ROLLBACK_FILE")"
   git rev-parse -q --verify "$target^{commit}" > /dev/null || die "rollback commit $target is not in this checkout"
   current="$(git rev-parse HEAD)"
+  local from="$current" last
   if [ "$current" = "$target" ]; then
-    say "already at the rollback commit $(short "$target"); nothing to do."
-    return 0
+    # A rollback that failed or was interrupted is redone (rebuild, restart), measured from the
+    # commit it started from.
+    last="$(grep -E ' (deploy|rollback) (start|OK|FAILED)' "$DEPLOY_LOG" 2> /dev/null | tail -1 || true)"
+    if [[ "$last" =~ rollback\ (start|FAILED) ]]; then
+      from="$(grep ' rollback start ' "$DEPLOY_LOG" | tail -1 | sed -E 's/.* rollback start ([0-9a-f]+) -> .*/\1/')"
+      git rev-parse -q --verify "$from^{commit}" > /dev/null || die "cannot read the commit the last rollback started from"
+      from="$(git rev-parse "$from^{commit}")"
+      say "the last rollback did not finish: redoing it (from $(short "$from"))"
+    else
+      say "already at the rollback commit $(short "$target"); nothing to do."
+      return 0
+    fi
   fi
 
   say "ROLLBACK"
-  changes="$(classify_changes "$current" "$target")"
-  show_plan "$current" "$target" "$changes"
+  changes="$(classify_changes "$from" "$target")"
+  CHANGES="$changes"
+  show_plan "$from" "$target" "$changes"
 
   if has migrations "$changes"; then
     echo "deploy: db/migrate differs between the running and the rollback commit. Rolling back the" >&2
@@ -428,7 +444,8 @@ do_rollback() {
     die "not rolled back (db/migrate differs; see above). Nothing was changed."
   fi
 
-  log_line "rollback start $(short "$current") -> $(short "$target")"
+  log_line "rollback start $(short "$from") -> $(short "$target")"
+  trap 'trap - ERR; log_line "rollback FAILED (unexpected error)"; echo "deploy: ROLLBACK FAILED (see above); run script/deploy --rollback again to retry" >&2; exit 1' ERR
   if [ "$(git symbolic-ref -q --short HEAD || true)" = master ]; then
     echo master > "$BRANCH_MARK"
   fi
@@ -436,17 +453,19 @@ do_rollback() {
   say "checked out $(short "$target") (detached; the next script/deploy brings back origin/master$([ -s "$BRANCH_MARK" ] && echo ' on branch master'))"
   restart_app "$changes"
   if ! wait_healthy "$timeout" "$target"; then
+    trap - ERR
     log_line "rollback FAILED (health check) at $(short "$target")"
     echo "deploy: the rolled-back code did not pass the health check either. App log:" >&2
     docker logs --tail 40 "$APP_CONTAINER" 2>&1 | sed 's/^/    /' >&2 || true
     exit 1
   fi
   reload_nginx_if_needed "$changes"
-  log_line "rollback OK $(short "$current") -> $(short "$target")"
+  trap - ERR
+  log_line "rollback OK $(short "$from") -> $(short "$target")"
   say "ROLLED BACK to $(git rev-parse HEAD) on $(hostname)"
   echo
   echo "Server log entry:"
-  echo "- $(date +%Y-%m-%d) $(hostname): rolled back $(short "$current") -> $(short "$target") with script/deploy --rollback."
+  echo "- $(date +%Y-%m-%d) $(hostname): rolled back $(short "$from") -> $(short "$target") with script/deploy --rollback."
 }
 
 main "$@"; exit
