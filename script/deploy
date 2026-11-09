@@ -150,8 +150,13 @@ show_plan() {
 # published on the host, and the public address goes through Cloudflare). X-Forwarded-Proto
 # stops config.force_ssl from answering with a redirect.
 http_code() {
-  docker exec "$APP_CONTAINER" curl -s -o /dev/null -m 20 -w '%{http_code}' \
-    -H 'X-Forwarded-Proto: https' "http://127.0.0.1:${APP_PORT}$1" 2> /dev/null || echo 000
+  # curl prints 000 and exits non-zero when nothing answers; docker exec prints nothing when the
+  # container is down. Either way the result is 000.
+  local code
+  code="$(docker exec "$APP_CONTAINER" curl -s -o /dev/null -m 20 -w '%{http_code}' \
+    -H 'X-Forwarded-Proto: https' "http://127.0.0.1:${APP_PORT}$1" 2> /dev/null)" || true
+  [[ "$code" =~ ^[1-5][0-9][0-9]$ ]] || code=000
+  echo "$code"
 }
 
 container_running() {
@@ -165,7 +170,7 @@ wait_for_puma() {
   say "waiting for Puma to start (startup.sh installs gems and builds assets first; a few minutes)"
   while [ "$waited" -lt "$timeout" ]; do
     code="$(http_code /)"
-    if [ "$code" != 000 ] && [ -n "$code" ]; then
+    if [ "$code" != 000 ]; then
       say "Puma answers (HTTP $code) after ${waited}s"
       return 0
     fi
@@ -285,13 +290,14 @@ do_deploy() {
   fi
   branch="$(git symbolic-ref -q --short HEAD || true)"
 
-  # After a failed deploy the running commit is not a good one: go back to the commit saved before
+  # After a failed deploy (or one that was interrupted: a "start" line with no OK or FAILED after it)
+  # the running commit is not a good one: go back to the commit saved before
   # it, both as the rollback commit and as the base for what changed (so a retry still rebuilds the
   # image or runs the migrations that failed).
   local saved=""
   [ -s "$ROLLBACK_FILE" ] && saved="$(tr -d '[:space:]' < "$ROLLBACK_FILE")"
   if [ -n "$saved" ] && git rev-parse -q --verify "$saved^{commit}" > /dev/null \
-    && grep -E ' (deploy|rollback) (OK|FAILED)' "$DEPLOY_LOG" 2> /dev/null | tail -1 | grep -q 'deploy FAILED'; then
+    && grep -E ' (deploy|rollback) (start|OK|FAILED)' "$DEPLOY_LOG" 2> /dev/null | tail -1 | grep -qE 'deploy (FAILED|start)'; then
     last_failed=1
     prev="$(git rev-parse "$saved^{commit}")"
     say "the last deploy failed: comparing with the saved rollback commit $(short "$prev"), not the running $(short "$running")"

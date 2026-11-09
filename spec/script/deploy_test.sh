@@ -47,7 +47,12 @@ case "$1" in
   compose) [[ "$*" == *build* ]] && exit "${FAKE_BUILD_RC:-0}" ;;
   exec)
     if [[ "$*" == *db:migrate* ]]; then exit "${FAKE_MIGRATE_RC:-0}"; fi
-    if [[ "$*" == *curl* && "$*" == *http_code* ]]; then echo "${FAKE_HTTP:-200}"; exit 0; fi
+    if [[ "$*" == *curl* && "$*" == *http_code* ]]; then
+      # FAKE_DOWN_CALLS: the first N health requests find nothing listening (curl prints 000, exits 7).
+      n=$(( $(cat "$DOCKER_LOG.down" 2> /dev/null || echo 0) + 1 )); echo "$n" > "$DOCKER_LOG.down"
+      if [ "$n" -le "${FAKE_DOWN_CALLS:-0}" ]; then printf 000; exit 7; fi
+      echo "${FAKE_HTTP:-200}"; exit 0
+    fi
     if [[ "$*" == *curl* ]]; then
       c="$(git -C "$ANTCAT_DIR" rev-parse HEAD)"
       echo "<footer><a href=\"https://github.com/calacademy-research/antcat/commit/$c\" title=\"Deployed commit on GitHub\">${c:0:7}</a></footer>"
@@ -60,7 +65,7 @@ FAKE
   export PATH="$BIN:$PATH" DOCKER_LOG="$T/docker.log" ANTCAT_DIR="$SERVER"
   export ANTCAT_ROLLBACK_FILE="$T/rollback.txt" ANTCAT_DEPLOY_LOG="$T/deploy.log"
   export ANTCAT_LOCK_FILE="$T/lock" ANTCAT_HEALTH_INTERVAL=1
-  unset FAKE_HTTP FAKE_MIGRATE_RC FAKE_RESTART_RC FAKE_BUILD_RC
+  unset FAKE_HTTP FAKE_MIGRATE_RC FAKE_RESTART_RC FAKE_BUILD_RC FAKE_DOWN_CALLS
   : > "$DOCKER_LOG"
 }
 
@@ -288,6 +293,27 @@ run
 check "retry exits 0" [ "$RC" -eq 0 ]
 check "retry ran db:migrate" docker_called "db:migrate"
 check "HEAD is the fix" head_is "$C"
+teardown
+
+setup "migrations wait until Puma really answers"
+B="$(push_change db/migrate/20261109000000_add_api_keys.rb "B: add api keys")"
+export FAKE_DOWN_CALLS=3
+run
+check "exits 0" [ "$RC" -eq 0 ]
+check "waited through the connection failures" [ "$(grep -c http_code "$DOCKER_LOG")" -ge 4 ]
+check "migrated after Puma answered" [ "$(grep -n -m1 db:migrate "$DOCKER_LOG" | cut -d: -f1)" -gt 4 ]
+teardown
+
+setup "an interrupted deploy counts as failed"
+B="$(push_change dockerized_app/Dockerfile "B: new Ruby")"
+echo "$A" > "$ANTCAT_ROLLBACK_FILE"
+git -C "$SERVER" checkout -q "$B"
+echo "2026-11-09 10:00:00 PST test deploy start a -> b ref=master changes=dockerfile" > "$ANTCAT_DEPLOY_LOG"
+run
+check "exits 0" [ "$RC" -eq 0 ]
+check "says the last deploy failed" out_has "the last deploy failed"
+check "rebuilt the image" docker_called "compose .*build app"
+check "rollback file still holds A" [ "$(cat "$ANTCAT_ROLLBACK_FILE")" = "$A" ]
 teardown
 
 echo
