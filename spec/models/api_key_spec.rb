@@ -36,7 +36,7 @@ describe ApiKey do
     it 'returns an "ac_" key and stores only its digest and prefix' do
       key = api_key.issue_key!
 
-      expect(key).to match(/\Aac_[1-9A-HJ-NP-Za-km-z]{#{described_class::KEY_RANDOM_LENGTH}}\z/)
+      expect(key).to match(/\Aac_[1-9A-HJ-NP-Za-km-z]{#{described_class::KEY_RANDOM_LENGTH}}\z/o)
       api_key.reload
       expect(api_key.key_digest).to eq OpenSSL::Digest::SHA256.hexdigest(key)
       expect(api_key.key_prefix).to eq key.first(described_class::KEY_DISPLAY_LENGTH)

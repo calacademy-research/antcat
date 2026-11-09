@@ -37,7 +37,8 @@ class CreateApiKeysAndUsage < ActiveRecord::Migration[8.1]
     add_index :api_keys, :email, name: "ix_api_keys__email"
     add_index :api_keys, :key_digest, unique: true, name: "ux_api_keys__key_digest"
 
-    create_table :api_usage_days, charset: "utf8mb4", collation: "utf8mb4_unicode_ci" do |t|
+    # Counter table, written only by `INSERT ... ON DUPLICATE KEY UPDATE`; the date/minute column is the time.
+    create_table :api_usage_days, charset: "utf8mb4", collation: "utf8mb4_unicode_ci" do |t| # rubocop:disable Rails/CreateTableWithTimestamps
       t.date :day, null: false
       t.bigint :api_key_id, null: false, default: 0
       t.string :client, limit: 64, null: false, default: ""
@@ -48,7 +49,8 @@ class CreateApiKeysAndUsage < ActiveRecord::Migration[8.1]
     add_index :api_usage_days, [:api_key_id, :day], name: "ix_api_usage_days__api_key_id__day"
     add_index :api_usage_days, [:day, :api_key_id, :client], unique: true, name: "ux_api_usage_days__day__api_key_id__client"
 
-    create_table :api_usage_minutes, charset: "utf8mb4", collation: "utf8mb4_unicode_ci" do |t|
+    # Counter table, written only by `INSERT ... ON DUPLICATE KEY UPDATE`; the date/minute column is the time.
+    create_table :api_usage_minutes, charset: "utf8mb4", collation: "utf8mb4_unicode_ci" do |t| # rubocop:disable Rails/CreateTableWithTimestamps
       t.datetime :minute, null: false
       t.bigint :api_key_id, null: false, default: 0
       t.string :client, limit: 64, null: false, default: ""

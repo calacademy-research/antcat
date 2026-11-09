@@ -21,22 +21,15 @@ class ApiUsageDay < ApplicationRecord
 
   # Totals per key for the admin page: `{ api_key_id => { today:, last_7_days:, last_30_days:, records:, rejected: } }`
   # (records and refused requests over the last 30 days).
+  SUMMARY_COUNTS = [:today, :last_7_days, :last_30_days, :records, :rejected]
+
   def self.summary_by_key today: Time.current.utc.to_date
     with_key.where(day: (today - 29.days)..today).group(:api_key_id).pluck(
       :api_key_id,
       Arel.sql(sanitize_sql_array(["SUM(CASE WHEN day = ? THEN requests ELSE 0 END)", today])),
       Arel.sql(sanitize_sql_array(["SUM(CASE WHEN day >= ? THEN requests ELSE 0 END)", today - 6.days])),
       Arel.sql("SUM(requests)"), Arel.sql("SUM(records)"), Arel.sql("SUM(rejected)")
-    ).to_h do |api_key_id, today_count, last_7_days, last_30_days, records, rejected|
-      counts = {
-        today: today_count.to_i,
-        last_7_days: last_7_days.to_i,
-        last_30_days: last_30_days.to_i,
-        records: records.to_i,
-        rejected: rejected.to_i
-      }
-      [api_key_id, counts]
-    end
+    ).to_h { |api_key_id, *sums| [api_key_id, SUMMARY_COUNTS.zip(sums.map(&:to_i)).to_h] }
   end
 
   # Requests without a key, per day: `[[day, visitors, requests, records, rejected], ...]`, newest first.

@@ -50,7 +50,8 @@ describe "API keys and limits" do
       it "answers single records" do
         api_get "/v1/taxa/#{taxon.id}"
         expect(response).to have_http_status :ok
-        expect(response.parsed_body["id"]).to eq taxon.id
+        # Single records are wrapped in their type: `{ "species" => { "id" => ... } }`.
+        expect(response.parsed_body.dig("species", "id")).to eq taxon.id
       end
 
       it "needs a key for lists of all records" do
@@ -102,11 +103,13 @@ describe "API keys and limits" do
       let(:key) { issued.last }
 
       it "lists records, 100 per page, and counts requests and records" do
+        # `create :species` also creates its genus, tribe and subfamily.
+        taxa_count = Taxon.count
         api_get "/v1/taxa", key: key
 
         expect(response).to have_http_status :ok
-        expect(response.parsed_body.size).to eq 1
-        expect(ApiUsageDay.find_by(api_key_id: api_key.id)).to have_attributes(requests: 1, records: 1, client: "")
+        expect(response.parsed_body.size).to eq taxa_count
+        expect(ApiUsageDay.find_by(api_key_id: api_key.id)).to have_attributes(requests: 1, records: taxa_count, client: "")
       end
 
       it "allows more than the no-key limit" do
@@ -192,7 +195,7 @@ describe "API keys and limits" do
         api_key.save!
 
         post issue_api_key_path, params: { token: token }
-        key = response.body[/ac_[1-9A-HJ-NP-Za-km-z]{#{ApiKey::KEY_RANDOM_LENGTH}}/]
+        key = response.body[/ac_[1-9A-HJ-NP-Za-km-z]{#{ApiKey::KEY_RANDOM_LENGTH}}/o]
         expect(key).to be_present
 
         api_get "/v1/taxa", key: key

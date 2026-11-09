@@ -79,7 +79,7 @@ describe "Registering for a free API key" do
       post issue_api_key_path, params: { token: token }
       expect(response).to have_http_status :ok
       expect(response.headers['Cache-Control']).to include 'no-store'
-      key = response.body[/ac_[1-9A-HJ-NP-Za-km-z]{#{ApiKey::KEY_RANDOM_LENGTH}}/]
+      key = response.body[/ac_[1-9A-HJ-NP-Za-km-z]{#{ApiKey::KEY_RANDOM_LENGTH}}/o]
       expect(key).to be_present
       expect(ApiKey.find_active_by_key(key)).to eq api_key
 
