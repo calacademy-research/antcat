@@ -1,0 +1,8 @@
+-page_title "Free API Key"
+-breadcrumb :api_key
+
+%p Press the button to see your API key. It is shown only once, so please copy it and keep it somewhere safe.
+
+=form_with url: issue_api_key_path, method: :post, data: { turbo: false } do |f|
+  =hidden_field_tag :token, @token
+  =f.button "Show my API key", class: "btn-saves btn-md"

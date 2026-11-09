@@ -1,0 +1,96 @@
+-page_title "API Keys"
+-breadcrumb :panel_api_keys
+
+%p
+  -if ApiAccess.enabled?
+    API keys and limits are
+    %strong on.
+  -else
+    API keys and limits are
+    %strong off
+    (the API works as before the keys; the registration form answers 404). Turn them on with
+    %code api_keys: enabled: true
+    in the server's settings.
+  Counts are per UTC day; records and refused requests (429) are for the last 30 days.
+  =link_to "Download CSV", panel_api_keys_path(format: :csv)
+
+-if @api_keys.blank?
+  .callout-blue.callout-responsive No API keys yet.
+-else
+  %table.table-striped
+    %thead
+      %tr
+        %th ID
+        %th Who
+        %th Project
+        %th Registered
+        %th Level
+        %th Status
+        %th Last used
+        %th Today
+        %th 7 days
+        %th 30 days
+        %th Records
+        %th 429s
+        %th
+    %tbody
+      -@api_keys.each do |api_key|
+        -usage = @usage.fetch(api_key.id, {})
+        %tr
+          %td=api_key.id
+          %td
+            =api_key.name
+            %br
+            =mail_to api_key.email
+            -if api_key.institution.present?
+              %br
+              =api_key.institution
+          %td
+            =api_key.project.truncate(200)
+            -if api_key.note.present?
+              %br
+              %em="Note: #{api_key.note.truncate(200)}"
+          %td.whitespace-nowrap=api_key.created_at.utc.to_date
+          %td
+            =api_key.level
+            -if ApiKey::LIMIT_ATTRIBUTES.any? { api_key[it] }
+              %br
+              %small="Own limits: #{ApiAccess.describe(api_key.limits)}"
+          %td
+            =api_key.status
+            -if api_key.key_prefix
+              %br
+              %code=api_key.key_prefix
+          %td.whitespace-nowrap=api_key.last_used_at&.utc&.to_fs(:db)
+          %td=usage[:today].to_i.to_fs(:delimited)
+          %td=usage[:last_7_days].to_i.to_fs(:delimited)
+          %td=usage[:last_30_days].to_i.to_fs(:delimited)
+          %td=usage[:records].to_i.to_fs(:delimited)
+          %td=usage[:rejected].to_i.to_fs(:delimited)
+          %td.whitespace-nowrap
+            =link_to "Edit", edit_panel_api_key_path(api_key), class: "btn-default"
+            -if api_key.active?
+              =link_to "Revoke", revoke_panel_api_key_path(api_key), method: :put, data: { confirm: "Revoke API key ##{api_key.id}?" }, class: "btn-danger"
+            -elsif api_key.revoked? && api_key.key_prefix
+              =link_to "Reactivate", reactivate_panel_api_key_path(api_key), method: :put, class: "btn-default"
+
+%h5.mt-8="Requests without a key (last #{EditorsPanels::ApiKeysController::NO_KEY_DAYS_SHOWN} days)"
+-if @no_key_totals.blank?
+  %p None.
+-else
+  %table.table-striped
+    %thead
+      %tr
+        %th Day (UTC)
+        %th Visitors (IPs)
+        %th Requests
+        %th Records
+        %th 429s
+    %tbody
+      -@no_key_totals.each do |day, visitors, requests, records, rejected|
+        %tr
+          %td=day
+          %td=visitors.to_fs(:delimited)
+          %td=requests.to_fs(:delimited)
+          %td=records.to_fs(:delimited)
+          %td=rejected.to_fs(:delimited)

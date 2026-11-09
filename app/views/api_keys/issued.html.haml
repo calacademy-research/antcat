@@ -1,0 +1,26 @@
+-page_title "Your API Key"
+-breadcrumb :api_key
+
+.callout-blue.mb-4
+  %p Your API key:
+  %p
+    %code#api-key=@key
+  %p
+    %strong Copy it now. It is shown only this once:
+    we store only a fingerprint of it, so we cannot show it again. If you lose it, please register again.
+
+%h6 How to use it
+%p
+  Send the key in the
+  %code=ApiAccess::HEADER
+  header, never in the web address. For example:
+%pre.pre-wrapped="curl -H \"#{ApiAccess::HEADER}: #{@key}\" https://www.antcat.org/v1/taxa"
+
+%p="Your limits: #{ApiAccess.describe(@api_key.limits)}."
+%p
+  Please cite AntCat in your work:
+  =ApiAccess::CITATION
+
+%p
+  Working on a larger project? Brian Fisher welcomes collaborations; write to
+  =mail_to ApiAccess::CONTACT

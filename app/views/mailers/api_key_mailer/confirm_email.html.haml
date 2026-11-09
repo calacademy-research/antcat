@@ -1,0 +1,11 @@
+%p Hello!
+
+%p Someone (hopefully you) asked for a free AntCat API key with this email address. To get the key, open this link and press the button:
+
+%p=link_to 'Get my API key', @url
+
+%p="The link is valid for #{@valid_for_hours} hours and works once. The key is shown only once, so please copy it when you see it. If you did not ask for a key, please ignore this email."
+
+%p
+  Working on a larger project? Brian Fisher welcomes collaborations; write to
+  =mail_to ApiAccess::CONTACT

@@ -146,6 +146,12 @@ Rails.application.routes.draw do
     end
   end
 
+  # Free registered API keys (2026-11-08, see `ApiAccess`): the form, the emailed link's page and the
+  # one-time page that shows the key. Answers 404 while `Settings.api_keys.enabled` is off.
+  get 'api_keys/confirm' => 'api_keys#confirm', as: :confirm_api_key
+  post 'api_keys/confirm' => 'api_keys#issue', as: :issue_api_key
+  resources :api_keys, only: [:new, :create]
+
   # Guide for programs and AI agents; a page, not a file in public/ (see `LlmsTxtController`).
   get 'llms.txt' => 'llms_txt#show', as: :llms_txt, format: false
 
@@ -188,6 +194,13 @@ Rails.application.routes.draw do
       resources :versions, only: [:index, :show]
       resource :bolton_keys_to_ref_tags, only: [:show, :create]
       resource :restart_and_reindex_solrs, only: [:create]
+      # Superadmins: API key registrations and usage (see `ApiAccess`).
+      resources :api_keys, only: [:index, :edit, :update], as: :panel_api_keys do
+        member do
+          put :revoke
+          put :reactivate
+        end
+      end
     end
   end
 

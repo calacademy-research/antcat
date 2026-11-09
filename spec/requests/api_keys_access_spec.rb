@@ -186,14 +186,20 @@ describe "API keys and limits" do
         logged.zip(original_loggers).each { |owner, original| owner.logger = original }
       end
 
-      it "never has the key in the requests that use it" do
-        _api_key, key = issued_key
+      it "never has the key, from the page that shows it to the requests that use it" do
+        api_key = build :api_key
+        token = api_key.new_confirmation_token
+        api_key.save!
+
+        post issue_api_key_path, params: { token: token }
+        key = response.body[/ac_[1-9A-HJ-NP-Za-km-z]{#{ApiKey::KEY_RANDOM_LENGTH}}/]
+        expect(key).to be_present
 
         api_get "/v1/taxa", key: key
         api_get "/v1/taxa/#{taxon.id}", key: key
         expect(response).to have_http_status :ok
 
-        expect(log.string).to include "Api::V1::TaxaController"
+        expect(log.string).to include "ApiKeysController#issue", "Api::V1::TaxaController"
         expect(log.string).not_to include key
       end
     end
