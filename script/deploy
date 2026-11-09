@@ -254,8 +254,9 @@ do_deploy() {
   show_plan "$prev" "$target" "$changes"
 
   if [ -n "$branch" ]; then
-    [ "$branch" = master ] && [ "$ref" = master ] \
-      || die "the checkout is on branch '$branch'; only origin/master can be deployed onto a branch checkout"
+    if [ "$branch" != master ] || [ "$ref" != master ]; then
+      die "the checkout is on branch '$branch'; only origin/master can be deployed onto a branch checkout"
+    fi
     git merge-base --is-ancestor "$prev" "$target" \
       || die "origin/master is not a fast-forward of the local master; check the checkout by hand"
   fi
