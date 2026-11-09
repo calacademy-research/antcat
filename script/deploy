@@ -210,11 +210,11 @@ restart_app() {
   if has dockerfile "$changes"; then
     say "rebuilding the app image (Dockerfile changed): docker compose build app"
     (cd dockerized_app && docker compose build app)
-    say "recreating the app container: docker compose up -d app"
-    (cd dockerized_app && docker compose up -d app)
+    say "recreating the app container: docker compose up -d --no-deps app"
+    (cd dockerized_app && docker compose up -d --no-deps app)
   elif has compose "$changes"; then
-    say "recreating the app container (docker-compose.yml changed): docker compose up -d app"
-    (cd dockerized_app && docker compose up -d app)
+    say "recreating the app container (docker-compose.yml changed): docker compose up -d --no-deps app"
+    (cd dockerized_app && docker compose up -d --no-deps app)
   else
     say "restarting: docker restart $APP_CONTAINER"
     docker restart "$APP_CONTAINER" > /dev/null
@@ -230,8 +230,13 @@ print_failure() {
   echo >&2
   echo "deploy: to roll back the code to $(short "$prev"):" >&2
   echo "    cd $APP_DIR && script/deploy --rollback" >&2
-  echo "deploy: or by hand:" >&2
-  echo "    cd $APP_DIR && git checkout -q $prev && docker restart $APP_CONTAINER" >&2
+  if has dockerfile "${CHANGES:-}" || has compose "${CHANGES:-}"; then
+    echo "deploy: (the image or container changed: use script/deploy --rollback, which rebuilds/recreates" >&2
+    echo "        and reloads nginx; a plain git checkout + docker restart would keep the new image)" >&2
+  else
+    echo "deploy: or by hand:" >&2
+    echo "    cd $APP_DIR && git checkout -q $prev && docker restart $APP_CONTAINER" >&2
+  fi
   if [ "$migrated" = 1 ]; then
     echo "deploy: MIGRATIONS RAN. Rolling back the code does not undo them; check first whether the" >&2
     echo "        old code works with the new tables/columns (added tables usually do). Do not run" >&2
@@ -258,10 +263,12 @@ reload_nginx_if_needed() {
 
 do_deploy() {
   local dry_run="$1" ref="$2" timeout="$3"
-  local prev target branch changes
+  local prev target branch running last_failed=0
   MIGRATED=0
+  CHANGES=""
 
-  prev="$(git rev-parse HEAD)"
+  running="$(git rev-parse HEAD)"
+  prev="$running"
   say "fetching from GitHub (origin)"
   git fetch -q origin
   if git rev-parse -q --verify "origin/$ref^{commit}" > /dev/null; then
@@ -273,12 +280,25 @@ do_deploy() {
   fi
   branch="$(git symbolic-ref -q --short HEAD || true)"
 
-  if [ "$prev" = "$target" ]; then
+  # After a failed deploy the running commit is not a good one: go back to the commit saved before
+  # it, both as the rollback commit and as the base for what changed (so a retry still rebuilds the
+  # image or runs the migrations that failed).
+  local saved=""
+  [ -s "$ROLLBACK_FILE" ] && saved="$(tr -d '[:space:]' < "$ROLLBACK_FILE")"
+  if [ -n "$saved" ] && git rev-parse -q --verify "$saved^{commit}" > /dev/null \
+    && grep -E ' (deploy|rollback) (OK|FAILED)' "$DEPLOY_LOG" 2> /dev/null | tail -1 | grep -q 'deploy FAILED'; then
+    last_failed=1
+    prev="$(git rev-parse "$saved^{commit}")"
+    say "the last deploy failed: comparing with the saved rollback commit $(short "$prev"), not the running $(short "$running")"
+  fi
+
+  if [ "$running" = "$target" ] && [ "$last_failed" = 0 ]; then
     say "already at $(short "$target") ($ref); nothing to deploy."
     return 0
   fi
 
-  changes="$(classify_changes "$prev" "$target")"
+  CHANGES="$(classify_changes "$prev" "$target")"
+  local changes="$CHANGES"
   show_plan "$prev" "$target" "$changes"
 
   # After a rollback on a branch checkout (production), go back onto master.
@@ -294,7 +314,7 @@ do_deploy() {
     if [ "$branch" != master ] || [ "$ref" != master ]; then
       die "the checkout is on branch '$branch'; only origin/master can be deployed onto a branch checkout"
     fi
-    git merge-base --is-ancestor "$prev" "$target" \
+    git merge-base --is-ancestor "$running" "$target" \
       || die "origin/master is not a fast-forward of the local master; check the checkout by hand"
   fi
 
@@ -303,10 +323,8 @@ do_deploy() {
     return 0
   fi
 
-  # After a failed deploy the running commit is not a good one to go back to: keep the saved one.
-  if [ -s "$ROLLBACK_FILE" ] && grep -E ' (deploy|rollback) (OK|FAILED)' "$DEPLOY_LOG" 2> /dev/null | tail -1 | grep -q 'deploy FAILED'; then
-    prev="$(tr -d '[:space:]' < "$ROLLBACK_FILE")"
-    say "the last deploy failed; keeping the saved rollback commit $(short "$prev")"
+  if [ "$last_failed" = 1 ]; then
+    say "keeping the saved rollback commit $(short "$prev") in $ROLLBACK_FILE"
   else
     echo "$prev" > "$ROLLBACK_FILE"
     say "saved the running commit to $ROLLBACK_FILE"

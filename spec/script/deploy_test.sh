@@ -44,6 +44,7 @@ case "$1" in
   inspect) echo true ;;
   logs) echo "fake app log" ;;
   restart) exit "${FAKE_RESTART_RC:-0}" ;;
+  compose) [[ "$*" == *build* ]] && exit "${FAKE_BUILD_RC:-0}" ;;
   exec)
     if [[ "$*" == *db:migrate* ]]; then exit "${FAKE_MIGRATE_RC:-0}"; fi
     if [[ "$*" == *curl* && "$*" == *http_code* ]]; then echo "${FAKE_HTTP:-200}"; exit 0; fi
@@ -58,7 +59,7 @@ FAKE
   export PATH="$BIN:$PATH" DOCKER_LOG="$T/docker.log" ANTCAT_DIR="$SERVER"
   export ANTCAT_ROLLBACK_FILE="$T/rollback.txt" ANTCAT_DEPLOY_LOG="$T/deploy.log"
   export ANTCAT_LOCK_FILE="$T/lock" ANTCAT_HEALTH_INTERVAL=1
-  unset FAKE_HTTP FAKE_MIGRATE_RC FAKE_RESTART_RC
+  unset FAKE_HTTP FAKE_MIGRATE_RC FAKE_RESTART_RC FAKE_BUILD_RC
   : > "$DOCKER_LOG"
 }
 
@@ -148,7 +149,7 @@ B="$(push_change dockerized_app/Dockerfile "B: new Ruby")"
 run
 check "exits 0" [ "$RC" -eq 0 ]
 check "built the image" docker_called "compose build app"
-check "recreated the container" docker_called "compose up -d app"
+check "recreated only the app container" docker_called "compose up -d --no-deps app"
 check "did not just restart" not docker_called "restart antcat-app"
 check "reloaded nginx" docker_called "nginx -s reload"
 teardown
@@ -249,6 +250,34 @@ C="$(push_change app/models/taxon.rb "C: fixed")"
 run
 check "exits 0" [ "$RC" -eq 0 ]
 check "rollback file still holds A" [ "$(cat "$ANTCAT_ROLLBACK_FILE")" = "$A" ]
+teardown
+
+setup "retry after a failed image build rebuilds again"
+B="$(push_change dockerized_app/Dockerfile "B: new Ruby")"
+export FAKE_BUILD_RC=1
+run
+check "first run fails" [ "$RC" -ne 0 ]
+check "suggests script/deploy --rollback, not a plain restart" out_has "use script/deploy --rollback"
+unset FAKE_BUILD_RC
+: > "$DOCKER_LOG"
+run
+check "retry exits 0" [ "$RC" -eq 0 ]
+check "retry rebuilt the image" docker_called "compose build app"
+check "rollback file still holds A" [ "$(cat "$ANTCAT_ROLLBACK_FILE")" = "$A" ]
+teardown
+
+setup "retry after a failed migration runs the migrations again"
+B="$(push_change db/migrate/20261109000000_add_api_keys.rb "B: add api keys")"
+export FAKE_MIGRATE_RC=1
+run
+check "first run fails" [ "$RC" -ne 0 ]
+unset FAKE_MIGRATE_RC
+C="$(push_change app/models/taxon.rb "C: fix the model the migration uses")"
+: > "$DOCKER_LOG"
+run
+check "retry exits 0" [ "$RC" -eq 0 ]
+check "retry ran db:migrate" docker_called "db:migrate"
+check "HEAD is the fix" head_is "$C"
 teardown
 
 echo
