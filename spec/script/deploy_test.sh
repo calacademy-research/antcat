@@ -47,6 +47,15 @@ case "$1" in
   compose) [[ "$*" == *build* ]] && exit "${FAKE_BUILD_RC:-0}" ;;
   exec)
     if [[ "$*" == *db:migrate* ]]; then exit "${FAKE_MIGRATE_RC:-0}"; fi
+    if [[ "$*" == *"bundle check"* ]]; then
+      # FAKE_GEMS_MISSING_CALLS: the first N checks run while startup.sh is still installing gems.
+      n=$(( $(cat "$DOCKER_LOG.gems" 2> /dev/null || echo 0) + 1 )); echo "$n" > "$DOCKER_LOG.gems"
+      [ "$n" -le "${FAKE_GEMS_MISSING_CALLS:-0}" ] && exit 1
+      exit 0
+    fi
+    if [[ "$*" == *curl* ]] && [ -n "${FAKE_DOWN_UNTIL_MIGRATED:-}" ] && ! grep -q db:migrate "$DOCKER_LOG"; then
+      printf 000; exit 7
+    fi
     if [[ "$*" == *curl* && "$*" == *http_code* ]]; then
       # FAKE_DOWN_CALLS: the first N health requests find nothing listening (curl prints 000, exits 7).
       n=$(( $(cat "$DOCKER_LOG.down" 2> /dev/null || echo 0) + 1 )); echo "$n" > "$DOCKER_LOG.down"
@@ -65,7 +74,7 @@ FAKE
   export PATH="$BIN:$PATH" DOCKER_LOG="$T/docker.log" ANTCAT_DIR="$SERVER"
   export ANTCAT_ROLLBACK_FILE="$T/rollback.txt" ANTCAT_DEPLOY_LOG="$T/deploy.log"
   export ANTCAT_LOCK_FILE="$T/lock" ANTCAT_HEALTH_INTERVAL=1
-  unset FAKE_HTTP FAKE_MIGRATE_RC FAKE_RESTART_RC FAKE_BUILD_RC FAKE_DOWN_CALLS
+  unset FAKE_HTTP FAKE_MIGRATE_RC FAKE_RESTART_RC FAKE_BUILD_RC FAKE_DOWN_CALLS FAKE_GEMS_MISSING_CALLS FAKE_DOWN_UNTIL_MIGRATED
   : > "$DOCKER_LOG"
 }
 
@@ -296,13 +305,23 @@ check "retry ran db:migrate" docker_called "db:migrate"
 check "HEAD is the fix" head_is "$C"
 teardown
 
-setup "migrations wait until Puma really answers"
+setup "migrations wait for the gems, not for Puma"
 B="$(push_change db/migrate/20261109000000_add_api_keys.rb "B: add api keys")"
+export FAKE_GEMS_MISSING_CALLS=3 FAKE_DOWN_UNTIL_MIGRATED=1
+run
+check "exits 0" [ "$RC" -eq 0 ]
+check "checked the gems until they were there" [ "$(grep -c 'bundle check' "$DOCKER_LOG")" -eq 4 ]
+check "migrated without any health request first" \
+  [ "$(grep -n -m1 db:migrate "$DOCKER_LOG" | cut -d: -f1)" -lt "$(grep -n -m1 curl "$DOCKER_LOG" | cut -d: -f1)" ]
+check "no error reported while waiting" not out_has "UNEXPECTED ERROR"
+check "no FAILED line in the deploy log" not grep -q FAILED "$ANTCAT_DEPLOY_LOG"
+teardown
+
+setup "health check waits while nothing listens"
+B="$(push_change app/models/taxon.rb "B: model change")"
 export FAKE_DOWN_CALLS=3
 run
 check "exits 0" [ "$RC" -eq 0 ]
-check "waited through the connection failures" [ "$(grep -c http_code "$DOCKER_LOG")" -ge 4 ]
-check "migrated after Puma answered" [ "$(grep -n -m1 db:migrate "$DOCKER_LOG" | cut -d: -f1)" -gt 4 ]
 check "no error reported while waiting" not out_has "UNEXPECTED ERROR"
 check "no FAILED line in the deploy log" not grep -q FAILED "$ANTCAT_DEPLOY_LOG"
 teardown

@@ -20,7 +20,7 @@
 #   5. rebuilds the app image only when dockerized_app/Dockerfile changed, recreates the app
 #      container when docker-compose.yml changed, otherwise restarts it (startup.sh runs bundle
 #      install, yarn and the asset build on every start, so a Gemfile or asset change needs only that)
-#   6. when db/migrate changed: waits for Puma, runs `rails db:migrate` as the app user, restarts
+#   6. when db/migrate changed: waits until the gems are installed (bundle check), runs `rails db:migrate` as the app user, restarts
 #   7. waits until the app answers on its local port (not through Cloudflare): /v1/taxa/429011 and
 #      the home page with HTTP 200, and the home page footer shows the new commit
 #   8. prints the deployed commit and a line for the shared AntCat server log
@@ -163,15 +163,15 @@ container_running() {
   [ "$(docker inspect -f '{{.State.Running}}' "$APP_CONTAINER" 2> /dev/null || true)" = true ]
 }
 
-# Waits until Puma answers at all (any HTTP status). Used before migrations: the new code may
-# not serve pages until its tables exist.
-wait_for_puma() {
-  local timeout="$1" waited=0 code start=$SECONDS
-  say "waiting for Puma to start (startup.sh installs gems and builds assets first; a few minutes)"
+# Waits until the restarted container has the gems the new Gemfile.lock needs (`bundle check`).
+# Used before migrations: they need the gems, not a running Puma (the new code may not even boot
+# before its migrations have run).
+wait_for_gems() {
+  local timeout="$1" waited=0 start=$SECONDS
+  say "waiting for the gems in the restarted container (startup.sh runs bundle install)"
   while [ "$waited" -lt "$timeout" ]; do
-    code="$(http_code /)"
-    if [ "$code" != 000 ]; then
-      say "Puma answers (HTTP $code) after ${waited}s"
+    if container_running && docker exec -w /app "$APP_CONTAINER" bundle check > /dev/null 2>&1; then
+      say "gems ready after ${waited}s"
       return 0
     fi
     sleep "$HEALTH_INTERVAL"
@@ -362,8 +362,8 @@ do_deploy() {
   restart_app "$changes"
 
   if has migrations "$changes"; then
-    if ! wait_for_puma "$timeout"; then
-      log_line "deploy FAILED (app did not start before migrations) at $(short "$target")"
+    if ! wait_for_gems "$timeout"; then
+      log_line "deploy FAILED (gems not ready before migrations) at $(short "$target")"
       print_failure "$prev" 0
       exit 1
     fi
