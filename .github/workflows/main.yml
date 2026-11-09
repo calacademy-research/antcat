@@ -47,6 +47,25 @@ jobs:
           bundle exec bundle-audit check --update > /tmp/audit.txt 2>&1 || true
           { echo '### bundler-audit'; echo '```'; cat /tmp/audit.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
           cat /tmp/audit.txt
+  deploy-script:
+    name: Deploy script (shellcheck, tests)
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+
+      - name: ShellCheck
+        run: shellcheck --version && shellcheck script/deploy spec/script/deploy_test.sh
+
+      - name: Tests (fake docker, local git repositories)
+        run: |
+          git config --global user.email ci@example.org
+          git config --global user.name ci
+          spec/script/deploy_test.sh
+
   rubocop:
     name: RuboCop
     runs-on: ubuntu-24.04

@@ -34,8 +34,14 @@ shows `600 root:root`, `600 root:root`, `700 root:root`. A change to the app's m
 needs the container recreated (`docker compose up -d app`, then `docker compose exec web nginx -s reload`);
 `docker restart antcat-app` keeps the old mounts.
 
-Deploy a code change: `cd /var/www/antcat-2 && git pull && docker restart antcat-app`
-(startup runs bundle install, yarn, asset precompile and Solr; allow a few minutes).
+Deploy a code change: `cd /var/www/antcat-2 && script/deploy --dry-run` to see what would change, then
+`script/deploy`. It refuses if tracked files have local changes, saves the running commit to
+`/root/antcat-rollback-commit.txt`, checks out `origin/master`, rebuilds the image only when `Dockerfile`
+changed, runs `rails db:migrate` when `db/migrate` changed, restarts, and waits until the app answers on its
+local port and the footer shows the new commit (startup runs bundle install, yarn and the asset build; allow
+a few minutes). On a failed check it prints the rollback command; it never rolls back by itself.
+`script/deploy --rollback` goes back to the saved commit. Every run is logged in `/root/antcat-deploy.log`.
+See `script/deploy --help`. By hand, as before: `git pull && docker restart antcat-app`.
 Never edit tracked files on the server; commit to GitHub instead.
 
 The app runs as the user `antcat` (uid 1000, gid 1001), not root. `startup.sh` starts as root only to
