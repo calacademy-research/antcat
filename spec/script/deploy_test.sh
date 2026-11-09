@@ -303,6 +303,8 @@ run
 check "exits 0" [ "$RC" -eq 0 ]
 check "waited through the connection failures" [ "$(grep -c http_code "$DOCKER_LOG")" -ge 4 ]
 check "migrated after Puma answered" [ "$(grep -n -m1 db:migrate "$DOCKER_LOG" | cut -d: -f1)" -gt 4 ]
+check "no error reported while waiting" not out_has "UNEXPECTED ERROR"
+check "no FAILED line in the deploy log" not grep -q FAILED "$ANTCAT_DEPLOY_LOG"
 teardown
 
 setup "an interrupted deploy counts as failed"

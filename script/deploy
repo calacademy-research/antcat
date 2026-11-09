@@ -154,13 +154,13 @@ http_code() {
   # container is down. Either way the result is 000.
   local code
   code="$(docker exec "$APP_CONTAINER" curl -s -o /dev/null -m 20 -w '%{http_code}' \
-    -H 'X-Forwarded-Proto: https' "http://127.0.0.1:${APP_PORT}$1" 2> /dev/null)" || true
+    -H 'X-Forwarded-Proto: https' "http://127.0.0.1:${APP_PORT}$1" 2> /dev/null || true)"
   [[ "$code" =~ ^[1-5][0-9][0-9]$ ]] || code=000
   echo "$code"
 }
 
 container_running() {
-  [ "$(docker inspect -f '{{.State.Running}}' "$APP_CONTAINER" 2> /dev/null)" = true ]
+  [ "$(docker inspect -f '{{.State.Running}}' "$APP_CONTAINER" 2> /dev/null || true)" = true ]
 }
 
 # Waits until Puma answers at all (any HTTP status). Used before migrations: the new code may
