@@ -239,7 +239,7 @@ print_failure() {
   fi
 }
 
-# shellcheck disable=SC2329 # called from the ERR trap
+# shellcheck disable=SC2317,SC2329 # called from the ERR trap
 on_error() {
   trap - ERR
   log_line "deploy FAILED (unexpected error, line ${BASH_LINENO[0]}) at $(git rev-parse --short=9 HEAD)"
