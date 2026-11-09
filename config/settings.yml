@@ -26,5 +26,13 @@ catalog:
 editors_panel:
   max_featured_wiki_pages_links: 6
 
+# Free registered API keys and the usage limits of /v1 (see `ApiAccess`). Off: the API works as before
+# the keys (no key check, no counting) and the key registration form answers 404. To turn on, set
+# `api_keys: enabled: true` in config/settings/production.secret.yml and restart the app.
+api_keys:
+  enabled: false
+  # A copy of each registration (when its key is issued) goes here.
+  registration_copy_to: "bfisher@calacademy.org"
+
 contact_us_email_address: "bfisher@calacademy.org"
 suggest_edit_email_address: "bfisher@calacademy.org"

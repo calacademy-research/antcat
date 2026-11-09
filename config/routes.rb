@@ -146,6 +146,9 @@ Rails.application.routes.draw do
     end
   end
 
+  # Guide for programs and AI agents; a page, not a file in public/ (see `LlmsTxtController`).
+  get 'llms.txt' => 'llms_txt#show', as: :llms_txt, format: false
+
   scope module: 'api' do
     # The API's front door (2026-11-08): what it is, its terms and where the docs are; see Api::V1::RootController.
     get '/v1', to: 'v1/root#show', as: :api_v1_root
