@@ -43,6 +43,7 @@ echo "docker $*" >> "$DOCKER_LOG"
 case "$1" in
   inspect) echo true ;;
   logs) echo "fake app log" ;;
+  restart) exit "${FAKE_RESTART_RC:-0}" ;;
   exec)
     if [[ "$*" == *db:migrate* ]]; then exit "${FAKE_MIGRATE_RC:-0}"; fi
     if [[ "$*" == *curl* && "$*" == *http_code* ]]; then echo "${FAKE_HTTP:-200}"; exit 0; fi
@@ -57,7 +58,7 @@ FAKE
   export PATH="$BIN:$PATH" DOCKER_LOG="$T/docker.log" ANTCAT_DIR="$SERVER"
   export ANTCAT_ROLLBACK_FILE="$T/rollback.txt" ANTCAT_DEPLOY_LOG="$T/deploy.log"
   export ANTCAT_LOCK_FILE="$T/lock" ANTCAT_HEALTH_INTERVAL=1
-  unset FAKE_HTTP FAKE_MIGRATE_RC
+  unset FAKE_HTTP FAKE_MIGRATE_RC FAKE_RESTART_RC
   : > "$DOCKER_LOG"
 }
 
@@ -202,6 +203,52 @@ F="$(git -C "$WORK" rev-parse HEAD)"
 run --ref feature
 check "exits 0" [ "$RC" -eq 0 ]
 check "HEAD is the feature commit" head_is "$F"
+teardown
+
+setup "unexpected error after the checkout still prints the rollback command"
+B="$(push_change app/models/taxon.rb "B: model change")"
+export FAKE_RESTART_RC=1
+run
+check "exits non-zero" [ "$RC" -ne 0 ]
+check "says unexpected error" out_has "UNEXPECTED ERROR"
+check "prints the rollback command" out_has "git checkout -q $A && docker restart antcat-app"
+check "logged the failure" grep -q "deploy FAILED (unexpected error" "$ANTCAT_DEPLOY_LOG"
+teardown
+
+setup "rollback on a branch checkout: the next deploy goes back onto master"
+git -C "$SERVER" checkout -q master
+B="$(push_change app/models/taxon.rb "B: broken")"
+run
+run --rollback
+check "rolled back" head_is "$A"
+run --ref some-branch
+check "refuses another ref after a production rollback" [ "$RC" -ne 0 ]
+C="$(push_change app/models/taxon.rb "C: fixed")"
+run
+check "exits 0" [ "$RC" -eq 0 ]
+check "HEAD is the fix" head_is "$C"
+check "back on branch master" [ "$(git -C "$SERVER" symbolic-ref -q --short HEAD)" = master ]
+teardown
+
+setup "rollback across a Dockerfile change rebuilds and reloads nginx"
+B="$(push_change dockerized_app/Dockerfile "B: new Ruby")"
+run
+: > "$DOCKER_LOG"
+run --rollback
+check "exits 0" [ "$RC" -eq 0 ]
+check "rebuilt the image" docker_called "compose build app"
+check "reloaded nginx" docker_called "nginx -s reload"
+teardown
+
+setup "after a failed deploy the rollback commit stays the last good one"
+B="$(push_change app/models/taxon.rb "B: broken")"
+export FAKE_HTTP=500
+run --timeout 2
+unset FAKE_HTTP
+C="$(push_change app/models/taxon.rb "C: fixed")"
+run
+check "exits 0" [ "$RC" -eq 0 ]
+check "rollback file still holds A" [ "$(cat "$ANTCAT_ROLLBACK_FILE")" = "$A" ]
 teardown
 
 echo
