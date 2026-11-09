@@ -49,7 +49,8 @@ case "$1" in
     if [[ "$*" == *db:migrate* ]]; then exit "${FAKE_MIGRATE_RC:-0}"; fi
     if [[ "$*" == *curl* && "$*" == *http_code* ]]; then echo "${FAKE_HTTP:-200}"; exit 0; fi
     if [[ "$*" == *curl* ]]; then
-      echo "<footer><a href='x'>$(git -C "$ANTCAT_DIR" rev-parse --short=7 HEAD)</a></footer>"
+      c="$(git -C "$ANTCAT_DIR" rev-parse HEAD)"
+      echo "<footer><a href=\"https://github.com/calacademy-research/antcat/commit/$c\" title=\"Deployed commit on GitHub\">${c:0:7}</a></footer>"
       exit 0
     fi ;;
 esac
@@ -148,8 +149,8 @@ setup "Dockerfile change rebuilds the image and reloads nginx"
 B="$(push_change dockerized_app/Dockerfile "B: new Ruby")"
 run
 check "exits 0" [ "$RC" -eq 0 ]
-check "built the image" docker_called "compose build app"
-check "recreated only the app container" docker_called "compose up -d --no-deps app"
+check "built the image" docker_called "compose .*build app"
+check "recreated only the app container" docker_called "compose .*up -d --no-deps app"
 check "did not just restart" not docker_called "restart antcat-app"
 check "reloaded nginx" docker_called "nginx -s reload"
 teardown
@@ -206,6 +207,14 @@ check "exits 0" [ "$RC" -eq 0 ]
 check "HEAD is the feature commit" head_is "$F"
 teardown
 
+setup "refuses when the deploy log cannot be written"
+B="$(push_change app/models/taxon.rb "B: model change")"
+export ANTCAT_DEPLOY_LOG="$T/no-such-dir/deploy.log"
+run
+check "exits non-zero" [ "$RC" -ne 0 ]
+check "did not move HEAD" head_is "$A"
+teardown
+
 setup "unexpected error after the checkout still prints the rollback command"
 B="$(push_change app/models/taxon.rb "B: model change")"
 export FAKE_RESTART_RC=1
@@ -237,7 +246,7 @@ run
 : > "$DOCKER_LOG"
 run --rollback
 check "exits 0" [ "$RC" -eq 0 ]
-check "rebuilt the image" docker_called "compose build app"
+check "rebuilt the image" docker_called "compose .*build app"
 check "reloaded nginx" docker_called "nginx -s reload"
 teardown
 
@@ -258,11 +267,12 @@ export FAKE_BUILD_RC=1
 run
 check "first run fails" [ "$RC" -ne 0 ]
 check "suggests script/deploy --rollback, not a plain restart" out_has "use script/deploy --rollback"
+check "error reported once" [ "$(grep -c "UNEXPECTED ERROR" <<< "$OUT")" -eq 1 ]
 unset FAKE_BUILD_RC
 : > "$DOCKER_LOG"
 run
 check "retry exits 0" [ "$RC" -eq 0 ]
-check "retry rebuilt the image" docker_called "compose build app"
+check "retry rebuilt the image" docker_called "compose .*build app"
 check "rollback file still holds A" [ "$(cat "$ANTCAT_ROLLBACK_FILE")" = "$A" ]
 teardown
 

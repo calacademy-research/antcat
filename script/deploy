@@ -81,6 +81,11 @@ main() {
     die "tracked files have local changes (above). Do not edit them on the server; commit to GitHub. Nothing was changed."
   fi
 
+  # The deploy log also tells the next run whether the last deploy failed, so it must be writable.
+  if [ "$dry_run" = 0 ]; then
+    { : >> "$DEPLOY_LOG"; } 2> /dev/null || die "cannot write the deploy log $DEPLOY_LOG"
+  fi
+
   if [ "$mode" = rollback ]; then
     do_rollback "$dry_run" "$yes" "$timeout"
   else
@@ -172,8 +177,8 @@ wait_for_puma() {
 
 # Waits until every health path answers 200 and the home page footer shows the expected commit.
 wait_healthy() {
-  # The footer shows the first 7 characters of the commit (app/views/application/_footer.html.haml).
-  local timeout="$1" commit7="${2:0:7}" waited=0 ok path code next_report=0
+  # The footer links the running commit as .../commit/<full hash> (app/views/application/_footer.html.haml).
+  local timeout="$1" commit="$2" commit7="${2:0:7}" waited=0 ok path code next_report=0
   say "waiting for the health check (local port ${APP_PORT}: ${HEALTH_PATHS[*]}), up to ${timeout}s"
   while [ "$waited" -lt "$timeout" ]; do
     ok=1
@@ -185,7 +190,7 @@ wait_healthy() {
       local body
       body="$(docker exec "$APP_CONTAINER" curl -s -m 20 -H 'X-Forwarded-Proto: https' \
         "http://127.0.0.1:${APP_PORT}/" 2> /dev/null || true)"
-      if [[ "$body" == *">${commit7}<"* ]]; then
+      if [[ "$body" == *"/commit/${commit}"* ]]; then
         say "healthy after ${waited}s: ${HEALTH_PATHS[*]} answer 200, footer shows ${commit7}"
         return 0
       fi
@@ -209,12 +214,12 @@ restart_app() {
   local changes="$1"
   if has dockerfile "$changes"; then
     say "rebuilding the app image (Dockerfile changed): docker compose build app"
-    (cd dockerized_app && docker compose build app)
+    docker compose -f dockerized_app/docker-compose.yml build app
     say "recreating the app container: docker compose up -d --no-deps app"
-    (cd dockerized_app && docker compose up -d --no-deps app)
+    docker compose -f dockerized_app/docker-compose.yml up -d --no-deps app
   elif has compose "$changes"; then
     say "recreating the app container (docker-compose.yml changed): docker compose up -d --no-deps app"
-    (cd dockerized_app && docker compose up -d --no-deps app)
+    docker compose -f dockerized_app/docker-compose.yml up -d --no-deps app
   else
     say "restarting: docker restart $APP_CONTAINER"
     docker restart "$APP_CONTAINER" > /dev/null
@@ -257,7 +262,7 @@ reload_nginx_if_needed() {
   if has dockerfile "$1" || has compose "$1" || has nginx "$1"; then
     # nginx keeps the old container's address after a recreate (502 until reloaded).
     say "reloading nginx"
-    (cd dockerized_app && docker compose exec -T web nginx -s reload) || say "WARNING: nginx reload failed; run it by hand"
+    docker compose -f dockerized_app/docker-compose.yml exec -T web nginx -s reload || say "WARNING: nginx reload failed; run it by hand"
   fi
 }
 
