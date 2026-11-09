@@ -1,0 +1,373 @@
+#!/usr/bin/env bash
+# Deploys antcat.org from GitHub on the server it runs on (antcat-staging or antcat-prod).
+# Replaces the hand-typed deploy (git fetch/pull + docker restart antcat-app).
+#
+# Usage (as root, in the checkout /var/www/antcat-2):
+#   script/deploy --dry-run      show what would change, change nothing
+#   script/deploy                deploy origin/master
+#   script/deploy --ref BRANCH   deploy another branch or commit from GitHub (staging only, for testing)
+#   script/deploy --rollback     go back to the commit saved before the last deploy
+#
+# Options: --timeout SECONDS (health check wait, default 900), --yes (confirm a rollback across
+# migrations), -h/--help.
+#
+# What a deploy does, in order:
+#   1. refuses if tracked files in the checkout have local changes (never edit them on the server)
+#   2. saves the running commit to /root/antcat-rollback-commit.txt
+#   3. fetches from GitHub and lists the new commits and what kind of files changed
+#   4. checks out the new commit (fast-forward when the checkout is on branch master, as on
+#      antcat-prod; a detached checkout, as on antcat-staging, stays detached)
+#   5. rebuilds the app image only when dockerized_app/Dockerfile changed, recreates the app
+#      container when docker-compose.yml changed, otherwise restarts it (startup.sh runs bundle
+#      install, yarn and the asset build on every start, so a Gemfile or asset change needs only that)
+#   6. when db/migrate changed: waits for Puma, runs `rails db:migrate` as the app user, restarts
+#   7. waits until the app answers on its local port (not through Cloudflare): /v1/taxa/429011 and
+#      the home page with HTTP 200, and the home page footer shows the new commit
+#   8. prints the deployed commit and a line for the shared AntCat server log
+# On a failed health check it prints the exact rollback command. It never rolls back by itself:
+# after a migration the code and the database must be looked at together first.
+#
+# Every run is appended to /root/antcat-deploy.log.
+#
+# For the tests (spec/script/deploy_test.sh) these can be overridden: ANTCAT_DIR,
+# ANTCAT_ROLLBACK_FILE, ANTCAT_DEPLOY_LOG, ANTCAT_LOCK_FILE, ANTCAT_HEALTH_INTERVAL.
+
+# Everything runs inside main(): bash reads a script while running it, and this file is replaced
+# by `git checkout` in the middle of a deploy. A function is read whole before it starts.
+main() {
+  set -euo pipefail
+
+  local script_dir
+  script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+  APP_DIR="${ANTCAT_DIR:-$(cd "$script_dir/.." && pwd)}"
+  ROLLBACK_FILE="${ANTCAT_ROLLBACK_FILE:-/root/antcat-rollback-commit.txt}"
+  DEPLOY_LOG="${ANTCAT_DEPLOY_LOG:-/root/antcat-deploy.log}"
+  LOCK_FILE="${ANTCAT_LOCK_FILE:-/tmp/antcat-deploy.lock}"
+  HEALTH_INTERVAL="${ANTCAT_HEALTH_INTERVAL:-10}"
+  APP_CONTAINER=antcat-app
+  APP_PORT=8080
+  HEALTH_PATHS=("/v1/taxa/429011" "/")
+
+  local mode=deploy dry_run=0 ref=master timeout=900 yes=0
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --dry-run) dry_run=1 ;;
+      --rollback) mode=rollback ;;
+      --ref) ref="${2:?--ref needs a branch or commit}"; shift ;;
+      --timeout) timeout="${2:?--timeout needs seconds}"; shift ;;
+      --yes) yes=1 ;;
+      -h | --help) sed -n '2,/^$/p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; return 0 ;;
+      *) die "unknown option: $1 (see --help)" ;;
+    esac
+    shift
+  done
+  case "$timeout" in '' | *[!0-9]*) die "--timeout must be a number of seconds" ;; esac
+
+  cd "$APP_DIR"
+  git rev-parse --git-dir > /dev/null 2>&1 || die "$APP_DIR is not a git checkout"
+  command -v docker > /dev/null || die "docker not found"
+
+  if command -v flock > /dev/null; then
+    exec 9> "$LOCK_FILE"
+    flock -n 9 || die "another deploy is running (lock $LOCK_FILE)"
+  fi
+
+  if [ -n "$(git status --porcelain --untracked-files=no)" ]; then
+    git status --short --untracked-files=no >&2
+    die "tracked files have local changes (above). Do not edit them on the server; commit to GitHub. Nothing was changed."
+  fi
+
+  if [ "$mode" = rollback ]; then
+    do_rollback "$dry_run" "$yes" "$timeout"
+  else
+    do_deploy "$dry_run" "$ref" "$timeout"
+  fi
+}
+
+die() { echo "deploy: ERROR: $*" >&2; exit 1; }
+say() { echo "deploy: $*"; }
+short() { git rev-parse --short=9 "$1"; }
+log_line() { echo "$(date '+%Y-%m-%d %H:%M:%S %Z') $(hostname) $*" >> "$DEPLOY_LOG" 2> /dev/null || true; }
+
+# Prints which kinds of files changed between two commits, one keyword per line.
+classify_changes() {
+  local files
+  files="$(git diff --name-only "$1" "$2")"
+  grep -qE '^dockerized_app/Dockerfile$' <<< "$files" && echo dockerfile
+  grep -qE '^dockerized_app/docker-compose\.yml$' <<< "$files" && echo compose
+  grep -qE '^Gemfile(\.lock)?$' <<< "$files" && echo gems
+  grep -qE '^db/migrate/' <<< "$files" && echo migrations
+  grep -qE '^(app/(assets|javascript)/|package\.json$|yarn\.lock$|tailwind|postcss|esbuild)' <<< "$files" && echo assets
+  grep -qE '^solr/configsets/' <<< "$files" && echo solr
+  grep -qE '^dockerized_app/nginx/' <<< "$files" && echo nginx
+  return 0
+}
+
+has() { grep -qx "$1" <<< "$2"; }
+
+show_plan() {
+  local from="$1" to="$2" changes="$3" count
+  count="$(git rev-list --count "$from..$to" 2> /dev/null || echo '?')"
+  say "running:  $(short "$from")  $(git log -1 --format=%s "$from")"
+  say "target:   $(short "$to")  $(git log -1 --format=%s "$to")"
+  if git merge-base --is-ancestor "$from" "$to"; then
+    say "$count new commit(s):"
+    git log --oneline --no-decorate -n 50 "$from..$to" | sed 's/^/    /'
+  else
+    say "the target is not a descendant of the running commit (going back, or another branch). Commits in the target only:"
+    git log --oneline --no-decorate -n 50 "$from..$to" | sed 's/^/    /'
+  fi
+  say "files changed: $(git diff --name-only "$from" "$to" | wc -l | tr -d ' ')"
+  local item label note
+  for item in dockerfile compose gems migrations assets solr nginx; do
+    case "$item" in
+      dockerfile) label="Dockerfile" note="image is rebuilt and the app container recreated" ;;
+      compose) label="docker-compose.yml" note="app container is recreated (other services: by hand)" ;;
+      gems) label="Gemfile/Gemfile.lock" note="startup.sh installs gems on restart" ;;
+      migrations) label="db/migrate" note="rails db:migrate is run" ;;
+      assets) label="JavaScript/CSS" note="startup.sh builds assets on restart" ;;
+      solr) label="Solr configset" note="NOT automatic: recreate the core and reindex (dockerized_app/docker-compose.yml)" ;;
+      nginx) label="nginx config" note="nginx is reloaded after the deploy" ;;
+    esac
+    if has "$item" "$changes"; then
+      printf 'deploy:   %-22s YES: %s\n' "$label" "$note"
+    else
+      printf 'deploy:   %-22s no\n' "$label"
+    fi
+  done
+}
+
+# HTTP status of a path on the app's own port, from inside the container (the port is not
+# published on the host, and the public address goes through Cloudflare). X-Forwarded-Proto
+# stops config.force_ssl from answering with a redirect.
+http_code() {
+  docker exec "$APP_CONTAINER" curl -s -o /dev/null -m 20 -w '%{http_code}' \
+    -H 'X-Forwarded-Proto: https' "http://127.0.0.1:${APP_PORT}$1" 2> /dev/null || echo 000
+}
+
+container_running() {
+  [ "$(docker inspect -f '{{.State.Running}}' "$APP_CONTAINER" 2> /dev/null)" = true ]
+}
+
+# Waits until Puma answers at all (any HTTP status). Used before migrations: the new code may
+# not serve pages until its tables exist.
+wait_for_puma() {
+  local timeout="$1" waited=0 code
+  say "waiting for Puma to start (startup.sh installs gems and builds assets first; a few minutes)"
+  while [ "$waited" -lt "$timeout" ]; do
+    code="$(http_code /)"
+    if [ "$code" != 000 ] && [ -n "$code" ]; then
+      say "Puma answers (HTTP $code) after ${waited}s"
+      return 0
+    fi
+    sleep "$HEALTH_INTERVAL"
+    waited=$((waited + HEALTH_INTERVAL))
+  done
+  return 1
+}
+
+# Waits until every health path answers 200 and the home page footer shows the expected commit.
+wait_healthy() {
+  local timeout="$1" commit7="$2" waited=0 ok path code
+  say "waiting for the health check (local port ${APP_PORT}: ${HEALTH_PATHS[*]}), up to ${timeout}s"
+  while [ "$waited" -lt "$timeout" ]; do
+    ok=1
+    for path in "${HEALTH_PATHS[@]}"; do
+      code="$(http_code "$path")"
+      [ "$code" = 200 ] || { ok=0; break; }
+    done
+    if [ "$ok" = 1 ]; then
+      if docker exec "$APP_CONTAINER" curl -s -m 20 -H 'X-Forwarded-Proto: https' \
+        "http://127.0.0.1:${APP_PORT}/" 2> /dev/null | grep -q ">${commit7}<"; then
+        say "healthy after ${waited}s: ${HEALTH_PATHS[*]} answer 200, footer shows ${commit7}"
+        return 0
+      fi
+      code="200, but footer does not show ${commit7} yet"
+    fi
+    if ! container_running && [ "$waited" -ge 30 ]; then
+      say "container $APP_CONTAINER is not running"
+      return 1
+    fi
+    if [ $((waited % 60)) -eq 0 ]; then say "  ...${waited}s: ${path} -> ${code}"; fi
+    sleep "$HEALTH_INTERVAL"
+    waited=$((waited + HEALTH_INTERVAL))
+  done
+  return 1
+}
+
+restart_app() {
+  local changes="$1"
+  if has dockerfile "$changes"; then
+    say "rebuilding the app image (Dockerfile changed): docker compose build app"
+    (cd dockerized_app && docker compose build app)
+    say "recreating the app container: docker compose up -d app"
+    (cd dockerized_app && docker compose up -d app)
+  elif has compose "$changes"; then
+    say "recreating the app container (docker-compose.yml changed): docker compose up -d app"
+    (cd dockerized_app && docker compose up -d app)
+  else
+    say "restarting: docker restart $APP_CONTAINER"
+    docker restart "$APP_CONTAINER" > /dev/null
+  fi
+}
+
+print_failure() {
+  local prev="$1" migrated="$2"
+  echo >&2
+  echo "deploy: HEALTH CHECK FAILED. The new code is checked out; nothing was rolled back." >&2
+  echo "deploy: last 40 lines of the app log:" >&2
+  docker logs --tail 40 "$APP_CONTAINER" 2>&1 | sed 's/^/    /' >&2 || true
+  echo >&2
+  echo "deploy: to roll back the code to $(short "$prev"):" >&2
+  echo "    cd $APP_DIR && script/deploy --rollback" >&2
+  echo "deploy: or by hand:" >&2
+  echo "    cd $APP_DIR && git checkout -q $prev && docker restart $APP_CONTAINER" >&2
+  if [ "$migrated" = 1 ]; then
+    echo "deploy: MIGRATIONS RAN. Rolling back the code does not undo them; check first whether the" >&2
+    echo "        old code works with the new tables/columns (added tables usually do). Do not run" >&2
+    echo "        db:rollback without a database backup." >&2
+  fi
+}
+
+do_deploy() {
+  local dry_run="$1" ref="$2" timeout="$3"
+  local prev target branch changes migrated=0
+
+  prev="$(git rev-parse HEAD)"
+  say "fetching from GitHub (origin)"
+  git fetch -q origin
+  if git rev-parse -q --verify "origin/$ref^{commit}" > /dev/null; then
+    target="$(git rev-parse "origin/$ref^{commit}")"
+  elif git rev-parse -q --verify "$ref^{commit}" > /dev/null; then
+    target="$(git rev-parse "$ref^{commit}")"
+  else
+    die "cannot find $ref on origin"
+  fi
+  branch="$(git symbolic-ref -q --short HEAD || true)"
+
+  if [ "$prev" = "$target" ]; then
+    say "already at $(short "$target") ($ref); nothing to deploy."
+    return 0
+  fi
+
+  changes="$(classify_changes "$prev" "$target")"
+  show_plan "$prev" "$target" "$changes"
+
+  if [ -n "$branch" ]; then
+    [ "$branch" = master ] && [ "$ref" = master ] \
+      || die "the checkout is on branch '$branch'; only origin/master can be deployed onto a branch checkout"
+    git merge-base --is-ancestor "$prev" "$target" \
+      || die "origin/master is not a fast-forward of the local master; check the checkout by hand"
+  fi
+
+  if [ "$dry_run" = 1 ]; then
+    say "dry run: nothing changed."
+    return 0
+  fi
+
+  echo "$prev" > "$ROLLBACK_FILE"
+  say "saved the running commit to $ROLLBACK_FILE"
+  log_line "deploy start $(short "$prev") -> $(short "$target") ref=$ref changes=$(echo "$changes" | paste -sd, -)"
+
+  if [ -n "$branch" ]; then
+    git merge -q --ff-only "$target"
+  else
+    git checkout -q "$target"
+  fi
+  say "checked out $(short "$target")"
+
+  restart_app "$changes"
+
+  if has migrations "$changes"; then
+    if ! wait_for_puma "$timeout"; then
+      log_line "deploy FAILED (app did not start before migrations) at $(short "$target")"
+      print_failure "$prev" 0
+      exit 1
+    fi
+    say "running migrations: docker exec -u antcat $APP_CONTAINER bundle exec rails db:migrate"
+    migrated=1
+    if ! docker exec -u antcat -e HOME=/home/antcat -w /app "$APP_CONTAINER" bundle exec rails db:migrate; then
+      log_line "deploy FAILED (db:migrate) at $(short "$target")"
+      echo "deploy: db:migrate FAILED. Some migrations may have run (each is its own transaction where MySQL allows)." >&2
+      print_failure "$prev" 1
+      exit 1
+    fi
+    say "migrations done; restarting so the app loads the new schema"
+    docker restart "$APP_CONTAINER" > /dev/null
+  fi
+
+  if ! wait_healthy "$timeout" "$(git rev-parse --short=7 "$target")"; then
+    log_line "deploy FAILED (health check) at $(short "$target") migrated=$migrated"
+    print_failure "$prev" "$migrated"
+    exit 1
+  fi
+
+  if has dockerfile "$changes" || has compose "$changes" || has nginx "$changes"; then
+    # nginx keeps the old container's address after a recreate (502 until reloaded).
+    say "reloading nginx"
+    (cd dockerized_app && docker compose exec -T web nginx -s reload) || say "WARNING: nginx reload failed; run it by hand"
+  fi
+
+  log_line "deploy OK $(short "$prev") -> $(short "$target") migrated=$migrated"
+  echo
+  say "DEPLOYED $(git rev-parse HEAD) on $(hostname)"
+  say "rollback if needed: cd $APP_DIR && script/deploy --rollback"
+  if has solr "$changes"; then
+    say "REMINDER: the Solr configset changed; recreate the core and reindex (see dockerized_app/docker-compose.yml)."
+  fi
+  echo
+  echo "Server log entry:"
+  echo "- $(date +%Y-%m-%d) $(hostname): deployed $(short "$prev") -> $(short "$target") with script/deploy" \
+    "($(git rev-list --count "$prev..$target" 2> /dev/null || echo '?') commits;" \
+    "migrations: $([ "$migrated" = 1 ] && echo yes || echo no);" \
+    "image rebuilt: $(has dockerfile "$changes" && echo yes || echo no)). Rollback commit $(short "$prev")."
+}
+
+do_rollback() {
+  local dry_run="$1" yes="$2" timeout="$3" current target changes
+  [ -s "$ROLLBACK_FILE" ] || die "no rollback commit saved ($ROLLBACK_FILE is missing or empty)"
+  target="$(tr -d '[:space:]' < "$ROLLBACK_FILE")"
+  git rev-parse -q --verify "$target^{commit}" > /dev/null || die "rollback commit $target is not in this checkout"
+  current="$(git rev-parse HEAD)"
+  if [ "$current" = "$target" ]; then
+    say "already at the rollback commit $(short "$target"); nothing to do."
+    return 0
+  fi
+
+  say "ROLLBACK"
+  changes="$(classify_changes "$current" "$target")"
+  show_plan "$current" "$target" "$changes"
+
+  if has migrations "$changes"; then
+    echo "deploy: db/migrate differs between the running and the rollback commit. Rolling back the" >&2
+    echo "        code does not undo migrations that ran. If the old code is fine with the current" >&2
+    echo "        database, run with --yes." >&2
+  fi
+
+  if [ "$dry_run" = 1 ]; then
+    say "dry run: nothing changed."
+    return 0
+  fi
+  if has migrations "$changes" && [ "$yes" != 1 ]; then
+    die "not rolled back (db/migrate differs; see above). Nothing was changed."
+  fi
+
+  log_line "rollback start $(short "$current") -> $(short "$target")"
+  git checkout -q "$target"
+  say "checked out $(short "$target") (detached; the next script/deploy brings back origin/master)"
+  restart_app "$changes"
+  if ! wait_healthy "$timeout" "$(git rev-parse --short=7 "$target")"; then
+    log_line "rollback FAILED (health check) at $(short "$target")"
+    echo "deploy: the rolled-back code did not pass the health check either. App log:" >&2
+    docker logs --tail 40 "$APP_CONTAINER" 2>&1 | sed 's/^/    /' >&2 || true
+    exit 1
+  fi
+  log_line "rollback OK $(short "$current") -> $(short "$target")"
+  say "ROLLED BACK to $(git rev-parse HEAD) on $(hostname)"
+  echo
+  echo "Server log entry:"
+  echo "- $(date +%Y-%m-%d) $(hostname): rolled back $(short "$current") -> $(short "$target") with script/deploy --rollback."
+}
+
+main "$@"
+exit $?
