@@ -294,14 +294,14 @@ do_deploy() {
   ON_BRANCH="$branch"
   [ -s "$BRANCH_MARK" ] && ON_BRANCH=master
 
-  # After a failed deploy (or one that was interrupted: a "start" line with no OK or FAILED after it)
+  # After a failed deploy or rollback (or one that was interrupted: a "start" line with no OK or FAILED after it)
   # the running commit is not a good one: go back to the commit saved before
   # it, both as the rollback commit and as the base for what changed (so a retry still rebuilds the
   # image or runs the migrations that failed).
   local saved=""
   [ -s "$ROLLBACK_FILE" ] && saved="$(tr -d '[:space:]' < "$ROLLBACK_FILE")"
   if [ -n "$saved" ] && git rev-parse -q --verify "$saved^{commit}" > /dev/null \
-    && grep -E ' (deploy|rollback) (start|OK|FAILED)' "$DEPLOY_LOG" 2> /dev/null | tail -1 | grep -qE 'deploy (FAILED|start)'; then
+    && grep -E ' (deploy|rollback) (start|OK|FAILED)' "$DEPLOY_LOG" 2> /dev/null | tail -1 | grep -qE '(deploy|rollback) (FAILED|start)'; then
     last_failed=1
     prev="$(git rev-parse "$saved^{commit}")"
     say "the last deploy failed: comparing with the saved rollback commit $(short "$prev"), not the running $(short "$running")"

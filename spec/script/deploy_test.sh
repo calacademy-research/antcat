@@ -342,6 +342,20 @@ check "no manual git checkout line" not out_has "git checkout -q $A"
 check "points to script/deploy --rollback" out_has "script/deploy --rollback"
 teardown
 
+setup "a failed rollback after a failed deploy: the next deploy still starts from the good commit"
+B="$(push_change db/migrate/20261109000000_add_api_keys.rb "B: add api keys")"
+export FAKE_MIGRATE_RC=1
+run
+unset FAKE_MIGRATE_RC
+echo "2026-11-09 10:00:00 PST test rollback FAILED (unexpected error)" >> "$ANTCAT_DEPLOY_LOG"
+C="$(push_change app/models/taxon.rb "C: fix")"
+: > "$DOCKER_LOG"
+run
+check "exits 0" [ "$RC" -eq 0 ]
+check "ran db:migrate" docker_called "db:migrate"
+check "rollback file still holds A" [ "$(cat "$ANTCAT_ROLLBACK_FILE")" = "$A" ]
+teardown
+
 echo
 echo "$TESTS tests, $FAILS failed checks"
 [ "$FAILS" -eq 0 ]
