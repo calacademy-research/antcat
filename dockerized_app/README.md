@@ -68,4 +68,6 @@ Strict-Transport-Security (`config.force_ssl`).
 nginx config change (`nginx/default.conf` or the `web` service in `docker-compose.yml`): the file is
 bind-mounted, and `git pull` replaces it, so a reload alone may keep the old file. Check and apply with
 `docker compose up -d --force-recreate web`, then `docker compose exec web nginx -t`. The visitor IP
-comes from Cloudflare's `CF-Connecting-IP` only for Cloudflare's address ranges (`set_real_ip_from`).
+comes from Cloudflare's `CF-Connecting-IP` only for Cloudflare's address ranges (`set_real_ip_from`). nginx
+replaces `X-Forwarded-For` and clears `Client-IP` and `Forwarded` in every proxied location, so the
+address Rails uses (`request.remote_ip`) cannot be set by the visitor.
