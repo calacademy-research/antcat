@@ -23,7 +23,12 @@
 #   6. when db/migrate changed: waits until the gems are installed (bundle check), runs `rails db:migrate` as the app user, restarts
 #   7. waits until the app answers on its local port (not through Cloudflare): /v1/taxa/429011 and
 #      the home page with HTTP 200, and the home page footer shows the new commit
-#   8. prints the deployed commit and a line for the shared AntCat server log
+#   8. when dockerized_app/nginx/ changed: tests the new nginx config in a throwaway container, then
+#      recreates the nginx container `web` (about a second of interruption). The config files are
+#      mounted one by one, and a running container keeps the file it started with, so a reload
+#      would read the old config. A config that fails its test is not loaded (nginx keeps the old
+#      one) and the deploy ends with a WARNING.
+#   9. prints the deployed commit and a line for the shared AntCat server log
 # On a failed health check it prints the exact rollback command. It never rolls back by itself:
 # after a migration the code and the database must be looked at together first.
 #
@@ -136,7 +141,7 @@ show_plan() {
       migrations) label="db/migrate" note="rails db:migrate is run" ;;
       assets) label="JavaScript/CSS" note="startup.sh builds assets on restart" ;;
       solr) label="Solr configset" note="NOT automatic: recreate the core and reindex (dockerized_app/docker-compose.yml)" ;;
-      nginx) label="nginx config" note="nginx is reloaded after the deploy" ;;
+      nginx) label="nginx config" note="tested, then the nginx container (web) is recreated (about 1 s)" ;;
     esac
     if has "$item" "$changes"; then
       printf 'deploy:   %-22s YES: %s\n' "$label" "$note"
@@ -265,12 +270,47 @@ on_error() {
   exit 1
 }
 
-reload_nginx_if_needed() {
-  if has dockerfile "$1" || has compose "$1" || has nginx "$1"; then
+# nginx after a deploy or a rollback. Sets NGINX_PROBLEM when the new config is not in force.
+update_nginx_if_needed() {
+  local compose=(docker compose -f dockerized_app/docker-compose.yml) waited=0
+  NGINX_PROBLEM=""
+  if has nginx "$1"; then
+    # default.conf and 99-autoreload.sh are mounted as single files. git replaces a changed file
+    # with a new one, and the running container keeps the old one, so `nginx -s reload` would
+    # read the old config. Test the new files in a throwaway container, then recreate `web`.
+    say "nginx config changed: testing it (docker compose run ... nginx -t)"
+    if ! "${compose[@]}" run --rm --no-deps -T --entrypoint nginx web -t 2>&1 | sed 's/^/    /'; then
+      NGINX_PROBLEM="the new nginx config FAILED its test and was not loaded; nginx is running with the old config"
+      return 0
+    fi
+    say "recreating the nginx container (web)"
+    if ! "${compose[@]}" up -d --force-recreate --no-deps web; then
+      NGINX_PROBLEM="recreating the nginx container failed; check: docker compose -f dockerized_app/docker-compose.yml ps web"
+      return 0
+    fi
+    until "${compose[@]}" exec -T web nginx -t > /dev/null 2>&1; do
+      if [ "$waited" -ge 30 ]; then
+        NGINX_PROBLEM="the nginx container did not come back within 30 s; check: docker compose -f dockerized_app/docker-compose.yml logs --tail 30 web"
+        return 0
+      fi
+      sleep "$HEALTH_INTERVAL"
+      waited=$((waited + HEALTH_INTERVAL))
+    done
+    say "nginx is running with the new config"
+  elif has dockerfile "$1" || has compose "$1"; then
     # nginx keeps the old container's address after a recreate (502 until reloaded).
     say "reloading nginx"
-    docker compose -f dockerized_app/docker-compose.yml exec -T web nginx -s reload || say "WARNING: nginx reload failed; run it by hand"
+    "${compose[@]}" exec -T web nginx -s reload || NGINX_PROBLEM="nginx reload failed; run it by hand"
   fi
+}
+
+# Printed last, so it is not missed above the summary.
+warn_nginx_problem() {
+  [ -n "${NGINX_PROBLEM:-}" ] || return 0
+  log_line "nginx WARNING: $NGINX_PROBLEM"
+  echo
+  say "WARNING (nginx): $NGINX_PROBLEM"
+  say "after fixing: docker compose -f dockerized_app/docker-compose.yml up -d --force-recreate --no-deps web"
 }
 
 do_deploy() {
@@ -385,7 +425,7 @@ do_deploy() {
     exit 1
   fi
 
-  reload_nginx_if_needed "$changes"
+  update_nginx_if_needed "$changes"
 
   trap - ERR
   log_line "deploy OK $(short "$prev") -> $(short "$target") migrated=$MIGRATED"
@@ -400,7 +440,9 @@ do_deploy() {
   echo "- $(date +%Y-%m-%d) $(hostname): deployed $(short "$prev") -> $(short "$target") with script/deploy" \
     "($(git rev-list --count "$prev..$target" 2> /dev/null || echo '?') commits;" \
     "migrations: $([ "$MIGRATED" = 1 ] && echo yes || echo no);" \
-    "image rebuilt: $(has dockerfile "$changes" && echo yes || echo no)). Rollback commit $(short "$prev")."
+    "image rebuilt: $(has dockerfile "$changes" && echo yes || echo no);" \
+    "nginx recreated: $(has nginx "$changes" && [ -z "$NGINX_PROBLEM" ] && echo yes || echo no)). Rollback commit $(short "$prev")."
+  warn_nginx_problem
 }
 
 do_rollback() {
@@ -459,13 +501,14 @@ do_rollback() {
     docker logs --tail 40 "$APP_CONTAINER" 2>&1 | sed 's/^/    /' >&2 || true
     exit 1
   fi
-  reload_nginx_if_needed "$changes"
+  update_nginx_if_needed "$changes"
   trap - ERR
   log_line "rollback OK $(short "$from") -> $(short "$target")"
   say "ROLLED BACK to $(git rev-parse HEAD) on $(hostname)"
   echo
   echo "Server log entry:"
   echo "- $(date +%Y-%m-%d) $(hostname): rolled back $(short "$from") -> $(short "$target") with script/deploy --rollback."
+  warn_nginx_problem
 }
 
 main "$@"; exit
