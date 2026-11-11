@@ -47,7 +47,8 @@ case "$1" in
   compose)
     [[ "$*" == *build* ]] && exit "${FAKE_BUILD_RC:-0}"
     # The throwaway nginx config test (compose run ... --entrypoint nginx web -t).
-    [[ "$*" == *" run "*"web -t" ]] && exit "${FAKE_NGINX_TEST_RC:-0}"
+    if [[ "$*" == *" run "*"web -t" ]]; then echo "nginx: fake config test"; exit "${FAKE_NGINX_TEST_RC:-0}"; fi
+    [[ "$*" == *"nginx -s reload" ]] && exit "${FAKE_NGINX_RELOAD_RC:-0}"
     [[ "$*" == *"--force-recreate"*" web" ]] && exit "${FAKE_NGINX_RECREATE_RC:-0}" ;;
   exec)
     if [[ "$*" == *db:migrate* ]]; then exit "${FAKE_MIGRATE_RC:-0}"; fi
@@ -56,6 +57,12 @@ case "$1" in
       n=$(( $(cat "$DOCKER_LOG.gems" 2> /dev/null || echo 0) + 1 )); echo "$n" > "$DOCKER_LOG.gems"
       [ "$n" -le "${FAKE_GEMS_MISSING_CALLS:-0}" ] && exit 1
       exit 0
+    fi
+    if [[ "$*" == *"http://web/"* ]]; then
+      # The nginx probe after a recreate. FAKE_NGINX_DOWN_CALLS: the first N probes get no answer.
+      n=$(( $(cat "$DOCKER_LOG.nginx" 2> /dev/null || echo 0) + 1 )); echo "$n" > "$DOCKER_LOG.nginx"
+      if [ "$n" -le "${FAKE_NGINX_DOWN_CALLS:-0}" ]; then printf 000; exit 7; fi
+      printf 301; exit 0
     fi
     if [[ "$*" == *curl* ]] && [ -n "${FAKE_DOWN_UNTIL_MIGRATED:-}" ] && ! grep -q db:migrate "$DOCKER_LOG"; then
       printf 000; exit 7
@@ -78,7 +85,7 @@ FAKE
   export PATH="$BIN:$PATH" DOCKER_LOG="$T/docker.log" ANTCAT_DIR="$SERVER"
   export ANTCAT_ROLLBACK_FILE="$T/rollback.txt" ANTCAT_DEPLOY_LOG="$T/deploy.log"
   export ANTCAT_LOCK_FILE="$T/lock" ANTCAT_HEALTH_INTERVAL=1
-  unset FAKE_HTTP FAKE_MIGRATE_RC FAKE_RESTART_RC FAKE_BUILD_RC FAKE_DOWN_CALLS FAKE_GEMS_MISSING_CALLS FAKE_DOWN_UNTIL_MIGRATED FAKE_NGINX_TEST_RC FAKE_NGINX_RECREATE_RC
+  unset FAKE_HTTP FAKE_MIGRATE_RC FAKE_RESTART_RC FAKE_BUILD_RC FAKE_DOWN_CALLS FAKE_GEMS_MISSING_CALLS FAKE_DOWN_UNTIL_MIGRATED FAKE_NGINX_TEST_RC FAKE_NGINX_RECREATE_RC FAKE_NGINX_DOWN_CALLS FAKE_NGINX_RELOAD_RC
   : > "$DOCKER_LOG"
 }
 
@@ -389,8 +396,9 @@ check "plan says nginx is recreated" out_has "nginx config .*YES: tested, then t
 check "tested the new config in a throwaway container" docker_called "compose .* run --rm --no-deps -T --entrypoint nginx web -t"
 check "recreated only the nginx container" docker_called "compose .*up -d --force-recreate --no-deps web"
 check "did not rely on a reload" not docker_called "nginx -s reload"
-check "says nginx runs the new config" out_has "nginx is running with the new config"
-check "server log line records it" out_has "nginx recreated: yes"
+check "waited until nginx answered" docker_called "exec antcat-app curl .*http://web/"
+check "says nginx answers with the new config" out_has "nginx answers with the new config"
+check "server log line records it" out_has "nginx: recreated with the new config)"
 check "no nginx warning" not out_has "WARNING (nginx)"
 teardown
 
@@ -404,7 +412,9 @@ check "did not recreate nginx" not docker_called "force-recreate"
 check "did not reload nginx" not docker_called "nginx -s reload"
 check "warns that the old config is in force" out_has "WARNING (nginx): the new nginx config FAILED its test"
 check "the warning comes after the summary" [ "$(grep -n 'WARNING (nginx)' <<< "$OUT" | cut -d: -f1)" -gt "$(grep -n 'Server log entry' <<< "$OUT" | cut -d: -f1)" ]
-check "server log line records it" out_has "nginx recreated: no"
+check "shows the test output" out_has "nginx: fake config test"
+check "says how to apply it after a fix" out_has "After fixing the config: docker compose .* up -d --force-recreate --no-deps web"
+check "server log line records it" out_has "nginx: PROBLEM, see the deploy output)"
 check "written to the deploy log" grep -q "nginx WARNING" "$ANTCAT_DEPLOY_LOG"
 teardown
 
@@ -414,6 +424,57 @@ export FAKE_NGINX_RECREATE_RC=1
 run
 check "the deploy itself succeeds" [ "$RC" -eq 0 ]
 check "warns" out_has "WARNING (nginx): recreating the nginx container failed"
+teardown
+
+setup "nginx recreated but not answering: warning after the wait"
+B="$(push_change dockerized_app/nginx/default.conf "B: nginx header")"
+export FAKE_NGINX_DOWN_CALLS=1000
+# The wait is 30 s: an interval of 10 keeps it to four probes, and a fake `sleep` makes them instant.
+export ANTCAT_HEALTH_INTERVAL=10
+printf '#!/bin/sh\nexit 0\n' > "$BIN/sleep"; chmod +x "$BIN/sleep"
+run
+check "the deploy itself succeeds" [ "$RC" -eq 0 ]
+check "warns that nginx did not answer" out_has "WARNING (nginx): the nginx container was recreated but did not answer within 30 s"
+check "does not claim the new config answers" not out_has "nginx answers with the new config"
+check "server log line records it" out_has "nginx: PROBLEM, see the deploy output)"
+teardown
+
+setup "nginx answers after a few probes: no warning"
+B="$(push_change dockerized_app/nginx/default.conf "B: nginx header")"
+export FAKE_NGINX_DOWN_CALLS=2
+run
+check "exits 0" [ "$RC" -eq 0 ]
+check "says nginx answers with the new config" out_has "nginx answers with the new config"
+check "no nginx warning" not out_has "WARNING (nginx)"
+teardown
+
+setup "Dockerfile change with an nginx config that fails its test: the running nginx is still reloaded"
+push_change dockerized_app/Dockerfile "B1: new Ruby" > /dev/null
+B="$(push_change dockerized_app/nginx/default.conf "B2: broken nginx config")"
+export FAKE_NGINX_TEST_RC=1
+run
+check "the deploy itself succeeds" [ "$RC" -eq 0 ]
+check "recreated the app container" docker_called "compose .*up -d --no-deps app"
+check "did not recreate nginx" not docker_called "force-recreate"
+check "reloaded the running nginx (new app container address)" docker_called "nginx -s reload"
+check "warns that the old config is in force" out_has "WARNING (nginx): the new nginx config FAILED its test"
+teardown
+
+setup "Dockerfile change with a good nginx config: recreated, no extra reload"
+push_change dockerized_app/Dockerfile "B1: new Ruby" > /dev/null
+B="$(push_change dockerized_app/nginx/default.conf "B2: nginx header")"
+run
+check "exits 0" [ "$RC" -eq 0 ]
+check "recreated nginx" docker_called "compose .*up -d --force-recreate --no-deps web"
+check "no reload needed" not docker_called "nginx -s reload"
+teardown
+
+setup "nginx reload fails after a Dockerfile change: warning with the command"
+B="$(push_change dockerized_app/Dockerfile "B: new Ruby")"
+export FAKE_NGINX_RELOAD_RC=1
+run
+check "the deploy itself succeeds" [ "$RC" -eq 0 ]
+check "warns with the reload command" out_has "WARNING (nginx): nginx reload failed .*exec -T web nginx -s reload"
 teardown
 
 setup "rollback across an nginx config change recreates the nginx container again"

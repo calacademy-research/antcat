@@ -24,7 +24,8 @@
 #   7. waits until the app answers on its local port (not through Cloudflare): /v1/taxa/429011 and
 #      the home page with HTTP 200, and the home page footer shows the new commit
 #   8. when dockerized_app/nginx/ changed: tests the new nginx config in a throwaway container, then
-#      recreates the nginx container `web` (about a second of interruption). The config files are
+#      recreates the nginx container `web` (about a second of interruption) and waits until it
+#      answers. The config files are
 #      mounted one by one, and a running container keeps the file it started with, so a reload
 #      would read the old config. A config that fails its test is not loaded (nginx keeps the old
 #      one) and the deploy ends with a WARNING.
@@ -270,38 +271,63 @@ on_error() {
   exit 1
 }
 
-# nginx after a deploy or a rollback. Sets NGINX_PROBLEM when the new config is not in force.
+# nginx after a deploy or a rollback. Sets NGINX_PROBLEM (message and what to do) when something
+# about nginx needs a person.
 update_nginx_if_needed() {
-  local compose=(docker compose -f dockerized_app/docker-compose.yml) waited=0
+  local compose=(docker compose -f dockerized_app/docker-compose.yml) out recreated=0
   NGINX_PROBLEM=""
   if has nginx "$1"; then
     # default.conf and 99-autoreload.sh are mounted as single files. git replaces a changed file
     # with a new one, and the running container keeps the old one, so `nginx -s reload` would
     # read the old config. Test the new files in a throwaway container, then recreate `web`.
     say "nginx config changed: testing it (docker compose run ... nginx -t)"
-    if ! "${compose[@]}" run --rm --no-deps -T --entrypoint nginx web -t 2>&1 | sed 's/^/    /'; then
-      NGINX_PROBLEM="the new nginx config FAILED its test and was not loaded; nginx is running with the old config"
-      return 0
-    fi
-    say "recreating the nginx container (web)"
-    if ! "${compose[@]}" up -d --force-recreate --no-deps web; then
-      NGINX_PROBLEM="recreating the nginx container failed; check: docker compose -f dockerized_app/docker-compose.yml ps web"
-      return 0
-    fi
-    until "${compose[@]}" exec -T web nginx -t > /dev/null 2>&1; do
-      if [ "$waited" -ge 30 ]; then
-        NGINX_PROBLEM="the nginx container did not come back within 30 s; check: docker compose -f dockerized_app/docker-compose.yml logs --tail 30 web"
-        return 0
+    if out="$("${compose[@]}" run --rm --no-deps -T --entrypoint nginx web -t 2>&1)"; then
+      printf '%s\n' "$out" | sed 's/^/    /'
+      say "recreating the nginx container (web)"
+      if "${compose[@]}" up -d --force-recreate --no-deps web; then
+        recreated=1
+        if nginx_answers 30; then
+          say "nginx answers with the new config"
+        else
+          NGINX_PROBLEM="the nginx container was recreated but did not answer within 30 s. Check: docker compose -f dockerized_app/docker-compose.yml logs --tail 30 web"
+        fi
+      else
+        NGINX_PROBLEM="recreating the nginx container failed. Check: docker compose -f dockerized_app/docker-compose.yml ps web; then: docker compose -f dockerized_app/docker-compose.yml up -d --force-recreate --no-deps web"
       fi
-      sleep "$HEALTH_INTERVAL"
-      waited=$((waited + HEALTH_INTERVAL))
-    done
-    say "nginx is running with the new config"
-  elif has dockerfile "$1" || has compose "$1"; then
-    # nginx keeps the old container's address after a recreate (502 until reloaded).
-    say "reloading nginx"
-    "${compose[@]}" exec -T web nginx -s reload || NGINX_PROBLEM="nginx reload failed; run it by hand"
+    else
+      printf '%s\n' "$out" | sed 's/^/    /'
+      NGINX_PROBLEM="the new nginx config FAILED its test (above) and was not loaded; nginx is running with the OLD config. After fixing the config: docker compose -f dockerized_app/docker-compose.yml up -d --force-recreate --no-deps web"
+    fi
   fi
+  if [ "$recreated" = 0 ] && { has dockerfile "$1" || has compose "$1"; }; then
+    # nginx keeps the old app container's address after the app is recreated (502 until
+    # reloaded). Also when the new nginx config was not loaded above: the running nginx reads
+    # the file it started with, so a reload is safe.
+    say "reloading nginx"
+    if ! "${compose[@]}" exec -T web nginx -s reload; then
+      [ -n "$NGINX_PROBLEM" ] || NGINX_PROBLEM="nginx reload failed (the site may answer 502). Run: docker compose -f dockerized_app/docker-compose.yml exec -T web nginx -s reload"
+    fi
+  fi
+}
+
+# True once nginx serves requests: any HTTP status on its port 80 (normally 301 to https), asked
+# from the app container over the Docker network, where curl is known to be installed.
+nginx_answers() {
+  local limit="$1" waited=0 code
+  while :; do
+    code="$(docker exec "$APP_CONTAINER" curl -s -o /dev/null -m 5 -w '%{http_code}' http://web/ 2> /dev/null || true)"
+    [[ "$code" =~ ^[1-5][0-9][0-9]$ ]] && return 0
+    [ "$waited" -ge "$limit" ] && return 1
+    sleep "$HEALTH_INTERVAL"
+    waited=$((waited + HEALTH_INTERVAL))
+  done
+}
+
+# For the server log line.
+nginx_outcome() {
+  if [ -n "${NGINX_PROBLEM:-}" ]; then echo "PROBLEM, see the deploy output"
+  elif has nginx "$1"; then echo "recreated with the new config"
+  else echo "unchanged"; fi
 }
 
 # Printed last, so it is not missed above the summary.
@@ -310,7 +336,6 @@ warn_nginx_problem() {
   log_line "nginx WARNING: $NGINX_PROBLEM"
   echo
   say "WARNING (nginx): $NGINX_PROBLEM"
-  say "after fixing: docker compose -f dockerized_app/docker-compose.yml up -d --force-recreate --no-deps web"
 }
 
 do_deploy() {
@@ -441,7 +466,7 @@ do_deploy() {
     "($(git rev-list --count "$prev..$target" 2> /dev/null || echo '?') commits;" \
     "migrations: $([ "$MIGRATED" = 1 ] && echo yes || echo no);" \
     "image rebuilt: $(has dockerfile "$changes" && echo yes || echo no);" \
-    "nginx recreated: $(has nginx "$changes" && [ -z "$NGINX_PROBLEM" ] && echo yes || echo no)). Rollback commit $(short "$prev")."
+    "nginx: $(nginx_outcome "$changes")). Rollback commit $(short "$prev")."
   warn_nginx_problem
 }
 
