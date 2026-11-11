@@ -298,7 +298,7 @@ update_nginx_if_needed() {
       fi
     else
       printf '%s\n' "$out" | sed 's/^/    /'
-      NGINX_PROBLEM="the nginx config in this checkout FAILED its test (above) and was not loaded. nginx is still running with the config it started with, but it will NOT start with this one: a restart of the nginx container or a reboot would take the site down. Fix the config and deploy again, or run script/deploy --rollback now"
+      NGINX_PROBLEM="the nginx config test FAILED or could not run (output above), so the config in this checkout was not loaded. nginx is still running with the config it started with. If the config is at fault, nginx will NOT start with it: a restart of the nginx container or a reboot would take the site down. Fix the config and deploy again, or run script/deploy --rollback now"
     fi
   fi
   if [ "$recreated" = 0 ] && { has dockerfile "$1" || has compose "$1"; }; then
@@ -314,7 +314,8 @@ update_nginx_if_needed() {
 
 # True once the site answers through nginx: the first health path over HTTPS with 200, as in the
 # app's own health check, asked from the app container over the Docker network (curl is installed
-# there; -k because the certificate is for antcat.org, not for the container name). The request
+# there). --connect-to sends the request to the `web` container with the site's own name in TLS
+# and in the Host header, as real traffic has; -k because the certificate is not checked. The request
 # goes through the proxied location to Rails, so neither a 502 from an nginx that cannot reach
 # the app nor a redirect counts. Sets NGINX_CODE to the last status (000: no answer) and
 # NGINX_ELAPSED to the seconds waited.
@@ -322,7 +323,7 @@ nginx_answers() {
   local limit="$1" start=$SECONDS
   while :; do
     NGINX_CODE="$(docker exec "$APP_CONTAINER" curl -sk -o /dev/null -m 5 -w '%{http_code}' \
-      -H 'Host: www.antcat.org' "https://web${HEALTH_PATHS[0]}" 2> /dev/null || true)"
+      --connect-to www.antcat.org:443:web:443 "https://www.antcat.org${HEALTH_PATHS[0]}" 2> /dev/null || true)"
     [[ "$NGINX_CODE" =~ ^[1-5][0-9][0-9]$ ]] || NGINX_CODE=000
     NGINX_ELAPSED=$((SECONDS - start))
     [ "$NGINX_CODE" = 200 ] && return 0

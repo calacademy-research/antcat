@@ -58,7 +58,7 @@ case "$1" in
       [ "$n" -le "${FAKE_GEMS_MISSING_CALLS:-0}" ] && exit 1
       exit 0
     fi
-    if [[ "$*" == *"https://web/"* ]]; then
+    if [[ "$*" == *"--connect-to www.antcat.org:443:web:443"* ]]; then
       # The probe through nginx after a recreate. FAKE_NGINX_DOWN_CALLS: the first N get no answer.
       n=$(( $(cat "$DOCKER_LOG.nginx" 2> /dev/null || echo 0) + 1 )); echo "$n" > "$DOCKER_LOG.nginx"
       if [ "$n" -le "${FAKE_NGINX_DOWN_CALLS:-0}" ]; then printf 000; exit 7; fi
@@ -397,7 +397,7 @@ check "plan says nginx is recreated" out_has "nginx config .*YES: tested, then t
 check "tested the new config in a throwaway container" docker_called "compose .* run --rm --no-deps -T web nginx -t"
 check "recreated only the nginx container" docker_called "compose .*up -d --force-recreate --no-deps web"
 check "did not rely on a reload" not docker_called "nginx -s reload"
-check "asked for a page through nginx" docker_called "exec antcat-app curl .*https://web/v1/taxa/429011"
+check "asked for a page through nginx, with the site's own name" docker_called "exec antcat-app curl .*--connect-to www.antcat.org:443:web:443 https://www.antcat.org/v1/taxa/429011"
 check "says nginx serves the site with the new config" out_has "nginx serves the site with this config (/v1/taxa/429011 through nginx: 200)"
 check "server log line records it" out_has "nginx: recreated with the checked-out config)"
 check "no nginx warning" not out_has "WARNING (nginx)"
@@ -411,10 +411,10 @@ check "the deploy itself succeeds" [ "$RC" -eq 0 ]
 check "deployed the new code" head_is "$B"
 check "did not recreate nginx" not docker_called "force-recreate"
 check "did not reload nginx" not docker_called "nginx -s reload"
-check "warns that the config was not loaded" out_has "WARNING (nginx): the nginx config in this checkout FAILED its test"
+check "warns that the config was not loaded" out_has "WARNING (nginx): the nginx config test FAILED or could not run"
 check "the warning comes after the summary" [ "$(grep -n 'WARNING (nginx)' <<< "$OUT" | cut -d: -f1)" -gt "$(grep -n 'Server log entry' <<< "$OUT" | cut -d: -f1)" ]
 check "shows the test output" out_has "nginx: fake config test"
-check "says a restart of nginx would take the site down" out_has "will NOT start with this one"
+check "says a restart of nginx would take the site down" out_has "nginx will NOT start with it"
 check "says what to do" out_has "Fix the config and deploy again, or run script/deploy --rollback now"
 check "server log line records it" out_has "nginx: PROBLEM, see the deploy output)"
 check "written to the deploy log" grep -q "nginx WARNING" "$ANTCAT_DEPLOY_LOG"
@@ -465,7 +465,7 @@ check "the deploy itself succeeds" [ "$RC" -eq 0 ]
 check "recreated the app container" docker_called "compose .*up -d --no-deps app"
 check "did not recreate nginx" not docker_called "force-recreate"
 check "reloaded the running nginx (new app container address)" docker_called "nginx -s reload"
-check "warns that the config was not loaded" out_has "WARNING (nginx): the nginx config in this checkout FAILED its test"
+check "warns that the config was not loaded" out_has "WARNING (nginx): the nginx config test FAILED or could not run"
 teardown
 
 setup "Dockerfile change with a good nginx config: recreated, no extra reload"
@@ -513,7 +513,7 @@ run --rollback
 check "the rollback itself succeeds" [ "$RC" -eq 0 ]
 check "back on A" head_is "$A"
 check "did not recreate nginx" not docker_called "force-recreate"
-check "warns" out_has "WARNING (nginx): the nginx config in this checkout FAILED its test"
+check "warns" out_has "WARNING (nginx): the nginx config test FAILED or could not run"
 check "the warning comes after the summary" [ "$(grep -n 'WARNING (nginx)' <<< "$OUT" | cut -d: -f1)" -gt "$(grep -n 'Server log entry' <<< "$OUT" | cut -d: -f1)" ]
 check "server log line records it" out_has "(nginx: PROBLEM, see the deploy output)."
 teardown
