@@ -66,8 +66,12 @@ per-visitor limit (10 requests/s with bursts of 60, 20 connections; over it: 429
 Strict-Transport-Security (`config.force_ssl`).
 
 nginx config change (`nginx/default.conf` or the `web` service in `docker-compose.yml`): the file is
-bind-mounted, and `git pull` replaces it, so a reload alone may keep the old file. Check and apply with
-`docker compose up -d --force-recreate web`, then `docker compose exec web nginx -t`. The visitor IP
+bind-mounted, and `git pull` replaces it, so a reload alone keeps the old file (seen on antcat-prod,
+2026-11-10). `script/deploy` handles a change under `nginx/`: it tests the new config in a throwaway
+container, recreates `web` (about a second of interruption) and asks for a page through it. It ends
+with a `WARNING (nginx)` line, with what to do, if the config failed its test (nginx then keeps the
+old one), the recreate failed, the page did not answer 200, or a reload failed. By hand, or for a change to the `web` service itself:
+`docker compose up -d --force-recreate --no-deps web`, then `docker compose exec web nginx -t`. The visitor IP
 comes from Cloudflare's `CF-Connecting-IP` only for Cloudflare's address ranges (`set_real_ip_from`). nginx
 replaces `X-Forwarded-For` and clears `Client-IP` and `Forwarded` in every proxied location, so the
 address Rails uses (`request.remote_ip`) cannot be set by the visitor.

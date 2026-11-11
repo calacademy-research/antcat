@@ -44,7 +44,12 @@ case "$1" in
   inspect) echo true ;;
   logs) echo "fake app log" ;;
   restart) exit "${FAKE_RESTART_RC:-0}" ;;
-  compose) [[ "$*" == *build* ]] && exit "${FAKE_BUILD_RC:-0}" ;;
+  compose)
+    [[ "$*" == *build* ]] && exit "${FAKE_BUILD_RC:-0}"
+    # The throwaway nginx config test (compose run ... web nginx -t).
+    if [[ "$*" == *" run "*"web nginx -t" ]]; then echo "nginx: fake config test"; exit "${FAKE_NGINX_TEST_RC:-0}"; fi
+    [[ "$*" == *"nginx -s reload" ]] && exit "${FAKE_NGINX_RELOAD_RC:-0}"
+    [[ "$*" == *"--force-recreate"*" web" ]] && exit "${FAKE_NGINX_RECREATE_RC:-0}" ;;
   exec)
     if [[ "$*" == *db:migrate* ]]; then exit "${FAKE_MIGRATE_RC:-0}"; fi
     if [[ "$*" == *"bundle check"* ]]; then
@@ -52,6 +57,12 @@ case "$1" in
       n=$(( $(cat "$DOCKER_LOG.gems" 2> /dev/null || echo 0) + 1 )); echo "$n" > "$DOCKER_LOG.gems"
       [ "$n" -le "${FAKE_GEMS_MISSING_CALLS:-0}" ] && exit 1
       exit 0
+    fi
+    if [[ "$*" == *"--connect-to www.antcat.org:443:web:443"* ]]; then
+      # The probe through nginx after a recreate. FAKE_NGINX_DOWN_CALLS: the first N get no answer.
+      n=$(( $(cat "$DOCKER_LOG.nginx" 2> /dev/null || echo 0) + 1 )); echo "$n" > "$DOCKER_LOG.nginx"
+      if [ "$n" -le "${FAKE_NGINX_DOWN_CALLS:-0}" ]; then printf 000; exit 7; fi
+      printf '%s' "${FAKE_NGINX_HTTP:-200}"; exit 0
     fi
     if [[ "$*" == *curl* ]] && [ -n "${FAKE_DOWN_UNTIL_MIGRATED:-}" ] && ! grep -q db:migrate "$DOCKER_LOG"; then
       printf 000; exit 7
@@ -74,7 +85,8 @@ FAKE
   export PATH="$BIN:$PATH" DOCKER_LOG="$T/docker.log" ANTCAT_DIR="$SERVER"
   export ANTCAT_ROLLBACK_FILE="$T/rollback.txt" ANTCAT_DEPLOY_LOG="$T/deploy.log"
   export ANTCAT_LOCK_FILE="$T/lock" ANTCAT_HEALTH_INTERVAL=1
-  unset FAKE_HTTP FAKE_MIGRATE_RC FAKE_RESTART_RC FAKE_BUILD_RC FAKE_DOWN_CALLS FAKE_GEMS_MISSING_CALLS FAKE_DOWN_UNTIL_MIGRATED
+  unset ANTCAT_NGINX_WAIT
+  unset FAKE_HTTP FAKE_MIGRATE_RC FAKE_RESTART_RC FAKE_BUILD_RC FAKE_DOWN_CALLS FAKE_GEMS_MISSING_CALLS FAKE_DOWN_UNTIL_MIGRATED FAKE_NGINX_TEST_RC FAKE_NGINX_RECREATE_RC FAKE_NGINX_DOWN_CALLS FAKE_NGINX_RELOAD_RC FAKE_NGINX_HTTP
   : > "$DOCKER_LOG"
 }
 
@@ -375,6 +387,144 @@ run
 check "exits 0" [ "$RC" -eq 0 ]
 check "ran db:migrate" docker_called "db:migrate"
 check "rollback file still holds A" [ "$(cat "$ANTCAT_ROLLBACK_FILE")" = "$A" ]
+teardown
+
+setup "nginx config change: tested, then the nginx container is recreated (a reload reads the old file)"
+B="$(push_change dockerized_app/nginx/default.conf "B: nginx header")"
+run
+check "exits 0" [ "$RC" -eq 0 ]
+check "plan says nginx is recreated" out_has "nginx config .*YES: tested, then the nginx container"
+check "tested the new config in a throwaway container" docker_called "compose .* run --rm --no-deps -T web nginx -t"
+check "recreated only the nginx container" docker_called "compose .*up -d --force-recreate --no-deps web"
+check "did not rely on a reload" not docker_called "nginx -s reload"
+check "asked for a page through nginx, with the site's own name" docker_called "exec antcat-app curl .*--connect-to www.antcat.org:443:web:443 https://www.antcat.org/v1/taxa/429011"
+check "says nginx serves the site with the new config" out_has "nginx serves the site with this config (/v1/taxa/429011 through nginx: 200)"
+check "server log line records it" out_has "nginx: recreated with the checked-out config)"
+check "no nginx warning" not out_has "WARNING (nginx)"
+teardown
+
+setup "nginx config change that fails its test: not loaded, nginx untouched, warning printed last"
+B="$(push_change dockerized_app/nginx/default.conf "B: broken nginx config")"
+export FAKE_NGINX_TEST_RC=1
+run
+check "the deploy itself succeeds" [ "$RC" -eq 0 ]
+check "deployed the new code" head_is "$B"
+check "did not recreate nginx" not docker_called "force-recreate"
+check "did not reload nginx" not docker_called "nginx -s reload"
+check "warns that the config was not loaded" out_has "WARNING (nginx): the nginx config test FAILED or could not run"
+check "the warning comes after the summary" [ "$(grep -n 'WARNING (nginx)' <<< "$OUT" | cut -d: -f1)" -gt "$(grep -n 'Server log entry' <<< "$OUT" | cut -d: -f1)" ]
+check "shows the test output" out_has "nginx: fake config test"
+check "says a restart of nginx would take the site down" out_has "nginx will NOT start with it"
+check "says what to do" out_has "Fix the config and deploy again, or run script/deploy --rollback now"
+check "server log line records it" out_has "nginx: PROBLEM, see the deploy output)"
+check "written to the deploy log" grep -q "nginx WARNING" "$ANTCAT_DEPLOY_LOG"
+teardown
+
+setup "nginx container cannot be recreated: warning, deploy still reported"
+B="$(push_change dockerized_app/nginx/default.conf "B: nginx header")"
+export FAKE_NGINX_RECREATE_RC=1
+run
+check "the deploy itself succeeds" [ "$RC" -eq 0 ]
+check "warns" out_has "WARNING (nginx): recreating the nginx container failed"
+teardown
+
+setup "nginx recreated but not answering: warning after the wait"
+B="$(push_change dockerized_app/nginx/default.conf "B: nginx header")"
+export FAKE_NGINX_DOWN_CALLS=1000 ANTCAT_NGINX_WAIT=2
+run
+check "the deploy itself succeeds" [ "$RC" -eq 0 ]
+check "warns that nginx does not serve the site" out_has "WARNING (nginx): the nginx container was recreated but does not serve the site (/v1/taxa/429011 through nginx: 000 after [2-9] s, 200 expected)"
+check "does not claim the site is served" not out_has "nginx serves the site"
+check "server log line records it" out_has "nginx: PROBLEM, see the deploy output)"
+teardown
+
+setup "nginx answers after a few probes: no warning"
+B="$(push_change dockerized_app/nginx/default.conf "B: nginx header")"
+export FAKE_NGINX_DOWN_CALLS=2
+run
+check "exits 0" [ "$RC" -eq 0 ]
+check "says nginx serves the site" out_has "nginx serves the site with this config"
+check "no nginx warning" not out_has "WARNING (nginx)"
+teardown
+
+setup "nginx recreated but answering 502 (cannot reach the app): warning, not success"
+B="$(push_change dockerized_app/nginx/default.conf "B: nginx header")"
+export FAKE_NGINX_HTTP=502 ANTCAT_NGINX_WAIT=2
+run
+check "the deploy itself succeeds" [ "$RC" -eq 0 ]
+check "warns with the status" out_has "WARNING (nginx): the nginx container was recreated but does not serve the site (/v1/taxa/429011 through nginx: 502"
+check "does not claim the site is served" not out_has "nginx serves the site"
+teardown
+
+setup "Dockerfile change with an nginx config that fails its test: the running nginx is still reloaded"
+push_change dockerized_app/Dockerfile "B1: new Ruby" > /dev/null
+B="$(push_change dockerized_app/nginx/default.conf "B2: broken nginx config")"
+export FAKE_NGINX_TEST_RC=1
+run
+check "the deploy itself succeeds" [ "$RC" -eq 0 ]
+check "recreated the app container" docker_called "compose .*up -d --no-deps app"
+check "did not recreate nginx" not docker_called "force-recreate"
+check "reloaded the running nginx (new app container address)" docker_called "nginx -s reload"
+check "warns that the config was not loaded" out_has "WARNING (nginx): the nginx config test FAILED or could not run"
+teardown
+
+setup "Dockerfile change with a good nginx config: recreated, no extra reload"
+push_change dockerized_app/Dockerfile "B1: new Ruby" > /dev/null
+B="$(push_change dockerized_app/nginx/default.conf "B2: nginx header")"
+run
+check "exits 0" [ "$RC" -eq 0 ]
+check "recreated nginx" docker_called "compose .*up -d --force-recreate --no-deps web"
+check "no reload needed" not docker_called "nginx -s reload"
+teardown
+
+setup "nginx reload fails after a Dockerfile change: warning with the command"
+B="$(push_change dockerized_app/Dockerfile "B: new Ruby")"
+export FAKE_NGINX_RELOAD_RC=1
+run
+check "the deploy itself succeeds" [ "$RC" -eq 0 ]
+check "warns with the reload command" out_has "WARNING (nginx): nginx reload failed .*exec -T web nginx -s reload"
+teardown
+
+setup "rollback across an nginx config change recreates the nginx container again"
+B="$(push_change dockerized_app/nginx/default.conf "B: nginx header")"
+run
+: > "$DOCKER_LOG"
+run --rollback
+check "exits 0" [ "$RC" -eq 0 ]
+check "back on A" head_is "$A"
+check "recreated the nginx container" docker_called "compose .*up -d --force-recreate --no-deps web"
+check "server log line records nginx" out_has "with script/deploy --rollback (nginx: recreated with the checked-out config)."
+teardown
+
+setup "nginx answering with a redirect, not the page: warning, not success"
+B="$(push_change dockerized_app/nginx/default.conf "B: nginx redirect")"
+export FAKE_NGINX_HTTP=301 ANTCAT_NGINX_WAIT=2
+run
+check "the deploy itself succeeds" [ "$RC" -eq 0 ]
+check "warns with the status" out_has "WARNING (nginx): .*through nginx: 301 after [2-9] s, 200 expected"
+teardown
+
+setup "rollback to an nginx config that fails its test: warning after the rollback summary"
+B="$(push_change dockerized_app/nginx/default.conf "B: nginx header")"
+run
+: > "$DOCKER_LOG"
+export FAKE_NGINX_TEST_RC=1
+run --rollback
+check "the rollback itself succeeds" [ "$RC" -eq 0 ]
+check "back on A" head_is "$A"
+check "did not recreate nginx" not docker_called "force-recreate"
+check "warns" out_has "WARNING (nginx): the nginx config test FAILED or could not run"
+check "the warning comes after the summary" [ "$(grep -n 'WARNING (nginx)' <<< "$OUT" | cut -d: -f1)" -gt "$(grep -n 'Server log entry' <<< "$OUT" | cut -d: -f1)" ]
+check "server log line records it" out_has "(nginx: PROBLEM, see the deploy output)."
+teardown
+
+setup "no nginx change: the nginx container is left alone"
+B="$(push_change app/models/taxon.rb "B: model change")"
+run
+check "exits 0" [ "$RC" -eq 0 ]
+check "no nginx test" not docker_called "web nginx -t"
+check "no recreate" not docker_called "force-recreate"
+check "no reload" not docker_called "nginx -s reload"
 teardown
 
 echo

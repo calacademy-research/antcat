@@ -23,7 +23,13 @@
 #   6. when db/migrate changed: waits until the gems are installed (bundle check), runs `rails db:migrate` as the app user, restarts
 #   7. waits until the app answers on its local port (not through Cloudflare): /v1/taxa/429011 and
 #      the home page with HTTP 200, and the home page footer shows the new commit
-#   8. prints the deployed commit and a line for the shared AntCat server log
+#   8. when dockerized_app/nginx/ changed: tests the new nginx config in a throwaway container, then
+#      recreates the nginx container `web` (about a second of interruption) and waits until it
+#      answers. The config files are
+#      mounted one by one, and a running container keeps the file it started with, so a reload
+#      would read the old config. A config that fails its test is not loaded (nginx keeps the old
+#      one) and the deploy ends with a WARNING.
+#   9. prints the deployed commit and a line for the shared AntCat server log
 # On a failed health check it prints the exact rollback command. It never rolls back by itself:
 # after a migration the code and the database must be looked at together first.
 #
@@ -31,7 +37,7 @@
 # master (antcat-prod) is remembered, and the next deploy of origin/master puts it back on master.
 #
 # For the tests (spec/script/deploy_test.sh) these can be overridden: ANTCAT_DIR,
-# ANTCAT_ROLLBACK_FILE, ANTCAT_DEPLOY_LOG, ANTCAT_LOCK_FILE, ANTCAT_HEALTH_INTERVAL.
+# ANTCAT_ROLLBACK_FILE, ANTCAT_DEPLOY_LOG, ANTCAT_LOCK_FILE, ANTCAT_HEALTH_INTERVAL, ANTCAT_NGINX_WAIT.
 
 # Everything runs inside main(): bash reads a script while running it, and this file is replaced
 # by `git checkout` in the middle of a deploy. A function is read whole before it starts.
@@ -46,6 +52,7 @@ main() {
   LOCK_FILE="${ANTCAT_LOCK_FILE:-/run/antcat-deploy.lock}"
   BRANCH_MARK="${ROLLBACK_FILE}.branch"
   HEALTH_INTERVAL="${ANTCAT_HEALTH_INTERVAL:-10}"
+  NGINX_WAIT="${ANTCAT_NGINX_WAIT:-30}"
   APP_CONTAINER=antcat-app
   APP_PORT=8080
   HEALTH_PATHS=("/v1/taxa/429011" "/")
@@ -131,12 +138,12 @@ show_plan() {
   for item in dockerfile compose gems migrations assets solr nginx; do
     case "$item" in
       dockerfile) label="Dockerfile" note="image is rebuilt and the app container recreated" ;;
-      compose) label="docker-compose.yml" note="app container is recreated (other services: by hand)" ;;
+      compose) label="docker-compose.yml" note="app container is recreated (a changed web, db or solr service: recreate it by hand)" ;;
       gems) label="Gemfile/Gemfile.lock" note="startup.sh installs gems on restart" ;;
       migrations) label="db/migrate" note="rails db:migrate is run" ;;
       assets) label="JavaScript/CSS" note="startup.sh builds assets on restart" ;;
       solr) label="Solr configset" note="NOT automatic: recreate the core and reindex (dockerized_app/docker-compose.yml)" ;;
-      nginx) label="nginx config" note="nginx is reloaded after the deploy" ;;
+      nginx) label="nginx config" note="tested, then the nginx container (web) is recreated (about 1 s)" ;;
     esac
     if has "$item" "$changes"; then
       printf 'deploy:   %-22s YES: %s\n' "$label" "$note"
@@ -265,12 +272,81 @@ on_error() {
   exit 1
 }
 
-reload_nginx_if_needed() {
-  if has dockerfile "$1" || has compose "$1" || has nginx "$1"; then
-    # nginx keeps the old container's address after a recreate (502 until reloaded).
-    say "reloading nginx"
-    docker compose -f dockerized_app/docker-compose.yml exec -T web nginx -s reload || say "WARNING: nginx reload failed; run it by hand"
+# nginx after a deploy or a rollback. Sets NGINX_PROBLEM (message and what to do) when something
+# about nginx needs a person.
+update_nginx_if_needed() {
+  local compose=(docker compose -f dockerized_app/docker-compose.yml) out recreated=0
+  NGINX_PROBLEM=""
+  if has nginx "$1"; then
+    # default.conf and 99-autoreload.sh are mounted as single files. git replaces a changed file
+    # with a new one, and the running container keeps the old one, so `nginx -s reload` would
+    # read the old config. Test the new files in a throwaway container, then recreate `web`.
+    say "nginx config changed: testing it (docker compose run ... nginx -t)"
+    # (The image's normal entrypoint runs first, as it will in the recreated container.)
+    # At most 2 minutes: a test that hangs counts as failed and does not hold up the deploy.
+    if out="$(timeout 120 "${compose[@]}" run --rm --no-deps -T web nginx -t 2>&1)"; then
+      printf '%s\n' "$out" | sed 's/^/    /'
+      say "recreating the nginx container (web)"
+      if "${compose[@]}" up -d --force-recreate --no-deps web; then
+        recreated=1
+        if nginx_answers "$NGINX_WAIT"; then
+          say "nginx serves the site with this config (${HEALTH_PATHS[0]} through nginx: $NGINX_CODE)"
+        else
+          NGINX_PROBLEM="the nginx container was recreated but does not serve the site (${HEALTH_PATHS[0]} through nginx: $NGINX_CODE after ${NGINX_ELAPSED} s, 200 expected). Check: docker compose -f dockerized_app/docker-compose.yml logs --tail 30 web"
+        fi
+      else
+        NGINX_PROBLEM="recreating the nginx container failed. Check: docker compose -f dockerized_app/docker-compose.yml ps web; then: docker compose -f dockerized_app/docker-compose.yml up -d --force-recreate --no-deps web"
+      fi
+    else
+      printf '%s\n' "$out" | sed 's/^/    /'
+      NGINX_PROBLEM="the nginx config test FAILED or could not run (output above), so the config in this checkout was not loaded. nginx is still running with the config it started with. If the config is at fault, nginx will NOT start with it: a restart of the nginx container or a reboot would take the site down. Fix the config and deploy again, or run script/deploy --rollback now"
+    fi
   fi
+  if [ "$recreated" = 0 ] && { has dockerfile "$1" || has compose "$1"; }; then
+    # nginx keeps the old app container's address after the app is recreated (502 until
+    # reloaded). Also when the new nginx config was not loaded above: the running nginx reads
+    # the file it started with, so a reload is safe.
+    say "reloading nginx"
+    if ! "${compose[@]}" exec -T web nginx -s reload; then
+      [ -n "$NGINX_PROBLEM" ] || NGINX_PROBLEM="nginx reload failed (the site may answer 502). Run: docker compose -f dockerized_app/docker-compose.yml exec -T web nginx -s reload"
+    fi
+  fi
+}
+
+# True once the site answers through nginx: the first health path over HTTPS with 200, as in the
+# app's own health check, asked from the app container over the Docker network (curl is installed
+# there). --connect-to sends the request to the `web` container with the site's own name in TLS
+# and in the Host header, as real traffic has; -k because the certificate is not checked. This
+# needs the app and nginx containers on one Docker network (they are, in docker-compose.yml). The
+# request goes through the proxied location to Rails, so neither a 502 from an nginx that cannot reach
+# the app nor a redirect counts. Sets NGINX_CODE to the last status (000: no answer) and
+# NGINX_ELAPSED to the seconds waited.
+nginx_answers() {
+  local limit="$1" start=$SECONDS
+  while :; do
+    NGINX_CODE="$(docker exec "$APP_CONTAINER" curl -sk -o /dev/null -m 5 -w '%{http_code}' \
+      --connect-to www.antcat.org:443:web:443 "https://www.antcat.org${HEALTH_PATHS[0]}" 2> /dev/null || true)"
+    [[ "$NGINX_CODE" =~ ^[1-5][0-9][0-9]$ ]] || NGINX_CODE=000
+    NGINX_ELAPSED=$((SECONDS - start))
+    [ "$NGINX_CODE" = 200 ] && return 0
+    [ "$NGINX_ELAPSED" -ge "$limit" ] && return 1
+    sleep "$HEALTH_INTERVAL"
+  done
+}
+
+# For the server log line.
+nginx_outcome() {
+  if [ -n "${NGINX_PROBLEM:-}" ]; then echo "PROBLEM, see the deploy output"
+  elif has nginx "$1"; then echo "recreated with the checked-out config"
+  else echo "unchanged"; fi
+}
+
+# Printed last, so it is not missed above the summary.
+warn_nginx_problem() {
+  [ -n "${NGINX_PROBLEM:-}" ] || return 0
+  log_line "nginx WARNING: $NGINX_PROBLEM"
+  echo
+  say "WARNING (nginx): $NGINX_PROBLEM"
 }
 
 do_deploy() {
@@ -385,7 +461,7 @@ do_deploy() {
     exit 1
   fi
 
-  reload_nginx_if_needed "$changes"
+  update_nginx_if_needed "$changes"
 
   trap - ERR
   log_line "deploy OK $(short "$prev") -> $(short "$target") migrated=$MIGRATED"
@@ -400,7 +476,9 @@ do_deploy() {
   echo "- $(date +%Y-%m-%d) $(hostname): deployed $(short "$prev") -> $(short "$target") with script/deploy" \
     "($(git rev-list --count "$prev..$target" 2> /dev/null || echo '?') commits;" \
     "migrations: $([ "$MIGRATED" = 1 ] && echo yes || echo no);" \
-    "image rebuilt: $(has dockerfile "$changes" && echo yes || echo no)). Rollback commit $(short "$prev")."
+    "image rebuilt: $(has dockerfile "$changes" && echo yes || echo no);" \
+    "nginx: $(nginx_outcome "$changes")). Rollback commit $(short "$prev")."
+  warn_nginx_problem
 }
 
 do_rollback() {
@@ -459,13 +537,15 @@ do_rollback() {
     docker logs --tail 40 "$APP_CONTAINER" 2>&1 | sed 's/^/    /' >&2 || true
     exit 1
   fi
-  reload_nginx_if_needed "$changes"
+  update_nginx_if_needed "$changes"
   trap - ERR
   log_line "rollback OK $(short "$from") -> $(short "$target")"
   say "ROLLED BACK to $(git rev-parse HEAD) on $(hostname)"
   echo
   echo "Server log entry:"
-  echo "- $(date +%Y-%m-%d) $(hostname): rolled back $(short "$from") -> $(short "$target") with script/deploy --rollback."
+  echo "- $(date +%Y-%m-%d) $(hostname): rolled back $(short "$from") -> $(short "$target") with script/deploy --rollback" \
+    "(nginx: $(nginx_outcome "$changes"))."
+  warn_nginx_problem
 }
 
 main "$@"; exit
