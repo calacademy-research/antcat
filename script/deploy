@@ -37,7 +37,7 @@
 # master (antcat-prod) is remembered, and the next deploy of origin/master puts it back on master.
 #
 # For the tests (spec/script/deploy_test.sh) these can be overridden: ANTCAT_DIR,
-# ANTCAT_ROLLBACK_FILE, ANTCAT_DEPLOY_LOG, ANTCAT_LOCK_FILE, ANTCAT_HEALTH_INTERVAL.
+# ANTCAT_ROLLBACK_FILE, ANTCAT_DEPLOY_LOG, ANTCAT_LOCK_FILE, ANTCAT_HEALTH_INTERVAL, ANTCAT_NGINX_WAIT.
 
 # Everything runs inside main(): bash reads a script while running it, and this file is replaced
 # by `git checkout` in the middle of a deploy. A function is read whole before it starts.
@@ -52,6 +52,7 @@ main() {
   LOCK_FILE="${ANTCAT_LOCK_FILE:-/run/antcat-deploy.lock}"
   BRANCH_MARK="${ROLLBACK_FILE}.branch"
   HEALTH_INTERVAL="${ANTCAT_HEALTH_INTERVAL:-10}"
+  NGINX_WAIT="${ANTCAT_NGINX_WAIT:-30}"
   APP_CONTAINER=antcat-app
   APP_PORT=8080
   HEALTH_PATHS=("/v1/taxa/429011" "/")
@@ -137,7 +138,7 @@ show_plan() {
   for item in dockerfile compose gems migrations assets solr nginx; do
     case "$item" in
       dockerfile) label="Dockerfile" note="image is rebuilt and the app container recreated" ;;
-      compose) label="docker-compose.yml" note="app container is recreated (other services: by hand)" ;;
+      compose) label="docker-compose.yml" note="app container is recreated (a changed web, db or solr service: recreate it by hand)" ;;
       gems) label="Gemfile/Gemfile.lock" note="startup.sh installs gems on restart" ;;
       migrations) label="db/migrate" note="rails db:migrate is run" ;;
       assets) label="JavaScript/CSS" note="startup.sh builds assets on restart" ;;
@@ -281,15 +282,16 @@ update_nginx_if_needed() {
     # with a new one, and the running container keeps the old one, so `nginx -s reload` would
     # read the old config. Test the new files in a throwaway container, then recreate `web`.
     say "nginx config changed: testing it (docker compose run ... nginx -t)"
-    if out="$("${compose[@]}" run --rm --no-deps -T --entrypoint nginx web -t 2>&1)"; then
+    # (The image's normal entrypoint runs first, as it will in the recreated container.)
+    if out="$("${compose[@]}" run --rm --no-deps -T web nginx -t 2>&1)"; then
       printf '%s\n' "$out" | sed 's/^/    /'
       say "recreating the nginx container (web)"
       if "${compose[@]}" up -d --force-recreate --no-deps web; then
         recreated=1
-        if nginx_answers 30; then
-          say "nginx answers with the new config"
+        if nginx_answers "$NGINX_WAIT"; then
+          say "nginx serves the site with the new config (${HEALTH_PATHS[0]} through nginx: $NGINX_CODE)"
         else
-          NGINX_PROBLEM="the nginx container was recreated but did not answer within 30 s. Check: docker compose -f dockerized_app/docker-compose.yml logs --tail 30 web"
+          NGINX_PROBLEM="the nginx container was recreated but does not serve the site (${HEALTH_PATHS[0]} through nginx: $NGINX_CODE after ${NGINX_WAIT} s). Check: docker compose -f dockerized_app/docker-compose.yml logs --tail 30 web"
         fi
       else
         NGINX_PROBLEM="recreating the nginx container failed. Check: docker compose -f dockerized_app/docker-compose.yml ps web; then: docker compose -f dockerized_app/docker-compose.yml up -d --force-recreate --no-deps web"
@@ -310,16 +312,20 @@ update_nginx_if_needed() {
   fi
 }
 
-# True once nginx serves requests: any HTTP status on its port 80 (normally 301 to https), asked
-# from the app container over the Docker network, where curl is known to be installed.
+# True once the site answers through nginx: the first health path over HTTPS with a 2xx or 3xx,
+# asked from the app container over the Docker network (curl is installed there; -k because the
+# certificate is for antcat.org, not for the container name). This goes through the proxied
+# location to Rails, so a 502 from an nginx that cannot reach the app does not count.
+# Sets NGINX_CODE to the last status (000: no answer).
 nginx_answers() {
-  local limit="$1" waited=0 code
+  local limit="$1" start=$SECONDS
   while :; do
-    code="$(docker exec "$APP_CONTAINER" curl -s -o /dev/null -m 5 -w '%{http_code}' http://web/ 2> /dev/null || true)"
-    [[ "$code" =~ ^[1-5][0-9][0-9]$ ]] && return 0
-    [ "$waited" -ge "$limit" ] && return 1
+    NGINX_CODE="$(docker exec "$APP_CONTAINER" curl -sk -o /dev/null -m 10 -w '%{http_code}' \
+      -H 'Host: www.antcat.org' "https://web${HEALTH_PATHS[0]}" 2> /dev/null || true)"
+    [[ "$NGINX_CODE" =~ ^[1-5][0-9][0-9]$ ]] || NGINX_CODE=000
+    [[ "$NGINX_CODE" =~ ^[23] ]] && return 0
+    [ $((SECONDS - start)) -ge "$limit" ] && return 1
     sleep "$HEALTH_INTERVAL"
-    waited=$((waited + HEALTH_INTERVAL))
   done
 }
 
@@ -532,7 +538,8 @@ do_rollback() {
   say "ROLLED BACK to $(git rev-parse HEAD) on $(hostname)"
   echo
   echo "Server log entry:"
-  echo "- $(date +%Y-%m-%d) $(hostname): rolled back $(short "$from") -> $(short "$target") with script/deploy --rollback."
+  echo "- $(date +%Y-%m-%d) $(hostname): rolled back $(short "$from") -> $(short "$target") with script/deploy --rollback" \
+    "(nginx: $(nginx_outcome "$changes"))."
   warn_nginx_problem
 }
 
