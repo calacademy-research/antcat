@@ -46,7 +46,7 @@ case "$1" in
   restart) exit "${FAKE_RESTART_RC:-0}" ;;
   compose)
     [[ "$*" == *build* ]] && exit "${FAKE_BUILD_RC:-0}"
-    # The throwaway nginx config test (compose run ... --entrypoint nginx web -t).
+    # The throwaway nginx config test (compose run ... web nginx -t).
     if [[ "$*" == *" run "*"web nginx -t" ]]; then echo "nginx: fake config test"; exit "${FAKE_NGINX_TEST_RC:-0}"; fi
     [[ "$*" == *"nginx -s reload" ]] && exit "${FAKE_NGINX_RELOAD_RC:-0}"
     [[ "$*" == *"--force-recreate"*" web" ]] && exit "${FAKE_NGINX_RECREATE_RC:-0}" ;;
@@ -398,8 +398,8 @@ check "tested the new config in a throwaway container" docker_called "compose .*
 check "recreated only the nginx container" docker_called "compose .*up -d --force-recreate --no-deps web"
 check "did not rely on a reload" not docker_called "nginx -s reload"
 check "asked for a page through nginx" docker_called "exec antcat-app curl .*https://web/v1/taxa/429011"
-check "says nginx serves the site with the new config" out_has "nginx serves the site with the new config (/v1/taxa/429011 through nginx: 200)"
-check "server log line records it" out_has "nginx: recreated with the new config)"
+check "says nginx serves the site with the new config" out_has "nginx serves the site with this config (/v1/taxa/429011 through nginx: 200)"
+check "server log line records it" out_has "nginx: recreated with the checked-out config)"
 check "no nginx warning" not out_has "WARNING (nginx)"
 teardown
 
@@ -411,10 +411,11 @@ check "the deploy itself succeeds" [ "$RC" -eq 0 ]
 check "deployed the new code" head_is "$B"
 check "did not recreate nginx" not docker_called "force-recreate"
 check "did not reload nginx" not docker_called "nginx -s reload"
-check "warns that the old config is in force" out_has "WARNING (nginx): the new nginx config FAILED its test"
+check "warns that the config was not loaded" out_has "WARNING (nginx): the nginx config in this checkout FAILED its test"
 check "the warning comes after the summary" [ "$(grep -n 'WARNING (nginx)' <<< "$OUT" | cut -d: -f1)" -gt "$(grep -n 'Server log entry' <<< "$OUT" | cut -d: -f1)" ]
 check "shows the test output" out_has "nginx: fake config test"
-check "says how to apply it after a fix" out_has "After fixing the config: docker compose .* up -d --force-recreate --no-deps web"
+check "says a restart of nginx would take the site down" out_has "will NOT start with this one"
+check "says what to do" out_has "Fix the config and deploy again, or run script/deploy --rollback now"
 check "server log line records it" out_has "nginx: PROBLEM, see the deploy output)"
 check "written to the deploy log" grep -q "nginx WARNING" "$ANTCAT_DEPLOY_LOG"
 teardown
@@ -432,7 +433,7 @@ B="$(push_change dockerized_app/nginx/default.conf "B: nginx header")"
 export FAKE_NGINX_DOWN_CALLS=1000 ANTCAT_NGINX_WAIT=2
 run
 check "the deploy itself succeeds" [ "$RC" -eq 0 ]
-check "warns that nginx does not serve the site" out_has "WARNING (nginx): the nginx container was recreated but does not serve the site (/v1/taxa/429011 through nginx: 000 after 2 s)"
+check "warns that nginx does not serve the site" out_has "WARNING (nginx): the nginx container was recreated but does not serve the site (/v1/taxa/429011 through nginx: 000 after [2-9] s, 200 expected)"
 check "does not claim the site is served" not out_has "nginx serves the site"
 check "server log line records it" out_has "nginx: PROBLEM, see the deploy output)"
 teardown
@@ -442,7 +443,7 @@ B="$(push_change dockerized_app/nginx/default.conf "B: nginx header")"
 export FAKE_NGINX_DOWN_CALLS=2
 run
 check "exits 0" [ "$RC" -eq 0 ]
-check "says nginx serves the site" out_has "nginx serves the site with the new config"
+check "says nginx serves the site" out_has "nginx serves the site with this config"
 check "no nginx warning" not out_has "WARNING (nginx)"
 teardown
 
@@ -464,7 +465,7 @@ check "the deploy itself succeeds" [ "$RC" -eq 0 ]
 check "recreated the app container" docker_called "compose .*up -d --no-deps app"
 check "did not recreate nginx" not docker_called "force-recreate"
 check "reloaded the running nginx (new app container address)" docker_called "nginx -s reload"
-check "warns that the old config is in force" out_has "WARNING (nginx): the new nginx config FAILED its test"
+check "warns that the config was not loaded" out_has "WARNING (nginx): the nginx config in this checkout FAILED its test"
 teardown
 
 setup "Dockerfile change with a good nginx config: recreated, no extra reload"
@@ -492,7 +493,29 @@ run --rollback
 check "exits 0" [ "$RC" -eq 0 ]
 check "back on A" head_is "$A"
 check "recreated the nginx container" docker_called "compose .*up -d --force-recreate --no-deps web"
-check "server log line records nginx" out_has "with script/deploy --rollback (nginx: recreated with the new config)."
+check "server log line records nginx" out_has "with script/deploy --rollback (nginx: recreated with the checked-out config)."
+teardown
+
+setup "nginx answering with a redirect, not the page: warning, not success"
+B="$(push_change dockerized_app/nginx/default.conf "B: nginx redirect")"
+export FAKE_NGINX_HTTP=301 ANTCAT_NGINX_WAIT=2
+run
+check "the deploy itself succeeds" [ "$RC" -eq 0 ]
+check "warns with the status" out_has "WARNING (nginx): .*through nginx: 301 after [2-9] s, 200 expected"
+teardown
+
+setup "rollback to an nginx config that fails its test: warning after the rollback summary"
+B="$(push_change dockerized_app/nginx/default.conf "B: nginx header")"
+run
+: > "$DOCKER_LOG"
+export FAKE_NGINX_TEST_RC=1
+run --rollback
+check "the rollback itself succeeds" [ "$RC" -eq 0 ]
+check "back on A" head_is "$A"
+check "did not recreate nginx" not docker_called "force-recreate"
+check "warns" out_has "WARNING (nginx): the nginx config in this checkout FAILED its test"
+check "the warning comes after the summary" [ "$(grep -n 'WARNING (nginx)' <<< "$OUT" | cut -d: -f1)" -gt "$(grep -n 'Server log entry' <<< "$OUT" | cut -d: -f1)" ]
+check "server log line records it" out_has "(nginx: PROBLEM, see the deploy output)."
 teardown
 
 setup "no nginx change: the nginx container is left alone"
