@@ -283,7 +283,8 @@ update_nginx_if_needed() {
     # read the old config. Test the new files in a throwaway container, then recreate `web`.
     say "nginx config changed: testing it (docker compose run ... nginx -t)"
     # (The image's normal entrypoint runs first, as it will in the recreated container.)
-    if out="$("${compose[@]}" run --rm --no-deps -T web nginx -t 2>&1)"; then
+    # At most 2 minutes: a test that hangs counts as failed and does not hold up the deploy.
+    if out="$(timeout 120 "${compose[@]}" run --rm --no-deps -T web nginx -t 2>&1)"; then
       printf '%s\n' "$out" | sed 's/^/    /'
       say "recreating the nginx container (web)"
       if "${compose[@]}" up -d --force-recreate --no-deps web; then
@@ -315,8 +316,9 @@ update_nginx_if_needed() {
 # True once the site answers through nginx: the first health path over HTTPS with 200, as in the
 # app's own health check, asked from the app container over the Docker network (curl is installed
 # there). --connect-to sends the request to the `web` container with the site's own name in TLS
-# and in the Host header, as real traffic has; -k because the certificate is not checked. The request
-# goes through the proxied location to Rails, so neither a 502 from an nginx that cannot reach
+# and in the Host header, as real traffic has; -k because the certificate is not checked. This
+# needs the app and nginx containers on one Docker network (they are, in docker-compose.yml). The
+# request goes through the proxied location to Rails, so neither a 502 from an nginx that cannot reach
 # the app nor a redirect counts. Sets NGINX_CODE to the last status (000: no answer) and
 # NGINX_ELAPSED to the seconds waited.
 nginx_answers() {
