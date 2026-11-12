@@ -57,11 +57,11 @@ class Protonym < ApplicationRecord
     absence: { message: "can only be set for species-group names" },
     unless: -> { species_group_name? }
   validates :gender_agreement_type, inclusion: { in: GENDER_AGREEMENT_TYPES, allow_nil: true }
-  validates(*GENDER_EPITHET_COLUMNS.values,
+  validates :masculine_epithet, :feminine_epithet, :neuter_epithet,
     absence: { message: "can only be set when the gender agreement type is adjective or participle" },
-    unless: -> { changeable_name? })
-  validates(*GENDER_EPITHET_COLUMNS.values,
-    format: { with: /\A[a-z]+\z/, message: "must be a single lowercase epithet", allow_nil: true })
+    unless: -> { changeable_name? }
+  validates :masculine_epithet, :feminine_epithet, :neuter_epithet,
+    format: { with: /\A[a-z]+\z/, message: "must be a single lowercase epithet", allow_nil: true }
   validates :ichnotaxon, absence: { message: "can only be set for fossil protonyms" }, unless: -> { fossil? }
 
   before_validation :cleanup_and_convert_taxts
