@@ -131,6 +131,19 @@ describe "API keys and limits" do
         expect(ApiUsageDay.sole).to have_attributes(requests: 1, records: 0)
       end
 
+      it "still refuses a request over the limit when the refusal cannot be counted" do
+        allow(ApiUsageDay).to receive(:add).and_wrap_original do |original, **counts|
+          raise ActiveRecord::Deadlocked if counts[:rejected].to_i.positive?
+
+          original.call(**counts)
+        end
+
+        travel_to(Time.utc(2026, 11, 8, 12, 0, 20)) { 6.times { api_get "/v1/taxa/#{taxon.id}" } }
+
+        expect(response).to have_http_status :too_many_requests
+        expect(ApiUsageDay.sole).to have_attributes(requests: 5, rejected: 0)
+      end
+
       it "never limits or counts the front door" do
         10.times { api_get "/v1" }
         expect(response).to have_http_status :ok
@@ -190,6 +203,17 @@ describe "API keys and limits" do
         expect(response.headers['Retry-After'].to_i).to be_between(1, 60)
         expect(response.parsed_body["message"]).to include "your API key: 2 requests a minute"
         expect(response.parsed_body["message"]).not_to include "get a free API key"
+      end
+
+      it "keeps the key's page size when a request cannot be counted" do
+        api_key.update!(records_per_page: 1)
+        create :species
+        allow(ApiUsageMinute).to receive(:hit).and_raise(ActiveRecord::LockWaitTimeout)
+
+        api_get "/v1/taxa", key: key
+
+        expect(response).to have_http_status :ok
+        expect(response.parsed_body.size).to eq 1
       end
 
       it "stops at the daily requests limit until the next UTC day" do

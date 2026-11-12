@@ -5,14 +5,8 @@
 #
 # The key is read from the `X-API-Key` header only. It is never logged: Rails does not log request
 # headers, `api_key` is in `filter_parameters`, and the key is not put in any response or email.
-#
-# Counting is a database write for every request, in both Puma workers. It must never take the API
-# down: when the counter rows are locked (`COUNTING_ERRORS`: a deadlock, or a lock wait that times
-# out), the request is answered and that request is not counted.
 module ApiKeyAccess
   extend ActiveSupport::Concern
-
-  COUNTING_ERRORS = [ActiveRecord::Deadlocked, ActiveRecord::LockWaitTimeout].freeze
 
   included do
     before_action :check_api_access
@@ -36,9 +30,6 @@ module ApiKeyAccess
       if (rejection = @api_gate.admit)
         render_api_over_limit rejection
       end
-    rescue *COUNTING_ERRORS => e
-      Rails.logger.error "API request answered without counting it (#{e.class})"
-      @api_gate = nil
     end
 
     # The list routes (`index`) have no filters: they page through a whole table with `starts_at`.
@@ -53,8 +44,6 @@ module ApiKeyAccess
     def count_api_records
       return unless @api_gate && response.successful?
       @api_gate.add_records api_records_in_response
-    rescue *COUNTING_ERRORS => e
-      Rails.logger.error "API records not counted (#{e.class})"
     end
 
     # Lists are JSON arrays; a single record is a JSON object.

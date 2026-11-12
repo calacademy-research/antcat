@@ -7,8 +7,15 @@
 #   rejection = gate.admit       # nil, or a Rejection to answer with 429
 #   gate.records_per_page        # page size for list routes
 #   gate.add_records(n)          # after the answer, records sent
+#
+# Counting is a database write for every request, in both Puma workers. It must never take the API
+# down: when a counter row is locked (`LOCK_ERRORS`: a deadlock, or a lock wait that times out), only
+# that one write is given up. A request that was not yet refused is answered without being counted;
+# a request that was refused stays refused, and the key's own page size stays in force.
 module ApiAccess
   class Gate
+    LOCK_ERRORS = [ActiveRecord::Deadlocked, ActiveRecord::LockWaitTimeout].freeze
+
     Rejection = Data.define(:limit_name, :limit, :retry_after) do
       def per_minute?
         limit_name == :requests_per_minute
@@ -38,13 +45,13 @@ module ApiAccess
     # The records-a-day limit is checked before the answer and the records are added after it (their
     # number is only known then), so requests at the same moment can go over it by a page each.
     def admit
-      rejection = daily_rejection || minute_rejection || count_request
+      rejection = unless_locked { daily_rejection || minute_rejection || count_request }
       if rejection
-        count_rejected
+        unless_locked { count_rejected }
         return rejection
       end
 
-      api_key&.touch_last_used(@now)
+      unless_locked { api_key&.touch_last_used(@now) }
       nil
     end
 
@@ -60,7 +67,7 @@ module ApiAccess
 
     def add_records count
       return unless count.positive?
-      ApiUsageDay.add day: today, api_key_id: api_key_id, client: client, records: count
+      unless_locked { ApiUsageDay.add day: today, api_key_id: api_key_id, client: client, records: count }
     end
 
     def api_key_id
@@ -73,6 +80,14 @@ module ApiAccess
     end
 
     private
+
+      # The block's value, or nil when a counter row is locked (see the comment at the top).
+      def unless_locked
+        yield
+      rescue *LOCK_ERRORS => e
+        Rails.logger.error "API usage not counted (#{e.class})"
+        nil
+      end
 
       def today
         @now.to_date
