@@ -150,6 +150,11 @@ module Protonyms
       'vetus' => %w[vetus vetus vetus]
     }.freeze
 
+    # -iger ("bearing") compounds whose stem ends in n. TaxonWorks' /(niger|integer)$/ rule takes them for niger
+    # ("black") and gives cornigra, spinigra, lanigra; the Latin keeps the e. Every such stem among AntCat's
+    # epithets (November 2026). A deliberate departure from TaxonWorks.
+    IGER_COMPOUND = /(corn|lan|spin|pinn|crin|ign|con|dolon)(iger|igera|igerum)$/
+
     attr_private_initialize :epithet
 
     def call
@@ -161,9 +166,13 @@ module Protonyms
 
     private
 
-      # Same rules, in the same order, as TaxonWorks' `predict_three_forms`.
+      # Same rules, in the same order, as TaxonWorks' `predict_three_forms`, except -iger compounds (above).
       def forms_by_ending
         name = epithet
+        if (match = IGER_COMPOUND.match(name))
+          stem = "#{name[0...match.begin(2)]}iger"
+          return [stem, "#{stem}a", "#{stem}um"]
+        end
 
         case name
         when /(color|coloris)$/      then [name, name, name]

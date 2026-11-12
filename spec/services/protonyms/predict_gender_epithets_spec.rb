@@ -26,6 +26,12 @@ describe Protonyms::PredictGenderEpithets do
       expect(forms('lanigera')).to eq %w[laniger lanigera lanigerum]
     end
 
+    it "keeps the e of -iger ('bearing') compounds that TaxonWorks takes for niger" do
+      expect(forms('corniger')).to eq %w[corniger cornigera cornigerum]
+      expect(forms('spiniger')).to eq %w[spiniger spinigera spinigerum]
+      expect(forms('conigera')).to eq %w[coniger conigera conigerum]
+    end
+
     it "declines comparatives" do
       expect(forms('major')).to eq %w[major major majus]
     end
