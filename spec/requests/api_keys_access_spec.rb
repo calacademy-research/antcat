@@ -106,6 +106,31 @@ describe "API keys and limits" do
         expect(response).to have_http_status :ok
       end
 
+      # Counting is a write for every request, in both Puma workers. A deadlock or a lock that is not
+      # given in time must not turn into an error for the visitor.
+      it "answers, without counting, when the counter rows are locked" do
+        allow(ApiUsageMinute).to receive(:hit).and_raise(ActiveRecord::Deadlocked)
+
+        api_get "/v1/taxa/#{taxon.id}"
+
+        expect(response).to have_http_status :ok
+        expect(response.parsed_body.dig("species", "id")).to eq taxon.id
+        expect(ApiUsageDay.sum(:requests)).to eq 0
+      end
+
+      it "answers when the records of the answer cannot be counted" do
+        allow(ApiUsageDay).to receive(:add).and_wrap_original do |original, **counts|
+          raise ActiveRecord::LockWaitTimeout if counts[:records].to_i.positive?
+
+          original.call(**counts)
+        end
+
+        api_get "/v1/taxa/#{taxon.id}"
+
+        expect(response).to have_http_status :ok
+        expect(ApiUsageDay.sole).to have_attributes(requests: 1, records: 0)
+      end
+
       it "never limits or counts the front door" do
         10.times { api_get "/v1" }
         expect(response).to have_http_status :ok
