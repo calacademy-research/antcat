@@ -22,6 +22,30 @@ class ApiUsageDay < ApplicationRecord
     with_connection { |connection| connection.exec_update(sql, "ApiUsageDay Add") }
   end
 
+  # Counts one request, but only while the day's requests are under `limit`. The check and the count
+  # are one statement (`UPDATE ... WHERE requests < limit`), so two requests at the same moment, in
+  # either Puma worker, cannot both take the last one. Returns the number of requests counted: 1, or
+  # 0 when the limit is reached.
+  def self.add_request_under day:, api_key_id:, client:, limit:
+    counted = increment_requests_under(day, api_key_id, client, limit)
+    return counted if counted.positive?
+
+    # No row yet (the first request of the day), or the limit is reached. Make the row, with nothing in it,
+    # then try once more.
+    add day: day, api_key_id: api_key_id, client: client
+    increment_requests_under(day, api_key_id, client, limit)
+  end
+
+  # The number of rows changed: 1 when the request was counted, 0 when not.
+  def self.increment_requests_under day, api_key_id, client, limit
+    sql = sanitize_sql_array([<<~SQL.squish, day, api_key_id, client, limit])
+      UPDATE api_usage_days SET requests = requests + 1
+      WHERE day = ? AND api_key_id = ? AND client = ? AND requests < ?
+    SQL
+    with_connection { |connection| connection.exec_update(sql, "ApiUsageDay Add request under limit") }.to_i
+  end
+  private_class_method :increment_requests_under
+
   # Totals per key for the admin page: `{ api_key_id => { today:, last_7_days:, last_30_days:, records:, rejected: } }`
   # (records and refused requests over the last 30 days).
   def self.summary_by_key today: Time.current.utc.to_date

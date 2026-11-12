@@ -81,10 +81,12 @@ module EditorsPanels
         rows.map { |row| row.map { csv_cell(it) }.join(",") }.join("\r\n") + "\r\n"
       end
 
-      # Quoted, with a leading apostrophe for text that a spreadsheet would run as a formula.
+      # Quoted, with a leading apostrophe for text that a spreadsheet would run as a formula: text that
+      # starts with =, +, - or @, also after spaces (some spreadsheets skip them), or with a tab or a
+      # carriage return.
       def csv_cell value
         text = value.respond_to?(:utc) ? value.utc.to_fs(:db) : value.to_s
-        text = "'#{text}" if text.match?(/\A[=+\-@\t\r]/)
+        text = "'#{text}" if text.match?(/\A(?:\s*[=+\-@]|[\t\r])/)
         %("#{text.gsub('"', '""')}")
       end
   end

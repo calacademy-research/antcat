@@ -96,6 +96,59 @@ describe "Registering for a free API key" do
       expect(response.body).not_to include key
     end
 
+    # The link's token is in the web address. nginx adds its own Referrer-Policy header after the app's
+    # and browsers take the last one, so the pages carry the meta tag too.
+    it "tells the browser to send no referrer from the link's page and the page with the key" do
+      register
+      token = token_from_last_email
+
+      meta_tag = /<meta (?=[^>]*name=["']referrer["'])(?=[^>]*content=["']no-referrer["'])[^>]*>/
+
+      get confirm_api_key_path(token: token)
+      expect(response.headers['Referrer-Policy']).to eq 'no-referrer'
+      expect(response.body).to match meta_tag
+
+      post issue_api_key_path, params: { token: token }
+      expect(response.headers['Referrer-Policy']).to eq 'no-referrer'
+      expect(response.body).to match meta_tag
+
+      get new_api_key_path
+      expect(response.headers['Referrer-Policy']).not_to eq 'no-referrer'
+      expect(response.body).not_to match(/name=["']referrer["']/)
+    end
+
+    context "when the email with the link cannot be sent" do
+      before do
+        delivery = instance_double(ActionMailer::MessageDelivery)
+        allow(delivery).to receive(:deliver_now).and_raise(Errno::ECONNREFUSED)
+        allow(ApiKeyMailer).to receive(:confirm_email).and_return(delivery)
+      end
+
+      it "says so, keeps what was typed and leaves no pending registration" do
+        expect { register }.not_to change { ApiKey.count }
+
+        expect(response).to have_http_status :service_unavailable
+        expect(response.body).to include ApiKeysController::EMAIL_NOT_SENT_MESSAGE
+        expect(response.body).to include 'value="Quintus Batiatus"', 'value="quintus@example.org"'
+      end
+
+      it "does not count the try against the limits per IP and per email" do
+        allow(Rails.cache).to receive(:decrement)
+
+        register email: ' Quintus@Example.org '
+
+        within = ApiKeysController::REGISTRATIONS_WITHIN
+        expect(Rails.cache).to have_received(:decrement).with("api_key:ip:127.0.0.1", 1, expires_in: within)
+        expect(Rails.cache).to have_received(:decrement).with("api_key:email:quintus@example.org", 1, expires_in: within)
+      end
+    end
+
+    it "does not take a sent email out of the limits" do
+      allow(Rails.cache).to receive(:decrement)
+      register
+      expect(Rails.cache).not_to have_received(:decrement)
+    end
+
     it "does not accept an expired link" do
       register
       token = token_from_last_email

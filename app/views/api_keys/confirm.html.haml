@@ -1,5 +1,8 @@
 -page_title "Free API Key"
 -breadcrumb :api_key
+-# The link's token is in the web address: send no referrer (see `ApiKeysController#no_referrer`).
+-content_for :meta_tags do
+  %meta{content: "no-referrer", name: "referrer"}
 
 %p Press the button to see your API key. It is shown only once, so please copy it and keep it somewhere safe.
 

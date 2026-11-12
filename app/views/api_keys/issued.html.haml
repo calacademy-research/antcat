@@ -1,5 +1,8 @@
 -page_title "Your API Key"
 -breadcrumb :api_key
+-# This page shows the key: send no referrer (see `ApiKeysController#no_referrer`).
+-content_for :meta_tags do
+  %meta{content: "no-referrer", name: "referrer"}
 
 .callout-blue.mb-4
   %p Your API key:

@@ -41,6 +41,23 @@ describe ApiAccess::Gate do
       expect(gate(at: now + 1.day).admit).to be_nil
     end
 
+    # Two requests at the same moment (one in each Puma worker) both look at the day's count before
+    # either is counted. The count is one statement that also checks the limit, so only one gets through.
+    it 'never counts more requests than the daily limit' do
+      49.times { |i| gate(at: now + (i * 61).seconds).admit }
+      later = now + 1.hour
+      first = gate(at: later)
+      second = gate(at: later + 1.second)
+      [first, second].each { |each_gate| expect(each_gate.__send__(:daily_rejection)).to be_nil }
+
+      expect(first.admit).to be_nil
+      rejection = second.admit
+
+      expect(rejection.limit_name).to eq :requests_per_day
+      expect(rejection.limit).to eq 50
+      expect(ApiUsageDay.sole).to have_attributes(requests: 50, rejected: 1)
+    end
+
     it 'stores a hash of the IP, never the IP' do
       gate.admit
 

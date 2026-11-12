@@ -62,6 +62,22 @@ describe "API keys and limits" do
         expect(response.parsed_body["message"]).to include "need a free API key", ApiAccess::REGISTER_URL
       end
 
+      # As in production: every request reaches the app from nginx (one address on the Docker network),
+      # which puts the visitor's address (from Cloudflare's CF-Connecting-IP) in X-Forwarded-For.
+      it "counts each visitor behind Cloudflare and nginx on their own, by the address nginx passes on" do
+        from_nginx = { 'REMOTE_ADDR' => '172.18.0.5' }
+
+        travel_to Time.utc(2026, 11, 8, 12, 0, 20) do
+          6.times { get "/v1/taxa/#{taxon.id}", headers: { 'X-Forwarded-For' => '203.0.113.7' }, env: from_nginx }
+          expect(response).to have_http_status :too_many_requests
+
+          get "/v1/taxa/#{taxon.id}", headers: { 'X-Forwarded-For' => '198.51.100.9' }, env: from_nginx
+          expect(response).to have_http_status :ok
+        end
+
+        expect(ApiUsageDay.without_key.pluck(:requests, :rejected)).to contain_exactly([5, 1], [1, 0])
+      end
+
       it "answers 429 with Retry-After after 5 requests a minute" do
         travel_to Time.utc(2026, 11, 8, 12, 0, 20) do
           5.times do

@@ -34,6 +34,24 @@ describe "API front door" do
     end
   end
 
+  # /llms.txt is a page of the app (`LlmsTxtController`), no longer a file in public/. nginx must pass
+  # it on like every other address: a location that served files itself would answer 404.
+  describe "nginx (dockerized_app/nginx/default.conf)" do
+    let(:https_server) { Rails.root.join("dockerized_app/nginx/default.conf").read.split(/^server \{/).last }
+    let(:locations) { https_server.scan(/^    location ([^\n]*?) *\{\n(.*?)^    \}/m) }
+
+    it "passes every address to the app, /llms.txt among them" do
+      expect(locations.map(&:first)).to include "/"
+      expect(locations.map(&:last)).to all(include("proxy_pass $antcat_app;"))
+      expect(https_server).not_to match(/^\s*(root|alias|try_files)\s/)
+      expect(locations.map(&:first).grep(/txt|llms/)).to be_empty
+    end
+
+    it "has no file of that name in public/ that would be served in its place" do
+      expect(Rails.public_path.join("llms.txt")).not_to exist
+    end
+  end
+
   context "when API keys are off (the default)" do
     it "says keys are coming, without a link to the form" do
       get "/v1"

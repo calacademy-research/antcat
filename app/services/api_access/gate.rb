@@ -32,18 +32,18 @@ module ApiAccess
     end
 
     # Returns nil when the request may go ahead (and counts it), or a `Rejection` (counted as refused).
+    #
+    # The day's requests are counted in one statement that also checks the limit (`count_request`), so
+    # requests arriving at the same moment in both Puma workers cannot go over the requests-a-day limit.
+    # The records-a-day limit is checked before the answer and the records are added after it (their
+    # number is only known then), so requests at the same moment can go over it by a page each.
     def admit
-      if (rejection = daily_rejection)
+      rejection = daily_rejection || minute_rejection || count_request
+      if rejection
         count_rejected
         return rejection
       end
 
-      if (rejection = minute_rejection)
-        count_rejected
-        return rejection
-      end
-
-      ApiUsageDay.add day: today, api_key_id: api_key_id, client: client, requests: 1
       api_key&.touch_last_used(@now)
       nil
     end
@@ -100,6 +100,20 @@ module ApiAccess
         return if count <= limits.requests_per_minute
 
         Rejection.new(:requests_per_minute, limits.requests_per_minute, seconds_until(minute + 1.minute))
+      end
+
+      # Counts the request for the day. With a requests-a-day limit: only while under it; nil when
+      # counted, or the rejection when another request took the last one since `daily_rejection` looked.
+      def count_request
+        limit = limits.requests_per_day
+        unless limit
+          ApiUsageDay.add day: today, api_key_id: api_key_id, client: client, requests: 1
+          return
+        end
+        counted = ApiUsageDay.add_request_under(day: today, api_key_id: api_key_id, client: client, limit: limit)
+        return if counted.positive?
+
+        Rejection.new(:requests_per_day, limit, seconds_until_tomorrow)
       end
 
       def count_rejected

@@ -40,6 +40,21 @@ describe "API keys admin page (/panel/api_keys)" do
       expect(response.body).to include '"Quintus Batiatus"'
     end
 
+    # A spreadsheet runs a cell that starts with =, +, - or @ as a formula, some also after spaces.
+    it "marks text a spreadsheet would run as a formula, also after spaces" do
+      create :api_key, name: 'Plain Name', institution: '=HYPERLINK("http://example.org")', project: "+1+1"
+      # Leading spaces are stripped when a registration is saved; a row written another way keeps them.
+      spaced = create :api_key, name: 'Spaced'
+      spaced.update_columns institution: '  =1+1', project: " \t@SUM(A1)", note: "-2"
+
+      get panel_api_keys_path(format: :csv)
+
+      expect(response.body).to include %("'=HYPERLINK(""http://example.org"")"), %("'+1+1")
+      expect(response.body).to include %("'  =1+1"), %("' \t@SUM(A1)"), %("'-2")
+      expect(response.body).to include '"Plain Name"', '"Spaced"'
+      expect(response.body).not_to include %("'Plain Name"), %("'Spaced")
+    end
+
     it "revokes and reactivates a key" do
       put revoke_panel_api_key_path(api_key)
       expect(api_key.reload.status).to eq ApiKey::REVOKED
