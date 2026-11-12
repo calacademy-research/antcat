@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2022_04_13_170109) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_12_180000) do
   create_table "activities", id: :integer, charset: "utf8mb3", force: :cascade do |t|
     t.integer "trackable_id"
     t.string "trackable_type"
@@ -174,6 +174,9 @@ ActiveRecord::Schema[8.1].define(version: 2022_04_13_170109) do
     t.boolean "ichnotaxon", default: false, null: false
     t.text "etymology_taxt"
     t.string "gender_agreement_type"
+    t.string "masculine_epithet"
+    t.string "feminine_epithet"
+    t.string "neuter_epithet"
     t.index ["authorship_id"], name: "ix_protonyms__authorship_id"
     t.index ["name_id"], name: "ix_protonyms__name_id"
     t.index ["type_name_id"], name: "ux_protonyms__type_name_id", unique: true

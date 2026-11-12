@@ -35,6 +35,11 @@ describe Api::V1::ProtonymsController, as: :visitor do
               "bioregion" => nil,
               "locality" => nil,
               "forms" => nil,
+              "gender_agreement_type" => nil,
+              "masculine_epithet" => nil,
+              "feminine_epithet" => nil,
+              "neuter_epithet" => nil,
+              "etymology_taxt" => protonym.etymology_taxt,
               "primary_type_information_taxt" => protonym.primary_type_information_taxt,
               "secondary_type_information_taxt" => protonym.secondary_type_information_taxt,
               "type_notes_taxt" => protonym.type_notes_taxt,
@@ -51,7 +56,8 @@ describe Api::V1::ProtonymsController, as: :visitor do
     context 'with species-group protonym' do
       let!(:protonym) do
         create :protonym, :species_group, bioregion: Protonym::NEARCTIC_REGION,
-          locality: "USA", forms: 'q.'
+          locality: "USA", forms: 'q.', gender_agreement_type: Protonym::ADJECTIVE,
+          masculine_epithet: "crassispinus", feminine_epithet: "crassispina", neuter_epithet: "crassispinum"
       end
 
       specify do
@@ -68,6 +74,11 @@ describe Api::V1::ProtonymsController, as: :visitor do
               "bioregion" => Protonym::NEARCTIC_REGION,
               "locality" => 'USA',
               "forms" => protonym.forms,
+              "gender_agreement_type" => Protonym::ADJECTIVE,
+              "masculine_epithet" => "crassispinus",
+              "feminine_epithet" => "crassispina",
+              "neuter_epithet" => "crassispinum",
+              "etymology_taxt" => nil,
               "primary_type_information_taxt" => protonym.primary_type_information_taxt,
               "secondary_type_information_taxt" => protonym.secondary_type_information_taxt,
               "type_notes_taxt" => protonym.type_notes_taxt,

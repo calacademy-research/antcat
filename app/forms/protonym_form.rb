@@ -8,6 +8,9 @@ class ProtonymForm
     forms
     fossil
     gender_agreement_type
+    masculine_epithet
+    feminine_epithet
+    neuter_epithet
     ichnotaxon
     locality
     sic

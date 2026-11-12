@@ -149,6 +149,24 @@
               =db_tooltip_icon :gender_agreement_type, scope: :protonyms
           %td=f.select :gender_agreement_type, Protonym::GENDER_AGREEMENT_TYPES, include_blank: '(blank)'
 
+      -if protonym.species_group_name? || protonym.gender_epithets
+        -predicted_gender_epithets = protonym.predicted_gender_epithets
+        -Protonym::GENDER_EPITHET_COLUMNS.each do |gender, column|
+          %tr
+            %td
+              =f.label column do
+                Spelling in a #{gender} genus (only for adjectives and participles)
+                =db_tooltip_icon :gender_epithets, scope: :protonyms
+            %td
+              =f.text_field column, placeholder: predicted_gender_epithets&.fetch(gender)
+        -if predicted_gender_epithets
+          %tr
+            %td
+            %td.text-sm
+              Predicted from the original epithet, as TaxonWorks does:
+              =predicted_gender_epithets.values.join(', ')
+              (masculine, feminine, neuter). Leave blank for nouns.
+
       %tr
         %td
           =f.label :etymology do

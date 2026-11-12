@@ -27,6 +27,12 @@ class Protonym < ApplicationRecord
     NOUN_IN_GENITIVE_CASE = 'noun_in_genitive_case'
   ]
   GENDER_AGREEMENT_TYPES = CHANGEABLE_GENDER_AGREEMENT_TYPES + UNCHANGEABLE_GENDER_AGREEMENT_TYPES
+  # The spelling of an adjectival or participial name in each genus gender (TaxonWorks stores the same three).
+  GENDER_EPITHET_COLUMNS = {
+    'masculine' => :masculine_epithet,
+    'feminine' => :feminine_epithet,
+    'neuter' => :neuter_epithet
+  }.freeze
 
   delegate :pages, to: :authorship, prefix: true
 
@@ -51,6 +57,11 @@ class Protonym < ApplicationRecord
     absence: { message: "can only be set for species-group names" },
     unless: -> { species_group_name? }
   validates :gender_agreement_type, inclusion: { in: GENDER_AGREEMENT_TYPES, allow_nil: true }
+  validates(*GENDER_EPITHET_COLUMNS.values,
+    absence: { message: "can only be set when the gender agreement type is adjective or participle" },
+    unless: -> { changeable_name? })
+  validates(*GENDER_EPITHET_COLUMNS.values,
+    format: { with: /\A[a-z]+\z/, message: "must be a single lowercase epithet", allow_nil: true })
   validates :ichnotaxon, absence: { message: "can only be set for fossil protonyms" }, unless: -> { fossil? }
 
   before_validation :cleanup_and_convert_taxts
@@ -65,6 +76,7 @@ class Protonym < ApplicationRecord
   has_paper_trail
   strip_attributes only: [
     :locality, :bioregion, :forms, :gender_agreement_type,
+    :masculine_epithet, :feminine_epithet, :neuter_epithet,
     :notes_taxt, :etymology_taxt
   ], replace_newlines: true
   strip_attributes only: [:primary_type_information_taxt, :secondary_type_information_taxt, :type_notes_taxt]
@@ -96,6 +108,24 @@ class Protonym < ApplicationRecord
 
   def unchangeable_name?
     gender_agreement_type.in?(UNCHANGEABLE_GENDER_AGREEMENT_TYPES)
+  end
+
+  # @return [Hash, nil] e.g. { "masculine" => "crassispinus", "feminine" => "crassispina", "neuter" => "crassispinum" }
+  def gender_epithets
+    return unless changeable_name? && GENDER_EPITHET_COLUMNS.values.any? { |column| self[column].present? }
+    GENDER_EPITHET_COLUMNS.transform_values { |column| self[column] }
+  end
+
+  # The spelling this name takes in a genus of `gender` ("masculine", "feminine" or "neuter").
+  def epithet_for_gender gender
+    column = GENDER_EPITHET_COLUMNS[gender]
+    self[column] if column && changeable_name?
+  end
+
+  # The three spellings TaxonWorks would predict from the original epithet (for adjectives and participles only).
+  def predicted_gender_epithets
+    return unless species_group_name? && name.epithet.present?
+    Protonyms::PredictGenderEpithets[name.epithet]
   end
 
   def genus_group_name?

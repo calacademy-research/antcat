@@ -82,6 +82,21 @@
             %th Etymology
             %td=Detax[@protonym.etymology_taxt]
 
+        -if @protonym.gender_agreement_type?
+          %tr
+            %th Part of speech
+            %td=@protonym.gender_agreement_type.humanize(capitalize: false)
+
+        -if (gender_epithets = @protonym.gender_epithets)
+          %tr
+            %th Spelling by genus gender
+            %td
+              -gender_epithets.each do |gender, epithet|
+                =gender
+                %i=epithet.presence || '?'
+                -unless gender == gender_epithets.keys.last
+                  &middot;
+
         -if @protonym.primary_type_information_taxt?
           %tr
             %th Primary type information

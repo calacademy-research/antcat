@@ -95,6 +95,42 @@ describe Protonym do
       end
     end
 
+    describe "gender epithet validations" do
+      context 'when protonym is an adjective' do
+        let(:protonym) { build_stubbed :protonym, :adjective_gender_agreement_type }
+
+        it 'can have the three spellings' do
+          protonym.assign_attributes(masculine_epithet: 'rufus', feminine_epithet: 'rufa', neuter_epithet: 'rufum')
+          expect(protonym.valid?).to eq true
+        end
+
+        it 'requires each spelling to be a single lowercase epithet' do
+          protonym.masculine_epithet = 'Rufus'
+          expect(protonym.valid?).to eq false
+          expect(protonym.errors.where(:masculine_epithet).map(&:message)).
+            to include("must be a single lowercase epithet")
+        end
+      end
+
+      context 'when protonym is a noun' do
+        let(:protonym) { build_stubbed :protonym, :noun_in_apposition_gender_agreement_type }
+
+        it 'cannot have spellings by gender' do
+          expect { protonym.feminine_epithet = 'trocha' }.to change { protonym.valid? }.to(false)
+          expect(protonym.errors.where(:feminine_epithet).map(&:message)).
+            to include("can only be set when the gender agreement type is adjective or participle")
+        end
+      end
+
+      context 'when protonym has no gender agreement type' do
+        let(:protonym) { build_stubbed :protonym, :species_group }
+
+        it 'cannot have spellings by gender' do
+          expect { protonym.neuter_epithet = 'rufum' }.to change { protonym.valid? }.to(false)
+        end
+      end
+    end
+
     describe "#ichnotaxon validations" do
       context 'when protonym is not fossil' do
         let(:protonym) { build_stubbed :protonym }
@@ -111,6 +147,7 @@ describe Protonym do
 
   describe 'callbacks' do
     it { is_expected.to strip_attributes(:locality, :bioregion, :forms, :gender_agreement_type, :notes_taxt) }
+    it { is_expected.to strip_attributes(:masculine_epithet, :feminine_epithet, :neuter_epithet) }
     it { is_expected.to strip_attributes(:etymology_taxt) }
     it { is_expected.to strip_attributes(:primary_type_information_taxt, :secondary_type_information_taxt, :type_notes_taxt) }
 
@@ -152,6 +189,40 @@ describe Protonym do
       reference.author_names.first.update_columns(name: 'O&Brien')
       expect(protonym.reload.plain_text_author_citation).to eq 'O&Brien, 2005'
       expect(protonym.author_citation).to eq 'O&amp;Brien, 2005'
+    end
+  end
+
+  describe "#gender_epithets and #epithet_for_gender" do
+    let(:protonym) do
+      build_stubbed :protonym, :adjective_gender_agreement_type,
+        masculine_epithet: 'crassispinus', feminine_epithet: 'crassispina', neuter_epithet: 'crassispinum'
+    end
+
+    specify do
+      expect(protonym.gender_epithets).to eq(
+        'masculine' => 'crassispinus', 'feminine' => 'crassispina', 'neuter' => 'crassispinum'
+      )
+    end
+
+    specify { expect(protonym.epithet_for_gender('feminine')).to eq 'crassispina' }
+    specify { expect(protonym.epithet_for_gender(nil)).to eq nil }
+
+    context 'when no spellings are recorded' do
+      let(:protonym) { build_stubbed :protonym, :adjective_gender_agreement_type }
+
+      specify { expect(protonym.gender_epithets).to eq nil }
+    end
+  end
+
+  describe "#predicted_gender_epithets" do
+    let(:protonym) do
+      build_stubbed :protonym, :adjective_gender_agreement_type, name: SpeciesName.new(name: 'Formica crassispina')
+    end
+
+    specify do
+      expect(protonym.predicted_gender_epithets).to eq(
+        'masculine' => 'crassispinus', 'feminine' => 'crassispina', 'neuter' => 'crassispinum'
+      )
     end
   end
 

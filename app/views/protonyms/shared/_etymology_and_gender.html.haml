@@ -41,3 +41,19 @@
       %p
         Gender agreement type:
         %code=protonym.gender_agreement_type
+
+    -if (gender_epithets = protonym.gender_epithets)
+      %p
+        Spelling by genus gender:
+        -gender_epithets.each do |gender, epithet|
+          %br
+          =gender
+          %i=epithet.presence || '?'
+        -if taxon.is_a?(SpeciesGroupTaxon) && (expected = protonym.epithet_for_gender(taxon.genus.name.gender))
+          %br
+          -if expected == taxon.name.epithet
+            This name agrees with its genus.
+          -else
+            %strong
+              In #{taxon.genus.name.name} it should read
+              %i=expected
