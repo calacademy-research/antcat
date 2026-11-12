@@ -64,6 +64,8 @@ main() {
   NGINX_WAIT="${ANTCAT_NGINX_WAIT:-30}"
   APP_CONTAINER=antcat-app
   APP_PORT=8080
+  # First entry = also the probe through nginx after a recreate (nginx_answers). No path here is
+  # counted by the API keys, and the app has no other request limit on them (nginx limits 10/s).
   HEALTH_PATHS=("/v1" "/catalog/429011" "/")
 
   local mode=deploy dry_run=0 ref=master timeout=900 yes=0
