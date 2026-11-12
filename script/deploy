@@ -21,8 +21,13 @@
 #      container when docker-compose.yml changed, otherwise restarts it (startup.sh runs bundle
 #      install, yarn and the asset build on every start, so a Gemfile or asset change needs only that)
 #   6. when db/migrate changed: waits until the gems are installed (bundle check), runs `rails db:migrate` as the app user, restarts
-#   7. waits until the app answers on its local port (not through Cloudflare): /v1/taxa/429011 and
-#      the home page with HTTP 200, and the home page footer shows the new commit
+#   7. waits until the app answers on its local port (not through Cloudflare): the API front door
+#      /v1, the catalog page of a taxon (/catalog/429011: names, history and references read from
+#      the database, as the API and the AntWeb export do) and the home page with HTTP 200, and the
+#      home page footer shows the new commit. None of them is counted by the API keys. /v1 is
+#      never limited or counted by the API keys (Api::V1::RootController skips check_api_access);
+#      a data path such as /v1/taxa/429011 is, and a health check asking it every few seconds ran
+#      into the limit of 50 requests a day without a key (antcat-staging, 2026-11-12)
 #   8. when dockerized_app/nginx/ changed: tests the new nginx config in a throwaway container, then
 #      recreates the nginx container `web` (about a second of interruption) and waits until it
 #      answers. The config files are
@@ -43,6 +48,10 @@
 # by `git checkout` in the middle of a deploy. A function is read whole before it starts.
 main() {
   set -Eeuo pipefail
+  # Files git writes must stay readable by the app, which runs as another user in the container
+  # and reads the commit from .git/HEAD at boot. A root shell left with umask 077 made .git/HEAD
+  # mode 600: the footer showed no commit and the health check waited 15 minutes (2026-11-12).
+  umask 022
 
   local script_dir
   script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -55,7 +64,9 @@ main() {
   NGINX_WAIT="${ANTCAT_NGINX_WAIT:-30}"
   APP_CONTAINER=antcat-app
   APP_PORT=8080
-  HEALTH_PATHS=("/v1/taxa/429011" "/")
+  # First entry = also the probe through nginx after a recreate (nginx_answers). No path here is
+  # counted by the API keys, and the app has no other request limit on them (nginx limits 10/s).
+  HEALTH_PATHS=("/v1" "/catalog/429011" "/")
 
   local mode=deploy dry_run=0 ref=master timeout=900 yes=0
   while [ $# -gt 0 ]; do
@@ -166,6 +177,20 @@ http_code() {
   echo "$code"
 }
 
+# Mode and owner of .git/HEAD: the app reads the running commit from it and must be able to.
+head_mode() {
+  local m
+  if ! m="$(stat -c '%a %U' "$APP_DIR/.git/HEAD" 2> /dev/null)"; then
+    echo "could not read the mode of $APP_DIR/.git/HEAD"
+    return 0
+  fi
+  # The app user is neither the owner (root) nor in root's group: the last digit decides.
+  case "$m" in
+    *[4567]\ *) echo ".git/HEAD is $m" ;;
+    *) echo ".git/HEAD is $m: not readable by the app user; run chmod go+r on it and on what git wrote with it" ;;
+  esac
+}
+
 container_running() {
   [ "$(docker inspect -f '{{.State.Running}}' "$APP_CONTAINER" 2> /dev/null || true)" = true ]
 }
@@ -206,7 +231,11 @@ wait_healthy() {
         say "healthy after ${waited}s: ${HEALTH_PATHS[*]} answer 200, footer shows ${commit7}"
         return 0
       fi
-      code="200, but footer does not show ${commit7} yet"
+      if [[ "$body" == *"/commit/"* ]]; then
+        code="200, but the footer still shows another commit (the old process)"
+      else
+        code="200, but the footer shows no commit: the app could not read it ($(head_mode))"
+      fi
     fi
     if ! container_running && [ "$waited" -ge 30 ]; then
       say "container $APP_CONTAINER is not running"

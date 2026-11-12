@@ -74,6 +74,8 @@ case "$1" in
       echo "${FAKE_HTTP:-200}"; exit 0
     fi
     if [[ "$*" == *curl* ]]; then
+      # FAKE_FOOTER_NONE: the app could not read its commit, the footer shows the version only.
+      if [ -n "${FAKE_FOOTER_NONE:-}" ]; then echo "<footer>Version 4.0.0</footer>"; exit 0; fi
       c="$(git -C "$ANTCAT_DIR" rev-parse HEAD)"
       echo "<footer><a href=\"https://github.com/calacademy-research/antcat/commit/$c\" title=\"Deployed commit on GitHub\">${c:0:7}</a></footer>"
       exit 0
@@ -139,7 +141,9 @@ check "rollback file holds the old commit" [ "$(cat "$ANTCAT_ROLLBACK_FILE")" = 
 check "restarted the app" docker_called "restart antcat-app"
 check "no rebuild" not docker_called "compose build"
 check "no migration" not docker_called "db:migrate"
-check "health check on the local port" docker_called "http://127.0.0.1:8080/v1/taxa/429011"
+check "health check asks the API front door on the local port" docker_called "http://127.0.0.1:8080/v1\\( \\|$\\)"
+check "health check asks a taxon's catalog page" docker_called "http://127.0.0.1:8080/catalog/429011"
+check "health check never asks a data path the API keys limit" not docker_called "8080/v1/"
 check "prints the deployed commit" out_has "DEPLOYED $B"
 show; check "prints a server log entry" out_has "Server log entry:"
 check "writes the deploy log" grep -q "deploy OK" "$ANTCAT_DEPLOY_LOG"
@@ -397,8 +401,8 @@ check "plan says nginx is recreated" out_has "nginx config .*YES: tested, then t
 check "tested the new config in a throwaway container" docker_called "compose .* run --rm --no-deps -T web nginx -t"
 check "recreated only the nginx container" docker_called "compose .*up -d --force-recreate --no-deps web"
 check "did not rely on a reload" not docker_called "nginx -s reload"
-check "asked for a page through nginx, with the site's own name" docker_called "exec antcat-app curl .*--connect-to www.antcat.org:443:web:443 https://www.antcat.org/v1/taxa/429011"
-check "says nginx serves the site with the new config" out_has "nginx serves the site with this config (/v1/taxa/429011 through nginx: 200)"
+check "asked for a page through nginx, with the site's own name" docker_called "exec antcat-app curl .*--connect-to www.antcat.org:443:web:443 https://www.antcat.org/v1"
+check "says nginx serves the site with the new config" out_has "nginx serves the site with this config (/v1 through nginx: 200)"
 check "server log line records it" out_has "nginx: recreated with the checked-out config)"
 check "no nginx warning" not out_has "WARNING (nginx)"
 teardown
@@ -433,7 +437,7 @@ B="$(push_change dockerized_app/nginx/default.conf "B: nginx header")"
 export FAKE_NGINX_DOWN_CALLS=1000 ANTCAT_NGINX_WAIT=2
 run
 check "the deploy itself succeeds" [ "$RC" -eq 0 ]
-check "warns that nginx does not serve the site" out_has "WARNING (nginx): the nginx container was recreated but does not serve the site (/v1/taxa/429011 through nginx: 000 after [2-9] s, 200 expected)"
+check "warns that nginx does not serve the site" out_has "WARNING (nginx): the nginx container was recreated but does not serve the site (/v1 through nginx: 000 after [2-9] s, 200 expected)"
 check "does not claim the site is served" not out_has "nginx serves the site"
 check "server log line records it" out_has "nginx: PROBLEM, see the deploy output)"
 teardown
@@ -452,7 +456,7 @@ B="$(push_change dockerized_app/nginx/default.conf "B: nginx header")"
 export FAKE_NGINX_HTTP=502 ANTCAT_NGINX_WAIT=2
 run
 check "the deploy itself succeeds" [ "$RC" -eq 0 ]
-check "warns with the status" out_has "WARNING (nginx): the nginx container was recreated but does not serve the site (/v1/taxa/429011 through nginx: 502"
+check "warns with the status" out_has "WARNING (nginx): the nginx container was recreated but does not serve the site (/v1 through nginx: 502"
 check "does not claim the site is served" not out_has "nginx serves the site"
 teardown
 
@@ -525,6 +529,23 @@ check "exits 0" [ "$RC" -eq 0 ]
 check "no nginx test" not docker_called "web nginx -t"
 check "no recreate" not docker_called "force-recreate"
 check "no reload" not docker_called "nginx -s reload"
+teardown
+
+setup "a root shell with umask 077 does not make the checkout unreadable for the app"
+B="$(push_change app/models/taxon.rb "B: model change")"
+OLD_UMASK="$(umask)"; umask 077; run; umask "$OLD_UMASK"
+check "exits 0" [ "$RC" -eq 0 ]
+check "HEAD is the new commit" head_is "$B"
+check ".git/HEAD readable by others" [ "$(( $(stat -c '%a' "$SERVER/.git/HEAD") % 10 ))" -ge 4 ]
+check "the changed file is readable by others" [ "$(( $(stat -c '%a' "$SERVER/app/models/taxon.rb") % 10 ))" -ge 4 ]
+teardown
+
+setup "a footer without any commit says the app could not read it"
+B="$(push_change app/models/taxon.rb "B: model change")"
+export FAKE_FOOTER_NONE=1
+run --timeout 3
+check "exits non-zero" [ "$RC" -ne 0 ]
+check "says the footer shows no commit" out_has "the footer shows no commit: the app could not read it (.git/HEAD is "
 teardown
 
 echo
