@@ -26,5 +26,18 @@ catalog:
 editors_panel:
   max_featured_wiki_pages_links: 6
 
+# Free registered API keys and the usage limits of /v1 (see `ApiAccess`). Off: the API works as before
+# the keys (no key check, no counting) and the key registration form answers 404. To turn on, set
+# `api_keys: enabled: true` in config/settings/production.secret.yml and restart the app.
+# The limits without a key are counted per visitor address (`request.remote_ip`). Behind Cloudflare that is
+# the visitor's own address, not Cloudflare's: nginx takes it from `CF-Connecting-IP` for connections from
+# Cloudflare's ranges and passes it on (dockerized_app/nginx/default.conf; spec/requests/forwarded_headers_spec.rb).
+# If nginx's `set_real_ip_from` list or `real_ip_header` is ever removed, every visitor behind one Cloudflare
+# edge would share one limit: check before turning this on.
+api_keys:
+  enabled: false
+  # A copy of each registration (when its key is issued) goes here.
+  registration_copy_to: "bfisher@calacademy.org"
+
 contact_us_email_address: "bfisher@calacademy.org"
 suggest_edit_email_address: "bfisher@calacademy.org"

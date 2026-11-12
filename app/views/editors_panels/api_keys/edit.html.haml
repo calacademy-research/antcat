@@ -1,0 +1,40 @@
+-page_title "API Key ##{@api_key.id}"
+-breadcrumb :edit_panel_api_key, @api_key
+
+%p
+  %strong=@api_key.name
+  ="(#{@api_key.email})"
+  -if @api_key.institution.present?
+    =", #{@api_key.institution}"
+=simple_format @api_key.project
+%p
+  ="Status: #{@api_key.status}."
+  -if @api_key.key_prefix
+    Key starts with
+    %code=@api_key.key_prefix
+  ="Registered #{@api_key.created_at.utc.to_fs(:db)} UTC."
+
+=form_with model: @api_key, url: panel_api_key_path(@api_key), method: :put, data: { turbo: false } do |f|
+  =render 'shared/errors_for', resource: @api_key
+
+  .row.mb-4
+    .medium-3
+      =f.label :level
+      =f.select :level, ApiKey::LEVELS, {}, class: 'w-full'
+
+  %p
+    Limits for this key. Leave a field empty to use the level's value
+    ="(now: #{ApiAccess.describe(ApiAccess::LEVEL_LIMITS.fetch(@api_key.level, ApiAccess::REGISTERED_LIMITS))})."
+    ="At most #{ApiAccess::MAX_REQUESTS_PER_MINUTE} requests a minute and #{ApiAccess::MAX_RECORDS_PER_PAGE.to_fs(:delimited)} records per page."
+  .row.mb-4
+    -ApiKey::LIMIT_ATTRIBUTES.each do |name|
+      .medium-3
+        =f.label name, name.to_s.humanize
+        =f.number_field name, min: 1, class: 'w-full'
+
+  .mb-4
+    =f.label :note, "Note (only seen here)"
+    =f.text_area :note, rows: 3, maxlength: ApiKey::NOTE_MAX_LENGTH, class: 'w-full'
+
+  =f.button "Save", class: "btn-saves btn-md"
+  =link_to "Cancel", panel_api_keys_path, class: "btn-neutral btn-md"

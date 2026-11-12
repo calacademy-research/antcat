@@ -22,6 +22,16 @@ module RequestThrottle
       email.present? && over_throttle_limit?("#{name}:email:#{email}", per_email, within)
     end
 
+    # Takes this request back out of the counters of `request_throttled?`: for a request that failed
+    # through no fault of the visitor (the email could not be sent), so trying again is not held
+    # against them.
+    def forget_throttled_request name, within:, email: nil
+      Rails.cache.decrement("#{name}:ip:#{request.remote_ip}", 1, expires_in: within)
+
+      email = normalized_throttle_email(email)
+      Rails.cache.decrement("#{name}:email:#{email}", 1, expires_in: within) if email.present?
+    end
+
     def over_throttle_limit? key, limit, within
       count = Rails.cache.increment(key, 1, expires_in: within)
       count.to_i > limit

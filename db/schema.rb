@@ -27,6 +27,52 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_12_180000) do
     t.index ["user_id"], name: "ix_activities__user_id"
   end
 
+  create_table "api_keys", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "email", null: false
+    t.string "institution"
+    t.text "project", null: false
+    t.string "level", default: "registered", null: false
+    t.string "status", default: "pending", null: false
+    t.string "key_digest", limit: 64
+    t.string "key_prefix", limit: 16
+    t.string "confirmation_digest", limit: 64
+    t.datetime "confirmation_sent_at"
+    t.datetime "terms_accepted_at", null: false
+    t.datetime "confirmed_at"
+    t.datetime "revoked_at"
+    t.datetime "last_used_at"
+    t.integer "requests_per_minute"
+    t.integer "requests_per_day"
+    t.integer "records_per_page"
+    t.integer "records_per_day"
+    t.text "note"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["confirmation_digest"], name: "ux_api_keys__confirmation_digest", unique: true
+    t.index ["email"], name: "ix_api_keys__email"
+    t.index ["key_digest"], name: "ux_api_keys__key_digest", unique: true
+  end
+
+  create_table "api_usage_days", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.date "day", null: false
+    t.bigint "api_key_id", default: 0, null: false
+    t.string "client", limit: 64, default: "", null: false
+    t.integer "requests", default: 0, null: false
+    t.integer "records", default: 0, null: false
+    t.integer "rejected", default: 0, null: false
+    t.index ["api_key_id", "day"], name: "ix_api_usage_days__api_key_id__day"
+    t.index ["day", "api_key_id", "client"], name: "ux_api_usage_days__day__api_key_id__client", unique: true
+  end
+
+  create_table "api_usage_minutes", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.datetime "minute", null: false
+    t.bigint "api_key_id", default: 0, null: false
+    t.string "client", limit: 64, default: "", null: false
+    t.integer "requests", default: 0, null: false
+    t.index ["minute", "api_key_id", "client"], name: "ux_api_usage_minutes__minute__api_key_id__client", unique: true
+  end
+
   create_table "author_names", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", precision: nil, null: false

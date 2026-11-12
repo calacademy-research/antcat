@@ -28,7 +28,7 @@ module AntCat
     config.middleware.insert_before(0, Rack::Cors) do
       allow do
         origins '*'
-        resource '/v1/*', headers: :any, methods: [:get, :options]
+        resource '/v1/*', headers: :any, methods: [:get, :options], expose: ['Retry-After']
       end
     end
 

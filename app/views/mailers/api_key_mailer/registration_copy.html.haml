@@ -1,0 +1,28 @@
+%p A new AntCat API key was issued.
+
+%table
+  %tr
+    %th{align: 'left'} Name
+    %td=@api_key.name
+  %tr
+    %th{align: 'left'} Email
+    %td=@api_key.email
+  %tr
+    %th{align: 'left'} Institution
+    %td=@api_key.institution.presence || '(none)'
+  %tr
+    %th{align: 'left'} Project
+    %td=simple_format @api_key.project
+  %tr
+    %th{align: 'left'} Level
+    %td=@api_key.level
+  %tr
+    %th{align: 'left'} Key starts with
+    %td=@api_key.key_prefix
+  %tr
+    %th{align: 'left'} Issued
+    %td=@api_key.confirmed_at&.utc&.to_fs(:db)
+
+%p
+  Revoke it, change the level or set limits:
+  =link_to 'API keys admin page', @admin_url
