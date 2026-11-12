@@ -1,0 +1,59 @@
+-page_title "Free API Key"
+-breadcrumb :api_key
+
+=include_recaptcha_v3_js
+
+.row.mb-4
+  .medium-8
+    %p
+      A free API key raises the limits of the
+      =link_to "AntCat API", api_v1_root_path
+      for your project. Without a key:
+      ="#{ApiAccess.describe(ApiAccess::NO_KEY_LIMITS)}, and lists of all records need a key."
+      With a key:
+      ="#{ApiAccess.describe(ApiAccess::REGISTERED_LIMITS)}."
+    %p
+      We will email you a link. When you open it, your key is shown once. Send it in the
+      %code=ApiAccess::HEADER
+      header.
+
+=form_with model: @api_key, url: api_keys_path, data: { turbo: false } do |f|
+  =render 'shared/errors_for', resource: @api_key
+
+  .row
+    .medium-6.mb-4
+      =f.label :name, "Full name"
+      =f.text_field :name, autofocus: true, maxlength: ApiKey::NAME_MAX_LENGTH, class: 'w-full'
+
+    .medium-6.mb-4
+      =f.label :email, "Email"
+      =f.email_field :email, maxlength: ApiKey::EMAIL_MAX_LENGTH, class: 'w-full'
+
+  .row
+    .medium-6.mb-4
+      =f.label :institution, "Institution (optional)"
+      =f.text_field :institution, maxlength: ApiKey::INSTITUTION_MAX_LENGTH, class: 'w-full'
+
+  .row
+    .col-span-12.mb-4
+      =f.label :project, "Project and what you will use the API for"
+      =f.text_area :project, rows: 4, maxlength: ApiKey::PROJECT_MAX_LENGTH, class: 'w-full'
+
+  .row
+    .col-span-12.mb-4
+      %h6 Terms of use
+      %ul
+        -(Api::V1::RootController::TERMS + Api::V1::RootController::KEY_TERMS).each do |term|
+          %li=term
+      %p
+        The same terms are in the
+        =link_to "API front door", api_v1_root_path
+        and in the
+        =link_to "guide for programs and AI agents", llms_txt_path
+      =f.check_box :terms
+      =f.label :terms, "I agree to the terms of use", class: 'inline'
+
+  .row
+    .medium-6
+      =recaptcha_v3_execute ApiKeysController::RECAPTCHA_V3_ACTION
+      =f.button "Get a free API key", class: "btn-saves btn-md"

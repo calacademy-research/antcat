@@ -9,13 +9,25 @@ This file is for programs and AI agents that want AntCat's data. Please read it 
 - Use the API, not the web pages. Do not crawl or scrape the website for data; robots.txt applies.
 - API: https://www.antcat.org/v1 (for example https://www.antcat.org/v1/taxa/429011)
 - Documentation: https://www.antcat.org/api_docs
+<% if ApiAccess.enabled? -%>
+- Wait for each answer before sending the next request. When you reach a limit the API answers HTTP 429 with a Retry-After header (seconds to wait); please slow down instead of retrying at once.
+
+## API keys and limits
+
+- Free registered API keys: <%= ApiAccess::REGISTER_URL %> (name, email, project; the key is shown once after you confirm your email address).
+- Send the key in the <%= ApiAccess::HEADER %> header, never in the web address. Example: curl -H "<%= ApiAccess::HEADER %>: ac_..." https://www.antcat.org/v1/taxa
+- Without a key (per IP): <%= ApiAccess.describe(ApiAccess::NO_KEY_LIMITS) %>. Lists of all records (for example /v1/taxa, paged with starts_at) need a key.
+- With a free key: <%= ApiAccess.describe(ApiAccess::REGISTERED_LIMITS) %>.
+- A key that is unknown or revoked gets HTTP 401.
+<% else -%>
 - Wait for each answer before sending the next request. Free registered API keys are coming; they will raise the limits. When you reach a limit the API answers HTTP 429 with how long to wait; please slow down instead of retrying at once.
+<% end -%>
 
 ## What we ask
 
 - Use the API to answer research questions. Systematic extraction of the whole catalog, a mirror or full synchronization must be arranged in advance with antcat@antcat.org.
 - Bulk data is not available automatically. For a larger project, write to antcat@antcat.org; AntCat is developed under the scientific leadership of Brian L. Fisher, who welcomes collaboration.
-- Cite AntCat: Bolton, B. <year>. An online catalog of the ants of the world. Available from https://antcat.org. (accessed <date>)
+- Cite AntCat: <%= ApiAccess::CITATION %>
 - AntCat data are licensed CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). The access limits do not change the rights the licence grants.
 
 ## Specimens and images

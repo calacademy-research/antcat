@@ -3,7 +3,10 @@ swagger: '2.0'
 info:
   version: "1.8.2"
   title: AntCat REST API
-  description: Read only API to access antcat.org
+  description: >-
+    Read only API to access antcat.org. Terms, limits and how to cite: https://www.antcat.org/v1 and
+    https://www.antcat.org/llms.txt. Free registered API keys (when live, see https://www.antcat.org/v1)
+    are sent in the X-API-Key header and raise the limits; lists of all records need a key.
   # TODO: This shows up as "Created by Brian Fisher ... Contact the developer" but credit should go to Joe Russack.
   contact:
     name: Brian Fisher
@@ -14,6 +17,15 @@ basePath: /v1
 schemes: [https]
 consumes: [application/json]
 produces: [application/json]
+
+securityDefinitions:
+  ApiKey:
+    type: apiKey
+    in: header
+    name: X-API-Key
+security:
+  - ApiKey: []
+  - {}
 
 paths:
   /taxa/{id}:
