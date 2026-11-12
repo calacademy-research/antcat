@@ -34,8 +34,14 @@ shows `600 root:root`, `600 root:root`, `700 root:root`. A change to the app's m
 needs the container recreated (`docker compose up -d app`, then `docker compose exec web nginx -s reload`);
 `docker restart antcat-app` keeps the old mounts.
 
-Deploy a code change: `cd /var/www/antcat-2 && git pull && docker restart antcat-app`
-(startup runs bundle install, yarn, asset precompile and Solr; allow a few minutes).
+Deploy a code change: `cd /var/www/antcat-2 && script/deploy --dry-run` to see what would change, then
+`script/deploy`. It refuses if tracked files have local changes, saves the running commit to
+`/root/antcat-rollback-commit.txt`, checks out `origin/master`, rebuilds the image only when `Dockerfile`
+changed, runs `rails db:migrate` when `db/migrate` changed, restarts, and waits until the app answers on its
+local port and the footer shows the new commit (startup runs bundle install, yarn and the asset build; allow
+a few minutes). On a failed check it prints the rollback command; it never rolls back by itself.
+`script/deploy --rollback` goes back to the saved commit. Every run is logged in `/root/antcat-deploy.log`.
+See `script/deploy --help`. By hand, as before: `git pull && docker restart antcat-app`.
 Never edit tracked files on the server; commit to GitHub instead.
 
 The app runs as the user `antcat` (uid 1000, gid 1001), not root. `startup.sh` starts as root only to
@@ -60,6 +66,12 @@ per-visitor limit (10 requests/s with bursts of 60, 20 connections; over it: 429
 Strict-Transport-Security (`config.force_ssl`).
 
 nginx config change (`nginx/default.conf` or the `web` service in `docker-compose.yml`): the file is
-bind-mounted, and `git pull` replaces it, so a reload alone may keep the old file. Check and apply with
-`docker compose up -d --force-recreate web`, then `docker compose exec web nginx -t`. The visitor IP
-comes from Cloudflare's `CF-Connecting-IP` only for Cloudflare's address ranges (`set_real_ip_from`).
+bind-mounted, and `git pull` replaces it, so a reload alone keeps the old file (seen on antcat-prod,
+2026-11-10). `script/deploy` handles a change under `nginx/`: it tests the new config in a throwaway
+container, recreates `web` (about a second of interruption) and asks for a page through it. It ends
+with a `WARNING (nginx)` line, with what to do, if the config failed its test (nginx then keeps the
+old one), the recreate failed, the page did not answer 200, or a reload failed. By hand, or for a change to the `web` service itself:
+`docker compose up -d --force-recreate --no-deps web`, then `docker compose exec web nginx -t`. The visitor IP
+comes from Cloudflare's `CF-Connecting-IP` only for Cloudflare's address ranges (`set_real_ip_from`). nginx
+replaces `X-Forwarded-For` and clears `Client-IP` and `Forwarded` in every proxied location, so the
+address Rails uses (`request.remote_ip`) cannot be set by the visitor.
