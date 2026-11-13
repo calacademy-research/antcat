@@ -167,7 +167,7 @@
               =predicted_gender_epithets.values.join(', ')
               (masculine, feminine, neuter). Leave blank for nouns.
 
-      -if protonym.species_group_name? || protonym.part_of_speech_basis? || protonym.spelling_basis? || protonym.interpretation_status? || protonym.spelling_review_wiki_page_id?
+      -if protonym.species_group_name? || protonym.part_of_speech_basis? || protonym.spelling_basis? || protonym.interpretation_status? || protonym.grammar_and_spelling_wiki_page_id?
         %tr
           %td
             =f.label :part_of_speech_basis do
@@ -195,15 +195,15 @@
               changed by scripts.
         %tr
           %td
-            =f.label :spelling_review_wiki_page_id do
-              Spelling review (wiki page)
-              =db_tooltip_icon :spelling_review_wiki_page_id, scope: :protonyms
+            =f.label :grammar_and_spelling_wiki_page_id do
+              Grammar and spelling (wiki page)
+              =db_tooltip_icon :grammar_and_spelling_wiki_page_id, scope: :protonyms
           %td
-            =f.collection_select :spelling_review_wiki_page_id, WikiPage.order(:title), :id, :title, include_blank: '(none)'
+            =f.collection_select :grammar_and_spelling_wiki_page_id, WikiPage.order(:title), :id, :title, include_blank: '(none)'
             .text-sm
-              Optional: the wiki page with the evidence and decision for a reviewed name. The public note
-              still gives the short explanation. Rules:
-              =link_to_wiki_page_or_missing WikiPage::SPELLING_POLICY
+              Optional: the wiki page "Grammar and spelling: <name>" with the evidence and decision for a
+              reviewed name. The public Spelling note still gives the short explanation. Policy:
+              =link_to_wiki_page_or_missing WikiPage::GRAMMAR_AND_SPELLING_POLICY
 
       %tr
         %td

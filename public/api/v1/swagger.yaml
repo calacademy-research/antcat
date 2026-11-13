@@ -773,7 +773,7 @@ definitions:
       part_of_speech_basis:
         type: string
         enum: [author_stated, grammatical_form, original_usage, noun_by_default, commission_ruling]
-        description: "Why AntCat reads the epithet as this part of speech. author_stated: stated by the original author. grammatical_form: the grammatical form of the epithet (Art. 31.2). original_usage: the original author's use of the name in the original publication (Art. 31.2.2). noun_by_default: noun in apposition by default, the original author gave no indication (Art. 31.2.2). commission_ruling: a ruling of the Commission. Except for commission_ruling, an interpretation adopted by AntCat, not a ruling of the Commission; rules on the AntCat wiki page 'Part of speech and spelling of species-group names'."
+        description: "Why AntCat reads the epithet as this part of speech. author_stated: stated by the original author. grammatical_form: the grammatical form of the epithet (Art. 31.2). original_usage: the original author's use of the name in the original publication (Art. 31.2.2). noun_by_default: noun in apposition by default, the original author gave no indication (Art. 31.2.2). commission_ruling: a ruling of the Commission. Except for commission_ruling, an interpretation adopted by AntCat, not a ruling of the Commission; rules on the AntCat wiki page 'AntCat policy on name grammar and spelling'."
       spelling_basis:
         type: string
         enum: [original_spelling, gender_agreement, justified_emendation, unjustified_emendation_in_prevailing_usage, incorrect_subsequent_spelling_in_prevailing_usage, commission_ruling]
@@ -782,9 +782,9 @@ definitions:
         type: string
         enum: [demonstrated, reasonably_inferred, disputed, unresolved]
         description: "How firmly AntCat's grammatical reading is established; it describes the grammar, not the spelling. demonstrated: direct evidence establishes the interpretation. reasonably_inferred = reasonably inferred: strongly supported but not explicit; a merely possible alternative may be noted. disputed: substantial evidence supports a competing interpretation; the notes give it. unresolved: the evidence does not yet allow AntCat to choose an interpretation."
-      spelling_review_wiki_page_id:
+      grammar_and_spelling_wiki_page_id:
         type: integer
-        description: Optional FK to the AntCat wiki page with the evidence and decision behind a reviewed part of speech or spelling (https://www.antcat.org/wiki/{id})
+        description: Optional FK to the AntCat wiki page "Grammar and spelling" for this name, with the evidence and decision behind its part of speech and accepted spelling (https://www.antcat.org/wiki/{id}). AntCat's interpretation, not a ruling of the Commission.
       created_at:
         type: string
         format: date-time

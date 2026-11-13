@@ -54,10 +54,10 @@
         Interpretation:
         %strong=protonym.interpretation_status_label
 
-    -if (review_page = protonym.spelling_review_wiki_page)
+    -if (grammar_page = protonym.grammar_and_spelling_wiki_page)
       %p
-        Spelling review:
-        =link_to review_page.title, review_page
+        Grammar and spelling:
+        =link_to grammar_page.title, grammar_page
 
     -if (gender_epithets = protonym.gender_epithets)
       %p

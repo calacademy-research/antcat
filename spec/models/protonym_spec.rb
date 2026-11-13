@@ -236,28 +236,28 @@ describe Protonym do
       end
     end
 
-    describe "#spelling_review_wiki_page" do
+    describe "#grammar_and_spelling_wiki_page" do
       let(:wiki_page) { create :wiki_page }
 
       it 'is optional' do
         expect(build_stubbed(:protonym, :species_group).valid?).to eq true
       end
 
-      it 'links a species-group protonym to its review page by id' do
-        protonym = create :protonym, :species_group, spelling_review_wiki_page: wiki_page
-        wiki_page.update!(title: 'Spelling review: renamed')
-        expect(protonym.reload.spelling_review_wiki_page).to eq wiki_page
+      it 'links a species-group protonym to its grammar and spelling page by id' do
+        protonym = create :protonym, :species_group, grammar_and_spelling_wiki_page: wiki_page
+        wiki_page.update!(title: 'Grammar and spelling: renamed')
+        expect(protonym.reload.grammar_and_spelling_wiki_page).to eq wiki_page
       end
 
       it 'can only be set for species-group names' do
-        protonym = build_stubbed :protonym, :genus_group, spelling_review_wiki_page: wiki_page
+        protonym = build_stubbed :protonym, :genus_group, grammar_and_spelling_wiki_page: wiki_page
         expect(protonym.valid?).to eq false
-        expect(protonym.errors.where(:spelling_review_wiki_page).map(&:message)).
+        expect(protonym.errors.where(:grammar_and_spelling_wiki_page).map(&:message)).
           to include("can only be set for species-group names")
       end
 
-      it 'keeps a linked review page from being deleted' do
-        create :protonym, :species_group, spelling_review_wiki_page: wiki_page
+      it 'keeps a linked grammar and spelling page from being deleted' do
+        create :protonym, :species_group, grammar_and_spelling_wiki_page: wiki_page
         expect(wiki_page.destroy).to eq false
         expect(WikiPage.exists?(wiki_page.id)).to eq true
       end
