@@ -1,7 +1,8 @@
 verb	path	action	name	who	purpose	status	test
-GET	/rails/view_components	view_components#index	preview_view_components	system	list: component previews (development and test only, not in production)	keep	(development and test only)
-GET	/rails/view_components/*path	view_components#previews	preview_view_component	system	previews: component previews (development and test only, not in production)	keep	(development and test only)
-GET	/_system_test_entrypoint	view_components_system_test#system_test_entrypoint	_system_test_entrypoint	system	system test entrypoint: component test entry point (test only, not in production)	keep	(development and test only)
+MOUNT	/api_docs	GrapeSwaggerRails::Engine		public	the API documentation page (Swagger UI of /v1)	keep	spec/requests/api_front_door_spec.rb
+GET	/rails/view_components	view_components#index	preview_view_components	system	list: component previews (development and test only, not in production)	keep	
+GET	/rails/view_components/*path	view_components#previews	preview_view_component	system	previews: component previews (development and test only, not in production)	keep	
+GET	/_system_test_entrypoint	view_components_system_test#system_test_entrypoint	_system_test_entrypoint	system	system test entrypoint: component test entry point (test only, not in production)	keep	
 GET	/	catalog#index	root	public	the home page: the catalog of the family Formicidae	keep	spec/features/catalog/catalog_spec.rb
 GET	/authors/autocomplete	authors/autocompletes#show	autocomplete	public	author lookup while typing	keep	spec/controllers/authors/autocompletes_controller_spec.rb
 GET	/authors/:author_id/merges/new	authors/merges#new	new_author_merges	editor	form to add: merge two author records into one	keep	spec/controllers/authors/merges_controller_spec.rb
@@ -21,7 +22,7 @@ GET	/catalog/search	catalog/searches#show	catalog_search	public	show one: the ca
 PATCH	/catalog/toggle_view	catalog/toggle_views#update	catalog_toggle_view	public	change: show or hide grouped history and other view settings	keep	spec/controllers/catalog/toggle_views_controller_spec.rb
 PUT	/catalog/toggle_view	catalog/toggle_views#update		public	change: show or hide grouped history and other view settings	keep	spec/controllers/catalog/toggle_views_controller_spec.rb
 GET	/catalog/autocomplete	catalog/autocompletes#show	catalog_autocomplete	public	taxon lookup while typing in the search box	keep	spec/controllers/catalog/autocompletes_controller_spec.rb
-GET	/catalog/:id	catalog#show	catalog	public	show one: the catalog page of a taxon (the main public page)	keep	spec/requests/csp_reports_spec.rb
+GET	/catalog/:id	catalog#show	catalog	public	show one: the catalog page of a taxon (the main public page)	keep	spec/features/catalog/catalog_spec.rb
 GET	/catalog/:id/bolton	catalog/bolton#show	bolton_catalog_view	user	a taxon in Bolton's catalogue layout	keep	spec/controllers/catalog/bolton_controller_spec.rb
 GET	/catalog/:id/wikipedia	catalog/wikipedia#show		public	wikitext of a taxon for Wikipedia editors	keep	spec/controllers/catalog/wikipedia_controller_spec.rb
 GET	/catalog/:id/history	catalog/histories#show	taxon_history	public	the edit history of a taxon	keep	spec/controllers/catalog/histories_controller_spec.rb
@@ -284,8 +285,8 @@ POST	/quick_and_dirty_fixes/remove_pages_from_taxac_tags_quick_and_dirty_fix	qui
 POST	/quick_and_dirty_fixes/replace_missing_tags_quick_and_dirty_fix	quick_and_dirty_fixes#replace_missing_tags	replace_missing_tags_quick_and_dirty_fix	helper	replace missing tags: one-click fixes of common data problems for editors	keep	spec/controllers/quick_and_dirty_fixes_controller_spec.rb
 POST	/quick_and_dirty_fixes/strip_except_replacement_name_for_quick_and_dirty_fix	quick_and_dirty_fixes#strip_except_replacement_name_for	strip_except_replacement_name_for_quick_and_dirty_fix	helper	strip except replacement name for: one-click fixes of common data problems for editors	keep	spec/controllers/quick_and_dirty_fixes_controller_spec.rb
 POST	/quick_and_dirty_fixes/update_current_taxon_id_quick_and_dirty_fix	quick_and_dirty_fixes#update_current_taxon_id	update_current_taxon_id_quick_and_dirty_fix	editor	update current taxon id: one-click fixes of common data problems for editors	keep	spec/controllers/quick_and_dirty_fixes_controller_spec.rb
-GET	/my/recently_used_references	my/recently_used_references#show	my_recently_used_references	public	show one: the editor's recently used references	keep	spec/controllers/my/recently_used_references_controller_spec.rb
-POST	/my/recently_used_references	my/recently_used_references#create		public	add: the editor's recently used references	keep	spec/controllers/my/recently_used_references_controller_spec.rb
+GET	/my/recently_used_references	my/recently_used_references#show	my_recently_used_references	public	show one: recently used references (kept in the session only)	keep	spec/controllers/my/recently_used_references_controller_spec.rb
+POST	/my/recently_used_references	my/recently_used_references#create		public	add: recently used references (kept in the session only)	keep	spec/controllers/my/recently_used_references_controller_spec.rb
 PATCH	/my/default_reference	my/default_reference#update	my_default_reference	user	change: the editor's default reference	keep	spec/controllers/my/default_reference_controller_spec.rb
 PUT	/my/default_reference	my/default_reference#update		user	change: the editor's default reference	keep	spec/controllers/my/default_reference_controller_spec.rb
 GET	/recede_historical_location	turbo/native/navigation#recede	turbo_recede_historical_location	system	Turbo Native app navigation helpers (turbo-rails gem); AntCat has no native app	check	

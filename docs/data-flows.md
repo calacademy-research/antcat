@@ -23,8 +23,8 @@ editors and helpers ──(web forms)──> MySQL (antcat-db) ──> Solr (ant
   `who` column of `docs/catalog/routes.tsv`, read from the controllers' `before_action` checks.
 - What is written: the taxonomy and reference tables (`taxa`, `protonyms`, `names`, `history_items`, `references`
   and the tables around them), through the forms of the site. There is no import of taxonomy from another source
-  in this app; the scripts that compare AntCat with TaxonWorks and with Bolton's catalog live in a separate
-  repository (`bpescador/antcat-pipelines`) and run inside the app container.
+  in this app; the scripts that compare AntCat with TaxonWorks and with Bolton's catalog are kept outside this
+  repository and run inside the app container.
 - What every save also writes:
   - a row of `versions` for each changed row (paper_trail: who, the old values, the changes), grouped by
     `request_uuid`; that is the revision history of each record;
@@ -49,16 +49,19 @@ editors and helpers ──(web forms)──> MySQL (antcat-db) ──> Solr (ant
    `origin/master` and starts a throwaway stack (`docker/docker-compose.yml`: Ruby and MySQL 8.4).
 2. `docker/download-database.sh` dumps the production database on antcat-prod over the private network
    (`mysqldump --single-transaction`, so the site keeps working), copies it back and loads it. A dated copy of the
-   dump is kept for 7 days in `/root/antcat/database_archive/`.
+   dump is kept for 7 days on that droplet.
 3. `rake antweb:export` (`app/services/exporters/antweb`) writes one line per taxon of every rank but subtribe and
    infrasubspecies: the AntCat id, the ranks above it, author and year, status, availability, the current valid
    name, rank and parent, the original combination, fossil, the taxonomic history (HTML), the reference id, bioregion,
    country and the Hymenoptera Online id (`ExportTaxon::HEADER` lists the 24 columns). It writes to a temporary file and puts
    it in place only when complete, so a failed run leaves the previous file.
-4. The file, `antcat.antweb.txt`, is served on port 9090 of antcat-export (log of each run:
-   `/root/antcat/run-results`).
+4. The file, `antcat.antweb.txt`, is served on port 9090 of antcat-export.
 5. 05:00 Pacific: AntWeb's nightly set 1 fetches it ("WorldAnts" import) and updates its taxon names. AntWeb never
    writes to AntCat.
+
+Planned (agreed 2026-11-13, in steps over a few weeks): the export runs on antcat-prod itself (`rake antweb:export` in
+the app container at 01:30 Pacific, the file served on the private network only); AntWeb's address for it changes
+once seven nights match, and the antcat-export droplet is retired. This section is rewritten when that is done.
 
 ## 4. Email
 

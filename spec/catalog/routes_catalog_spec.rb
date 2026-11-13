@@ -8,6 +8,11 @@ require 'rails_helper'
 describe "Function catalog (docs/catalog/routes.tsv)" do # rubocop:disable RSpec/DescribeClass
   def self.app_routes
     Rails.application.routes.routes.filter_map do |route|
+      engine = route.app.try(:app)
+      if engine.is_a?(Class) && engine < Rails::Engine # `mount SomeEngine => '/path'`: one row for the whole engine
+        next { verb: "MOUNT", path: route.path.spec.to_s, action: engine.name, name: route.name.to_s }
+      end
+
       controller = route.defaults[:controller]
       next if controller.blank? || controller.start_with?("rails/", "active_storage/", "action_mailbox/")
 
@@ -46,8 +51,18 @@ describe "Function catalog (docs/catalog/routes.tsv)" do # rubocop:disable RSpec
     expect(blank).to be_empty, "#{blank.size} rows without who, purpose or status: #{blank.first(5).pluck('path')}"
   end
 
+  it "has each route once" do
+    duplicates = rows.map(&key).tally.select { |_key, n| n > 1 }.keys
+    expect(duplicates).to be_empty, "rows listed more than once: #{duplicates.map { |k| k.join(' ') }}"
+  end
+
+  it "names only specs that exist" do
+    gone = rows.pluck("test").compact_blank.reject { |path| Rails.root.join(path).exist? }
+    expect(gone).to be_empty, "the test column names files that do not exist: #{gone.uniq.join(', ')}"
+  end
+
   it "uses the known values for who and status" do
-    expect(rows.pluck("who").uniq - %w[public user editor helper admin superadmin api system]).to be_empty
+    expect(rows.pluck("who").uniq - %w[public user editor helper superadmin api system]).to be_empty
     expect(rows.pluck("status").uniq - %w[keep check remove]).to be_empty
   end
 end
