@@ -1,0 +1,86 @@
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+# The function catalog (docs/catalog/routes.tsv) has one row per route of the app: who may use it, what it is for,
+# whether it stays, and which spec covers it. This spec fails when a route has no row or a row has no route, so a new
+# route cannot be added without saying what it is for. Its failure message prints the missing rows, ready to paste.
+describe "Function catalog (docs/catalog/routes.tsv)" do # rubocop:disable RSpec/DescribeClass
+  def self.app_routes
+    Rails.application.routes.routes.filter_map do |route|
+      engine = route.app.try(:app)
+      if engine.is_a?(Class) && engine < Rails::Engine # `mount SomeEngine => '/path'`: one row for the whole engine
+        next { verb: "MOUNT", path: route.path.spec.to_s, action: engine.name, name: route.name.to_s }
+      end
+
+      controller = route.defaults[:controller]
+      next if controller&.start_with?("rails/", "active_storage/", "action_mailbox/")
+
+      path = route.path.spec.to_s.delete_suffix("(.:format)")
+      verb = route.verb.presence || "ANY"
+      # A route without a controller (a `redirect`, a Rack app) gets a row too, named after what answers it.
+      action = controller ? "#{controller}##{route.defaults[:action]}" : redirect_or_app(route)
+      { verb: verb, path: path, action: action, name: route.name.to_s }
+    end.uniq { |r| [r[:verb], r[:path], r[:action]] }
+  end
+
+  def self.redirect_or_app route
+    route.app.is_a?(ActionDispatch::Routing::Redirect) ? "redirect" : route.app.class.name
+  end
+
+  # Tab-separated, one row per route, first line the column names (no csv gem: Ruby 4 has no csv by default).
+  def self.catalog_rows
+    # Lines end in LF; a CR left by a spreadsheet's save is dropped. Saved as plain tab-separated text, no quotes.
+    lines = Rails.root.join("docs/catalog/routes.tsv").read.each_line(chomp: true).map { |l| l.delete_suffix("\r") }.reject(&:blank?)
+    header = lines.shift.split("\t")
+    lines.map { |line| header.zip(line.split("\t", -1)).to_h }
+  end
+
+  let(:routes) { self.class.app_routes }
+  let(:rows) { self.class.catalog_rows }
+  let(:key) { ->(h) { [h[:verb] || h["verb"], h[:path] || h["path"], h[:action] || h["action"]] } }
+
+  it "has a row for every route" do
+    have = rows.map(&key).to_set
+    missing = routes.reject { |r| have.include?(key.call(r)) }
+    lines = missing.map { |r| [r[:verb], r[:path], r[:action], r[:name], "", "", "", ""].join("\t") }
+    expect(missing).to be_empty, "#{missing.size} routes have no row in docs/catalog/routes.tsv:\n#{lines.join("\n")}"
+  end
+
+  it "has a route for every row" do
+    have = routes.map(&key).to_set
+    stale = rows.reject { |r| have.include?(key.call(r)) }
+    expect(stale).to be_empty, "rows with no route (removed or renamed): #{stale.map { |r| key.call(r).join(' ') }}"
+  end
+
+  it "says for every row who may use it, what it is for and whether it stays" do
+    blank = rows.select { |r| r["who"].blank? || r["purpose"].blank? || r["status"].blank? }
+    expect(blank).to be_empty, "#{blank.size} rows without who, purpose or status: #{blank.first(5).pluck('path')}"
+  end
+
+  it "has each route once" do
+    duplicates = rows.map(&key).tally.select { |_key, n| n > 1 }.keys
+    expect(duplicates).to be_empty, "rows listed more than once: #{duplicates.map { |k| k.join(' ') }}"
+  end
+
+  it "names only specs that exist" do
+    gone = rows.pluck("test").compact_blank.reject { |path| Rails.root.join(path).exist? }
+    expect(gone).to be_empty, "the test column names files that do not exist: #{gone.uniq.join(', ')}"
+  end
+
+  it "uses the known values for who and status" do
+    bad_who = rows.reject { |r| r["who"].in?(%w[public user editor helper superadmin api system]) }
+    bad_status = rows.reject { |r| r["status"].in?(%w[keep check remove]) }
+    expect(bad_who).to be_empty, "unknown who: #{bad_who.map { |r| "#{key.call(r).join(' ')}: #{r['who']}" }}"
+    expect(bad_status).to be_empty, "unknown status: #{bad_status.map { |r| "#{key.call(r).join(' ')}: #{r['status']}" }}"
+  end
+
+  # Rails sends a request to the first route that matches, so a later route with the same verb and path is never
+  # reached. Such a row may not say `keep`.
+  it "does not keep a route that an earlier route hides" do
+    first = {}
+    hidden = routes.reject { |r| first.key?([r[:verb], r[:path]]) ? false : (first[[r[:verb], r[:path]]] = true) }
+    kept = hidden.select { |r| rows.find { |row| key.call(row) == key.call(r) }&.dig("status") == "keep" }
+    expect(kept).to be_empty, "hidden by an earlier route but marked keep: #{kept.map { |r| key.call(r).join(' ') }}"
+  end
+end
