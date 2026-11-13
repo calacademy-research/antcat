@@ -33,6 +33,25 @@ class Protonym < ApplicationRecord
     'feminine' => :feminine_epithet,
     'neuter' => :neuter_epithet
   }.freeze
+  # Why AntCat reads the name as this part of speech (the grammatical basis).
+  PART_OF_SPEECH_BASES = {
+    'author_stated' => 'stated by the original author',
+    'grammatical_form' => 'the grammatical form of the epithet (Art. 31.2)',
+    'decisive_usage' => 'decisive subsequent usage (Art. 31.2.2)',
+    'noun_by_default' => 'noun in apposition by default, usage not decisive (Art. 31.2.2)',
+    'commission_ruling' => 'a ruling of the Commission'
+  }.freeze
+  # Why AntCat accepts the spelling it uses (the nomenclatural basis). A name can be a noun
+  # under Art. 31.2.2 and still keep a later spelling under Art. 33.3.1; the two are recorded apart.
+  SPELLING_BASES = {
+    'original_spelling' => 'the correct original spelling (Art. 32.2)',
+    'gender_agreement' => 'the ending agrees with the gender of the genus (Arts. 31.2, 34.2)',
+    'justified_emendation' => 'a justified emendation (Arts. 32.5, 33.2.2)',
+    'unjustified_emendation_in_prevailing_usage' => 'an unjustified emendation in prevailing usage (Art. 33.2.3.1)',
+    'incorrect_subsequent_spelling_in_prevailing_usage' =>
+      'an incorrect subsequent spelling in prevailing usage (Art. 33.3.1)',
+    'commission_ruling' => 'a ruling of the Commission'
+  }.freeze
 
   delegate :pages, to: :authorship, prefix: true
 
@@ -53,9 +72,14 @@ class Protonym < ApplicationRecord
 
   validates :bioregion, inclusion: { in: BIOREGIONS, allow_nil: true }
   validates :bioregion, absence: { message: "cannot be set for fossil protonyms" }, if: -> { fossil? }
-  validates :bioregion, :forms, :locality, :gender_agreement_type,
+  validates :bioregion, :forms, :locality, :gender_agreement_type, :part_of_speech_basis, :spelling_basis,
     absence: { message: "can only be set for species-group names" },
     unless: -> { species_group_name? }
+  validates :part_of_speech_basis, inclusion: { in: PART_OF_SPEECH_BASES.keys, allow_nil: true }
+  validates :part_of_speech_basis, absence: { message: "needs a gender agreement type" },
+    unless: -> { gender_agreement_type? }
+  validates :spelling_basis, inclusion: { in: SPELLING_BASES.keys, allow_nil: true }
+  validate :contested_interpretation_has_public_note
   validates :gender_agreement_type, inclusion: { in: GENDER_AGREEMENT_TYPES, allow_nil: true }
   validates :masculine_epithet, :feminine_epithet, :neuter_epithet,
     absence: { message: "can only be set when the gender agreement type is adjective or participle" },
@@ -77,6 +101,7 @@ class Protonym < ApplicationRecord
   strip_attributes only: [
     :locality, :bioregion, :forms, :gender_agreement_type,
     :masculine_epithet, :feminine_epithet, :neuter_epithet,
+    :part_of_speech_basis, :spelling_basis,
     :notes_taxt, :etymology_taxt
   ], replace_newlines: true
   strip_attributes only: [:primary_type_information_taxt, :secondary_type_information_taxt, :type_notes_taxt]
@@ -128,6 +153,14 @@ class Protonym < ApplicationRecord
     Protonyms::PredictGenderEpithets[name.epithet]
   end
 
+  def part_of_speech_basis_label
+    PART_OF_SPEECH_BASES[part_of_speech_basis]
+  end
+
+  def spelling_basis_label
+    SPELLING_BASES[spelling_basis]
+  end
+
   def genus_group_name?
     Rank.genus_group_name?(rank_from_name)
   end
@@ -150,6 +183,16 @@ class Protonym < ApplicationRecord
   end
 
   private
+
+    # A contested reading is only transparent if visitors can read the alternative: the note must
+    # have text outside hidden editor notes (`{hiddennote ...}`, which visitors do not see).
+    def contested_interpretation_has_public_note
+      return unless interpretation_contested?
+      return if Taxt.remove_hidden_notes(notes_taxt.to_s).strip.present?
+
+      errors.add :interpretation_contested,
+        "needs a public note that gives the alternative interpretation and its evidence"
+    end
 
     def cleanup_and_convert_taxts
       cleanup_and_convert_taxt_columns(

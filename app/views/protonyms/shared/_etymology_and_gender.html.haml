@@ -1,6 +1,6 @@
 -show_agreement_in_gender = taxon.is_a?(SpeciesGroupTaxon)
 
--if protonym.etymology_taxt? || show_agreement_in_gender || protonym.gender_agreement_type?
+-if protonym.etymology_taxt? || show_agreement_in_gender || protonym.gender_agreement_type? || protonym.spelling_basis?
   .bluebox
     -if protonym.etymology_taxt?
       %p
@@ -41,6 +41,18 @@
       %p
         Gender agreement type:
         %code=protonym.gender_agreement_type
+        -if protonym.part_of_speech_basis?
+          %br
+          Basis: #{protonym.part_of_speech_basis_label}
+
+    -if protonym.spelling_basis?
+      %p
+        Accepted spelling, basis: #{protonym.spelling_basis_label}
+
+    -if protonym.interpretation_contested?
+      %p
+        %strong Interpretation contested
+        (see the protonym's notes)
 
     -if (gender_epithets = protonym.gender_epithets)
       %p

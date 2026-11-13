@@ -20,6 +20,8 @@
     =CatalogFormatter.link_to_taxt_reference(taxon.authorship_reference)
   =protonym.decorate.format_pages_and_forms
   =Detax[protonym.notes_taxt]
+  -if protonym.interpretation_contested?
+    %span.text-sm.italic=link_to '[interpretation contested]', protonym_path(protonym)
   =add_period_if_necessary(protonym.decorate.format_locality)
   =add_period_if_necessary(protonym.bioregion)
 

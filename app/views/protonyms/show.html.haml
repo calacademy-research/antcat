@@ -85,7 +85,21 @@
         -if @protonym.gender_agreement_type?
           %tr
             %th Part of speech
-            %td=@protonym.gender_agreement_type.humanize(capitalize: false)
+            %td
+              =@protonym.gender_agreement_type.humanize(capitalize: false)
+              -if @protonym.part_of_speech_basis?
+                %span.text-sm (basis: #{@protonym.part_of_speech_basis_label})
+
+        -if @protonym.spelling_basis?
+          %tr
+            %th Accepted spelling
+            %td Basis: #{@protonym.spelling_basis_label}
+
+        -if @protonym.interpretation_contested?
+          %tr
+            %th Interpretation
+            %td
+              Contested: AntCat adopts one defensible reading; the notes below give the alternative and its evidence.
 
         -if (gender_epithets = @protonym.gender_epithets)
           %tr

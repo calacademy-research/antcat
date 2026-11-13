@@ -11,6 +11,9 @@ class ProtonymForm
     masculine_epithet
     feminine_epithet
     neuter_epithet
+    part_of_speech_basis
+    spelling_basis
+    interpretation_contested
     ichnotaxon
     locality
     sic

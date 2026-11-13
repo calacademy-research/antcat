@@ -131,6 +131,65 @@ describe Protonym do
       end
     end
 
+    describe "spelling basis validations" do
+      context 'when protonym is a species-group name with a part of speech' do
+        let(:protonym) { build_stubbed :protonym, :adjective_gender_agreement_type }
+
+        it 'accepts the listed bases' do
+          protonym.assign_attributes(part_of_speech_basis: 'decisive_usage', spelling_basis: 'gender_agreement')
+          expect(protonym.valid?).to eq true
+        end
+
+        it 'rejects an unlisted basis' do
+          protonym.spelling_basis = 'because Bolton said so'
+          expect(protonym.valid?).to eq false
+          expect(protonym.errors.where(:spelling_basis).map(&:message)).to include("is not included in the list")
+        end
+      end
+
+      context 'when protonym has no part of speech' do
+        let(:protonym) { build_stubbed :protonym, :species_group }
+
+        it 'cannot have a part-of-speech basis' do
+          expect { protonym.part_of_speech_basis = 'noun_by_default' }.to change { protonym.valid? }.to(false)
+          expect(protonym.errors.where(:part_of_speech_basis).map(&:message)).to include("needs a gender agreement type")
+        end
+
+        it 'can still record the basis for the accepted spelling' do
+          protonym.spelling_basis = 'original_spelling'
+          expect(protonym.valid?).to eq true
+        end
+      end
+
+      context 'when protonym is not a species-group name' do
+        let(:protonym) { build_stubbed :protonym, :genus_group }
+
+        it 'cannot have a spelling basis' do
+          expect { protonym.spelling_basis = 'original_spelling' }.to change { protonym.valid? }.to(false)
+        end
+      end
+    end
+
+    describe "#interpretation_contested validations" do
+      let(:protonym) { build_stubbed :protonym, :adjective_gender_agreement_type, interpretation_contested: true }
+
+      it 'requires a public note' do
+        expect(protonym.valid?).to eq false
+        expect(protonym.errors.where(:interpretation_contested).map(&:message)).
+          to include("needs a public note that gives the alternative interpretation and its evidence")
+      end
+
+      it 'does not count a hidden note' do
+        protonym.notes_taxt = "{hiddennote alternative reading: a noun phrase}"
+        expect(protonym.valid?).to eq false
+      end
+
+      it 'is valid with a public note' do
+        protonym.notes_taxt = "Spelling: an alternative reading is a noun phrase, which keeps the original spelling."
+        expect(protonym.valid?).to eq true
+      end
+    end
+
     describe "#ichnotaxon validations" do
       context 'when protonym is not fossil' do
         let(:protonym) { build_stubbed :protonym }
@@ -148,6 +207,7 @@ describe Protonym do
   describe 'callbacks' do
     it { is_expected.to strip_attributes(:locality, :bioregion, :forms, :gender_agreement_type, :notes_taxt) }
     it { is_expected.to strip_attributes(:masculine_epithet, :feminine_epithet, :neuter_epithet) }
+    it { is_expected.to strip_attributes(:part_of_speech_basis, :spelling_basis) }
     it { is_expected.to strip_attributes(:etymology_taxt) }
     it { is_expected.to strip_attributes(:primary_type_information_taxt, :secondary_type_information_taxt, :type_notes_taxt) }
 

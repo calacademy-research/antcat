@@ -167,6 +167,30 @@
               =predicted_gender_epithets.values.join(', ')
               (masculine, feminine, neuter). Leave blank for nouns.
 
+      -if protonym.species_group_name? || protonym.part_of_speech_basis? || protonym.spelling_basis? || protonym.interpretation_contested?
+        %tr
+          %td
+            =f.label :part_of_speech_basis do
+              Basis for the part of speech
+              =db_tooltip_icon :part_of_speech_basis, scope: :protonyms
+          %td=f.select :part_of_speech_basis, Protonym::PART_OF_SPEECH_BASES.invert, include_blank: '(blank)'
+        %tr
+          %td
+            =f.label :spelling_basis do
+              Basis for the accepted spelling
+              =db_tooltip_icon :spelling_basis, scope: :protonyms
+          %td=f.select :spelling_basis, Protonym::SPELLING_BASES.invert, include_blank: '(blank)'
+        %tr
+          %td
+          %td
+            =f.check_box :interpretation_contested
+            =f.label :interpretation_contested do
+              Interpretation contested
+              =db_tooltip_icon :interpretation_contested, scope: :protonyms
+            .text-sm
+              AntCat adopts one defensible reading over another. Needs a public note (not a hidden note)
+              giving the alternative interpretation and its evidence.
+
       %tr
         %td
           =f.label :etymology do
