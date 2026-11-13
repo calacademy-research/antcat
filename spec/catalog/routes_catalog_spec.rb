@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require 'csv'
 
-# The function catalog (docs/catalog/routes.csv) has one row per route of the app: who may use it, what it is for,
+# The function catalog (docs/catalog/routes.tsv) has one row per route of the app: who may use it, what it is for,
 # whether it stays, and which spec covers it. This spec fails when a route has no row or a row has no route, so a new
 # route cannot be added without saying what it is for. Its failure message prints the missing rows, ready to paste.
-describe "Function catalog (docs/catalog/routes.csv)" do
+describe "Function catalog (docs/catalog/routes.tsv)" do
   def self.app_routes
     Rails.application.routes.routes.filter_map do |route|
       controller = route.defaults[:controller]
@@ -18,8 +17,11 @@ describe "Function catalog (docs/catalog/routes.csv)" do
     end.uniq { |r| [r[:verb], r[:path], r[:action]] }
   end
 
+  # Tab-separated, one row per route, first line the column names (no csv gem: Ruby 4 has no csv by default).
   def self.catalog_rows
-    CSV.read(Rails.root.join("docs/catalog/routes.csv"), headers: true).map(&:to_h)
+    lines = Rails.root.join("docs/catalog/routes.tsv").read.split("\n").reject(&:blank?)
+    header = lines.shift.split("\t")
+    lines.map { |line| header.zip(line.split("\t", -1)).to_h }
   end
 
   let(:routes) { self.class.app_routes }
@@ -29,8 +31,8 @@ describe "Function catalog (docs/catalog/routes.csv)" do
   it "has a row for every route" do
     have = rows.map(&key).to_set
     missing = routes.reject { |r| have.include?(key.call(r)) }
-    lines = missing.map { |r| CSV.generate_line([r[:verb], r[:path], r[:action], r[:name], "", "", "", ""]) }
-    expect(missing).to be_empty, "#{missing.size} routes have no row in docs/catalog/routes.csv:\n#{lines.join}"
+    lines = missing.map { |r| [r[:verb], r[:path], r[:action], r[:name], "", "", "", ""].join("\t") }
+    expect(missing).to be_empty, "#{missing.size} routes have no row in docs/catalog/routes.tsv:\n#{lines.join("\n")}"
   end
 
   it "has a route for every row" do
