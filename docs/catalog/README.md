@@ -35,3 +35,10 @@ paste. Tab-separated; open it in a spreadsheet or read it on GitHub.
 
 `/references/latest_additions`, the three Turbo Native routes above, and `/*id` (the static pages of the high_voltage gem, the last route). The component previews
 (`/rails/view_components`, `/_system_test_entrypoint`) exist only in development and test.
+
+## See also
+
+- `docs/data-model.md`: every table, what one row is and how the tables connect (checked by
+  `spec/catalog/data_model_spec.rb`).
+- `docs/data-flows.md`: where the data comes from and goes: editing, reading and the API, the nightly export to
+  AntWeb, email, backups and deploys.
