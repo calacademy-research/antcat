@@ -59,7 +59,7 @@ editors and helpers ──(web forms)──> MySQL (antcat-db) ──> Solr (ant
 5. 05:00 Pacific: AntWeb's nightly set 1 fetches it ("WorldAnts" import) and updates its taxon names. AntWeb never
    writes to AntCat.
 
-Planned (agreed 2026-11-13, in steps over a few weeks): the export runs on antcat-prod itself (`rake antweb:export` in
+Planned (CAS IT, 2026-11-13, in steps over a few weeks): the export runs on antcat-prod itself (`rake antweb:export` in
 the app container at 01:30 Pacific, the file served on the private network only); AntWeb's address for it changes
 once seven nights match, and the antcat-export droplet is retired. This section is rewritten when that is done.
 
