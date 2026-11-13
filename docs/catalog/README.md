@@ -31,6 +31,9 @@ paste. Tab-separated; open it in a spreadsheet or read it on GitHub.
   (`turbo/native/navigation`): added by the turbo-rails gem for Turbo Native apps. AntCat has no native app. They do no
   harm; they can be dropped by not loading the gem's route file.
 
+- `DevsController` (`app/controllers/devs_controller.rb`, developer pages of the pickers and styles) has views but
+  no route, so it is not in this list and cannot be reached: a candidate for removal.
+
 ## Routes without a spec
 
 `/references/latest_additions`, the three Turbo Native routes above, and `/*id` (the static pages of the high_voltage gem, the last route). The component previews
