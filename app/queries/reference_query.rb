@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Orders references by date added or date changed (the latest additions and latest changes pages).
 class ReferenceQuery
   def initialize relation = Reference.all
     @relation = relation

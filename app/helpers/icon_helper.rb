@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# The site's icons (an <i> with the antcat_icon class) and the superadmin mark.
 module IconHelper
   def antcat_icon *css_classes
     tag.i nil, class: ["antcat_icon"].concat(Array.wrap(css_classes))

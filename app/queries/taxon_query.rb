@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Common filters and orders of taxa (by epithet, with or without pass-through names, valid only, and so on).
 class TaxonQuery
   def initialize relation = Taxon.all
     @relation = relation

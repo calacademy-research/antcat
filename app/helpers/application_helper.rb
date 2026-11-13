@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# General view helpers: dashes for empty values, punctuation, and other small formatting used across the site.
 module ApplicationHelper
   def or_dash thing
     return ndash if thing.blank? || thing.try(:zero?)

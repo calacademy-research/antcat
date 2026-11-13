@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Autocomplete: publishers whose "place: name" contains the typed text (reference form).
 module Autocomplete
   class PublishersQuery
     include Service

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Tooltips and wiki page icons next to form fields: shows a tooltip from the tooltips table, or a link to add one.
 module TooltipHelper
   def db_tooltip_icon key, scope:
     return new_db_tooltip(key, scope) unless (tooltip = Tooltip.find_by(key: key, scope: scope))

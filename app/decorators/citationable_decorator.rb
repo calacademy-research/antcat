@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# The link to the record a citation belongs to (today always a protonym).
 class CitationableDecorator
   include Rails.application.routes.url_helpers
   include ActionView::Helpers::UrlHelper

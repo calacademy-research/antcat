@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# The form object behind the taxon form: builds the name and, for a new taxon, the protonym, checks the children and
+# saves everything in one step.
 class TaxonForm
   include ActiveModel::Model
 

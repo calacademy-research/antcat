@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Autocomplete: protonyms for the pickers, by id or by name, a page at a time.
 module Autocomplete
   class ProtonymsQuery
     include Service

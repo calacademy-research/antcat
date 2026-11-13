@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Formats links and text for the AntWeb export: links point at www.antcat.org (catalog, protonyms, references), so
+# they work on AntWeb's pages.
 module AntwebFormatter
   ANTCAT_BASE_URL = "https://www.antcat.org/"
   CATALOG_BASE_URL = "#{ANTCAT_BASE_URL}catalog/"

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Renders Markdown: editors' content and user content (comments, with fewer allowed attributes), and raw taxt
+# without hidden notes for visitors.
 module MarkdownHelper
   def markdown content
     return unless content

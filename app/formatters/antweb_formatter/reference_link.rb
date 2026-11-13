@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# The link to a reference on antcat.org, with the links to its documents, for the AntWeb export.
 module AntwebFormatter
   class ReferenceLink
     include ActionView::Helpers::UrlHelper

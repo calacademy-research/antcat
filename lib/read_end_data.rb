@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Reads the YAML under `__END__` of a source file (the database scripts keep their section, tags and description
+# there).
 class ReadEndData
   def initialize file
     @file = file

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Shows two versions of a record side by side in the revision history (cache columns left out, editor notes only for
+# signed-in users).
 class RevisionPresenter
   REMOVED_REFERENCE_CACHE_COLUMNS = %i[
     formatted_cache

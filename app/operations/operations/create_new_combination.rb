@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# Operation: "Create combination" for a species moved to another genus: creates the new species record and makes the
+# old one an obsolete combination, in one transaction. Its description shows the editor what will happen before it
+# runs.
 module Operations
   class CreateNewCombination
     include Operation

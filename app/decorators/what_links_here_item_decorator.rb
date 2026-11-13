@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Formats one result of "What links here": a link to the record (taxon, protonym, reference, history item...) whose
+# taxt points at the record looked at.
 class WhatLinksHereItemDecorator
   include Rails.application.routes.url_helpers
   include ActionView::Helpers::UrlHelper

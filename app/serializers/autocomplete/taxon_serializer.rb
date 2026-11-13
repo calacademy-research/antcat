@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# The JSON of a taxon for the pickers' autocomplete: name, author citation, CSS classes, link, and optionally its
+# protonym.
 module Autocomplete
   class TaxonSerializer
     attr_private_initialize :taxon

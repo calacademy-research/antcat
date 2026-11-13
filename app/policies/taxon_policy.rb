@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Which editing buttons a taxon page shows: create combination, create obsolete combination, force change of parent.
 class TaxonPolicy
   attr_private_initialize :taxon
 

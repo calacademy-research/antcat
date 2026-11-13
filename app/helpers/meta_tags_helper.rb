@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# The robots noindex tag and the page description meta tag.
 module MetaTagsHelper
   def noindex_meta_tag
     content_for :meta_tags do

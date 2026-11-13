@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Formats taxon links for the Bolton view of the catalog (/catalog/:id/bolton): status and rank as CSS classes and a
+# hover preview.
 module BoltonFormatter
   module_function
 

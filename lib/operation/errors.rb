@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# The errors an operation collected while it ran.
 module Operation
   class Errors
     def initialize

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Formats how long a database script took when run as a soft validation (milliseconds and share of the total).
 class DbScriptSoftValidationDecorator < Draper::Decorator
   delegate :runtime
 

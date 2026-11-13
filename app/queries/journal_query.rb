@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Lists journals with their number of references, in the order asked (the journals page).
 class JournalQuery
   REFERENCE_COUNT_ORDER = "reference_count"
 

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Whether "Create combination" is allowed for a taxon (a valid species without subspecies or infrasubspecies), with
+# the reasons when it is not.
 class CreateCombinationPolicy
   attr_private_initialize :taxon
 

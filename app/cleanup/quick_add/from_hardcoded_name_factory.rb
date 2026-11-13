@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Quick add: picks the quick adder for a name typed as text (only subgenus names are supported).
 module QuickAdd
   class FromHardcodedNameFactory
     def self.create_quick_adder name_string

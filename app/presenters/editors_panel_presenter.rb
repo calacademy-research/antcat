@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# The editors' panel (/panel): recent activities and comments, unconfirmed edits and featured wiki pages.
 class EditorsPanelPresenter
   MAX_FEATURED_WIKI_PAGES_LINKS = Settings.editors_panel.max_featured_wiki_pages_links
 

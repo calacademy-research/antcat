@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Development seeds: example history items between protonyms (senior and junior synonyms) for trying the history
+# pages.
 # :nocov:
 module Seed
   class RelationalHistoryItems

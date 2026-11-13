@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Formats a history item: the badge of a rank-only item, and the form parameters to add another item of the same
+# kind after it.
 class HistoryItemDecorator < Draper::Decorator
   def rank_specific_badge
     return unless history_item.rank?

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# The JSON of a reference for the pickers' autocomplete, with the search query when asked.
 module Autocomplete
   class ReferenceSerializer
     def initialize reference, fulltext_params = nil

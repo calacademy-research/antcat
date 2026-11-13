@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Autocomplete: references for the taxt editor's {ref} tags, by id or by author, year and title.
 module Autocomplete
   class LinkableReferencesQuery
     include Service

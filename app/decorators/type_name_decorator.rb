@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Formats a type name (the type taxon of a genus-group name): its rank, the taxon's status now, and the fixation
+# method with its reference.
 class TypeNameDecorator < Draper::Decorator
   delegate :taxon, :fixation_method, :reference, :pages
 

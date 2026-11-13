@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Google reCAPTCHA v3 on the forms of visitors who are not signed in (when enabled in the settings).
 module RecaptchaHelper
   RECAPTCHA_V3_SITE_KEY = Settings.recaptcha.v3.site_key
 

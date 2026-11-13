@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Formats a comment: a link to it on its page, and a short plain version for tables.
 class CommentDecorator < Draper::Decorator
   def link_comment label
     return "commented" unless comment.try(:commentable)

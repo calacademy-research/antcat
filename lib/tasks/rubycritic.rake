@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Development only: the `antcat:rubycritic` task, a code quality report of app/ and lib/ (cleanup code and
+# development patches left out).
 if Rails.env.development?
   require 'rubycritic/rake_task'
 

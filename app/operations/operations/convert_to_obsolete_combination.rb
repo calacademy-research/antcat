@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Operation: turns a taxon into an obsolete combination of a new combination, and points its own obsolete
+# combinations at the new one. Used by "Create combination".
 module Operations
   class ConvertToObsoleteCombination
     include Operation
