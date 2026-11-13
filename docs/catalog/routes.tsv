@@ -196,11 +196,11 @@ GET	/feedbacks/:id	feedbacks#show	feedback	helper	show one: the feedback form an
 PATCH	/feedbacks/:id	feedbacks#update		helper	change: the feedback form and its list for editors	keep	spec/controllers/feedbacks_controller_spec.rb
 PUT	/feedbacks/:id	feedbacks#update		helper	change: the feedback form and its list for editors	keep	spec/controllers/feedbacks_controller_spec.rb
 DELETE	/feedbacks/:id	feedbacks#destroy		superadmin	delete: the feedback form and its list for editors	keep	spec/controllers/feedbacks_controller_spec.rb
-GET	/comments	comments#index	comments	user	list: comments on catalog records	keep	spec/controllers/comments_controller_spec.rb
-POST	/comments	comments#create		user	add: comments on catalog records	keep	spec/controllers/comments_controller_spec.rb
-GET	/comments/:id/edit	comments#edit	edit_comment	user	form to change: comments on catalog records	keep	spec/controllers/comments_controller_spec.rb
-PATCH	/comments/:id	comments#update	comment	user	change: comments on catalog records	keep	spec/controllers/comments_controller_spec.rb
-PUT	/comments/:id	comments#update		user	change: comments on catalog records	keep	spec/controllers/comments_controller_spec.rb
+GET	/comments	comments#index	comments	user	list: comments on issues, feedback and site notices	keep	spec/controllers/comments_controller_spec.rb
+POST	/comments	comments#create		user	add: comments on issues, feedback and site notices	keep	spec/controllers/comments_controller_spec.rb
+GET	/comments/:id/edit	comments#edit	edit_comment	user	form to change: comments on issues, feedback and site notices	keep	spec/controllers/comments_controller_spec.rb
+PATCH	/comments/:id	comments#update	comment	user	change: comments on issues, feedback and site notices	keep	spec/controllers/comments_controller_spec.rb
+PUT	/comments/:id	comments#update		user	change: comments on issues, feedback and site notices	keep	spec/controllers/comments_controller_spec.rb
 GET	/panel	editors_panels#show	editors_panel	user	show one: the editor's panel: links to tools and recent changes	keep	spec/controllers/editors_panels_controller_spec.rb
 GET	/panel/invite_users	editors_panels#invite_users	invite_users	user	invite users: the editor's panel: links to tools and recent changes	keep	spec/controllers/editors_panels_controller_spec.rb
 GET	/panel/versions	editors_panels/versions#index	versions	editor	list: every saved version of every record (PaperTrail)	keep	spec/controllers/editors_panels/versions_controller_spec.rb
