@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Validates a reference's date: YYYY, YYYYMM or YYYYMMDD, optionally with dashes and a trailing question mark.
 class ReferenceDateFormatValidator < ActiveModel::EachValidator
   ERROR_MESSAGE = <<~STR.squish
     must match format YYYY, YYYYMM or YYYYMMDD (optionally separated by dashes; trailing question mark allowed)

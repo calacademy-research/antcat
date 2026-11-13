@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Formats a database script (/database_scripts): its tags as badges, its source link on GitHub, its description and
+# the empty or not-empty state.
 class DatabaseScriptDecorator < Draper::Decorator
   GITHUB_MASTER_BASE_URL = "#{Settings.github.repo_url}/blob/master"
   TAG_CSS_CLASSES = {

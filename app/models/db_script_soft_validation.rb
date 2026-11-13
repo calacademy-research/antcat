@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Runs one database script against one record, as a soft validation (a warning on the record's page, not an error),
+# and times it.
 class DbScriptSoftValidation
   include Draper::Decoratable
 

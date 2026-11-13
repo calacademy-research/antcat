@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# A museum or collection that holds type material: abbreviation, name and GRSciColl identifier (table
+# `institutions`).
 class Institution < ApplicationRecord
   include Trackable
 

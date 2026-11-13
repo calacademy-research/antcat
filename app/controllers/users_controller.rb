@@ -1,5 +1,14 @@
 # frozen_string_literal: true
 
+# User profiles and the list of users.
+#
+# Routes: GET /users/mentionables (signed in); GET /users (anyone); POST /users (superadmins); GET /users/new
+# (superadmins); GET /users/:id/edit (superadmins); GET /users/:id (anyone); PATCH /users/:id (superadmins); PUT
+# /users/:id (superadmins); DELETE /users/:id (superadmins). Purpose, rights and tests of each:
+# docs/catalog/routes.tsv.
+#
+# `create` is never reached: Devise's sign-up route (POST /users, config/routes.rb) comes first, so the "New user"
+# form posts to sign-up (to decide: drop the form or give it its own path; docs/catalog/README.md).
 class UsersController < ApplicationController
   SHOW_USER_STATS_PARAM = :show_user_stats
 

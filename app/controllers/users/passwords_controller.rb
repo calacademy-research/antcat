@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+# Password reset.
+#
+# Routes: GET /users/password/new (anyone); GET /users/password/edit (anyone); PATCH /users/password (anyone); PUT
+# /users/password (anyone); POST /users/password (anyone). Purpose, rights and tests of each:
+# docs/catalog/routes.tsv.
 module Users
   class PasswordsController < Devise::PasswordsController
     include RequestThrottle

@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+# Wiki pages for editors (how-tos).
+#
+# Routes: GET /wiki (anyone); POST /wiki (helpers); GET /wiki/new (helpers); GET /wiki/:id/edit (helpers); GET
+# /wiki/:id (anyone); PATCH /wiki/:id (helpers); PUT /wiki/:id (helpers); DELETE /wiki/:id (superadmins). Purpose,
+# rights and tests of each: docs/catalog/routes.tsv.
 class WikiPagesController < ApplicationController
   before_action :ensure_unconfirmed_user_is_not_over_edit_limit, except: [:index, :show]
   # Wiki pages and issues: helpers and editors only (Brian, 2026-10-16).

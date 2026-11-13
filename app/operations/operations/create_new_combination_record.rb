@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Operation: creates the record of a species in a new genus (valid, same protonym), refusing a name already in use.
 module Operations
   class CreateNewCombinationRecord
     include Operation

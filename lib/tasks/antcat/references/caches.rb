@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Rake task helper: empties or rebuilds the cached formatted text of every reference.
 module AntCat
   class Caches
     def invalidate_content_caches

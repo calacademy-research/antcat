@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Rake task helper: checks every record of every model for validation errors and prints what is invalid.
 module AntCat
   class InvalidRecords
     def self.call

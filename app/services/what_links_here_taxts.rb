@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# "What links here": the taxt columns whose tags point at a record.
 class WhatLinksHereTaxts
   def initialize record, record_to_tag_regex_taxt_method
     @record = record

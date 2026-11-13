@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# The taxon browser of catalog pages: links to the taxa of each rank and the toggles (valid only, all taxa, views).
 class TaxonBrowserPresenter
   include Rails.application.routes.url_helpers
   include ActionView::Helpers

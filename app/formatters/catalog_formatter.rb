@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Formats links to taxa, protonyms and references on the site's own pages: hover previews, status and rank as CSS
+# classes, author citations.
 module CatalogFormatter
   extend ActionView::Helpers::OutputSafetyHelper # For `#safe_join`.
 

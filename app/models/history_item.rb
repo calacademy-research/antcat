@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# One statement of a protonym's taxonomic history ("junior synonym of", "combination in"...), with its reference and
+# the other name it is about (table `history_items`).
 class HistoryItem < ApplicationRecord
   include CleanupAndConvertTaxtColumns
   include Trackable

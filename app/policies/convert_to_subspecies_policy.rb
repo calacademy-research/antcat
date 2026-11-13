@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Whether a species can be converted to a subspecies (it must be a species without subspecies), with the reasons
+# when it cannot.
 class ConvertToSubspeciesPolicy
   attr_private_initialize :taxon
 

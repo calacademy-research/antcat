@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# Move a taxon to another parent without the usual checks.
+#
+# Routes: GET /taxa/:taxon_id/force_parent_change (editors); POST /taxa/:taxon_id/force_parent_change (editors).
+# Purpose, rights and tests of each: docs/catalog/routes.tsv.
 module Taxa
   class ForceParentChangesController < ApplicationController
     before_action :ensure_user_is_editor

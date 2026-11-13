@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Formats a taxon: links with name and author citation, status in words, and links to the same taxon on AntWiki,
+# AntWeb and Google Scholar.
 class TaxonDecorator < Draper::Decorator
   ANTWIKI_BASE_URL = "https://www.antwiki.org/wiki/"
   ANTWEB_BASE_URL = "https://www.antweb.org/description.do?"

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Operation: makes a species a subspecies of another species: a new subspecies record under it, refusing a name
+# already in use.
 module Taxa
   module Operations
     class ConvertToSubspecies

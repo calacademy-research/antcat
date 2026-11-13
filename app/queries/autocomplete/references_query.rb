@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Autocomplete: references for the pickers and the reference search box, by id or by Solr search with keywords
+# (author, year, title).
 module Autocomplete
   class ReferencesQuery
     include Service

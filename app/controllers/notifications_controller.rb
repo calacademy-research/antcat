@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# Notifications for the signed-in user.
+#
+# Routes: GET /notifications (signed in). Purpose, rights and tests of each: docs/catalog/routes.tsv.
 class NotificationsController < ApplicationController
   before_action :authenticate_user!
   after_action :mark_all_notifications_as_seen, only: :index

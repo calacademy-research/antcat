@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# The family (Formicidae): the top of the catalog, without a parent.
 class Family < FamilyGroupTaxon
   validates(*TAXA_COLUMNS, absence: true)
 

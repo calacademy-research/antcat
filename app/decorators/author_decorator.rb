@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Formats an author's page: the years of the author's references and of the taxa they described.
 class AuthorDecorator < Draper::Decorator
   delegate :references, :described_taxa
 

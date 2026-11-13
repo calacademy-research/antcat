@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# AntWeb export: the subfamily, tribe, genus, subgenus, species and subspecies columns of a taxon, by its rank
+# ("incertae_sedis" where the placement is uncertain).
 module Exporters
   module Antweb
     class TaxonomicAttributes

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Renders Markdown to HTML after sanitizing; content from any signed-in user (comments) keeps fewer attributes.
 module Markdowns
   class Render
     include ActionView::Helpers::SanitizeHelper

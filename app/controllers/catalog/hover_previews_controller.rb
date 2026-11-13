@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# The small preview shown when hovering a taxon link.
+#
+# Routes: GET /catalog/:id/hover_preview (anyone). Purpose, rights and tests of each: docs/catalog/routes.tsv.
 module Catalog
   class HoverPreviewsController < ApplicationController
     def show

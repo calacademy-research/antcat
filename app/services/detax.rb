@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Turns taxt into HTML for the site's pages ({tax 429361} becomes a link to /catalog/429361), after sanitizing.
 class Detax
   include Service
   include ActionView::Helpers::SanitizeHelper

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# One result of "What links here": the table, column and id of a record that points at the record looked at.
 class WhatLinksHereItem
   attr_accessor :table, :field, :id
 

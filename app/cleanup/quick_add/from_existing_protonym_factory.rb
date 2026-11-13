@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Quick add (an editors' shortcut on database script pages): picks the quick adder for an existing protonym by its
+# rank (species or subspecies); other ranks get a "not supported" adder.
 module QuickAdd
   class FromExistingProtonymFactory
     def self.create_quick_adder protonym

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Formats a protonym: links with name, epithet or author citation, and its type and locality details.
 class ProtonymDecorator < Draper::Decorator
   delegate :locality, :forms, :authorship
 

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Operation: makes a subspecies a species (a new species record, the subspecies an obsolete combination), refusing a
+# name already in use.
 module Taxa
   module Operations
     class ElevateToSpecies

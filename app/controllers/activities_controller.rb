@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# The activity feed: who changed what in the catalog.
+#
+# Routes: GET /activities (anyone); GET /activities/:id (anyone); DELETE /activities/:id (superadmins). Purpose,
+# rights and tests of each: docs/catalog/routes.tsv.
 class ActivitiesController < ApplicationController
   FILTERABLE_TRACKABLE_TYPES_BY_GROUP = {
     'Catalog (common)' => %w[

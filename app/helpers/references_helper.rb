@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# The "Add to Recently Used" button of reference pages.
 module ReferencesHelper
   def add_to_recently_used_references_link reference
     link_to "Add to Recently Used", my_recently_used_references_path(id: reference.id),

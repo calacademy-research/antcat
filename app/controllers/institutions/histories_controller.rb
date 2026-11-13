@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# The edit history of an institution.
+#
+# Routes: GET /institutions/:institution_id/history (anyone). Purpose, rights and tests of each:
+# docs/catalog/routes.tsv.
 module Institutions
   class HistoriesController < ApplicationController
     def show

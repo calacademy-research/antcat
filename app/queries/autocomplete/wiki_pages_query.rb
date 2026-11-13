@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Autocomplete: wiki pages by id or title (for links in Markdown).
 module Autocomplete
   class WikiPagesQuery
     include Service

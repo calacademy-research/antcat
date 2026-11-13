@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# The base of every controller: CSRF protection, the user who made a change (paper_trail) and the request id of each
+# save, the rights checks (helper, editor, superadmin), smaller pages and exports for visitors, and the answers to
+# errors (403, 406).
 class ApplicationController < ActionController::Base
   include HttpBasicAuth
 

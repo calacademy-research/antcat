@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# API: taxon records.
+#
+# Routes: GET /v1/taxa (API); GET /v1/taxa/:id (API); GET /v1/taxa/:id/junior_synonyms (API); GET
+# /v1/taxa/search/:string (API). Purpose, rights and tests of each: docs/catalog/routes.tsv.
 module Api
   module V1
     class TaxaController < Api::ApiController

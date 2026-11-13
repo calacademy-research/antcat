@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# Publisher lookup while typing.
+#
+# Routes: GET /publishers/autocomplete (anyone). Purpose, rights and tests of each: docs/catalog/routes.tsv.
 module Publishers
   class AutocompletesController < ApplicationController
     def show

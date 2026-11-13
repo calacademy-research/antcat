@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Formats an activity of the feed (/activities): who did what to which record ("added", "edited", "deleted"), with
+# links to the record or a label when it is gone.
 class ActivityDecorator < Draper::Decorator
   # Don't show user who created other users' accounts.
   HIDE_USER_FOR_TRACKABLE_TYPES = ['User']

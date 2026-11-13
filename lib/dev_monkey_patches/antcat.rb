@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Development console only: shortcuts on taxa, protonyms and references to make and open links to their pages
+# (localhost or production).
 module DevMonkeyPatches
   module AntCat
     PRODUCTION_BASE_URL = Settings.production_url

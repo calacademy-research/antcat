@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# How similar two references are (0 to 1), from their author, year, title and pagination.
 module References
   class ReferenceSimilarity
     include Service

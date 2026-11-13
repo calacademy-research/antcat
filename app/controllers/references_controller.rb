@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+# References (publications).
+#
+# Routes: GET /references (anyone); POST /references (helpers); GET /references/new (helpers); GET
+# /references/:id/edit (helpers); GET /references/:id (anyone); PATCH /references/:id (helpers); PUT /references/:id
+# (helpers); DELETE /references/:id (editors). Purpose, rights and tests of each: docs/catalog/routes.tsv.
 class ReferencesController < ApplicationController
   before_action :ensure_user_is_at_least_helper, except: [:index, :show]
   before_action :ensure_user_is_editor, only: [:destroy]

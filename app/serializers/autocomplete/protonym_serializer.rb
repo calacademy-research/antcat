@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# The JSON of a protonym for the pickers' autocomplete: name, author citation, link, and optionally its terminal
+# taxon.
 module Autocomplete
   class ProtonymSerializer
     attr_private_initialize :protonym

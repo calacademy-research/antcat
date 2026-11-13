@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# Export references (EndNote, wikitext).
+#
+# Routes: GET /references/:id/exports/wikipedia (anyone); GET /references/exports/endnote (anyone). Purpose, rights
+# and tests of each: docs/catalog/routes.tsv.
 module References
   class ExportsController < ApplicationController
     MAX_RECORDS = 999_999

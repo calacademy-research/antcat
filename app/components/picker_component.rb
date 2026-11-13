@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# View component: the search-as-you-type picker of editing forms for choosing a taxon, protonym or reference,
+# showing the chosen record with its author citation.
 class PickerComponent < ApplicationComponent
   NUM_CATALOG_RESULTS = 7
 

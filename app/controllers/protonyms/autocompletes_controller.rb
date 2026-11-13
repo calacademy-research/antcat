@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# Protonym lookup while typing.
+#
+# Routes: GET /protonyms/autocomplete (anyone). Purpose, rights and tests of each: docs/catalog/routes.tsv.
 module Protonyms
   class AutocompletesController < ApplicationController
     NUM_RESULTS = 10

@@ -160,10 +160,10 @@ POST	/api_keys	api_keys#create	api_keys	public	add: free API key registration an
 GET	/api_keys/new	api_keys#new	new_api_key	public	form to add: free API key registration and confirmation (on when api_keys.enabled)	keep	spec/requests/api_front_door_spec.rb
 GET	/llms.txt	llms_txt#show	llms_txt	public	show one: the guide for programs and AI agents (/llms.txt)	keep	spec/requests/api_front_door_spec.rb
 GET	/v1	api/v1/root#show	api_v1_root	api	show one: the API front door: version, routes, limits, keys, terms	keep	spec/requests/api_front_door_spec.rb
-GET	/v1/taxa	api/v1/taxa#index	v1_taxa	api	list: API: taxon records (the main export, also read by AntWeb)	keep	spec/controllers/api/v1/taxa_controller_spec.rb
-GET	/v1/taxa/:id	api/v1/taxa#show	v1_taxon	api	show one: API: taxon records (the main export, also read by AntWeb)	keep	spec/controllers/api/v1/taxa_controller_spec.rb
-GET	/v1/taxa/:id/junior_synonyms	api/v1/taxa#junior_synonyms	v1	api	junior synonyms: API: taxon records (the main export, also read by AntWeb)	keep	spec/controllers/api/v1/taxa_controller_spec.rb
-GET	/v1/taxa/search/:string	api/v1/taxa#search		api	search: API: taxon records (the main export, also read by AntWeb)	keep	spec/controllers/api/v1/taxa_controller_spec.rb
+GET	/v1/taxa	api/v1/taxa#index	v1_taxa	api	list: API: taxon records	keep	spec/controllers/api/v1/taxa_controller_spec.rb
+GET	/v1/taxa/:id	api/v1/taxa#show	v1_taxon	api	show one: API: taxon records	keep	spec/controllers/api/v1/taxa_controller_spec.rb
+GET	/v1/taxa/:id/junior_synonyms	api/v1/taxa#junior_synonyms	v1	api	junior synonyms: API: taxon records	keep	spec/controllers/api/v1/taxa_controller_spec.rb
+GET	/v1/taxa/search/:string	api/v1/taxa#search		api	search: API: taxon records	keep	spec/controllers/api/v1/taxa_controller_spec.rb
 GET	/v1/protonyms	api/v1/protonyms#index	v1_protonyms	api	list: API: protonym records	keep	spec/controllers/api/v1/protonyms_controller_spec.rb
 GET	/v1/protonyms/:id	api/v1/protonyms#show	v1_protonym	api	show one: API: protonym records	keep	spec/controllers/api/v1/protonyms_controller_spec.rb
 GET	/v1/authors	api/v1/authors#index	v1_authors	api	list: API: author records	keep	spec/controllers/api/v1/authors_controller_spec.rb

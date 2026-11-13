@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# Authors of references.
+#
+# Routes: GET /authors (anyone); GET /authors/:id (anyone); DELETE /authors/:id (editors). Purpose, rights and tests
+# of each: docs/catalog/routes.tsv.
 class AuthorsController < ApplicationController
   # Deleting is editor-only, as for protonyms, references and history items (an author's names go with it).
   before_action :ensure_user_is_editor, only: [:destroy]

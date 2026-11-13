@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Formats a version (a change in the revision history): the link to the record's history and a compact list of the
+# changed attributes.
 module PaperTrail
   class VersionDecorator < Draper::Decorator
     COMPACT_CHANGESET_HIDDEN_ITEM_TYPES = %w[

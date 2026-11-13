@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# A help text shown next to a form field, by key and scope (table `tooltips`).
 class Tooltip < ApplicationRecord
   include Trackable
 

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# AntWeb export: the type information fields of the protonym synopsis.
 module Exporters
   module Antweb
     module History

@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+# Protonyms (original names and their type data).
+#
+# Routes: GET /protonyms (anyone); POST /protonyms (helpers); GET /protonyms/new (helpers); GET /protonyms/:id/edit
+# (helpers); GET /protonyms/:id (anyone); PATCH /protonyms/:id (helpers); PUT /protonyms/:id (helpers); DELETE
+# /protonyms/:id (editors). Purpose, rights and tests of each: docs/catalog/routes.tsv.
 class ProtonymsController < ApplicationController
   before_action :ensure_user_is_at_least_helper, except: [:index, :show]
   before_action :ensure_user_is_editor, only: [:destroy]

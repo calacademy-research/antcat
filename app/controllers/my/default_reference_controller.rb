@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# The editor's default reference.
+#
+# Routes: PATCH /my/default_reference (signed in); PUT /my/default_reference (signed in). Purpose, rights and tests
+# of each: docs/catalog/routes.tsv.
 module My
   class DefaultReferenceController < ApplicationController
     before_action :authenticate_user!

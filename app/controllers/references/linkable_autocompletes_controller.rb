@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# Reference lookup for links in text.
+#
+# Routes: GET /references/linkable_autocomplete (anyone). Purpose, rights and tests of each:
+# docs/catalog/routes.tsv.
 module References
   class LinkableAutocompletesController < ApplicationController
     # For at.js. Not as advanced as `References::AutocompletesController`.

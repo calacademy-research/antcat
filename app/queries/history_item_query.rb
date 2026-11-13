@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Searches history items by their text, with LIKE or a regular expression (editors' search of history items).
 class HistoryItemQuery
   SEARCH_TYPES = [
     LIKE = 'LIKE',

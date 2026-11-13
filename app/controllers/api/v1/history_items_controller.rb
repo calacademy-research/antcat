@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# API: taxonomic history items.
+#
+# Routes: GET /v1/history_items (API); GET /v1/history_items/:id (API). Purpose, rights and tests of each:
+# docs/catalog/routes.tsv.
 module Api
   module V1
     class HistoryItemsController < Api::ApiController

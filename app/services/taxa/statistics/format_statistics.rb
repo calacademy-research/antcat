@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Formats those statistics as text ("1,234 valid species, 56 synonyms...").
 module Taxa
   module Statistics
     class FormatStatistics

@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# Database checks (data quality scripts) and their results.
+#
+# Routes: GET /database_scripts (helpers); GET /database_scripts/:id (helpers). Purpose, rights and tests of each:
+# docs/catalog/routes.tsv.
 class DatabaseScriptsController < ApplicationController
   FLUSH_QUERY_CACHE_DEBUG = false
   # TODO: Move to `DatabaseScriptsPresenter`.

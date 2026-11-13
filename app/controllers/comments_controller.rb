@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+# Comments on issues, feedback messages and site notices.
+#
+# Routes: GET /comments (signed in); POST /comments (signed in); GET /comments/:id/edit (signed in); PATCH
+# /comments/:id (signed in); PUT /comments/:id (signed in). Purpose, rights and tests of each:
+# docs/catalog/routes.tsv.
 class CommentsController < ApplicationController
   # Models that include `Commentable`. `commentable_type` from params must be one of these.
   COMMENTABLE_TYPES = %w[Feedback Issue SiteNotice].freeze

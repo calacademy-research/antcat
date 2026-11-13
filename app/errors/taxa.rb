@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Errors raised when a taxon change is not allowed: it has subspecies or infrasubspecies, the name exists already,
+# or the new parent is not valid.
 # :nocov:
 module Taxa
   class TaxonHasSubspecies < StandardError

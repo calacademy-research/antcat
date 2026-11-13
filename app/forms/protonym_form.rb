@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# The form object behind the protonym form: the editable attributes, the name, the authorship citation and the type
+# name, saved together.
 class ProtonymForm
   include ActiveModel::Model
 

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# A publication: article, book or chapter, with its authors, year, title, review state and caches of its formatted
+# text (table `references`).
 class Reference < ApplicationRecord
   include Trackable
 

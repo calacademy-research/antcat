@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# The catalog of the family Formicidae.
+#
+# Routes: GET / (anyone); GET /catalog/:id (anyone). Purpose, rights and tests of each: docs/catalog/routes.tsv.
 class CatalogController < ApplicationController
   # Avoid blowing up if there's no family. Useful in test and dev.
   unless Rails.env.production?

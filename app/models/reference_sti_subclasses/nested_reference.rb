@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# A reference to a part of another reference (a chapter in a book), with the pages of both.
 class NestedReference < Reference
   belongs_to :nesting_reference, class_name: 'Reference'
 

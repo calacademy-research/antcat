@@ -1,5 +1,11 @@
 # frozen_string_literal: true
 
+# Institutions (museums, collections).
+#
+# Routes: GET /institutions (anyone); POST /institutions (helpers); GET /institutions/new (helpers); GET
+# /institutions/:id/edit (editors); GET /institutions/:id (anyone); PATCH /institutions/:id (editors); PUT
+# /institutions/:id (editors); DELETE /institutions/:id (superadmins). Purpose, rights and tests of each:
+# docs/catalog/routes.tsv.
 class InstitutionsController < ApplicationController
   before_action :ensure_user_is_at_least_helper, only: [:new, :create]
   before_action :ensure_user_is_editor, only: [:edit, :update]

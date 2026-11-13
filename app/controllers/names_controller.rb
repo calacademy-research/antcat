@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# Name records (spelling and authorship).
+#
+# Routes: GET /names/:id/edit (editors); GET /names/:id (anyone); PATCH /names/:id (editors); PUT /names/:id
+# (editors). Purpose, rights and tests of each: docs/catalog/routes.tsv.
 class NamesController < ApplicationController
   before_action :ensure_user_is_editor, except: [:show]
 

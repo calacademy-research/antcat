@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# The catalog's advanced search (/catalog/search): finds taxa by name, rank, status, author, year, locality,
+# bioregion, type information, forms, fossil and the other permitted fields.
 module Catalog
   class AdvancedSearchQuery
     include Service

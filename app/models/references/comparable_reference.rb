@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# A reference reduced to the parts that are compared when looking for duplicates (author, year, title without
+# markup, pagination).
 module References
   class ComparableReference
     ROMAN_NUMERALS = [

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# The species-group taxa of a genus whose epithet is a spelling of a given one (misspellings and declensions
+# included).
 module Taxa
   class FindEpithetInGenus
     include Service

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# AntWeb export: the type name line of the protonym synopsis (the type species of a genus and how it was fixed).
 module Exporters
   module Antweb
     module History

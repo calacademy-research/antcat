@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# The AntWeb export (docs/data-flows.md, section 3): one tab-separated line per taxon, with the 24 columns of
+# `HEADER`.
 module Exporters
   module Antweb
     class ExportTaxon

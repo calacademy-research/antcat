@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# API: name records.
+#
+# Routes: GET /v1/names (API); GET /v1/names/:id (API). Purpose, rights and tests of each: docs/catalog/routes.tsv.
 module Api
   module V1
     class NamesController < Api::ApiController

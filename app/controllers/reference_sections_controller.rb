@@ -1,5 +1,11 @@
 # frozen_string_literal: true
 
+# Reference sections of taxa.
+#
+# Routes: POST /taxa/:taxon_id/reference_sections (helpers); GET /taxa/:taxon_id/reference_sections/new (helpers);
+# GET /reference_sections (anyone); GET /reference_sections/:id/edit (helpers); GET /reference_sections/:id
+# (anyone); PATCH /reference_sections/:id (helpers); PUT /reference_sections/:id (helpers); DELETE
+# /reference_sections/:id (editors). Purpose, rights and tests of each: docs/catalog/routes.tsv.
 class ReferenceSectionsController < ApplicationController
   PER_PAGE_OPTIONS = [30, 100]
 

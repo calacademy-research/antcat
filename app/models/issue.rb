@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# An item of the editors' list of things to fix (table `issues`).
 class Issue < ApplicationRecord
   include Commentable
   include Trackable

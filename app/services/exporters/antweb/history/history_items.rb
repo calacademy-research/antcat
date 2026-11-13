@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# AntWeb export: the HTML of a taxon's history items, for the taxonomic history column.
 module Exporters
   module Antweb
     module History

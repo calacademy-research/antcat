@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# A subtribe, within a tribe; checks the endings of subtribe names.
 class Subtribe < FamilyGroupTaxon
   VALID_ENDINGS_REGEX = /(ina|iti)\z/
 

@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# Turn a species into a subspecies.
+#
+# Routes: GET /taxa/:taxon_id/convert_to_subspecies/new (editors); POST /taxa/:taxon_id/convert_to_subspecies
+# (editors). Purpose, rights and tests of each: docs/catalog/routes.tsv.
 module Taxa
   class ConvertToSubspeciesController < ApplicationController
     before_action :ensure_user_is_editor

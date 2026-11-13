@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# API: reference records.
+#
+# Routes: GET /v1/references (API); GET /v1/references/:id (API). Purpose, rights and tests of each:
+# docs/catalog/routes.tsv.
 module Api
   module V1
     class ReferencesController < Api::ApiController

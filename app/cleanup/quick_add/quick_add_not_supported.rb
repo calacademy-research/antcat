@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Quick add: the adder for a case that is not supported; it cannot add and says why.
 module QuickAdd
   class QuickAddNotSupported
     def initialize error_message

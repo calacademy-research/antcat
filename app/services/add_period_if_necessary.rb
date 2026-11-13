@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Adds a period to the end of a text unless it already ends with . ! or ?.
 class AddPeriodIfNecessary
   include Service
 

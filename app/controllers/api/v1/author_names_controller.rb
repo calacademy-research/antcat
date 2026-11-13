@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# API: author name records.
+#
+# Routes: GET /v1/author_names (API); GET /v1/author_names/:id (API). Purpose, rights and tests of each:
+# docs/catalog/routes.tsv.
 module Api
   module V1
     class AuthorNamesController < Api::ApiController

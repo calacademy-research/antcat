@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# Sign in and sign out.
+#
+# Routes: GET /users/sign_in (anyone); POST /users/sign_in (anyone); DELETE /users/sign_out (anyone). Purpose,
+# rights and tests of each: docs/catalog/routes.tsv.
 module Users
   class SessionsController < Devise::SessionsController
     include RequestThrottle

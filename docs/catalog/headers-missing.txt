@@ -1,0 +1,1 @@
+# Ruby files without a header comment (script/code_headers.rb). Only ever remove lines.

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Turns taxt into HTML for the AntWeb export ({tax 429361} becomes a link to antcat.org); hidden editor notes are
+# removed first, because the export is public.
 module AntwebFormatter
   class Detax
     include ActionView::Helpers::SanitizeHelper

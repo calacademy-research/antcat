@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Formats a notification: links to the comment and the record it is about, or "[deleted]" when they are gone.
 class NotificationDecorator < Draper::Decorator
   def link_comment label
     comment = notification.attached

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Formats a feedback message: who sent it (a user or name and email), the page it was sent from, and the text of the
+# email to the editors.
 class FeedbackDecorator < Draper::Decorator
   delegate :user, :id, :comment, :created_at, :ip
 

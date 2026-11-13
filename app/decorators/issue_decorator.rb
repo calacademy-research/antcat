@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Formats an issue of the editors' list: open or closed icon and the "Help wanted!" badge.
 class IssueDecorator < Draper::Decorator
   def icon
     h.antcat_icon "issue", issue.open? ? 'open' : 'closed'

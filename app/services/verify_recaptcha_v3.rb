@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Checks a reCAPTCHA v3 token with Google (forms of visitors who are not signed in).
 class VerifyRecaptchaV3
   include Service
 

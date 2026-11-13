@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# The JSON of a reference in the API (/v1/references): the attributes it gives.
 module Api
   module V1
     class ReferenceSerializer

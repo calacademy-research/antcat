@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# The edit history of a name.
+#
+# Routes: GET /names/:name_id/history (anyone). Purpose, rights and tests of each: docs/catalog/routes.tsv.
 module Names
   class HistoriesController < ApplicationController
     def show

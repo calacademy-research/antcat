@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Tells a user that a comment concerns them (mentioned, active in the discussion, creator of the record) (table
+# `notifications`).
 class Notification < ApplicationRecord
   REASONS = [
     MENTIONED_IN_COMMENT = 'mentioned_in_comment',
