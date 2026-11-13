@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_13_190000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_13_230000) do
   create_table "activities", id: :integer, charset: "utf8mb3", force: :cascade do |t|
     t.integer "trackable_id"
     t.string "trackable_type"
@@ -226,8 +226,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_13_190000) do
     t.string "part_of_speech_basis"
     t.string "spelling_basis"
     t.string "interpretation_status"
+    t.bigint "spelling_review_wiki_page_id"
     t.index ["authorship_id"], name: "ix_protonyms__authorship_id"
     t.index ["name_id"], name: "ix_protonyms__name_id"
+    t.index ["spelling_review_wiki_page_id"], name: "ix_protonyms__spelling_review_wiki_page_id"
     t.index ["type_name_id"], name: "ux_protonyms__type_name_id", unique: true
   end
 
@@ -462,6 +464,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_13_190000) do
   add_foreign_key "issues", "users", name: "fk_issues__user_id__users__id"
   add_foreign_key "protonyms", "citations", column: "authorship_id", name: "fk_protonyms__authorship_id__citations__id"
   add_foreign_key "protonyms", "type_names", name: "fk_protonyms__type_name_id__type_names__id"
+  add_foreign_key "protonyms", "wiki_pages", column: "spelling_review_wiki_page_id", name: "fk_protonyms__spelling_review_wiki_page_id__wiki_pages__id"
   add_foreign_key "reference_author_names", "author_names", name: "fk_reference_author_names__author_name_id__author_names__id"
   add_foreign_key "reference_author_names", "references", name: "fk_reference_author_names__reference_id__references__id"
   add_foreign_key "reference_documents", "references", name: "fk_reference_documents__reference_id__references__id"

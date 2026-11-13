@@ -100,6 +100,11 @@
             %th Interpretation
             %td=@protonym.interpretation_status_label.upcase_first
 
+        -if (review_page = @protonym.spelling_review_wiki_page)
+          %tr
+            %th Spelling review
+            %td=link_to review_page.title, review_page
+
         -if (gender_epithets = @protonym.gender_epithets)
           %tr
             %th Spelling by genus gender

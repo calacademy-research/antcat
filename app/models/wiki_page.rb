@@ -9,7 +9,8 @@ class WikiPage < ApplicationRecord
     SPECIES_GROUP_NAMES_CONNECTING_TERMS = 'species_group_names_connecting_terms',
     FORMS = 'forms',
     NEW_CONTRIBUTORS_HELP_PAGE = 'new_contributors_help_page',
-    TYPE_INFORMATION = 'type_information'
+    TYPE_INFORMATION = 'type_information',
+    SPELLING_POLICY = 'spelling_policy'
   ]
 
   MissingWikiPage = Struct.new(:permanent_identifier) do
@@ -21,6 +22,10 @@ class WikiPage < ApplicationRecord
       WikiPage.new
     end
   end
+
+  # Protonyms whose part of speech or spelling this page documents (a spelling review packet).
+  has_many :spelling_reviewed_protonyms, class_name: 'Protonym', foreign_key: :spelling_review_wiki_page_id,
+    dependent: :restrict_with_error, inverse_of: :spelling_review_wiki_page
 
   validates :title, presence: true, length: { maximum: TITLE_MAX_LENGTH }, uniqueness: { case_sensitive: true }
   validates :content, presence: true

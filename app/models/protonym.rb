@@ -52,13 +52,16 @@ class Protonym < ApplicationRecord
       'an incorrect subsequent spelling in prevailing usage (Art. 33.3.1)',
     'commission_ruling' => 'a ruling of the Commission'
   }.freeze
-  # How firmly AntCat's reading of the name is established (Brian Fisher, 13 Nov 2026). `disputed`
-  # takes precedence: it is used whenever a substantive competing interpretation is documented,
-  # even when the adopted reading has strong evidence, and it needs a public note.
+  # How firmly AntCat's grammatical reading of the name is established (Brian Fisher, 13 Nov 2026).
+  # An interpretation adopted by AntCat, never a ruling of the Commission. `disputed` needs substantial
+  # evidence for a competing reading (and a public note giving it); a reading that is merely possible
+  # can be mentioned in the note of a `reasonably_inferred` name. The same wording is used on the
+  # policy wiki page, in the API documentation and in the edit-form help.
   INTERPRETATION_STATUSES = {
     'demonstrated' => 'demonstrated: direct evidence establishes the interpretation',
-    'reasonably_inferred' => 'reasonably inferred: strong grammatical evidence, no explicit original statement',
-    'disputed' => 'disputed: more than one defensible interpretation; the notes give the alternative',
+    'reasonably_inferred' =>
+      'reasonably inferred: strongly supported but not explicit; a merely possible alternative may be noted',
+    'disputed' => 'disputed: substantial evidence supports a competing interpretation; the notes give it',
     'unresolved' => 'unresolved: the evidence does not yet allow AntCat to choose an interpretation'
   }.freeze
   INTERPRETATIONS_NEEDING_PART_OF_SPEECH = %w[demonstrated reasonably_inferred].freeze
@@ -80,13 +83,15 @@ class Protonym < ApplicationRecord
   has_many :history_items, -> { order(:position) }, dependent: :restrict_with_error
   has_many :history_items_as_object, class_name: 'HistoryItem', foreign_key: :object_protonym_id, dependent: false
   has_one :authorship_reference, through: :authorship, source: :reference
+  # Optional: the wiki page that documents a reviewed part of speech or spelling (evidence and decision).
+  belongs_to :spelling_review_wiki_page, class_name: 'WikiPage', optional: true, inverse_of: :spelling_reviewed_protonyms
 
   validates :bioregion, inclusion: { in: BIOREGIONS, allow_nil: true }
   validates :bioregion, absence: { message: "cannot be set for fossil protonyms" }, if: -> { fossil? }
   validates :bioregion, :forms, :locality, :gender_agreement_type, :part_of_speech_basis, :spelling_basis,
     absence: { message: "can only be set for species-group names" },
     unless: -> { species_group_name? }
-  validates :interpretation_status, absence: { message: "can only be set for species-group names" },
+  validates :interpretation_status, :spelling_review_wiki_page, absence: { message: "can only be set for species-group names" },
     unless: -> { species_group_name? }
   validates :interpretation_status, inclusion: { in: INTERPRETATION_STATUSES.keys, allow_nil: true }
   validates :interpretation_status, absence: { message: "needs a gender agreement type to be demonstrated or inferred" },

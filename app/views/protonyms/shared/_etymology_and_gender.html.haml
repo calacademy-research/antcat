@@ -54,6 +54,11 @@
         Interpretation:
         %strong=protonym.interpretation_status_label
 
+    -if (review_page = protonym.spelling_review_wiki_page)
+      %p
+        Spelling review:
+        =link_to review_page.title, review_page
+
     -if (gender_epithets = protonym.gender_epithets)
       %p
         Spelling by genus gender:

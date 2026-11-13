@@ -167,7 +167,7 @@
               =predicted_gender_epithets.values.join(', ')
               (masculine, feminine, neuter). Leave blank for nouns.
 
-      -if protonym.species_group_name? || protonym.part_of_speech_basis? || protonym.spelling_basis? || protonym.interpretation_status?
+      -if protonym.species_group_name? || protonym.part_of_speech_basis? || protonym.spelling_basis? || protonym.interpretation_status? || protonym.spelling_review_wiki_page_id?
         %tr
           %td
             =f.label :part_of_speech_basis do
@@ -188,9 +188,22 @@
           %td
             =f.select :interpretation_status, Protonym::INTERPRETATION_STATUSES.invert, include_blank: '(blank)'
             .text-sm
-              Use disputed whenever a substantive competing reading is documented, even if the adopted one
-              has strong evidence; it needs a public note (not a hidden note) giving the alternative and its
-              evidence. Disputed and unresolved names are never changed by scripts.
+              Disputed only when substantial evidence supports a competing interpretation, even if the adopted
+              one has strong evidence; it needs a public note (not a hidden note) giving the alternative and its
+              evidence. A merely possible alternative goes in the note of a reasonably inferred name. This is
+              AntCat's interpretation, not a ruling of the Commission. Disputed and unresolved names are never
+              changed by scripts.
+        %tr
+          %td
+            =f.label :spelling_review_wiki_page_id do
+              Spelling review (wiki page)
+              =db_tooltip_icon :spelling_review_wiki_page_id, scope: :protonyms
+          %td
+            =f.collection_select :spelling_review_wiki_page_id, WikiPage.order(:title), :id, :title, include_blank: '(none)'
+            .text-sm
+              Optional: the wiki page with the evidence and decision for a reviewed name. The public note
+              still gives the short explanation. Rules:
+              =link_to_wiki_page_or_missing WikiPage::SPELLING_POLICY
 
       %tr
         %td
