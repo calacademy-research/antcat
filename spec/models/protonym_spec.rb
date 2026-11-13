@@ -395,4 +395,22 @@ describe Protonym do
       specify { expect(protonym.unchangeable_name?).to eq false }
     end
   end
+
+  describe "API v1 documentation (public/api/v1/swagger.yaml)" do
+    let(:properties) do
+      YAML.safe_load_file(Rails.root.join('public/api/v1/swagger.yaml')).dig('definitions', 'Protonym', 'properties')
+    end
+
+    it 'lists the same values as the model' do
+      expect(properties.dig('gender_agreement_type', 'enum')).to eq described_class::GENDER_AGREEMENT_TYPES
+      expect(properties.dig('part_of_speech_basis', 'enum')).to eq described_class::PART_OF_SPEECH_BASES.keys
+      expect(properties.dig('spelling_basis', 'enum')).to eq described_class::SPELLING_BASES.keys
+      expect(properties.dig('interpretation_status', 'enum')).to eq described_class::INTERPRETATION_STATUSES.keys
+    end
+
+    it 'defines each interpretation status in the words of the edit form' do
+      description = properties.dig('interpretation_status', 'description')
+      described_class::INTERPRETATION_STATUSES.each_value { |label| expect(description).to include(label) }
+    end
+  end
 end
