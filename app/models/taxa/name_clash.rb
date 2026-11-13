@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Whether a name is already used by a taxon.
 module Taxa
   class NameClash
     include Service

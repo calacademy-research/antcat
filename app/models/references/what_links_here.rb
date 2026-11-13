@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# "What links here" for a reference: citations, nested references, type names, history items and taxt that point at
+# it.
 module References
   class WhatLinksHere
     RECORD_TO_TAG_REGEX_TAXT_METHOD = :reference

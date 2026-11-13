@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Helpers database scripts use to render their results (as a table, paginated or not).
 module DatabaseScripts
   module RenderHelpers
     def as_table

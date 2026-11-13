@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Stands in for a database script that is named somewhere (a related-scripts list) but does not exist; shows an
+# error title.
 module DatabaseScripts
   UnfoundDatabaseScript = Struct.new(:class_name) do
     def title

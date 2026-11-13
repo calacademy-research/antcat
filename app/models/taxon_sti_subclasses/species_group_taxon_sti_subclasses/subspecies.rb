@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# A subspecies, within a species.
 class Subspecies < SpeciesGroupTaxon
   belongs_to :species
 

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# One change of a record in the revision history (paper_trail; table `versions`), linked to the activity of the same
+# save.
 module PaperTrail
   class Version < ApplicationRecord
     include PaperTrail::VersionConcern

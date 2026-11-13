@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# "What links here" for a taxon: the taxa, type names and history items that point at it, and the taxt that names
+# it.
 module Taxa
   class WhatLinksHere
     RECORD_TO_TAG_REGEX_TAXT_METHOD = :taxon

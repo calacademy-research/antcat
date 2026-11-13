@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# A tribe, within a subfamily, with its subtribes and genera.
 class Tribe < FamilyGroupTaxon
   belongs_to :subfamily
 

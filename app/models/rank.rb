@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# The ranks (family to infrasubspecies) and the groups of ranks, used everywhere a rule depends on the rank.
 class Rank
   TYPES = [
     FAMILY          = 'Family',

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# One spelling of an author's name as it appears on references; checks the characters and suffixes allowed (table
+# `author_names`).
 class AuthorName < ApplicationRecord
   include Trackable
 

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Taxt: text with tags that point at taxa, protonyms and references ({tax 1}, {pro 1}, {ref 1}...). The tags, the
+# columns that hold taxt, and removing hidden notes.
 require 'strscan'
 
 module Taxt

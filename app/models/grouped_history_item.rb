@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# History items of the same kind shown together as one line on a taxon page.
 class GroupedHistoryItem
   attr_reader :items
 

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# An account: rights (helper, editor, superadmin, developer), settings, and the author the user is, if any (table
+# `users`; sign-in by Devise).
 class User < ApplicationRecord
   include Trackable
 

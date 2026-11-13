@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# A section of references on a taxon page (only for ranks above species) (table `reference_sections`).
 class ReferenceSection < ApplicationRecord
   include CleanupAndConvertTaxtColumns
   include Trackable

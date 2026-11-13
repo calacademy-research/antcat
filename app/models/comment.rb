@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# A comment by a user on an issue, a feedback message or a site notice; comments on feedback are shown to helpers
+# and above only (table `comments`).
 class Comment < ApplicationRecord
   include Trackable
 

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# The type taxon of a genus-group name and how it was fixed (by monotypy, original or subsequent designation) (table
+# `type_names`).
 class TypeName < ApplicationRecord
   include OrderByPages
 

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# The editor's default reference, kept in the session: a new taxon's authorship starts with it.
 module References
   class DefaultReference
     DEFAULT_REFERENCE_SESSION_KEY = :default_reference_id

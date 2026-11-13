@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# A subfamily, with its tribes, genera, species and subspecies.
 class Subfamily < FamilyGroupTaxon
   belongs_to :family, optional: true
 
