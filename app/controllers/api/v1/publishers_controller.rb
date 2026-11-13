@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# API: publisher records.
+#
+# Routes: GET /v1/publishers (API); GET /v1/publishers/:id (API). Purpose, rights and tests of each:
+# docs/catalog/routes.tsv.
 module Api
   module V1
     class PublishersController < Api::ApiController

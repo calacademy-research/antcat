@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# Journal lookup while typing.
+#
+# Routes: GET /journals/autocomplete (anyone). Purpose, rights and tests of each: docs/catalog/routes.tsv.
 module Journals
   class AutocompletesController < ApplicationController
     def show

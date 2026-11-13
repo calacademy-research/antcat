@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# API: reference sections of taxa.
+#
+# Routes: GET /v1/reference_sections (API); GET /v1/reference_sections/:id (API). Purpose, rights and tests of each:
+# docs/catalog/routes.tsv.
 module Api
   module V1
     class ReferenceSectionsController < Api::ApiController

@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# Create an obsolete combination.
+#
+# Routes: GET /taxa/:taxon_id/create_obsolete_combination (editors); POST
+# /taxa/:taxon_id/create_obsolete_combination (editors). Purpose, rights and tests of each: docs/catalog/routes.tsv.
 module Taxa
   class CreateObsoleteCombinationsController < ApplicationController
     before_action :ensure_user_is_editor

@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# Download of a reference document (PDF).
+#
+# Routes: GET /documents/:id/:file_name (anyone). Purpose, rights and tests of each: docs/catalog/routes.tsv.
 module References
   class DownloadsController < ApplicationController
     def show

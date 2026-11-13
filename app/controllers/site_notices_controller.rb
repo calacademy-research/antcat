@@ -1,5 +1,11 @@
 # frozen_string_literal: true
 
+# Notices shown to editors on the site.
+#
+# Routes: POST /site_notices/mark_all_as_read (signed in); GET /site_notices (anyone); POST /site_notices (editors);
+# GET /site_notices/new (editors); GET /site_notices/:id/edit (editors); GET /site_notices/:id (signed in); PATCH
+# /site_notices/:id (editors); PUT /site_notices/:id (editors); DELETE /site_notices/:id (superadmins). Purpose,
+# rights and tests of each: docs/catalog/routes.tsv.
 class SiteNoticesController < ApplicationController
   before_action :authenticate_user!, except: [:index]
   before_action :ensure_user_is_editor, except: [:index, :show, :mark_all_as_read]

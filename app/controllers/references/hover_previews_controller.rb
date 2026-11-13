@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# The preview shown when hovering a reference link.
+#
+# Routes: GET /references/:reference_id/hover_preview (anyone). Purpose, rights and tests of each:
+# docs/catalog/routes.tsv.
 module References
   class HoverPreviewsController < ApplicationController
     def show

@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# Taxon lookup while typing in the search box.
+#
+# Routes: GET /catalog/autocomplete (anyone). Purpose, rights and tests of each: docs/catalog/routes.tsv.
 module Catalog
   class AutocompletesController < ApplicationController
     NUM_RESULTS = 10

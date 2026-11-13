@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+# Journals.
+#
+# Routes: GET /journals (anyone); GET /journals/:id/edit (helpers); GET /journals/:id (anyone); PATCH /journals/:id
+# (helpers); PUT /journals/:id (helpers); DELETE /journals/:id (editors). Purpose, rights and tests of each:
+# docs/catalog/routes.tsv.
 class JournalsController < ApplicationController
   before_action :ensure_user_is_at_least_helper, except: [:index, :show]
   before_action :ensure_user_is_editor, only: [:destroy] # As for protonyms, references and history items.

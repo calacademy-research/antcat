@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# Author lookup while typing.
+#
+# Routes: GET /authors/autocomplete (anyone). Purpose, rights and tests of each: docs/catalog/routes.tsv.
 module Authors
   class AutocompletesController < ApplicationController
     MAX_RESULTS = 50

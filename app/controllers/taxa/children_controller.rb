@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# The child taxa of a taxon.
+#
+# Routes: GET /taxa/:taxon_id/children (anyone). Purpose, rights and tests of each: docs/catalog/routes.tsv.
 module Taxa
   class ChildrenController < ApplicationController
     def show

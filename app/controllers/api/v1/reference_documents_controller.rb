@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# API: reference document (PDF) records.
+#
+# Routes: GET /v1/reference_documents (API); GET /v1/reference_documents/:id (API). Purpose, rights and tests of
+# each: docs/catalog/routes.tsv.
 module Api
   module V1
     class ReferenceDocumentsController < Api::ApiController

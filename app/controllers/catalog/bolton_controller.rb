@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# A taxon in Bolton's catalogue layout.
+#
+# Routes: GET /catalog/:id/bolton (signed in). Purpose, rights and tests of each: docs/catalog/routes.tsv.
 module Catalog
   class BoltonController < ApplicationController
     SUPPORTED_TYPES = [Rank::GENUS, Rank::SPECIES, Rank::SUBSPECIES, Rank::INFRASUBSPECIES]

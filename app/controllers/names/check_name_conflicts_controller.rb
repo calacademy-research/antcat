@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# Warn when a new name already exists.
+#
+# Routes: GET /names/check_name_conflicts (anyone). Purpose, rights and tests of each: docs/catalog/routes.tsv.
 module Names
   class CheckNameConflictsController < ApplicationController
     def show

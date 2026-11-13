@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# Reference search.
+#
+# Routes: GET /references/search/help (anyone); GET /references/search (anyone). Purpose, rights and tests of each:
+# docs/catalog/routes.tsv.
 module References
   class SearchController < ApplicationController
     before_action :redirect_if_search_query_matches_reference_id, only: :index

@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# Show or hide grouped history and other view settings.
+#
+# Routes: PATCH /catalog/toggle_view (anyone); PUT /catalog/toggle_view (anyone). Purpose, rights and tests of each:
+# docs/catalog/routes.tsv.
 module Catalog
   class ToggleViewsController < ApplicationController
     VALID_ONLY = 'valid_only'

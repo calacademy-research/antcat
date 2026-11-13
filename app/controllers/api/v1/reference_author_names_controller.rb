@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# API: links between references and author names.
+#
+# Routes: GET /v1/reference_author_names (API); GET /v1/reference_author_names/:id (API). Purpose, rights and tests
+# of each: docs/catalog/routes.tsv.
 module Api
   module V1
     class ReferenceAuthorNamesController < Api::ApiController

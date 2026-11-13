@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# Raise a subspecies to species.
+#
+# Routes: POST /taxa/:taxon_id/elevate_to_species (editors). Purpose, rights and tests of each:
+# docs/catalog/routes.tsv.
 module Taxa
   class ElevateToSpeciesController < ApplicationController
     before_action :ensure_user_is_editor

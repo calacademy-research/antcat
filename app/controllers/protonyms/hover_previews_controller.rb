@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# The preview shown when hovering a protonym link.
+#
+# Routes: GET /protonyms/:protonym_id/hover_preview (anyone). Purpose, rights and tests of each:
+# docs/catalog/routes.tsv.
 module Protonyms
   class HoverPreviewsController < ApplicationController
     def show

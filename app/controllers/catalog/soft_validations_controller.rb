@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# Database checks of one taxon.
+#
+# Routes: GET /catalog/:id/soft_validations (anyone). Purpose, rights and tests of each: docs/catalog/routes.tsv.
 module Catalog
   class SoftValidationsController < ApplicationController
     def show

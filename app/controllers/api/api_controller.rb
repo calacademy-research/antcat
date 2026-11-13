@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# The base of the API controllers (/v1): records in id order, 100 a page (or the key's page size when API keys are
+# on), paged with starts_at; 404 for an unknown id; hidden editor notes removed from every answer.
 module Api
   class ApiController < ApplicationController
     include ApiKeyAccess # Keys and limits; off unless `Settings.api_keys.enabled`.

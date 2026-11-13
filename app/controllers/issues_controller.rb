@@ -1,5 +1,11 @@
 # frozen_string_literal: true
 
+# Open questions about the catalog, for editors.
+#
+# Routes: PUT /issues/:id/close (helpers); PUT /issues/:id/reopen (helpers); GET /issues (anyone); POST /issues
+# (helpers); GET /issues/new (helpers); GET /issues/:id/edit (helpers); GET /issues/:id (anyone); PATCH /issues/:id
+# (helpers); PUT /issues/:id (helpers); DELETE /issues/:id (superadmins). Purpose, rights and tests of each:
+# docs/catalog/routes.tsv.
 class IssuesController < ApplicationController
   before_action :ensure_unconfirmed_user_is_not_over_edit_limit, except: [:index, :show]
   # Wiki pages and issues: helpers and editors only (Brian, 2026-10-16).

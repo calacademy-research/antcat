@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# What links to a taxon.
+#
+# Routes: GET /catalog/:id/what_links_here (anyone). Purpose, rights and tests of each: docs/catalog/routes.tsv.
 module Catalog
   class WhatLinksHeresController < ApplicationController
     def show

@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# Every saved version of every record (PaperTrail).
+#
+# Routes: GET /panel/versions (editors); GET /panel/versions/:id (editors). Purpose, rights and tests of each:
+# docs/catalog/routes.tsv.
 module EditorsPanels
   class VersionsController < ApplicationController
     FILTERABLE_ITEM_TYPES = %w[
