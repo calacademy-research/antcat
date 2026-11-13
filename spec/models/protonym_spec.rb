@@ -398,7 +398,7 @@ describe Protonym do
 
   describe "API v1 documentation (public/api/v1/swagger.yaml)" do
     let(:properties) do
-      YAML.safe_load_file(Rails.root.join('public/api/v1/swagger.yaml')).dig('definitions', 'Protonym', 'properties')
+      YAML.safe_load_file(Rails.public_path.join('api/v1/swagger.yaml')).dig('definitions', 'Protonym', 'properties')
     end
 
     it 'lists the same values as the model' do
