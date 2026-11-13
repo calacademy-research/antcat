@@ -34,6 +34,11 @@ paste. Tab-separated; open it in a spreadsheet or read it on GitHub.
 - `DevsController` (`app/controllers/devs_controller.rb`, developer pages of the pickers and styles) has views but
   no route, so it is not in this list and cannot be reached: a candidate for removal.
 
+- `POST /users` to `users#create` (the superadmins' "New user" form) is never reached: Devise's sign-up route
+  with the same verb and path comes first in `config/routes.rb`, so the form's POST goes to sign-up. Either drop the
+  form (sign-up and invitations replace it) or give it its own path. Status `check`; the spec now refuses `keep`
+  for a route hidden by an earlier one.
+
 ## Routes without a spec
 
 `/references/latest_additions`, the three Turbo Native routes above, and `/*id` (the static pages of the high_voltage gem, the last route). The component previews

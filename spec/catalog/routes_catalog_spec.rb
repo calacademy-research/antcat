@@ -14,17 +14,24 @@ describe "Function catalog (docs/catalog/routes.tsv)" do # rubocop:disable RSpec
       end
 
       controller = route.defaults[:controller]
-      next if controller.blank? || controller.start_with?("rails/", "active_storage/", "action_mailbox/")
+      next if controller&.start_with?("rails/", "active_storage/", "action_mailbox/")
 
       path = route.path.spec.to_s.delete_suffix("(.:format)")
       verb = route.verb.presence || "ANY"
-      { verb: verb, path: path, action: "#{controller}##{route.defaults[:action]}", name: route.name.to_s }
+      # A route without a controller (a `redirect`, a Rack app) gets a row too, named after what answers it.
+      action = controller ? "#{controller}##{route.defaults[:action]}" : redirect_or_app(route)
+      { verb: verb, path: path, action: action, name: route.name.to_s }
     end.uniq { |r| [r[:verb], r[:path], r[:action]] }
+  end
+
+  def self.redirect_or_app route
+    route.app.is_a?(ActionDispatch::Routing::Redirect) ? "redirect" : route.app.class.name
   end
 
   # Tab-separated, one row per route, first line the column names (no csv gem: Ruby 4 has no csv by default).
   def self.catalog_rows
-    lines = Rails.root.join("docs/catalog/routes.tsv").read.split("\n").reject(&:blank?)
+    # Lines end in LF; a CR left by a spreadsheet's save is dropped. Saved as plain tab-separated text, no quotes.
+    lines = Rails.root.join("docs/catalog/routes.tsv").read.each_line(chomp: true).map { |l| l.delete_suffix("\r") }.reject(&:blank?)
     header = lines.shift.split("\t")
     lines.map { |line| header.zip(line.split("\t", -1)).to_h }
   end
@@ -62,7 +69,18 @@ describe "Function catalog (docs/catalog/routes.tsv)" do # rubocop:disable RSpec
   end
 
   it "uses the known values for who and status" do
-    expect(rows.pluck("who").uniq - %w[public user editor helper superadmin api system]).to be_empty
-    expect(rows.pluck("status").uniq - %w[keep check remove]).to be_empty
+    bad_who = rows.reject { |r| r["who"].in?(%w[public user editor helper superadmin api system]) }
+    bad_status = rows.reject { |r| r["status"].in?(%w[keep check remove]) }
+    expect(bad_who).to be_empty, "unknown who: #{bad_who.map { |r| "#{key.call(r).join(' ')}: #{r['who']}" }}"
+    expect(bad_status).to be_empty, "unknown status: #{bad_status.map { |r| "#{key.call(r).join(' ')}: #{r['status']}" }}"
+  end
+
+  # Rails sends a request to the first route that matches, so a later route with the same verb and path is never
+  # reached. Such a row may not say `keep`.
+  it "does not keep a route that an earlier route hides" do
+    first = {}
+    hidden = routes.reject { |r| first.key?([r[:verb], r[:path]]) ? false : (first[[r[:verb], r[:path]]] = true) }
+    kept = hidden.select { |r| rows.find { |row| key.call(row) == key.call(r) }&.dig("status") == "keep" }
+    expect(kept).to be_empty, "hidden by an earlier route but marked keep: #{kept.map { |r| key.call(r).join(' ') }}"
   end
 end

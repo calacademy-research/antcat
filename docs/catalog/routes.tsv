@@ -146,7 +146,7 @@ GET	/users/sign_up/complete	users/registrations#complete	complete_user_sign_up	p
 POST	/users/sign_up/complete	users/registrations#finish	users_sign_up_complete	public	finish: sign up and account settings	keep	spec/controllers/users/registrations_controller_spec.rb
 GET	/users/mentionables	users#mentionables	mentionables_users	user	mentionables: user profiles and the list of users	keep	spec/controllers/users_controller_spec.rb
 GET	/users	users#index	users	public	list: user profiles and the list of users	keep	spec/controllers/users_controller_spec.rb
-POST	/users	users#create		superadmin	add: user profiles and the list of users	keep	spec/controllers/users_controller_spec.rb
+POST	/users	users#create		superadmin	add: user profiles and the list of users (never reached: Devise's sign-up route POST /users comes first)	check	spec/controllers/users_controller_spec.rb
 GET	/users/new	users#new	new_user	superadmin	form to add: user profiles and the list of users	keep	spec/controllers/users_controller_spec.rb
 GET	/users/:id/edit	users#edit	edit_user	superadmin	form to change: user profiles and the list of users	keep	spec/controllers/users_controller_spec.rb
 GET	/users/:id	users#show	user	public	show one: user profiles and the list of users	keep	spec/controllers/users_controller_spec.rb
