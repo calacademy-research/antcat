@@ -228,8 +228,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_13_230000) do
     t.string "interpretation_status"
     t.bigint "grammar_and_spelling_wiki_page_id"
     t.index ["authorship_id"], name: "ix_protonyms__authorship_id"
-    t.index ["name_id"], name: "ix_protonyms__name_id"
     t.index ["grammar_and_spelling_wiki_page_id"], name: "ix_protonyms__grammar_and_spelling_wiki_page_id"
+    t.index ["name_id"], name: "ix_protonyms__name_id"
     t.index ["type_name_id"], name: "ux_protonyms__type_name_id", unique: true
   end
 
