@@ -13,7 +13,7 @@ class ProtonymForm
     neuter_epithet
     part_of_speech_basis
     spelling_basis
-    interpretation_contested
+    interpretation_status
     ichnotaxon
     locality
     sic

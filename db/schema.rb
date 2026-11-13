@@ -225,7 +225,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_13_190000) do
     t.string "neuter_epithet"
     t.string "part_of_speech_basis"
     t.string "spelling_basis"
-    t.boolean "interpretation_contested", default: false, null: false
+    t.string "interpretation_status"
     t.index ["authorship_id"], name: "ix_protonyms__authorship_id"
     t.index ["name_id"], name: "ix_protonyms__name_id"
     t.index ["type_name_id"], name: "ux_protonyms__type_name_id", unique: true

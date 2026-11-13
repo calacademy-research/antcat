@@ -49,10 +49,10 @@
       %p
         Accepted spelling, basis: #{protonym.spelling_basis_label}
 
-    -if protonym.interpretation_contested?
+    -if protonym.interpretation_status?
       %p
-        %strong Interpretation contested
-        (see the protonym's notes)
+        Interpretation:
+        %strong=protonym.interpretation_status_label
 
     -if (gender_epithets = protonym.gender_epithets)
       %p

@@ -41,7 +41,7 @@ describe Api::V1::ProtonymsController, as: :visitor do
               "neuter_epithet" => nil,
               "part_of_speech_basis" => nil,
               "spelling_basis" => nil,
-              "interpretation_contested" => false,
+              "interpretation_status" => nil,
               "etymology_taxt" => protonym.etymology_taxt,
               "primary_type_information_taxt" => protonym.primary_type_information_taxt,
               "secondary_type_information_taxt" => protonym.secondary_type_information_taxt,
@@ -61,8 +61,8 @@ describe Api::V1::ProtonymsController, as: :visitor do
         create :protonym, :species_group, bioregion: Protonym::NEARCTIC_REGION,
           locality: "USA", forms: 'q.', gender_agreement_type: Protonym::ADJECTIVE,
           masculine_epithet: "crassispinus", feminine_epithet: "crassispina", neuter_epithet: "crassispinum",
-          part_of_speech_basis: 'decisive_usage', spelling_basis: 'gender_agreement',
-          interpretation_contested: true, notes_taxt: "Spelling: an alternative reading is a noun phrase."
+          part_of_speech_basis: 'original_usage', spelling_basis: 'gender_agreement',
+          interpretation_status: 'disputed', notes_taxt: "Spelling: an alternative reading is a noun phrase."
       end
 
       specify do
@@ -83,9 +83,9 @@ describe Api::V1::ProtonymsController, as: :visitor do
               "masculine_epithet" => "crassispinus",
               "feminine_epithet" => "crassispina",
               "neuter_epithet" => "crassispinum",
-              "part_of_speech_basis" => 'decisive_usage',
+              "part_of_speech_basis" => 'original_usage',
               "spelling_basis" => 'gender_agreement',
-              "interpretation_contested" => true,
+              "interpretation_status" => 'disputed',
               "etymology_taxt" => nil,
               "primary_type_information_taxt" => protonym.primary_type_information_taxt,
               "secondary_type_information_taxt" => protonym.secondary_type_information_taxt,

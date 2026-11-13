@@ -19,7 +19,7 @@ module Api
         :neuter_epithet,
         :part_of_speech_basis,
         :spelling_basis,
-        :interpretation_contested,
+        :interpretation_status,
         :etymology_taxt,
         :primary_type_information_taxt,
         :secondary_type_information_taxt,

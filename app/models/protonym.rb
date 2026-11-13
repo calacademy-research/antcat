@@ -37,8 +37,8 @@ class Protonym < ApplicationRecord
   PART_OF_SPEECH_BASES = {
     'author_stated' => 'stated by the original author',
     'grammatical_form' => 'the grammatical form of the epithet (Art. 31.2)',
-    'decisive_usage' => 'decisive subsequent usage (Art. 31.2.2)',
-    'noun_by_default' => 'noun in apposition by default, usage not decisive (Art. 31.2.2)',
+    'original_usage' => "the original author's use of the name in the original publication (Art. 31.2.2)",
+    'noun_by_default' => 'noun in apposition by default: the original author gave no indication (Art. 31.2.2)',
     'commission_ruling' => 'a ruling of the Commission'
   }.freeze
   # Why AntCat accepts the spelling it uses (the nomenclatural basis). A name can be a noun
@@ -52,6 +52,17 @@ class Protonym < ApplicationRecord
       'an incorrect subsequent spelling in prevailing usage (Art. 33.3.1)',
     'commission_ruling' => 'a ruling of the Commission'
   }.freeze
+  # How firmly AntCat's reading of the name is established (Brian Fisher, 13 Nov 2026). `disputed`
+  # takes precedence: it is used whenever a substantive competing interpretation is documented,
+  # even when the adopted reading has strong evidence, and it needs a public note.
+  INTERPRETATION_STATUSES = {
+    'demonstrated' => 'demonstrated: direct evidence establishes the interpretation',
+    'reasonably_inferred' => 'reasonably inferred: strong grammatical evidence, no explicit original statement',
+    'disputed' => 'disputed: more than one defensible interpretation; the notes give the alternative',
+    'unresolved' => 'unresolved: the evidence does not yet allow AntCat to choose an interpretation'
+  }.freeze
+  INTERPRETATIONS_NEEDING_PART_OF_SPEECH = %w[demonstrated reasonably_inferred].freeze
+  SCRIPTED_SPELLING_CHANGE_BLOCKED_STATUSES = %w[disputed unresolved].freeze
 
   delegate :pages, to: :authorship, prefix: true
 
@@ -75,11 +86,16 @@ class Protonym < ApplicationRecord
   validates :bioregion, :forms, :locality, :gender_agreement_type, :part_of_speech_basis, :spelling_basis,
     absence: { message: "can only be set for species-group names" },
     unless: -> { species_group_name? }
+  validates :interpretation_status, absence: { message: "can only be set for species-group names" },
+    unless: -> { species_group_name? }
+  validates :interpretation_status, inclusion: { in: INTERPRETATION_STATUSES.keys, allow_nil: true }
+  validates :interpretation_status, absence: { message: "needs a gender agreement type to be demonstrated or inferred" },
+    if: -> { interpretation_status.in?(INTERPRETATIONS_NEEDING_PART_OF_SPEECH) && !gender_agreement_type? }
   validates :part_of_speech_basis, inclusion: { in: PART_OF_SPEECH_BASES.keys, allow_nil: true }
   validates :part_of_speech_basis, absence: { message: "needs a gender agreement type" },
     unless: -> { gender_agreement_type? }
   validates :spelling_basis, inclusion: { in: SPELLING_BASES.keys, allow_nil: true }
-  validate :contested_interpretation_has_public_note
+  validate :disputed_interpretation_has_public_note
   validates :gender_agreement_type, inclusion: { in: GENDER_AGREEMENT_TYPES, allow_nil: true }
   validates :masculine_epithet, :feminine_epithet, :neuter_epithet,
     absence: { message: "can only be set when the gender agreement type is adjective or participle" },
@@ -101,7 +117,7 @@ class Protonym < ApplicationRecord
   strip_attributes only: [
     :locality, :bioregion, :forms, :gender_agreement_type,
     :masculine_epithet, :feminine_epithet, :neuter_epithet,
-    :part_of_speech_basis, :spelling_basis,
+    :part_of_speech_basis, :spelling_basis, :interpretation_status,
     :notes_taxt, :etymology_taxt
   ], replace_newlines: true
   strip_attributes only: [:primary_type_information_taxt, :secondary_type_information_taxt, :type_notes_taxt]
@@ -161,6 +177,20 @@ class Protonym < ApplicationRecord
     SPELLING_BASES[spelling_basis]
   end
 
+  def interpretation_status_label
+    INTERPRETATION_STATUSES[interpretation_status]
+  end
+
+  def interpretation_disputed?
+    interpretation_status == 'disputed'
+  end
+
+  # Scripts never change the spelling of a disputed or unresolved name. A reasonably inferred one needs
+  # an approval for that name; a demonstrated one only where an ICZN rule requires the change.
+  def scripted_spelling_change_blocked?
+    interpretation_status.in?(SCRIPTED_SPELLING_CHANGE_BLOCKED_STATUSES)
+  end
+
   def genus_group_name?
     Rank.genus_group_name?(rank_from_name)
   end
@@ -184,13 +214,13 @@ class Protonym < ApplicationRecord
 
   private
 
-    # A contested reading is only transparent if visitors can read the alternative: the note must
+    # A disputed reading is only transparent if visitors can read the alternative: the note must
     # have text outside hidden editor notes (`{hiddennote ...}`, which visitors do not see).
-    def contested_interpretation_has_public_note
-      return unless interpretation_contested?
+    def disputed_interpretation_has_public_note
+      return unless interpretation_disputed?
       return if Taxt.remove_hidden_notes(notes_taxt.to_s).strip.present?
 
-      errors.add :interpretation_contested,
+      errors.add :interpretation_status,
         "needs a public note that gives the alternative interpretation and its evidence"
     end
 

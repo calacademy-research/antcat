@@ -167,7 +167,7 @@
               =predicted_gender_epithets.values.join(', ')
               (masculine, feminine, neuter). Leave blank for nouns.
 
-      -if protonym.species_group_name? || protonym.part_of_speech_basis? || protonym.spelling_basis? || protonym.interpretation_contested?
+      -if protonym.species_group_name? || protonym.part_of_speech_basis? || protonym.spelling_basis? || protonym.interpretation_status?
         %tr
           %td
             =f.label :part_of_speech_basis do
@@ -182,14 +182,15 @@
           %td=f.select :spelling_basis, Protonym::SPELLING_BASES.invert, include_blank: '(blank)'
         %tr
           %td
+            =f.label :interpretation_status do
+              Interpretation
+              =db_tooltip_icon :interpretation_status, scope: :protonyms
           %td
-            =f.check_box :interpretation_contested
-            =f.label :interpretation_contested do
-              Interpretation contested
-              =db_tooltip_icon :interpretation_contested, scope: :protonyms
+            =f.select :interpretation_status, Protonym::INTERPRETATION_STATUSES.invert, include_blank: '(blank)'
             .text-sm
-              AntCat adopts one defensible reading over another. Needs a public note (not a hidden note)
-              giving the alternative interpretation and its evidence.
+              Use disputed whenever a substantive competing reading is documented, even if the adopted one
+              has strong evidence; it needs a public note (not a hidden note) giving the alternative and its
+              evidence. Disputed and unresolved names are never changed by scripts.
 
       %tr
         %td

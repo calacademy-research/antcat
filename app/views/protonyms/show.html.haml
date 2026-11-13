@@ -95,11 +95,10 @@
             %th Accepted spelling
             %td Basis: #{@protonym.spelling_basis_label}
 
-        -if @protonym.interpretation_contested?
+        -if @protonym.interpretation_status?
           %tr
             %th Interpretation
-            %td
-              Contested: AntCat adopts one defensible reading; the notes below give the alternative and its evidence.
+            %td=@protonym.interpretation_status_label.upcase_first
 
         -if (gender_epithets = @protonym.gender_epithets)
           %tr

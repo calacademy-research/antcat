@@ -136,7 +136,7 @@ describe Protonym do
         let(:protonym) { build_stubbed :protonym, :adjective_gender_agreement_type }
 
         it 'accepts the listed bases' do
-          protonym.assign_attributes(part_of_speech_basis: 'decisive_usage', spelling_basis: 'gender_agreement')
+          protonym.assign_attributes(part_of_speech_basis: 'original_usage', spelling_basis: 'gender_agreement')
           expect(protonym.valid?).to eq true
         end
 
@@ -170,23 +170,69 @@ describe Protonym do
       end
     end
 
-    describe "#interpretation_contested validations" do
-      let(:protonym) { build_stubbed :protonym, :adjective_gender_agreement_type, interpretation_contested: true }
+    describe "#interpretation_status validations" do
+      context 'when disputed' do
+        let(:protonym) { build_stubbed :protonym, :adjective_gender_agreement_type, interpretation_status: 'disputed' }
 
-      it 'requires a public note' do
-        expect(protonym.valid?).to eq false
-        expect(protonym.errors.where(:interpretation_contested).map(&:message)).
-          to include("needs a public note that gives the alternative interpretation and its evidence")
+        it 'requires a public note' do
+          expect(protonym.valid?).to eq false
+          expect(protonym.errors.where(:interpretation_status).map(&:message)).
+            to include("needs a public note that gives the alternative interpretation and its evidence")
+        end
+
+        it 'does not count a hidden note' do
+          protonym.notes_taxt = "{hiddennote alternative reading: a noun phrase}"
+          expect(protonym.valid?).to eq false
+        end
+
+        it 'is valid with a public note' do
+          protonym.notes_taxt = "Spelling: an alternative reading is a noun phrase, which keeps the original spelling."
+          expect(protonym.valid?).to eq true
+        end
+
+        it 'blocks scripted spelling changes' do
+          expect(protonym.scripted_spelling_change_blocked?).to eq true
+        end
       end
 
-      it 'does not count a hidden note' do
-        protonym.notes_taxt = "{hiddennote alternative reading: a noun phrase}"
-        expect(protonym.valid?).to eq false
+      context 'when unresolved' do
+        let(:protonym) { build_stubbed :protonym, :species_group, interpretation_status: 'unresolved' }
+
+        it 'needs neither a part of speech nor a note' do
+          expect(protonym.valid?).to eq true
+        end
+
+        it 'blocks scripted spelling changes' do
+          expect(protonym.scripted_spelling_change_blocked?).to eq true
+        end
       end
 
-      it 'is valid with a public note' do
-        protonym.notes_taxt = "Spelling: an alternative reading is a noun phrase, which keeps the original spelling."
-        expect(protonym.valid?).to eq true
+      context 'when demonstrated or reasonably inferred' do
+        let(:protonym) { build_stubbed :protonym, :species_group }
+
+        it 'needs a part of speech' do
+          protonym.interpretation_status = 'reasonably_inferred'
+          expect(protonym.valid?).to eq false
+          expect(protonym.errors.where(:interpretation_status).map(&:message)).
+            to include("needs a gender agreement type to be demonstrated or inferred")
+        end
+
+        it 'does not block scripted spelling changes' do
+          protonym.assign_attributes(gender_agreement_type: Protonym::ADJECTIVE, interpretation_status: 'demonstrated')
+          expect(protonym.valid?).to eq true
+          expect(protonym.scripted_spelling_change_blocked?).to eq false
+        end
+      end
+
+      it 'rejects an unlisted status' do
+        protonym = build_stubbed :protonym, :species_group, interpretation_status: 'probable'
+        expect(protonym.valid?).to eq false
+        expect(protonym.errors.where(:interpretation_status).map(&:message)).to include("is not included in the list")
+      end
+
+      it 'can only be set for species-group names' do
+        protonym = build_stubbed :protonym, :genus_group, interpretation_status: 'unresolved'
+        expect(protonym.valid?).to eq false
       end
     end
 
