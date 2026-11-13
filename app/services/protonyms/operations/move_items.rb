@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Moves history items from one protonym to another.
 module Protonyms
   module Operations
     class MoveItems

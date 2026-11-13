@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# The spellings to search for an epithet: frequent misspellings, Latin declensions and spellings deemed identical.
 module Names
   class EpithetSearchSet
     include Service

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Exports references in EndNote format (articles and books; taxonomic notes only for signed-in users).
 module Exporters
   module Endnote
     class Formatter

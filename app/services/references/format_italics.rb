@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Turns *text* in reference fields into italics.
 module References
   class FormatItalics
     include Service

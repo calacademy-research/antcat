@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Merges two authors into one: moves the names of one to the other and deletes the empty author, in one transaction.
 module Authors
   class Merge
     include Service

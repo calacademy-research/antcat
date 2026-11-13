@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Operation: adds an obsolete combination of a taxon in another genus, refusing a name already in use.
 module Taxa
   module Operations
     class CreateObsoleteCombination

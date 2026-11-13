@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Splits an article's series, volume and issue text into its parts.
 module References
   class ExtractSeriesVolumeAndIssue
     include Service

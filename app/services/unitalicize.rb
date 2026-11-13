@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Removes <i> and </i> from a text.
 class Unitalicize
   include Service
 

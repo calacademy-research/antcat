@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Formats a type information field for display: institution abbreviations expanded and specimen identifiers linked.
 module Types
   class FormatTypeField
     include ActionView::Helpers::SanitizeHelper

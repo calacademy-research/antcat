@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Stores one cached formatted text of a reference, without touching its update time.
 module References
   module Cache
     class Set

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Notifies the users concerned by a new comment, once each: those mentioned, the creator of the record, and those
+# active in the discussion.
 module Notifications
   class NotifyUsersForComment
     include Service

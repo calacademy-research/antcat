@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# AntWeb export: the HTML list of a taxon's child taxa, for the taxonomic history column.
 module Exporters
   module Antweb
     module History

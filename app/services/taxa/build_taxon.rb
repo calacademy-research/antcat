@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Builds a new taxon of a rank under a parent, with its name and protonym, for the "Add" forms.
 module Taxa
   class BuildTaxon
     include Service

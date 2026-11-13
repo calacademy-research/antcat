@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Moves reference sections from one taxon to another.
 module Taxa
   module Operations
     class MoveItems

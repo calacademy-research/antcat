@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Expands the AntCat tags in Markdown: @user123, %wiki12, %dbscript:Name and %github34 become links.
 module Markdowns
   class ParseAntCatTags
     include Rails.application.routes.url_helpers

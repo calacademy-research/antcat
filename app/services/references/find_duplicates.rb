@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Finds references that may be duplicates of a reference (similarity of 0.5 or more).
 module References
   class FindDuplicates
     include Service

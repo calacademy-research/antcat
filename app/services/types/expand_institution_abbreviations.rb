@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# In type information, turns institution abbreviations (MCZC) into the institution's name with a link.
 module Types
   class ExpandInstitutionAbbreviations
     include Service

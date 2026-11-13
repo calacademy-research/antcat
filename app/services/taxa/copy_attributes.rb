@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# The attributes of a taxon that are copied to a taxon made from it (a new combination, a converted rank).
 module Taxa
   class CopyAttributes
     include Service

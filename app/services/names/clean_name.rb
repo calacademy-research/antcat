@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# The cleaned form of a name: the subgenus part of a "Genus (Subgenus)" name, or the name without parenthesized
+# parts and marks.
 module Names
   class CleanName
     include Service

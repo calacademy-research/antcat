@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# AntWeb export: the HTML synopsis of a taxon's protonym (name, authorship, type and locality), for the taxonomic
+# history column.
 module Exporters
   module Antweb
     module History

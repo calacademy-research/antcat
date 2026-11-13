@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Formats a reference's date (YYYYMMDD and shorter forms) for display.
 module References
   class FormatDate
     include Service

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Converts the combined tags editors may type, a taxon id with a protonym tag or the reverse ({tax 123pro}), into a
+# plain tag of the right record ({pro <the taxon's protonym id>}).
 module Taxt
   class ConvertTags
     include Service

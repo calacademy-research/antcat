@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Tidies taxt before it is saved: spaces around colons and other punctuation, doubled spaces.
 module Taxt
   class Cleanup
     include Service

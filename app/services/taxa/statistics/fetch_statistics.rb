@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Counts the taxa below a taxon by rank and status (and fossil or extant), for the statistics on catalog pages.
 module Taxa
   module Statistics
     class FetchStatistics

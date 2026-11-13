@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# AntWeb export: the values of one taxon's line (names of the ranks, author and year, status, current valid name,
+# fossil, history, reference, bioregion and so on).
 module Exporters
   module Antweb
     class TaxonAttributes

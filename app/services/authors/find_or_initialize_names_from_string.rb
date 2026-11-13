@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Turns the authors typed in the reference form ("Bolton, B.; Fisher, B. L.") into author names: existing ones
+# (matched with case) or new ones with a new author.
 module Authors
   class FindOrInitializeNamesFromString
     include Service

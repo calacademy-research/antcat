@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Notifies the users mentioned in a text attached to a record.
 module Notifications
   class NotifyMentionedUsers
     include Service

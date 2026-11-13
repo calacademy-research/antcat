@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Builds the right kind of name (species name, genus name...) from a typed name; raises for a name it cannot parse.
 module Names
   class BuildNameFromString
     include Service

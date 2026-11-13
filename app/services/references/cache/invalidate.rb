@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Empties the cached formatted text of references, so it is made again when next shown.
 module References
   module Cache
     class Invalidate
