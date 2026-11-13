@@ -5,7 +5,7 @@ require 'rails_helper'
 # The function catalog (docs/catalog/routes.tsv) has one row per route of the app: who may use it, what it is for,
 # whether it stays, and which spec covers it. This spec fails when a route has no row or a row has no route, so a new
 # route cannot be added without saying what it is for. Its failure message prints the missing rows, ready to paste.
-describe "Function catalog (docs/catalog/routes.tsv)" do
+describe "Function catalog (docs/catalog/routes.tsv)" do # rubocop:disable RSpec/DescribeClass
   def self.app_routes
     Rails.application.routes.routes.filter_map do |route|
       controller = route.defaults[:controller]
@@ -43,11 +43,11 @@ describe "Function catalog (docs/catalog/routes.tsv)" do
 
   it "says for every row who may use it, what it is for and whether it stays" do
     blank = rows.select { |r| r["who"].blank? || r["purpose"].blank? || r["status"].blank? }
-    expect(blank).to be_empty, "#{blank.size} rows without who, purpose or status: #{blank.first(5).map { |r| r['path'] }}"
+    expect(blank).to be_empty, "#{blank.size} rows without who, purpose or status: #{blank.first(5).pluck('path')}"
   end
 
   it "uses the known values for who and status" do
-    expect(rows.map { |r| r["who"] }.uniq - %w[public user editor helper admin superadmin api system]).to be_empty
-    expect(rows.map { |r| r["status"] }.uniq - %w[keep check remove]).to be_empty
+    expect(rows.pluck("who").uniq - %w[public user editor helper admin superadmin api system]).to be_empty
+    expect(rows.pluck("status").uniq - %w[keep check remove]).to be_empty
   end
 end
