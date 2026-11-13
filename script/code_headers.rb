@@ -21,7 +21,10 @@ module CodeHeaders
   BASELINE_INTRO = "# Ruby files without a header comment (script/code_headers.rb). Only ever remove lines.\n"
   GLOBS = ['app/**/*.rb', 'lib/**/*.rb', 'lib/**/*.rake'].freeze
   DATABASE_SCRIPTS = 'app/database_scripts/database_scripts/'
-  OPENER = /\A\s*(module|class)\s+[A-Z][\w:]*(\s*<\s*[\w:]+)?\s*\z/
+  # `module A`, `class B`, `class B < C`, `class B < Struct.new(...)`, with or without a trailing comment.
+  OPENER = /\A\s*(module|class)\s+[A-Z][\w:]*(\s*<\s*\S.*?)?\s*(#.*)?\z/
+  # The list of files without a header is empty since 2026-11-13 and may not grow again.
+  BASELINE_MAX = 0
 
   module_function
 
@@ -40,18 +43,21 @@ module CodeHeaders
     return true if path.start_with?(DATABASE_SCRIPTS) && source.match?(/^__END__\s*\n(.*\n)*\s*section:/)
     return true if path.end_with?('.rake') && source.each_line.any? { |l| l =~ /^\s*desc\s+["']/ && sentence?(l.sub(/desc/, '#')) }
 
-    # A comment counts when it comes before the first opener (a file's own header) or right before an opener (the
-    # class's doc inside its namespace), not when it is the first comment inside a class (that is about a method).
+    # A comment counts when it comes before the first opener (a file's own header) or between `module` lines and the
+    # first `class` (the class's doc inside its namespace); not when it comes after a `class` line (that one is about
+    # a method or a nested class).
     seen_opener = false
+    seen_class = false
     pending = false
     source.each_line do |line|
       next if line.strip.empty?
       if line.match?(OPENER)
         return true if pending
         seen_opener = true
+        seen_class ||= line.lstrip.start_with?('class')
       elsif line.lstrip.start_with?('#')
         return true if sentence?(line) && !seen_opener
-        pending ||= sentence?(line)
+        pending ||= sentence?(line) && !seen_class
       else
         return false
       end
