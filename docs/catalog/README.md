@@ -1,6 +1,6 @@
 # AntCat function catalog
 
-`routes.tsv` has one row per route of the app (294 on 2026-11-13: 293 routes and one mounted engine, the API docs): what it is for, who may use it, whether it stays,
+`routes.tsv` has one row per route of the app (295 on 2026-11-13: 293 routes, the mounted API docs engine and the assets route): what it is for, who may use it, whether it stays,
 and the spec that covers it. `spec/catalog/routes_catalog_spec.rb` fails when a route has no row or a row has no route,
 so a new route cannot be added without saying what it is for. Its failure message prints the missing rows, ready to
 paste. Tab-separated; open it in a spreadsheet or read it on GitHub.
@@ -23,7 +23,7 @@ paste. Tab-separated; open it in a spreadsheet or read it on GitHub.
 | editor | 63 |
 | superadmin | 24 |
 | api | 29 |
-| system | 7 |
+| system | 8 |
 
 ## To decide (status `check`)
 

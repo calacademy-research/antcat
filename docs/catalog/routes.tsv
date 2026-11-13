@@ -1,5 +1,6 @@
 verb	path	action	name	who	purpose	status	test
 MOUNT	/api_docs	GrapeSwaggerRails::Engine		public	the API documentation page (Swagger UI of /v1)	keep	spec/requests/api_front_door_spec.rb
+ANY	/assets	ActionDispatch::Routing::Mapper::Constraints		system	compiled CSS and JavaScript files (the asset gem's route; in production nginx serves them)	keep	
 GET	/rails/view_components	view_components#index	preview_view_components	system	list: component previews (development and test only, not in production)	keep	
 GET	/rails/view_components/*path	view_components#previews	preview_view_component	system	previews: component previews (development and test only, not in production)	keep	
 GET	/_system_test_entrypoint	view_components_system_test#system_test_entrypoint	_system_test_entrypoint	system	system test entrypoint: component test entry point (test only, not in production)	keep	
