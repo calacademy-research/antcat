@@ -11,9 +11,9 @@ paste. Tab-separated; open it in a spreadsheet or read it on GitHub.
 | who | the least a visitor must be: `public` (anyone), `user` (signed in), `helper`, `editor`, `superadmin`, `api` (the JSON API, with or without a key), `system` (not for people: browser reports, gem routes, development-only previews). Read from the controller's `before_action` checks |
 | purpose | what the route is for, in a few words |
 | status | `keep`, `check` (to decide), `remove` |
-| test | a spec that requests the route or its controller; blank = none found |
+| test | a spec file for the route's controller or a request or feature spec that names it; blank = none found. It says such a file exists, not that this exact route is exercised (a controller spec calls the action directly, past the routing) |
 
-## Summary (2026-11-13)
+## Summary (2026-11-13; not checked by the spec, recount when routes change)
 
 | Who | Routes |
 |---|---|
