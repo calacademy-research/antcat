@@ -33,5 +33,5 @@ paste. Tab-separated; open it in a spreadsheet or read it on GitHub.
 
 ## Routes without a spec
 
-`/references/latest_additions` and the three Turbo Native routes above. The component previews
+`/references/latest_additions`, the three Turbo Native routes above, and `/*id` (the static pages of the high_voltage gem, the last route). The component previews
 (`/rails/view_components`, `/_system_test_entrypoint`) exist only in development and test.
