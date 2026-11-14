@@ -6,7 +6,8 @@ module DatabaseScripts
       Status::VALID,
       Status::SYNONYM,
       Status::HOMONYM,
-      Status::EXCLUDED_FROM_FORMICIDAE
+      Status::EXCLUDED_FROM_FORMICIDAE,
+      Status::UNJUSTIFIED_EMENDATION
     ]
 
     def self.looks_like_a_false_positive? protonym

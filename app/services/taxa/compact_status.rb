@@ -41,6 +41,7 @@ module Taxa
         when Status::HOMONYM                 then "homonym replaced by #{link_homonym_replaced_by}"
         when Status::OBSOLETE_COMBINATION    then "obsolete #{name_of_obsoletes} of #{link_current_taxon}"
         when Status::UNAVAILABLE_MISSPELLING then "misspelling of #{link_current_taxon}"
+        when Status::UNJUSTIFIED_EMENDATION  then "unjustified emendation of #{link_current_taxon}"
         when *SELF_STATUSES                  then status
         else                                 raise "unknown status: #{status}"
         end

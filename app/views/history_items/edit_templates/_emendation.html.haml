@@ -1,0 +1,14 @@
+%table.table-unstriped
+  %tr
+    %td Kind
+    %td=select_tag :subtype, options_for_select(History::Definitions::TYPE_DEFINITIONS[History::Definitions::EMENDATION][:subtype_options], history_item.subtype), id: nil
+  %tr
+    %td Emended spelling
+    %td
+      .max-w-xs
+        =text_field_tag :text_value, history_item.text_value, id: nil
+  %tr
+    %td Unjustified emendation (its record; only for "Unjustified")
+    %td=taxon_picker history_item.object_taxon, name: 'object_taxon_id'
+
+  =tr_for_reference_and_pages history_item

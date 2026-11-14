@@ -121,6 +121,35 @@ describe GroupedHistoryItem, :relational_hi do
       end
     end
 
+    context 'with `EMENDATION` items (one line per kind and spelling)' do
+      let(:item) { create :history_item, :emendation }
+
+      specify do
+        expect(grouped_history_item.taxt).to eq "[Justified emendation of spelling to <i>binghamii</i> by " \
+                                                "#{item.citation_taxt}; #{item.citation_taxt}.]"
+      end
+    end
+
+    context 'with unjustified `EMENDATION` items (one line per record)' do
+      let(:item) { create :history_item, :unjustified_emendation }
+
+      specify do
+        expect(grouped_history_item.taxt).to eq "[Unjustified emendation of spelling to #{Taxt.tax(item.object_taxon.id)} " \
+                                                "by #{item.citation_taxt}; #{item.citation_taxt}.]"
+      end
+
+      it 'groups citations with and without italics, never two records' do
+        without_italics = build(
+          :history_item, :unjustified_emendation,
+          protonym: item.protonym, object_taxon: item.object_taxon, text_value: item.object_taxon.name.epithet
+        )
+        other_record = create :history_item, :unjustified_emendation, protonym: item.protonym
+
+        expect(without_italics.group_key).to eq item.group_key
+        expect(other_record.group_key).not_to eq item.group_key
+      end
+    end
+
     context 'with `INCERTAE_SEDIS_IN` items' do
       let(:item) { create :history_item, :incertae_sedis_in }
 

@@ -81,6 +81,15 @@ describe Taxa::CompactStatus do
           expect(described_class[taxon]).to eq "misspelling of #{taxon_link(current_taxon)}"
         end
       end
+
+      context "when taxon status is 'unjustified emendation'" do
+        let!(:current_taxon) { build_stubbed :any_taxon }
+        let!(:taxon) { build_stubbed :any_taxon, :unjustified_emendation, current_taxon: current_taxon }
+
+        specify do
+          expect(described_class[taxon]).to eq "unjustified emendation of #{taxon_link(current_taxon)}"
+        end
+      end
     end
 
     describe 'prefixes and suffixes' do

@@ -137,6 +137,26 @@ export default class extends Controller {
         inputsToShow.push(this.typeSpecificReferenceTarget, this.typeSpecificPagesTarget, this.typeSpecificTextValueTarget)
         break
 
+      case 'Emendation':
+        this.typeLabelSubtypeTarget.textContent = "Kind"
+        this._setupSelect(this.subtypeSelectTarget, [
+          { label: "(none)", value: "" },
+          { label: "Justified (Arts. 32.5, 33.2.2)", value: "Justified" },
+          { label: "Unjustified (Art. 33.2.3)", value: "Unjustified" },
+          { label: "Unjustified, deemed justified by prevailing usage (Art. 33.2.3.1)", value: "DeemedJustified" },
+        ])
+        this.typeLabelTextValueTarget.textContent = "Emended spelling"
+        // Only for "Unjustified": the emendation's own record (status "unjustified emendation").
+        this.typeLabelObjectTaxonTarget.textContent = "Unjustified emendation (its record)"
+        inputsToShow.push(
+          this.typeSpecificSubtypeTarget,
+          this.typeSpecificTextValueTarget,
+          this.typeSpecificObjectTaxonTarget,
+          this.typeSpecificReferenceTarget,
+          this.typeSpecificPagesTarget,
+        )
+        break
+
       case 'IncertaeSedisIn':
         this.typeLabelSubtypeTarget.textContent = "Form"
         this._setupSelect(this.subtypeSelectTarget, [

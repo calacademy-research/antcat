@@ -152,6 +152,12 @@ FactoryBot.define do
       status { Status::UNAVAILABLE_MISSPELLING }
     end
 
+    trait :unjustified_emendation do
+      status { Status::UNJUSTIFIED_EMENDATION }
+
+      with_current_taxon
+    end
+
     # Parallel statuses.
     trait :unresolved_homonym do
       unresolved_homonym { true }

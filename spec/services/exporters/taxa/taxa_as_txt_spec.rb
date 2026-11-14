@@ -22,6 +22,15 @@ describe Exporters::Taxa::TaxaAsTxt do
       end
     end
 
+    context 'when taxon is an unjustified emendation' do
+      let(:taxon) { create :genus, :unjustified_emendation, current_taxon: create(:genus) }
+
+      specify do
+        expect(described_class[[taxon]]).
+          to include "#{taxon.name_cache} unjustified emendation of #{taxon.current_taxon.name_cache}\n"
+      end
+    end
+
     context 'when taxon is a homonym' do
       let(:taxon) { create :genus, :homonym }
 

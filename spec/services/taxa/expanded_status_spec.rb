@@ -82,6 +82,16 @@ describe Taxa::ExpandedStatus do
           expect(described_class[taxon]).to eq "a misspelling of #{taxon_link_with_author_citation(current_taxon)}"
         end
       end
+
+      context "when taxon status is 'unjustified emendation'" do
+        let!(:current_taxon) { create :any_taxon }
+        let!(:taxon) { build_stubbed :any_taxon, :unjustified_emendation, current_taxon: current_taxon }
+
+        specify do
+          expect(described_class[taxon]).
+            to eq "an unjustified emendation of #{taxon_link_with_author_citation(current_taxon)}"
+        end
+      end
     end
 
     describe 'prefixes and suffixes' do
