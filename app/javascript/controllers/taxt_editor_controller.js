@@ -32,6 +32,7 @@ export default class extends ApplicationController {
         object_taxon_id:    this.container.querySelector('[name=object_taxon_id]')?.value,
         reference_id:       this.container.querySelector('[name=reference_id]')?.value,
         pages:              this.container.querySelector('input[name=pages]')?.value,
+        citation_note:      this.container.querySelector('input[name=citation_note]')?.value,
       },
       edit_summary: this.editSummary,
     }

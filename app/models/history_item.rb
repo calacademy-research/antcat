@@ -20,6 +20,11 @@ class HistoryItem < ApplicationRecord
   VALID_PAGES_REGEX = /\A[^;<>{}]*\z/ # Allow any format except weird characters for now.
 
   TEXT_VALUE_MAX_LENGTH = 50
+
+  # Printed right after the citation, exactly as in the source: "[Myrmicidae]", "[provisional]",
+  # "(see note in bibliography)". May hold taxt tags.
+  CITATION_NOTE_MAX_LENGTH = 255
+  VALID_CITATION_NOTE_REGEX = /\A(\[[^\[\];]*\]|\([^;]*\))\z/
   VALID_TEXT_VALUE_REGEX = /\A[^;{}]*\z/ # Allow any format except weird characters for now.
 
   self.inheritance_column = :_type_column_disabled
@@ -50,6 +55,7 @@ class HistoryItem < ApplicationRecord
     validate :validate_optional_reference_and_pages
     validate :validate_object_protonym_not_same_as_protonym
   end
+  validate :validate_citation_note
 
   before_validation :cleanup_and_convert_taxts
 
@@ -70,7 +76,7 @@ class HistoryItem < ApplicationRecord
 
   acts_as_list scope: :protonym, touch_on_update: false
   has_paper_trail
-  strip_attributes only: [:taxt, :rank, :subtype, :picked_value, :text_value, :pages],
+  strip_attributes only: [:taxt, :rank, :subtype, :picked_value, :text_value, :pages, :citation_note],
     replace_newlines: true
   trackable parameters: proc { { protonym_id: protonym_id } }
 
@@ -111,7 +117,7 @@ class HistoryItem < ApplicationRecord
     raise 'not supported' if taxt_type?
     return unless reference_id || pages
 
-    "#{Taxt.ref(reference_id || 'REFERENCE_ID MISSING')}: #{pages || 'PAGES_MISSING'}"
+    "#{Taxt.ref(reference_id || 'REFERENCE_ID MISSING')}: #{pages || 'PAGES_MISSING'}#{" #{citation_note}" if citation_note}"
   end
   alias_method :citation, :citation_taxt
 
@@ -137,7 +143,7 @@ class HistoryItem < ApplicationRecord
       :optional_attributes, to: :definition, private: true
 
     def cleanup_and_convert_taxts
-      cleanup_and_convert_taxt_columns :taxt
+      cleanup_and_convert_taxt_columns :taxt, :citation_note
     end
 
     def validate_type_specific_attributes
@@ -148,6 +154,18 @@ class HistoryItem < ApplicationRecord
 
       validates_presence_of(required_presence) if required_presence.present?
       validates_absence_of(required_absence) if required_absence.present?
+    end
+
+    def validate_citation_note
+      return if citation_note.blank?
+
+      if taxt_type? || !reference_id || !pages
+        errors.add :citation_note, 'is only for items with a reference and pages'
+      elsif citation_note.length > CITATION_NOTE_MAX_LENGTH
+        errors.add :citation_note, "is too long (maximum is #{CITATION_NOTE_MAX_LENGTH} characters)"
+      elsif !citation_note.match?(VALID_CITATION_NOTE_REGEX)
+        errors.add :citation_note, 'must be in square brackets or parentheses, without ";"'
+      end
     end
 
     def validate_subtype

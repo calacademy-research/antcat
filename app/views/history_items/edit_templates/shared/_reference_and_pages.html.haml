@@ -6,3 +6,8 @@
   %td
     .max-w-xs
       =text_field_tag :pages, history_item.pages, id: nil
+%tr
+  %td Citation note
+  %td
+    .max-w-xs
+      =text_field_tag :citation_note, history_item.citation_note, id: nil, placeholder: '[provisional] or (see note in bibliography)'
