@@ -161,6 +161,15 @@ describe HistoryItemsController do
         expect(response.parsed_body['content']).to be_present
       end
 
+      it 'renders the inline editor for an emendation (its own edit template)' do
+        emendation = create :history_item, :unjustified_emendation
+        put :update, params: { id: emendation.id, history_item: { pages: '12' } }, as: :json
+
+        expect(response).to have_http_status :ok
+        expect(emendation.reload.pages).to eq '12'
+        expect(response.parsed_body['content']).to include 'Emended spelling'
+      end
+
       it 'raises when `history_item` has no permitted keys (rendered as 400 Bad Request)' do
         expect { put(:update, params: { id: history_item.id, history_item: { unknown: 'x' } }) }.
           to raise_error(ActionController::ParameterMissing)

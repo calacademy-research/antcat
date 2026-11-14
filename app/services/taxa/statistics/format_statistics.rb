@@ -12,6 +12,7 @@ module Taxa
       SORTED_STATUSES = [
         Status::VALID,
         Status::SYNONYM,
+        Status::UNJUSTIFIED_EMENDATION,
         Status::HOMONYM,
         Status::UNIDENTIFIABLE,
         Status::UNAVAILABLE,

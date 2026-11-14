@@ -658,6 +658,7 @@ definitions:
               - synonym
               - obsolete combination
               - unavailable misspelling
+              - unjustified emendation
           protonym_id:
             type: integer
             description: Id of the protonym record

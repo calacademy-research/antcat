@@ -11,14 +11,19 @@ class Status
     UNAVAILABLE               = "unavailable",
     EXCLUDED_FROM_FORMICIDAE  = "excluded from Formicidae",
     OBSOLETE_COMBINATION      = "obsolete combination",
-    UNAVAILABLE_MISSPELLING   = "unavailable misspelling"
+    UNAVAILABLE_MISSPELLING   = "unavailable misspelling",
+    # An unjustified emendation (ICZN Art. 33.2.3) is an available name with its own author and date and a junior
+    # objective synonym of the name it emends: its own protonym, and the current taxon is the correctly spelled
+    # name. TaxonWorks: TaxonNameRelationship::Iczn::Invalidating::Synonym::Objective::UnjustifiedEmendation.
+    UNJUSTIFIED_EMENDATION    = "unjustified emendation"
   ]
 
   PLURALS = {
     SYNONYM                   => 'synonyms',
     HOMONYM                   => 'homonyms',
     OBSOLETE_COMBINATION      => 'obsolete combinations',
-    UNAVAILABLE_MISSPELLING   => 'unavailable misspellings'
+    UNAVAILABLE_MISSPELLING   => 'unavailable misspellings',
+    UNJUSTIFIED_EMENDATION    => 'unjustified emendations'
   }
 
   PASS_THROUGH_NAMES = [OBSOLETE_COMBINATION, UNAVAILABLE_MISSPELLING]
@@ -29,7 +34,8 @@ class Status
     presence: [
       SYNONYM,
       OBSOLETE_COMBINATION,
-      UNAVAILABLE_MISSPELLING
+      UNAVAILABLE_MISSPELLING,
+      UNJUSTIFIED_EMENDATION
     ],
     absence: [
       VALID,
@@ -48,7 +54,8 @@ class Status
       UNIDENTIFIABLE,
       UNAVAILABLE,
       EXCLUDED_FROM_FORMICIDAE,
-      UNAVAILABLE_MISSPELLING
+      UNAVAILABLE_MISSPELLING,
+      UNJUSTIFIED_EMENDATION
     ]
   }
 
