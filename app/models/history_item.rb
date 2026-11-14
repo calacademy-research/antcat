@@ -24,6 +24,7 @@ class HistoryItem < ApplicationRecord
   # Printed right after the citation, exactly as in the source: "[Myrmicidae]", "[provisional]",
   # "(see note in bibliography)". May hold taxt tags.
   CITATION_NOTE_MAX_LENGTH = 255
+  NOMEN_NUDUM_NAME_REGEX = %r{\A(?:[[:alpha:] .-]|</?i>)+\z}
   CITATION_NOTE_TAG = '\\{[a-z]+ \\d+\\}|\\{(?:missing[0-9]?|unmissing|misspelling) (?:<i>)?[^{}<>;]+(?:</i>)?\\}'
   CITATION_NOTE_PART = "[^\\[\\]();{}<>]|#{CITATION_NOTE_TAG}|</?i>"
   CITATION_NOTE_TEXT = "(?:#{CITATION_NOTE_PART}|\\((?:#{CITATION_NOTE_PART})*\\))*"
@@ -61,6 +62,7 @@ class HistoryItem < ApplicationRecord
     validate :validate_object_protonym_not_same_as_protonym
   end
   validate :validate_citation_note
+  validate :validate_nomen_nudum_name, if: -> { type == History::Definitions::NOMEN_NUDUM_CITATION }
 
   before_validation :cleanup_and_convert_taxts
 
@@ -159,6 +161,13 @@ class HistoryItem < ApplicationRecord
 
       validates_presence_of(required_presence) if required_presence.present?
       validates_absence_of(required_absence) if required_absence.present?
+    end
+
+    # The name is rendered inside an {unmissing} tag: letters, spaces, hyphens, full stops and italics only.
+    def validate_nomen_nudum_name
+      return if text_value.blank? || text_value.match?(NOMEN_NUDUM_NAME_REGEX)
+
+      errors.add :text_value, 'must be the name as printed: letters, spaces, hyphens, full stops, and <i> italics only'
     end
 
     def validate_citation_note

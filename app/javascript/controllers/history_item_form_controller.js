@@ -270,6 +270,40 @@ export default class extends Controller {
         )
         break
 
+      case 'UnresolvedJuniorHomonymOf':
+        this.typeLabelSubtypeTarget.textContent = "Homonymy"
+        this._setupSelect(this.subtypeSelectTarget, [
+          { label: "(none)", value: "" },
+          { label: "Unresolved junior primary homonym of", value: "Primary" },
+          { label: "Unresolved junior secondary homonym of", value: "Secondary" },
+        ])
+        this.typeLabelObjectTaxonTarget.textContent = "Homonym of"
+        this._markCitationAsOptional()
+        inputsToShow.push(
+          this.typeSpecificSubtypeTarget,
+          this.typeSpecificReferenceTarget,
+          this.typeSpecificPagesTarget,
+          this.typeSpecificObjectTaxonTarget,
+        )
+        break
+
+      case 'UnnecessaryReplacementNameFor':
+        this.typeLabelObjectTaxonTarget.textContent = "Unnecessary replacement name for"
+        this._markCitationAsOptional()
+        inputsToShow.push(this.typeSpecificReferenceTarget, this.typeSpecificPagesTarget, this.typeSpecificObjectTaxonTarget)
+        break
+
+      case 'UnidentifiableTaxon':
+      case 'SubgenusIndeterminate':
+      case 'DuplicatedIn':
+        inputsToShow.push(this.typeSpecificReferenceTarget, this.typeSpecificPagesTarget)
+        break
+
+      case 'NomenNudumCitation':
+        this.typeLabelTextValueTarget.textContent = "Name as printed"
+        inputsToShow.push(this.typeSpecificReferenceTarget, this.typeSpecificPagesTarget, this.typeSpecificTextValueTarget)
+        break
+
       case 'UnavailableName':
         this._markCitationAsOptional()
         inputsToShow.push(this.typeSpecificReferenceTarget, this.typeSpecificPagesTarget)

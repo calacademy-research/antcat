@@ -161,6 +161,44 @@ FactoryBot.define do
       with_object_taxon
     end
 
+    trait :unresolved_junior_homonym_of do
+      type { History::Definitions::UNRESOLVED_JUNIOR_HOMONYM_OF }
+      subtype { 'Primary' }
+
+      with_object_taxon
+    end
+
+    trait :unnecessary_replacement_name_for do
+      type { History::Definitions::UNNECESSARY_REPLACEMENT_NAME_FOR }
+
+      with_object_taxon
+    end
+
+    trait :unidentifiable_taxon do
+      type { History::Definitions::UNIDENTIFIABLE_TAXON }
+
+      with_reference
+    end
+
+    trait :subgenus_indeterminate do
+      type { History::Definitions::SUBGENUS_INDETERMINATE }
+
+      with_reference
+    end
+
+    trait :duplicated_in do
+      type { History::Definitions::DUPLICATED_IN }
+
+      with_reference
+    end
+
+    trait :nomen_nudum_citation do
+      type { History::Definitions::NOMEN_NUDUM_CITATION }
+      text_value { '<i>Camponotus maculatus cognatodichrous</i>' }
+
+      with_reference
+    end
+
     trait :subspecies_of do
       type { History::Definitions::SUBSPECIES_OF }
 

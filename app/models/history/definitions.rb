@@ -34,6 +34,11 @@ module History
       'Senior' => 'senior'
     }.freeze
 
+    UNRESOLVED_HOMONYM_KINDS = {
+      'Primary' => 'primary',
+      'Secondary' => 'secondary'
+    }.freeze
+
     TYPE_DEFINITIONS = {
       TAXT = 'Taxt' => {
         type_name: TAXT,
@@ -679,6 +684,128 @@ module History
 
         validates_presence_of: [:subtype, :object_taxon, :reference, :pages],
         allow_force_author_citation: true
+      },
+      UNRESOLVED_JUNIOR_HOMONYM_OF = 'UnresolvedJuniorHomonymOf' => {
+        type_name: UNRESOLVED_JUNIOR_HOMONYM_OF,
+        type_label: 'Unresolved junior primary/secondary homonym of',
+        ranks: SPECIES_GROUP_LABEL,
+
+        group_order: 73,
+
+        templates: {
+          default: {
+            content: '[Unresolved junior %<kind>s homonym of {taxac %<object_taxon_id>s}%<citation>s.]',
+            vars: ->(o) {
+              {
+                # Validation requires a known subtype; the fallback only keeps an unsaved, invalid item renderable.
+                kind: UNRESOLVED_HOMONYM_KINDS.fetch(o.subtype.to_s, '?'),
+                object_taxon_id: o.object_taxon_id,
+                citation: (" (#{o.citation})" if o.citation)
+              }
+            }
+          }
+        },
+
+        subtypes: UNRESOLVED_JUNIOR_HOMONYM_OF_SUBTYPES = UNRESOLVED_HOMONYM_KINDS.keys,
+        subtype_options: UNRESOLVED_HOMONYM_KINDS.map { |subtype, kind| ["Unresolved junior #{kind} homonym of", subtype] },
+
+        validates_presence_of: [:subtype, :object_taxon],
+        optional_attributes: [:reference, :pages]
+      },
+      UNNECESSARY_REPLACEMENT_NAME_FOR = 'UnnecessaryReplacementNameFor' => {
+        type_name: UNNECESSARY_REPLACEMENT_NAME_FOR,
+        type_label: 'Unnecessary replacement name for',
+        ranks: SPECIES_GROUP_LABEL,
+
+        group_order: 76,
+
+        templates: {
+          default: {
+            content: 'Unnecessary replacement name for {taxac %<object_taxon_id>s}%<citation>s.',
+            vars: ->(o) { { object_taxon_id: o.object_taxon_id, citation: (" (#{o.citation})" if o.citation) } }
+          }
+        },
+
+        validates_presence_of: [:object_taxon],
+        optional_attributes: [:reference, :pages]
+      },
+      UNIDENTIFIABLE_TAXON = 'UnidentifiableTaxon' => {
+        type_name: UNIDENTIFIABLE_TAXON,
+        type_label: 'Unidentifiable taxon (no placement)',
+        ranks: SPECIES_GROUP_LABEL,
+
+        group_order: 66,
+        group_key: ->(o) { [o.type] },
+
+        templates: {
+          default: {
+            content: 'Unidentifiable taxon: %<grouped_item_taxts>s.'
+          }
+        },
+
+        groupable_template_content: '%<citation>s',
+        groupable_template_vars: ->(o) { { citation: o.citation } },
+
+        validates_presence_of: [:reference, :pages]
+      },
+      SUBGENUS_INDETERMINATE = 'SubgenusIndeterminate' => {
+        type_name: SUBGENUS_INDETERMINATE,
+        type_label: 'Subgenus indeterminate',
+        ranks: SPECIES_GROUP_LABEL,
+
+        group_order: 67,
+        group_key: ->(o) { [o.type] },
+
+        templates: {
+          default: {
+            content: 'Subgenus indeterminate: %<grouped_item_taxts>s.'
+          }
+        },
+
+        groupable_template_content: '%<citation>s',
+        groupable_template_vars: ->(o) { { citation: o.citation } },
+
+        validates_presence_of: [:reference, :pages]
+      },
+      DUPLICATED_IN = 'DuplicatedIn' => {
+        type_name: DUPLICATED_IN,
+        type_label: 'Duplicated in (the same description published again)',
+        ranks: SPECIES_GROUP_LABEL,
+
+        group_order: 13,
+        group_key: ->(o) { [o.type] },
+
+        templates: {
+          default: {
+            content: '[Duplicated in %<grouped_item_taxts>s.]'
+          }
+        },
+
+        groupable_template_content: '%<citation>s',
+        groupable_template_vars: ->(o) { { citation: o.citation } },
+
+        validates_presence_of: [:reference, :pages]
+      },
+      NOMEN_NUDUM_CITATION = 'NomenNudumCitation' => {
+        type_name: NOMEN_NUDUM_CITATION,
+        type_label: 'Nomen nudum: where the name was published without description',
+        ranks: ANY_RANK_GROUP_LABEL,
+
+        group_order: 101,
+        # One line per name as printed (`text_value`, e.g. "<i>Camponotus maculatus cognatodichrous</i>").
+        group_key: ->(o) { [o.type, 'text_value', o.text_value] },
+
+        templates: {
+          default: {
+            content: '[{unmissing %<name>s} %<grouped_item_taxts>s. <i>Nomen nudum</i>.]',
+            vars: ->(o) { { name: o.text_value } }
+          }
+        },
+
+        groupable_template_content: '%<citation>s',
+        groupable_template_vars: ->(o) { { citation: o.citation } },
+
+        validates_presence_of: [:text_value, :reference, :pages]
       }
     }
 
