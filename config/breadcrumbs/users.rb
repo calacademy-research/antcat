@@ -19,4 +19,3 @@ crumb :my_account do |user|
   link "My account"
   parent :user, user
 end
-
