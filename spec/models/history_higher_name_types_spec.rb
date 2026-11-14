@@ -4,7 +4,7 @@ require 'rails_helper'
 
 # Genus- and family-group types (2026-11-14): the line starts with the protonym's terminal taxon, as the
 # free text did ("Pheidole in Myrmicinae, Pheidolini: ...").
-describe HistoryItem, 'genus- and family-group types' do
+describe HistoryItem do
   let(:protonym) { create :protonym }
   let(:subject_tag) { Taxt.prott(protonym.id) }
   let(:taxon_a) { create :family }
@@ -70,7 +70,7 @@ describe HistoryItem, 'genus- and family-group types' do
     end
   end
 
-  describe HistoryPresenter, '#grouped_items' do
+  describe 'grouping on the page (HistoryPresenter#grouped_items)' do
     def lines
       HistoryPresenter.new(HistoryItem.where(protonym: protonym)).grouped_items.map(&:items).map(&:size)
     end
@@ -88,6 +88,19 @@ describe HistoryItem, 'genus- and family-group types' do
       create :history_item, :as_synonym_of, protonym: protonym, subtype: 'Senior', object_taxon: taxon_a
       create :history_item, :as_synonym_of, protonym: protonym, subtype: 'Junior', object_taxon: taxon_b
       expect(lines).to eq [2, 1, 1]
+    end
+
+    it 'keeps one line per object for incertae sedis' do
+      create :history_item, :placement_incertae_sedis_in, protonym: protonym, object_taxon: taxon_a
+      create :history_item, :placement_incertae_sedis_in, protonym: protonym, object_taxon: taxon_a
+      create :history_item, :placement_incertae_sedis_in, protonym: protonym, object_taxon: taxon_b
+      expect(lines).to eq [2, 1]
+    end
+
+    it 'keeps lines with and without the author citation apart' do
+      create :history_item, :as_genus, protonym: protonym
+      create :history_item, :as_genus, protonym: protonym, force_author_citation: true
+      expect(lines).to eq [1, 1]
     end
 
     it 'keeps one line per rank and object' do
