@@ -61,6 +61,7 @@ class HistoryItem < ApplicationRecord
     validate :validate_object_protonym_not_same_as_protonym
   end
   validate :validate_citation_note
+  validate :validate_emendation_object_taxon, if: -> { type == History::Definitions::EMENDATION }
 
   before_validation :cleanup_and_convert_taxts
 
@@ -170,6 +171,19 @@ class HistoryItem < ApplicationRecord
         errors.add :citation_note, "is too long (maximum is #{CITATION_NOTE_MAX_LENGTH} characters)"
       elsif !citation_note.match?(VALID_CITATION_NOTE_REGEX)
         errors.add :citation_note, 'must be one note in square brackets or parentheses, without ";" (braces only as tags)'
+      end
+    end
+
+    # An unjustified emendation names its own record, which must have that status; the other kinds have none.
+    def validate_emendation_object_taxon
+      if subtype == History::Definitions::EMENDATION_UNJUSTIFIED
+        if object_taxon.nil?
+          errors.add :object_taxon, "must be set to the unjustified emendation's own record"
+        elsif !object_taxon.unjustified_emendation?
+          errors.add :object_taxon, "must have the status 'unjustified emendation'"
+        end
+      elsif object_taxon
+        errors.add :object_taxon, 'is only for an unjustified emendation'
       end
     end
 

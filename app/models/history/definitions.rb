@@ -34,6 +34,23 @@ module History
       'Senior' => 'senior'
     }.freeze
 
+    # Emendations, ICZN Art. 33.2 (Brian Fisher, 14 Nov 2026). A change of a gender ending is a mandatory change
+    # (Art. 34.2), not an emendation (Art. 33.1), and has no history item: part of speech and the three spellings
+    # on the protonym carry it. TaxonWorks: Justified and DeemedJustified as Incorrect original spelling (the
+    # original spelling, NOMEN_0000044) with the emending work cited; Unjustified as Unjustified emendation
+    # (NOMEN_0000278), between the emendation's own record and this name.
+    EMENDATION_LEADS = {
+      # Arts. 32.5, 33.2.2: corrects an incorrect original spelling; takes the original author and date.
+      'Justified' => 'Justified emendation of spelling to %<spelling>s',
+      # Art. 33.2.3: an available name with its own author and date; its record has the status
+      # "unjustified emendation".
+      'Unjustified' => 'Unjustified emendation of spelling to {tax %<object_taxon_id>i}',
+      # Art. 33.2.3.1: unjustified, but in prevailing usage and attributed to the original author and date, so
+      # deemed a justified emendation.
+      'DeemedJustified' => 'Emendation of spelling to %<spelling>s, unjustified but in prevailing usage and ' \
+                           'deemed justified (Art. 33.2.3.1)'
+    }.freeze
+
     TYPE_DEFINITIONS = {
       TAXT = 'Taxt' => {
         type_name: TAXT,
@@ -284,6 +301,48 @@ module History
         groupable_template_vars: ->(o) { { citation: o.citation } },
 
         validates_presence_of: [:reference, :pages]
+      },
+      EMENDATION = 'Emendation' => {
+        type_name: EMENDATION,
+        type_label: 'Emendation (justified, unjustified, or deemed justified by prevailing usage)',
+        ranks: ANY_RANK_GROUP_LABEL,
+
+        # Next to the misspellings: both are subsequent spellings (Art. 33.1).
+        group_order: 15,
+        # One line per kind and emended spelling (`text_value`, e.g. "<i>binghamii</i>").
+        group_key: ->(o) { [o.type, 'subtype', o.subtype, 'text_value', o.text_value, 'object_taxon_id', o.object_taxon_id] },
+
+        templates: {
+          default: {
+            content: '[%<lead>s by %<grouped_item_taxts>s.]',
+            vars: ->(o) {
+              {
+                # Validation requires a known subtype; the fallback only keeps an unsaved, invalid item renderable.
+                lead: format(EMENDATION_LEADS.fetch(o.subtype.to_s, '%<spelling>s'),
+                  spelling: o.text_value, object_taxon_id: o.object_taxon_id.to_i)
+              }
+            }
+          }
+        },
+
+        groupable_template_content: '%<citation>s',
+        groupable_template_vars: ->(o) { { citation: o.citation } },
+
+        subtypes: EMENDATION_SUBTYPES = [
+          EMENDATION_JUSTIFIED = 'Justified',
+          EMENDATION_UNJUSTIFIED = 'Unjustified',
+          EMENDATION_DEEMED_JUSTIFIED = 'DeemedJustified'
+        ],
+        subtype_options: [
+          ['Justified (Arts. 32.5, 33.2.2)', EMENDATION_JUSTIFIED],
+          ['Unjustified (Art. 33.2.3)', EMENDATION_UNJUSTIFIED],
+          ['Unjustified, deemed justified by prevailing usage (Art. 33.2.3.1)', EMENDATION_DEEMED_JUSTIFIED]
+        ],
+
+        # The emendation's own record (status "unjustified emendation"): required for Unjustified, absent otherwise
+        # (HistoryItem#validate_emendation_object_taxon).
+        optional_attributes: [:object_taxon],
+        validates_presence_of: [:subtype, :text_value, :reference, :pages]
       },
       MISSPELLED_AS = 'MisspelledAs' => {
         type_name: MISSPELLED_AS,

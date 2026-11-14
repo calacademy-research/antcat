@@ -154,6 +154,8 @@ FactoryBot.define do
 
     trait :unjustified_emendation do
       status { Status::UNJUSTIFIED_EMENDATION }
+
+      with_current_taxon
     end
 
     # Parallel statuses.

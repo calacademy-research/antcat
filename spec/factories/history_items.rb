@@ -96,6 +96,20 @@ FactoryBot.define do
       with_reference
     end
 
+    trait :emendation do
+      type { History::Definitions::EMENDATION }
+      subtype { History::Definitions::EMENDATION_JUSTIFIED }
+      text_value { '<i>binghamii</i>' }
+
+      with_reference
+    end
+
+    trait :unjustified_emendation do
+      emendation
+      subtype { History::Definitions::EMENDATION_UNJUSTIFIED }
+      object_taxon { association :family, :unjustified_emendation }
+    end
+
     trait :misspelled_as do
       type { History::Definitions::MISSPELLED_AS }
       text_value { '<i>atrata</i>' }

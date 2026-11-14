@@ -497,6 +497,58 @@ describe HistoryItem, :relational_hi do
       end
     end
 
+    context 'when `type` is `EMENDATION`' do
+      context 'with subtype `Justified`' do
+        let(:history_item) { create :history_item, :emendation }
+
+        specify do
+          expect(history_item.to_taxt).
+            to eq "[Justified emendation of spelling to <i>binghamii</i> by #{history_item.citation_taxt}.]"
+        end
+      end
+
+      context 'with subtype `DeemedJustified`' do
+        let(:history_item) { create :history_item, :emendation, subtype: History::Definitions::EMENDATION_DEEMED_JUSTIFIED }
+
+        specify do
+          expect(history_item.to_taxt).to eq "[Emendation of spelling to <i>binghamii</i>, unjustified but in prevailing " \
+                                             "usage and deemed justified (Art. 33.2.3.1) by #{history_item.citation_taxt}.]"
+        end
+      end
+
+      context 'with subtype `Unjustified`' do
+        let(:history_item) { create :history_item, :unjustified_emendation }
+
+        specify do
+          expect(history_item.to_taxt).to eq "[Unjustified emendation of spelling to " \
+                                             "#{Taxt.tax(history_item.object_taxon.id)} by #{history_item.citation_taxt}.]"
+        end
+      end
+
+      it 'requires a known subtype and the emended spelling' do
+        expect(build(:history_item, :emendation, subtype: 'Other')).not_to be_valid
+        expect(build(:history_item, :emendation, text_value: nil)).not_to be_valid
+      end
+
+      it "requires the unjustified emendation's own record, with that status, and only for that kind" do
+        item = build :history_item, :emendation, subtype: History::Definitions::EMENDATION_UNJUSTIFIED
+        expect(item).not_to be_valid
+        expect(item.errors.where(:object_taxon).map(&:message)).
+          to include("must be set to the unjustified emendation's own record")
+
+        item.object_taxon = create :family
+        expect(item).not_to be_valid
+        expect(item.errors.where(:object_taxon).map(&:message)).
+          to include("must have the status 'unjustified emendation'")
+
+        justified = build :history_item, :emendation, object_taxon: create(:family)
+        expect(justified).not_to be_valid
+        expect(justified.errors.where(:object_taxon).map(&:message)).to include('is only for an unjustified emendation')
+
+        expect(build(:history_item, :unjustified_emendation)).to be_valid
+      end
+    end
+
     context 'when `type` is `INCERTAE_SEDIS_IN`' do
       History::Definitions::INCERTAE_SEDIS_IN_PREFIXES.each do |subtype, prefix|
         context "with subtype `#{subtype}`" do

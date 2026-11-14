@@ -121,6 +121,15 @@ describe GroupedHistoryItem, :relational_hi do
       end
     end
 
+    context 'with `EMENDATION` items (one line per kind and spelling)' do
+      let(:item) { create :history_item, :emendation }
+
+      specify do
+        expect(grouped_history_item.taxt).to eq "[Justified emendation of spelling to <i>binghamii</i> by " \
+                                                "#{item.citation_taxt}; #{item.citation_taxt}.]"
+      end
+    end
+
     context 'with `INCERTAE_SEDIS_IN` items' do
       let(:item) { create :history_item, :incertae_sedis_in }
 
