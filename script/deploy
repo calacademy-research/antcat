@@ -9,7 +9,7 @@
 #   script/deploy --rollback     go back to the commit saved before the last deploy
 #
 # Options: --timeout SECONDS (health check wait, default 900), --yes (confirm a rollback across
-# migrations), -h/--help.
+# migrations, or a deploy that replaces a running commit that is not on master), -h/--help.
 #
 # What a deploy does, in order:
 #   1. refuses if tracked files in the checkout have local changes (never edit them on the server)
@@ -107,7 +107,7 @@ main() {
   if [ "$mode" = rollback ]; then
     do_rollback "$dry_run" "$yes" "$timeout"
   else
-    do_deploy "$dry_run" "$ref" "$timeout"
+    do_deploy "$dry_run" "$ref" "$timeout" "$yes"
   fi
 }
 
@@ -379,7 +379,7 @@ warn_nginx_problem() {
 }
 
 do_deploy() {
-  local dry_run="$1" ref="$2" timeout="$3"
+  local dry_run="$1" ref="$2" timeout="$3" yes="${4:-0}"
   local prev target branch running last_failed=0
   MIGRATED=0
   CHANGES=""
@@ -420,6 +420,30 @@ do_deploy() {
   CHANGES="$(classify_changes "$prev" "$target")"
   local changes="$CHANGES"
   show_plan "$prev" "$target" "$changes"
+
+  # A running commit that the target does not contain and that is not on master is a branch being
+  # tested here (antcat-staging, 2026-11-13: a plain deploy of master replaced a feature branch that
+  # was being tested, and only warned). Ask for --yes before replacing it. "On master" is by ancestry: pull
+  # requests here are merged with merge commits, so a merged branch's commits are on master.
+  if [ "$last_failed" = 0 ] && ! git merge-base --is-ancestor "$running" "$target"; then
+    # origin was fetched above. merge-base answers 0 (on master), 1 (not on master), or more (it cannot tell: stop).
+    local on_master_rc=0
+    git merge-base --is-ancestor "$running" origin/master || on_master_rc=$?
+    case "$on_master_rc" in
+      0) ;;
+      1)
+        local holders
+        holders="$( { git branch -r --contains "$running" 2> /dev/null || true; } | { grep -v -- '->' || true; } \
+          | sed 's/^ *origin\///' | tr '\n' ' ' | sed 's/ $//')"
+        say "the running commit $(short "$running") is not on master${holders:+ (it is on: $holders)}: probably a branch being tested here."
+        if [ "$yes" != 1 ]; then
+          [ "$dry_run" = 1 ] && say "a real deploy would stop here and ask for --yes."
+          [ "$dry_run" = 1 ] || die "this deploy would replace it. Nothing was changed. If that is intended, run again with --yes."
+        fi
+        ;;
+      *) die "cannot tell whether the running commit $(short "$running") is on origin/master (git merge-base exit $on_master_rc). Nothing was changed." ;;
+    esac
+  fi
 
   # After a rollback on a branch checkout (production), go back onto master.
   local reattach=0
