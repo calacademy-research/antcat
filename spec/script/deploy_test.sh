@@ -298,12 +298,15 @@ teardown
 setup "runs the deploy script of origin/master when the checkout's copy differs"
 mkdir -p "$WORK/script"
 # shellcheck disable=SC2016  # the stub expands them when it runs
-printf '#!/usr/bin/env bash\necho "MASTER SCRIPT $* dir=$ANTCAT_DIR from=$ANTCAT_DEPLOY_FROM_MASTER"\n' > "$WORK/script/deploy"
+printf '#!/usr/bin/env bash\necho "MASTER SCRIPT $* dir=$ANTCAT_DIR"; [ -n "$ANTCAT_DEPLOY_FROM_MASTER" ] && echo FROM_SET\n' > "$WORK/script/deploy"
 git -C "$WORK" add -A; git -C "$WORK" commit -qm "M: master's deploy script"; git -C "$WORK" push -q origin master
 run --dry-run --timeout 5
 check "exits 0" [ "$RC" -eq 0 ]
 check "says it runs master's script" out_has "running the deploy script of origin/master"
-check "master's script ran with the same options" out_has "MASTER SCRIPT --dry-run --timeout 5 dir=$SERVER from=1"
+check "master's script ran with the same options" out_has "MASTER SCRIPT --dry-run --timeout 5 dir=$SERVER"
+check "told it is master's copy" out_has "FROM_SET"
+run --an-option-only-master-knows
+check "an option only master's copy knows reaches it" out_has "MASTER SCRIPT --an-option-only-master-knows"
 check "did not move HEAD" head_is "$A"
 teardown
 
@@ -332,12 +335,15 @@ teardown
 setup "the temporary copy removes itself; the variable set by hand is said"
 mkdir -p "$T/tmp"
 cp "$DEPLOY" "$T/tmp/antcat-deploy.test"
-OUT="$(ANTCAT_DEPLOY_FROM_MASTER=1 bash "$T/tmp/antcat-deploy.test" --dry-run 2>&1)"; RC=$?
+OUT="$(ANTCAT_DIR="$SERVER" ANTCAT_DEPLOY_FROM_MASTER="$T/tmp/antcat-deploy.test" bash "$T/tmp/antcat-deploy.test" --dry-run 2>&1)"; RC=$?
 check "exits 0" [ "$RC" -eq 0 ]
 check "the temporary copy is gone" [ ! -e "$T/tmp/antcat-deploy.test" ]
 OUT="$(ANTCAT_DEPLOY_FROM_MASTER=1 "$DEPLOY" --dry-run 2>&1)"; RC=$?
 check "the checkout's copy stays" [ -e "$DEPLOY" ]
-check "says the variable is set" out_has "ANTCAT_DEPLOY_FROM_MASTER is set in this shell"
+check "says the variable is set" out_has "ANTCAT_DEPLOY_FROM_MASTER was set in this shell"
+cp "$DEPLOY" "$T/tmp/antcat-deploy.early"
+OUT="$(ANTCAT_DIR="$SERVER" ANTCAT_DEPLOY_FROM_MASTER="$T/tmp/antcat-deploy.early" bash "$T/tmp/antcat-deploy.early" --no-such-option 2>&1)"; RC=$?
+check "an early stop still removes the temporary copy" [ ! -e "$T/tmp/antcat-deploy.early" ]
 teardown
 
 setup "says when origin/master has no deploy script, and goes on"
