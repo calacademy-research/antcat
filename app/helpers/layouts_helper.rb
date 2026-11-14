@@ -8,7 +8,6 @@ module LayoutsHelper
   end
 
   def rails_env_css_class
-    return if cookies[:disable_env_css] == "yes"
     "rails-env-#{Rails.env}"
   end
 
