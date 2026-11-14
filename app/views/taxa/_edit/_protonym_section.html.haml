@@ -37,10 +37,10 @@
               =decorated_type_name.format_rank
               =CatalogFormatter.link_to_taxon(type_name.taxon) + decorated_type_name.compact_taxon_status + Detax[decorated_type_name.format_fixation_method]
 
-      -if protonym.etymology_taxt?
+      -if protonym.etymology?
         %tr
           %td Etymology
-          %td=Detax[protonym.etymology_taxt]
+          %td=render 'protonyms/shared/etymology', protonym: protonym
 
       -if protonym.primary_type_information_taxt?
         %tr

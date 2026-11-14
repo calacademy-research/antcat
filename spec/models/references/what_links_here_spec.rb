@@ -19,13 +19,18 @@ describe References::WhatLinksHere do
     let!(:history_item) { create :history_item, :junior_synonym_of, reference: reference }
     let!(:nested_reference) { create :nested_reference, nesting_reference: reference }
     let!(:type_name) { create :type_name, :by_subsequent_designation_of, reference: reference }
+    let!(:etymology_protonym) do
+      create :protonym, etymology_taxt: 'From Latin crassus.', etymology_source: 'later_work',
+        etymology_pages: '44', etymology_reference: reference
+    end
 
     specify do
       expect(what_links_here.all).to match_array [
         WhatLinksHereItem.new('citations',     :reference_id,         authorship.id),
         WhatLinksHereItem.new('history_items', :reference_id,         history_item.id),
         WhatLinksHereItem.new('references',    :nesting_reference_id, nested_reference.id),
-        WhatLinksHereItem.new('type_names',    :reference_id,         type_name.id)
+        WhatLinksHereItem.new('type_names',    :reference_id,         type_name.id),
+        WhatLinksHereItem.new('protonyms',     :etymology_reference_id, etymology_protonym.id)
       ]
     end
 

@@ -95,6 +95,8 @@ FactoryBot.define do
 
     trait :with_all_taxts do
       sequence(:etymology_taxt) { |n| "etymology_taxt #{n} #{taxt_tag}" }
+      etymology_source { 'original_description' }
+      etymology_pages { '1' }
       sequence(:primary_type_information_taxt) { |n| "primary_type_information_taxt #{n} #{taxt_tag}" }
       sequence(:secondary_type_information_taxt) { |n| "secondary_type_information_taxt #{n} #{taxt_tag}" }
       sequence(:type_notes_taxt) { |n| "type_notes_taxt #{n} #{taxt_tag}" }

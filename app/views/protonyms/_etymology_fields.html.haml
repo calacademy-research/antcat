@@ -1,0 +1,51 @@
+-# Etymology rows of the two protonym forms (edit protonym; new taxon with a new protonym).
+-# Locals: f (form builder for the protonym), protonym, name_prefix ("protonym" or
+-# "taxon[protonym_attributes]"), id_prefix ("protonym" or "taxon_protonym_attributes").
+%tr
+  %td
+    =f.label :etymology do
+      Etymology (verbatim)
+      =db_tooltip_icon :etymology, scope: :protonyms
+  %td
+    =render 'taxt_editors/field_taxt_editor', name: "#{name_prefix}[etymology_taxt]", content: protonym.etymology_taxt
+    .text-sm
+      The author's words exactly as printed, in the original language; nothing added or changed. Needs a source
+      and a page. AntCat's own reading goes in "AntCat derivation", never here.
+%tr
+  %td
+    =f.label :etymology_source do
+      Etymology source
+      =db_tooltip_icon :etymology_source, scope: :protonyms
+  %td
+    =f.select :etymology_source, Protonym::ETYMOLOGY_SOURCES.invert, include_blank: '(blank)'
+    .text-sm
+      Original description: the reference is the authorship reference, so leave the reference below blank.
+      Later work: pick its reference below.
+%tr
+  %td
+    =f.label :etymology_reference_id do
+      Etymology reference (later work only)
+  %td=reference_picker protonym.etymology_reference, name: "#{name_prefix}[etymology_reference_id]", id: "#{id_prefix}_etymology_reference_id"
+%tr
+  %td
+    =f.label :etymology_pages do
+      Etymology page(s)
+  %td
+    .max-w-xs=f.text_field :etymology_pages
+%tr
+  %td
+    =f.label :etymology_translation do
+      Etymology translation (AntCat)
+  %td
+    =f.text_area :etymology_translation, rows: 2
+    .text-sm English, only when the original is not in English. Shown as AntCat's translation.
+%tr
+  %td
+    =f.label :etymology_derivation do
+      AntCat derivation
+      =db_tooltip_icon :etymology_derivation, scope: :protonyms
+  %td
+    =f.text_area :etymology_derivation, rows: 2
+    .text-sm
+      AntCat's own reading of the name (for example Latin crassus, thick, + spina, spine), where the author
+      gave none or to add to it. Always shown as AntCat's, never as the author's.

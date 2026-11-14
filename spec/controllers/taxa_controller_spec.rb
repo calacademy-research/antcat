@@ -112,6 +112,26 @@ describe TaxaController do
           expect(protonym.notes_taxt).to eq protonym_attributes[:notes_taxt]
         end
 
+        it 'sets the etymology with its source (the new-protonym form)' do
+          params = taxon_params.deep_merge(
+            protonym_attributes: {
+              etymology_taxt: 'Named after the collector.',
+              etymology_source: 'original_description',
+              etymology_pages: '12',
+              etymology_translation: 'Named after the collector.',
+              etymology_derivation: 'Latin collector.'
+            }
+          )
+          post :create, params: base_params.merge(taxon: params)
+
+          protonym = Taxon.last.protonym
+          expect(protonym.etymology_taxt).to eq 'Named after the collector.'
+          expect(protonym.etymology_source).to eq 'original_description'
+          expect(protonym.etymology_pages).to eq '12'
+          expect(protonym.etymology_translation).to eq 'Named after the collector.'
+          expect(protonym.etymology_derivation).to eq 'Latin collector.'
+        end
+
         it 'sets authorship_attributes' do
           post :create, params: base_params.merge(taxon: taxon_params)
 
