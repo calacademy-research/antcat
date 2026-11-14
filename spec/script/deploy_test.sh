@@ -308,20 +308,45 @@ check "did not move HEAD" head_is "$A"
 teardown
 
 setup "runs its own copy when it is master's"
-mkdir -p "$WORK/script"
+mkdir -p "$WORK/script" "$T/tmp"
 cp "$DEPLOY" "$WORK/script/deploy"
 git -C "$WORK" add -A; git -C "$WORK" commit -qm "M: master's deploy script = this one"; git -C "$WORK" push -q origin master
-run --dry-run
+TMPDIR="$T/tmp" run --dry-run
 check "exits 0" [ "$RC" -eq 0 ]
 check "does not say it runs another script" not out_has "running the deploy script of origin/master"
 check "the dry run ran" out_has "dry run: nothing changed."
+check "no temporary copy left" [ -z "$(find "$T/tmp" -name 'antcat-deploy.*')" ]
+teardown
+
+setup "--own-script runs this copy although master's differs"
+mkdir -p "$WORK/script"
+echo 'echo MASTER SCRIPT' > "$WORK/script/deploy"
+git -C "$WORK" add -A; git -C "$WORK" commit -qm "M: master's deploy script"; git -C "$WORK" push -q origin master
+run --dry-run --own-script
+check "exits 0" [ "$RC" -eq 0 ]
+check "says so" out_has "--own-script: running this copy"
+check "master's copy did not run" not out_has "MASTER SCRIPT"
+check "the dry run ran" out_has "dry run: nothing changed."
+teardown
+
+setup "the temporary copy removes itself; the variable set by hand is said"
+mkdir -p "$T/tmp"
+cp "$DEPLOY" "$T/tmp/antcat-deploy.test"
+OUT="$(ANTCAT_DEPLOY_FROM_MASTER=1 bash "$T/tmp/antcat-deploy.test" --dry-run 2>&1)"; RC=$?
+check "exits 0" [ "$RC" -eq 0 ]
+check "the temporary copy is gone" [ ! -e "$T/tmp/antcat-deploy.test" ]
+OUT="$(ANTCAT_DEPLOY_FROM_MASTER=1 "$DEPLOY" --dry-run 2>&1)"; RC=$?
+check "the checkout's copy stays" [ -e "$DEPLOY" ]
+check "says the variable is set" out_has "ANTCAT_DEPLOY_FROM_MASTER is set in this shell"
 teardown
 
 setup "says when origin/master has no deploy script, and goes on"
-B="$(push_change app/models/taxon.rb "B: model change")"
-run --dry-run
+mkdir -p "$T/tmp"
+push_change app/models/taxon.rb "B: model change" > /dev/null
+TMPDIR="$T/tmp" run --dry-run
 check "exits 0" [ "$RC" -eq 0 ]
 check "warns" out_has "origin/master has no script/deploy; running this copy"
+check "no temporary copy left" [ -z "$(find "$T/tmp" -name 'antcat-deploy.*')" ]
 teardown
 
 setup "refuses when the deploy log cannot be written"
