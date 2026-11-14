@@ -327,6 +327,16 @@ describe Protonym do
         expect(protonym.valid?).to eq false
       end
 
+      it 'does not block a merge or tag fix that rewrites only the tags of an old etymology' do
+        reference, other_reference = create_list :any_reference, 2
+        protonym = create :protonym
+        protonym.update_columns(etymology_taxt: "Named after the collector (#{Taxt.ref(reference.id)}: 12).")
+        protonym.reload
+
+        protonym.etymology_taxt = "Named after the collector (#{Taxt.ref(other_reference.id)}:12)."
+        expect(protonym.valid?).to eq true
+      end
+
       it 'keeps a reference cited for an etymology from being deleted' do
         create :protonym, etymology_taxt: 'From Latin crassus.', etymology_source: 'later_work',
           etymology_pages: '44', etymology_reference: reference

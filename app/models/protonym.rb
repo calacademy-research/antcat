@@ -271,8 +271,16 @@ class Protonym < ApplicationRecord
     # until someone edits its text or starts filling in the source.
     def etymology_source_required?
       return false unless etymology_taxt?
+      return true if new_record? || etymology_source? || etymology_pages? || etymology_reference_id?
 
-      new_record? || etymology_taxt_changed? || etymology_source? || etymology_pages? || etymology_reference_id?
+      etymology_taxt_changed? && etymology_words_changed?
+    end
+
+    # Merges and tag fixes rewrite {ref}, {tax} and other tags, and the taxt cleanup respaces punctuation, in old
+    # etymologies too; only a change of the words counts as editing the etymology (review of #1607, 14 Nov 2026).
+    def etymology_words_changed?
+      words = ->(taxt) { taxt.to_s.gsub(/\{[^}]*\}/, ' ').gsub(/\s*([:;,.])\s*/, '\\1').squish }
+      words[etymology_taxt_was] != words[etymology_taxt]
     end
 
     def cleanup_and_convert_taxts
