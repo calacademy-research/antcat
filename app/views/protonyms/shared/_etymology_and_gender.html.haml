@@ -65,10 +65,13 @@
           %br
           =gender
           %i=epithet.presence || '?'
-        -if taxon.is_a?(SpeciesGroupTaxon) && (expected = protonym.epithet_for_gender(taxon.genus.name.gender))
+        -if taxon.is_a?(SpeciesGroupTaxon) && (expected = protonym.epithet_for_gender(taxon.genus&.name&.gender))
           %br
           -if expected == taxon.name.epithet
             This name agrees with its genus.
+          -elsif protonym.spelling_kept_against_agreement?
+            Spelling kept (#{protonym.spelling_basis_label || protonym.interpretation_status_label}), not
+            %i=expected
           -else
             %strong
               In #{taxon.genus.name.name} it should read

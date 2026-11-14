@@ -41,6 +41,23 @@ describe DatabaseScripts::SpeciesGroupTaxaNotSpelledForTheirGenusGender do
       specify { expect(database_script.results).to eq [] }
     end
 
+    context 'when the spelling is kept on purpose (prevailing usage)' do
+      before do
+        species.protonym.update!(spelling_basis: 'incorrect_subsequent_spelling_in_prevailing_usage',
+          interpretation_status: 'reasonably_inferred')
+      end
+
+      specify { expect(database_script.results).to eq [] }
+    end
+
+    context 'when the reading is disputed' do
+      before do
+        species.protonym.update!(interpretation_status: 'disputed', notes_taxt: 'Spelling: an alternative reading.')
+      end
+
+      specify { expect(database_script.results).to eq [] }
+    end
+
     context 'when the species is an unavailable misspelling' do
       let(:species) do
         create :species, :unavailable_misspelling, name_string: 'Atta crassispinus', current_taxon: create(:species)

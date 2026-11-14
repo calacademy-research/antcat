@@ -52,6 +52,10 @@ class Protonym < ApplicationRecord
       'an incorrect subsequent spelling in prevailing usage (Art. 33.3.1)',
     'commission_ruling' => 'a ruling of the Commission'
   }.freeze
+  # Bases under which a spelling stands even where it does not agree with the genus (review of #1607).
+  SPELLING_KEPT_AGAINST_AGREEMENT_BASES = %w[
+    unjustified_emendation_in_prevailing_usage incorrect_subsequent_spelling_in_prevailing_usage commission_ruling
+  ].freeze
   # How firmly AntCat's grammatical reading of the name is established (Brian Fisher, 13 Nov 2026).
   # An interpretation adopted by AntCat, never a ruling of the Commission. `disputed` needs substantial
   # evidence for a competing reading (and a public note giving it); a reading that is merely possible
@@ -220,6 +224,12 @@ class Protonym < ApplicationRecord
 
   def etymology?
     etymology_taxt? || etymology_derivation?
+  end
+
+  # A spelling kept on purpose (prevailing usage, a Commission ruling), or a reading that is disputed or not yet
+  # settled: a mismatch with the genus gender is not an error to report.
+  def spelling_kept_against_agreement?
+    spelling_basis.in?(SPELLING_KEPT_AGAINST_AGREEMENT_BASES) || scripted_spelling_change_blocked?
   end
 
   def etymology_source_label
