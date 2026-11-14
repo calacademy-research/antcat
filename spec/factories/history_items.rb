@@ -104,10 +104,14 @@ FactoryBot.define do
       with_reference
     end
 
+    # The emendation's own record; its current taxon (the name in its original spelling) has this item's protonym.
     trait :unjustified_emendation do
       emendation
       subtype { History::Definitions::EMENDATION_UNJUSTIFIED }
-      object_taxon { association :family, :unjustified_emendation }
+      object_taxon do
+        association :genus, :unjustified_emendation, current_taxon: association(:genus, protonym: protonym)
+      end
+      text_value { "<i>#{object_taxon.name.epithet}</i>" }
     end
 
     trait :misspelled_as do

@@ -170,6 +170,18 @@ describe HistoryItemsController do
         expect(response.parsed_body['content']).to include 'Emended spelling'
       end
 
+      it 'saves the kind, spelling and record of an emendation from the inline editor' do
+        emendation = create :history_item, :emendation
+        record = create :genus, :unjustified_emendation, current_taxon: create(:genus, protonym: emendation.protonym)
+        params = {
+          subtype: History::Definitions::EMENDATION_UNJUSTIFIED, text_value: record.name.epithet, object_taxon_id: record.id
+        }
+        put :update, params: { id: emendation.id, history_item: params }, as: :json
+
+        expect(response).to have_http_status :ok
+        expect(emendation.reload).to have_attributes(params)
+      end
+
       it 'raises when `history_item` has no permitted keys (rendered as 400 Bad Request)' do
         expect { put(:update, params: { id: history_item.id, history_item: { unknown: 'x' } }) }.
           to raise_error(ActionController::ParameterMissing)

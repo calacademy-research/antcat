@@ -547,6 +547,25 @@ describe HistoryItem, :relational_hi do
 
         expect(create(:history_item, :unjustified_emendation)).to be_valid
       end
+
+      it 'requires an emendation of this name, with the spelling of its record' do
+        item = create :history_item, :unjustified_emendation
+        item.object_taxon = create :genus, :unjustified_emendation, current_taxon: create(:genus)
+        item.text_value = item.object_taxon.name.epithet
+        expect(item).not_to be_valid
+        expect(item.errors.where(:object_taxon).map(&:message)).
+          to include('must be an unjustified emendation of this name (its current taxon has another protonym)')
+
+        item = create :history_item, :unjustified_emendation
+        epithet = item.object_taxon.name.epithet
+        item.text_value = '<i>otherspelling</i>'
+        expect(item).not_to be_valid
+        expect(item.errors.where(:text_value).map(&:message)).
+          to include("must be the spelling of the linked record (#{epithet})")
+
+        item.text_value = epithet
+        expect(item).to be_valid
+      end
     end
 
     context 'when `type` is `INCERTAE_SEDIS_IN`' do

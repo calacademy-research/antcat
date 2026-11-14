@@ -190,10 +190,27 @@ class HistoryItem < ApplicationRecord
           errors.add :object_taxon, "must be set to the unjustified emendation's own record"
         elsif !object_taxon.unjustified_emendation?
           errors.add :object_taxon, "must have the status 'unjustified emendation'"
+        else
+          validate_unjustified_emendation_record
         end
       elsif object_taxon
         errors.add :object_taxon, 'is only for an unjustified emendation'
       end
+    end
+
+    # The linked record must emend this name: its current taxon, the name in its original spelling, belongs to this
+    # protonym. And the emended spelling given here must be the record's own (it shows in neither the line nor the
+    # group key, so a mismatch would go unseen; review of #1617).
+    def validate_unjustified_emendation_record
+      unless object_taxon.current_taxon&.protonym_id == protonym_id
+        errors.add :object_taxon, 'must be an unjustified emendation of this name (its current taxon has another protonym)'
+      end
+
+      epithet = object_taxon.name&.epithet
+      return if text_value.blank? || epithet.blank?
+      return if text_value.gsub(%r{</?i>}, '').strip == epithet
+
+      errors.add :text_value, "must be the spelling of the linked record (#{epithet})"
     end
 
     def validate_subtype

@@ -314,8 +314,13 @@ module History
 
         # Next to the misspellings: both are subsequent spellings (Art. 33.1).
         group_order: 15,
-        # One line per kind and emended spelling (`text_value`, e.g. "<i>binghamii</i>").
-        group_key: ->(o) { [o.type, 'subtype', o.subtype, 'text_value', o.text_value, 'object_taxon_id', o.object_taxon_id] },
+        # One line per kind and emended spelling (`text_value`, e.g. "<i>binghamii</i>"). An unjustified emendation
+        # is one line per record: its spelling is the record's (validated), so `text_value` would only split
+        # citations written with and without italics.
+        group_key: ->(o) {
+          spelling = o.subtype == EMENDATION_UNJUSTIFIED ? [] : ['text_value', o.text_value]
+          [o.type, 'subtype', o.subtype, *spelling, 'object_taxon_id', o.object_taxon_id]
+        },
 
         templates: {
           default: {
