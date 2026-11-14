@@ -16,10 +16,14 @@ module DatabaseScripts
         joins('INNER JOIN names genus_names ON genus_names.id = genera.name_id').
         where(protonyms: { gender_agreement_type: Protonym::CHANGEABLE_GENDER_AGREEMENT_TYPES }).
         # Spellings kept on purpose, and disputed or unsettled readings, are not errors (review of #1607).
-        where('protonyms.spelling_basis IS NULL OR protonyms.spelling_basis NOT IN (?)',
-          Protonym::SPELLING_KEPT_AGAINST_AGREEMENT_BASES).
-        where('protonyms.interpretation_status IS NULL OR protonyms.interpretation_status NOT IN (?)',
-          Protonym::SCRIPTED_SPELLING_CHANGE_BLOCKED_STATUSES).
+        where(
+          'protonyms.spelling_basis IS NULL OR protonyms.spelling_basis NOT IN (?)',
+          Protonym::SPELLING_KEPT_AGAINST_AGREEMENT_BASES
+        ).
+        where(
+          'protonyms.interpretation_status IS NULL OR protonyms.interpretation_status NOT IN (?)',
+          Protonym::SCRIPTED_SPELLING_CHANGE_BLOCKED_STATUSES
+        ).
         where(<<~SQL.squish)
           names.epithet <> CASE genus_names.gender
             WHEN 'masculine' THEN protonyms.masculine_epithet

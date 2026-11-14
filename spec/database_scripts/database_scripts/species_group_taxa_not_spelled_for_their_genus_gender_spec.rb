@@ -43,8 +43,10 @@ describe DatabaseScripts::SpeciesGroupTaxaNotSpelledForTheirGenusGender do
 
     context 'when the spelling is kept on purpose (prevailing usage)' do
       before do
-        species.protonym.update!(spelling_basis: 'incorrect_subsequent_spelling_in_prevailing_usage',
-          interpretation_status: 'reasonably_inferred')
+        species.protonym.update!(
+          spelling_basis: 'incorrect_subsequent_spelling_in_prevailing_usage',
+          interpretation_status: 'reasonably_inferred'
+        )
       end
 
       specify { expect(database_script.results).to eq [] }
