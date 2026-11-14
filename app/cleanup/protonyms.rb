@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# Checks used while moving data from taxa to their protonyms (a cleanup in progress): whether the taxa of a protonym
+# are all above genus and of different ranks, have the same status, or are a genus and subgenus pair, and which
+# notes texts are close to a standard form.
 module Protonyms
   SEMI_NORMALIZED_NOTES_TAXTS = [
     /^ ?\[as subgenus of \{tax|taxac \d+\}\]$/,

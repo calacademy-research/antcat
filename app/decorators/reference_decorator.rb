@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Formats a reference: its link, notes, DOI and PDF links, and its review state in words.
 class ReferenceDecorator < Draper::Decorator
   DOI_BASE_URL = "https://doi.org/"
   FORMATTED_REVIEW_STATES = {

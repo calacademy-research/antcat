@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Development console only: short names for the statuses and helpers to find a taxon by name or id.
 module DevMonkeyPatches
   module Object
     def self.patch!

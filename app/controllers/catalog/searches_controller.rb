@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# The catalog search (simple and advanced).
+#
+# Routes: GET /catalog/search (anyone). Purpose, rights and tests of each: docs/catalog/routes.tsv.
 module Catalog
   class SearchesController < ApplicationController
     PER_PAGE_OPTIONS = [30, 100, 500, 1000]

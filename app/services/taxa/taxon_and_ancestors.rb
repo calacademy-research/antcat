@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# A taxon and all its parents up to the family, in order.
 module Taxa
   class TaxonAndAncestors
     include Service

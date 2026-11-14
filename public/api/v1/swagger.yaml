@@ -914,6 +914,9 @@ definitions:
       pages:
         type: string
         description: Pages in the reference
+      citation_note:
+        type: string
+        description: Note printed right after the citation, as printed (e.g. "[provisional]", "(see note in bibliography)")
       object_protonym_id:
         type: integer
         description: fk to protonyms, the protonym the item refers to

@@ -1,5 +1,11 @@
 # frozen_string_literal: true
 
+# Taxonomic history items of protonyms.
+#
+# Routes: POST /protonyms/:protonym_id/history_items (helpers); GET /protonyms/:protonym_id/history_items/new
+# (helpers); GET /history_items (anyone); GET /history_items/:id/edit (helpers); GET /history_items/:id (anyone);
+# PATCH /history_items/:id (helpers); PUT /history_items/:id (helpers); DELETE /history_items/:id (editors).
+# Purpose, rights and tests of each: docs/catalog/routes.tsv.
 class HistoryItemsController < ApplicationController
   PER_PAGE_OPTIONS = [30, 100, 500]
 
@@ -98,7 +104,7 @@ class HistoryItemsController < ApplicationController
         history_item: [
           :taxt, :rank, :position, :type,
           :subtype, :picked_value, :text_value,
-          :reference_id, :pages, :object_protonym_id, :object_taxon_id,
+          :reference_id, :pages, :citation_note, :object_protonym_id, :object_taxon_id,
           :force_author_citation
         ]
       )

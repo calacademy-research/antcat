@@ -19,9 +19,6 @@ application.register("clipboard", ClipboardController)
 import CopyFieldController from "./copy_field_controller"
 application.register("copy-field", CopyFieldController)
 
-import DevController from "./dev_controller"
-application.register("dev", DevController)
-
 import DiscoController from "./disco_controller"
 application.register("disco", DiscoController)
 

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# The small operation framework used by app/operations: an operation runs with a context, collects results and
+# errors, and can fail with a message.
 require_relative 'operation/context'
 require_relative 'operation/errors'
 require_relative 'operation/results'

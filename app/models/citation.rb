@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# A reference and pages: the authorship of a protonym (table `citations`).
 class Citation < ApplicationRecord
   include OrderByPages
 

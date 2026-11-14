@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+# Help texts shown in the editing forms.
+#
+# Routes: GET /tooltips (anyone); POST /tooltips (helpers); GET /tooltips/new (helpers); GET /tooltips/:id/edit
+# (helpers); GET /tooltips/:id (helpers); PATCH /tooltips/:id (helpers); PUT /tooltips/:id (helpers); DELETE
+# /tooltips/:id (superadmins). Purpose, rights and tests of each: docs/catalog/routes.tsv.
 class TooltipsController < ApplicationController
   before_action :ensure_user_is_at_least_helper, except: [:index]
   before_action :ensure_user_is_superadmin, only: [:destroy]

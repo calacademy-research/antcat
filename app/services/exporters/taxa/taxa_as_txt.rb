@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Exports a list of taxa as plain text (the catalog search's download).
 module Exporters
   module Taxa
     class TaxaAsTxt

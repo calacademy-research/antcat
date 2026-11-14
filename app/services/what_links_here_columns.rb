@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# "What links here": the rows whose id columns point at a record.
 class WhatLinksHereColumns
   def initialize record, columns_referencing_record
     @record = record

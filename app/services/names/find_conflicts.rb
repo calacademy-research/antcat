@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Names that conflict with a name being added or edited (the same or a similar name), for the name form's check.
 module Names
   class FindConflicts
     include Service

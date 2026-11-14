@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# The extra tabs of the taxon browser (all genera, incertae sedis, without tribe and so on) that apply to a taxon.
 module TaxonBrowser
   class LinksToExtraTabs
     include Service

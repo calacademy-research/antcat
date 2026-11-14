@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Quick add: the parameters of the new-taxon form for a species-rank taxon made from an existing protonym (rank,
+# status, parent genus, name, current taxon), and whether it can be added.
 module QuickAdd
   class FromExistingSpeciesProtonym
     def initialize protonym

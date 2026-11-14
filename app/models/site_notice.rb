@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# A notice to the editors shown at the top of the site until read (table `site_notices`).
 class SiteNotice < ApplicationRecord
   include Commentable
   include Trackable

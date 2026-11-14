@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# A message sent with the feedback form, by a visitor or a signed-in user (table `feedbacks`).
 class Feedback < ApplicationRecord
   include Commentable
   include Trackable

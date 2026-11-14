@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Turns a list of Bolton reference keys ("Bolton, 1995b:") into {ref} tags of the matching references, with limits
+# on size.
 module Markdowns
   class BoltonKeysToRefTags
     include Service

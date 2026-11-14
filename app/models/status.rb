@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# The statuses of a taxon (valid, synonym, homonym...) and which combinations of status and current taxon are
+# allowed.
 class Status
   STATUSES = [
     VALID                     = "valid",

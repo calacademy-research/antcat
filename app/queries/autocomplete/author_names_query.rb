@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Autocomplete: author names containing the typed text (reference form).
 module Autocomplete
   class AuthorNamesQuery
     include Service

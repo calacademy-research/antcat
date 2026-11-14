@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# A publisher (name and place), for book references; reads "Place: Name" from text (table `publishers`).
 class Publisher < ApplicationRecord
   has_many :references, dependent: :restrict_with_error
 

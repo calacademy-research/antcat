@@ -17,6 +17,23 @@ module History
       'UnidentifiableToGenus' => 'Unidentifiable to genus; <i>incertae sedis</i>'
     }.freeze
 
+    # Genus- and family-group lines name their subject first, as in Bolton's catalogue ("Pheidole in Myrmicinae,
+    # Pheidolini: ..."). The subject is the protonym's terminal taxon ({prott}, or {prottac} with
+    # `force_author_citation`), so a converted page reads exactly as the free text did (2026-11-14).
+    HIGHER_NAME_SUBJECT = ->(o) { "{#{o.force_author_citation? ? 'prottac' : 'prott'} #{o.protonym_id}}" }
+
+    AS_RANK_OF_RANKS = {
+      'Subgenus' => 'subgenus',
+      'Tribe' => 'tribe',
+      'Subtribe' => 'subtribe',
+      'Subfamily' => 'subfamily'
+    }.freeze
+
+    AS_SYNONYM_OF_KINDS = {
+      'Junior' => 'junior',
+      'Senior' => 'senior'
+    }.freeze
+
     TYPE_DEFINITIONS = {
       TAXT = 'Taxt' => {
         type_name: TAXT,
@@ -535,6 +552,133 @@ module History
 
         validates_presence_of: [],
         optional_attributes: [:reference, :pages]
+      },
+      PLACEMENT_IN = 'PlacementIn' => {
+        type_name: PLACEMENT_IN,
+        type_label: 'Placement in (genus- and family-group: "X in A, B: ...")',
+        ranks: GENUS_GROUP_LABEL,
+
+        group_order: 80,
+        # The placement ("{tax A}, {tax B}", "{tax A}, {tax B}, {tax C} genus group") is taxt in `taxt`;
+        # one line per placement.
+        group_key: ->(o) { [o.type, 'taxt', o.taxt, o.force_author_citation?] },
+
+        templates: {
+          default: {
+            content: '%<subject>s in %<placement>s: %<grouped_item_taxts>s.',
+            vars: ->(o) { { subject: HIGHER_NAME_SUBJECT.call(o), placement: o.taxt } }
+          }
+        },
+
+        groupable_template_content: '%<citation>s',
+        groupable_template_vars: ->(o) { { citation: o.citation } },
+
+        validates_presence_of: [:taxt, :reference, :pages],
+        allow_force_author_citation: true
+      },
+      PLACEMENT_INCERTAE_SEDIS_IN = 'PlacementIncertaeSedisIn' => {
+        type_name: PLACEMENT_INCERTAE_SEDIS_IN,
+        type_label: 'Incertae sedis in (genus- and family-group: "X incertae sedis in A: ...")',
+        ranks: ANY_RANK_GROUP_LABEL,
+
+        group_order: 81,
+        group_key: ->(o) { [o.type, 'object_taxon_id', o.object_taxon_id, o.force_author_citation?] },
+
+        templates: {
+          default: {
+            content: '%<subject>s <i>incertae sedis</i> in {tax %<object_taxon_id>s}: %<grouped_item_taxts>s.',
+            vars: ->(o) { { subject: HIGHER_NAME_SUBJECT.call(o), object_taxon_id: o.object_taxon_id } }
+          }
+        },
+
+        groupable_template_content: '%<citation>s',
+        groupable_template_vars: ->(o) { { citation: o.citation } },
+
+        validates_presence_of: [:object_taxon, :reference, :pages],
+        allow_force_author_citation: true
+      },
+      AS_GENUS = 'AsGenus' => {
+        type_name: AS_GENUS,
+        type_label: 'As genus ("X as genus: ...")',
+        ranks: GENUS_GROUP_LABEL,
+
+        group_order: 82,
+        group_key: ->(o) { [o.type, o.force_author_citation?] },
+
+        templates: {
+          default: {
+            content: '%<subject>s as genus: %<grouped_item_taxts>s.',
+            vars: ->(o) { { subject: HIGHER_NAME_SUBJECT.call(o) } }
+          }
+        },
+
+        groupable_template_content: '%<citation>s',
+        groupable_template_vars: ->(o) { { citation: o.citation } },
+
+        validates_presence_of: [:reference, :pages],
+        allow_force_author_citation: true
+      },
+      AS_RANK_OF = 'AsRankOf' => {
+        type_name: AS_RANK_OF,
+        type_label: 'As subgenus/tribe/subtribe/subfamily of ("X as subgenus of A: ...")',
+        ranks: ANY_RANK_GROUP_LABEL,
+
+        group_order: 83,
+        group_key: ->(o) { [o.type, 'subtype', o.subtype, 'object_taxon_id', o.object_taxon_id, o.force_author_citation?] },
+
+        templates: {
+          default: {
+            content: '%<subject>s as %<rank>s of {tax %<object_taxon_id>s}: %<grouped_item_taxts>s.',
+            vars: ->(o) {
+              {
+                subject: HIGHER_NAME_SUBJECT.call(o),
+                # Validation requires a known subtype; the fallback only keeps an unsaved, invalid item renderable.
+                rank: AS_RANK_OF_RANKS.fetch(o.subtype.to_s, '?'),
+                object_taxon_id: o.object_taxon_id
+              }
+            }
+          }
+        },
+
+        groupable_template_content: '%<citation>s',
+        groupable_template_vars: ->(o) { { citation: o.citation } },
+
+        subtypes: AS_RANK_OF_SUBTYPES = AS_RANK_OF_RANKS.keys,
+        subtype_options: AS_RANK_OF_RANKS.map { |subtype, rank| ["As #{rank} of", subtype] },
+
+        validates_presence_of: [:subtype, :object_taxon, :reference, :pages],
+        allow_force_author_citation: true
+      },
+      AS_SYNONYM_OF = 'AsSynonymOf' => {
+        type_name: AS_SYNONYM_OF,
+        type_label: 'As junior/senior synonym of (genus- and family-group: "X as junior synonym of A: ...")',
+        ranks: ANY_RANK_GROUP_LABEL,
+
+        group_order: 84,
+        group_key: ->(o) { [o.type, 'subtype', o.subtype, 'object_taxon_id', o.object_taxon_id, o.force_author_citation?] },
+
+        templates: {
+          default: {
+            content: '%<subject>s as %<kind>s synonym of {tax %<object_taxon_id>s}: %<grouped_item_taxts>s.',
+            vars: ->(o) {
+              {
+                subject: HIGHER_NAME_SUBJECT.call(o),
+                # Validation requires a known subtype; the fallback only keeps an unsaved, invalid item renderable.
+                kind: AS_SYNONYM_OF_KINDS.fetch(o.subtype.to_s, '?'),
+                object_taxon_id: o.object_taxon_id
+              }
+            }
+          }
+        },
+
+        groupable_template_content: '%<citation>s',
+        groupable_template_vars: ->(o) { { citation: o.citation } },
+
+        subtypes: AS_SYNONYM_OF_SUBTYPES = AS_SYNONYM_OF_KINDS.keys,
+        subtype_options: AS_SYNONYM_OF_KINDS.map { |subtype, kind| ["As #{kind} synonym of", subtype] },
+
+        validates_presence_of: [:subtype, :object_taxon, :reference, :pages],
+        allow_force_author_citation: true
       }
     }
 

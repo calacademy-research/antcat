@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# Preview of catalog markup while editing.
+#
+# Routes: POST /markdown/preview (signed in). Purpose, rights and tests of each: docs/catalog/routes.tsv.
 class MarkdownController < ApplicationController
   MAX_TEXT_LENGTH = 100_000
 

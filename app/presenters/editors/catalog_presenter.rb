@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# The editors' part of a catalog page: taxa with the same name and the edit, add child and other buttons.
 module Editors
   class CatalogPresenter
     include Rails.application.routes.url_helpers

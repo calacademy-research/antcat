@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Renders the pickers of editing forms (taxon, protonym, reference) with PickerComponent.
 module RecordPickerHelper
   def taxon_picker taxon, name:, id: nil, ranks: nil, allow_clear: true
     render PickerComponent.new(:taxon, taxon, name: name, id: id, ranks: ranks, allow_clear: allow_clear)

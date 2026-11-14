@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Whether a database script found anything: empty, not empty, not applicable, or excluded (slow or list scripts), as
+# shown on /database_scripts.
 module DatabaseScripts
   class EmptyStatus
     include Service

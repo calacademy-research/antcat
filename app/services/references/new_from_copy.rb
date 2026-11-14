@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# A new reference prefilled from an existing one (the "Copy" button): its journal, publisher or book and its basic
+# fields and notes.
 module References
   class NewFromCopy
     include Service

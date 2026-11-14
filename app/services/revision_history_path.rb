@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# The link to the revision history of a record, by its type and id.
 class RevisionHistoryPath
   include Rails.application.routes.url_helpers
   include ActionView::Helpers::UrlHelper

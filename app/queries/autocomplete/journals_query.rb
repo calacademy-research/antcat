@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Autocomplete: journal names containing the typed text, most used first (reference form).
 module Autocomplete
   class JournalsQuery
     include Service

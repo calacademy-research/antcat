@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# A taxon's name with each part linked to its own catalog page (genus, species, subspecies).
 module Taxa
   class LinkEachEpithet
     include Service

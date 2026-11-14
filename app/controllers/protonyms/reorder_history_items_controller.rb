@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+# Reorder the history items of a protonym.
+#
+# Routes: GET /protonyms/:protonym_id/reorder_history_items (editors); POST
+# /protonyms/:protonym_id/reorder_history_items (editors). Purpose, rights and tests of each:
+# docs/catalog/routes.tsv.
 module Protonyms
   class ReorderHistoryItemsController < ApplicationController
     before_action :ensure_user_is_editor

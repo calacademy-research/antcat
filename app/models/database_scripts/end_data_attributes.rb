@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Reads a database script's title, section, tags, description and related scripts from its `__END__` block.
 require Rails.root.join('lib/read_end_data')
 
 module DatabaseScripts

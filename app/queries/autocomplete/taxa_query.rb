@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Autocomplete: taxa for the pickers, by id or by name, optionally of given ranks, a page at a time.
 module Autocomplete
   class TaxaQuery
     include Service

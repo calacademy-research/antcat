@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# The reference search (Solr): free text over the public fields (and the editors' notes for signed-in users), with
+# year, type and other filters.
 module References
   class FulltextSearchQuery
     include Service

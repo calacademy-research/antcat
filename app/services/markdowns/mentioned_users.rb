@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# The users mentioned (@user123) in a text, at most 10, since a mention sends an email.
 module Markdowns
   class MentionedUsers
     include Service

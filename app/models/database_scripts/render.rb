@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Runs a database script's `render` to make its results page.
 module DatabaseScripts
   class Render
     def initialize database_script, options = {}

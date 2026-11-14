@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# Reference lookup while typing.
+#
+# Routes: GET /references/autocomplete (anyone). Purpose, rights and tests of each: docs/catalog/routes.tsv.
 module References
   class AutocompletesController < ApplicationController
     def show

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Picks the versions of a record to show and compare in its revision history.
 class RevisionComparer
   def initialize item_class, item_id, selected_id = nil, diff_with_id = nil
     @item_class = item_class

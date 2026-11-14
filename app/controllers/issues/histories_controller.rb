@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# The edit history of an issue.
+#
+# Routes: GET /issues/:issue_id/history (anyone). Purpose, rights and tests of each: docs/catalog/routes.tsv.
 module Issues
   class HistoriesController < ApplicationController
     def show

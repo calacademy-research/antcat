@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# The definition of one kind of history item (its label, the fields it uses, the ranks it applies to), from
+# `History::Definitions`.
 module History
   class Definition
     def self.from_type type_name

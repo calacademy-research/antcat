@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Builds the catalog page of a taxon (/catalog/:id): the taxon browser, the statistics and what to show to visitors.
 class CatalogPresenter
   attr_private_initialize :taxon, [:params, :session, { formicidae_landing_page: false }]
 

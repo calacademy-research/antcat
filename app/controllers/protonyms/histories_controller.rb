@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# The edit history of a protonym.
+#
+# Routes: GET /protonyms/:protonym_id/history (anyone). Purpose, rights and tests of each: docs/catalog/routes.tsv.
 module Protonyms
   class HistoriesController < ApplicationController
     def show

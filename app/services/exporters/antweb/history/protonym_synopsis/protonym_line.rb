@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# AntWeb export: the first line of the protonym synopsis (the name as published with its authorship).
 module Exporters
   module Antweb
     module History

@@ -1,5 +1,13 @@
 # frozen_string_literal: true
 
+# User profiles and the list of users.
+#
+# Routes: GET /users/mentionables (signed in); GET /users (anyone); GET /users/:id/edit (superadmins); GET /users/:id
+# (anyone); PATCH /users/:id (superadmins); PUT /users/:id (superadmins); DELETE /users/:id (superadmins). Purpose,
+# rights and tests of each: docs/catalog/routes.tsv.
+#
+# No new/create (removed 2026-11-13, Brian Fisher): people sign up themselves and a superadmin gives rights on the
+# edit page. The old "New user" form never worked: its POST /users reached Devise's sign-up route.
 class UsersController < ApplicationController
   SHOW_USER_STATS_PARAM = :show_user_stats
 
@@ -23,20 +31,6 @@ class UsersController < ApplicationController
     @user = find_user
     @recent_user_activities = @user.activities.most_recent_first.limit(5).includes(:user)
     @recent_user_comments = @user.comments.visible_to(current_user).most_recent_first.limit(5)
-  end
-
-  def new
-    @user = User.new
-  end
-
-  def create
-    @user = User.new(user_params)
-
-    if @user.save
-      redirect_to @user, notice: "Successfully added user."
-    else
-      render :new, status: :unprocessable_content
-    end
   end
 
   def edit

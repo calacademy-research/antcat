@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Makes the cached formatted text of a reference again.
 module References
   module Cache
     class Regenerate

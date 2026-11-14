@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# API: journal records.
+#
+# Routes: GET /v1/journals (API); GET /v1/journals/:id (API). Purpose, rights and tests of each:
+# docs/catalog/routes.tsv.
 module Api
   module V1
     class JournalsController < Api::ApiController

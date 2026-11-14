@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Renders a database script's results as an HTML table; text entered by users is sanitized, only formatting tags and
+# the app's own links are kept.
 module DatabaseScripts
   module Renderers
     class AsTable

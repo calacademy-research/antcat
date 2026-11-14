@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# A random taxon page.
+#
+# Routes: GET /catalog/random (anyone). Purpose, rights and tests of each: docs/catalog/routes.tsv.
 module Catalog
   class RandomController < ApplicationController
     def show

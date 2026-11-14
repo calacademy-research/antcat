@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Formats a journal's page: the years of its references.
 class JournalDecorator < Draper::Decorator
   delegate :references
 

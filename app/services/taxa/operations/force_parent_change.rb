@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Operation: moves a taxon to another parent, skipping the usual checks (editors' "Force change parent").
 module Taxa
   module Operations
     class ForceParentChange

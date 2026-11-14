@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Groups the history items of a protonym for display (items of the same kind together) and picks the template.
 class HistoryPresenter
   def initialize history_items, template_name = :default
     @history_items = history_items

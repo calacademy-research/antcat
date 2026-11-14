@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# The description meta tag of a catalog page (name, rank, status and author citation of the taxon).
 module MetaTags
   class TaxonMetaTagContent
     include Service

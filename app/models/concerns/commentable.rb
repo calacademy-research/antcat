@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Lets a model take comments (issues, feedback, site notices): its comments and the users who commented.
 module Commentable
   extend ActiveSupport::Concern
 

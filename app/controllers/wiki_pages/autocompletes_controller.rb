@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# Wiki page lookup while typing.
+#
+# Routes: GET /wiki/autocomplete (anyone). Purpose, rights and tests of each: docs/catalog/routes.tsv.
 module WikiPages
   class AutocompletesController < ApplicationController
     def show

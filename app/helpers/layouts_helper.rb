@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
+# View helpers of the page layout: page title, CSS classes for the controller and the environment, and the title
+# tag.
 module LayoutsHelper
   def controller_css_class controller_name
     "#{controller_name.tr('/', '_')}-controller"
   end
 
   def rails_env_css_class
-    return if cookies[:disable_env_css] == "yes"
     "rails-env-#{Rails.env}"
   end
 

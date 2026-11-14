@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# A journal, for article references (table `journals`).
 class Journal < ApplicationRecord
   include Trackable
 

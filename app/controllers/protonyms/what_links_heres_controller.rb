@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# What links to a protonym.
+#
+# Routes: GET /protonyms/:protonym_id/what_links_here (anyone). Purpose, rights and tests of each:
+# docs/catalog/routes.tsv.
 module Protonyms
   class WhatLinksHeresController < ApplicationController
     def show

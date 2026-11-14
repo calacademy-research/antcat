@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Notifies one user (a row of `notifications` and an email when allowed), unless the user caused it or was already
+# told.
 module Notifications
   class NotifyUser
     include Service

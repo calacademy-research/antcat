@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# View helpers of the activity feed: names with italics only, links to the activities of a record.
 module ActivitiesHelper
   # Names stored in activity parameters may contain italics; any other markup is removed.
   def activity_name_html name

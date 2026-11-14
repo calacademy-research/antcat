@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# A help page of the site; some have a permanent identifier the code links to (table `wiki_pages`).
 class WikiPage < ApplicationRecord
   include Trackable
 

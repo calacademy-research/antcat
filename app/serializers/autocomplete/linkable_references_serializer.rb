@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# The JSON of references for the autocomplete of the taxt editor ({ref} tags): author, year, title, pagination.
 module Autocomplete
   class LinkableReferencesSerializer
     include Service

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Decorator of nested references (a chapter): falls back to the PDF of the book when the chapter has none.
 class NestedReferenceDecorator < ReferenceDecorator
   delegate :nesting_reference
 

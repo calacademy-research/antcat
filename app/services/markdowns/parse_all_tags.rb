@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Expands every tag in Markdown content: the AntCat tags (users, wiki pages, database scripts, GitHub issues) and
+# the catalog tags.
 module Markdowns
   class ParseAllTags
     include Service

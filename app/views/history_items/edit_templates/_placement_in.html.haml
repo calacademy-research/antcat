@@ -1,0 +1,6 @@
+%table.table-unstriped
+  %tr
+    %td In
+    %td=text_area_tag :taxt, history_item.taxt, rows: 2, data: { has_linkables: true, previewable: true, previewable_title: 'Placement', use_extras: true }, class: 'w-full'
+
+  =tr_for_reference_and_pages history_item

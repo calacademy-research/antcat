@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# API: protonym records.
+#
+# Routes: GET /v1/protonyms (API); GET /v1/protonyms/:id (API). Purpose, rights and tests of each:
+# docs/catalog/routes.tsv.
 module Api
   module V1
     class ProtonymsController < Api::ApiController

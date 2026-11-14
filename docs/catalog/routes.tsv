@@ -1,0 +1,291 @@
+verb	path	action	name	who	purpose	status	test
+MOUNT	/api_docs	GrapeSwaggerRails::Engine		public	the API documentation page (Swagger UI of /v1)	keep	spec/requests/api_front_door_spec.rb
+ANY	/assets	ActionDispatch::Routing::Mapper::Constraints		system	compiled CSS and JavaScript files (the asset gem's route; in production nginx serves them)	keep	
+GET	/rails/view_components	view_components#index	preview_view_components	system	list: component previews (development and test only, not in production)	keep	
+GET	/rails/view_components/*path	view_components#previews	preview_view_component	system	previews: component previews (development and test only, not in production)	keep	
+GET	/_system_test_entrypoint	view_components_system_test#system_test_entrypoint	_system_test_entrypoint	system	system test entrypoint: component test entry point (test only, not in production)	keep	
+GET	/	catalog#index	root	public	the home page: the catalog of the family Formicidae	keep	spec/features/catalog/catalog_spec.rb
+GET	/authors/autocomplete	authors/autocompletes#show	autocomplete	public	author lookup while typing	keep	spec/controllers/authors/autocompletes_controller_spec.rb
+GET	/authors/:author_id/merges/new	authors/merges#new	new_author_merges	editor	form to add: merge two author records into one	keep	spec/controllers/authors/merges_controller_spec.rb
+GET	/authors/:author_id/merges	authors/merges#show	author_merges	editor	show one: merge two author records into one	keep	spec/controllers/authors/merges_controller_spec.rb
+POST	/authors/:author_id/merges	authors/merges#create		editor	add: merge two author records into one	keep	spec/controllers/authors/merges_controller_spec.rb
+POST	/authors/:author_id/author_names	author_names#create	author_author_names	editor	add: author name spellings of an author	keep	spec/controllers/author_names_controller_spec.rb
+GET	/authors/:author_id/author_names/new	author_names#new	new_author_author_name	editor	form to add: author name spellings of an author	keep	spec/controllers/author_names_controller_spec.rb
+GET	/author_names/:id/edit	author_names#edit	edit_author_name	editor	form to change: author name spellings of an author	keep	spec/controllers/author_names_controller_spec.rb
+PATCH	/author_names/:id	author_names#update	author_name	editor	change: author name spellings of an author	keep	spec/controllers/author_names_controller_spec.rb
+PUT	/author_names/:id	author_names#update		editor	change: author name spellings of an author	keep	spec/controllers/author_names_controller_spec.rb
+DELETE	/author_names/:id	author_names#destroy		editor	delete: author name spellings of an author	keep	spec/controllers/author_names_controller_spec.rb
+GET	/authors	authors#index	authors	public	list: authors of references	keep	spec/controllers/authors_controller_spec.rb
+GET	/authors/:id	authors#show	author	public	show one: authors of references	keep	spec/controllers/authors_controller_spec.rb
+DELETE	/authors/:id	authors#destroy		editor	delete: authors of references	keep	spec/controllers/authors_controller_spec.rb
+GET	/catalog/random	catalog/random#show	catalog_random	public	a random taxon page	keep	spec/controllers/catalog/random_controller_spec.rb
+GET	/catalog/search	catalog/searches#show	catalog_search	public	show one: the catalog search (simple and advanced)	keep	spec/controllers/catalog/searches_controller_spec.rb
+PATCH	/catalog/toggle_view	catalog/toggle_views#update	catalog_toggle_view	public	change: show or hide grouped history and other view settings	keep	spec/controllers/catalog/toggle_views_controller_spec.rb
+PUT	/catalog/toggle_view	catalog/toggle_views#update		public	change: show or hide grouped history and other view settings	keep	spec/controllers/catalog/toggle_views_controller_spec.rb
+GET	/catalog/autocomplete	catalog/autocompletes#show	catalog_autocomplete	public	taxon lookup while typing in the search box	keep	spec/controllers/catalog/autocompletes_controller_spec.rb
+GET	/catalog/:id	catalog#show	catalog	public	show one: the catalog page of a taxon (the main public page)	keep	spec/features/catalog/catalog_spec.rb
+GET	/catalog/:id/bolton	catalog/bolton#show	bolton_catalog_view	user	a taxon in Bolton's catalogue layout	keep	spec/controllers/catalog/bolton_controller_spec.rb
+GET	/catalog/:id/wikipedia	catalog/wikipedia#show		public	wikitext of a taxon for Wikipedia editors	keep	spec/controllers/catalog/wikipedia_controller_spec.rb
+GET	/catalog/:id/history	catalog/histories#show	taxon_history	public	the edit history of a taxon	keep	spec/controllers/catalog/histories_controller_spec.rb
+GET	/catalog/:id/hover_preview	catalog/hover_previews#show		public	the small preview shown when hovering a taxon link	keep	spec/controllers/catalog/hover_previews_controller_spec.rb
+GET	/catalog/:id/what_links_here	catalog/what_links_heres#show	taxon_what_links_here	public	what links to a taxon	keep	spec/controllers/catalog/what_links_heres_controller_spec.rb
+GET	/catalog/:id/soft_validations	catalog/soft_validations#show	taxon_soft_validations	public	database checks of one taxon	keep	spec/controllers/catalog/soft_validations_controller_spec.rb
+GET	/documents/:id/:file_name	references/downloads#show		public	download of a reference document (PDF)	keep	spec/controllers/references/downloads_controller_spec.rb
+GET	/institutions/:institution_id/history	institutions/histories#show	institution_history	public	the edit history of an institution	keep	spec/controllers/institutions/histories_controller_spec.rb
+GET	/institutions	institutions#index	institutions	public	list: institutions (museums, collections)	keep	spec/controllers/institutions_controller_spec.rb
+POST	/institutions	institutions#create		helper	add: institutions (museums, collections)	keep	spec/controllers/institutions_controller_spec.rb
+GET	/institutions/new	institutions#new	new_institution	helper	form to add: institutions (museums, collections)	keep	spec/controllers/institutions_controller_spec.rb
+GET	/institutions/:id/edit	institutions#edit	edit_institution	editor	form to change: institutions (museums, collections)	keep	spec/controllers/institutions_controller_spec.rb
+GET	/institutions/:id	institutions#show	institution	public	show one: institutions (museums, collections)	keep	spec/controllers/institutions_controller_spec.rb
+PATCH	/institutions/:id	institutions#update		editor	change: institutions (museums, collections)	keep	spec/controllers/institutions_controller_spec.rb
+PUT	/institutions/:id	institutions#update		editor	change: institutions (museums, collections)	keep	spec/controllers/institutions_controller_spec.rb
+DELETE	/institutions/:id	institutions#destroy		superadmin	delete: institutions (museums, collections)	keep	spec/controllers/institutions_controller_spec.rb
+GET	/journals/autocomplete	journals/autocompletes#show		public	journal lookup while typing	keep	spec/controllers/journals/autocompletes_controller_spec.rb
+GET	/journals	journals#index	journals	public	list: journals	keep	spec/controllers/journals_controller_spec.rb
+GET	/journals/:id/edit	journals#edit	edit_journal	helper	form to change: journals	keep	spec/controllers/journals_controller_spec.rb
+GET	/journals/:id	journals#show	journal	public	show one: journals	keep	spec/controllers/journals_controller_spec.rb
+PATCH	/journals/:id	journals#update		helper	change: journals	keep	spec/controllers/journals_controller_spec.rb
+PUT	/journals/:id	journals#update		helper	change: journals	keep	spec/controllers/journals_controller_spec.rb
+DELETE	/journals/:id	journals#destroy		editor	delete: journals	keep	spec/controllers/journals_controller_spec.rb
+GET	/publishers/autocomplete	publishers/autocompletes#show	publishers_autocomplete	public	publisher lookup while typing	keep	spec/controllers/publishers/autocompletes_controller_spec.rb
+GET	/references/autocomplete	references/autocompletes#show		public	reference lookup while typing	keep	spec/controllers/references/autocompletes_controller_spec.rb
+GET	/references/linkable_autocomplete	references/linkable_autocompletes#show	linkable_autocomplete	public	show one: reference lookup for links in text	keep	spec/controllers/references/linkable_autocompletes_controller_spec.rb
+GET	/references/:reference_id/history	references/histories#show	reference_history	public	the edit history of a reference	keep	spec/controllers/references/histories_controller_spec.rb
+GET	/references/:reference_id/hover_preview	references/hover_previews#show	reference_hover_preview	public	the preview shown when hovering a reference link	keep	spec/controllers/references/hover_previews_controller_spec.rb
+GET	/references/:reference_id/what_links_here	references/what_links_heres#show	reference_what_links_here	public	what links to a reference	keep	spec/controllers/references/what_links_heres_controller_spec.rb
+POST	/references/:id/reviews/start	references/reviews#start	start_reviewing_reference	editor	start: review status of new references	keep	spec/controllers/references/reviews_controller_spec.rb
+POST	/references/:id/reviews/finish	references/reviews#finish	finish_reviewing_reference	editor	finish: review status of new references	keep	spec/controllers/references/reviews_controller_spec.rb
+POST	/references/:id/reviews/restart	references/reviews#restart	restart_reviewing_reference	editor	restart: review status of new references	keep	spec/controllers/references/reviews_controller_spec.rb
+GET	/references/:id/exports/wikipedia	references/exports#wikipedia	wikipedia_export_reference	public	wikipedia: export references (EndNote, wikitext)	keep	spec/controllers/references/exports_controller_spec.rb
+GET	/references/exports/endnote	references/exports#endnote	endnote_export_references	public	endnote: export references (EndNote, wikitext)	keep	spec/controllers/references/exports_controller_spec.rb
+GET	/references/latest_additions	references/latest_additions#index	references_latest_additions	public	references added most recently	keep	
+GET	/references/latest_changes	references/latest_changes#index	references_latest_changes	public	references changed most recently	keep	spec/controllers/references/latest_changes_controller_spec.rb
+PUT	/references/reviews/approve_all	references/reviews#approve_all	approve_all_reviewing_references	superadmin	approve all: review status of new references	keep	spec/controllers/references/reviews_controller_spec.rb
+GET	/references/search/help	references/search#help	help_references_search_index	public	help: reference search	keep	spec/controllers/references/search_controller_spec.rb
+GET	/references/search	references/search#index	references_search_index	public	reference search	keep	spec/controllers/references/search_controller_spec.rb
+GET	/references	references#index	references	public	list: references (publications)	keep	spec/controllers/references_controller_spec.rb
+POST	/references	references#create		helper	add: references (publications)	keep	spec/controllers/references_controller_spec.rb
+GET	/references/new	references#new	new_reference	helper	form to add: references (publications)	keep	spec/controllers/references_controller_spec.rb
+GET	/references/:id/edit	references#edit	edit_reference	helper	form to change: references (publications)	keep	spec/controllers/references_controller_spec.rb
+GET	/references/:id	references#show	reference	public	show one: references (publications)	keep	spec/controllers/references_controller_spec.rb
+PATCH	/references/:id	references#update		helper	change: references (publications)	keep	spec/controllers/references_controller_spec.rb
+PUT	/references/:id	references#update		helper	change: references (publications)	keep	spec/controllers/references_controller_spec.rb
+DELETE	/references/:id	references#destroy		editor	delete: references (publications)	keep	spec/controllers/references_controller_spec.rb
+POST	/protonyms/:protonym_id/history_items	history_items#create	protonym_history_items	helper	add: taxonomic history items of protonyms	keep	spec/controllers/history_items_controller_spec.rb
+GET	/protonyms/:protonym_id/history_items/new	history_items#new	new_protonym_history_item	helper	form to add: taxonomic history items of protonyms	keep	spec/controllers/history_items_controller_spec.rb
+GET	/protonyms/autocomplete	protonyms/autocompletes#show		public	protonym lookup while typing	keep	spec/controllers/protonyms/autocompletes_controller_spec.rb
+GET	/protonyms/:protonym_id/history	protonyms/histories#show	protonym_history	public	the edit history of a protonym	keep	spec/controllers/protonyms/histories_controller_spec.rb
+GET	/protonyms/:protonym_id/move_items/new	protonyms/move_items#new	new_protonym_move_items	editor	form to add: move history items between protonyms	keep	spec/controllers/protonyms/move_items_controller_spec.rb
+GET	/protonyms/:protonym_id/move_items	protonyms/move_items#show	protonym_move_items	editor	show one: move history items between protonyms	keep	spec/controllers/protonyms/move_items_controller_spec.rb
+POST	/protonyms/:protonym_id/move_items	protonyms/move_items#create		editor	add: move history items between protonyms	keep	spec/controllers/protonyms/move_items_controller_spec.rb
+GET	/protonyms/:protonym_id/what_links_here	protonyms/what_links_heres#show	protonym_what_links_here	public	what links to a protonym	keep	spec/controllers/protonyms/what_links_heres_controller_spec.rb
+GET	/protonyms/:protonym_id/soft_validations	protonyms/soft_validations#show	protonym_soft_validations	public	database checks of one protonym	keep	spec/controllers/protonyms/soft_validations_controller_spec.rb
+GET	/protonyms/:protonym_id/hover_preview	protonyms/hover_previews#show	protonym_hover_preview	public	the preview shown when hovering a protonym link	keep	spec/controllers/protonyms/hover_previews_controller_spec.rb
+GET	/protonyms/:protonym_id/reorder_history_items	protonyms/reorder_history_items#show	protonym_reorder_history_items	editor	show one: reorder the history items of a protonym	keep	spec/controllers/protonyms/reorder_history_items_controller_spec.rb
+POST	/protonyms/:protonym_id/reorder_history_items	protonyms/reorder_history_items#create		editor	add: reorder the history items of a protonym	keep	spec/controllers/protonyms/reorder_history_items_controller_spec.rb
+GET	/protonyms	protonyms#index	protonyms	public	list: protonyms (original names and their type data)	keep	spec/controllers/protonyms_controller_spec.rb
+POST	/protonyms	protonyms#create		helper	add: protonyms (original names and their type data)	keep	spec/controllers/protonyms_controller_spec.rb
+GET	/protonyms/new	protonyms#new	new_protonym	helper	form to add: protonyms (original names and their type data)	keep	spec/controllers/protonyms_controller_spec.rb
+GET	/protonyms/:id/edit	protonyms#edit	edit_protonym	helper	form to change: protonyms (original names and their type data)	keep	spec/controllers/protonyms_controller_spec.rb
+GET	/protonyms/:id	protonyms#show	protonym	public	show one: protonyms (original names and their type data)	keep	spec/controllers/protonyms_controller_spec.rb
+PATCH	/protonyms/:id	protonyms#update		helper	change: protonyms (original names and their type data)	keep	spec/controllers/protonyms_controller_spec.rb
+PUT	/protonyms/:id	protonyms#update		helper	change: protonyms (original names and their type data)	keep	spec/controllers/protonyms_controller_spec.rb
+DELETE	/protonyms/:id	protonyms#destroy		editor	delete: protonyms (original names and their type data)	keep	spec/controllers/protonyms_controller_spec.rb
+GET	/protonyms/localities/autocomplete	protonyms/localities/autocompletes#show	protonyms_localities_autocomplete	public	type locality lookup while typing	keep	spec/controllers/protonyms/localities/autocompletes_controller_spec.rb
+POST	/taxa/:taxon_id/reference_sections	reference_sections#create	taxon_reference_sections	helper	add: reference sections of taxa	keep	spec/controllers/reference_sections_controller_spec.rb
+GET	/taxa/:taxon_id/reference_sections/new	reference_sections#new	new_taxon_reference_section	helper	form to add: reference sections of taxa	keep	spec/controllers/reference_sections_controller_spec.rb
+GET	/taxa/:taxon_id/children	taxa/children#show	taxon_children	public	the child taxa of a taxon	keep	spec/controllers/taxa/children_controller_spec.rb
+GET	/taxa/:taxon_id/create_combination/new	taxa/create_combinations#new	new_taxon_create_combination	editor	form to add: create a new combination of a species	keep	spec/controllers/taxa/create_combinations_controller_spec.rb
+GET	/taxa/:taxon_id/create_combination	taxa/create_combinations#show	taxon_create_combination	editor	show one: create a new combination of a species	keep	spec/controllers/taxa/create_combinations_controller_spec.rb
+POST	/taxa/:taxon_id/create_combination	taxa/create_combinations#create		editor	add: create a new combination of a species	keep	spec/controllers/taxa/create_combinations_controller_spec.rb
+GET	/taxa/:taxon_id/convert_to_subspecies/new	taxa/convert_to_subspecies#new	new_taxon_convert_to_subspecies	editor	form to add: turn a species into a subspecies	keep	spec/controllers/taxa/convert_to_subspecies_controller_spec.rb
+POST	/taxa/:taxon_id/convert_to_subspecies	taxa/convert_to_subspecies#create	taxon_convert_to_subspecies	editor	add: turn a species into a subspecies	keep	spec/controllers/taxa/convert_to_subspecies_controller_spec.rb
+GET	/taxa/:taxon_id/force_parent_change	taxa/force_parent_changes#show	taxon_force_parent_change	editor	show one: move a taxon to another parent without the usual checks	keep	spec/controllers/taxa/force_parent_changes_controller_spec.rb
+POST	/taxa/:taxon_id/force_parent_change	taxa/force_parent_changes#create		editor	add: move a taxon to another parent without the usual checks	keep	spec/controllers/taxa/force_parent_changes_controller_spec.rb
+GET	/taxa/:taxon_id/force_update	taxa/force_updates#show	taxon_force_update	superadmin	show one: change a taxon without the usual checks	keep	spec/controllers/taxa/force_updates_controller_spec.rb
+PATCH	/taxa/:taxon_id/force_update	taxa/force_updates#update		superadmin	change: change a taxon without the usual checks	keep	spec/controllers/taxa/force_updates_controller_spec.rb
+PUT	/taxa/:taxon_id/force_update	taxa/force_updates#update		superadmin	change: change a taxon without the usual checks	keep	spec/controllers/taxa/force_updates_controller_spec.rb
+POST	/taxa/:taxon_id/elevate_to_species	taxa/elevate_to_species#create	taxon_elevate_to_species	editor	add: raise a subspecies to species	keep	spec/controllers/taxa/elevate_to_species_controller_spec.rb
+GET	/taxa/:taxon_id/create_obsolete_combination	taxa/create_obsolete_combinations#show	taxon_create_obsolete_combination	editor	show one: create an obsolete combination	keep	spec/controllers/taxa/create_obsolete_combinations_controller_spec.rb
+POST	/taxa/:taxon_id/create_obsolete_combination	taxa/create_obsolete_combinations#create		editor	add: create an obsolete combination	keep	spec/controllers/taxa/create_obsolete_combinations_controller_spec.rb
+GET	/taxa/:taxon_id/move_items/new	taxa/move_items#new	new_taxon_move_items	editor	form to add: move history and reference items between taxa	keep	spec/controllers/taxa/move_items_controller_spec.rb
+GET	/taxa/:taxon_id/move_items	taxa/move_items#show	taxon_move_items	editor	show one: move history and reference items between taxa	keep	spec/controllers/taxa/move_items_controller_spec.rb
+POST	/taxa/:taxon_id/move_items	taxa/move_items#create		editor	add: move history and reference items between taxa	keep	spec/controllers/taxa/move_items_controller_spec.rb
+GET	/taxa/:taxon_id/set_subgenus	taxa/set_subgenera#show	taxon_set_subgenus	editor	show one: set the subgenus of species in a genus	keep	spec/controllers/taxa/set_subgenera_controller_spec.rb
+DELETE	/taxa/:taxon_id/set_subgenus	taxa/set_subgenera#destroy		editor	delete: set the subgenus of species in a genus	keep	spec/controllers/taxa/set_subgenera_controller_spec.rb
+POST	/taxa/:taxon_id/set_subgenus	taxa/set_subgenera#create		editor	add: set the subgenus of species in a genus	keep	spec/controllers/taxa/set_subgenera_controller_spec.rb
+GET	/taxa/:taxon_id/reorder_reference_sections	taxa/reorder_reference_sections#show	taxon_reorder_reference_sections	editor	show one: reorder the reference sections of a taxon	keep	spec/controllers/taxa/reorder_reference_sections_controller_spec.rb
+POST	/taxa/:taxon_id/reorder_reference_sections	taxa/reorder_reference_sections#create		editor	add: reorder the reference sections of a taxon	keep	spec/controllers/taxa/reorder_reference_sections_controller_spec.rb
+POST	/taxa	taxa#create	taxa	editor	add: a taxon record	keep	spec/controllers/taxa_controller_spec.rb
+GET	/taxa/new	taxa#new	new_taxon	editor	form to add: a taxon record	keep	spec/controllers/taxa_controller_spec.rb
+GET	/taxa/:id/edit	taxa#edit	edit_taxon	editor	form to change: a taxon record	keep	spec/controllers/taxa_controller_spec.rb
+PATCH	/taxa/:id	taxa#update	taxon	editor	change: a taxon record	keep	spec/controllers/taxa_controller_spec.rb
+PUT	/taxa/:id	taxa#update		editor	change: a taxon record	keep	spec/controllers/taxa_controller_spec.rb
+DELETE	/taxa/:id	taxa#destroy		editor	delete: a taxon record	keep	spec/controllers/taxa_controller_spec.rb
+GET	/names/check_name_conflicts	names/check_name_conflicts#show	names_check_name_conflicts	public	show one: warn when a new name already exists	keep	spec/controllers/names/check_name_conflicts_controller_spec.rb
+GET	/names/:name_id/history	names/histories#show	name_history	public	the edit history of a name	keep	spec/controllers/names/histories_controller_spec.rb
+GET	/names/:id/edit	names#edit	edit_name	editor	form to change: name records (spelling and authorship)	keep	spec/controllers/names_controller_spec.rb
+GET	/names/:id	names#show	name	public	show one: name records (spelling and authorship)	keep	spec/controllers/names_controller_spec.rb
+PATCH	/names/:id	names#update		editor	change: name records (spelling and authorship)	keep	spec/controllers/names_controller_spec.rb
+PUT	/names/:id	names#update		editor	change: name records (spelling and authorship)	keep	spec/controllers/names_controller_spec.rb
+GET	/users/sign_in	users/sessions#new	new_user_session	public	form to add: sign in and sign out	keep	spec/controllers/users/sessions_controller_spec.rb
+POST	/users/sign_in	users/sessions#create	user_session	public	add: sign in and sign out	keep	spec/controllers/users/sessions_controller_spec.rb
+DELETE	/users/sign_out	users/sessions#destroy	destroy_user_session	public	sign out	keep	spec/controllers/users/sessions_controller_spec.rb
+GET	/users/password/new	users/passwords#new	new_user_password	public	form to add: password reset	keep	spec/controllers/users/passwords_controller_spec.rb
+GET	/users/password/edit	users/passwords#edit	edit_user_password	public	form to change: password reset	keep	spec/controllers/users/passwords_controller_spec.rb
+PATCH	/users/password	users/passwords#update	user_password	public	change: password reset	keep	spec/controllers/users/passwords_controller_spec.rb
+PUT	/users/password	users/passwords#update		public	change: password reset	keep	spec/controllers/users/passwords_controller_spec.rb
+POST	/users/password	users/passwords#create		public	add: password reset	keep	spec/controllers/users/passwords_controller_spec.rb
+GET	/users/cancel	users/registrations#cancel	cancel_user_registration	public	cancel: sign up and account settings	keep	spec/controllers/users/registrations_controller_spec.rb
+GET	/users/sign_up	users/registrations#new	new_user_registration	public	form to add: sign up and account settings	keep	spec/controllers/users/registrations_controller_spec.rb
+GET	/users/edit	users/registrations#edit	edit_user_registration	user	form to change: sign up and account settings	keep	spec/controllers/users/registrations_controller_spec.rb
+PATCH	/users	users/registrations#update	user_registration	user	change: sign up and account settings	keep	spec/controllers/users/registrations_controller_spec.rb
+PUT	/users	users/registrations#update		user	change: sign up and account settings	keep	spec/controllers/users/registrations_controller_spec.rb
+DELETE	/users	users/registrations#destroy		user	delete: sign up and account settings	keep	spec/controllers/users/registrations_controller_spec.rb
+POST	/users	users/registrations#create		public	add: sign up and account settings	keep	spec/controllers/users/registrations_controller_spec.rb
+GET	/users/sign_up/complete	users/registrations#complete	complete_user_sign_up	public	complete: sign up and account settings	keep	spec/controllers/users/registrations_controller_spec.rb
+POST	/users/sign_up/complete	users/registrations#finish	users_sign_up_complete	public	finish: sign up and account settings	keep	spec/controllers/users/registrations_controller_spec.rb
+GET	/users/mentionables	users#mentionables	mentionables_users	user	mentionables: user profiles and the list of users	keep	spec/controllers/users_controller_spec.rb
+GET	/users	users#index	users	public	list: user profiles and the list of users	keep	spec/controllers/users_controller_spec.rb
+GET	/users/:id/edit	users#edit	edit_user	superadmin	form to change: user profiles and the list of users	keep	spec/controllers/users_controller_spec.rb
+GET	/users/:id	users#show	user	public	show one: user profiles and the list of users	keep	spec/controllers/users_controller_spec.rb
+PATCH	/users/:id	users#update		superadmin	change: user profiles and the list of users	keep	spec/controllers/users_controller_spec.rb
+PUT	/users/:id	users#update		superadmin	change: user profiles and the list of users	keep	spec/controllers/users_controller_spec.rb
+DELETE	/users/:id	users#destroy		superadmin	delete: user profiles and the list of users	keep	spec/controllers/users_controller_spec.rb
+GET	/api_keys/confirm	api_keys#confirm	confirm_api_key	public	confirm: free API key registration and confirmation (on when api_keys.enabled)	keep	spec/requests/api_key_registration_spec.rb
+POST	/api_keys/confirm	api_keys#issue	issue_api_key	public	issue: free API key registration and confirmation (on when api_keys.enabled)	keep	spec/requests/api_key_registration_spec.rb
+POST	/api_keys	api_keys#create	api_keys	public	add: free API key registration and confirmation (on when api_keys.enabled)	keep	spec/requests/api_front_door_spec.rb
+GET	/api_keys/new	api_keys#new	new_api_key	public	form to add: free API key registration and confirmation (on when api_keys.enabled)	keep	spec/requests/api_front_door_spec.rb
+GET	/llms.txt	llms_txt#show	llms_txt	public	show one: the guide for programs and AI agents (/llms.txt)	keep	spec/requests/api_front_door_spec.rb
+GET	/v1	api/v1/root#show	api_v1_root	api	show one: the API front door: version, routes, limits, keys, terms	keep	spec/requests/api_front_door_spec.rb
+GET	/v1/taxa	api/v1/taxa#index	v1_taxa	api	list: API: taxon records	keep	spec/controllers/api/v1/taxa_controller_spec.rb
+GET	/v1/taxa/:id	api/v1/taxa#show	v1_taxon	api	show one: API: taxon records	keep	spec/controllers/api/v1/taxa_controller_spec.rb
+GET	/v1/taxa/:id/junior_synonyms	api/v1/taxa#junior_synonyms	v1	api	junior synonyms: API: taxon records	keep	spec/controllers/api/v1/taxa_controller_spec.rb
+GET	/v1/taxa/search/:string	api/v1/taxa#search		api	search: API: taxon records	keep	spec/controllers/api/v1/taxa_controller_spec.rb
+GET	/v1/protonyms	api/v1/protonyms#index	v1_protonyms	api	list: API: protonym records	keep	spec/controllers/api/v1/protonyms_controller_spec.rb
+GET	/v1/protonyms/:id	api/v1/protonyms#show	v1_protonym	api	show one: API: protonym records	keep	spec/controllers/api/v1/protonyms_controller_spec.rb
+GET	/v1/authors	api/v1/authors#index	v1_authors	api	list: API: author records	keep	spec/controllers/api/v1/authors_controller_spec.rb
+GET	/v1/authors/:id	api/v1/authors#show	v1_author	api	show one: API: author records	keep	spec/controllers/api/v1/authors_controller_spec.rb
+GET	/v1/author_names	api/v1/author_names#index	v1_author_names	api	list: API: author name records	keep	spec/controllers/api/v1/author_names_controller_spec.rb
+GET	/v1/author_names/:id	api/v1/author_names#show	v1_author_name	api	show one: API: author name records	keep	spec/controllers/api/v1/author_names_controller_spec.rb
+GET	/v1/names	api/v1/names#index	v1_names	api	list: API: name records	keep	spec/controllers/api/v1/names_controller_spec.rb
+GET	/v1/names/:id	api/v1/names#show	v1_name	api	show one: API: name records	keep	spec/controllers/api/v1/names_controller_spec.rb
+GET	/v1/citations	api/v1/citations#index	v1_citations	api	list: API: citation records	keep	spec/controllers/api/v1/citations_controller_spec.rb
+GET	/v1/citations/:id	api/v1/citations#show	v1_citation	api	show one: API: citation records	keep	spec/controllers/api/v1/citations_controller_spec.rb
+GET	/v1/history_items	api/v1/history_items#index	v1_history_items	api	list: API: taxonomic history items	keep	spec/controllers/api/v1/history_items_controller_spec.rb
+GET	/v1/history_items/:id	api/v1/history_items#show	v1_history_item	api	show one: API: taxonomic history items	keep	spec/controllers/api/v1/history_items_controller_spec.rb
+GET	/v1/journals	api/v1/journals#index	v1_journals	api	list: API: journal records	keep	spec/controllers/api/v1/journals_controller_spec.rb
+GET	/v1/journals/:id	api/v1/journals#show	v1_journal	api	show one: API: journal records	keep	spec/controllers/api/v1/journals_controller_spec.rb
+GET	/v1/publishers	api/v1/publishers#index	v1_publishers	api	list: API: publisher records	keep	spec/controllers/api/v1/publishers_controller_spec.rb
+GET	/v1/publishers/:id	api/v1/publishers#show	v1_publisher	api	show one: API: publisher records	keep	spec/controllers/api/v1/publishers_controller_spec.rb
+GET	/v1/references	api/v1/references#index	v1_references	api	list: API: reference records	keep	spec/controllers/api/v1/references_controller_spec.rb
+GET	/v1/references/:id	api/v1/references#show	v1_reference	api	show one: API: reference records	keep	spec/controllers/api/v1/references_controller_spec.rb
+GET	/v1/reference_author_names	api/v1/reference_author_names#index	v1_reference_author_names	api	list: API: links between references and author names	keep	spec/controllers/api/v1/reference_author_names_controller_spec.rb
+GET	/v1/reference_author_names/:id	api/v1/reference_author_names#show	v1_reference_author_name	api	show one: API: links between references and author names	keep	spec/controllers/api/v1/reference_author_names_controller_spec.rb
+GET	/v1/reference_documents	api/v1/reference_documents#index	v1_reference_documents	api	list: API: reference document (PDF) records	keep	spec/controllers/api/v1/reference_documents_controller_spec.rb
+GET	/v1/reference_documents/:id	api/v1/reference_documents#show	v1_reference_document	api	show one: API: reference document (PDF) records	keep	spec/controllers/api/v1/reference_documents_controller_spec.rb
+GET	/v1/reference_sections	api/v1/reference_sections#index	v1_reference_sections	api	list: API: reference sections of taxa	keep	spec/controllers/api/v1/reference_sections_controller_spec.rb
+GET	/v1/reference_sections/:id	api/v1/reference_sections#show	v1_reference_section	api	show one: API: reference sections of taxa	keep	spec/controllers/api/v1/reference_sections_controller_spec.rb
+PUT	/feedbacks/:id/close	feedbacks#close	close_feedback	helper	close: the feedback form and its list for editors	keep	spec/controllers/feedbacks_controller_spec.rb
+PUT	/feedbacks/:id/reopen	feedbacks#reopen	reopen_feedback	helper	reopen: the feedback form and its list for editors	keep	spec/controllers/feedbacks_controller_spec.rb
+GET	/feedbacks	feedbacks#index	feedbacks	helper	list: the feedback form and its list for editors	keep	spec/controllers/feedbacks_controller_spec.rb
+POST	/feedbacks	feedbacks#create		public	add: the feedback form and its list for editors	keep	spec/controllers/feedbacks_controller_spec.rb
+GET	/feedbacks/new	feedbacks#new	new_feedback	public	form to add: the feedback form and its list for editors	keep	spec/controllers/feedbacks_controller_spec.rb
+GET	/feedbacks/:id/edit	feedbacks#edit	edit_feedback	helper	form to change: the feedback form and its list for editors	keep	spec/controllers/feedbacks_controller_spec.rb
+GET	/feedbacks/:id	feedbacks#show	feedback	helper	show one: the feedback form and its list for editors	keep	spec/controllers/feedbacks_controller_spec.rb
+PATCH	/feedbacks/:id	feedbacks#update		helper	change: the feedback form and its list for editors	keep	spec/controllers/feedbacks_controller_spec.rb
+PUT	/feedbacks/:id	feedbacks#update		helper	change: the feedback form and its list for editors	keep	spec/controllers/feedbacks_controller_spec.rb
+DELETE	/feedbacks/:id	feedbacks#destroy		superadmin	delete: the feedback form and its list for editors	keep	spec/controllers/feedbacks_controller_spec.rb
+GET	/comments	comments#index	comments	user	list: comments on issues, feedback and site notices	keep	spec/controllers/comments_controller_spec.rb
+POST	/comments	comments#create		user	add: comments on issues, feedback and site notices	keep	spec/controllers/comments_controller_spec.rb
+GET	/comments/:id/edit	comments#edit	edit_comment	user	form to change: comments on issues, feedback and site notices	keep	spec/controllers/comments_controller_spec.rb
+PATCH	/comments/:id	comments#update	comment	user	change: comments on issues, feedback and site notices	keep	spec/controllers/comments_controller_spec.rb
+PUT	/comments/:id	comments#update		user	change: comments on issues, feedback and site notices	keep	spec/controllers/comments_controller_spec.rb
+GET	/panel	editors_panels#show	editors_panel	user	show one: the editor's panel: links to tools and recent changes	keep	spec/controllers/editors_panels_controller_spec.rb
+GET	/panel/invite_users	editors_panels#invite_users	invite_users	user	invite users: the editor's panel: links to tools and recent changes	keep	spec/controllers/editors_panels_controller_spec.rb
+GET	/panel/versions	editors_panels/versions#index	versions	editor	list: every saved version of every record (PaperTrail)	keep	spec/controllers/editors_panels/versions_controller_spec.rb
+GET	/panel/versions/:id	editors_panels/versions#show	version	editor	show one: every saved version of every record (PaperTrail)	keep	spec/controllers/editors_panels/versions_controller_spec.rb
+GET	/panel/bolton_keys_to_ref_tags	editors_panels/bolton_keys_to_ref_tags#show	bolton_keys_to_ref_tags	helper	show one: convert Bolton reference keys to reference tags in text	keep	spec/controllers/editors_panels/bolton_keys_to_ref_tags_controller_spec.rb
+POST	/panel/bolton_keys_to_ref_tags	editors_panels/bolton_keys_to_ref_tags#create		helper	add: convert Bolton reference keys to reference tags in text	keep	spec/controllers/editors_panels/bolton_keys_to_ref_tags_controller_spec.rb
+POST	/panel/restart_and_reindex_solrs	editors_panels/restart_and_reindex_solrs#create	restart_and_reindex_solrs	superadmin	add: restart Solr and reindex the search	keep	spec/controllers/editors_panels/restart_and_reindex_solrs_controller_spec.rb
+PUT	/panel/api_keys/:id/revoke	editors_panels/api_keys#revoke	revoke_panel_api_key	superadmin	revoke: admin page of API keys (list, change limits, revoke, CSV)	keep	spec/requests/api_key_registration_spec.rb
+PUT	/panel/api_keys/:id/reactivate	editors_panels/api_keys#reactivate	reactivate_panel_api_key	superadmin	reactivate: admin page of API keys (list, change limits, revoke, CSV)	keep	spec/requests/api_key_registration_spec.rb
+GET	/panel/api_keys	editors_panels/api_keys#index	panel_api_keys	superadmin	list: admin page of API keys (list, change limits, revoke, CSV)	keep	spec/requests/api_key_registration_spec.rb
+GET	/panel/api_keys/:id/edit	editors_panels/api_keys#edit	edit_panel_api_key	superadmin	form to change: admin page of API keys (list, change limits, revoke, CSV)	keep	spec/requests/api_key_registration_spec.rb
+PATCH	/panel/api_keys/:id	editors_panels/api_keys#update	panel_api_key	superadmin	change: admin page of API keys (list, change limits, revoke, CSV)	keep	spec/requests/api_key_registration_spec.rb
+PUT	/panel/api_keys/:id	editors_panels/api_keys#update		superadmin	change: admin page of API keys (list, change limits, revoke, CSV)	keep	spec/requests/api_key_registration_spec.rb
+GET	/notifications	notifications#index	notifications	user	list: notifications for the signed-in user	keep	spec/controllers/notifications_controller_spec.rb
+GET	/activities/unconfirmed	activities/unconfirmeds#show	unconfirmed_activities	user	show one: edits by unconfirmed users, for review	keep	spec/controllers/activities/unconfirmeds_controller_spec.rb
+GET	/activities	activities#index	activities	public	list: the activity feed: who changed what in the catalog	keep	spec/controllers/activities_controller_spec.rb
+GET	/activities/:id	activities#show	activity	public	show one: the activity feed: who changed what in the catalog	keep	spec/controllers/activities_controller_spec.rb
+DELETE	/activities/:id	activities#destroy		superadmin	delete: the activity feed: who changed what in the catalog	keep	spec/controllers/activities_controller_spec.rb
+POST	/site_notices/mark_all_as_read	site_notices#mark_all_as_read	mark_all_as_read_site_notices	user	mark all as read: notices shown to editors on the site	keep	spec/controllers/site_notices_controller_spec.rb
+GET	/site_notices	site_notices#index	site_notices	public	list: notices shown to editors on the site	keep	spec/controllers/site_notices_controller_spec.rb
+POST	/site_notices	site_notices#create		editor	add: notices shown to editors on the site	keep	spec/controllers/site_notices_controller_spec.rb
+GET	/site_notices/new	site_notices#new	new_site_notice	editor	form to add: notices shown to editors on the site	keep	spec/controllers/site_notices_controller_spec.rb
+GET	/site_notices/:id/edit	site_notices#edit	edit_site_notice	editor	form to change: notices shown to editors on the site	keep	spec/controllers/site_notices_controller_spec.rb
+GET	/site_notices/:id	site_notices#show	site_notice	user	show one: notices shown to editors on the site	keep	spec/controllers/site_notices_controller_spec.rb
+PATCH	/site_notices/:id	site_notices#update		editor	change: notices shown to editors on the site	keep	spec/controllers/site_notices_controller_spec.rb
+PUT	/site_notices/:id	site_notices#update		editor	change: notices shown to editors on the site	keep	spec/controllers/site_notices_controller_spec.rb
+DELETE	/site_notices/:id	site_notices#destroy		superadmin	delete: notices shown to editors on the site	keep	spec/controllers/site_notices_controller_spec.rb
+GET	/history_items/:history_item_id/history	history_items/histories#show	history_item_history	public	the edit history of a history item	keep	spec/controllers/history_items/histories_controller_spec.rb
+GET	/history_items	history_items#index	history_items	public	list: taxonomic history items of protonyms	keep	spec/controllers/history_items_controller_spec.rb
+GET	/history_items/:id/edit	history_items#edit	edit_history_item	helper	form to change: taxonomic history items of protonyms	keep	spec/controllers/history_items_controller_spec.rb
+GET	/history_items/:id	history_items#show	history_item	public	show one: taxonomic history items of protonyms	keep	spec/controllers/history_items_controller_spec.rb
+PATCH	/history_items/:id	history_items#update		helper	change: taxonomic history items of protonyms	keep	spec/controllers/history_items_controller_spec.rb
+PUT	/history_items/:id	history_items#update		helper	change: taxonomic history items of protonyms	keep	spec/controllers/history_items_controller_spec.rb
+DELETE	/history_items/:id	history_items#destroy		editor	delete: taxonomic history items of protonyms	keep	spec/controllers/history_items_controller_spec.rb
+GET	/reference_sections/:reference_section_id/history	reference_sections/histories#show	reference_section_history	public	the edit history of a reference section	keep	spec/controllers/reference_sections/histories_controller_spec.rb
+GET	/reference_sections	reference_sections#index	reference_sections	public	list: reference sections of taxa	keep	spec/controllers/reference_sections_controller_spec.rb
+GET	/reference_sections/:id/edit	reference_sections#edit	edit_reference_section	helper	form to change: reference sections of taxa	keep	spec/controllers/reference_sections_controller_spec.rb
+GET	/reference_sections/:id	reference_sections#show	reference_section	public	show one: reference sections of taxa	keep	spec/controllers/reference_sections_controller_spec.rb
+PATCH	/reference_sections/:id	reference_sections#update		helper	change: reference sections of taxa	keep	spec/controllers/reference_sections_controller_spec.rb
+PUT	/reference_sections/:id	reference_sections#update		helper	change: reference sections of taxa	keep	spec/controllers/reference_sections_controller_spec.rb
+DELETE	/reference_sections/:id	reference_sections#destroy		editor	delete: reference sections of taxa	keep	spec/controllers/reference_sections_controller_spec.rb
+GET	/tooltips/:tooltip_id/history	tooltips/histories#show	tooltip_history	public	the edit history of a tooltip	keep	spec/controllers/tooltips/histories_controller_spec.rb
+GET	/tooltips	tooltips#index	tooltips	public	list: help texts shown in the editing forms	keep	spec/controllers/tooltips_controller_spec.rb
+POST	/tooltips	tooltips#create		helper	add: help texts shown in the editing forms	keep	spec/controllers/tooltips_controller_spec.rb
+GET	/tooltips/new	tooltips#new	new_tooltip	helper	form to add: help texts shown in the editing forms	keep	spec/controllers/tooltips_controller_spec.rb
+GET	/tooltips/:id/edit	tooltips#edit	edit_tooltip	helper	form to change: help texts shown in the editing forms	keep	spec/controllers/tooltips_controller_spec.rb
+GET	/tooltips/:id	tooltips#show	tooltip	helper	show one: help texts shown in the editing forms	keep	spec/controllers/tooltips_controller_spec.rb
+PATCH	/tooltips/:id	tooltips#update		helper	change: help texts shown in the editing forms	keep	spec/controllers/tooltips_controller_spec.rb
+PUT	/tooltips/:id	tooltips#update		helper	change: help texts shown in the editing forms	keep	spec/controllers/tooltips_controller_spec.rb
+DELETE	/tooltips/:id	tooltips#destroy		superadmin	delete: help texts shown in the editing forms	keep	spec/controllers/tooltips_controller_spec.rb
+GET	/issues/:issue_id/history	issues/histories#show	issue_history	public	the edit history of an issue	keep	spec/controllers/issues/histories_controller_spec.rb
+PUT	/issues/:id/close	issues#close	close_issue	helper	close: open questions about the catalog, for editors	keep	spec/controllers/issues_controller_spec.rb
+PUT	/issues/:id/reopen	issues#reopen	reopen_issue	helper	reopen: open questions about the catalog, for editors	keep	spec/controllers/issues_controller_spec.rb
+GET	/issues	issues#index	issues	public	list: open questions about the catalog, for editors	keep	spec/controllers/issues_controller_spec.rb
+POST	/issues	issues#create		helper	add: open questions about the catalog, for editors	keep	spec/controllers/issues_controller_spec.rb
+GET	/issues/new	issues#new	new_issue	helper	form to add: open questions about the catalog, for editors	keep	spec/controllers/issues_controller_spec.rb
+GET	/issues/:id/edit	issues#edit	edit_issue	helper	form to change: open questions about the catalog, for editors	keep	spec/controllers/issues_controller_spec.rb
+GET	/issues/:id	issues#show	issue	public	show one: open questions about the catalog, for editors	keep	spec/controllers/issues_controller_spec.rb
+PATCH	/issues/:id	issues#update		helper	change: open questions about the catalog, for editors	keep	spec/controllers/issues_controller_spec.rb
+PUT	/issues/:id	issues#update		helper	change: open questions about the catalog, for editors	keep	spec/controllers/issues_controller_spec.rb
+DELETE	/issues/:id	issues#destroy		superadmin	delete: open questions about the catalog, for editors	keep	spec/controllers/issues_controller_spec.rb
+GET	/wiki/autocomplete	wiki_pages/autocompletes#show		public	wiki page lookup while typing	keep	spec/controllers/wiki_pages/autocompletes_controller_spec.rb
+GET	/wiki/:wiki_page_id/history	wiki_pages/histories#show	wiki_page_history	public	the edit history of a wiki page	keep	spec/controllers/wiki_pages/histories_controller_spec.rb
+GET	/wiki	wiki_pages#index	wiki_pages	public	list: wiki pages for editors (how-tos)	keep	spec/controllers/wiki_pages_controller_spec.rb
+POST	/wiki	wiki_pages#create		helper	add: wiki pages for editors (how-tos)	keep	spec/controllers/wiki_pages_controller_spec.rb
+GET	/wiki/new	wiki_pages#new	new_wiki_page	helper	form to add: wiki pages for editors (how-tos)	keep	spec/controllers/wiki_pages_controller_spec.rb
+GET	/wiki/:id/edit	wiki_pages#edit	edit_wiki_page	helper	form to change: wiki pages for editors (how-tos)	keep	spec/controllers/wiki_pages_controller_spec.rb
+GET	/wiki/:id	wiki_pages#show	wiki_page	public	show one: wiki pages for editors (how-tos)	keep	spec/controllers/wiki_pages_controller_spec.rb
+PATCH	/wiki/:id	wiki_pages#update		helper	change: wiki pages for editors (how-tos)	keep	spec/controllers/wiki_pages_controller_spec.rb
+PUT	/wiki/:id	wiki_pages#update		helper	change: wiki pages for editors (how-tos)	keep	spec/controllers/wiki_pages_controller_spec.rb
+DELETE	/wiki/:id	wiki_pages#destroy		superadmin	delete: wiki pages for editors (how-tos)	keep	spec/controllers/wiki_pages_controller_spec.rb
+POST	/markdown/preview	markdown#preview	markdown_preview	user	preview: preview of catalog markup while editing	keep	spec/controllers/markdown_controller_spec.rb
+GET	/database_scripts	database_scripts#index	database_scripts	helper	list: database checks (data quality scripts) and their results	keep	spec/controllers/database_scripts_controller_spec.rb
+GET	/database_scripts/:id	database_scripts#show	database_script	helper	show one: database checks (data quality scripts) and their results	keep	spec/controllers/database_scripts_controller_spec.rb
+POST	/csp_reports	csp_reports#create	csp_reports	system	add: browser reports of Content Security Policy violations	keep	spec/requests/csp_reports_spec.rb
+POST	/quick_and_dirty_fixes/convert_to_taxac_tags_quick_and_dirty_fix	quick_and_dirty_fixes#convert_to_taxac_tags	convert_to_taxac_tags_quick_and_dirty_fix	helper	convert to taxac tags: one-click fixes of common data problems for editors	keep	spec/controllers/quick_and_dirty_fixes_controller_spec.rb
+POST	/quick_and_dirty_fixes/delete_history_item_quick_and_dirty_fix	quick_and_dirty_fixes#delete_history_item	delete_history_item_quick_and_dirty_fix	editor	delete history item: one-click fixes of common data problems for editors	keep	spec/controllers/quick_and_dirty_fixes_controller_spec.rb
+POST	/quick_and_dirty_fixes/flag_as_original_combination_quick_and_dirty_fix	quick_and_dirty_fixes#flag_as_original_combination	flag_as_original_combination_quick_and_dirty_fix	editor	flag as original combination: one-click fixes of common data problems for editors	keep	spec/controllers/quick_and_dirty_fixes_controller_spec.rb
+POST	/quick_and_dirty_fixes/force_remove_pages_from_taxac_tags_quick_and_dirty_fix	quick_and_dirty_fixes#force_remove_pages_from_taxac_tags	force_remove_pages_from_taxac_tags_quick_and_dirty_fix	helper	force remove pages from taxac tags: one-click fixes of common data problems for editors	keep	spec/controllers/quick_and_dirty_fixes_controller_spec.rb
+POST	/quick_and_dirty_fixes/remove_pages_from_taxac_tags_quick_and_dirty_fix	quick_and_dirty_fixes#remove_pages_from_taxac_tags	remove_pages_from_taxac_tags_quick_and_dirty_fix	helper	remove pages from taxac tags: one-click fixes of common data problems for editors	keep	spec/controllers/quick_and_dirty_fixes_controller_spec.rb
+POST	/quick_and_dirty_fixes/replace_missing_tags_quick_and_dirty_fix	quick_and_dirty_fixes#replace_missing_tags	replace_missing_tags_quick_and_dirty_fix	helper	replace missing tags: one-click fixes of common data problems for editors	keep	spec/controllers/quick_and_dirty_fixes_controller_spec.rb
+POST	/quick_and_dirty_fixes/strip_except_replacement_name_for_quick_and_dirty_fix	quick_and_dirty_fixes#strip_except_replacement_name_for	strip_except_replacement_name_for_quick_and_dirty_fix	helper	strip except replacement name for: one-click fixes of common data problems for editors	keep	spec/controllers/quick_and_dirty_fixes_controller_spec.rb
+POST	/quick_and_dirty_fixes/update_current_taxon_id_quick_and_dirty_fix	quick_and_dirty_fixes#update_current_taxon_id	update_current_taxon_id_quick_and_dirty_fix	editor	update current taxon id: one-click fixes of common data problems for editors	keep	spec/controllers/quick_and_dirty_fixes_controller_spec.rb
+GET	/my/recently_used_references	my/recently_used_references#show	my_recently_used_references	public	show one: recently used references (kept in the session only)	keep	spec/controllers/my/recently_used_references_controller_spec.rb
+POST	/my/recently_used_references	my/recently_used_references#create		public	add: recently used references (kept in the session only)	keep	spec/controllers/my/recently_used_references_controller_spec.rb
+PATCH	/my/default_reference	my/default_reference#update	my_default_reference	user	change: the editor's default reference	keep	spec/controllers/my/default_reference_controller_spec.rb
+PUT	/my/default_reference	my/default_reference#update		user	change: the editor's default reference	keep	spec/controllers/my/default_reference_controller_spec.rb
+GET	/*id	high_voltage/pages#show	page	public	static pages from app/views/pages (catch-all, last route)	keep	

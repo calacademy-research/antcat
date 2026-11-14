@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# The edit history of a reference.
+#
+# Routes: GET /references/:reference_id/history (anyone). Purpose, rights and tests of each:
+# docs/catalog/routes.tsv.
 module References
   class HistoriesController < ApplicationController
     def show

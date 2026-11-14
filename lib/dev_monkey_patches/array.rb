@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Development console only: opens the localhost page of every record in an array.
 module DevMonkeyPatches
   module Array
     def self.patch!

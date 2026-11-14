@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# The edit history of a history item.
+#
+# Routes: GET /history_items/:history_item_id/history (anyone). Purpose, rights and tests of each:
+# docs/catalog/routes.tsv.
 module HistoryItems
   class HistoriesController < ApplicationController
     def show

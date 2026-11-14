@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# Change a taxon without the usual checks.
+#
+# Routes: GET /taxa/:taxon_id/force_update (superadmins); PATCH /taxa/:taxon_id/force_update (superadmins); PUT
+# /taxa/:taxon_id/force_update (superadmins). Purpose, rights and tests of each: docs/catalog/routes.tsv.
 module Taxa
   class ForceUpdatesController < ApplicationController
     before_action :ensure_user_is_superadmin

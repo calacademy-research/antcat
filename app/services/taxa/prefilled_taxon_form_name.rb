@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# The start of the name in the "Add" form of a child taxon (the parent's name and a space).
 module Taxa
   class PrefilledTaxonFormName
     include Service

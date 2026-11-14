@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Formats a user: link to the user page, "@name" for mentions, the email address with the name, and the badges of
+# the user's rights.
 class UserDecorator < Draper::Decorator
   delegate :name, :email, :editor?, :at_least_helper?
 

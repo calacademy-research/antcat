@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# Set the subgenus of species in a genus.
+#
+# Routes: GET /taxa/:taxon_id/set_subgenus (editors); DELETE /taxa/:taxon_id/set_subgenus (editors); POST
+# /taxa/:taxon_id/set_subgenus (editors). Purpose, rights and tests of each: docs/catalog/routes.tsv.
 module Taxa
   class SetSubgeneraController < ApplicationController
     before_action :ensure_user_is_editor

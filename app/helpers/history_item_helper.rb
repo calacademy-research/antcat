@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# View helpers of the history item forms: the kinds of item to choose from, grouped by rank, and the reference and
+# pages fields.
 module HistoryItemHelper
   def options_for_history_item_types value
     options = History::Definitions::TYPE_DEFINITIONS.each_with_object({}) do |(type, definition), memo|

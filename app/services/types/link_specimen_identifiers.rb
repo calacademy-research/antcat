@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# In type information, links specimen identifiers (CASENT0123456 and the other known prefixes) to their specimen
+# pages on AntWeb.
 module Types
   class LinkSpecimenIdentifiers
     include Service

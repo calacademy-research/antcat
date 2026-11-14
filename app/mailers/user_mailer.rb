@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Emails a user about a new notification (a reply or a mention), if the user allows email notifications.
 class UserMailer < ApplicationMailer
   def new_notification user, notification
     return unless user.enable_email_notifications?

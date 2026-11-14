@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# A taxon of genus-group rank (genus or subgenus).
 class GenusGroupTaxon < Taxon
   belongs_to :subfamily, optional: true
 

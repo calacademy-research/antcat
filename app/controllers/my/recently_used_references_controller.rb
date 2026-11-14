@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# The editor's recently used references.
+#
+# Routes: GET /my/recently_used_references (anyone); POST /my/recently_used_references (anyone). Purpose, rights and
+# tests of each: docs/catalog/routes.tsv.
 module My
   class RecentlyUsedReferencesController < ApplicationController
     NUMBER_OF_RECENT_REFERENCES = 15

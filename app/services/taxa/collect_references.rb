@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# All references a taxon's page cites, from its relations and its taxt.
 module Taxa
   class CollectReferences
     include Service

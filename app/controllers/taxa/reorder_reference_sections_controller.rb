@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# Reorder the reference sections of a taxon.
+#
+# Routes: GET /taxa/:taxon_id/reorder_reference_sections (editors); POST /taxa/:taxon_id/reorder_reference_sections
+# (editors). Purpose, rights and tests of each: docs/catalog/routes.tsv.
 module Taxa
   class ReorderReferenceSectionsController < ApplicationController
     before_action :ensure_user_is_editor

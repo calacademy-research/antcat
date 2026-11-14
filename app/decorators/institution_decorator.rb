@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Formats an institution: the link to its GRSciColl record.
 class InstitutionDecorator < Draper::Decorator
   delegate :grscicoll_identifier
 

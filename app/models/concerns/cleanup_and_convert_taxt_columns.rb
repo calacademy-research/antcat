@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Before a record with taxt columns is saved: tidies the taxt and converts old tag forms to the current ones.
 module CleanupAndConvertTaxtColumns
   private
 

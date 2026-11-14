@@ -1,5 +1,11 @@
 # frozen_string_literal: true
 
+# The feedback form and its list for editors.
+#
+# Routes: PUT /feedbacks/:id/close (helpers); PUT /feedbacks/:id/reopen (helpers); GET /feedbacks (helpers); POST
+# /feedbacks (anyone); GET /feedbacks/new (anyone); GET /feedbacks/:id/edit (helpers); GET /feedbacks/:id (helpers);
+# PATCH /feedbacks/:id (helpers); PUT /feedbacks/:id (helpers); DELETE /feedbacks/:id (superadmins). Purpose, rights
+# and tests of each: docs/catalog/routes.tsv.
 class FeedbacksController < ApplicationController
   RECAPTCHA_V3_ACTION = 'feedback'
 

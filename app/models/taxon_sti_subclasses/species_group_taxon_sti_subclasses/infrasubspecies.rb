@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# An infrasubspecies, within a subspecies.
 class Infrasubspecies < SpeciesGroupTaxon
   belongs_to :species
   belongs_to :subspecies

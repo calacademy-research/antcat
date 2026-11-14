@@ -9,9 +9,14 @@
 #   script/deploy --rollback     go back to the commit saved before the last deploy
 #
 # Options: --timeout SECONDS (health check wait, default 900), --yes (confirm a rollback across
-# migrations), -h/--help.
+# migrations, or a deploy that replaces a running commit that is not on master), --own-script (run this
+# copy, not the one on origin/master; see step 0), -h/--help.
 #
 # What a deploy does, in order:
+#   0. runs the copy of this script on origin/master when the checkout's copy differs (a checkout of a
+#      branch may hold an older one; 2026-11-14). This fetches origin/master first, also on a dry run.
+#      --own-script runs the checkout's copy instead (to try a change to this script on staging: check
+#      out its branch with --ref first, then run the deploy you want with --own-script).
 #   1. refuses if tracked files in the checkout have local changes (never edit them on the server)
 #   2. saves the running commit to /root/antcat-rollback-commit.txt
 #   3. fetches from GitHub and lists the new commits and what kind of files changed
@@ -21,8 +26,13 @@
 #      container when docker-compose.yml changed, otherwise restarts it (startup.sh runs bundle
 #      install, yarn and the asset build on every start, so a Gemfile or asset change needs only that)
 #   6. when db/migrate changed: waits until the gems are installed (bundle check), runs `rails db:migrate` as the app user, restarts
-#   7. waits until the app answers on its local port (not through Cloudflare): /v1/taxa/429011 and
-#      the home page with HTTP 200, and the home page footer shows the new commit
+#   7. waits until the app answers on its local port (not through Cloudflare): the API front door
+#      /v1, the catalog page of a taxon (/catalog/429011: names, history and references read from
+#      the database, as the API and the AntWeb export do) and the home page with HTTP 200, and the
+#      home page footer shows the new commit. None of them is counted by the API keys. /v1 is
+#      never limited or counted by the API keys (Api::V1::RootController skips check_api_access);
+#      a data path such as /v1/taxa/429011 is, and a health check asking it every few seconds ran
+#      into the limit of 50 requests a day without a key (antcat-staging, 2026-11-12)
 #   8. when dockerized_app/nginx/ changed: tests the new nginx config in a throwaway container, then
 #      recreates the nginx container `web` (about a second of interruption) and waits until it
 #      answers. The config files are
@@ -43,6 +53,18 @@
 # by `git checkout` in the middle of a deploy. A function is read whole before it starts.
 main() {
   set -Eeuo pipefail
+  local args=("$@")
+  # Run as origin/master's copy (step 0, below): remove the temporary file at once, whatever ends the run.
+  local from_master="${ANTCAT_DEPLOY_FROM_MASTER:-}"
+  unset ANTCAT_DEPLOY_FROM_MASTER
+  if [ -n "$from_master" ] && [ "${BASH_SOURCE[0]}" = "$from_master" ]; then
+    case "$(basename "$from_master")" in antcat-deploy.??????) ;; *) die "ANTCAT_DEPLOY_FROM_MASTER names $from_master, not a temporary copy (antcat-deploy.XXXXXX); unset it" ;; esac
+    rm -f "${BASH_SOURCE[0]}"   # bash keeps reading the open file
+  fi
+  # Files git writes must stay readable by the app, which runs as another user in the container
+  # and reads the commit from .git/HEAD at boot. A root shell left with umask 077 made .git/HEAD
+  # mode 600: the footer showed no commit and the health check waited 15 minutes (2026-11-12).
+  umask 022
 
   local script_dir
   script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -55,7 +77,11 @@ main() {
   NGINX_WAIT="${ANTCAT_NGINX_WAIT:-30}"
   APP_CONTAINER=antcat-app
   APP_PORT=8080
-  HEALTH_PATHS=("/v1/taxa/429011" "/")
+  # First entry = also the probe through nginx after a recreate (nginx_answers). No path here is
+  # counted by the API keys, and the app has no other request limit on them (nginx limits 10/s).
+  HEALTH_PATHS=("/v1" "/catalog/429011" "/")
+
+  run_master_copy "$from_master" "${args[@]}"
 
   local mode=deploy dry_run=0 ref=master timeout=900 yes=0
   while [ $# -gt 0 ]; do
@@ -65,6 +91,7 @@ main() {
       --ref) ref="${2:?--ref needs a branch or commit}"; shift ;;
       --timeout) timeout="${2:?--timeout needs seconds}"; shift ;;
       --yes) yes=1 ;;
+      --own-script) ;;   # read by run_master_copy
       -h | --help) sed -n '2,/^$/p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; return 0 ;;
       *) die "unknown option: $1 (see --help)" ;;
     esac
@@ -96,8 +123,61 @@ main() {
   if [ "$mode" = rollback ]; then
     do_rollback "$dry_run" "$yes" "$timeout"
   else
-    do_deploy "$dry_run" "$ref" "$timeout"
+    do_deploy "$dry_run" "$ref" "$timeout" "$yes"
   fi
+}
+
+# Step 0: the deploy script of origin/master runs, whatever the checkout holds. antcat-staging, 2026-11-14: a deploy
+# started from a checkout of a branch without #1613 ran that branch's older copy of this script, so the guard for a
+# running commit that is not on master did not exist there. Before the options are read (master's copy may know an
+# option this one does not) and before anything is locked or changed, master's script is fetched; when it differs
+# from this file it is run instead, with the same options. Not with --own-script, or when this run is master's copy.
+run_master_copy() {
+  local from_master="$1"; shift
+  local own=0 rollback=0 help=0 a
+  for a in "$@"; do
+    case "$a" in
+      --own-script) own=1 ;;
+      --rollback) rollback=1 ;;
+      -h | --help) help=1 ;;
+    esac
+  done
+  if [ -n "$from_master" ]; then
+    [ "${BASH_SOURCE[0]}" = "$from_master" ] \
+      || say "WARNING: ANTCAT_DEPLOY_FROM_MASTER was set in this shell: running this copy without comparing it with origin/master (unset it)"
+    return 0
+  fi
+  [ "$help" = 1 ] && return 0
+  if [ "$own" = 1 ]; then
+    say "--own-script: running this copy of the deploy script, not the one on origin/master"
+    return 0
+  fi
+  local dir
+  dir="${ANTCAT_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
+  git -C "$dir" rev-parse --git-dir > /dev/null 2>&1 || return 0   # main says it is not a checkout
+  # an explicit refspec: origin/master is updated whatever fetch refspec the checkout was cloned with
+  if ! git -C "$dir" fetch -q origin +refs/heads/master:refs/remotes/origin/master; then
+    # a rollback must work while GitHub cannot be reached; a deploy fetches anyway
+    [ "$rollback" = 1 ] && { say "WARNING: cannot fetch origin/master; rolling back with this copy of the script"; return 0; }
+    die "cannot fetch origin/master from GitHub. Nothing was changed. (--own-script runs this copy without fetching.)"
+  fi
+  if ! git -C "$dir" cat-file -e origin/master:script/deploy 2> /dev/null; then
+    say "WARNING: origin/master has no script/deploy; running this copy"
+    return 0
+  fi
+  local master_script
+  master_script="$(mktemp "${TMPDIR:-/tmp}/antcat-deploy.XXXXXX")" \
+    || die "cannot write a temporary file in ${TMPDIR:-/tmp}. Nothing was changed. (--own-script runs this copy.)"
+  git -C "$dir" show origin/master:script/deploy > "$master_script" \
+    || { rm -f "$master_script"; die "cannot read script/deploy of origin/master. Nothing was changed."; }
+  if cmp -s "$master_script" "${BASH_SOURCE[0]}"; then
+    rm -f "$master_script"
+    return 0
+  fi
+  say "running the deploy script of origin/master ($(git -C "$dir" rev-parse --short=9 origin/master)), not the copy in this checkout (if it fails before changing anything, --own-script runs this copy)"
+  shopt -s execfail   # a failed exec returns here, so the temporary copy is removed
+  ANTCAT_DEPLOY_FROM_MASTER="$master_script" ANTCAT_DIR="$dir" exec bash "$master_script" "$@" \
+    || { rm -f "$master_script"; die "could not run the deploy script of origin/master. Nothing was changed."; }
 }
 
 die() { echo "deploy: ERROR: $*" >&2; exit 1; }
@@ -166,6 +246,20 @@ http_code() {
   echo "$code"
 }
 
+# Mode and owner of .git/HEAD: the app reads the running commit from it and must be able to.
+head_mode() {
+  local m
+  if ! m="$(stat -c '%a %U' "$APP_DIR/.git/HEAD" 2> /dev/null)"; then
+    echo "could not read the mode of $APP_DIR/.git/HEAD"
+    return 0
+  fi
+  # The app user is neither the owner (root) nor in root's group: the last digit decides.
+  case "$m" in
+    *[4567]\ *) echo ".git/HEAD is $m" ;;
+    *) echo ".git/HEAD is $m: not readable by the app user; run chmod go+r on it and on what git wrote with it" ;;
+  esac
+}
+
 container_running() {
   [ "$(docker inspect -f '{{.State.Running}}' "$APP_CONTAINER" 2> /dev/null || true)" = true ]
 }
@@ -206,7 +300,11 @@ wait_healthy() {
         say "healthy after ${waited}s: ${HEALTH_PATHS[*]} answer 200, footer shows ${commit7}"
         return 0
       fi
-      code="200, but footer does not show ${commit7} yet"
+      if [[ "$body" == *"/commit/"* ]]; then
+        code="200, but the footer still shows another commit (the old process)"
+      else
+        code="200, but the footer shows no commit: the app could not read it ($(head_mode))"
+      fi
     fi
     if ! container_running && [ "$waited" -ge 30 ]; then
       say "container $APP_CONTAINER is not running"
@@ -350,7 +448,7 @@ warn_nginx_problem() {
 }
 
 do_deploy() {
-  local dry_run="$1" ref="$2" timeout="$3"
+  local dry_run="$1" ref="$2" timeout="$3" yes="${4:-0}"
   local prev target branch running last_failed=0
   MIGRATED=0
   CHANGES=""
@@ -391,6 +489,30 @@ do_deploy() {
   CHANGES="$(classify_changes "$prev" "$target")"
   local changes="$CHANGES"
   show_plan "$prev" "$target" "$changes"
+
+  # A running commit that the target does not contain and that is not on master is a branch being
+  # tested here (antcat-staging, 2026-11-13: a plain deploy of master replaced a feature branch that
+  # was being tested, and only warned). Ask for --yes before replacing it. "On master" is by ancestry: pull
+  # requests here are merged with merge commits, so a merged branch's commits are on master.
+  if [ "$last_failed" = 0 ] && ! git merge-base --is-ancestor "$running" "$target"; then
+    # origin was fetched above. merge-base answers 0 (on master), 1 (not on master), or more (it cannot tell: stop).
+    local on_master_rc=0
+    git merge-base --is-ancestor "$running" origin/master || on_master_rc=$?
+    case "$on_master_rc" in
+      0) ;;
+      1)
+        local holders
+        holders="$( { git branch -r --contains "$running" 2> /dev/null || true; } | { grep -v -- '->' || true; } \
+          | sed 's/^ *origin\///' | tr '\n' ' ' | sed 's/ $//')"
+        say "the running commit $(short "$running") is not on master${holders:+ (it is on: $holders)}: probably a branch being tested here."
+        if [ "$yes" != 1 ]; then
+          [ "$dry_run" = 1 ] && say "a real deploy would stop here and ask for --yes."
+          [ "$dry_run" = 1 ] || die "this deploy would replace it. Nothing was changed. If that is intended, run again with --yes."
+        fi
+        ;;
+      *) die "cannot tell whether the running commit $(short "$running") is on origin/master (git merge-base exit $on_master_rc). Nothing was changed." ;;
+    esac
+  fi
 
   # After a rollback on a branch checkout (production), go back onto master.
   local reattach=0

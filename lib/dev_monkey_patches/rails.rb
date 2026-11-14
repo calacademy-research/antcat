@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Development console only: prints a list of taxa as a table (id, rank, status, name, link).
 module DevMonkeyPatches
   module Rails
     def self.patch!

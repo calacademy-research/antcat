@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# A taxon: a name in the catalog with its rank (the subclass), status, parents, protonym and current taxon (table
+# `taxa`, docs/data-model.md).
 class Taxon < ApplicationRecord
   include Trackable
 

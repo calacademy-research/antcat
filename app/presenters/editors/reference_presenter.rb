@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# The editors' part of a reference page: the review buttons (start, finish, restart reviewing) and the other editing
+# links.
 module Editors
   class ReferencePresenter
     include Rails.application.routes.url_helpers

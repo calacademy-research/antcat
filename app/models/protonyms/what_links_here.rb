@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# "What links here" for a protonym: the taxa and history items that point at it, and the taxt that names it.
 module Protonyms
   class WhatLinksHere
     RECORD_TO_TAG_REGEX_TAXT_METHOD = :protonym

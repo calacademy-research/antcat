@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+# Review status of new references.
+#
+# Routes: POST /references/:id/reviews/start (editors); POST /references/:id/reviews/finish (editors); POST
+# /references/:id/reviews/restart (editors); PUT /references/reviews/approve_all (superadmins). Purpose, rights and
+# tests of each: docs/catalog/routes.tsv.
 module References
   class ReviewsController < ApplicationController
     before_action :ensure_user_is_editor

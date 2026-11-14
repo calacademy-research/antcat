@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# A taxon of species-group rank (species, subspecies, infrasubspecies); its protonym must have a species-group name.
 class SpeciesGroupTaxon < Taxon
   belongs_to :subfamily, optional: true
   belongs_to :genus

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Formats the comment count and the link to the comments of a record that takes comments (issue, feedback, site
+# notice).
 class CommentableDecorator < Draper::Decorator
   def link_existing_comments_section
     return unless commentable.comments.any?

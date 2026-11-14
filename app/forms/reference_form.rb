@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# The form object behind the reference form: author names, journal or publisher and the other fields, saved
+# together; warns of a possible duplicate before saving.
 class ReferenceForm
   include ActiveModel::Model
 

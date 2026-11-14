@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# A genus, within a subfamily and tribe, with its subgenera, species and subspecies.
 class Genus < GenusGroupTaxon
   belongs_to :tribe, optional: true
 

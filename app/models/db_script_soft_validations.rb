@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# The database scripts run as soft validations on taxon and protonym pages, and their warnings.
 class DbScriptSoftValidations
   WARN_ON_DATABASE_SCRIPTS_RUNTIME_OVER = 0.2.seconds
 

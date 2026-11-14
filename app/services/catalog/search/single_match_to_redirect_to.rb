@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# The quick search box: when the text matches exactly one taxon by name or epithet, the taxon to go to directly.
 module Catalog
   module Search
     class SingleMatchToRedirectTo

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# The short key of a reference ("Bolton, 1995b"), as HTML or plain text.
 module References
   class Key
     attr_private_initialize :reference

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# A person who wrote references; the spellings of the name are its author names (table `authors`, docs/data-
+# model.md).
 class Author < ApplicationRecord
   include Trackable
 

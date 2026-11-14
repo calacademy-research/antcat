@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Renders Markdown without the <p> around a single paragraph (for inline text).
 module Markdowns
   class RenderWithoutWrappingP
     include Service

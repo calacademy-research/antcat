@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# The sections and tags of database scripts (slow, new, has quick fix, high priority...), used to group and filter
+# them on /database_scripts.
 module DatabaseScripts
   module Tagging
     SECTIONS = [

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# The name of a subspecies, with its subspecies epithet and short form (C. f. rufa).
 class SubspeciesName < SpeciesGroupName
   def subspecies_epithet
     cleaned_name_parts[2]

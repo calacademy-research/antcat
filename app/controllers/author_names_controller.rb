@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+# Author name spellings of an author.
+#
+# Routes: POST /authors/:author_id/author_names (editors); GET /authors/:author_id/author_names/new (editors); GET
+# /author_names/:id/edit (editors); PATCH /author_names/:id (editors); PUT /author_names/:id (editors); DELETE
+# /author_names/:id (editors). Purpose, rights and tests of each: docs/catalog/routes.tsv.
 class AuthorNamesController < ApplicationController
   before_action :ensure_user_is_editor
 

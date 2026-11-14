@@ -74,6 +74,8 @@ case "$1" in
       echo "${FAKE_HTTP:-200}"; exit 0
     fi
     if [[ "$*" == *curl* ]]; then
+      # FAKE_FOOTER_NONE: the app could not read its commit, the footer shows the version only.
+      if [ -n "${FAKE_FOOTER_NONE:-}" ]; then echo "<footer>Version 4.0.0</footer>"; exit 0; fi
       c="$(git -C "$ANTCAT_DIR" rev-parse HEAD)"
       echo "<footer><a href=\"https://github.com/calacademy-research/antcat/commit/$c\" title=\"Deployed commit on GitHub\">${c:0:7}</a></footer>"
       exit 0
@@ -139,7 +141,9 @@ check "rollback file holds the old commit" [ "$(cat "$ANTCAT_ROLLBACK_FILE")" = 
 check "restarted the app" docker_called "restart antcat-app"
 check "no rebuild" not docker_called "compose build"
 check "no migration" not docker_called "db:migrate"
-check "health check on the local port" docker_called "http://127.0.0.1:8080/v1/taxa/429011"
+check "health check asks the API front door on the local port" docker_called "http://127.0.0.1:8080/v1\\( \\|$\\)"
+check "health check asks a taxon's catalog page" docker_called "http://127.0.0.1:8080/catalog/429011"
+check "health check never asks a data path the API keys limit" not docker_called "8080/v1/"
 check "prints the deployed commit" out_has "DEPLOYED $B"
 show; check "prints a server log entry" out_has "Server log entry:"
 check "writes the deploy log" grep -q "deploy OK" "$ANTCAT_DEPLOY_LOG"
@@ -232,6 +236,138 @@ F="$(git -C "$WORK" rev-parse HEAD)"
 run --ref feature
 check "exits 0" [ "$RC" -eq 0 ]
 check "HEAD is the feature commit" head_is "$F"
+teardown
+
+setup "a plain deploy does not replace a tested branch without --yes"
+git -C "$WORK" checkout -q -b feature
+echo x > "$WORK/feature.txt"; git -C "$WORK" add -A; git -C "$WORK" commit -qm "F: feature"
+git -C "$WORK" push -q origin feature
+F="$(git -C "$WORK" rev-parse HEAD)"
+run --ref feature
+check "the feature branch is deployed" head_is "$F"
+STARTS="$(grep -c "deploy start" "$ANTCAT_DEPLOY_LOG")"
+run --dry-run
+check "dry run exits 0" [ "$RC" -eq 0 ]
+check "dry run names the branch" out_has "is not on master (it is on: feature)"
+check "dry run says a real deploy would ask for --yes" out_has "a real deploy would stop here and ask for --yes"
+run
+check "refuses without --yes" [ "$RC" -ne 0 ]
+check "says how to go on" out_has "run again with --yes"
+check "HEAD is still the feature commit" head_is "$F"
+check "the rollback commit is not overwritten" [ "$(tr -d '[:space:]' < "$ANTCAT_ROLLBACK_FILE")" = "$A" ]
+check "no new deploy start in the log" [ "$(grep -c "deploy start" "$ANTCAT_DEPLOY_LOG")" = "$STARTS" ]
+run --yes
+check "deploys master with --yes" head_is "$A"
+teardown
+
+setup "a newer commit of the tested branch needs no --yes"
+git -C "$WORK" checkout -q -b feature
+echo x > "$WORK/feature.txt"; git -C "$WORK" add -A; git -C "$WORK" commit -qm "F: feature"
+git -C "$WORK" push -q origin feature
+run --ref feature
+check "the first feature commit is deployed" [ "$RC" -eq 0 ]
+echo y > "$WORK/feature.txt"; git -C "$WORK" commit -qam "F2: feature"
+git -C "$WORK" push -q origin feature
+F2="$(git -C "$WORK" rev-parse HEAD)"
+run --ref feature
+check "exits 0" [ "$RC" -eq 0 ]
+check "HEAD is the newer feature commit" head_is "$F2"
+check "no --yes asked" not out_has "run again with --yes"
+teardown
+
+setup "a tested branch deleted on GitHub: still asks for --yes, with a message"
+git -C "$WORK" checkout -q -b feature
+echo x > "$WORK/feature.txt"; git -C "$WORK" add -A; git -C "$WORK" commit -qm "F: feature"
+git -C "$WORK" push -q origin feature
+F="$(git -C "$WORK" rev-parse HEAD)"
+run --ref feature
+check "the feature branch is deployed" head_is "$F"
+git -C "$WORK" push -q origin --delete feature
+git -C "$SERVER" fetch -q --prune origin
+run --dry-run
+check "dry run exits 0" [ "$RC" -eq 0 ]
+check "says it is not on master, no branch named" out_has "is not on master: probably a branch being tested here"
+run
+check "refuses without --yes" [ "$RC" -ne 0 ]
+check "says how to go on" out_has "run again with --yes"
+check "HEAD is still the feature commit" head_is "$F"
+run --yes
+check "deploys master with --yes" head_is "$A"
+teardown
+
+setup "runs the deploy script of origin/master when the checkout's copy differs"
+mkdir -p "$WORK/script"
+# shellcheck disable=SC2016  # the stub expands them when it runs
+printf '#!/usr/bin/env bash\necho "MASTER SCRIPT $* dir=$ANTCAT_DIR"; [ -n "$ANTCAT_DEPLOY_FROM_MASTER" ] && echo FROM_SET\n' > "$WORK/script/deploy"
+git -C "$WORK" add -A; git -C "$WORK" commit -qm "M: master's deploy script"; git -C "$WORK" push -q origin master
+run --dry-run --timeout 5
+check "exits 0" [ "$RC" -eq 0 ]
+check "says it runs master's script" out_has "running the deploy script of origin/master"
+check "master's script ran with the same options" out_has "MASTER SCRIPT --dry-run --timeout 5 dir=$SERVER"
+check "told it is master's copy" out_has "FROM_SET"
+run --an-option-only-master-knows
+check "an option only master's copy knows reaches it" out_has "MASTER SCRIPT --an-option-only-master-knows"
+check "did not move HEAD" head_is "$A"
+teardown
+
+setup "runs its own copy when it is master's"
+mkdir -p "$WORK/script" "$T/tmp"
+cp "$DEPLOY" "$WORK/script/deploy"
+git -C "$WORK" add -A; git -C "$WORK" commit -qm "M: master's deploy script = this one"; git -C "$WORK" push -q origin master
+TMPDIR="$T/tmp" run --dry-run
+check "exits 0" [ "$RC" -eq 0 ]
+check "does not say it runs another script" not out_has "running the deploy script of origin/master"
+check "the dry run ran" out_has "dry run: nothing changed."
+check "no temporary copy left" [ -z "$(find "$T/tmp" -name 'antcat-deploy.*')" ]
+teardown
+
+setup "--own-script runs this copy although master's differs"
+mkdir -p "$WORK/script"
+echo 'echo MASTER SCRIPT' > "$WORK/script/deploy"
+git -C "$WORK" add -A; git -C "$WORK" commit -qm "M: master's deploy script"; git -C "$WORK" push -q origin master
+run --dry-run --own-script
+check "exits 0" [ "$RC" -eq 0 ]
+check "says so" out_has "--own-script: running this copy"
+check "master's copy did not run" not out_has "MASTER SCRIPT"
+check "the dry run ran" out_has "dry run: nothing changed."
+teardown
+
+setup "the temporary copy removes itself; the variable set by hand is said"
+mkdir -p "$T/tmp"
+cp "$DEPLOY" "$T/tmp/antcat-deploy.abc123"
+OUT="$(ANTCAT_DIR="$SERVER" ANTCAT_DEPLOY_FROM_MASTER="$T/tmp/antcat-deploy.abc123" bash "$T/tmp/antcat-deploy.abc123" --dry-run 2>&1)"; RC=$?
+check "exits 0" [ "$RC" -eq 0 ]
+check "the temporary copy is gone" [ ! -e "$T/tmp/antcat-deploy.abc123" ]
+OUT="$(ANTCAT_DIR="$SERVER" ANTCAT_DEPLOY_FROM_MASTER=1 "$DEPLOY" --dry-run 2>&1)"; RC=$?
+check "exits 0 (variable set by hand)" [ "$RC" -eq 0 ]
+check "the checkout's copy stays" [ -e "$DEPLOY" ]
+check "says the variable is set" out_has "ANTCAT_DEPLOY_FROM_MASTER was set in this shell"
+cp "$DEPLOY" "$T/tmp/antcat-deploy.def456"
+OUT="$(ANTCAT_DIR="$SERVER" ANTCAT_DEPLOY_FROM_MASTER="$T/tmp/antcat-deploy.def456" bash "$T/tmp/antcat-deploy.def456" --no-such-option 2>&1)"; RC=$?
+check "an early stop still removes the temporary copy" [ ! -e "$T/tmp/antcat-deploy.def456" ]
+teardown
+
+setup "GitHub cannot be reached: a deploy stops, a rollback goes on with this copy"
+B="$(push_change app/models/taxon.rb "B: model change")"
+run
+check "deploy to B" head_is "$B"
+git -C "$SERVER" remote set-url origin "$T/no-such-origin.git"
+run --dry-run
+check "a deploy stops" [ "$RC" -ne 0 ]
+check "says why and how to go on" out_has "cannot fetch origin/master from GitHub. Nothing was changed. (--own-script"
+run --rollback
+check "the rollback goes on" [ "$RC" -eq 0 ]
+check "warns" out_has "cannot fetch origin/master; rolling back with this copy of the script"
+check "rolled back to A" head_is "$A"
+teardown
+
+setup "says when origin/master has no deploy script, and goes on"
+mkdir -p "$T/tmp"
+push_change app/models/taxon.rb "B: model change" > /dev/null
+TMPDIR="$T/tmp" run --dry-run
+check "exits 0" [ "$RC" -eq 0 ]
+check "warns" out_has "origin/master has no script/deploy; running this copy"
+check "no temporary copy left" [ -z "$(find "$T/tmp" -name 'antcat-deploy.*')" ]
 teardown
 
 setup "refuses when the deploy log cannot be written"
@@ -397,8 +533,8 @@ check "plan says nginx is recreated" out_has "nginx config .*YES: tested, then t
 check "tested the new config in a throwaway container" docker_called "compose .* run --rm --no-deps -T web nginx -t"
 check "recreated only the nginx container" docker_called "compose .*up -d --force-recreate --no-deps web"
 check "did not rely on a reload" not docker_called "nginx -s reload"
-check "asked for a page through nginx, with the site's own name" docker_called "exec antcat-app curl .*--connect-to www.antcat.org:443:web:443 https://www.antcat.org/v1/taxa/429011"
-check "says nginx serves the site with the new config" out_has "nginx serves the site with this config (/v1/taxa/429011 through nginx: 200)"
+check "asked for a page through nginx, with the site's own name" docker_called "exec antcat-app curl .*--connect-to www.antcat.org:443:web:443 https://www.antcat.org/v1"
+check "says nginx serves the site with the new config" out_has "nginx serves the site with this config (/v1 through nginx: 200)"
 check "server log line records it" out_has "nginx: recreated with the checked-out config)"
 check "no nginx warning" not out_has "WARNING (nginx)"
 teardown
@@ -433,7 +569,7 @@ B="$(push_change dockerized_app/nginx/default.conf "B: nginx header")"
 export FAKE_NGINX_DOWN_CALLS=1000 ANTCAT_NGINX_WAIT=2
 run
 check "the deploy itself succeeds" [ "$RC" -eq 0 ]
-check "warns that nginx does not serve the site" out_has "WARNING (nginx): the nginx container was recreated but does not serve the site (/v1/taxa/429011 through nginx: 000 after [2-9] s, 200 expected)"
+check "warns that nginx does not serve the site" out_has "WARNING (nginx): the nginx container was recreated but does not serve the site (/v1 through nginx: 000 after [2-9] s, 200 expected)"
 check "does not claim the site is served" not out_has "nginx serves the site"
 check "server log line records it" out_has "nginx: PROBLEM, see the deploy output)"
 teardown
@@ -452,7 +588,7 @@ B="$(push_change dockerized_app/nginx/default.conf "B: nginx header")"
 export FAKE_NGINX_HTTP=502 ANTCAT_NGINX_WAIT=2
 run
 check "the deploy itself succeeds" [ "$RC" -eq 0 ]
-check "warns with the status" out_has "WARNING (nginx): the nginx container was recreated but does not serve the site (/v1/taxa/429011 through nginx: 502"
+check "warns with the status" out_has "WARNING (nginx): the nginx container was recreated but does not serve the site (/v1 through nginx: 502"
 check "does not claim the site is served" not out_has "nginx serves the site"
 teardown
 
@@ -525,6 +661,23 @@ check "exits 0" [ "$RC" -eq 0 ]
 check "no nginx test" not docker_called "web nginx -t"
 check "no recreate" not docker_called "force-recreate"
 check "no reload" not docker_called "nginx -s reload"
+teardown
+
+setup "a root shell with umask 077 does not make the checkout unreadable for the app"
+B="$(push_change app/models/taxon.rb "B: model change")"
+OLD_UMASK="$(umask)"; umask 077; run; umask "$OLD_UMASK"
+check "exits 0" [ "$RC" -eq 0 ]
+check "HEAD is the new commit" head_is "$B"
+check ".git/HEAD readable by others" [ "$(( $(stat -c '%a' "$SERVER/.git/HEAD") % 10 ))" -ge 4 ]
+check "the changed file is readable by others" [ "$(( $(stat -c '%a' "$SERVER/app/models/taxon.rb") % 10 ))" -ge 4 ]
+teardown
+
+setup "a footer without any commit says the app could not read it"
+B="$(push_change app/models/taxon.rb "B: model change")"
+export FAKE_FOOTER_NONE=1
+run --timeout 3
+check "exits non-zero" [ "$RC" -ne 0 ]
+check "says the footer shows no commit" out_has "the footer shows no commit: the app could not read it (.git/HEAD is "
 teardown
 
 echo

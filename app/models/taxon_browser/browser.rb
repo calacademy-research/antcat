@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# The taxon browser of catalog pages: the tabs from family down to the taxon, each listing the taxa of a rank.
 module TaxonBrowser
   class Browser
     attr_reader :view
