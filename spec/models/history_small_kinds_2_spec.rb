@@ -24,7 +24,7 @@ describe HistoryItem do
     end
 
     it 'renders unidentifiable taxon, subgenus indeterminate and duplicated in' do
-      a = create :history_item, :unidentifiable_taxon, protonym: protonym
+      a = create :history_item, :unplaced_unidentifiable_taxon, protonym: protonym
       b = create :history_item, :subgenus_indeterminate, protonym: protonym
       c = create :history_item, :duplicated_in, protonym: protonym
       expect(a.to_taxt).to eq "Unidentifiable taxon: #{a.citation_taxt}."
