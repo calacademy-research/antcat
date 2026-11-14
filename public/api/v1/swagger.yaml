@@ -1,7 +1,7 @@
 swagger: '2.0'
 
 info:
-  version: "1.11.0"
+  version: "1.12.0"
   title: AntCat REST API
   description: >-
     Read only API to access antcat.org. Terms, limits and how to cite: https://www.antcat.org/v1 and
@@ -760,8 +760,8 @@ definitions:
         description: Long field with text and notes. For a species-group name, a note beginning "Spelling" gives the short explanation of the accepted spelling and the part of speech.
       gender_agreement_type:
         type: string
-        enum: [adjective, participle, noun_in_apposition, noun_in_genitive_case]
-        description: Part of speech of a species-group epithet. Adjectives and participles agree with the gender of the genus (ICZN Art. 31.2); nouns keep their ending (Arts. 31.2.1, 34.2.1).
+        enum: [adjective, participle, noun_in_apposition, noun_in_genitive_case, indeclinable]
+        description: Part of speech of a species-group epithet. Adjectives and participles agree with the gender of the genus (ICZN Art. 31.2); nouns keep their ending (Arts. 31.2.1, 34.2.1). indeclinable is a treatment, not a part of speech; a word (or final component) that is not Latin or Latinized keeps its ending (Art. 31.2.3).
       masculine_epithet:
         type: string
         description: Spelling of an adjectival or participial epithet in a masculine genus
@@ -773,8 +773,8 @@ definitions:
         description: Spelling of an adjectival or participial epithet in a neuter genus
       part_of_speech_basis:
         type: string
-        enum: [author_stated, grammatical_form, original_usage, noun_by_default, commission_ruling]
-        description: "Why AntCat reads the epithet as this part of speech. author_stated: stated by the original author. grammatical_form: the grammatical form of the epithet (Art. 31.2). original_usage: the original author's use of the name in the original publication (Art. 31.2.2). noun_by_default: noun in apposition by default, the original author gave no indication (Art. 31.2.2). commission_ruling: a ruling of the Commission. Except for commission_ruling, an interpretation adopted by AntCat, not a ruling of the Commission; rules on the AntCat wiki page 'AntCat policy on name grammar and spelling'."
+        enum: [author_stated, grammatical_form, original_usage, noun_by_default, not_latin, commission_ruling]
+        description: "Why AntCat reads the epithet as this part of speech. author_stated: stated by the original author. grammatical_form: the grammatical form of the epithet (Art. 31.2). original_usage: the original author's use of the name in the original publication (Art. 31.2.2). noun_by_default: noun in apposition by default, the original author gave no indication (Art. 31.2.2). not_latin: the word, or its final component, is not Latin or Latinized, so indeclinable (Arts. 26, 31.2.3). commission_ruling: a ruling of the Commission. Except for commission_ruling, an interpretation adopted by AntCat, not a ruling of the Commission; rules on the AntCat wiki page 'AntCat policy on name grammar and spelling'."
       spelling_basis:
         type: string
         enum: [original_spelling, gender_agreement, justified_emendation, unjustified_emendation_in_prevailing_usage, incorrect_subsequent_spelling_in_prevailing_usage, commission_ruling]
