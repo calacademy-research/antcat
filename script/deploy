@@ -9,9 +9,14 @@
 #   script/deploy --rollback     go back to the commit saved before the last deploy
 #
 # Options: --timeout SECONDS (health check wait, default 900), --yes (confirm a rollback across
-# migrations, or a deploy that replaces a running commit that is not on master), -h/--help.
+# migrations, or a deploy that replaces a running commit that is not on master), --own-script (run this
+# copy, not the one on origin/master; see step 0), -h/--help.
 #
 # What a deploy does, in order:
+#   0. runs the copy of this script on origin/master when the checkout's copy differs (a checkout of a
+#      branch may hold an older one; 2026-11-14). This fetches origin/master first, also on a dry run.
+#      --own-script runs the checkout's copy instead (to try a change to this script on staging: check
+#      out its branch with --ref first, then run the deploy you want with --own-script).
 #   1. refuses if tracked files in the checkout have local changes (never edit them on the server)
 #   2. saves the running commit to /root/antcat-rollback-commit.txt
 #   3. fetches from GitHub and lists the new commits and what kind of files changed
@@ -48,6 +53,14 @@
 # by `git checkout` in the middle of a deploy. A function is read whole before it starts.
 main() {
   set -Eeuo pipefail
+  local args=("$@")
+  # Run as origin/master's copy (step 0, below): remove the temporary file at once, whatever ends the run.
+  local from_master="${ANTCAT_DEPLOY_FROM_MASTER:-}"
+  unset ANTCAT_DEPLOY_FROM_MASTER
+  if [ -n "$from_master" ] && [ "${BASH_SOURCE[0]}" = "$from_master" ]; then
+    case "$(basename "$from_master")" in antcat-deploy.??????) ;; *) die "ANTCAT_DEPLOY_FROM_MASTER names $from_master, not a temporary copy (antcat-deploy.XXXXXX); unset it" ;; esac
+    rm -f "${BASH_SOURCE[0]}"   # bash keeps reading the open file
+  fi
   # Files git writes must stay readable by the app, which runs as another user in the container
   # and reads the commit from .git/HEAD at boot. A root shell left with umask 077 made .git/HEAD
   # mode 600: the footer showed no commit and the health check waited 15 minutes (2026-11-12).
@@ -68,6 +81,8 @@ main() {
   # counted by the API keys, and the app has no other request limit on them (nginx limits 10/s).
   HEALTH_PATHS=("/v1" "/catalog/429011" "/")
 
+  run_master_copy "$from_master" "${args[@]}"
+
   local mode=deploy dry_run=0 ref=master timeout=900 yes=0
   while [ $# -gt 0 ]; do
     case "$1" in
@@ -76,6 +91,7 @@ main() {
       --ref) ref="${2:?--ref needs a branch or commit}"; shift ;;
       --timeout) timeout="${2:?--timeout needs seconds}"; shift ;;
       --yes) yes=1 ;;
+      --own-script) ;;   # read by run_master_copy
       -h | --help) sed -n '2,/^$/p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; return 0 ;;
       *) die "unknown option: $1 (see --help)" ;;
     esac
@@ -109,6 +125,59 @@ main() {
   else
     do_deploy "$dry_run" "$ref" "$timeout" "$yes"
   fi
+}
+
+# Step 0: the deploy script of origin/master runs, whatever the checkout holds. antcat-staging, 2026-11-14: a deploy
+# started from a checkout of a branch without #1613 ran that branch's older copy of this script, so the guard for a
+# running commit that is not on master did not exist there. Before the options are read (master's copy may know an
+# option this one does not) and before anything is locked or changed, master's script is fetched; when it differs
+# from this file it is run instead, with the same options. Not with --own-script, or when this run is master's copy.
+run_master_copy() {
+  local from_master="$1"; shift
+  local own=0 rollback=0 help=0 a
+  for a in "$@"; do
+    case "$a" in
+      --own-script) own=1 ;;
+      --rollback) rollback=1 ;;
+      -h | --help) help=1 ;;
+    esac
+  done
+  if [ -n "$from_master" ]; then
+    [ "${BASH_SOURCE[0]}" = "$from_master" ] \
+      || say "WARNING: ANTCAT_DEPLOY_FROM_MASTER was set in this shell: running this copy without comparing it with origin/master (unset it)"
+    return 0
+  fi
+  [ "$help" = 1 ] && return 0
+  if [ "$own" = 1 ]; then
+    say "--own-script: running this copy of the deploy script, not the one on origin/master"
+    return 0
+  fi
+  local dir
+  dir="${ANTCAT_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
+  git -C "$dir" rev-parse --git-dir > /dev/null 2>&1 || return 0   # main says it is not a checkout
+  # an explicit refspec: origin/master is updated whatever fetch refspec the checkout was cloned with
+  if ! git -C "$dir" fetch -q origin +refs/heads/master:refs/remotes/origin/master; then
+    # a rollback must work while GitHub cannot be reached; a deploy fetches anyway
+    [ "$rollback" = 1 ] && { say "WARNING: cannot fetch origin/master; rolling back with this copy of the script"; return 0; }
+    die "cannot fetch origin/master from GitHub. Nothing was changed. (--own-script runs this copy without fetching.)"
+  fi
+  if ! git -C "$dir" cat-file -e origin/master:script/deploy 2> /dev/null; then
+    say "WARNING: origin/master has no script/deploy; running this copy"
+    return 0
+  fi
+  local master_script
+  master_script="$(mktemp "${TMPDIR:-/tmp}/antcat-deploy.XXXXXX")" \
+    || die "cannot write a temporary file in ${TMPDIR:-/tmp}. Nothing was changed. (--own-script runs this copy.)"
+  git -C "$dir" show origin/master:script/deploy > "$master_script" \
+    || { rm -f "$master_script"; die "cannot read script/deploy of origin/master. Nothing was changed."; }
+  if cmp -s "$master_script" "${BASH_SOURCE[0]}"; then
+    rm -f "$master_script"
+    return 0
+  fi
+  say "running the deploy script of origin/master ($(git -C "$dir" rev-parse --short=9 origin/master)), not the copy in this checkout (if it fails before changing anything, --own-script runs this copy)"
+  shopt -s execfail   # a failed exec returns here, so the temporary copy is removed
+  ANTCAT_DEPLOY_FROM_MASTER="$master_script" ANTCAT_DIR="$dir" exec bash "$master_script" "$@" \
+    || { rm -f "$master_script"; die "could not run the deploy script of origin/master. Nothing was changed."; }
 }
 
 die() { echo "deploy: ERROR: $*" >&2; exit 1; }

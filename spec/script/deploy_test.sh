@@ -295,6 +295,81 @@ run --yes
 check "deploys master with --yes" head_is "$A"
 teardown
 
+setup "runs the deploy script of origin/master when the checkout's copy differs"
+mkdir -p "$WORK/script"
+# shellcheck disable=SC2016  # the stub expands them when it runs
+printf '#!/usr/bin/env bash\necho "MASTER SCRIPT $* dir=$ANTCAT_DIR"; [ -n "$ANTCAT_DEPLOY_FROM_MASTER" ] && echo FROM_SET\n' > "$WORK/script/deploy"
+git -C "$WORK" add -A; git -C "$WORK" commit -qm "M: master's deploy script"; git -C "$WORK" push -q origin master
+run --dry-run --timeout 5
+check "exits 0" [ "$RC" -eq 0 ]
+check "says it runs master's script" out_has "running the deploy script of origin/master"
+check "master's script ran with the same options" out_has "MASTER SCRIPT --dry-run --timeout 5 dir=$SERVER"
+check "told it is master's copy" out_has "FROM_SET"
+run --an-option-only-master-knows
+check "an option only master's copy knows reaches it" out_has "MASTER SCRIPT --an-option-only-master-knows"
+check "did not move HEAD" head_is "$A"
+teardown
+
+setup "runs its own copy when it is master's"
+mkdir -p "$WORK/script" "$T/tmp"
+cp "$DEPLOY" "$WORK/script/deploy"
+git -C "$WORK" add -A; git -C "$WORK" commit -qm "M: master's deploy script = this one"; git -C "$WORK" push -q origin master
+TMPDIR="$T/tmp" run --dry-run
+check "exits 0" [ "$RC" -eq 0 ]
+check "does not say it runs another script" not out_has "running the deploy script of origin/master"
+check "the dry run ran" out_has "dry run: nothing changed."
+check "no temporary copy left" [ -z "$(find "$T/tmp" -name 'antcat-deploy.*')" ]
+teardown
+
+setup "--own-script runs this copy although master's differs"
+mkdir -p "$WORK/script"
+echo 'echo MASTER SCRIPT' > "$WORK/script/deploy"
+git -C "$WORK" add -A; git -C "$WORK" commit -qm "M: master's deploy script"; git -C "$WORK" push -q origin master
+run --dry-run --own-script
+check "exits 0" [ "$RC" -eq 0 ]
+check "says so" out_has "--own-script: running this copy"
+check "master's copy did not run" not out_has "MASTER SCRIPT"
+check "the dry run ran" out_has "dry run: nothing changed."
+teardown
+
+setup "the temporary copy removes itself; the variable set by hand is said"
+mkdir -p "$T/tmp"
+cp "$DEPLOY" "$T/tmp/antcat-deploy.abc123"
+OUT="$(ANTCAT_DIR="$SERVER" ANTCAT_DEPLOY_FROM_MASTER="$T/tmp/antcat-deploy.abc123" bash "$T/tmp/antcat-deploy.abc123" --dry-run 2>&1)"; RC=$?
+check "exits 0" [ "$RC" -eq 0 ]
+check "the temporary copy is gone" [ ! -e "$T/tmp/antcat-deploy.abc123" ]
+OUT="$(ANTCAT_DIR="$SERVER" ANTCAT_DEPLOY_FROM_MASTER=1 "$DEPLOY" --dry-run 2>&1)"; RC=$?
+check "exits 0 (variable set by hand)" [ "$RC" -eq 0 ]
+check "the checkout's copy stays" [ -e "$DEPLOY" ]
+check "says the variable is set" out_has "ANTCAT_DEPLOY_FROM_MASTER was set in this shell"
+cp "$DEPLOY" "$T/tmp/antcat-deploy.def456"
+OUT="$(ANTCAT_DIR="$SERVER" ANTCAT_DEPLOY_FROM_MASTER="$T/tmp/antcat-deploy.def456" bash "$T/tmp/antcat-deploy.def456" --no-such-option 2>&1)"; RC=$?
+check "an early stop still removes the temporary copy" [ ! -e "$T/tmp/antcat-deploy.def456" ]
+teardown
+
+setup "GitHub cannot be reached: a deploy stops, a rollback goes on with this copy"
+B="$(push_change app/models/taxon.rb "B: model change")"
+run
+check "deploy to B" head_is "$B"
+git -C "$SERVER" remote set-url origin "$T/no-such-origin.git"
+run --dry-run
+check "a deploy stops" [ "$RC" -ne 0 ]
+check "says why and how to go on" out_has "cannot fetch origin/master from GitHub. Nothing was changed. (--own-script"
+run --rollback
+check "the rollback goes on" [ "$RC" -eq 0 ]
+check "warns" out_has "cannot fetch origin/master; rolling back with this copy of the script"
+check "rolled back to A" head_is "$A"
+teardown
+
+setup "says when origin/master has no deploy script, and goes on"
+mkdir -p "$T/tmp"
+push_change app/models/taxon.rb "B: model change" > /dev/null
+TMPDIR="$T/tmp" run --dry-run
+check "exits 0" [ "$RC" -eq 0 ]
+check "warns" out_has "origin/master has no script/deploy; running this copy"
+check "no temporary copy left" [ -z "$(find "$T/tmp" -name 'antcat-deploy.*')" ]
+teardown
+
 setup "refuses when the deploy log cannot be written"
 B="$(push_change app/models/taxon.rb "B: model change")"
 export ANTCAT_DEPLOY_LOG="$T/no-such-dir/deploy.log"
