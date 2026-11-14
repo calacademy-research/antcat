@@ -12,6 +12,8 @@
 # migrations, or a deploy that replaces a running commit that is not on master), -h/--help.
 #
 # What a deploy does, in order:
+#   0. runs the copy of this script on origin/master when the checkout's copy differs (a checkout of a
+#      branch may hold an older one; 2026-11-14)
 #   1. refuses if tracked files in the checkout have local changes (never edit them on the server)
 #   2. saves the running commit to /root/antcat-rollback-commit.txt
 #   3. fetches from GitHub and lists the new commits and what kind of files changed
@@ -48,6 +50,7 @@
 # by `git checkout` in the middle of a deploy. A function is read whole before it starts.
 main() {
   set -Eeuo pipefail
+  local args=("$@")
   # Files git writes must stay readable by the app, which runs as another user in the container
   # and reads the commit from .git/HEAD at boot. A root shell left with umask 077 made .git/HEAD
   # mode 600: the footer showed no commit and the health check waited 15 minutes (2026-11-12).
@@ -86,6 +89,27 @@ main() {
   cd "$APP_DIR"
   git rev-parse --git-dir > /dev/null 2>&1 || die "$APP_DIR is not a git checkout"
   command -v docker > /dev/null || die "docker not found"
+
+  # The deploy script of origin/master runs, whatever the checkout holds. antcat-staging, 2026-11-14: a deploy
+  # started from a checkout of a branch without #1613 ran that branch's older copy of this script, so the guard
+  # for a running commit that is not on master did not exist there. Before anything is changed or locked, the
+  # script of origin/master is fetched; when it differs from this file it is run instead, with the same options.
+  if [ -n "${ANTCAT_DEPLOY_FROM_MASTER:-}" ]; then
+    case "${BASH_SOURCE[0]}" in */antcat-deploy.*) rm -f "${BASH_SOURCE[0]}" ;; esac   # the copy in /tmp (bash keeps reading the open file)
+  else
+    git fetch -q origin master || die "cannot fetch origin/master from GitHub. Nothing was changed."
+    local master_script
+    master_script="$(mktemp "${TMPDIR:-/tmp}/antcat-deploy.XXXXXX")"
+    if git show origin/master:script/deploy > "$master_script" 2> /dev/null && [ -s "$master_script" ]; then
+      if ! cmp -s "$master_script" "${BASH_SOURCE[0]}"; then
+        say "running the deploy script of origin/master ($(git rev-parse --short=9 origin/master)), not the copy in this checkout"
+        ANTCAT_DEPLOY_FROM_MASTER=1 ANTCAT_DIR="$APP_DIR" exec bash "$master_script" "${args[@]}"
+      fi
+    else
+      say "WARNING: origin/master has no script/deploy; running this copy"
+    fi
+    rm -f "$master_script"
+  fi
 
   if command -v flock > /dev/null; then
     { exec 9> "$LOCK_FILE"; } 2> /dev/null || die "cannot open the lock file $LOCK_FILE (run as root)"

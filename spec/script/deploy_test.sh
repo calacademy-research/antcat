@@ -295,6 +295,35 @@ run --yes
 check "deploys master with --yes" head_is "$A"
 teardown
 
+setup "runs the deploy script of origin/master when the checkout's copy differs"
+mkdir -p "$WORK/script"
+# shellcheck disable=SC2016  # the stub expands them when it runs
+printf '#!/usr/bin/env bash\necho "MASTER SCRIPT $* dir=$ANTCAT_DIR from=$ANTCAT_DEPLOY_FROM_MASTER"\n' > "$WORK/script/deploy"
+git -C "$WORK" add -A; git -C "$WORK" commit -qm "M: master's deploy script"; git -C "$WORK" push -q origin master
+run --dry-run --timeout 5
+check "exits 0" [ "$RC" -eq 0 ]
+check "says it runs master's script" out_has "running the deploy script of origin/master"
+check "master's script ran with the same options" out_has "MASTER SCRIPT --dry-run --timeout 5 dir=$SERVER from=1"
+check "did not move HEAD" head_is "$A"
+teardown
+
+setup "runs its own copy when it is master's"
+mkdir -p "$WORK/script"
+cp "$DEPLOY" "$WORK/script/deploy"
+git -C "$WORK" add -A; git -C "$WORK" commit -qm "M: master's deploy script = this one"; git -C "$WORK" push -q origin master
+run --dry-run
+check "exits 0" [ "$RC" -eq 0 ]
+check "does not say it runs another script" not out_has "running the deploy script of origin/master"
+check "the dry run ran" out_has "dry run: nothing changed."
+teardown
+
+setup "says when origin/master has no deploy script, and goes on"
+B="$(push_change app/models/taxon.rb "B: model change")"
+run --dry-run
+check "exits 0" [ "$RC" -eq 0 ]
+check "warns" out_has "origin/master has no script/deploy; running this copy"
+teardown
+
 setup "refuses when the deploy log cannot be written"
 B="$(push_change app/models/taxon.rb "B: model change")"
 export ANTCAT_DEPLOY_LOG="$T/no-such-dir/deploy.log"
