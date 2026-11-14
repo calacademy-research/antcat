@@ -20,7 +20,3 @@ crumb :my_account do |user|
   parent :user, user
 end
 
-crumb :new_user do
-  link "New"
-  parent :users
-end
