@@ -1,0 +1,18 @@
+-# The etymology in the words of the author who gave it, where it was printed, AntCat's translation, and
+-# AntCat's own reading, each marked so that a reader can tell the quote from AntCat's words.
+-if protonym.etymology_taxt?
+  %p
+    -if protonym.etymology_source?
+      =safe_join(['“', Detax[protonym.etymology_taxt], '”'])
+      =protonym.decorate.format_etymology_source
+    -else
+      =Detax[protonym.etymology_taxt]
+      %span.text-sm.text-gray-600 (source not yet recorded)
+  -if protonym.etymology_translation?
+    %p
+      Translation (AntCat):
+      =protonym.etymology_translation
+-if protonym.etymology_derivation?
+  %p
+    AntCat derivation:
+    =protonym.etymology_derivation

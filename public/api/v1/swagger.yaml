@@ -1,7 +1,7 @@
 swagger: '2.0'
 
 info:
-  version: "1.8.2"
+  version: "1.10.0"
   title: AntCat REST API
   description: >-
     Read only API to access antcat.org. Terms, limits and how to cite: https://www.antcat.org/v1 and
@@ -756,7 +756,54 @@ definitions:
         description: String describing the forms; no standard format
       notes_taxt:
         type: string
-        description: Long field with text and notes
+        description: Long field with text and notes. For a species-group name, a note beginning "Spelling" gives the short explanation of the accepted spelling and the part of speech.
+      gender_agreement_type:
+        type: string
+        enum: [adjective, participle, noun_in_apposition, noun_in_genitive_case]
+        description: Part of speech of a species-group epithet. Adjectives and participles agree with the gender of the genus (ICZN Art. 31.2); nouns keep their ending (Arts. 31.2.1, 34.2.1).
+      masculine_epithet:
+        type: string
+        description: Spelling of an adjectival or participial epithet in a masculine genus
+      feminine_epithet:
+        type: string
+        description: Spelling of an adjectival or participial epithet in a feminine genus
+      neuter_epithet:
+        type: string
+        description: Spelling of an adjectival or participial epithet in a neuter genus
+      part_of_speech_basis:
+        type: string
+        enum: [author_stated, grammatical_form, original_usage, noun_by_default, commission_ruling]
+        description: "Why AntCat reads the epithet as this part of speech. author_stated: stated by the original author. grammatical_form: the grammatical form of the epithet (Art. 31.2). original_usage: the original author's use of the name in the original publication (Art. 31.2.2). noun_by_default: noun in apposition by default, the original author gave no indication (Art. 31.2.2). commission_ruling: a ruling of the Commission. Except for commission_ruling, an interpretation adopted by AntCat, not a ruling of the Commission; rules on the AntCat wiki page 'AntCat policy on name grammar and spelling'."
+      spelling_basis:
+        type: string
+        enum: [original_spelling, gender_agreement, justified_emendation, unjustified_emendation_in_prevailing_usage, incorrect_subsequent_spelling_in_prevailing_usage, commission_ruling]
+        description: "Why AntCat accepts the spelling it uses, recorded apart from the part of speech. original_spelling: the correct original spelling (Art. 32.2). gender_agreement: the ending agrees with the gender of the genus (Arts. 31.2, 34.2). justified_emendation: Arts. 32.5, 33.2.2. unjustified_emendation_in_prevailing_usage: Art. 33.2.3.1. incorrect_subsequent_spelling_in_prevailing_usage: Art. 33.3.1. commission_ruling: a ruling of the Commission."
+      interpretation_status:
+        type: string
+        enum: [demonstrated, reasonably_inferred, disputed, unresolved]
+        description: "How firmly AntCat's grammatical reading is established; it describes the grammar, not the spelling. demonstrated: direct evidence establishes the interpretation. reasonably_inferred = reasonably inferred: strongly supported but not explicit; a merely possible alternative may be noted. disputed: substantial evidence supports a competing interpretation; the notes give it. unresolved: the evidence does not yet allow AntCat to choose an interpretation."
+      grammar_and_spelling_wiki_page_id:
+        type: integer
+        description: Optional FK to the AntCat wiki page "Grammar and spelling" for this name, with the evidence and decision behind its part of speech and accepted spelling (https://www.antcat.org/wiki/{id}). AntCat's interpretation, not a ruling of the Commission.
+      etymology_taxt:
+        type: string
+        description: The etymology in the words of the author who gave it, exactly as printed, in the original language; nothing added. Where it was printed is in etymology_source and etymology_pages. Entries made before November 2026 may have no source yet and are not guaranteed verbatim.
+      etymology_source:
+        type: string
+        enum: [original_description, later_work]
+        description: "Whose words etymology_taxt holds. original_description: the original description, whose reference is the authorship reference (authorship_id). later_work: a later work, given in etymology_reference_id."
+      etymology_reference_id:
+        type: integer
+        description: FK to the reference of the later work the etymology is quoted from; only when etymology_source is later_work.
+      etymology_pages:
+        type: string
+        description: Page or pages where the etymology is printed, in the authorship reference or in etymology_reference_id.
+      etymology_translation:
+        type: string
+        description: English translation of etymology_taxt, by AntCat, when the original is not in English.
+      etymology_derivation:
+        type: string
+        description: AntCat's own reading of the etymology (AntCat derivation), where the author gave none or to add to it. AntCat's interpretation, never part of the quoted text.
       created_at:
         type: string
         format: date-time

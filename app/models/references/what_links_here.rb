@@ -9,7 +9,8 @@ module References
       [Citation, :reference_id],
       [Reference, :nesting_reference_id],
       [TypeName, :reference_id],
-      [HistoryItem, :reference_id]
+      [HistoryItem, :reference_id],
+      [Protonym, :etymology_reference_id]
     ]
 
     attr_private_initialize :record

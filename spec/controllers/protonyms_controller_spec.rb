@@ -42,6 +42,10 @@ describe ProtonymsController do
           ichnotaxon: false,
           sic: false,
           etymology_taxt: "etymology",
+          etymology_source: 'original_description',
+          etymology_pages: '12',
+          etymology_translation: "translation",
+          etymology_derivation: "derivation",
           primary_type_information_taxt: "primary type information",
           secondary_type_information_taxt: "secondary type information",
           type_notes_taxt: "type notes",
@@ -69,6 +73,10 @@ describe ProtonymsController do
         expect(protonym.sic).to eq protonym_params[:sic]
 
         expect(protonym.etymology_taxt).to eq protonym_params[:etymology_taxt]
+        expect(protonym.etymology_source).to eq protonym_params[:etymology_source]
+        expect(protonym.etymology_pages).to eq protonym_params[:etymology_pages]
+        expect(protonym.etymology_translation).to eq protonym_params[:etymology_translation]
+        expect(protonym.etymology_derivation).to eq protonym_params[:etymology_derivation]
         expect(protonym.primary_type_information_taxt).to eq protonym_params[:primary_type_information_taxt]
         expect(protonym.secondary_type_information_taxt).to eq protonym_params[:secondary_type_information_taxt]
         expect(protonym.type_notes_taxt).to eq protonym_params[:type_notes_taxt]

@@ -14,6 +14,7 @@ class DbScriptSoftValidations
     DatabaseScripts::ObsoleteCombinationsWithObsoleteCombinations,
     DatabaseScripts::ObsoleteCombinationsWithProtonymsNotMatchingItsCurrentTaxonsProtonym,
     DatabaseScripts::ObsoleteCombinationsWithVeryDifferentEpithets,
+    DatabaseScripts::SpeciesGroupTaxaNotSpelledForTheirGenusGender,
     DatabaseScripts::SpeciesWithGeneraAppearingMoreThanOnceInItsProtonym,
     DatabaseScripts::SynonymGeneraWithSpeciesWithIncompatibleStatuses,
     DatabaseScripts::SynonymsBelongingToTheSameProtonymAsItsCurrentTaxon,

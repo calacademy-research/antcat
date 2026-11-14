@@ -30,6 +30,36 @@ describe ProtonymDecorator do
     end
   end
 
+  describe "#format_etymology_source" do
+    context 'when the etymology is from the original description' do
+      let(:protonym) do
+        create :protonym, etymology_taxt: 'Named after the collector.', etymology_source: 'original_description',
+          etymology_pages: '69'
+      end
+
+      specify do
+        expect(decorated.format_etymology_source).
+          to eq "(original description, #{reference_link(protonym.authorship_reference)}: 69)"
+      end
+    end
+
+    context 'when the etymology is from a later work' do
+      let(:reference) { create :any_reference }
+      let(:protonym) do
+        create :protonym, etymology_taxt: 'From Latin crassus.', etymology_source: 'later_work',
+          etymology_pages: '44', etymology_reference: reference
+      end
+
+      specify { expect(decorated.format_etymology_source).to eq "(later work, #{reference_link(reference)}: 44)" }
+    end
+
+    context 'when no source is recorded' do
+      let(:protonym) { create :protonym }
+
+      specify { expect(decorated.format_etymology_source).to eq nil }
+    end
+  end
+
   describe "#link_to_protonym_with_linked_author_citation" do
     let(:protonym) { create :protonym }
 

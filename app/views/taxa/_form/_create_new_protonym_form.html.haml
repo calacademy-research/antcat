@@ -93,12 +93,8 @@
                   =db_tooltip_icon :gender_agreement_type, scope: :protonyms
               %td=protonym_form.select :gender_agreement_type, Protonym::GENDER_AGREEMENT_TYPES, include_blank: '(blank)'
 
-          %tr
-            %td
-              =protonym_form.label :etymology do
-                Etymology
-                =db_tooltip_icon :etymology, scope: :protonyms
-            %td=render 'taxt_editors/field_taxt_editor', name: 'taxon[protonym_attributes][etymology_taxt]', content: taxon.protonym.etymology_taxt
+          =render 'protonyms/etymology_fields', f: protonym_form, protonym: taxon.protonym,
+            name_prefix: 'taxon[protonym_attributes]', id_prefix: 'taxon_protonym_attributes'
 
           %tr
             %td

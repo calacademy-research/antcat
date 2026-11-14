@@ -149,12 +149,63 @@
               =db_tooltip_icon :gender_agreement_type, scope: :protonyms
           %td=f.select :gender_agreement_type, Protonym::GENDER_AGREEMENT_TYPES, include_blank: '(blank)'
 
-      %tr
-        %td
-          =f.label :etymology do
-            Etymology
-            =db_tooltip_icon :etymology, scope: :protonyms
-        %td=render 'taxt_editors/field_taxt_editor', name: 'protonym[etymology_taxt]', content: protonym.etymology_taxt
+      -if protonym.species_group_name? || protonym.gender_epithets
+        -predicted_gender_epithets = protonym.predicted_gender_epithets
+        -Protonym::GENDER_EPITHET_COLUMNS.each do |gender, column|
+          %tr
+            %td
+              =f.label column do
+                Spelling in a #{gender} genus (only for adjectives and participles)
+                =db_tooltip_icon :gender_epithets, scope: :protonyms
+            %td
+              =f.text_field column, placeholder: predicted_gender_epithets&.fetch(gender)
+        -if predicted_gender_epithets
+          %tr
+            %td
+            %td.text-sm
+              Predicted from the original epithet, as TaxonWorks does:
+              =predicted_gender_epithets.values.join(', ')
+              (masculine, feminine, neuter). Leave blank for nouns.
+
+      -if protonym.species_group_name? || protonym.part_of_speech_basis? || protonym.spelling_basis? || protonym.interpretation_status? || protonym.grammar_and_spelling_wiki_page_id?
+        %tr
+          %td
+            =f.label :part_of_speech_basis do
+              Basis for the part of speech
+              =db_tooltip_icon :part_of_speech_basis, scope: :protonyms
+          %td=f.select :part_of_speech_basis, Protonym::PART_OF_SPEECH_BASES.invert, include_blank: '(blank)'
+        %tr
+          %td
+            =f.label :spelling_basis do
+              Basis for the accepted spelling
+              =db_tooltip_icon :spelling_basis, scope: :protonyms
+          %td=f.select :spelling_basis, Protonym::SPELLING_BASES.invert, include_blank: '(blank)'
+        %tr
+          %td
+            =f.label :interpretation_status do
+              Interpretation
+              =db_tooltip_icon :interpretation_status, scope: :protonyms
+          %td
+            =f.select :interpretation_status, Protonym::INTERPRETATION_STATUSES.invert, include_blank: '(blank)'
+            .text-sm
+              Disputed only when substantial evidence supports a competing interpretation, even if the adopted
+              one has strong evidence; it needs a public note (not a hidden note) giving the alternative and its
+              evidence. A merely possible alternative goes in the note of a reasonably inferred name. This is
+              AntCat's interpretation, not a ruling of the Commission. Disputed and unresolved names are never
+              changed by scripts.
+        %tr
+          %td
+            =f.label :grammar_and_spelling_wiki_page_id do
+              Grammar and spelling (wiki page)
+              =db_tooltip_icon :grammar_and_spelling_wiki_page_id, scope: :protonyms
+          %td
+            =f.collection_select :grammar_and_spelling_wiki_page_id, WikiPage.order(:title), :id, :title, include_blank: '(none)'
+            .text-sm
+              Optional: the wiki page "Grammar and spelling: <name>" with the evidence and decision for a
+              reviewed name. The public Spelling note still gives the short explanation. Policy:
+              =link_to_wiki_page_or_missing WikiPage::GRAMMAR_AND_SPELLING_POLICY
+
+      =render 'protonyms/etymology_fields', f: f, protonym: protonym, name_prefix: 'protonym', id_prefix: 'protonym'
 
       %tr
         %td

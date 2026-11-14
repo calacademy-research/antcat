@@ -33,6 +33,14 @@ class ProtonymDecorator < Draper::Decorator
       )
   end
 
+  # "(original description, Karavaiev, 1926f: 69)", with the reference linked.
+  def format_etymology_source
+    return unless protonym.etymology_source? && (reference = protonym.etymology_source_reference)
+
+    parts = ['(', protonym.etymology_source_label, ', ', reference.decorate.link_to_reference]
+    h.safe_join(parts + [": #{protonym.etymology_pages})"])
+  end
+
   def format_locality
     return unless locality
 

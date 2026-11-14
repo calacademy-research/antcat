@@ -10,6 +10,13 @@ class ProtonymForm
     forms
     fossil
     gender_agreement_type
+    masculine_epithet
+    feminine_epithet
+    neuter_epithet
+    part_of_speech_basis
+    spelling_basis
+    interpretation_status
+    grammar_and_spelling_wiki_page_id
     ichnotaxon
     locality
     sic
@@ -17,6 +24,11 @@ class ProtonymForm
     nomen_nudum
 
     etymology_taxt
+    etymology_source
+    etymology_reference_id
+    etymology_pages
+    etymology_translation
+    etymology_derivation
     primary_type_information_taxt
     secondary_type_information_taxt
     type_notes_taxt

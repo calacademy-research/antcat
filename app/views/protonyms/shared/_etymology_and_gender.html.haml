@@ -1,14 +1,13 @@
 -show_agreement_in_gender = taxon.is_a?(SpeciesGroupTaxon)
 
--if protonym.etymology_taxt? || show_agreement_in_gender || protonym.gender_agreement_type?
+-if protonym.etymology? || show_agreement_in_gender || protonym.gender_agreement_type? || protonym.spelling_basis?
   .bluebox
-    -if protonym.etymology_taxt?
-      %p
-        %strong Etymology:
-        =Detax[protonym.etymology_taxt]
+    -if protonym.etymology?
+      %strong Etymology:
+      =render 'protonyms/shared/etymology', protonym: protonym
 
     -if show_agreement_in_gender
-      -if protonym.etymology_taxt?
+      -if protonym.etymology?
         %hr
 
       %h6
@@ -41,3 +40,40 @@
       %p
         Gender agreement type:
         %code=protonym.gender_agreement_type
+        -if protonym.part_of_speech_basis?
+          %br
+          Basis: #{protonym.part_of_speech_basis_label}
+
+    -if protonym.spelling_basis?
+      %p
+        Accepted spelling, basis: #{protonym.spelling_basis_label}
+
+    -if protonym.interpretation_status?
+      %p
+        Interpretation:
+        %strong=protonym.interpretation_status_label
+
+    -if (grammar_page = protonym.grammar_and_spelling_wiki_page)
+      %p
+        Grammar and spelling:
+        =link_to grammar_page.title, grammar_page
+
+    -if (gender_epithets = protonym.gender_epithets)
+      %p
+        Spelling by genus gender:
+        -gender_epithets.each do |gender, epithet|
+          %br
+          =gender
+          %i=epithet.presence || '?'
+        -# A misspelling is not "fixed" to the genus gender (review of #1607).
+        -if taxon.is_a?(SpeciesGroupTaxon) && taxon.status != Status::UNAVAILABLE_MISSPELLING && (expected = protonym.epithet_for_gender(taxon.genus&.name&.gender))
+          %br
+          -if expected == taxon.name.epithet
+            This name agrees with its genus.
+          -elsif protonym.spelling_kept_against_agreement?
+            Spelling kept (#{protonym.spelling_kept_against_agreement_reason}), not
+            %i=expected
+          -else
+            %strong
+              In #{taxon.genus.name.name} it should read
+              %i=expected

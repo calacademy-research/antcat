@@ -27,6 +27,55 @@ class Protonym < ApplicationRecord
     NOUN_IN_GENITIVE_CASE = 'noun_in_genitive_case'
   ]
   GENDER_AGREEMENT_TYPES = CHANGEABLE_GENDER_AGREEMENT_TYPES + UNCHANGEABLE_GENDER_AGREEMENT_TYPES
+  # The spelling of an adjectival or participial name in each genus gender (TaxonWorks stores the same three).
+  GENDER_EPITHET_COLUMNS = {
+    'masculine' => :masculine_epithet,
+    'feminine' => :feminine_epithet,
+    'neuter' => :neuter_epithet
+  }.freeze
+  # Why AntCat reads the name as this part of speech (the grammatical basis).
+  PART_OF_SPEECH_BASES = {
+    'author_stated' => 'stated by the original author',
+    'grammatical_form' => 'the grammatical form of the epithet (Art. 31.2)',
+    'original_usage' => "the original author's use of the name in the original publication (Art. 31.2.2)",
+    'noun_by_default' => 'noun in apposition by default: the original author gave no indication (Art. 31.2.2)',
+    'commission_ruling' => 'a ruling of the Commission'
+  }.freeze
+  # Why AntCat accepts the spelling it uses (the nomenclatural basis). A name can be a noun
+  # under Art. 31.2.2 and still keep a later spelling under Art. 33.3.1; the two are recorded apart.
+  SPELLING_BASES = {
+    'original_spelling' => 'the correct original spelling (Art. 32.2)',
+    'gender_agreement' => 'the ending agrees with the gender of the genus (Arts. 31.2, 34.2)',
+    'justified_emendation' => 'a justified emendation (Arts. 32.5, 33.2.2)',
+    'unjustified_emendation_in_prevailing_usage' => 'an unjustified emendation in prevailing usage (Art. 33.2.3.1)',
+    'incorrect_subsequent_spelling_in_prevailing_usage' =>
+      'an incorrect subsequent spelling in prevailing usage (Art. 33.3.1)',
+    'commission_ruling' => 'a ruling of the Commission'
+  }.freeze
+  # Bases under which a spelling stands even where it does not agree with the genus (review of #1607).
+  SPELLING_KEPT_AGAINST_AGREEMENT_BASES = %w[
+    unjustified_emendation_in_prevailing_usage incorrect_subsequent_spelling_in_prevailing_usage commission_ruling
+  ].freeze
+  # How firmly AntCat's grammatical reading of the name is established (Brian Fisher, 13 Nov 2026).
+  # An interpretation adopted by AntCat, never a ruling of the Commission. `disputed` needs substantial
+  # evidence for a competing reading (and a public note giving it); a reading that is merely possible
+  # can be mentioned in the note of a `reasonably_inferred` name. The same wording is used on the
+  # policy wiki page, in the API documentation and in the edit-form help.
+  INTERPRETATION_STATUSES = {
+    'demonstrated' => 'demonstrated: direct evidence establishes the interpretation',
+    'reasonably_inferred' =>
+      'reasonably inferred: strongly supported but not explicit; a merely possible alternative may be noted',
+    'disputed' => 'disputed: substantial evidence supports a competing interpretation; the notes give it',
+    'unresolved' => 'unresolved: the evidence does not yet allow AntCat to choose an interpretation'
+  }.freeze
+  INTERPRETATIONS_NEEDING_PART_OF_SPEECH = %w[demonstrated reasonably_inferred].freeze
+  SCRIPTED_SPELLING_CHANGE_BLOCKED_STATUSES = %w[disputed unresolved].freeze
+  # Whose words `etymology_taxt` holds (Brian Fisher, 13 Nov 2026). The etymology is the author's words as
+  # printed; AntCat's own reading goes in `etymology_derivation`, never in the quote.
+  ETYMOLOGY_SOURCES = {
+    'original_description' => 'original description',
+    'later_work' => 'later work'
+  }.freeze
 
   delegate :pages, to: :authorship, prefix: true
 
@@ -44,14 +93,46 @@ class Protonym < ApplicationRecord
   has_many :history_items, -> { order(:position) }, dependent: :restrict_with_error
   has_many :history_items_as_object, class_name: 'HistoryItem', foreign_key: :object_protonym_id, dependent: false
   has_one :authorship_reference, through: :authorship, source: :reference
+  # Optional: the wiki page "Grammar and spelling: <name>" with the evidence and decision for a reviewed name.
+  belongs_to :grammar_and_spelling_wiki_page, class_name: 'WikiPage', optional: true,
+    inverse_of: :grammar_and_spelling_protonyms
+  # Only for an etymology from a later work; the original description is the authorship reference.
+  belongs_to :etymology_reference, class_name: 'Reference', optional: true, inverse_of: :etymology_protonyms
 
   validates :bioregion, inclusion: { in: BIOREGIONS, allow_nil: true }
   validates :bioregion, absence: { message: "cannot be set for fossil protonyms" }, if: -> { fossil? }
-  validates :bioregion, :forms, :locality, :gender_agreement_type,
+  validates :bioregion, :forms, :locality, :gender_agreement_type, :part_of_speech_basis, :spelling_basis,
     absence: { message: "can only be set for species-group names" },
     unless: -> { species_group_name? }
+  validates :interpretation_status, :grammar_and_spelling_wiki_page, absence: { message: "can only be set for species-group names" },
+    unless: -> { species_group_name? }
+  validates :interpretation_status, inclusion: { in: INTERPRETATION_STATUSES.keys, allow_nil: true }
+  validates :interpretation_status, absence: { message: "needs a gender agreement type to be demonstrated or inferred" },
+    if: -> { interpretation_status.in?(INTERPRETATIONS_NEEDING_PART_OF_SPEECH) && !gender_agreement_type? }
+  validates :part_of_speech_basis, inclusion: { in: PART_OF_SPEECH_BASES.keys, allow_nil: true }
+  validates :part_of_speech_basis, absence: { message: "needs a gender agreement type" },
+    unless: -> { gender_agreement_type? }
+  validates :spelling_basis, inclusion: { in: SPELLING_BASES.keys, allow_nil: true }
+  validate :disputed_interpretation_has_public_note
   validates :gender_agreement_type, inclusion: { in: GENDER_AGREEMENT_TYPES, allow_nil: true }
+  validates :masculine_epithet, :feminine_epithet, :neuter_epithet,
+    absence: { message: "can only be set when the gender agreement type is adjective or participle" },
+    unless: -> { changeable_name? }
+  validates :masculine_epithet, :feminine_epithet, :neuter_epithet,
+    format: { with: /\A[a-z]+\z/, message: "must be a single lowercase epithet", allow_nil: true }
   validates :ichnotaxon, absence: { message: "can only be set for fossil protonyms" }, unless: -> { fossil? }
+  validates :etymology_source, inclusion: { in: ETYMOLOGY_SOURCES.keys, allow_nil: true }
+  # Etymologies entered before 14 Nov 2026 have no source; they are not blocked until their text is edited.
+  validates :etymology_source, :etymology_pages,
+    presence: { message: "is required for an etymology (the author's words as printed)" },
+    if: :etymology_source_required?
+  validates :etymology_reference, presence: { message: "is required when the etymology is from a later work" },
+    if: -> { etymology_source == 'later_work' }
+  validates :etymology_reference,
+    absence: { message: "must be blank for the original description (it is the authorship reference)" },
+    if: -> { etymology_source == 'original_description' }
+  validates :etymology_source, :etymology_reference, :etymology_pages, :etymology_translation,
+    absence: { message: "can only be set with an etymology" }, unless: -> { etymology_taxt? }
 
   before_validation :cleanup_and_convert_taxts
 
@@ -65,7 +146,10 @@ class Protonym < ApplicationRecord
   has_paper_trail
   strip_attributes only: [
     :locality, :bioregion, :forms, :gender_agreement_type,
-    :notes_taxt, :etymology_taxt
+    :masculine_epithet, :feminine_epithet, :neuter_epithet,
+    :part_of_speech_basis, :spelling_basis, :interpretation_status,
+    :notes_taxt, :etymology_taxt,
+    :etymology_source, :etymology_pages, :etymology_translation, :etymology_derivation
   ], replace_newlines: true
   strip_attributes only: [:primary_type_information_taxt, :secondary_type_information_taxt, :type_notes_taxt]
   trackable parameters: proc { { name: name_with_fossil } }
@@ -98,6 +182,75 @@ class Protonym < ApplicationRecord
     gender_agreement_type.in?(UNCHANGEABLE_GENDER_AGREEMENT_TYPES)
   end
 
+  # @return [Hash, nil] e.g. { "masculine" => "crassispinus", "feminine" => "crassispina", "neuter" => "crassispinum" }
+  def gender_epithets
+    return unless changeable_name? && GENDER_EPITHET_COLUMNS.values.any? { |column| self[column].present? }
+    GENDER_EPITHET_COLUMNS.transform_values { |column| self[column] }
+  end
+
+  # The spelling this name takes in a genus of `gender` ("masculine", "feminine" or "neuter").
+  def epithet_for_gender gender
+    column = GENDER_EPITHET_COLUMNS[gender]
+    self[column] if column && changeable_name?
+  end
+
+  # The three spellings TaxonWorks would predict from the original epithet (for adjectives and participles only).
+  def predicted_gender_epithets
+    return unless species_group_name? && name.epithet.present?
+    Protonyms::PredictGenderEpithets[name.epithet]
+  end
+
+  def part_of_speech_basis_label
+    PART_OF_SPEECH_BASES[part_of_speech_basis]
+  end
+
+  def spelling_basis_label
+    SPELLING_BASES[spelling_basis]
+  end
+
+  def interpretation_status_label
+    INTERPRETATION_STATUSES[interpretation_status]
+  end
+
+  def interpretation_disputed?
+    interpretation_status == 'disputed'
+  end
+
+  # Scripts never change the spelling of a disputed or unresolved name. A reasonably inferred one needs
+  # an approval for that name; a demonstrated one only where an ICZN rule requires the change.
+  def scripted_spelling_change_blocked?
+    interpretation_status.in?(SCRIPTED_SPELLING_CHANGE_BLOCKED_STATUSES)
+  end
+
+  def etymology?
+    etymology_taxt? || etymology_derivation?
+  end
+
+  # A spelling kept on purpose (prevailing usage, a Commission ruling), or a reading that is disputed or not yet
+  # settled: a mismatch with the genus gender is not an error to report.
+  def spelling_kept_against_agreement?
+    spelling_kept_against_agreement_reason.present?
+  end
+
+  # The basis when it keeps the spelling; otherwise the disputed or unresolved status that blocks a change.
+  def spelling_kept_against_agreement_reason
+    return spelling_basis_label if spelling_basis.in?(SPELLING_KEPT_AGAINST_AGREEMENT_BASES)
+
+    interpretation_status_label if scripted_spelling_change_blocked?
+  end
+
+  def etymology_source_label
+    ETYMOLOGY_SOURCES[etymology_source]
+  end
+
+  # The work the etymology was printed in: the authorship reference for the original description.
+  def etymology_source_reference
+    case etymology_source
+    when 'original_description' then authorship_reference
+    when 'later_work' then etymology_reference
+    end
+  end
+
   def genus_group_name?
     Rank.genus_group_name?(rank_from_name)
   end
@@ -120,6 +273,32 @@ class Protonym < ApplicationRecord
   end
 
   private
+
+    # A disputed reading is only transparent if visitors can read the alternative: the note must
+    # have text outside hidden editor notes (`{hiddennote ...}`, which visitors do not see).
+    def disputed_interpretation_has_public_note
+      return unless interpretation_disputed?
+      return if Taxt.remove_hidden_notes(notes_taxt.to_s).strip.present?
+
+      errors.add :interpretation_status,
+        "needs a public note that gives the alternative interpretation and its evidence"
+    end
+
+    # A new or edited etymology needs its source; one entered before the source fields existed does not,
+    # until someone edits its text or starts filling in the source.
+    def etymology_source_required?
+      return false unless etymology_taxt?
+      return true if new_record? || etymology_source? || etymology_pages? || etymology_reference_id?
+
+      etymology_taxt_changed? && etymology_words_changed?
+    end
+
+    # Merges and tag fixes rewrite {ref}, {tax} and other tags, and the taxt cleanup respaces punctuation, in old
+    # etymologies too; only a change of the words counts as editing the etymology (review of #1607, 14 Nov 2026).
+    def etymology_words_changed?
+      words = ->(taxt) { taxt.to_s.gsub(/\{[^}]*\}/, ' ').gsub(/\s*([:;,.])\s*/, '\\1').squish }
+      words[etymology_taxt_was] != words[etymology_taxt]
+    end
 
     def cleanup_and_convert_taxts
       cleanup_and_convert_taxt_columns(
