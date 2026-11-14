@@ -1,14 +1,13 @@
 -show_agreement_in_gender = taxon.is_a?(SpeciesGroupTaxon)
 
--if protonym.etymology_taxt? || show_agreement_in_gender || protonym.gender_agreement_type? || protonym.spelling_basis?
+-if protonym.etymology? || show_agreement_in_gender || protonym.gender_agreement_type? || protonym.spelling_basis?
   .bluebox
-    -if protonym.etymology_taxt?
-      %p
-        %strong Etymology:
-        =Detax[protonym.etymology_taxt]
+    -if protonym.etymology?
+      %strong Etymology:
+      =render 'protonyms/shared/etymology', protonym: protonym
 
     -if show_agreement_in_gender
-      -if protonym.etymology_taxt?
+      -if protonym.etymology?
         %hr
 
       %h6

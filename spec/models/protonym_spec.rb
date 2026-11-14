@@ -263,6 +263,78 @@ describe Protonym do
       end
     end
 
+    describe "etymology source validations" do
+      let(:reference) { create :any_reference }
+
+      it 'needs a source and page for a new etymology' do
+        protonym = build :protonym, etymology_taxt: 'Named after the collector.'
+        expect(protonym.valid?).to eq false
+        expect(protonym.errors.where(:etymology_source).map(&:message)).
+          to include("is required for an etymology (the author's words as printed)")
+        expect(protonym.errors.where(:etymology_pages).map(&:message)).
+          to include("is required for an etymology (the author's words as printed)")
+      end
+
+      it 'takes the original description from the authorship reference' do
+        protonym = create :protonym, etymology_taxt: 'Named after the collector.',
+          etymology_source: 'original_description', etymology_pages: '69'
+        expect(protonym.etymology_source_reference).to eq protonym.authorship_reference
+        expect(protonym.etymology_source_label).to eq 'original description'
+      end
+
+      it 'does not take a separate reference for the original description' do
+        protonym = build :protonym, etymology_taxt: 'Named after the collector.',
+          etymology_source: 'original_description', etymology_pages: '69', etymology_reference: reference
+        expect(protonym.valid?).to eq false
+        expect(protonym.errors.where(:etymology_reference).map(&:message)).
+          to include("must be blank for the original description (it is the authorship reference)")
+      end
+
+      it 'needs the reference of a later work' do
+        protonym = build :protonym, etymology_taxt: 'From Latin crassus.', etymology_source: 'later_work',
+          etymology_pages: '44'
+        expect(protonym.valid?).to eq false
+        expect(protonym.errors.where(:etymology_reference).map(&:message)).
+          to include("is required when the etymology is from a later work")
+
+        protonym.etymology_reference = reference
+        expect(protonym.valid?).to eq true
+        expect(protonym.etymology_source_reference).to eq reference
+      end
+
+      it 'needs an etymology for a source, page or translation' do
+        protonym = build :protonym, etymology_source: 'original_description', etymology_pages: '69',
+          etymology_translation: 'Named after the collector.'
+        expect(protonym.valid?).to eq false
+        [:etymology_source, :etymology_pages, :etymology_translation].each do |attribute|
+          expect(protonym.errors.where(attribute).map(&:message)).to include("can only be set with an etymology")
+        end
+      end
+
+      it 'keeps an AntCat derivation without a quoted etymology' do
+        protonym = build :protonym, etymology_derivation: 'Latin crassus, thick, + spina, spine.'
+        expect(protonym.valid?).to eq true
+        expect(protonym.etymology?).to eq true
+      end
+
+      it 'does not block an etymology entered before the source fields until its text is edited' do
+        protonym = create :protonym
+        protonym.update_columns(etymology_taxt: 'Named after the collector.')
+        protonym.reload
+
+        expect(protonym.valid?).to eq true
+        protonym.etymology_taxt = 'Named after the collector, J. Smith.'
+        expect(protonym.valid?).to eq false
+      end
+
+      it 'keeps a reference cited for an etymology from being deleted' do
+        create :protonym, etymology_taxt: 'From Latin crassus.', etymology_source: 'later_work',
+          etymology_pages: '44', etymology_reference: reference
+        expect(reference.destroy).to eq false
+        expect(Reference.exists?(reference.id)).to eq true
+      end
+    end
+
     describe "#ichnotaxon validations" do
       context 'when protonym is not fossil' do
         let(:protonym) { build_stubbed :protonym }
@@ -406,6 +478,7 @@ describe Protonym do
       expect(properties.dig('part_of_speech_basis', 'enum')).to eq described_class::PART_OF_SPEECH_BASES.keys
       expect(properties.dig('spelling_basis', 'enum')).to eq described_class::SPELLING_BASES.keys
       expect(properties.dig('interpretation_status', 'enum')).to eq described_class::INTERPRETATION_STATUSES.keys
+      expect(properties.dig('etymology_source', 'enum')).to eq described_class::ETYMOLOGY_SOURCES.keys
     end
 
     it 'defines each interpretation status in the words of the edit form' do

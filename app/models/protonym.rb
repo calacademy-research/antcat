@@ -66,6 +66,12 @@ class Protonym < ApplicationRecord
   }.freeze
   INTERPRETATIONS_NEEDING_PART_OF_SPEECH = %w[demonstrated reasonably_inferred].freeze
   SCRIPTED_SPELLING_CHANGE_BLOCKED_STATUSES = %w[disputed unresolved].freeze
+  # Whose words `etymology_taxt` holds (Brian Fisher, 13 Nov 2026). The etymology is the author's words as
+  # printed; AntCat's own reading goes in `etymology_derivation`, never in the quote.
+  ETYMOLOGY_SOURCES = {
+    'original_description' => 'original description',
+    'later_work' => 'later work'
+  }.freeze
 
   delegate :pages, to: :authorship, prefix: true
 
@@ -86,6 +92,8 @@ class Protonym < ApplicationRecord
   # Optional: the wiki page "Grammar and spelling: <name>" with the evidence and decision for a reviewed name.
   belongs_to :grammar_and_spelling_wiki_page, class_name: 'WikiPage', optional: true,
     inverse_of: :grammar_and_spelling_protonyms
+  # Only for an etymology from a later work; the original description is the authorship reference.
+  belongs_to :etymology_reference, class_name: 'Reference', optional: true, inverse_of: :etymology_protonyms
 
   validates :bioregion, inclusion: { in: BIOREGIONS, allow_nil: true }
   validates :bioregion, absence: { message: "cannot be set for fossil protonyms" }, if: -> { fossil? }
@@ -109,6 +117,18 @@ class Protonym < ApplicationRecord
   validates :masculine_epithet, :feminine_epithet, :neuter_epithet,
     format: { with: /\A[a-z]+\z/, message: "must be a single lowercase epithet", allow_nil: true }
   validates :ichnotaxon, absence: { message: "can only be set for fossil protonyms" }, unless: -> { fossil? }
+  validates :etymology_source, inclusion: { in: ETYMOLOGY_SOURCES.keys, allow_nil: true }
+  # Etymologies entered before 14 Nov 2026 have no source; they are not blocked until their text is edited.
+  validates :etymology_source, :etymology_pages,
+    presence: { message: "is required for an etymology (the author's words as printed)" },
+    if: :etymology_source_required?
+  validates :etymology_reference, presence: { message: "is required when the etymology is from a later work" },
+    if: -> { etymology_source == 'later_work' }
+  validates :etymology_reference,
+    absence: { message: "must be blank for the original description (it is the authorship reference)" },
+    if: -> { etymology_source == 'original_description' }
+  validates :etymology_source, :etymology_reference, :etymology_pages, :etymology_translation,
+    absence: { message: "can only be set with an etymology" }, unless: -> { etymology_taxt? }
 
   before_validation :cleanup_and_convert_taxts
 
@@ -124,7 +144,8 @@ class Protonym < ApplicationRecord
     :locality, :bioregion, :forms, :gender_agreement_type,
     :masculine_epithet, :feminine_epithet, :neuter_epithet,
     :part_of_speech_basis, :spelling_basis, :interpretation_status,
-    :notes_taxt, :etymology_taxt
+    :notes_taxt, :etymology_taxt,
+    :etymology_source, :etymology_pages, :etymology_translation, :etymology_derivation
   ], replace_newlines: true
   strip_attributes only: [:primary_type_information_taxt, :secondary_type_information_taxt, :type_notes_taxt]
   trackable parameters: proc { { name: name_with_fossil } }
@@ -197,6 +218,22 @@ class Protonym < ApplicationRecord
     interpretation_status.in?(SCRIPTED_SPELLING_CHANGE_BLOCKED_STATUSES)
   end
 
+  def etymology?
+    etymology_taxt? || etymology_derivation?
+  end
+
+  def etymology_source_label
+    ETYMOLOGY_SOURCES[etymology_source]
+  end
+
+  # The work the etymology was printed in: the authorship reference for the original description.
+  def etymology_source_reference
+    case etymology_source
+    when 'original_description' then authorship_reference
+    when 'later_work' then etymology_reference
+    end
+  end
+
   def genus_group_name?
     Rank.genus_group_name?(rank_from_name)
   end
@@ -228,6 +265,14 @@ class Protonym < ApplicationRecord
 
       errors.add :interpretation_status,
         "needs a public note that gives the alternative interpretation and its evidence"
+    end
+
+    # A new or edited etymology needs its source; one entered before the source fields existed does not,
+    # until someone edits its text or starts filling in the source.
+    def etymology_source_required?
+      return false unless etymology_taxt?
+
+      new_record? || etymology_taxt_changed? || etymology_source? || etymology_pages? || etymology_reference_id?
     end
 
     def cleanup_and_convert_taxts

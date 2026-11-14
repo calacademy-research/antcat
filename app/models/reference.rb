@@ -27,6 +27,8 @@ class Reference < ApplicationRecord
   has_many :citations, dependent: :restrict_with_error
   has_many :citations_from_type_names, class_name: 'TypeName', dependent: :restrict_with_error # [grep:unify_citations].
   has_many :history_items, class_name: 'HistoryItem', dependent: :restrict_with_error # [grep:unify_citations].
+  has_many :etymology_protonyms, class_name: 'Protonym', foreign_key: :etymology_reference_id,
+    dependent: :restrict_with_error, inverse_of: :etymology_reference
   has_one :document, class_name: 'ReferenceDocument', dependent: :destroy
 
   validates :year, :pagination, :title, :author_names, presence: true

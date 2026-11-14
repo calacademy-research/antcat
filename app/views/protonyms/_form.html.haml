@@ -205,12 +205,7 @@
               reviewed name. The public Spelling note still gives the short explanation. Policy:
               =link_to_wiki_page_or_missing WikiPage::GRAMMAR_AND_SPELLING_POLICY
 
-      %tr
-        %td
-          =f.label :etymology do
-            Etymology
-            =db_tooltip_icon :etymology, scope: :protonyms
-        %td=render 'taxt_editors/field_taxt_editor', name: 'protonym[etymology_taxt]', content: protonym.etymology_taxt
+      =render 'protonyms/etymology_fields', f: f, protonym: protonym, name_prefix: 'protonym', id_prefix: 'protonym'
 
       %tr
         %td

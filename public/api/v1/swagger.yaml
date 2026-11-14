@@ -1,7 +1,7 @@
 swagger: '2.0'
 
 info:
-  version: "1.9.0"
+  version: "1.10.0"
   title: AntCat REST API
   description: >-
     Read only API to access antcat.org. Terms, limits and how to cite: https://www.antcat.org/v1 and
@@ -785,6 +785,25 @@ definitions:
       grammar_and_spelling_wiki_page_id:
         type: integer
         description: Optional FK to the AntCat wiki page "Grammar and spelling" for this name, with the evidence and decision behind its part of speech and accepted spelling (https://www.antcat.org/wiki/{id}). AntCat's interpretation, not a ruling of the Commission.
+      etymology_taxt:
+        type: string
+        description: The etymology in the words of the author who gave it, exactly as printed, in the original language; nothing added. Where it was printed is in etymology_source and etymology_pages. Entries made before November 2026 may have no source yet and are not guaranteed verbatim.
+      etymology_source:
+        type: string
+        enum: [original_description, later_work]
+        description: "Whose words etymology_taxt holds. original_description: the original description, whose reference is the authorship reference (authorship_id). later_work: a later work, given in etymology_reference_id."
+      etymology_reference_id:
+        type: integer
+        description: FK to the reference of the later work the etymology is quoted from; only when etymology_source is later_work.
+      etymology_pages:
+        type: string
+        description: Page or pages where the etymology is printed, in the authorship reference or in etymology_reference_id.
+      etymology_translation:
+        type: string
+        description: English translation of etymology_taxt, by AntCat, when the original is not in English.
+      etymology_derivation:
+        type: string
+        description: AntCat's own reading of the etymology (AntCat derivation), where the author gave none or to add to it. AntCat's interpretation, never part of the quoted text.
       created_at:
         type: string
         format: date-time

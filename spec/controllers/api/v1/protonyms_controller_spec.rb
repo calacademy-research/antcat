@@ -44,6 +44,11 @@ describe Api::V1::ProtonymsController, as: :visitor do
               "interpretation_status" => nil,
               "grammar_and_spelling_wiki_page_id" => nil,
               "etymology_taxt" => protonym.etymology_taxt,
+              "etymology_source" => 'original_description',
+              "etymology_reference_id" => nil,
+              "etymology_pages" => '1',
+              "etymology_translation" => nil,
+              "etymology_derivation" => nil,
               "primary_type_information_taxt" => protonym.primary_type_information_taxt,
               "secondary_type_information_taxt" => protonym.secondary_type_information_taxt,
               "type_notes_taxt" => protonym.type_notes_taxt,
@@ -63,8 +68,13 @@ describe Api::V1::ProtonymsController, as: :visitor do
           locality: "USA", forms: 'q.', gender_agreement_type: Protonym::ADJECTIVE,
           masculine_epithet: "crassispinus", feminine_epithet: "crassispina", neuter_epithet: "crassispinum",
           part_of_speech_basis: 'original_usage', spelling_basis: 'gender_agreement',
-          interpretation_status: 'disputed', notes_taxt: "Spelling: an alternative reading is a noun phrase."
+          interpretation_status: 'disputed', notes_taxt: "Spelling: an alternative reading is a noun phrase.",
+          etymology_taxt: "Название от латинского crassus.", etymology_source: 'later_work',
+          etymology_reference: etymology_reference, etymology_pages: '44',
+          etymology_translation: "The name is from the Latin crassus.",
+          etymology_derivation: "Latin crassus, thick, + spina, spine."
       end
+      let(:etymology_reference) { create :any_reference }
 
       specify do
         get :show, params: { id: protonym.id }
@@ -88,7 +98,12 @@ describe Api::V1::ProtonymsController, as: :visitor do
               "spelling_basis" => 'gender_agreement',
               "interpretation_status" => 'disputed',
               "grammar_and_spelling_wiki_page_id" => nil,
-              "etymology_taxt" => nil,
+              "etymology_taxt" => "Название от латинского crassus.",
+              "etymology_source" => 'later_work',
+              "etymology_reference_id" => etymology_reference.id,
+              "etymology_pages" => '44',
+              "etymology_translation" => "The name is from the Latin crassus.",
+              "etymology_derivation" => "Latin crassus, thick, + spina, spine.",
               "primary_type_information_taxt" => protonym.primary_type_information_taxt,
               "secondary_type_information_taxt" => protonym.secondary_type_information_taxt,
               "type_notes_taxt" => protonym.type_notes_taxt,

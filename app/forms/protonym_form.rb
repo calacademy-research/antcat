@@ -22,6 +22,11 @@ class ProtonymForm
     nomen_nudum
 
     etymology_taxt
+    etymology_source
+    etymology_reference_id
+    etymology_pages
+    etymology_translation
+    etymology_derivation
     primary_type_information_taxt
     secondary_type_information_taxt
     type_notes_taxt
