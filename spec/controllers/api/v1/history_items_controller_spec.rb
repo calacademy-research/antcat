@@ -17,6 +17,7 @@ describe Api::V1::HistoryItemsController, as: :visitor do
       "text_value" => history_item.text_value,
       "reference_id" => history_item.reference_id,
       "pages" => history_item.pages,
+      "citation_note" => history_item.citation_note,
       "object_protonym_id" => history_item.object_protonym_id,
       "object_taxon_id" => history_item.object_taxon_id,
       "force_author_citation" => history_item.force_author_citation,

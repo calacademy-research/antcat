@@ -104,7 +104,7 @@ class HistoryItemsController < ApplicationController
         history_item: [
           :taxt, :rank, :position, :type,
           :subtype, :picked_value, :text_value,
-          :reference_id, :pages, :object_protonym_id, :object_taxon_id,
+          :reference_id, :pages, :citation_note, :object_protonym_id, :object_taxon_id,
           :force_author_citation
         ]
       )

@@ -16,7 +16,8 @@ module Taxt
     [Protonym,         'protonyms',           'secondary_type_information_taxt'],
     [Protonym,         'protonyms',           'type_notes_taxt'],
     [Protonym,         'protonyms',           'notes_taxt'],
-    [HistoryItem,      'history_items',       'taxt']
+    [HistoryItem,      'history_items',       'taxt'],
+    [HistoryItem,      'history_items',       'citation_note']
   ]
 
   TAXON_TAGS = [

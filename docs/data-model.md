@@ -74,7 +74,7 @@ History: yes.
 
 The taxonomic history of a protonym, one statement per row, in `position` order: "combination in X", "junior
 synonym of Y", "status as species", and so on. `type` is the kind of statement (`History::Definitions::TYPES`);
-`subtype`, `picked_value`, `text_value` its details; `reference_id` and `pages` its source; `object_protonym_id`
+`subtype`, `picked_value`, `text_value` its details; `reference_id` and `pages` its source (`citation_note`: a note printed right after the citation); `object_protonym_id`
 or `object_taxon_id` the other name it is about; `taxt` for statements written as text; `rank` when the statement
 is shown only on the taxon of one rank. History: yes.
 

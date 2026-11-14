@@ -123,6 +123,15 @@
           %td
             %code pages
 
+        %tr.hidden{"data-history-item-form-target" => "typeSpecificPages typeSpecificSection"}
+          %th.no-wrap
+            =f.label :citation_note do
+              Citation note
+          %td.grow-tw-conflict
+            .max-w-xs=f.text_field :citation_note, placeholder: '[provisional] or (see note in bibliography)'
+          %td
+            %code citation_note
+
         %tr.hidden{"data-history-item-form-target" => "typeSpecificForceAuthorCitation typeSpecificSection"}
           %th.no-wrap
             =f.label :pages, id: 'type-label-force-author-citation' do
