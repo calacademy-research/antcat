@@ -334,16 +334,31 @@ teardown
 
 setup "the temporary copy removes itself; the variable set by hand is said"
 mkdir -p "$T/tmp"
-cp "$DEPLOY" "$T/tmp/antcat-deploy.test"
-OUT="$(ANTCAT_DIR="$SERVER" ANTCAT_DEPLOY_FROM_MASTER="$T/tmp/antcat-deploy.test" bash "$T/tmp/antcat-deploy.test" --dry-run 2>&1)"; RC=$?
+cp "$DEPLOY" "$T/tmp/antcat-deploy.abc123"
+OUT="$(ANTCAT_DIR="$SERVER" ANTCAT_DEPLOY_FROM_MASTER="$T/tmp/antcat-deploy.abc123" bash "$T/tmp/antcat-deploy.abc123" --dry-run 2>&1)"; RC=$?
 check "exits 0" [ "$RC" -eq 0 ]
-check "the temporary copy is gone" [ ! -e "$T/tmp/antcat-deploy.test" ]
-OUT="$(ANTCAT_DEPLOY_FROM_MASTER=1 "$DEPLOY" --dry-run 2>&1)"; RC=$?
+check "the temporary copy is gone" [ ! -e "$T/tmp/antcat-deploy.abc123" ]
+OUT="$(ANTCAT_DIR="$SERVER" ANTCAT_DEPLOY_FROM_MASTER=1 "$DEPLOY" --dry-run 2>&1)"; RC=$?
+check "exits 0 (variable set by hand)" [ "$RC" -eq 0 ]
 check "the checkout's copy stays" [ -e "$DEPLOY" ]
 check "says the variable is set" out_has "ANTCAT_DEPLOY_FROM_MASTER was set in this shell"
-cp "$DEPLOY" "$T/tmp/antcat-deploy.early"
-OUT="$(ANTCAT_DIR="$SERVER" ANTCAT_DEPLOY_FROM_MASTER="$T/tmp/antcat-deploy.early" bash "$T/tmp/antcat-deploy.early" --no-such-option 2>&1)"; RC=$?
-check "an early stop still removes the temporary copy" [ ! -e "$T/tmp/antcat-deploy.early" ]
+cp "$DEPLOY" "$T/tmp/antcat-deploy.def456"
+OUT="$(ANTCAT_DIR="$SERVER" ANTCAT_DEPLOY_FROM_MASTER="$T/tmp/antcat-deploy.def456" bash "$T/tmp/antcat-deploy.def456" --no-such-option 2>&1)"; RC=$?
+check "an early stop still removes the temporary copy" [ ! -e "$T/tmp/antcat-deploy.def456" ]
+teardown
+
+setup "GitHub cannot be reached: a deploy stops, a rollback goes on with this copy"
+B="$(push_change app/models/taxon.rb "B: model change")"
+run
+check "deploy to B" head_is "$B"
+git -C "$SERVER" remote set-url origin "$T/no-such-origin.git"
+run --dry-run
+check "a deploy stops" [ "$RC" -ne 0 ]
+check "says why and how to go on" out_has "cannot fetch origin/master from GitHub. Nothing was changed. (--own-script"
+run --rollback
+check "the rollback goes on" [ "$RC" -eq 0 ]
+check "warns" out_has "cannot fetch origin/master; rolling back with this copy of the script"
+check "rolled back to A" head_is "$A"
 teardown
 
 setup "says when origin/master has no deploy script, and goes on"

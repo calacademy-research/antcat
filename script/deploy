@@ -58,6 +58,7 @@ main() {
   local from_master="${ANTCAT_DEPLOY_FROM_MASTER:-}"
   unset ANTCAT_DEPLOY_FROM_MASTER
   if [ -n "$from_master" ] && [ "${BASH_SOURCE[0]}" = "$from_master" ]; then
+    case "$(basename "$from_master")" in antcat-deploy.??????) ;; *) die "ANTCAT_DEPLOY_FROM_MASTER names $from_master, not a temporary copy (antcat-deploy.XXXXXX); unset it" ;; esac
     rm -f "${BASH_SOURCE[0]}"   # bash keeps reading the open file
   fi
   # Files git writes must stay readable by the app, which runs as another user in the container
@@ -174,9 +175,8 @@ run_master_copy() {
   fi
   say "running the deploy script of origin/master ($(git -C "$dir" rev-parse --short=9 origin/master)), not the copy in this checkout"
   shopt -s execfail   # a failed exec returns here, so the temporary copy is removed
-  ANTCAT_DEPLOY_FROM_MASTER="$master_script" ANTCAT_DIR="$dir" exec bash "$master_script" "$@"
-  rm -f "$master_script"
-  die "could not run the deploy script of origin/master. Nothing was changed."
+  ANTCAT_DEPLOY_FROM_MASTER="$master_script" ANTCAT_DIR="$dir" exec bash "$master_script" "$@" \
+    || { rm -f "$master_script"; die "could not run the deploy script of origin/master. Nothing was changed."; }
 }
 
 die() { echo "deploy: ERROR: $*" >&2; exit 1; }
