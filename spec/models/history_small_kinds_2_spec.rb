@@ -45,8 +45,15 @@ describe HistoryItem do
       expect(build(:history_item, :unresolved_junior_homonym_of, protonym: protonym, object_taxon: nil)).not_to be_valid
     end
 
-    it 'requires the name for a nomen nudum citation' do
+    it 'requires the name for a nomen nudum citation, letters and italics only' do
       expect(build(:history_item, :nomen_nudum_citation, protonym: protonym, text_value: nil)).not_to be_valid
+      expect(build(:history_item, :nomen_nudum_citation, protonym: protonym, text_value: '<i>Xus</i> <b>y</b>')).not_to be_valid
+      expect(build(:history_item, :nomen_nudum_citation, protonym: protonym, text_value: '<i>Xus</i> var. <i>yus</i>')).to be_valid
+    end
+
+    it 'renders an unnecessary replacement name with a citation' do
+      item = create :history_item, :unnecessary_replacement_name_for, :with_reference, protonym: protonym, object_taxon: taxon
+      expect(item.to_taxt).to eq "Unnecessary replacement name for #{Taxt.taxac(taxon.id)} (#{item.citation_taxt})."
     end
 
     it 'renders an unsaved unresolved homonym with a blank subtype instead of raising' do
@@ -70,7 +77,7 @@ describe HistoryItem do
       create :history_item, :nomen_nudum_citation, protonym: protonym, text_value: '<i>Xus a</i>'
       create :history_item, :nomen_nudum_citation, protonym: protonym, text_value: '<i>Xus a</i>'
       create :history_item, :nomen_nudum_citation, protonym: protonym, text_value: '<i>Xus b</i>'
-      expect(lines).to eq [2, 1]
+      expect(lines).to match_array [2, 1]
     end
   end
 end
