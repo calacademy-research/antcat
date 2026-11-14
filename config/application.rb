@@ -23,6 +23,8 @@ module AntCat
     # 7.1 -> 8.1 (2026-10) needed no overrides; session/cookie settings are unchanged since 7.1.
     # Notable: YJIT on outside dev/test, `Regexp.timeout = 1` (s), path-relative redirects raise.
     config.load_defaults 8.1
+    # No Turbo Native routes (/recede_, /resume_, /refresh_historical_location): AntCat has no native app (2026-11-13).
+    config.turbo.draw_routes = false
 
     # Other sites may read the public API (`/v1/`) from browsers; nothing else is shared cross-origin.
     config.middleware.insert_before(0, Rack::Cors) do

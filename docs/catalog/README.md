@@ -1,6 +1,6 @@
 # AntCat function catalog
 
-`routes.tsv` has one row per route of the app (295 on 2026-11-13: 293 routes, the mounted API docs engine and the assets route): what it is for, who may use it, whether it stays,
+`routes.tsv` has one row per route of the app (290 on 2026-11-13: 288 routes, the mounted API docs engine and the assets route): what it is for, who may use it, whether it stays,
 and the spec that covers it. `spec/catalog/routes_catalog_spec.rb` fails when a route has no row or a row has no route,
 so a new route cannot be added without saying what it is for. Its failure message prints the missing rows, ready to
 paste. Tab-separated; open it in a spreadsheet or read it on GitHub.
@@ -21,27 +21,19 @@ paste. Tab-separated; open it in a spreadsheet or read it on GitHub.
 | user | 20 |
 | helper | 59 |
 | editor | 63 |
-| superadmin | 24 |
+| superadmin | 22 |
 | api | 29 |
-| system | 8 |
+| system | 5 |
 
-## To decide (status `check`)
+## Decided (2026-11-13, Brian Fisher)
 
-- `/recede_historical_location`, `/resume_historical_location`, `/refresh_historical_location`
-  (`turbo/native/navigation`): added by the turbo-rails gem for Turbo Native apps. AntCat has no native app. They do no
-  harm; they can be dropped by not loading the gem's route file.
-
-- `DevsController` (`app/controllers/devs_controller.rb`, developer pages of the pickers and styles) has views but
-  no route, so it is not in this list and cannot be reached: a candidate for removal.
-
-- `POST /users` to `users#create` (the superadmins' "New user" form) is never reached: Devise's sign-up route
-  with the same verb and path comes first in `config/routes.rb`, so the form's POST goes to sign-up. Either drop the
-  form (sign-up and invitations replace it) or give it its own path. Status `check`; the spec now refuses `keep`
-  for a route hidden by an earlier one.
+- Removed: the superadmins' "New user" form (`users#new`, `users#create`; its POST reached Devise's sign-up route,
+  so it never worked; people sign up themselves and get rights on the edit page), `DevsController` (developer pages
+  with no route), and the three Turbo Native routes (`config.turbo.draw_routes = false`; AntCat has no native app).
 
 ## Routes without a spec
 
-`/references/latest_additions`, the three Turbo Native routes above, and `/*id` (the static pages of the high_voltage gem, the last route). The component previews
+`/references/latest_additions` and `/*id` (the static pages of the high_voltage gem, the last route). The component previews
 (`/rails/view_components`, `/_system_test_entrypoint`) exist only in development and test.
 
 ## See also

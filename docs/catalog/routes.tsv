@@ -147,8 +147,6 @@ GET	/users/sign_up/complete	users/registrations#complete	complete_user_sign_up	p
 POST	/users/sign_up/complete	users/registrations#finish	users_sign_up_complete	public	finish: sign up and account settings	keep	spec/controllers/users/registrations_controller_spec.rb
 GET	/users/mentionables	users#mentionables	mentionables_users	user	mentionables: user profiles and the list of users	keep	spec/controllers/users_controller_spec.rb
 GET	/users	users#index	users	public	list: user profiles and the list of users	keep	spec/controllers/users_controller_spec.rb
-POST	/users	users#create		superadmin	add: user profiles and the list of users (never reached: Devise's sign-up route POST /users comes first)	check	spec/controllers/users_controller_spec.rb
-GET	/users/new	users#new	new_user	superadmin	form to add: user profiles and the list of users	keep	spec/controllers/users_controller_spec.rb
 GET	/users/:id/edit	users#edit	edit_user	superadmin	form to change: user profiles and the list of users	keep	spec/controllers/users_controller_spec.rb
 GET	/users/:id	users#show	user	public	show one: user profiles and the list of users	keep	spec/controllers/users_controller_spec.rb
 PATCH	/users/:id	users#update		superadmin	change: user profiles and the list of users	keep	spec/controllers/users_controller_spec.rb
@@ -290,7 +288,4 @@ GET	/my/recently_used_references	my/recently_used_references#show	my_recently_us
 POST	/my/recently_used_references	my/recently_used_references#create		public	add: recently used references (kept in the session only)	keep	spec/controllers/my/recently_used_references_controller_spec.rb
 PATCH	/my/default_reference	my/default_reference#update	my_default_reference	user	change: the editor's default reference	keep	spec/controllers/my/default_reference_controller_spec.rb
 PUT	/my/default_reference	my/default_reference#update		user	change: the editor's default reference	keep	spec/controllers/my/default_reference_controller_spec.rb
-GET	/recede_historical_location	turbo/native/navigation#recede	turbo_recede_historical_location	system	Turbo Native app navigation helpers (turbo-rails gem); AntCat has no native app	check	
-GET	/resume_historical_location	turbo/native/navigation#resume	turbo_resume_historical_location	system	Turbo Native app navigation helpers (turbo-rails gem); AntCat has no native app	check	
-GET	/refresh_historical_location	turbo/native/navigation#refresh	turbo_refresh_historical_location	system	Turbo Native app navigation helpers (turbo-rails gem); AntCat has no native app	check	
 GET	/*id	high_voltage/pages#show	page	public	static pages from app/views/pages (catch-all, last route)	keep	

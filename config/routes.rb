@@ -140,7 +140,9 @@ Rails.application.routes.draw do
     get 'users/sign_up/complete' => 'users/registrations#complete', as: :complete_user_sign_up
     post 'users/sign_up/complete' => 'users/registrations#finish'
   end
-  resources :users do
+  # No new/create: people sign up themselves (Devise, POST /users above); a superadmin then gives rights on the user's
+  # edit page. The old superadmin form's POST /users always reached sign-up instead (removed 2026-11-13).
+  resources :users, except: [:new, :create] do
     collection do
       get :mentionables
     end
