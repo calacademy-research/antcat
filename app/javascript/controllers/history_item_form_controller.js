@@ -293,7 +293,7 @@ export default class extends Controller {
         inputsToShow.push(this.typeSpecificReferenceTarget, this.typeSpecificPagesTarget, this.typeSpecificObjectTaxonTarget)
         break
 
-      case 'UnidentifiableTaxon':
+      case 'UnplacedUnidentifiableTaxon':
       case 'SubgenusIndeterminate':
       case 'DuplicatedIn':
         inputsToShow.push(this.typeSpecificReferenceTarget, this.typeSpecificPagesTarget)

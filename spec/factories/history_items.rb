@@ -174,8 +174,8 @@ FactoryBot.define do
       with_object_taxon
     end
 
-    trait :unidentifiable_taxon do
-      type { History::Definitions::UNIDENTIFIABLE_TAXON }
+    trait :unplaced_unidentifiable_taxon do
+      type { History::Definitions::UNPLACED_UNIDENTIFIABLE_TAXON }
 
       with_reference
     end

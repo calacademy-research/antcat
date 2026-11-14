@@ -729,8 +729,9 @@ module History
         validates_presence_of: [:object_taxon],
         optional_attributes: [:reference, :pages]
       },
-      UNIDENTIFIABLE_TAXON = 'UnidentifiableTaxon' => {
-        type_name: UNIDENTIFIABLE_TAXON,
+      # Not UNIDENTIFIABLE_TAXON: that is IncertaeSedisIn's subtype constant.
+      UNPLACED_UNIDENTIFIABLE_TAXON = 'UnplacedUnidentifiableTaxon' => {
+        type_name: UNPLACED_UNIDENTIFIABLE_TAXON,
         type_label: 'Unidentifiable taxon (no placement)',
         ranks: SPECIES_GROUP_LABEL,
 
