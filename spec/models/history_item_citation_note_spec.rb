@@ -35,37 +35,40 @@ describe HistoryItem do
   end
 
   describe 'validation of citation_note' do
+    # A saved protonym: an unsaved one has no id, which another validation reads as "object is the protonym".
+    let(:protonym) { create :protonym }
+
     it 'accepts square brackets and parentheses' do
-      expect(build(:history_item, :status_as_species, citation_note: '[provisional]')).to be_valid
-      expect(build(:history_item, :status_as_species, citation_note: '(diagnosis, redescription)')).to be_valid
+      expect(build(:history_item, :status_as_species, protonym: protonym, citation_note: '[provisional]')).to be_valid
+      expect(build(:history_item, :status_as_species, protonym: protonym, citation_note: '(diagnosis, redescription)')).to be_valid
     end
 
     it 'accepts taxt tags and one level of parentheses' do
-      expect(build(:history_item, :status_as_species, citation_note: '[{tax 1}]')).to be_valid
-      expect(build(:history_item, :status_as_species, citation_note: '[{unmissing <i>Myrmicidae</i>}]')).to be_valid
-      expect(build(:history_item, :status_as_species, citation_note: '[by implication (as type-genus)]')).to be_valid
+      expect(build(:history_item, :status_as_species, protonym: protonym, citation_note: '[{tax 1}]')).to be_valid
+      expect(build(:history_item, :status_as_species, protonym: protonym, citation_note: '[{unmissing <i>Myrmicidae</i>}]')).to be_valid
+      expect(build(:history_item, :status_as_species, protonym: protonym, citation_note: '[by implication (as type-genus)]')).to be_valid
     end
 
     it 'refuses other forms' do
-      expect(build(:history_item, :status_as_species, citation_note: 'provisional')).not_to be_valid
-      expect(build(:history_item, :status_as_species, citation_note: '[a; b]')).not_to be_valid
-      expect(build(:history_item, :status_as_species, citation_note: '(a) free text (b)')).not_to be_valid
-      expect(build(:history_item, :status_as_species, citation_note: '(x] [y)')).not_to be_valid
-      expect(build(:history_item, :status_as_species, citation_note: '(see {foo)')).not_to be_valid
-      expect(build(:history_item, :status_as_species, citation_note: '[<b>x</b>]')).not_to be_valid
-      expect(build(:history_item, :status_as_species, citation_note: "[#{'x' * 300}]")).not_to be_valid
+      expect(build(:history_item, :status_as_species, protonym: protonym, citation_note: 'provisional')).not_to be_valid
+      expect(build(:history_item, :status_as_species, protonym: protonym, citation_note: '[a; b]')).not_to be_valid
+      expect(build(:history_item, :status_as_species, protonym: protonym, citation_note: '(a) free text (b)')).not_to be_valid
+      expect(build(:history_item, :status_as_species, protonym: protonym, citation_note: '(x] [y)')).not_to be_valid
+      expect(build(:history_item, :status_as_species, protonym: protonym, citation_note: '(see {foo)')).not_to be_valid
+      expect(build(:history_item, :status_as_species, protonym: protonym, citation_note: '[<b>x</b>]')).not_to be_valid
+      expect(build(:history_item, :status_as_species, protonym: protonym, citation_note: "[#{'x' * 300}]")).not_to be_valid
     end
 
     it 'refuses a note with a reference but no pages' do
-      expect(build(:history_item, :status_as_species, pages: nil, citation_note: '[provisional]')).not_to be_valid
+      expect(build(:history_item, :status_as_species, protonym: protonym, pages: nil, citation_note: '[provisional]')).not_to be_valid
     end
 
     it 'refuses a note on a free-text item' do
-      expect(build(:history_item, taxt: 'Text.', citation_note: '[provisional]')).not_to be_valid
+      expect(build(:history_item, protonym: protonym, taxt: 'Text.', citation_note: '[provisional]')).not_to be_valid
     end
 
     it 'refuses a note without a reference' do
-      expect(build(:history_item, :unavailable_name, citation_note: '[provisional]')).not_to be_valid
+      expect(build(:history_item, :unavailable_name, protonym: protonym, citation_note: '[provisional]')).not_to be_valid
     end
   end
 end
