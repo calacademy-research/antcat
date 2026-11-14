@@ -144,7 +144,7 @@ run_master_copy() {
   done
   if [ -n "$from_master" ]; then
     [ "${BASH_SOURCE[0]}" = "$from_master" ] \
-      || say "ANTCAT_DEPLOY_FROM_MASTER was set in this shell: running this copy without comparing it with origin/master"
+      || say "WARNING: ANTCAT_DEPLOY_FROM_MASTER was set in this shell: running this copy without comparing it with origin/master (unset it)"
     return 0
   fi
   [ "$help" = 1 ] && return 0
@@ -166,14 +166,15 @@ run_master_copy() {
     return 0
   fi
   local master_script
-  master_script="$(mktemp "${TMPDIR:-/tmp}/antcat-deploy.XXXXXX")"
+  master_script="$(mktemp "${TMPDIR:-/tmp}/antcat-deploy.XXXXXX")" \
+    || die "cannot write a temporary file in ${TMPDIR:-/tmp}. Nothing was changed. (--own-script runs this copy.)"
   git -C "$dir" show origin/master:script/deploy > "$master_script" \
     || { rm -f "$master_script"; die "cannot read script/deploy of origin/master. Nothing was changed."; }
   if cmp -s "$master_script" "${BASH_SOURCE[0]}"; then
     rm -f "$master_script"
     return 0
   fi
-  say "running the deploy script of origin/master ($(git -C "$dir" rev-parse --short=9 origin/master)), not the copy in this checkout"
+  say "running the deploy script of origin/master ($(git -C "$dir" rev-parse --short=9 origin/master)), not the copy in this checkout (if it fails before changing anything, --own-script runs this copy)"
   shopt -s execfail   # a failed exec returns here, so the temporary copy is removed
   ANTCAT_DEPLOY_FROM_MASTER="$master_script" ANTCAT_DIR="$dir" exec bash "$master_script" "$@" \
     || { rm -f "$master_script"; die "could not run the deploy script of origin/master. Nothing was changed."; }
