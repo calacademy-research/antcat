@@ -211,6 +211,65 @@ export default class extends Controller {
         )
         break
 
+      case 'PlacementIn':
+        inputsToShow.push(
+          this.typeSpecificTaxtTarget,
+          this.typeSpecificReferenceTarget,
+          this.typeSpecificPagesTarget,
+          this.typeSpecificForceAuthorCitationTarget,
+        )
+        break
+
+      case 'PlacementIncertaeSedisIn':
+        this.typeLabelObjectTaxonTarget.textContent = "Incertae sedis in"
+        inputsToShow.push(
+          this.typeSpecificReferenceTarget,
+          this.typeSpecificPagesTarget,
+          this.typeSpecificObjectTaxonTarget,
+          this.typeSpecificForceAuthorCitationTarget,
+        )
+        break
+
+      case 'AsGenus':
+        inputsToShow.push(this.typeSpecificReferenceTarget, this.typeSpecificPagesTarget, this.typeSpecificForceAuthorCitationTarget)
+        break
+
+      case 'AsRankOf':
+        this.typeLabelSubtypeTarget.textContent = "Rank"
+        this._setupSelect(this.subtypeSelectTarget, [
+          { label: "(none)", value: "" },
+          { label: "As subgenus of", value: "Subgenus" },
+          { label: "As tribe of", value: "Tribe" },
+          { label: "As subtribe of", value: "Subtribe" },
+          { label: "As subfamily of", value: "Subfamily" },
+        ])
+        this.typeLabelObjectTaxonTarget.textContent = "Of"
+        inputsToShow.push(
+          this.typeSpecificSubtypeTarget,
+          this.typeSpecificReferenceTarget,
+          this.typeSpecificPagesTarget,
+          this.typeSpecificObjectTaxonTarget,
+          this.typeSpecificForceAuthorCitationTarget,
+        )
+        break
+
+      case 'AsSynonymOf':
+        this.typeLabelSubtypeTarget.textContent = "Synonym"
+        this._setupSelect(this.subtypeSelectTarget, [
+          { label: "(none)", value: "" },
+          { label: "As junior synonym of", value: "Junior" },
+          { label: "As senior synonym of", value: "Senior" },
+        ])
+        this.typeLabelObjectTaxonTarget.textContent = "Synonym of"
+        inputsToShow.push(
+          this.typeSpecificSubtypeTarget,
+          this.typeSpecificReferenceTarget,
+          this.typeSpecificPagesTarget,
+          this.typeSpecificObjectTaxonTarget,
+          this.typeSpecificForceAuthorCitationTarget,
+        )
+        break
+
       case 'UnavailableName':
         this._markCitationAsOptional()
         inputsToShow.push(this.typeSpecificReferenceTarget, this.typeSpecificPagesTarget)

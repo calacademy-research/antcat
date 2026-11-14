@@ -125,6 +125,42 @@ FactoryBot.define do
       with_object_taxon
     end
 
+    trait :placement_in do
+      type { History::Definitions::PLACEMENT_IN }
+      taxt { '{tax 1}, {tax 2}' }
+
+      with_reference
+    end
+
+    trait :placement_incertae_sedis_in do
+      type { History::Definitions::PLACEMENT_INCERTAE_SEDIS_IN }
+
+      with_reference
+      with_object_taxon
+    end
+
+    trait :as_genus do
+      type { History::Definitions::AS_GENUS }
+
+      with_reference
+    end
+
+    trait :as_rank_of do
+      type { History::Definitions::AS_RANK_OF }
+      subtype { 'Subgenus' }
+
+      with_reference
+      with_object_taxon
+    end
+
+    trait :as_synonym_of do
+      type { History::Definitions::AS_SYNONYM_OF }
+      subtype { 'Junior' }
+
+      with_reference
+      with_object_taxon
+    end
+
     trait :subspecies_of do
       type { History::Definitions::SUBSPECIES_OF }
 
