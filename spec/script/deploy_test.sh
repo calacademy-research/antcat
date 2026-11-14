@@ -245,14 +245,17 @@ git -C "$WORK" push -q origin feature
 F="$(git -C "$WORK" rev-parse HEAD)"
 run --ref feature
 check "the feature branch is deployed" head_is "$F"
+STARTS="$(grep -c "deploy start" "$ANTCAT_DEPLOY_LOG")"
 run --dry-run
 check "dry run exits 0" [ "$RC" -eq 0 ]
 check "dry run names the branch" out_has "is not on master (it is on: feature)"
+check "dry run says a real deploy would ask for --yes" out_has "a real deploy would stop here and ask for --yes"
 run
 check "refuses without --yes" [ "$RC" -ne 0 ]
 check "says how to go on" out_has "run again with --yes"
 check "HEAD is still the feature commit" head_is "$F"
 check "the rollback commit is not overwritten" [ "$(tr -d '[:space:]' < "$ANTCAT_ROLLBACK_FILE")" = "$A" ]
+check "no new deploy start in the log" [ "$(grep -c "deploy start" "$ANTCAT_DEPLOY_LOG")" = "$STARTS" ]
 run --yes
 check "deploys master with --yes" head_is "$A"
 teardown
@@ -262,12 +265,33 @@ git -C "$WORK" checkout -q -b feature
 echo x > "$WORK/feature.txt"; git -C "$WORK" add -A; git -C "$WORK" commit -qm "F: feature"
 git -C "$WORK" push -q origin feature
 run --ref feature
+check "the first feature commit is deployed" [ "$RC" -eq 0 ]
 echo y > "$WORK/feature.txt"; git -C "$WORK" commit -qam "F2: feature"
 git -C "$WORK" push -q origin feature
 F2="$(git -C "$WORK" rev-parse HEAD)"
 run --ref feature
 check "exits 0" [ "$RC" -eq 0 ]
 check "HEAD is the newer feature commit" head_is "$F2"
+teardown
+
+setup "a tested branch deleted on GitHub: still asks for --yes, with a message"
+git -C "$WORK" checkout -q -b feature
+echo x > "$WORK/feature.txt"; git -C "$WORK" add -A; git -C "$WORK" commit -qm "F: feature"
+git -C "$WORK" push -q origin feature
+F="$(git -C "$WORK" rev-parse HEAD)"
+run --ref feature
+check "the feature branch is deployed" head_is "$F"
+git -C "$WORK" push -q origin --delete feature
+git -C "$SERVER" fetch -q --prune origin
+run --dry-run
+check "dry run exits 0" [ "$RC" -eq 0 ]
+check "says it is not on master, no branch named" out_has "is not on master: probably a branch being tested here"
+run
+check "refuses without --yes" [ "$RC" -ne 0 ]
+check "says how to go on" out_has "run again with --yes"
+check "HEAD is still the feature commit" head_is "$F"
+run --yes
+check "deploys master with --yes" head_is "$A"
 teardown
 
 setup "refuses when the deploy log cannot be written"

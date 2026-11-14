@@ -424,14 +424,24 @@ do_deploy() {
   # A running commit that the target does not contain and that is not on master is a branch being
   # tested here (antcat-staging, 2026-11-13: a plain deploy of master replaced a feature branch that
   # was being tested, and only warned). Ask for --yes before replacing it.
-  if [ "$last_failed" = 0 ] && ! git merge-base --is-ancestor "$running" "$target" \
-    && ! git merge-base --is-ancestor "$running" origin/master; then
-    local holders
-    holders="$(git branch -r --contains "$running" 2> /dev/null | grep -v -- '->' | sed 's/^ *origin\///' | tr '\n' ' ' | sed 's/ $//')"
-    say "the running commit $(short "$running") is not on master${holders:+ (it is on: $holders)}: probably a branch being tested here."
-    if [ "$yes" != 1 ] && [ "$dry_run" != 1 ]; then
-      die "this deploy would replace it. Nothing was changed. If that is intended, run again with --yes."
-    fi
+  if [ "$last_failed" = 0 ] && ! git merge-base --is-ancestor "$running" "$target"; then
+    # origin was fetched above. merge-base answers 0 (on master), 1 (not on master), or more (it cannot tell: stop).
+    local on_master_rc=0
+    git merge-base --is-ancestor "$running" origin/master || on_master_rc=$?
+    case "$on_master_rc" in
+      0) ;;
+      1)
+        local holders
+        holders="$( { git branch -r --contains "$running" 2> /dev/null || true; } | { grep -v -- '->' || true; } \
+          | sed 's/^ *origin\///' | tr '\n' ' ' | sed 's/ $//')"
+        say "the running commit $(short "$running") is not on master${holders:+ (it is on: $holders)}: probably a branch being tested here."
+        if [ "$yes" != 1 ]; then
+          [ "$dry_run" = 1 ] && say "a real deploy would stop here and ask for --yes."
+          [ "$dry_run" = 1 ] || die "this deploy would replace it. Nothing was changed. If that is intended, run again with --yes."
+        fi
+        ;;
+      *) die "cannot tell whether the running commit $(short "$running") is on origin/master (git merge-base exit $on_master_rc). Nothing was changed." ;;
+    esac
   fi
 
   # After a rollback on a branch checkout (production), go back onto master.
