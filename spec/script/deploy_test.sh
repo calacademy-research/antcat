@@ -272,6 +272,7 @@ F2="$(git -C "$WORK" rev-parse HEAD)"
 run --ref feature
 check "exits 0" [ "$RC" -eq 0 ]
 check "HEAD is the newer feature commit" head_is "$F2"
+check "no --yes asked" not out_has "run again with --yes"
 teardown
 
 setup "a tested branch deleted on GitHub: still asks for --yes, with a message"

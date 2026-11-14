@@ -423,7 +423,8 @@ do_deploy() {
 
   # A running commit that the target does not contain and that is not on master is a branch being
   # tested here (antcat-staging, 2026-11-13: a plain deploy of master replaced a feature branch that
-  # was being tested, and only warned). Ask for --yes before replacing it.
+  # was being tested, and only warned). Ask for --yes before replacing it. "On master" is by ancestry: pull
+  # requests here are merged with merge commits, so a merged branch's commits are on master.
   if [ "$last_failed" = 0 ] && ! git merge-base --is-ancestor "$running" "$target"; then
     # origin was fetched above. merge-base answers 0 (on master), 1 (not on master), or more (it cannot tell: stop).
     local on_master_rc=0
