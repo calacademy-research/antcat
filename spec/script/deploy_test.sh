@@ -238,6 +238,38 @@ check "exits 0" [ "$RC" -eq 0 ]
 check "HEAD is the feature commit" head_is "$F"
 teardown
 
+setup "a plain deploy does not replace a tested branch without --yes"
+git -C "$WORK" checkout -q -b feature
+echo x > "$WORK/feature.txt"; git -C "$WORK" add -A; git -C "$WORK" commit -qm "F: feature"
+git -C "$WORK" push -q origin feature
+F="$(git -C "$WORK" rev-parse HEAD)"
+run --ref feature
+check "the feature branch is deployed" head_is "$F"
+run --dry-run
+check "dry run exits 0" [ "$RC" -eq 0 ]
+check "dry run names the branch" out_has "is not on master (it is on: feature)"
+run
+check "refuses without --yes" [ "$RC" -ne 0 ]
+check "says how to go on" out_has "run again with --yes"
+check "HEAD is still the feature commit" head_is "$F"
+check "the rollback commit is not overwritten" [ "$(tr -d '[:space:]' < "$ANTCAT_ROLLBACK_FILE")" = "$A" ]
+run --yes
+check "deploys master with --yes" head_is "$A"
+teardown
+
+setup "a newer commit of the tested branch needs no --yes"
+git -C "$WORK" checkout -q -b feature
+echo x > "$WORK/feature.txt"; git -C "$WORK" add -A; git -C "$WORK" commit -qm "F: feature"
+git -C "$WORK" push -q origin feature
+run --ref feature
+echo y > "$WORK/feature.txt"; git -C "$WORK" commit -qam "F2: feature"
+git -C "$WORK" push -q origin feature
+F2="$(git -C "$WORK" rev-parse HEAD)"
+run --ref feature
+check "exits 0" [ "$RC" -eq 0 ]
+check "HEAD is the newer feature commit" head_is "$F2"
+teardown
+
 setup "refuses when the deploy log cannot be written"
 B="$(push_change app/models/taxon.rb "B: model change")"
 export ANTCAT_DEPLOY_LOG="$T/no-such-dir/deploy.log"
