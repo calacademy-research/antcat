@@ -545,7 +545,7 @@ describe HistoryItem, :relational_hi do
         expect(justified).not_to be_valid
         expect(justified.errors.where(:object_taxon).map(&:message)).to include('is only for an unjustified emendation')
 
-        expect(build(:history_item, :unjustified_emendation)).to be_valid
+        expect(create(:history_item, :unjustified_emendation)).to be_valid
       end
     end
 

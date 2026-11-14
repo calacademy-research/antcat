@@ -318,8 +318,11 @@ module History
             vars: ->(o) {
               {
                 # Validation requires a known subtype; the fallback only keeps an unsaved, invalid item renderable.
-                lead: format(EMENDATION_LEADS.fetch(o.subtype.to_s, '%<spelling>s'),
-                  spelling: o.text_value, object_taxon_id: o.object_taxon_id.to_i)
+                lead: format(
+                  EMENDATION_LEADS.fetch(o.subtype.to_s, '%<spelling>s'),
+                  spelling: o.text_value,
+                  object_taxon_id: o.object_taxon_id.to_i
+                )
               }
             }
           }
