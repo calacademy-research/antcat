@@ -53,6 +53,8 @@ module Exporters
             "valid"
           elsif taxon.synonym?
             "synonym of #{format_name(taxon.current_taxon)}"
+          elsif taxon.unjustified_emendation?
+            "unjustified emendation of #{format_name(taxon.current_taxon)}"
           else
             taxon.status
           end

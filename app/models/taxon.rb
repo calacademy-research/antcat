@@ -91,7 +91,8 @@ class Taxon < ApplicationRecord
     Status::HOMONYM,
     Status::UNIDENTIFIABLE,
     Status::UNAVAILABLE,
-    Status::EXCLUDED_FROM_FORMICIDAE
+    Status::EXCLUDED_FROM_FORMICIDAE,
+    Status::UNJUSTIFIED_EMENDATION
   ].each do |status|
     define_method "#{status.downcase.tr(' ', '_')}?" do
       self.status == status

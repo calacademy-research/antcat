@@ -8,7 +8,8 @@ describe Status do
       [
         Status::SYNONYM,
         Status::OBSOLETE_COMBINATION,
-        Status::UNAVAILABLE_MISSPELLING
+        Status::UNAVAILABLE_MISSPELLING,
+        Status::UNJUSTIFIED_EMENDATION
       ].each do |status|
         expect(described_class.cannot_have_current_taxon?(status)).to eq false
         expect(described_class.requires_current_taxon?(status)).to eq true
@@ -36,7 +37,8 @@ describe Status do
         Status::UNIDENTIFIABLE,
         Status::UNAVAILABLE,
         Status::EXCLUDED_FROM_FORMICIDAE,
-        Status::UNAVAILABLE_MISSPELLING
+        Status::UNAVAILABLE_MISSPELLING,
+        Status::UNJUSTIFIED_EMENDATION
       ].each do |status_of_current_taxon|
         expect(
           described_class.status_of_current_taxon_allowed?(Status::OBSOLETE_COMBINATION, status_of_current_taxon)
@@ -61,7 +63,8 @@ describe Status do
         Status::HOMONYM,
         Status::UNIDENTIFIABLE,
         Status::UNAVAILABLE,
-        Status::EXCLUDED_FROM_FORMICIDAE
+        Status::EXCLUDED_FROM_FORMICIDAE,
+        Status::UNJUSTIFIED_EMENDATION
       ].each do |taxon_status|
         expect(described_class.display_history_items?(taxon_status)).to eq true
       end
