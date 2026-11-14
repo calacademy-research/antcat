@@ -24,7 +24,7 @@ class HistoryItem < ApplicationRecord
   # Printed right after the citation, exactly as in the source: "[Myrmicidae]", "[provisional]",
   # "(see note in bibliography)". May hold taxt tags.
   CITATION_NOTE_MAX_LENGTH = 255
-  CITATION_NOTE_TAG = '\\{[a-z]+ \\d+\\}|\\{(?:unmissing|misspelling) (?:<i>)?[^{}<>;]+(?:</i>)?\\}'
+  CITATION_NOTE_TAG = '\\{[a-z]+ \\d+\\}|\\{(?:missing[0-9]?|unmissing|misspelling) (?:<i>)?[^{}<>;]+(?:</i>)?\\}'
   CITATION_NOTE_PART = "[^\\[\\]();{}<>]|#{CITATION_NOTE_TAG}|</?i>"
   CITATION_NOTE_TEXT = "(?:#{CITATION_NOTE_PART}|\\((?:#{CITATION_NOTE_PART})*\\))*"
   # One bracketed or parenthesized note; braces only as taxt tags, angle brackets only as <i>; parentheses inside

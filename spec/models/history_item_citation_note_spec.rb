@@ -46,6 +46,7 @@ describe HistoryItem do
     it 'accepts taxt tags and one level of parentheses' do
       expect(build(:history_item, :status_as_species, protonym: protonym, citation_note: '[{tax 1}]')).to be_valid
       expect(build(:history_item, :status_as_species, protonym: protonym, citation_note: '[{unmissing <i>Myrmicidae</i>}]')).to be_valid
+      expect(build(:history_item, :status_as_species, protonym: protonym, citation_note: '[{missing <i>Attidae</i>}]')).to be_valid
       expect(build(:history_item, :status_as_species, protonym: protonym, citation_note: '[by implication (as type-genus)]')).to be_valid
     end
 
