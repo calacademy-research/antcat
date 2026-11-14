@@ -328,7 +328,7 @@ describe Protonym do
       end
 
       it 'does not block a merge or tag fix that rewrites only the tags of an old etymology' do
-        reference, other_reference = create_list :any_reference, 2
+        reference, other_reference = 2.times.map { create :any_reference }
         protonym = create :protonym
         protonym.update_columns(etymology_taxt: "Named after the collector (#{Taxt.ref(reference.id)}: 12).")
         protonym.reload
