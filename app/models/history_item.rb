@@ -24,7 +24,12 @@ class HistoryItem < ApplicationRecord
   # Printed right after the citation, exactly as in the source: "[Myrmicidae]", "[provisional]",
   # "(see note in bibliography)". May hold taxt tags.
   CITATION_NOTE_MAX_LENGTH = 255
-  VALID_CITATION_NOTE_REGEX = /\A(\[[^\[\];]*\]|\([^;]*\))\z/
+  CITATION_NOTE_TAG = '\\{[a-z]+ \\d+\\}|\\{(?:unmissing|misspelling) (?:<i>)?[^{}<>;]+(?:</i>)?\\}'
+  CITATION_NOTE_PART = "[^\\[\\]();{}<>]|#{CITATION_NOTE_TAG}|</?i>"
+  CITATION_NOTE_TEXT = "(?:#{CITATION_NOTE_PART}|\\((?:#{CITATION_NOTE_PART})*\\))*"
+  # One bracketed or parenthesized note; braces only as taxt tags, angle brackets only as <i>; parentheses inside
+  # may nest one level.
+  VALID_CITATION_NOTE_REGEX = /\A(?:\[#{CITATION_NOTE_TEXT}\]|\(#{CITATION_NOTE_TEXT}\))\z/
   VALID_TEXT_VALUE_REGEX = /\A[^;{}]*\z/ # Allow any format except weird characters for now.
 
   self.inheritance_column = :_type_column_disabled
@@ -159,12 +164,12 @@ class HistoryItem < ApplicationRecord
     def validate_citation_note
       return if citation_note.blank?
 
-      if taxt_type? || !reference_id || !pages
+      if taxt_type? || !reference || !pages
         errors.add :citation_note, 'is only for items with a reference and pages'
       elsif citation_note.length > CITATION_NOTE_MAX_LENGTH
         errors.add :citation_note, "is too long (maximum is #{CITATION_NOTE_MAX_LENGTH} characters)"
       elsif !citation_note.match?(VALID_CITATION_NOTE_REGEX)
-        errors.add :citation_note, 'must be in square brackets or parentheses, without ";"'
+        errors.add :citation_note, 'must be one note in square brackets or parentheses, without ";" (braces only as tags)'
       end
     end
 

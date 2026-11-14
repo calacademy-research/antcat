@@ -28,8 +28,9 @@ describe HistoryItem do
       first = create :history_item, :status_as_species, protonym: protonym, citation_note: '[provisional]'
       second = create :history_item, :status_as_species, protonym: protonym
       grouped = HistoryPresenter.new(described_class.where(protonym: protonym)).grouped_items.first
-      expect(grouped.taxt).to include "#{first.citation_taxt}; #{second.citation_taxt}"
+      expect(grouped.taxt).to include(first.citation_taxt, second.citation_taxt)
       expect(first.citation_taxt).to end_with ' [provisional]'
+      expect(second.citation_taxt).not_to include '['
     end
   end
 
@@ -39,9 +40,24 @@ describe HistoryItem do
       expect(build(:history_item, :status_as_species, citation_note: '(diagnosis, redescription)')).to be_valid
     end
 
+    it 'accepts taxt tags and one level of parentheses' do
+      expect(build(:history_item, :status_as_species, citation_note: '[{tax 1}]')).to be_valid
+      expect(build(:history_item, :status_as_species, citation_note: '[{unmissing <i>Myrmicidae</i>}]')).to be_valid
+      expect(build(:history_item, :status_as_species, citation_note: '[by implication (as type-genus)]')).to be_valid
+    end
+
     it 'refuses other forms' do
       expect(build(:history_item, :status_as_species, citation_note: 'provisional')).not_to be_valid
       expect(build(:history_item, :status_as_species, citation_note: '[a; b]')).not_to be_valid
+      expect(build(:history_item, :status_as_species, citation_note: '(a) free text (b)')).not_to be_valid
+      expect(build(:history_item, :status_as_species, citation_note: '(x] [y)')).not_to be_valid
+      expect(build(:history_item, :status_as_species, citation_note: '(see {foo)')).not_to be_valid
+      expect(build(:history_item, :status_as_species, citation_note: '[<b>x</b>]')).not_to be_valid
+      expect(build(:history_item, :status_as_species, citation_note: "[#{'x' * 300}]")).not_to be_valid
+    end
+
+    it 'refuses a note with a reference but no pages' do
+      expect(build(:history_item, :status_as_species, pages: nil, citation_note: '[provisional]')).not_to be_valid
     end
 
     it 'refuses a note on a free-text item' do
