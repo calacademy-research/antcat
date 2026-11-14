@@ -127,7 +127,7 @@ FactoryBot.define do
 
     trait :placement_in do
       type { History::Definitions::PLACEMENT_IN }
-      taxt { '{tax 1}, {tax 2}' }
+      taxt { "#{Taxt.tax(create(:family).id)}, #{Taxt.tax(create(:family).id)}" }
 
       with_reference
     end

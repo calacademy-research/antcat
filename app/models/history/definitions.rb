@@ -579,14 +579,14 @@ module History
       PLACEMENT_INCERTAE_SEDIS_IN = 'PlacementIncertaeSedisIn' => {
         type_name: PLACEMENT_INCERTAE_SEDIS_IN,
         type_label: 'Incertae sedis in (genus- and family-group: "X incertae sedis in A: ...")',
-        ranks: GENUS_GROUP_LABEL,
+        ranks: ANY_RANK_GROUP_LABEL,
 
         group_order: 81,
         group_key: ->(o) { [o.type, 'object_taxon_id', o.object_taxon_id, o.force_author_citation?] },
 
         templates: {
           default: {
-            content: '%<subject>s <i>incertae sedis</i> in {tax %<object_taxon_id>i}: %<grouped_item_taxts>s.',
+            content: '%<subject>s <i>incertae sedis</i> in {tax %<object_taxon_id>s}: %<grouped_item_taxts>s.',
             vars: ->(o) { { subject: HIGHER_NAME_SUBJECT.call(o), object_taxon_id: o.object_taxon_id } }
           }
         },
@@ -621,14 +621,14 @@ module History
       AS_RANK_OF = 'AsRankOf' => {
         type_name: AS_RANK_OF,
         type_label: 'As subgenus/tribe/subtribe/subfamily of ("X as subgenus of A: ...")',
-        ranks: GENUS_GROUP_LABEL,
+        ranks: ANY_RANK_GROUP_LABEL,
 
         group_order: 83,
         group_key: ->(o) { [o.type, 'subtype', o.subtype, 'object_taxon_id', o.object_taxon_id, o.force_author_citation?] },
 
         templates: {
           default: {
-            content: '%<subject>s as %<rank>s of {tax %<object_taxon_id>i}: %<grouped_item_taxts>s.',
+            content: '%<subject>s as %<rank>s of {tax %<object_taxon_id>s}: %<grouped_item_taxts>s.',
             vars: ->(o) {
               {
                 subject: HIGHER_NAME_SUBJECT.call(o),
@@ -652,14 +652,14 @@ module History
       AS_SYNONYM_OF = 'AsSynonymOf' => {
         type_name: AS_SYNONYM_OF,
         type_label: 'As junior/senior synonym of (genus- and family-group: "X as junior synonym of A: ...")',
-        ranks: GENUS_GROUP_LABEL,
+        ranks: ANY_RANK_GROUP_LABEL,
 
         group_order: 84,
         group_key: ->(o) { [o.type, 'subtype', o.subtype, 'object_taxon_id', o.object_taxon_id, o.force_author_citation?] },
 
         templates: {
           default: {
-            content: '%<subject>s as %<kind>s synonym of {tax %<object_taxon_id>i}: %<grouped_item_taxts>s.',
+            content: '%<subject>s as %<kind>s synonym of {tax %<object_taxon_id>s}: %<grouped_item_taxts>s.',
             vars: ->(o) {
               {
                 subject: HIGHER_NAME_SUBJECT.call(o),

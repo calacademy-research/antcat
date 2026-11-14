@@ -59,8 +59,10 @@ describe HistoryItem do
       expect(build(:history_item, :as_synonym_of, subtype: 'Other')).not_to be_valid
     end
 
-    it 'does not allow taxt on the other types' do
-      expect(build(:history_item, :as_genus, taxt: 'x')).not_to be_valid
+    %i[placement_incertae_sedis_in as_genus as_rank_of as_synonym_of].each do |trait|
+      it "does not allow taxt on #{trait}" do
+        expect(build(:history_item, trait, taxt: 'x')).not_to be_valid
+      end
     end
 
     it 'renders an unsaved item with a blank subtype instead of raising' do
