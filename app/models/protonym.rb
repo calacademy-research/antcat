@@ -229,7 +229,14 @@ class Protonym < ApplicationRecord
   # A spelling kept on purpose (prevailing usage, a Commission ruling), or a reading that is disputed or not yet
   # settled: a mismatch with the genus gender is not an error to report.
   def spelling_kept_against_agreement?
-    spelling_basis.in?(SPELLING_KEPT_AGAINST_AGREEMENT_BASES) || scripted_spelling_change_blocked?
+    spelling_kept_against_agreement_reason.present?
+  end
+
+  # The basis when it keeps the spelling; otherwise the disputed or unresolved status that blocks a change.
+  def spelling_kept_against_agreement_reason
+    return spelling_basis_label if spelling_basis.in?(SPELLING_KEPT_AGAINST_AGREEMENT_BASES)
+
+    interpretation_status_label if scripted_spelling_change_blocked?
   end
 
   def etymology_source_label
