@@ -1,0 +1,9 @@
+%table.table-unstriped
+  %tr
+    %td Synonym
+    %td=select_tag :subtype, options_for_select(History::Definitions::TYPE_DEFINITIONS[History::Definitions::AS_SYNONYM_OF][:subtype_options], history_item.subtype), id: nil
+  %tr
+    %td Synonym of
+    %td=taxon_picker history_item.object_taxon, name: 'object_taxon_id'
+
+  =tr_for_reference_and_pages history_item
