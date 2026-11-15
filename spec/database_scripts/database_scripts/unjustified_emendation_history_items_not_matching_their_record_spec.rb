@@ -28,6 +28,17 @@ describe DatabaseScripts::UnjustifiedEmendationHistoryItemsNotMatchingTheirRecor
       expect(database_script.results).to eq [history_item]
     end
 
+    it "returns an item whose spelling differs from the record's only in case" do
+      history_item.update_columns(text_value: record.name.epithet.upcase)
+      expect(database_script.results).to eq [history_item]
+    end
+
+    it 'returns an item that lost its record (a foreign key keeps the record from being deleted)' do
+      history_item.update_columns(object_taxon_id: nil)
+      expect(database_script.results).to eq [history_item]
+      expect(DatabaseScripts::Render.new(database_script, {}).call).to include 'no linked record'
+    end
+
     it 'ignores justified emendations' do
       create :history_item, :emendation
       expect(database_script.results).to eq []

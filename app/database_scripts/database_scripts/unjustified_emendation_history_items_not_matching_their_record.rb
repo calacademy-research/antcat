@@ -3,13 +3,16 @@
 module DatabaseScripts
   class UnjustifiedEmendationHistoryItemsNotMatchingTheirRecord < DatabaseScript
     # The checks of `HistoryItem#validate_emendation_object_taxon`, which run only when the item is saved. A later
-    # change to the linked record (its status, or its current taxon moved to another name) is caught here.
+    # change to the linked record (its status, or its current taxon moved to another name) is caught here. The
+    # spellings are compared byte for byte: the tables' collation ignores case and accents, and a spelling that
+    # differs only by those is what this script is for (review of #1620).
     MISMATCH_SQL = <<~SQL.squish
       records.id IS NULL
       OR records.status <> :status
       OR record_current_taxa.protonym_id IS NULL
       OR record_current_taxa.protonym_id <> history_items.protonym_id
-      OR record_names.epithet <> TRIM(REPLACE(REPLACE(history_items.text_value, '<i>', ''), '</i>', ''))
+      OR CAST(COALESCE(record_names.epithet, '') AS BINARY) <>
+        CAST(COALESCE(TRIM(REPLACE(REPLACE(history_items.text_value, '<i>', ''), '</i>', '')), '') AS BINARY)
     SQL
 
     def results
