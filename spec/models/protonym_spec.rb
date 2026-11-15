@@ -317,6 +317,31 @@ describe Protonym do
         expect(protonym.etymology?).to eq true
       end
 
+      describe 'markup in the AntCat derivation' do
+        it 'accepts <i> for Latin and Greek words, roots and suffixes' do
+          protonym = build :protonym, etymology_derivation: "Formed from Mexico with the suffix <i>-ensis</i>."
+          expect(protonym.valid?).to eq true
+        end
+
+        it 'refuses other markup and stray angle brackets' do
+          ['Latin <b>crassus</b>.', 'Latin <i class="x">crassus</i>.', 'Latin <crassus>.', 'crassus i> spina'].each do |derivation|
+            protonym = build :protonym, etymology_derivation: derivation
+            expect(protonym.valid?).to eq false
+            expect(protonym.errors.where(:etymology_derivation).map(&:message)).
+              to eq ['may contain no markup or angle brackets other than <i>...</i>']
+          end
+        end
+
+        it 'refuses an unclosed or nested <i>' do
+          ['Latin <i>crassus.', 'Latin <i><i>crassus</i></i>.', 'Latin </i>crassus<i>.'].each do |derivation|
+            protonym = build :protonym, etymology_derivation: derivation
+            expect(protonym.valid?).to eq false
+            expect(protonym.errors.where(:etymology_derivation).map(&:message)).
+              to eq ['needs each <i> closed by </i>, without nesting']
+          end
+        end
+      end
+
       it 'does not block an etymology entered before the source fields until its text is edited' do
         protonym = create :protonym
         protonym.update_columns(etymology_taxt: 'Named after the collector.')
