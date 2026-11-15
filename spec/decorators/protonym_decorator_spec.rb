@@ -54,8 +54,9 @@ describe ProtonymDecorator do
       let(:protonym) { create :protonym }
 
       before do
-        protonym.update_columns(etymology_derivation:
-          %(Latin <i class="x" onclick="alert(1)">crassus</i>, <b>thick</b> & <a href="http://x">spina</a>))
+        protonym.update_columns(
+          etymology_derivation: %(Latin <i class="x" onclick="alert(1)">crassus</i>, <b>thick</b> & <a href="http://x">spina</a>)
+        )
       end
 
       it 'renders no markup but <i>, without attributes, and escapes the text' do

@@ -324,7 +324,7 @@ describe Protonym do
         end
 
         it 'refuses other markup and stray angle brackets' do
-          ['Latin <b>crassus</b>.', 'Latin <i class="x">crassus</i>.', 'Latin <crassus>.'].each do |derivation|
+          ['Latin <b>crassus</b>.', 'Latin <i class="x">crassus</i>.', 'Latin <crassus>.', 'crassus i> spina'].each do |derivation|
             protonym = build :protonym, etymology_derivation: derivation
             expect(protonym.valid?).to eq false
             expect(protonym.errors.where(:etymology_derivation).map(&:message)).

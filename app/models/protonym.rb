@@ -311,12 +311,12 @@ class Protonym < ApplicationRecord
     # derived etymologies). The page renders nothing else, so other markup is refused when saved rather than hidden
     # on display while it travels on in the stored value (review of #1621).
     def etymology_derivation_markup
-      tags = etymology_derivation.to_s.scan(%r{</?i>|<})
+      tags = etymology_derivation.to_s.scan(%r{</?i>|[<>]})
       return if tags.empty?
       unless (tags - ['<i>', '</i>']).empty?
         return errors.add(:etymology_derivation, 'may contain no markup or angle brackets other than <i>...</i>')
       end
-      return if tags.each_slice(2).all? { |pair| pair == ['<i>', '</i>'] }
+      return if tags.each_slice(2).all?(['<i>', '</i>'])
 
       errors.add :etymology_derivation, 'needs each <i> closed by </i>, without nesting'
     end
