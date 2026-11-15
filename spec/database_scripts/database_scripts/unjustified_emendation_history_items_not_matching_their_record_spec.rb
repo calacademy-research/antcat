@@ -34,10 +34,15 @@ describe DatabaseScripts::UnjustifiedEmendationHistoryItemsNotMatchingTheirRecor
     end
   end
 
-  describe "#render" do
+  context 'with results' do
+    let(:script) { database_script }
+
+    before { record.update_columns(status: Status::SYNONYM) }
+
     it 'names the problem' do
-      record.update_columns(status: Status::SYNONYM)
-      expect(database_script.render).to include 'status is synonym'
+      expect(DatabaseScripts::Render.new(database_script, {}).call).to include 'status is synonym'
     end
+
+    it_behaves_like "a database script with renderable results"
   end
 end
