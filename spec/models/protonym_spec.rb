@@ -470,6 +470,14 @@ describe Protonym do
       specify { expect(protonym.changeable_name?).to eq false }
       specify { expect(protonym.unchangeable_name?).to eq true }
       specify { expect(protonym.gender_epithets).to eq nil }
+
+      it 'is valid with its basis and a status' do
+        protonym = build(
+          :protonym, :indeclinable_gender_agreement_type,
+          part_of_speech_basis: 'not_latin', interpretation_status: 'demonstrated'
+        )
+        expect(protonym).to be_valid
+      end
     end
 
     context 'when `gender_agreement_type` is `PARTICIPLE`' do

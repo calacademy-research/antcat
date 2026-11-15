@@ -53,7 +53,8 @@ module DatabaseScripts
         if history_item.text_value.to_s.gsub(%r{</?i>}, '').strip != record.name.epithet
           found << "the spelling differs from the record's (#{record.name.epithet})"
         end
-        found.join('; ')
+        # SQL trims spaces only; Ruby also strips tabs and line breaks (review of #1620).
+        found.empty? ? 'the spelling differs from the record\'s in white space' : found.join('; ')
       end
   end
 end
