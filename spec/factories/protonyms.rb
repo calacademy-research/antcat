@@ -76,6 +76,12 @@ FactoryBot.define do
       species_group
     end
 
+    trait :indeclinable_gender_agreement_type do
+      gender_agreement_type { Protonym::INDECLINABLE }
+
+      species_group
+    end
+
     trait :participle_gender_agreement_type do
       gender_agreement_type { Protonym::PARTICIPLE }
 

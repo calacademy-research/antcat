@@ -24,7 +24,11 @@ class Protonym < ApplicationRecord
   ]
   UNCHANGEABLE_GENDER_AGREEMENT_TYPES = [
     NOUN_IN_APPOSITION = 'noun_in_apposition',
-    NOUN_IN_GENITIVE_CASE = 'noun_in_genitive_case'
+    NOUN_IN_GENITIVE_CASE = 'noun_in_genitive_case',
+    # Not a part of speech: a word, or a compound's final component, that is not Latin or Latinized keeps its
+    # ending (ICZN Art. 31.2.3); a word spelled as a Greek or Latin word is that word unless its author said
+    # otherwise (Art. 26). Policy: the AntCat wiki page "AntCat policy on name grammar and spelling".
+    INDECLINABLE = 'indeclinable'
   ]
   GENDER_AGREEMENT_TYPES = CHANGEABLE_GENDER_AGREEMENT_TYPES + UNCHANGEABLE_GENDER_AGREEMENT_TYPES
   # The spelling of an adjectival or participial name in each genus gender (TaxonWorks stores the same three).
@@ -39,6 +43,7 @@ class Protonym < ApplicationRecord
     'grammatical_form' => 'the grammatical form of the epithet (Art. 31.2)',
     'original_usage' => "the original author's use of the name in the original publication (Art. 31.2.2)",
     'noun_by_default' => 'noun in apposition by default: the original author gave no indication (Art. 31.2.2)',
+    'not_latin' => 'the word, or its final component, is not Latin or Latinized, so indeclinable (Arts. 26, 31.2.3)',
     'commission_ruling' => 'a ruling of the Commission'
   }.freeze
   # Why AntCat accepts the spelling it uses (the nomenclatural basis). A name can be a noun
