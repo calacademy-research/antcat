@@ -41,6 +41,14 @@ class ProtonymDecorator < Draper::Decorator
     h.safe_join(parts + [": #{protonym.etymology_pages})"])
   end
 
+  # AntCat's own reading of the name (AntCat policy on derived etymologies), shown as plain text with <i> allowed
+  # for Latin and Greek words, roots and suffixes ("<i>-ensis</i>"). Any other markup is sanitized away, never rendered.
+  def format_etymology_derivation
+    return unless protonym.etymology_derivation?
+
+    h.sanitize(protonym.etymology_derivation, tags: %w[i], attributes: [])
+  end
+
   def format_locality
     return unless locality
 

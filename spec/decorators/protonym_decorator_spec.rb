@@ -30,6 +30,40 @@ describe ProtonymDecorator do
     end
   end
 
+  describe "#format_etymology_derivation" do
+    context 'without a derivation' do
+      let(:protonym) { create :protonym }
+
+      specify { expect(decorated.format_etymology_derivation).to eq nil }
+    end
+
+    context 'with italics' do
+      let(:protonym) do
+        create :protonym, etymology_derivation:
+          "Toponym: Formed from Mexico with the Latin adjectival suffix <i>-ensis</i>, 'of Mexico'."
+      end
+
+      it 'keeps <i> and escapes the rest as text' do
+        expect(decorated.format_etymology_derivation).
+          to eq "Toponym: Formed from Mexico with the Latin adjectival suffix <i>-ensis</i>, 'of Mexico'."
+      end
+    end
+
+    context 'with other markup' do
+      let(:protonym) do
+        create :protonym, etymology_derivation:
+          %(Latin <i class="x" onclick="alert(1)">crassus</i>, <b>thick</b> & <a href="http://x">spina</a><script>alert(2)</script>)
+      end
+
+      it 'renders no markup but <i>, and no attributes' do
+        rendered = decorated.format_etymology_derivation
+        expect(rendered).to include '<i>crassus</i>'
+        expect(rendered).to include 'thick &amp; spina'
+        expect(rendered).not_to match(/<(b|a|script)\b|onclick|href|class=/)
+      end
+    end
+  end
+
   describe "#format_etymology_source" do
     context 'when the etymology is from the original description' do
       let(:protonym) do
