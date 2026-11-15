@@ -43,23 +43,36 @@ describe ProtonymDecorator do
           "Toponym: Formed from Mexico with the Latin adjectival suffix <i>-ensis</i>, 'of Mexico'."
       end
 
-      it 'keeps <i> and escapes the rest as text' do
+      it 'keeps <i>' do
         expect(decorated.format_etymology_derivation).
           to eq "Toponym: Formed from Mexico with the Latin adjectival suffix <i>-ensis</i>, 'of Mexico'."
       end
     end
 
-    context 'with other markup' do
-      let(:protonym) do
-        create :protonym, etymology_derivation:
-          %(Latin <i class="x" onclick="alert(1)">crassus</i>, <b>thick</b> & <a href="http://x">spina</a><script>alert(2)</script>)
+    # Values saved before the model refused other markup (or written around it) must still render safely.
+    context 'with other markup stored' do
+      let(:protonym) { create :protonym }
+
+      before do
+        protonym.update_columns(etymology_derivation:
+          %(Latin <i class="x" onclick="alert(1)">crassus</i>, <b>thick</b> & <a href="http://x">spina</a>))
       end
 
-      it 'renders no markup but <i>, and no attributes' do
-        rendered = decorated.format_etymology_derivation
-        expect(rendered).to include '<i>crassus</i>'
-        expect(rendered).to include 'thick &amp; spina'
-        expect(rendered).not_to match(/<(b|a|script)\b|onclick|href|class=/)
+      it 'renders no markup but <i>, without attributes, and escapes the text' do
+        expect(decorated.format_etymology_derivation).to eq 'Latin <i>crassus</i>, thick &amp; spina'
+      end
+    end
+
+    context 'with a script stored' do
+      let(:protonym) { create :protonym }
+
+      before { protonym.update_columns(etymology_derivation: 'Latin <script>alert(2)</script>crassus') }
+
+      # Whether the script's text is dropped or kept as plain text depends on the sanitizer version; either way no
+      # script element is rendered.
+      it 'renders no script element' do
+        expect(decorated.format_etymology_derivation).not_to include '<script'
+        expect(decorated.format_etymology_derivation).to include 'crassus'
       end
     end
   end

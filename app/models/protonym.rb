@@ -139,6 +139,8 @@ class Protonym < ApplicationRecord
   validates :etymology_source, :etymology_reference, :etymology_pages, :etymology_translation,
     absence: { message: "can only be set with an etymology" }, unless: -> { etymology_taxt? }
 
+  validate :etymology_derivation_markup, if: :etymology_derivation_changed?
+
   before_validation :cleanup_and_convert_taxts
 
   scope :extant, -> { where(fossil: false) }
@@ -303,6 +305,20 @@ class Protonym < ApplicationRecord
     def etymology_words_changed?
       words = ->(taxt) { taxt.to_s.gsub(/\{[^}]*\}/, ' ').gsub(/\s*([:;,.])\s*/, '\\1').squish }
       words[etymology_taxt_was] != words[etymology_taxt]
+    end
+
+    # The derivation is plain text with <i>...</i> for Latin and Greek words, roots and suffixes (AntCat policy on
+    # derived etymologies). The page renders nothing else, so other markup is refused when saved rather than hidden
+    # on display while it travels on in the stored value (review of #1621).
+    def etymology_derivation_markup
+      tags = etymology_derivation.to_s.scan(%r{</?i>|<})
+      return if tags.empty?
+      unless (tags - ['<i>', '</i>']).empty?
+        return errors.add(:etymology_derivation, 'may contain no markup or angle brackets other than <i>...</i>')
+      end
+      return if tags.each_slice(2).all? { |pair| pair == ['<i>', '</i>'] }
+
+      errors.add :etymology_derivation, 'needs each <i> closed by </i>, without nesting'
     end
 
     def cleanup_and_convert_taxts
