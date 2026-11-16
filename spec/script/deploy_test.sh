@@ -680,46 +680,51 @@ check "exits non-zero" [ "$RC" -ne 0 ]
 check "says the footer shows no commit" out_has "the footer shows no commit: the app could not read it (.git/HEAD is "
 teardown
 
-# script/ci-deploy-staging (road map D2, 2026-11-16): the forced command of GitHub's staging deploy key
-CI="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)/script/ci-deploy-staging"
+# script/ci-deploy-staging (road map D2, 2026-11-16): the forced command of GitHub's staging deploy key. It takes no
+# settings from the environment (it runs as root), so the tests run a copy with its three paths rewritten to a sandbox:
+# a local "GitHub" whose master holds a fake script/deploy that prints what it was given.
 ci_run() { CI_RC=0; CI_OUT="$("$@" 2>&1)" || CI_RC=$?; }
+ci_sandbox() {
+  T="$(mktemp -d)"
+  git init -q --bare -b master "$T/origin.git"; git init -q -b master "$T/work"
+  git -C "$T/work" config user.email t@example.org; git -C "$T/work" config user.name test
+  mkdir -p "$T/work/script"
+  # shellcheck disable=SC2016
+  printf '#!/usr/bin/env bash\necho "master copy: $* from=$(basename "$ANTCAT_DEPLOY_FROM_MASTER") dir=$ANTCAT_DIR"\nexit "${FAKE_RC:-0}"\n' > "$T/work/script/deploy"
+  git -C "$T/work" add -A; git -C "$T/work" commit -qm "master deploy script"
+  git -C "$T/work" remote add origin "$T/origin.git"; git -C "$T/work" push -q origin master 2>/dev/null
+  git clone -q "$T/origin.git" "$T/server"
+  printf '#!/usr/bin/env bash\necho "BRANCH COPY RAN"\n' > "$T/server/script/deploy"   # what a pushed branch could hold
+  sed -e "s|^HOLD=/root/antcat-staging-hold|HOLD=$T/hold|" -e "s|^APP_DIR=/var/www/antcat-2|APP_DIR=$T/server|" \
+      -e "s|^LOG=/root/antcat-ci-deploy.log|LOG=$T/ci.log|" \
+      "$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)/script/ci-deploy-staging" > "$T/ci"
+  chmod +x "$T/ci"
+}
 
-TESTS=$((TESTS + 1)); echo "TEST: ci-deploy-staging deploys origin/staging with --yes, and nothing else"
-T="$(mktemp -d)"
-# shellcheck disable=SC2016
-printf '#!/usr/bin/env bash\necho "deploy called: $*"\n' > "$T/fake-deploy"; chmod +x "$T/fake-deploy"
-ci_run env ANTCAT_HOLD_FILE="$T/hold" ANTCAT_DEPLOY_CMD="$T/fake-deploy" "$CI"
-check "exits 0" [ "$CI_RC" -eq 0 ]
-check "calls deploy with --ref staging --yes" grep -q "deploy called: --ref staging --yes" <<<"$CI_OUT"
-ci_run env ANTCAT_HOLD_FILE="$T/hold" ANTCAT_DEPLOY_CMD="$T/fake-deploy" SSH_ORIGINAL_COMMAND=deploy "$CI"
-check "accepts the job's command 'deploy'" [ "$CI_RC" -eq 0 ]
-ci_run env ANTCAT_HOLD_FILE="$T/hold" ANTCAT_DEPLOY_CMD="$T/fake-deploy" SSH_ORIGINAL_COMMAND="rm -rf /" "$CI"
-check "refuses any other command (64)" [ "$CI_RC" -eq 64 ]
-check "  and does not deploy" not grep -q "deploy called" <<<"$CI_OUT"
-ci_run env ANTCAT_HOLD_FILE="$T/hold" ANTCAT_DEPLOY_CMD="$T/fake-deploy" "$CI" --ref origin/master
-check "refuses arguments (64)" [ "$CI_RC" -eq 64 ]
-echo "AntCat chat: protonym write, until 15:00" > "$T/hold"
-ci_run env ANTCAT_HOLD_FILE="$T/hold" ANTCAT_DEPLOY_CMD="$T/fake-deploy" "$CI"
-check "a hold stops it (75)" [ "$CI_RC" -eq 75 ]
-check "  says who holds staging" grep -q "AntCat chat: protonym write" <<<"$CI_OUT"
-check "  and does not deploy" not grep -q "deploy called" <<<"$CI_OUT"
-rm -rf "$T"
-
-TESTS=$((TESTS + 1)); echo "TEST: ci-deploy-staging runs the deploy script of origin/master, not the checkout's"
-T="$(mktemp -d)"
-git init -q --bare -b master "$T/origin.git"; git init -q -b master "$T/work"
-git -C "$T/work" config user.email t@example.org; git -C "$T/work" config user.name test
-mkdir -p "$T/work/script"
-# shellcheck disable=SC2016
-printf '#!/usr/bin/env bash\necho "master copy: $* from=$(basename "$ANTCAT_DEPLOY_FROM_MASTER") dir=$ANTCAT_DIR"\n' > "$T/work/script/deploy"
-git -C "$T/work" add -A; git -C "$T/work" commit -qm "master deploy script"
-git -C "$T/work" remote add origin "$T/origin.git"; git -C "$T/work" push -q origin master
-git clone -q "$T/origin.git" "$T/server"
-printf '#!/usr/bin/env bash\necho "BRANCH COPY RAN"\n' > "$T/server/script/deploy"   # what a pushed branch could hold
-ci_run env ANTCAT_HOLD_FILE="$T/hold" ANTCAT_DIR="$T/server" TMPDIR="$T" "$CI"
+TESTS=$((TESTS + 1)); echo "TEST: ci-deploy-staging runs origin/master's deploy script for origin/staging, and nothing else"
+ci_sandbox
+check "the sandbox copy has the three paths rewritten" [ "$(grep -c "^HOLD=$T/hold\|^APP_DIR=$T/server\|^LOG=$T/ci.log" "$T/ci")" -eq 3 ]
+ci_run env TMPDIR="$T" "$T/ci"
 check "exits 0" [ "$CI_RC" -eq 0 ]
 check "runs origin/master's copy with --ref staging --yes" grep -q "master copy: --ref staging --yes from=antcat-deploy\.[A-Za-z0-9]\{6\} dir=$T/server" <<<"$CI_OUT"
 check "  never the checkout's copy" not grep -q "BRANCH COPY RAN" <<<"$CI_OUT"
+check "  and keeps the output in its log" grep -q "master copy" "$T/ci.log"
+ci_run env TMPDIR="$T" FAKE_RC=3 "$T/ci"
+check "returns the deploy script's exit code" [ "$CI_RC" -eq 3 ]
+ci_run env TMPDIR="$T" SSH_ORIGINAL_COMMAND=deploy "$T/ci"
+check "accepts the job's command 'deploy'" [ "$CI_RC" -eq 0 ]
+ci_run env TMPDIR="$T" SSH_ORIGINAL_COMMAND="rm -rf /" "$T/ci"
+check "refuses any other command (64)" [ "$CI_RC" -eq 64 ]
+check "  and does not deploy" not grep -q "master copy" <<<"$CI_OUT"
+ci_run env TMPDIR="$T" "$T/ci" --ref master
+check "refuses arguments (64)" [ "$CI_RC" -eq 64 ]
+echo "AntCat chat: protonym write, until 15:00" > "$T/hold"
+ci_run env TMPDIR="$T" "$T/ci"
+check "a hold stops it (75)" [ "$CI_RC" -eq 75 ]
+check "  says who holds staging" grep -q "AntCat chat: protonym write" <<<"$CI_OUT"
+check "  and does not deploy" not grep -q "master copy" <<<"$CI_OUT"
+# shellcheck disable=SC2016
+check "the installed script reads no setting from the environment" not grep -q 'ANTCAT_HOLD_FILE\|ANTCAT_DEPLOY_CMD\|\${ANTCAT_DIR' "$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)/script/ci-deploy-staging"
 rm -rf "$T"
 
 echo

@@ -8,20 +8,23 @@
 # its script/deploy from a temporary copy, as script/deploy's own step 0 does, which then deploys origin/staging.
 # What stays true of any automatic staging deploy (AntWeb's too): the branch's own app code, Dockerfile and compose file
 # are then built and run on staging, so push access to `staging` is control of the staging server. Only maintainers
-# push there, and the GitHub Environment antcat-staging lets only the branch `staging` use the key.
+# push there, and the GitHub Environment antcat-staging lets only the branches staging and master use the key.
 #
 # It refuses, and changes nothing, while staging is held: the file /root/antcat-staging-hold exists (the AntCat chat
-# or a person is using staging's data; its first line says who and why; remove it to release staging). The hold and
-# the board (coordination board, "who holds antcat-staging") say the same thing.
+# or a person is using staging's data; its first line says who and why; remove it to release staging).
+#
+# The deploy runs detached from the SSH session (nohup, its own log /root/antcat-ci-deploy.log), and this script shows
+# its output as it goes: a cancelled job or a dropped connection does not stop a deploy half way.
 #
 # Exit codes: what script/deploy returns; 75 when staging is held; 64 when it is not run as the forced command of the
 # deploy key (any argument or SSH_ORIGINAL_COMMAND other than none or "deploy" is refused).
-# For the tests (spec/script/deploy_test.sh): ANTCAT_HOLD_FILE, ANTCAT_DEPLOY_CMD override the hold file and the
-# deploy command; ANTCAT_DIR the checkout.
+# No settings from the environment (the installed copy runs as root): the tests run a copy with the three paths below
+# rewritten (spec/script/deploy_test.sh).
 set -Eeuo pipefail
 
-HOLD="${ANTCAT_HOLD_FILE:-/root/antcat-staging-hold}"
-APP_DIR="${ANTCAT_DIR:-/var/www/antcat-2}"
+HOLD=/root/antcat-staging-hold
+APP_DIR=/var/www/antcat-2
+LOG=/root/antcat-ci-deploy.log
 
 if [ "$#" -ne 0 ] || { [ -n "${SSH_ORIGINAL_COMMAND:-}" ] && [ "${SSH_ORIGINAL_COMMAND}" != "deploy" ]; }; then
   echo "ci-deploy-staging: takes no arguments (it deploys origin/staging and nothing else)" >&2
@@ -34,11 +37,15 @@ if [ -e "$HOLD" ]; then
   exit 75
 fi
 
-if [ -n "${ANTCAT_DEPLOY_CMD:-}" ]; then   # the tests
-  exec "$ANTCAT_DEPLOY_CMD" --ref staging --yes
-fi
 umask 022
 git -C "$APP_DIR" fetch -q origin master || { echo "ci-deploy-staging: cannot fetch origin/master; nothing deployed" >&2; exit 1; }
 copy="$(mktemp "${TMPDIR:-/tmp}/antcat-deploy.XXXXXX")"
 git -C "$APP_DIR" show origin/master:script/deploy > "$copy" || { rm -f "$copy"; echo "ci-deploy-staging: no script/deploy on origin/master" >&2; exit 1; }
-ANTCAT_DEPLOY_FROM_MASTER="$copy" ANTCAT_DIR="$APP_DIR" exec bash "$copy" --ref staging --yes
+
+: > "$LOG"
+ANTCAT_DEPLOY_FROM_MASTER="$copy" ANTCAT_DIR="$APP_DIR" nohup bash "$copy" --ref staging --yes > "$LOG" 2>&1 < /dev/null &
+pid=$!
+tail -n +1 -f --pid="$pid" "$LOG" || true
+rc=0
+wait "$pid" || rc=$?
+exit "$rc"
