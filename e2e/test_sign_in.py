@@ -1,5 +1,6 @@
 """Signing in (e2e/README.md): the page has its form and token; with the test editor account (staging only) the
 sign-in works and the editor's panel opens. The only POST of these tests."""
+import os
 import re
 
 import pytest
@@ -21,6 +22,7 @@ def test_sign_in_page_has_its_form():
 
 
 @pytest.mark.skipif(not (EDITOR_EMAIL and EDITOR_PASSWORD), reason="test editor account not set")
+@pytest.mark.skipif(os.environ.get("ANTCAT_ENVIRONMENT") != "staging", reason="the sign-in writes to the user row: only with ANTCAT_ENVIRONMENT=staging")
 def test_editor_signs_in_and_opens_the_panel():
     s = session()
     page = follow(s, "GET", "/users/sign_in")

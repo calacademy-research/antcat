@@ -67,6 +67,7 @@ jobs:
         env:
           ANTCAT_URL: https://127.0.0.1:8443
           ANTCAT_HOST_HEADER: www.antcat.org
+          ANTCAT_ENVIRONMENT: staging
           ANTCAT_TEST_API_KEY: ${{ secrets.ANTCAT_TEST_API_KEY }}
           ANTCAT_TEST_EDITOR_EMAIL: ${{ secrets.ANTCAT_TEST_EDITOR_EMAIL }}
           ANTCAT_TEST_EDITOR_PASSWORD: ${{ secrets.ANTCAT_TEST_EDITOR_PASSWORD }}

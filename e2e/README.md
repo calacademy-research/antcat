@@ -14,3 +14,4 @@ and, with a wrong password, its failed attempts. The suite refuses to start when
 | `ANTCAT_HOST_HEADER` | the Host header to send, when the tunnel's address is not the site's name |
 | `ANTCAT_TEST_API_KEY` | an API key of the site, for the /v1 tests that need one (skipped without) |
 | `ANTCAT_TEST_EDITOR_EMAIL`, `ANTCAT_TEST_EDITOR_PASSWORD` | a test editor account (sign-in test skipped without) |
+| `ANTCAT_ENVIRONMENT` | must be `staging` for the sign-in test (it writes to the user row) |
