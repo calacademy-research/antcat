@@ -36,10 +36,10 @@ describe NotesPage do
 
   describe '#content_for_rendering' do
     it 'turns Markdown quotations into blockquotes, which survive the sanitizer' do
-      notes_page = described_class.new(content: "Text.\n\n> Spelling. Originally described as *crassispina*.\n\nMore.")
+      notes_page = described_class.new(content: "Text.\n\n> **Spelling.** Originally described as *crassispina*.\n\nMore.")
 
       expect(notes_page.content_for_rendering).
-        to eq "Text.\n\n<blockquote>Spelling. Originally described as *crassispina*.</blockquote>\n\nMore."
+        to eq "Text.\n\n<blockquote><b>Spelling.</b> Originally described as <i>crassispina</i>.</blockquote>\n\nMore."
     end
 
     it 'leaves a ">" inside a line alone' do

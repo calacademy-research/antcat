@@ -27,8 +27,12 @@ class NotesPage < ApplicationRecord
   end
 
   # Markdown's "> quoted" lines as `<blockquote>`: the renderer sanitizes its input first, which turns the ">" of
-  # a quote into "&gt;", so a document written elsewhere (an .md file) would lose its quotes.
+  # a quote into "&gt;", so a document written elsewhere (an .md file) would lose its quotes. Markdown is not read
+  # inside an HTML block, so the emphasis of a quoted line (`*italic*`, `**bold**`) is written as tags here.
   def content_for_rendering
-    content.to_s.gsub(/^>[ \t]?(.*)$/, '<blockquote>\1</blockquote>')
+    content.to_s.gsub(/^>[ \t]?(.*)$/) do
+      quoted = Regexp.last_match(1).gsub(/\*\*(.+?)\*\*/, '<b>\1</b>').gsub(/\*(.+?)\*/, '<i>\1</i>')
+      "<blockquote>#{quoted}</blockquote>"
+    end
   end
 end
