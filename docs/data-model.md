@@ -63,6 +63,12 @@ One row per original description of a name.
 - Flags: `fossil`, `sic` (spelled as in the original), `nomen_nudum`, `ichnotaxon`; `gender_agreement_type`.
 - Searched through Solr. History: yes.
 
+### `notes_pages`
+
+The one page of notes on a name ("Notes on this name"), at most one row per protonym: `protonym_id` -> `protonyms`,
+`content` in Markdown with sections as needed (Etymological notes, Type specimen notes, Nomenclatural notes).
+Shown at `/protonyms/:protonym_id/notes`. History: yes.
+
 ### `names`
 
 One row per name string. STI by kind and rank (`app/models/name_sti_subclasses`: family-group, genus-group and

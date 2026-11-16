@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-# Renders Markdown: editors' content and user content (comments, with fewer allowed attributes), and raw taxt
-# without hidden notes for visitors.
+# Renders Markdown: editors' content, user content (comments, with fewer allowed attributes) and whole documents
+# (notes pages), and raw taxt without hidden notes for visitors.
 module MarkdownHelper
   def markdown content
     return unless content
@@ -17,6 +17,13 @@ module MarkdownHelper
   # Raw taxt as shown in "show raw" and source views: without hidden notes for visitors (see `Current`).
   def raw_taxt_for_viewer taxt
     Current.signed_in ? taxt : Taxt.remove_hidden_notes(taxt)
+  end
+
+  # For a whole document (a notes page): Markdown read as written, quotations included; the HTML it produces is
+  # sanitized. See `Markdowns::RenderDocument`.
+  def document_markdown content
+    return unless content
+    Markdowns::RenderDocument[content.dup]
   end
 
   def markdown_without_wrapping content

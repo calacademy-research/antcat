@@ -20,6 +20,7 @@ class RevisionHistoryPath
       when "Institution"      then institution_history_path(id)
       when "Issue"            then issue_history_path(id)
       when "Name"             then name_history_path(id)
+      when "NotesPage"        then notes_page_history_path(id)
       when "Protonym"         then protonym_history_path(id)
       when "Reference"        then reference_history_path(id)
       when "ReferenceSection" then reference_section_history_path(id)

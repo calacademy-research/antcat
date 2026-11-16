@@ -22,6 +22,8 @@
   =Detax[protonym.notes_taxt]
   -if protonym.interpretation_disputed?
     %span.text-sm.italic=link_to '[interpretation disputed]', protonym_path(protonym)
+  -if protonym.notes_page
+    %span.text-sm.italic=link_to '[notes on this name]', protonym_notes_path(protonym)
   =add_period_if_necessary(protonym.decorate.format_locality)
   =add_period_if_necessary(protonym.bioregion)
 

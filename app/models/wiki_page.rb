@@ -24,9 +24,11 @@ class WikiPage < ApplicationRecord
     end
   end
 
-  # Protonyms whose grammar and spelling this page documents ("Grammar and spelling: <name>").
+  # The wiki link of 13 Nov 2026 (`protonyms.grammar_and_spelling_wiki_page_id`), no longer used; notes on a name
+  # are a `NotesPage` now. Kept, with the column and its foreign key, so that a page some protonym still points
+  # to is refused with a message, not a database error. Goes with the migration that removes the column.
   has_many :grammar_and_spelling_protonyms, class_name: 'Protonym', foreign_key: :grammar_and_spelling_wiki_page_id,
-    dependent: :restrict_with_error, inverse_of: :grammar_and_spelling_wiki_page
+    dependent: :restrict_with_error, inverse_of: false
 
   validates :title, presence: true, length: { maximum: TITLE_MAX_LENGTH }, uniqueness: { case_sensitive: true }
   validates :content, presence: true

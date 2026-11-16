@@ -98,9 +98,10 @@ class Protonym < ApplicationRecord
   has_many :history_items, -> { order(:position) }, dependent: :restrict_with_error
   has_many :history_items_as_object, class_name: 'HistoryItem', foreign_key: :object_protonym_id, dependent: false
   has_one :authorship_reference, through: :authorship, source: :reference
-  # Optional: the wiki page "Grammar and spelling: <name>" with the evidence and decision for a reviewed name.
-  belongs_to :grammar_and_spelling_wiki_page, class_name: 'WikiPage', optional: true,
-    inverse_of: :grammar_and_spelling_protonyms
+  # Optional: the one page of notes on this name ("Notes on this name"), any rank. It replaces the link to a wiki
+  # page (`grammar_and_spelling_wiki_page_id`, 13 Nov 2026), which was never used on antcat.org; the column stays
+  # until a later migration removes it.
+  has_one :notes_page, dependent: :restrict_with_error
   # Only for an etymology from a later work; the original description is the authorship reference.
   belongs_to :etymology_reference, class_name: 'Reference', optional: true, inverse_of: :etymology_protonyms
 
@@ -109,7 +110,7 @@ class Protonym < ApplicationRecord
   validates :bioregion, :forms, :locality, :gender_agreement_type, :part_of_speech_basis, :spelling_basis,
     absence: { message: "can only be set for species-group names" },
     unless: -> { species_group_name? }
-  validates :interpretation_status, :grammar_and_spelling_wiki_page, absence: { message: "can only be set for species-group names" },
+  validates :interpretation_status, absence: { message: "can only be set for species-group names" },
     unless: -> { species_group_name? }
   validates :interpretation_status, inclusion: { in: INTERPRETATION_STATUSES.keys, allow_nil: true }
   validates :interpretation_status, absence: { message: "needs a gender agreement type to be demonstrated or inferred" },

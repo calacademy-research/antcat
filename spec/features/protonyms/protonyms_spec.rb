@@ -25,6 +25,33 @@ feature "Protonyms", as: :helper do
     i_should_see "Type-genus: Atta, by original designation"
   end
 
+  # One page of notes per name, of any rank (16 Nov 2026).
+  scenario "Adding and editing the notes on a name (with edit summary)" do
+    protonym = create :protonym, :genus_group
+
+    visit protonym_path(protonym)
+    i_follow "Add notes on this name"
+    fill_in "notes_page_content", with: "## Type specimen notes\n\nThe type series is in two museums."
+    fill_in "edit_summary", with: "notes on the types"
+    click_button "Save"
+    i_should_see "Successfully created the notes on this name."
+    i_should_see "The type series is in two museums."
+    there_should_be_an_activity "Archibald added the notes on #{protonym.name.name}", edit_summary: "notes on the types"
+
+    visit protonym_path(protonym)
+    i_should_not_see "Add notes on this name"
+    i_follow_the_first "Type specimen notes"
+    i_follow "Edit"
+    fill_in "notes_page_content", with: "## Nomenclatural notes\n\nAvailable from the original description."
+    click_button "Save"
+    i_should_see "Successfully updated the notes on this name."
+    i_should_see "Available from the original description."
+
+    i_follow "History"
+    i_should_see "Current version"
+    i_should_see "Available from the original description."
+  end
+
   scenario "Adding a protonym with errors" do
     visit protonyms_path
     i_follow "New"

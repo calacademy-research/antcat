@@ -103,6 +103,13 @@ Rails.application.routes.draw do
       resource :soft_validations, only: :show
       resource :hover_preview, only: :show
       resource :reorder_history_items, only: [:show, :create]
+      resource :notes, only: [:show, :new, :create, :edit, :update, :destroy]
+    end
+  end
+  # The history of a name's page of notes, by the page's id (as the other histories: by the record's id).
+  resources :notes_pages, only: [] do
+    scope module: :notes_pages do
+      resource :history, only: :show
     end
   end
   namespace :protonyms do

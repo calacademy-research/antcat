@@ -1,0 +1,8 @@
+-page_title "Notes on a name ##{@comparer.most_recent.id}"
+-breadcrumb :notes_page_history, @comparer.most_recent
+-noindex_meta_tag
+
+-content_for :breadcrumbs_right do
+  =activities_link_for_trackable @comparer.most_recent
+
+=render template: "shared/revision_comparer/main", locals: { comparer: @comparer, revision_presenter: @revision_presenter }

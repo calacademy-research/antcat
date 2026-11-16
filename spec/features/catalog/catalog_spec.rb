@@ -14,6 +14,29 @@ feature "Using the catalog", as: :visitor do
     find(tab_css_selector, visible: false).click
   end
 
+  scenario "Following the notes on a name from its catalog page" do
+    protonym = create :protonym, :species_group
+    create :notes_page, protonym: protonym,
+      content: "## Etymological notes\n\nA noun in apposition.\n\n> Spelling. The original spelling stands.\n\n| Year | Work |\n| --- | --- |\n| 1926 | Karavaiev |"
+    taxon = create :species, protonym: protonym
+
+    visit catalog_path(taxon)
+    i_follow "[notes on this name]"
+    i_should_see "Notes on #{protonym.name.name}"
+    within "[data-testid='notes-page-content']" do
+      expect(page).to have_css "h2", text: "Etymological notes"
+      expect(page).to have_css "blockquote", text: "Spelling. The original spelling stands."
+      expect(page).to have_css "table td", text: "Karavaiev"
+    end
+  end
+
+  scenario "A name without notes shows no link to them" do
+    taxon = create :species
+
+    visit catalog_path(taxon)
+    i_should_not_see "[notes on this name]"
+  end
+
   scenario "Selecting a subfamily" do
     create :subfamily, :with_family, name_string: "Dolichoderinae"
     visit root_path

@@ -1,0 +1,33 @@
+-content_for :javascripts do
+  =javascript_include_tag "markdown_and_friends"
+
+-content_for :breadcrumbs_right do
+  %button.btn-neutral{"data-action" => "click->toggler#toggle", "data-toggler-target" => "help"} Show/hide markdown formatting help
+
+.hidden{data: { toggler_name: "help" }}
+  .callout-white
+    =render 'shared/markdown_formatting_help'
+
+=form_with model: notes_page, url: protonym_notes_path(protonym), scope: :notes_page do |f|
+  =render "shared/errors_for", resource: notes_page
+
+  .mb-4
+    %h5
+      Notes on
+      =protonym.decorate.link_to_protonym_with_author_citation
+    .text-sm
+      One page per name, in Markdown. Sections as needed, each as a second-level heading:
+      -NotesPage::SECTIONS.each do |section|
+        %code ## #{section}
+      Etymological notes cover the derivation, the part of speech, gender agreement and the accepted spelling.
+      The public Spelling note on the protonym still gives the short explanation. Policy:
+      =link_to_wiki_page_or_missing WikiPage::GRAMMAR_AND_SPELLING_POLICY
+
+  .mb-4
+    =f.text_area :content, rows: 30, data: { has_mentionables: true, has_linkables: true, previewable: true, previewable_title: "Notes" }
+
+  .mb-4
+    =edit_summary_text_field_tag
+
+  .mb-4
+    =f.button "Save", class: "btn-saves btn-md"

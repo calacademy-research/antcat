@@ -17,10 +17,10 @@ paste. Tab-separated; open it in a spreadsheet or read it on GitHub.
 
 | Who | Routes |
 |---|---|
-| public | 92 |
+| public | 94 |
 | user | 20 |
-| helper | 59 |
-| editor | 63 |
+| helper | 64 |
+| editor | 64 |
 | superadmin | 22 |
 | api | 29 |
 | system | 5 |

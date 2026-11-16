@@ -1,6 +1,8 @@
 -show_agreement_in_gender = taxon.is_a?(SpeciesGroupTaxon)
 
--if protonym.etymology? || show_agreement_in_gender || protonym.gender_agreement_type? || protonym.spelling_basis?
+-notes_page = protonym.notes_page
+
+-if protonym.etymology? || show_agreement_in_gender || protonym.gender_agreement_type? || protonym.spelling_basis? || notes_page
   .bluebox
     -if protonym.etymology?
       %strong Etymology:
@@ -53,10 +55,9 @@
         Interpretation:
         %strong=protonym.interpretation_status_label
 
-    -if (grammar_page = protonym.grammar_and_spelling_wiki_page)
-      %p
-        Grammar and spelling:
-        =link_to grammar_page.title, grammar_page
+    -# The link text names the sections ("Etymological notes"), so no label stands before it.
+    -if notes_page
+      %p=link_to notes_page.standalone_link_label, protonym_notes_path(protonym)
 
     -if (gender_epithets = protonym.gender_epithets)
       %p

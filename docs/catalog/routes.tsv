@@ -83,6 +83,14 @@ GET	/protonyms/:protonym_id/soft_validations	protonyms/soft_validations#show	pro
 GET	/protonyms/:protonym_id/hover_preview	protonyms/hover_previews#show	protonym_hover_preview	public	the preview shown when hovering a protonym link	keep	spec/controllers/protonyms/hover_previews_controller_spec.rb
 GET	/protonyms/:protonym_id/reorder_history_items	protonyms/reorder_history_items#show	protonym_reorder_history_items	editor	show one: reorder the history items of a protonym	keep	spec/controllers/protonyms/reorder_history_items_controller_spec.rb
 POST	/protonyms/:protonym_id/reorder_history_items	protonyms/reorder_history_items#create		editor	add: reorder the history items of a protonym	keep	spec/controllers/protonyms/reorder_history_items_controller_spec.rb
+GET	/protonyms/:protonym_id/notes/new	protonyms/notes#new	new_protonym_notes	helper	form to add: the page of notes on a name ("Notes on this name")	keep	spec/controllers/protonyms/notes_controller_spec.rb
+GET	/protonyms/:protonym_id/notes/edit	protonyms/notes#edit	edit_protonym_notes	helper	form to change: the page of notes on a name ("Notes on this name")	keep	spec/controllers/protonyms/notes_controller_spec.rb
+GET	/protonyms/:protonym_id/notes	protonyms/notes#show	protonym_notes	public	show one: the page of notes on a name ("Notes on this name")	keep	spec/controllers/protonyms/notes_controller_spec.rb
+PATCH	/protonyms/:protonym_id/notes	protonyms/notes#update		helper	change: the page of notes on a name ("Notes on this name")	keep	spec/controllers/protonyms/notes_controller_spec.rb
+PUT	/protonyms/:protonym_id/notes	protonyms/notes#update		helper	change: the page of notes on a name ("Notes on this name")	keep	spec/controllers/protonyms/notes_controller_spec.rb
+DELETE	/protonyms/:protonym_id/notes	protonyms/notes#destroy		editor	delete: the page of notes on a name ("Notes on this name")	keep	spec/controllers/protonyms/notes_controller_spec.rb
+POST	/protonyms/:protonym_id/notes	protonyms/notes#create		helper	add: the page of notes on a name ("Notes on this name")	keep	spec/controllers/protonyms/notes_controller_spec.rb
+GET	/notes_pages/:notes_page_id/history	notes_pages/histories#show	notes_page_history	public	the edit history of the page of notes on a name	keep	spec/controllers/notes_pages/histories_controller_spec.rb
 GET	/protonyms	protonyms#index	protonyms	public	list: protonyms (original names and their type data)	keep	spec/controllers/protonyms_controller_spec.rb
 POST	/protonyms	protonyms#create		helper	add: protonyms (original names and their type data)	keep	spec/controllers/protonyms_controller_spec.rb
 GET	/protonyms/new	protonyms#new	new_protonym	helper	form to add: protonyms (original names and their type data)	keep	spec/controllers/protonyms_controller_spec.rb

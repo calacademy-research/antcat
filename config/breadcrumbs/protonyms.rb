@@ -26,6 +26,34 @@ crumb :protonym_history do |protonym|
   parent :protonym, protonym
 end
 
+crumb :protonym_notes do |protonym|
+  link "Notes on this name", protonym_notes_path(protonym)
+  parent :protonym, protonym
+end
+
+crumb :new_protonym_notes do |protonym|
+  link "Add notes on this name"
+  parent :protonym, protonym
+end
+
+crumb :edit_protonym_notes do |protonym|
+  link "Edit"
+  parent :protonym_notes, protonym
+end
+
+# By the page of notes (a history is found by its record's id); a deleted page still shows its history.
+crumb :notes_page_history do |notes_page|
+  link "History"
+  protonym = Protonym.find_by(id: notes_page.protonym_id)
+  if protonym && NotesPage.exists?(notes_page.id)
+    parent :protonym_notes, protonym
+  elsif protonym
+    parent :protonym, protonym
+  else
+    parent :protonyms
+  end
+end
+
 crumb :protonym_what_links_here do |protonym|
   link "What Links Here"
   parent :protonym, protonym

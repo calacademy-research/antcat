@@ -18,6 +18,7 @@ module EditorsPanels
       Issue
       Journal
       Name
+      NotesPage
       Place
       Protonym
       Publisher

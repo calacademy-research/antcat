@@ -402,6 +402,39 @@
   }
 
 
+  /* A name's page of notes ("Notes on this name"): Markdown written as a document, so its headings start at
+     "#" and "##". Shown one size below the page's own headings, with ruled tables and marked quotations. */
+  .notes-page h1 {
+    font-size: 1.5625rem;
+  }
+
+  .notes-page h2 {
+    @apply mt-8 pb-1 border-b border-gray-300;
+    font-size: 1.375rem;
+  }
+
+  .notes-page h3 {
+    @apply mt-6 font-bold;
+    font-size: 1.125rem;
+  }
+
+  .notes-page h4, .notes-page h5, .notes-page h6 {
+    @apply mt-4 font-bold;
+    font-size: 1rem;
+  }
+
+  .notes-page table {
+    @apply mb-6 border border-gray-200;
+  }
+
+  .notes-page th, .notes-page td {
+    @apply align-top border-b border-gray-200;
+  }
+
+  .notes-page blockquote {
+    @apply my-4 pl-4 border-l-4 border-gray-300 text-gray-700;
+  }
+
 }
 
 /* Callouts: utilities (not components) so that, as in v3, their child rules can beat plain

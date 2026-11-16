@@ -1,0 +1,21 @@
+-page_title "Notes on #{@protonym.name.name}"
+-breadcrumb :protonym_notes, @protonym
+
+-content_for :breadcrumbs_right do
+  =link_to "History", notes_page_history_path(@notes_page), class: "btn-default"
+  -if user_is_at_least_helper?
+    =link_to "Edit", edit_protonym_notes_path(@protonym), class: "btn-default"
+  -if user_is_editor?
+    =link_to "Delete", protonym_notes_path(@protonym), method: :delete, data: { confirm: 'Delete the notes on this name?' }, class: "btn-danger"
+
+.mb-4
+  %h5
+    Notes on
+    =@protonym.decorate.link_to_protonym_with_author_citation
+  %span.text-sm.text-gray-600
+    Last edited #{time_ago_in_words(@notes_page.updated_at)} ago
+    =mdash
+    Added #{time_ago_in_words(@notes_page.created_at)} ago
+
+.mb-4.notes-page{data: { testid: 'notes-page-content' }}
+  =document_markdown @notes_page.content
