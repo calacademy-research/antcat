@@ -16,7 +16,7 @@ describe Markdowns::RenderDocument do
         expect(quotations.size).to eq 1
         expect(quotations.first.text).to include "quoted text and a link", "second line"
         expect(quotations.first.css('em').map(&:text)).to eq ["text"]
-        expect(quotations.first.css('a').map { |link| link['href'] }).to eq ["/catalog/1"]
+        expect(quotations.first.css('a').pluck('href')).to eq ["/catalog/1"]
         expect(quotations.first.text).not_to include "More text"
       end
 
@@ -95,7 +95,7 @@ describe Markdowns::RenderDocument do
       it 'expands them in the text' do
         rendered = described_class["> {#{Taxt::TAX_TAG} #{taxon.id}}"]
 
-        expect(fragment_of(rendered).css('blockquote a').map { |link| link['href'] }).to eq ["/catalog/#{taxon.id}"]
+        expect(fragment_of(rendered).css('blockquote a').pluck('href')).to eq ["/catalog/#{taxon.id}"]
       end
 
       it 'does not expand them inside attribute values' do
@@ -107,7 +107,7 @@ describe Markdowns::RenderDocument do
           fragment = fragment_of(described_class[content])
 
           expect(fragment.css('img, [onerror]')).to be_empty
-          expect(fragment.css('a').map { |link| link['href'] } - ["https://example.com/"]).to be_empty
+          expect(fragment.css('a').pluck('href') - ["https://example.com/"]).to be_empty
         end
       end
     end
