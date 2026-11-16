@@ -85,3 +85,6 @@ docker_migration/sql-data
 
 # Deployed commit, optional (config/initializers/antcat_version.rb reads it)
 /REVISION
+
+# Python bytecode (e2e/)
+__pycache__/
