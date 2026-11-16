@@ -1,9 +1,9 @@
 verb	path	action	name	who	purpose	status	test
 MOUNT	/api_docs	GrapeSwaggerRails::Engine		public	the API documentation page (Swagger UI of /v1)	keep	spec/requests/api_front_door_spec.rb
-ANY	/assets	ActionDispatch::Routing::Mapper::Constraints		system	compiled CSS and JavaScript files (the asset gem's route; in production nginx serves them)	keep	
-GET	/rails/view_components	view_components#index	preview_view_components	system	list: component previews (development and test only, not in production)	keep	
-GET	/rails/view_components/*path	view_components#previews	preview_view_component	system	previews: component previews (development and test only, not in production)	keep	
-GET	/_system_test_entrypoint	view_components_system_test#system_test_entrypoint	_system_test_entrypoint	system	system test entrypoint: component test entry point (test only, not in production)	keep	
+ANY	/assets	ActionDispatch::Routing::Mapper::Constraints		system	compiled CSS and JavaScript files (the asset gem's route; in production nginx serves them)	keep	none: served by nginx in production; the asset build is checked by the production container job in CI
+GET	/rails/view_components	view_components#index	preview_view_components	system	list: component previews (development and test only, not in production)	keep	none: development and test only, not routed in production
+GET	/rails/view_components/*path	view_components#previews	preview_view_component	system	previews: component previews (development and test only, not in production)	keep	none: development and test only, not routed in production
+GET	/_system_test_entrypoint	view_components_system_test#system_test_entrypoint	_system_test_entrypoint	system	system test entrypoint: component test entry point (test only, not in production)	keep	none: test only, not routed in production
 GET	/	catalog#index	root	public	the home page: the catalog of the family Formicidae	keep	spec/features/catalog/catalog_spec.rb
 GET	/authors/autocomplete	authors/autocompletes#show	autocomplete	public	author lookup while typing	keep	spec/controllers/authors/autocompletes_controller_spec.rb
 GET	/authors/:author_id/merges/new	authors/merges#new	new_author_merges	editor	form to add: merge two author records into one	keep	spec/controllers/authors/merges_controller_spec.rb
@@ -58,7 +58,7 @@ POST	/references/:id/reviews/finish	references/reviews#finish	finish_reviewing_r
 POST	/references/:id/reviews/restart	references/reviews#restart	restart_reviewing_reference	editor	restart: review status of new references	keep	spec/controllers/references/reviews_controller_spec.rb
 GET	/references/:id/exports/wikipedia	references/exports#wikipedia	wikipedia_export_reference	public	wikipedia: export references (EndNote, wikitext)	keep	spec/controllers/references/exports_controller_spec.rb
 GET	/references/exports/endnote	references/exports#endnote	endnote_export_references	public	endnote: export references (EndNote, wikitext)	keep	spec/controllers/references/exports_controller_spec.rb
-GET	/references/latest_additions	references/latest_additions#index	references_latest_additions	public	references added most recently	keep	
+GET	/references/latest_additions	references/latest_additions#index	references_latest_additions	public	references added most recently	keep	spec/requests/references_latest_additions_spec.rb
 GET	/references/latest_changes	references/latest_changes#index	references_latest_changes	public	references changed most recently	keep	spec/controllers/references/latest_changes_controller_spec.rb
 PUT	/references/reviews/approve_all	references/reviews#approve_all	approve_all_reviewing_references	superadmin	approve all: review status of new references	keep	spec/controllers/references/reviews_controller_spec.rb
 GET	/references/search/help	references/search#help	help_references_search_index	public	help: reference search	keep	spec/controllers/references/search_controller_spec.rb
@@ -288,4 +288,4 @@ GET	/my/recently_used_references	my/recently_used_references#show	my_recently_us
 POST	/my/recently_used_references	my/recently_used_references#create		public	add: recently used references (kept in the session only)	keep	spec/controllers/my/recently_used_references_controller_spec.rb
 PATCH	/my/default_reference	my/default_reference#update	my_default_reference	user	change: the editor's default reference	keep	spec/controllers/my/default_reference_controller_spec.rb
 PUT	/my/default_reference	my/default_reference#update		user	change: the editor's default reference	keep	spec/controllers/my/default_reference_controller_spec.rb
-GET	/*id	high_voltage/pages#show	page	public	static pages from app/views/pages (catch-all, last route)	keep	
+GET	/*id	high_voltage/pages#show	page	public	static pages from app/views/pages (catch-all, last route)	keep	spec/requests/static_pages_spec.rb

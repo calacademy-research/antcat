@@ -11,9 +11,9 @@ paste. Tab-separated; open it in a spreadsheet or read it on GitHub.
 | who | the least a visitor must be: `public` (anyone), `user` (signed in), `helper`, `editor`, `superadmin`, `api` (the JSON API, with or without a key), `system` (not for people: browser reports, gem routes, development-only previews). Read from the controller's `before_action` checks |
 | purpose | what the route is for, in a few words |
 | status | `keep`, `check` (to decide), `remove` |
-| test | a spec file for the route's controller or a request or feature spec that names it; blank = none found. It says such a file exists, not that this exact route is exercised (a controller spec calls the action directly, past the routing) |
+| test | a spec file for the route's controller or a request or feature spec that names it, or `none: <reason>` where no test can run (a route that exists only in development or test; /assets, which nginx serves). Since 2026-11-16 every route that stays must have one: spec/catalog/routes_catalog_spec.rb fails otherwise. It says such a file exists, not that this exact route is exercised (a controller spec calls the action directly, past the routing) |
 
-## Summary (2026-11-13; not checked by the spec, recount when routes change)
+## Summary (2026-11-13, recounted 2026-11-16; not checked by the spec, recount when routes change)
 
 | Who | Routes |
 |---|---|
@@ -33,8 +33,7 @@ paste. Tab-separated; open it in a spreadsheet or read it on GitHub.
 
 ## Routes without a spec
 
-`/references/latest_additions` and `/*id` (the static pages of the high_voltage gem, the last route). The component previews
-(`/rails/view_components`, `/_system_test_entrypoint`) exist only in development and test.
+None since 2026-11-16 (step 5): `/references/latest_additions` got spec/requests/references_latest_additions_spec.rb, `/*id` (the static pages of the high_voltage gem) got spec/requests/static_pages_spec.rb, and the four system routes say `none:` with the reason (`none:` is refused on any route that is not `system`).
 
 ## See also
 
