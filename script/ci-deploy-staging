@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+# The only thing GitHub's staging deploy job can run on antcat-staging (road map step D2, 2026-11-16): the forced
+# command of its key in /root/.ssh/authorized_keys. It is installed OUTSIDE the checkout, by hand, once (step D1):
+#   install -o root -g root -m 755 /var/www/antcat-2/script/ci-deploy-staging /usr/local/sbin/antcat-ci-deploy-staging
+#   command="/usr/local/sbin/antcat-ci-deploy-staging",restrict ssh-ed25519 AAAA... github-deploy-antcat-staging
+# so a branch pushed to `staging` cannot change what the key runs (the checkout holds the branch's files). And it runs
+# the deploy script of origin/master (reviewed and merged code), never the branch's: it fetches origin/master and runs
+# its script/deploy from a temporary copy, as script/deploy's own step 0 does, which then deploys origin/staging.
+# What stays true of any automatic staging deploy (AntWeb's too): the branch's own app code, Dockerfile and compose file
+# are then built and run on staging, so push access to `staging` is control of the staging server. Only maintainers
+# push there, and the GitHub Environment antcat-staging lets only the branches staging and master use the key.
+#
+# It refuses, and changes nothing, while staging is held: the file /root/antcat-staging-hold exists (the AntCat chat
+# or a person is using staging's data; its first line says who and why; remove it to release staging).
+#
+# The deploy runs detached from the SSH session (nohup, a log of its own, /root/antcat-ci-deploy.log.<date-time>), and
+# this script shows its output as it goes: a cancelled job or a dropped connection does not stop a deploy half way. Two
+# deploys never run at once: script/deploy holds a lock (/run/antcat-deploy.lock) and the second one stops at once.
+#
+# Exit codes: what script/deploy returns; 75 when staging is held; 64 when it is not run as the forced command of the
+# deploy key (any argument or SSH_ORIGINAL_COMMAND other than none or "deploy" is refused).
+# No settings from the environment (the installed copy runs as root): the tests run a copy with the three paths below
+# rewritten (spec/script/deploy_test.sh).
+set -Eeuo pipefail
+
+HOLD=/root/antcat-staging-hold
+APP_DIR=/var/www/antcat-2
+LOG=/root/antcat-ci-deploy.log
+
+if [ "$#" -ne 0 ] || { [ -n "${SSH_ORIGINAL_COMMAND:-}" ] && [ "${SSH_ORIGINAL_COMMAND}" != "deploy" ]; }; then
+  echo "ci-deploy-staging: takes no arguments (it deploys origin/staging and nothing else)" >&2
+  exit 64
+fi
+
+if [ -e "$HOLD" ]; then
+  echo "ci-deploy-staging: staging is held, nothing deployed: $(head -n 1 "$HOLD" 2>/dev/null || true)" >&2
+  echo "ci-deploy-staging: remove $HOLD to release it (and update the board)" >&2
+  exit 75
+fi
+
+umask 022
+git -C "$APP_DIR" fetch -q origin master || { echo "ci-deploy-staging: cannot fetch origin/master; nothing deployed" >&2; exit 1; }
+copy="$(mktemp "${TMPDIR:-/tmp}/antcat-deploy.XXXXXX")"
+git -C "$APP_DIR" show origin/master:script/deploy > "$copy" || { rm -f "$copy"; echo "ci-deploy-staging: no script/deploy on origin/master" >&2; exit 1; }
+
+log="$LOG.$(date +%Y%m%d-%H%M%S).$$"
+: > "$log"
+ANTCAT_DEPLOY_FROM_MASTER="$copy" ANTCAT_DIR="$APP_DIR" nohup bash "$copy" --ref staging --yes > "$log" 2>&1 < /dev/null &
+pid=$!
+tail -n +1 -f --pid="$pid" "$log" || true
+rc=0
+wait "$pid" || rc=$?
+[ "$rc" -eq 75 ] && rc=1   # 75 means "staging is held" to the workflow, and only this script says that
+exit "$rc"

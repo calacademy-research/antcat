@@ -1,0 +1,72 @@
+# Deploys the branch `staging` to antcat-staging, then runs the end-to-end tests against it (road map step D2,
+# 2026-11-16; the same way as AntWeb: push a branch to `staging` to try it there before it merges).
+#
+# The job logs in with a key whose only possible command on the server is /usr/local/sbin/antcat-ci-deploy-staging
+# (forced command in authorized_keys, installed outside the checkout from script/ci-deploy-staging): it runs
+# origin/master's deploy script to deploy origin/staging, or refuses while staging is held (/root/antcat-staging-hold).
+# Push access to `staging` is still control of the staging server (the branch's code and containers run there; see that
+# script). Secrets (step D1) are kept in the GitHub Environment antcat-staging, whose rule lets only the branches
+# staging and master use them (master: e2e-staging.yml started by hand): ANTCAT_DEPLOY_SSH_KEY, ANTCAT_STAGING_SSH_HOST, ANTCAT_STAGING_HOST_KEYS (the server's public host
+# keys, one per line as "type base64", without the host name), and those of the end-to-end tests. Until they exist the
+# job passes with a notice. Needs e2e-staging.yml with on: workflow_call (#1624).
+name: Deploy staging
+
+on:
+  push:
+    branches: [staging]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# The whole run, its tests included, is one at a time: a second push waits until the first run's tests are done
+# (e2e-staging.yml has its own group for runs started by hand).
+concurrency:
+  group: antcat-staging-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy origin/staging to antcat-staging
+    runs-on: ubuntu-24.04
+    environment: antcat-staging
+    timeout-minutes: 25
+    outputs:
+      deployed: ${{ steps.deploy.outputs.deployed }}
+    env:
+      HAS_KEY: ${{ secrets.ANTCAT_DEPLOY_SSH_KEY != '' }}
+    steps:
+      - name: Not set up yet
+        if: env.HAS_KEY != 'true'
+        run: |
+          echo "::notice::Staging deploy skipped, the deploy key is not saved as a secret yet (road map step D1)."
+
+      - name: Deploy
+        id: deploy
+        if: env.HAS_KEY == 'true'
+        env:
+          SSH_KEY: ${{ secrets.ANTCAT_DEPLOY_SSH_KEY }}
+          SSH_HOST: ${{ secrets.ANTCAT_STAGING_SSH_HOST }}
+          HOST_KEYS: ${{ secrets.ANTCAT_STAGING_HOST_KEYS }}
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/id_deploy && chmod 600 ~/.ssh/id_deploy
+          printf '%s\n' "$HOST_KEYS" | sed "s|^|$SSH_HOST |" > ~/.ssh/known_hosts && chmod 600 ~/.ssh/known_hosts
+          rc=0
+          ssh -i ~/.ssh/id_deploy -o StrictHostKeyChecking=yes -o ServerAliveInterval=30 "root@$SSH_HOST" deploy || rc=$?
+          rm -f ~/.ssh/id_deploy
+          if [ "$rc" -eq 75 ]; then
+            echo "::warning::antcat-staging is held (see the board); nothing deployed. Run this workflow again when it is released."
+            echo "deployed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          [ "$rc" -eq 0 ] || { echo "::error::script/deploy failed (exit $rc); its output above gives the rollback command."; exit "$rc"; }
+          echo "deployed=true" >> "$GITHUB_OUTPUT"
+
+  e2e:
+    name: End-to-end tests
+    needs: deploy
+    if: needs.deploy.outputs.deployed == 'true'
+    uses: ./.github/workflows/e2e-staging.yml
+    secrets: inherit
