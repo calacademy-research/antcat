@@ -18,6 +18,7 @@ class ActivitiesController < ApplicationController
       Institution
       Journal
       Name
+      NotesPage
       ReferenceSection
     ],
     'Non-catalog' => %w[

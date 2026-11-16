@@ -1,0 +1,6 @@
+.notes-page
+  =markdown item.content_for_rendering
+
+=inline_expandable("show raw") do
+  =preserve do
+    %pre.mb-8=raw_taxt_for_viewer(item.content)

@@ -1,0 +1,6 @@
+=activity.event_to_verb
+the notes on
+-if activity.trackable
+  =link_to activity.parameters[:protonym_name], protonym_notes_path(activity.trackable.protonym_id)
+-else
+  =ActivityDecorator.link_protonym_if_exists activity.parameters[:protonym_id]

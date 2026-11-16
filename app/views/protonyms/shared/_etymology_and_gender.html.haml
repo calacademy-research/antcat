@@ -1,6 +1,8 @@
 -show_agreement_in_gender = taxon.is_a?(SpeciesGroupTaxon)
 
--if protonym.etymology? || show_agreement_in_gender || protonym.gender_agreement_type? || protonym.spelling_basis? || protonym.grammar_and_spelling_wiki_page_id?
+-notes_page = protonym.notes_page
+
+-if protonym.etymology? || show_agreement_in_gender || protonym.gender_agreement_type? || protonym.spelling_basis? || notes_page
   .bluebox
     -if protonym.etymology?
       %strong Etymology:
@@ -53,10 +55,10 @@
         Interpretation:
         %strong=protonym.interpretation_status_label
 
-    -if (notes_page = protonym.grammar_and_spelling_wiki_page)
+    -if notes_page
       %p
         Notes on this name:
-        =link_to notes_page.title, notes_page
+        =link_to notes_page.link_label, protonym_notes_path(protonym)
 
     -if (gender_epithets = protonym.gender_epithets)
       %p

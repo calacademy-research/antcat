@@ -236,29 +236,24 @@ describe Protonym do
       end
     end
 
-    describe "#grammar_and_spelling_wiki_page" do
-      let(:wiki_page) { create :wiki_page }
-
+    describe "#notes_page" do
       it 'is optional' do
         expect(build_stubbed(:protonym, :species_group).valid?).to eq true
       end
 
-      it 'links a species-group protonym to its page of notes by id' do
-        protonym = create :protonym, :species_group, grammar_and_spelling_wiki_page: wiki_page
-        wiki_page.update!(title: 'Notes: renamed')
-        expect(protonym.reload.grammar_and_spelling_wiki_page).to eq wiki_page
-      end
-
       # One page of notes per name, of any rank (type specimen and nomenclatural notes are not only for species).
-      it 'can be set for a genus-group name' do
-        protonym = build_stubbed :protonym, :genus_group, grammar_and_spelling_wiki_page: wiki_page
-        expect(protonym.valid?).to eq true
+      it 'belongs to a protonym of any rank' do
+        protonym = create :protonym, :genus_group
+        notes_page = create :notes_page, protonym: protonym
+
+        expect(protonym.reload.notes_page).to eq notes_page
       end
 
-      it 'keeps a linked page of notes from being deleted' do
-        create :protonym, :species_group, grammar_and_spelling_wiki_page: wiki_page
-        expect(wiki_page.destroy).to eq false
-        expect(WikiPage.exists?(wiki_page.id)).to eq true
+      it 'keeps a protonym with notes from being deleted' do
+        notes_page = create :notes_page
+
+        expect(notes_page.protonym.destroy).to eq false
+        expect(described_class.exists?(notes_page.protonym_id)).to eq true
       end
     end
 

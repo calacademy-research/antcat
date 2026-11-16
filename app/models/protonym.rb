@@ -98,11 +98,10 @@ class Protonym < ApplicationRecord
   has_many :history_items, -> { order(:position) }, dependent: :restrict_with_error
   has_many :history_items_as_object, class_name: 'HistoryItem', foreign_key: :object_protonym_id, dependent: false
   has_one :authorship_reference, through: :authorship, source: :reference
-  # Optional: the one wiki page of notes on this name ("Notes on this name" on the pages), any rank. Sections as
-  # needed: "Etymological notes" (derivation, part of speech, gender agreement and the accepted spelling), "Type
-  # specimen notes", "Nomenclatural notes". The column keeps its first name (16 Nov 2026: one page per protonym).
-  belongs_to :grammar_and_spelling_wiki_page, class_name: 'WikiPage', optional: true,
-    inverse_of: :grammar_and_spelling_protonyms
+  # Optional: the one page of notes on this name ("Notes on this name"), any rank. It replaces the link to a wiki
+  # page (`grammar_and_spelling_wiki_page_id`, 13 Nov 2026), which was never used on antcat.org; the column stays
+  # until a later migration removes it.
+  has_one :notes_page, dependent: :restrict_with_error
   # Only for an etymology from a later work; the original description is the authorship reference.
   belongs_to :etymology_reference, class_name: 'Reference', optional: true, inverse_of: :etymology_protonyms
 

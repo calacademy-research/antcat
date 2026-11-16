@@ -15,28 +15,22 @@ feature "Using the catalog", as: :visitor do
   end
 
   scenario "Following the notes on a name from its catalog page" do
-    wiki_page = create :wiki_page, title: "Notes: Leptothorax nylanderi var. crassispina", content: "Etymological notes"
-    protonym = create :protonym, :species_group, grammar_and_spelling_wiki_page: wiki_page
+    protonym = create :protonym, :species_group
+    create :notes_page, protonym: protonym,
+      content: "## Etymological notes\n\nA noun in apposition.\n\n> Spelling. The original spelling stands.\n\n| Year | Work |\n| --- | --- |\n| 1926 | Karavaiev |"
     taxon = create :species, protonym: protonym
 
     visit catalog_path(taxon)
     i_follow "[notes on this name]"
-    i_should_see "Etymological notes"
-    i_should_see "Notes on:"
-    i_follow protonym.name.name
-    i_should_see "Notes on this name"
+    i_should_see "Notes on #{protonym.name.name}"
+    within "[data-testid='notes-page-content']" do
+      expect(page).to have_css "h2", text: "Etymological notes"
+      expect(page).to have_css "blockquote", text: "Spelling. The original spelling stands."
+      expect(page).to have_css "table td", text: "Karavaiev"
+    end
   end
 
-  scenario "A page of notes on two names lists both" do
-    wiki_page = create :wiki_page
-    first_protonym = create :protonym, :species_group, grammar_and_spelling_wiki_page: wiki_page
-    second_protonym = create :protonym, :species_group, grammar_and_spelling_wiki_page: wiki_page
-
-    visit wiki_page_path(wiki_page)
-    i_should_see "#{first_protonym.author_citation}; #{second_protonym.name.name}"
-  end
-
-  scenario "A name without a page of notes shows no link to one" do
+  scenario "A name without notes shows no link to them" do
     taxon = create :species
 
     visit catalog_path(taxon)

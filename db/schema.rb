@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_14_180000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_16_220000) do
   create_table "activities", id: :integer, charset: "utf8mb3", force: :cascade do |t|
     t.integer "trackable_id"
     t.string "trackable_type"
@@ -186,6 +186,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_14_180000) do
     t.boolean "non_conforming", default: false, null: false
     t.index ["id", "type"], name: "ix_names__id__type"
     t.index ["name"], name: "ix_names__name"
+  end
+
+  create_table "notes_pages", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.integer "protonym_id", null: false
+    t.text "content", size: :medium, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["protonym_id"], name: "ux_notes_pages__protonym_id", unique: true
   end
 
   create_table "notifications", id: :integer, charset: "utf8mb3", force: :cascade do |t|
@@ -469,6 +477,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_14_180000) do
   add_foreign_key "history_items", "taxa", column: "object_taxon_id", name: "fk_history_items__object_taxon_id__taxa__id"
   add_foreign_key "issues", "users", column: "closer_id", name: "fk_issues__closer_id__users__id"
   add_foreign_key "issues", "users", name: "fk_issues__user_id__users__id"
+  add_foreign_key "notes_pages", "protonyms", name: "fk_notes_pages__protonym_id__protonyms__id"
   add_foreign_key "protonyms", "citations", column: "authorship_id", name: "fk_protonyms__authorship_id__citations__id"
   add_foreign_key "protonyms", "references", column: "etymology_reference_id", name: "fk_protonyms__etymology_reference_id__references__id"
   add_foreign_key "protonyms", "type_names", name: "fk_protonyms__type_name_id__type_names__id"

@@ -16,7 +16,6 @@ class ProtonymForm
     part_of_speech_basis
     spelling_basis
     interpretation_status
-    grammar_and_spelling_wiki_page_id
     ichnotaxon
     locality
     sic

@@ -4,6 +4,8 @@
 -content_for :breadcrumbs_right do
   -if user_is_at_least_helper?
     =link_to 'Edit', edit_protonym_path(@protonym), class: "btn-default"
+    -unless @protonym.notes_page
+      =link_to 'Add notes on this name', new_protonym_notes_path(@protonym), class: "btn-default"
   -if current_user
     =link_to "History", protonym_history_path(@protonym), class: "btn-default"
     =link_to "What Links Here", protonym_what_links_here_path(@protonym), class: "btn-default"
@@ -100,10 +102,10 @@
             %th Interpretation
             %td=@protonym.interpretation_status_label.upcase_first
 
-        -if (notes_page = @protonym.grammar_and_spelling_wiki_page)
+        -if (notes_page = @protonym.notes_page)
           %tr
             %th Notes on this name
-            %td=link_to notes_page.title, notes_page
+            %td=link_to notes_page.link_label, protonym_notes_path(@protonym)
 
         -if (gender_epithets = @protonym.gender_epithets)
           %tr

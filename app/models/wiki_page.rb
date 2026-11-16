@@ -24,10 +24,6 @@ class WikiPage < ApplicationRecord
     end
   end
 
-  # Protonyms this page holds the notes on ("Notes on this name"); usually one. See Protonym.
-  has_many :grammar_and_spelling_protonyms, class_name: 'Protonym', foreign_key: :grammar_and_spelling_wiki_page_id,
-    dependent: :restrict_with_error, inverse_of: :grammar_and_spelling_wiki_page
-
   validates :title, presence: true, length: { maximum: TITLE_MAX_LENGTH }, uniqueness: { case_sensitive: true }
   validates :content, presence: true
   validates :permanent_identifier, uniqueness: { case_sensitive: true, allow_nil: true }
