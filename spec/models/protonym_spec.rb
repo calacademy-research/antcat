@@ -243,20 +243,19 @@ describe Protonym do
         expect(build_stubbed(:protonym, :species_group).valid?).to eq true
       end
 
-      it 'links a species-group protonym to its grammar and spelling page by id' do
+      it 'links a species-group protonym to its page of notes by id' do
         protonym = create :protonym, :species_group, grammar_and_spelling_wiki_page: wiki_page
-        wiki_page.update!(title: 'Grammar and spelling: renamed')
+        wiki_page.update!(title: 'Notes: renamed')
         expect(protonym.reload.grammar_and_spelling_wiki_page).to eq wiki_page
       end
 
-      it 'can only be set for species-group names' do
+      # One page of notes per name, of any rank (type specimen and nomenclatural notes are not only for species).
+      it 'can be set for a genus-group name' do
         protonym = build_stubbed :protonym, :genus_group, grammar_and_spelling_wiki_page: wiki_page
-        expect(protonym.valid?).to eq false
-        expect(protonym.errors.where(:grammar_and_spelling_wiki_page).map(&:message)).
-          to include("can only be set for species-group names")
+        expect(protonym.valid?).to eq true
       end
 
-      it 'keeps a linked grammar and spelling page from being deleted' do
+      it 'keeps a linked page of notes from being deleted' do
         create :protonym, :species_group, grammar_and_spelling_wiki_page: wiki_page
         expect(wiki_page.destroy).to eq false
         expect(WikiPage.exists?(wiki_page.id)).to eq true

@@ -14,6 +14,24 @@ feature "Using the catalog", as: :visitor do
     find(tab_css_selector, visible: false).click
   end
 
+  scenario "Following the notes on a name from its catalog page" do
+    wiki_page = create :wiki_page, title: "Notes: Leptothorax nylanderi var. crassispina", content: "Etymological notes"
+    protonym = create :protonym, :species_group, grammar_and_spelling_wiki_page: wiki_page
+    taxon = create :species, protonym: protonym
+
+    visit catalog_path(taxon)
+    i_follow "[notes on this name]"
+    i_should_see "Etymological notes"
+    i_should_see "Notes on: #{protonym.name.name}"
+  end
+
+  scenario "A name without a page of notes shows no link to one" do
+    taxon = create :species
+
+    visit catalog_path(taxon)
+    i_should_not_see "[notes on this name]"
+  end
+
   scenario "Selecting a subfamily" do
     create :subfamily, :with_family, name_string: "Dolichoderinae"
     visit root_path

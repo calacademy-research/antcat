@@ -24,7 +24,7 @@ class WikiPage < ApplicationRecord
     end
   end
 
-  # Protonyms whose grammar and spelling this page documents ("Grammar and spelling: <name>").
+  # Protonyms this page holds the notes on ("Notes on this name"); usually one. See Protonym.
   has_many :grammar_and_spelling_protonyms, class_name: 'Protonym', foreign_key: :grammar_and_spelling_wiki_page_id,
     dependent: :restrict_with_error, inverse_of: :grammar_and_spelling_wiki_page
 

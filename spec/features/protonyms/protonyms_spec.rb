@@ -25,6 +25,21 @@ feature "Protonyms", as: :helper do
     i_should_see "Type-genus: Atta, by original designation"
   end
 
+  # One page of notes per name, of any rank (16 Nov 2026).
+  scenario "Linking a genus-group protonym to its page of notes" do
+    create :wiki_page, title: "Notes: Atta", content: "Type specimen notes"
+    protonym = create :protonym, :genus_group
+
+    visit edit_protonym_path(protonym)
+    select "Notes: Atta", from: "protonym_grammar_and_spelling_wiki_page_id"
+    click_button "Save"
+    i_should_see "Protonym was successfully updated"
+    i_should_see "Notes on this name"
+
+    i_follow_the_first "Notes: Atta"
+    i_should_see "Type specimen notes"
+  end
+
   scenario "Adding a protonym with errors" do
     visit protonyms_path
     i_follow "New"

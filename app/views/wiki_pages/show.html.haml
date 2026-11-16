@@ -15,5 +15,11 @@
     =mdash
     Added #{time_ago_in_words(@wiki_page.created_at)} ago
 
+-if (noted_protonyms = @wiki_page.grammar_and_spelling_protonyms.includes(:name).to_a).present?
+  .mb-4.text-sm
+    Notes on:
+    -noted_protonyms.each do |protonym|
+      =protonym.decorate.link_to_protonym_with_author_citation
+
 .mb-4
   =markdown @wiki_page.content

@@ -1,7 +1,7 @@
 swagger: '2.0'
 
 info:
-  version: "1.12.0"
+  version: "1.13.0"
   title: AntCat REST API
   description: >-
     Read only API to access antcat.org. Terms, limits and how to cite: https://www.antcat.org/v1 and
@@ -785,7 +785,7 @@ definitions:
         description: "How firmly AntCat's grammatical reading is established; it describes the grammar, not the spelling. demonstrated: direct evidence establishes the interpretation. reasonably_inferred = reasonably inferred: strongly supported but not explicit; a merely possible alternative may be noted. disputed: substantial evidence supports a competing interpretation; the notes give it. unresolved: the evidence does not yet allow AntCat to choose an interpretation."
       grammar_and_spelling_wiki_page_id:
         type: integer
-        description: Optional FK to the AntCat wiki page "Grammar and spelling" for this name, with the evidence and decision behind its part of speech and accepted spelling (https://www.antcat.org/wiki/{id}). AntCat's interpretation, not a ruling of the Commission.
+        description: 'Optional FK to the one AntCat wiki page of notes on this name (https://www.antcat.org/wiki/{id}), shown as "Notes on this name"; any rank. Its sections, as needed: Etymological notes (derivation, part of speech, gender agreement and the accepted spelling, with the evidence and decision), Type specimen notes, Nomenclatural notes. The field keeps its first name. AntCat''s interpretation, not a ruling of the Commission.'
       etymology_taxt:
         type: string
         description: The etymology in the words of the author who gave it, exactly as printed, in the original language; nothing added. Where it was printed is in etymology_source and etymology_pages. Entries made before November 2026 may have no source yet and are not guaranteed verbatim.

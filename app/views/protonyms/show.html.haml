@@ -100,10 +100,10 @@
             %th Interpretation
             %td=@protonym.interpretation_status_label.upcase_first
 
-        -if (grammar_page = @protonym.grammar_and_spelling_wiki_page)
+        -if (notes_page = @protonym.grammar_and_spelling_wiki_page)
           %tr
-            %th Grammar and spelling
-            %td=link_to grammar_page.title, grammar_page
+            %th Notes on this name
+            %td=link_to notes_page.title, notes_page
 
         -if (gender_epithets = @protonym.gender_epithets)
           %tr
