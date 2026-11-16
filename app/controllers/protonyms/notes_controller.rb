@@ -36,6 +36,8 @@ module Protonyms
       else
         render :new, status: :unprocessable_content
       end
+    rescue ActiveRecord::RecordNotUnique # Two people (or a double click) added the notes at the same moment.
+      redirect_to edit_protonym_notes_path(@protonym), alert: "This name already has notes; they are shown here to edit."
     end
 
     def edit

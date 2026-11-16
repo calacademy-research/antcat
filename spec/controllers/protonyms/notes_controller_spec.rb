@@ -78,6 +78,13 @@ describe Protonyms::NotesController do
       expect(response).to redirect_to edit_protonym_notes_path(protonym)
     end
 
+    it 'goes to the edit form when someone else added the notes at the same moment' do
+      allow_any_instance_of(NotesPage).to receive(:save).and_raise(ActiveRecord::RecordNotUnique) # rubocop:disable RSpec/AnyInstance
+
+      expect(post(:create, params: { protonym_id: protonym.id, notes_page: notes_page_params })).
+        to redirect_to edit_protonym_notes_path(protonym)
+    end
+
     it 'shows the form again when the notes are empty' do
       expect(post(:create, params: { protonym_id: protonym.id, notes_page: { content: '' } })).to render_template :new
     end

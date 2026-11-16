@@ -32,6 +32,21 @@ describe NotesPage do
     it 'falls back to "Notes" for a page without headings' do
       expect(described_class.new(content: "Just text.").link_label).to eq "Notes"
     end
+
+    it 'does not read a heading inside a code block' do
+      notes_page = described_class.new(content: "## Type specimen notes\n\n```\n## not a heading\n```")
+
+      expect(notes_page.section_titles).to eq ["Type specimen notes"]
+    end
+  end
+
+  describe 'line endings' do
+    it "stores a form's CR LF line endings as LF" do
+      notes_page = create :notes_page, content: "## Etymological notes\r\n\r\nText."
+
+      expect(notes_page.content).to eq "## Etymological notes\n\nText."
+      expect(notes_page.section_titles).to eq ["Etymological notes"]
+    end
   end
 
   describe '#content_for_rendering' do
@@ -44,6 +59,23 @@ describe NotesPage do
 
     it 'leaves a ">" inside a line alone' do
       expect(described_class.new(content: "a > b").content_for_rendering).to eq "a > b"
+    end
+
+    it 'leaves a quoted line inside a code block alone' do
+      content = "```\n> not a quote\n```"
+
+      expect(described_class.new(content: content).content_for_rendering).to eq content
+    end
+
+    it 'is still sanitized when rendered: markup in a quoted line cannot run a script' do
+      notes_page = described_class.new(content: "> <script>alert(1)</script>quoted <a href=\"javascript:alert(1)\" onclick=\"alert(1)\">link</a>")
+      html = Markdowns::Render[notes_page.content_for_rendering]
+
+      expect(html).to include "<blockquote>"
+      expect(html).to include "quoted"
+      expect(html).not_to include "<script"
+      expect(html).not_to include "onclick"
+      expect(html).not_to include "javascript:"
     end
   end
 end
