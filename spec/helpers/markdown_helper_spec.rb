@@ -12,6 +12,13 @@ describe MarkdownHelper do
     end
   end
 
+  describe "#document_markdown" do
+    it "renders quotations" do
+      expect(helper.document_markdown("> quoted")).to include "<blockquote>"
+      expect(helper.markdown("> quoted")).not_to include "<blockquote>"
+    end
+  end
+
   describe "#user_markdown" do
     it "renders without `class` attributes" do
       expect(helper.user_markdown(%(<span class="callout-danger" title="t">x</span>))).

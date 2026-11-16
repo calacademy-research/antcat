@@ -4,45 +4,6 @@ require 'rails_helper'
 
 describe Markdowns::Render do
   describe "#call" do
-    # For a name's page of notes, written as a document.
-    context 'with `blockquotes: true`' do
-      it 'reads "> quoted" lines as a quotation, with their Markdown' do
-        rendered = described_class["Text.\n\n> **Spelling.** Originally *crassispina*; see [the Code](https://code.iczn.org).\n> Second line.\n\nMore.", blockquotes: true]
-
-        expect(rendered).to include "<blockquote>"
-        expect(rendered.scan("<blockquote>").size).to eq 1
-        expect(rendered).to include "<strong>Spelling.</strong>"
-        expect(rendered).to include "<em>crassispina</em>"
-        expect(rendered).to include %(<a href="https://code.iczn.org">the Code</a>)
-        expect(rendered).to include "<p>More.</p>"
-      end
-
-      it 'leaves the quotation as text without the option, as before' do
-        expect(described_class["> quoted"]).not_to include "<blockquote>"
-      end
-
-      it 'still sanitizes what is quoted' do
-        rendered = described_class[%(> <script>alert(1)</script>quoted <a href="javascript:alert(1)" onclick="alert(1)">link</a>), blockquotes: true]
-
-        expect(rendered).to include "<blockquote>"
-        expect(rendered).to include "quoted"
-        expect(rendered).not_to include "<script"
-        expect(rendered).not_to include "onclick"
-        expect(rendered).not_to include "javascript:"
-      end
-
-      it 'does not let the stand-in character of the content open a quotation or a tag' do
-        rendered = described_class["\uE000 not quoted <b>bold</b>", blockquotes: true]
-
-        expect(rendered).not_to include "<blockquote>"
-        expect(rendered).to include "not quoted"
-      end
-
-      it 'leaves a ">" inside a line alone' do
-        expect(described_class["a > b", blockquotes: true]).not_to include "<blockquote>"
-      end
-    end
-
     context 'with unsafe tags' do
       it "sanitizes them" do
         content = '<script>xss</script>'

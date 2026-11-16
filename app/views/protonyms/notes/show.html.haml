@@ -18,4 +18,4 @@
     Added #{time_ago_in_words(@notes_page.created_at)} ago
 
 .mb-4.notes-page{data: { testid: 'notes-page-content' }}
-  =markdown @notes_page.content, blockquotes: true
+  =document_markdown @notes_page.content

@@ -4,7 +4,7 @@
 # notes, in Markdown (table `notes_pages`, one row per protonym at most). Sections as needed, each a second-level
 # heading: "Etymological notes" (derivation, part of speech, gender agreement and the accepted spelling), "Type
 # specimen notes", "Nomenclatural notes". Shown at /protonyms/:protonym_id/notes, rendered with
-# `markdown content, blockquotes: true` so that a document written elsewhere keeps its "> quoted" lines.
+# `document_markdown` (`Markdowns::RenderDocument`) so that a document written elsewhere keeps its "> quoted" lines.
 class NotesPage < ApplicationRecord
   include Trackable
 
@@ -24,7 +24,7 @@ class NotesPage < ApplicationRecord
 
   # The headings of the page ("## Etymological notes"), for the link text on the name's pages.
   def section_titles
-    lines_outside_code.filter_map { |line, code| line[/\A##[ \t]+(.+?)[ \t#]*\z/, 1] unless code }
+    lines_outside_code.filter_map { |line, code| line[/\A##[ \t]+(.+?)(?:[ \t]+#+)?[ \t]*\z/, 1] unless code }
   end
 
   def link_label

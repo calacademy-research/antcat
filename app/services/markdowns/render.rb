@@ -10,18 +10,9 @@ module Markdowns
     # styled like the site's own notices and warnings.
     USER_CONTENT_ATTRIBUTES = (ActionView::Helpers::SanitizeHelper.sanitizer_vendor.safe_list_sanitizer.allowed_attributes.to_a - %w[class]).freeze
 
-    # Stands in for the ">" that opens a quoted line while the content is sanitized (a private-use character).
-    QUOTE_MARK = "\uE000"
-
-    # `blockquotes: true` keeps Markdown's "> quoted" lines (for documents written elsewhere: a name's page of
-    # notes). The sanitizer turns every ">" into "&gt;", which is why other content writes `<blockquote>`; here
-    # the ">" at the start of a line is set aside while the content is sanitized and put back before Markdown
-    # reads it. A ">" at the start of a line is text, never markup, so what the sanitizer removed stays removed.
-    def initialize content, user_content: false, blockquotes: false
+    def initialize content, user_content: false
       sanitize_options = user_content ? { attributes: USER_CONTENT_ATTRIBUTES } : {}
-      content = content.delete(QUOTE_MARK).gsub(/^[ \t]{0,3}>(?=[ \t]|$)/, QUOTE_MARK) if blockquotes
       @content = sanitize(content, **sanitize_options).to_s.to_str
-      @content = @content.gsub(QUOTE_MARK, ">") if blockquotes
     end
 
     # Tags are expanded in `AntCatMarkdown#postprocess`; attribute values from the content are kept out of that.
