@@ -2,7 +2,9 @@
 # through an SSH tunnel, on every pull request and by hand. Skipped (green, with a note) until the deploy key and the
 # staging settings are saved as repository secrets (step D1): ANTCAT_STAGING_SSH_KEY, ANTCAT_STAGING_SSH_HOST,
 # ANTCAT_STAGING_HOST_KEYS (the server's public host keys, pinned), optional ANTCAT_TEST_API_KEY,
-# ANTCAT_TEST_EDITOR_EMAIL, ANTCAT_TEST_EDITOR_PASSWORD. The tunnel forwards a local port to the site's web server on
+# ANTCAT_TEST_EDITOR_EMAIL, ANTCAT_TEST_EDITOR_PASSWORD. The key belongs to a user of its own on the droplet (e2e, not
+# root), restricted in its authorized_keys to forwarding the one port (restrict,port-forwarding,permitopen="127.0.0.1:443",
+# command="/bin/false"), so a pull request that edits this file can do nothing else with it. The tunnel forwards a local port to the site's web server on
 # the droplet (ANTCAT_STAGING_TARGET, default 127.0.0.1:443) and the tests send the site's name as Host.
 name: End-to-end tests (staging)
 
@@ -48,7 +50,7 @@ jobs:
           printf '%s\n' "$SSH_KEY" > ~/.ssh/id_staging && chmod 600 ~/.ssh/id_staging
           printf '%s\n' "$HOST_KEYS" | sed "s|^|$SSH_HOST |" > ~/.ssh/known_hosts && chmod 600 ~/.ssh/known_hosts
           ssh -i ~/.ssh/id_staging -o StrictHostKeyChecking=yes -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 \
-            -f -N -L "8443:$TARGET" "root@$SSH_HOST"
+            -f -N -L "8443:$TARGET" "e2e@$SSH_HOST"
           rm -f ~/.ssh/id_staging   # the tunnel is up; no test code ever sees the key
           sleep 2
 

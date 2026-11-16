@@ -25,7 +25,7 @@ def test_a_taxon_page_and_its_views():
 
 
 def test_search_finds_a_genus():
-    r = get("/catalog/search?qq=Camponotus", allow_redirects=True)
+    r = get("/catalog/search?qq=Camponotus")
     assert r.status_code == 200, r.status_code
     assert "Camponotus" in r.text
 
