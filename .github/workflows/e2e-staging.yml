@@ -1,0 +1,67 @@
+# End-to-end tests against antcat-staging (e2e/, road map step D3, 2026-11-16): read-only checks of the running site
+# through an SSH tunnel, on every pull request and by hand. Skipped (green, with a note) until the deploy key and the
+# staging settings are saved as repository secrets (step D1): ANTCAT_STAGING_SSH_KEY, ANTCAT_STAGING_SSH_HOST,
+# ANTCAT_STAGING_HOST_KEYS (the server's public host keys, pinned), optional ANTCAT_TEST_API_KEY,
+# ANTCAT_TEST_EDITOR_EMAIL, ANTCAT_TEST_EDITOR_PASSWORD. The tunnel forwards a local port to the site's web server on
+# the droplet (ANTCAT_STAGING_TARGET, default 127.0.0.1:443) and the tests send the site's name as Host.
+name: End-to-end tests (staging)
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: antcat-staging-e2e
+  cancel-in-progress: false
+
+jobs:
+  e2e:
+    name: End-to-end tests against antcat-staging
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      HAS_KEY: ${{ secrets.ANTCAT_STAGING_SSH_KEY != '' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+
+      - name: Not set up yet
+        if: env.HAS_KEY != 'true'
+        run: |
+          echo "::notice::End-to-end tests skipped, the staging deploy key is not saved as a secret yet (road map step D1)."
+
+      - name: Tunnel to staging
+        if: env.HAS_KEY == 'true'
+        env:
+          SSH_KEY: ${{ secrets.ANTCAT_STAGING_SSH_KEY }}
+          SSH_HOST: ${{ secrets.ANTCAT_STAGING_SSH_HOST }}
+          HOST_KEYS: ${{ secrets.ANTCAT_STAGING_HOST_KEYS }}
+          TARGET: ${{ vars.ANTCAT_STAGING_TARGET || '127.0.0.1:443' }}
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/id_staging && chmod 600 ~/.ssh/id_staging
+          printf '%s\n' "$HOST_KEYS" | sed "s|^|$SSH_HOST |" > ~/.ssh/known_hosts && chmod 600 ~/.ssh/known_hosts
+          ssh -i ~/.ssh/id_staging -o StrictHostKeyChecking=yes -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 \
+            -f -N -L "8443:$TARGET" "root@$SSH_HOST"
+          rm -f ~/.ssh/id_staging   # the tunnel is up; no test code ever sees the key
+          sleep 2
+
+      - name: Run the tests
+        if: env.HAS_KEY == 'true'
+        env:
+          ANTCAT_URL: https://127.0.0.1:8443
+          ANTCAT_HOST_HEADER: www.antcat.org
+          ANTCAT_TEST_API_KEY: ${{ secrets.ANTCAT_TEST_API_KEY }}
+          ANTCAT_TEST_EDITOR_EMAIL: ${{ secrets.ANTCAT_TEST_EDITOR_EMAIL }}
+          ANTCAT_TEST_EDITOR_PASSWORD: ${{ secrets.ANTCAT_TEST_EDITOR_PASSWORD }}
+        run: |
+          pip install --quiet pytest==8.3.3 requests==2.32.3
+          # the origin certificate is issued for www.antcat.org, not 127.0.0.1: checked by name below, so verification is off
+          # only for this one local tunnel address
+          ANTCAT_INSECURE_LOCAL=1 python3 -m pytest e2e -q
