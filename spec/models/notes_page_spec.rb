@@ -27,6 +27,7 @@ describe NotesPage do
 
       expect(notes_page.section_titles).to eq ["Etymological notes", "Type specimen notes"]
       expect(notes_page.link_label).to eq "Etymological notes, Type specimen notes"
+      expect(notes_page.standalone_link_label).to eq "Etymological notes, Type specimen notes"
     end
 
     it 'keeps a "#" that belongs to the title' do
@@ -35,7 +36,10 @@ describe NotesPage do
     end
 
     it 'falls back to "Notes" for a page without headings' do
-      expect(described_class.new(content: "Just text.").link_label).to eq "Notes"
+      notes_page = described_class.new(content: "Just text.")
+
+      expect(notes_page.link_label).to eq "Notes"
+      expect(notes_page.standalone_link_label).to eq "Notes on this name"
     end
 
     it 'does not read a heading inside a code block' do

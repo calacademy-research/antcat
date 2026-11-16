@@ -27,8 +27,14 @@ class NotesPage < ApplicationRecord
     lines_outside_code.filter_map { |line, code| line[/\A##[ \t]+(.+?)(?:[ \t]+#+)?[ \t]*\z/, 1] unless code }
   end
 
+  # Link text beside the label "Notes on this name" (the protonym page's table).
   def link_label
     section_titles.presence&.join(", ") || "Notes"
+  end
+
+  # Link text that stands alone (the box on catalog and protonym pages).
+  def standalone_link_label
+    section_titles.presence&.join(", ") || "Notes on this name"
   end
 
   private

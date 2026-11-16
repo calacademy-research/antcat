@@ -55,10 +55,9 @@
         Interpretation:
         %strong=protonym.interpretation_status_label
 
+    -# The link text names the sections ("Etymological notes"), so no label stands before it.
     -if notes_page
-      %p
-        Notes on this name:
-        =link_to notes_page.link_label, protonym_notes_path(protonym)
+      %p=link_to notes_page.standalone_link_label, protonym_notes_path(protonym)
 
     -if (gender_epithets = protonym.gender_epithets)
       %p
