@@ -708,7 +708,7 @@ ci_run env TMPDIR="$T" "$T/ci"
 check "exits 0" [ "$CI_RC" -eq 0 ]
 check "runs origin/master's copy with --ref staging --yes" grep -q "master copy: --ref staging --yes from=antcat-deploy\.[A-Za-z0-9]\{6\} dir=$T/server" <<<"$CI_OUT"
 check "  never the checkout's copy" not grep -q "BRANCH COPY RAN" <<<"$CI_OUT"
-check "  and keeps the output in its log" grep -q "master copy" "$T/ci.log"
+check "  and keeps the output in a log of its own" grep -q "master copy" "$T"/ci.log.*
 ci_run env TMPDIR="$T" FAKE_RC=3 "$T/ci"
 check "returns the deploy script's exit code" [ "$CI_RC" -eq 3 ]
 ci_run env TMPDIR="$T" SSH_ORIGINAL_COMMAND=deploy "$T/ci"

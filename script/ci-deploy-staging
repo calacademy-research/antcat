@@ -13,8 +13,9 @@
 # It refuses, and changes nothing, while staging is held: the file /root/antcat-staging-hold exists (the AntCat chat
 # or a person is using staging's data; its first line says who and why; remove it to release staging).
 #
-# The deploy runs detached from the SSH session (nohup, its own log /root/antcat-ci-deploy.log), and this script shows
-# its output as it goes: a cancelled job or a dropped connection does not stop a deploy half way.
+# The deploy runs detached from the SSH session (nohup, a log of its own, /root/antcat-ci-deploy.log.<date-time>), and
+# this script shows its output as it goes: a cancelled job or a dropped connection does not stop a deploy half way. Two
+# deploys never run at once: script/deploy holds a lock (/run/antcat-deploy.lock) and the second one stops at once.
 #
 # Exit codes: what script/deploy returns; 75 when staging is held; 64 when it is not run as the forced command of the
 # deploy key (any argument or SSH_ORIGINAL_COMMAND other than none or "deploy" is refused).
@@ -42,10 +43,11 @@ git -C "$APP_DIR" fetch -q origin master || { echo "ci-deploy-staging: cannot fe
 copy="$(mktemp "${TMPDIR:-/tmp}/antcat-deploy.XXXXXX")"
 git -C "$APP_DIR" show origin/master:script/deploy > "$copy" || { rm -f "$copy"; echo "ci-deploy-staging: no script/deploy on origin/master" >&2; exit 1; }
 
-: > "$LOG"
-ANTCAT_DEPLOY_FROM_MASTER="$copy" ANTCAT_DIR="$APP_DIR" nohup bash "$copy" --ref staging --yes > "$LOG" 2>&1 < /dev/null &
+log="$LOG.$(date +%Y%m%d-%H%M%S).$$"
+: > "$log"
+ANTCAT_DEPLOY_FROM_MASTER="$copy" ANTCAT_DIR="$APP_DIR" nohup bash "$copy" --ref staging --yes > "$log" 2>&1 < /dev/null &
 pid=$!
-tail -n +1 -f --pid="$pid" "$LOG" || true
+tail -n +1 -f --pid="$pid" "$log" || true
 rc=0
 wait "$pid" || rc=$?
 exit "$rc"
