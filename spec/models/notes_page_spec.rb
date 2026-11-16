@@ -43,6 +43,12 @@ describe NotesPage do
 
       expect(notes_page.section_titles).to eq ["Type specimen notes"]
     end
+
+    it 'closes a code block only with the kind of fence that opened it' do
+      notes_page = described_class.new(content: "```\n~~~\n## not a heading\n```\n\n## Type specimen notes")
+
+      expect(notes_page.section_titles).to eq ["Type specimen notes"]
+    end
   end
 
   describe 'line endings' do

@@ -34,12 +34,17 @@ class NotesPage < ApplicationRecord
   private
 
     # Each line with whether it is inside a fenced code block (``` or ~~~), where nothing is a heading.
+    # A block is closed by the kind of fence that opened it.
     def lines_outside_code
-      in_code = false
+      open_fence = nil
       content.to_s.split("\n", -1).map do |line|
-        fence = line.match?(CODE_FENCE)
-        code = in_code || fence
-        in_code = !in_code if fence
+        fence = line[CODE_FENCE, 1]
+        code = open_fence.present? || fence.present?
+        if open_fence.nil?
+          open_fence = fence
+        elsif fence == open_fence
+          open_fence = nil
+        end
         [line, code]
       end
     end
