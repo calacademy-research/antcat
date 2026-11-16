@@ -15,11 +15,11 @@
     =mdash
     Added #{time_ago_in_words(@wiki_page.created_at)} ago
 
--if (noted_protonyms = @wiki_page.grammar_and_spelling_protonyms.includes(:name).to_a).present?
+-# Usually one name; a page may serve several (names described together), so they are listed.
+-if (noted_protonyms = @wiki_page.grammar_and_spelling_protonyms.includes(:name, :authorship_reference).order(:id).to_a).present?
   .mb-4.text-sm
     Notes on:
-    -noted_protonyms.each do |protonym|
-      =protonym.decorate.link_to_protonym_with_author_citation
+    =safe_join(noted_protonyms.map { |protonym| protonym.decorate.link_to_protonym_with_author_citation }, '; ')
 
 .mb-4
   =markdown @wiki_page.content
