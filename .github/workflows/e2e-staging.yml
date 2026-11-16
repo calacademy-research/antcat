@@ -1,5 +1,7 @@
 # End-to-end tests against antcat-staging (e2e/, road map step D3, 2026-11-16): read-only checks of the running site
-# through an SSH tunnel, on every pull request and by hand. Skipped (green, with a note) until the deploy key and the
+# through an SSH tunnel. They test what is deployed on staging, so they run after a staging deploy (called by the deploy
+# workflow of step D2) or by hand, not on every pull request; that also keeps the test secrets away from branch code
+# nobody has looked at. Skipped (green, with a note) until the deploy key and the
 # staging settings are saved as repository secrets (step D1): ANTCAT_STAGING_SSH_KEY, ANTCAT_STAGING_SSH_HOST,
 # ANTCAT_STAGING_HOST_KEYS (the server's public host keys, pinned), optional ANTCAT_TEST_API_KEY,
 # ANTCAT_TEST_EDITOR_EMAIL, ANTCAT_TEST_EDITOR_PASSWORD. The key belongs to a user of its own on the droplet (e2e, not
@@ -9,8 +11,8 @@
 name: End-to-end tests (staging)
 
 on:
-  pull_request:
   workflow_dispatch:
+  workflow_call:
 
 permissions:
   contents: read
@@ -36,6 +38,12 @@ jobs:
         if: env.HAS_KEY != 'true'
         run: |
           echo "::notice::End-to-end tests skipped, the staging deploy key is not saved as a secret yet (road map step D1)."
+
+      - name: Python
+        if: env.HAS_KEY == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
 
       - name: Tunnel to staging
         if: env.HAS_KEY == 'true'
@@ -63,7 +71,7 @@ jobs:
           ANTCAT_TEST_EDITOR_EMAIL: ${{ secrets.ANTCAT_TEST_EDITOR_EMAIL }}
           ANTCAT_TEST_EDITOR_PASSWORD: ${{ secrets.ANTCAT_TEST_EDITOR_PASSWORD }}
         run: |
-          pip install --quiet pytest==8.3.3 requests==2.32.3
-          # the origin certificate is issued for www.antcat.org, not 127.0.0.1: checked by name below, so verification is off
-          # only for this one local tunnel address
-          ANTCAT_INSECURE_LOCAL=1 python3 -m pytest e2e -q
+          python -m pip install --quiet pytest==8.3.3 requests==2.32.3
+          # TLS is not verified for the local tunnel address (the certificate names www.antcat.org, not 127.0.0.1); the
+          # server is authenticated by the pinned SSH host keys of the tunnel instead
+          ANTCAT_INSECURE_LOCAL=1 python -m pytest e2e -q -p no:cacheprovider

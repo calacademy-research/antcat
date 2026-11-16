@@ -1,5 +1,5 @@
 """Shared settings of the AntCat end-to-end tests (e2e/README.md): the site address and a session that sends the Host
-header and the CA bundle when given. Every test is skipped when ANTCAT_URL is not set."""
+header when given. Every test is skipped when ANTCAT_URL is not set."""
 import os
 import urllib.parse
 
@@ -8,7 +8,6 @@ import requests
 
 BASE_URL = os.environ.get("ANTCAT_URL", "").rstrip("/")
 HOST = os.environ.get("ANTCAT_HOST_HEADER", "")
-CA = os.environ.get("ANTCAT_CA_BUNDLE", "")
 API_KEY = os.environ.get("ANTCAT_TEST_API_KEY", "")
 EDITOR_EMAIL = os.environ.get("ANTCAT_TEST_EDITOR_EMAIL", "")
 EDITOR_PASSWORD = os.environ.get("ANTCAT_TEST_EDITOR_PASSWORD", "")
@@ -30,10 +29,10 @@ def session():
     s.headers["X-Forwarded-Proto"] = "https"
     if HOST:
         s.headers["Host"] = HOST
-    if CA:
-        s.verify = CA
-    elif os.environ.get("ANTCAT_INSECURE_LOCAL") == "1" and BASE_URL.startswith("https://127.0.0.1:"):
-        s.verify = False   # CI's SSH tunnel: the certificate is for the site's name, the address is the tunnel's
+    if os.environ.get("ANTCAT_INSECURE_LOCAL") == "1" and BASE_URL.startswith("https://127.0.0.1:"):
+        # CI's SSH tunnel only: the certificate names the site, the address is the tunnel's; the pinned SSH host keys
+        # authenticate the server
+        s.verify = False
         requests.packages.urllib3.disable_warnings()
     return s
 
