@@ -25,6 +25,7 @@ jobs:
   e2e:
     name: End-to-end tests against antcat-staging
     runs-on: ubuntu-24.04
+    environment: antcat-staging   # its secrets live there (step D1); environment secrets need this line
     timeout-minutes: 20
     env:
       HAS_KEY: ${{ secrets.ANTCAT_STAGING_SSH_KEY != '' }}

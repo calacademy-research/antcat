@@ -1,11 +1,14 @@
 # Deploys the branch `staging` to antcat-staging, then runs the end-to-end tests against it (road map step D2,
 # 2026-11-16; the same way as AntWeb: push a branch to `staging` to try it there before it merges).
 #
-# The job logs in with a key whose only possible command on the server is script/ci-deploy-staging (forced command
-# in authorized_keys): it deploys origin/staging with script/deploy, or refuses while staging is held
-# (/root/antcat-staging-hold; see that script). So a workflow edited in a branch can do nothing else with the key.
-# Secrets (step D1, kept in the GitHub Environment antcat-staging): ANTCAT_DEPLOY_SSH_KEY, ANTCAT_STAGING_SSH_HOST,
-# ANTCAT_STAGING_HOST_KEYS, and those of the end-to-end tests. Until they exist the job passes with a notice.
+# The job logs in with a key whose only possible command on the server is /usr/local/sbin/antcat-ci-deploy-staging
+# (forced command in authorized_keys, installed outside the checkout from script/ci-deploy-staging): it runs
+# origin/master's deploy script to deploy origin/staging, or refuses while staging is held (/root/antcat-staging-hold).
+# Push access to `staging` is still control of the staging server (the branch's code and containers run there; see that
+# script). Secrets (step D1) are kept in the GitHub Environment antcat-staging, whose rule lets only the branch
+# `staging` use them: ANTCAT_DEPLOY_SSH_KEY, ANTCAT_STAGING_SSH_HOST, ANTCAT_STAGING_HOST_KEYS (the server's public host
+# keys, one per line as "type base64", without the host name), and those of the end-to-end tests. Until they exist the
+# job passes with a notice. Needs e2e-staging.yml with on: workflow_call (#1624).
 name: Deploy staging
 
 on:
@@ -20,6 +23,7 @@ jobs:
   deploy:
     name: Deploy origin/staging to antcat-staging
     runs-on: ubuntu-24.04
+    environment: antcat-staging
     concurrency:      # one deploy at a time; the tests have their own group (e2e-staging.yml)
       group: antcat-staging-deploy
       cancel-in-progress: false
