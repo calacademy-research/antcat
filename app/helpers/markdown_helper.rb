@@ -3,9 +3,10 @@
 # Renders Markdown: editors' content and user content (comments, with fewer allowed attributes), and raw taxt
 # without hidden notes for visitors.
 module MarkdownHelper
-  def markdown content
+  # `blockquotes: true` for content written as a document (a name's page of notes): "> quoted" lines are quotes.
+  def markdown content, blockquotes: false
     return unless content
-    Markdowns::Render[content.dup]
+    Markdowns::Render[content.dup, blockquotes: blockquotes]
   end
 
   # For content any signed-in user can write (comments); see `Markdowns::Render::USER_CONTENT_ATTRIBUTES`.

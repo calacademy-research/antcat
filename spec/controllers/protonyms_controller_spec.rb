@@ -262,6 +262,18 @@ describe ProtonymsController do
       expect(activity.parameters).to eq(name: "<i>#{protonym.name.name}</i>")
     end
 
+    context 'when protonym has a page of notes' do
+      before do
+        create :notes_page, protonym: protonym
+      end
+
+      it 'does not delete it, and says why' do
+        expect { delete(:destroy, params: { id: protonym.id }) }.not_to change { Protonym.count }
+        expect(response).to redirect_to protonym_path(protonym)
+        expect(flash[:alert]).to include "notes page"
+      end
+    end
+
     context 'when protonym has references to it' do
       context 'when protonym has a taxon' do
         before do

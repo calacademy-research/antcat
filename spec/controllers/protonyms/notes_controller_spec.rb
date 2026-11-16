@@ -17,6 +17,7 @@ describe Protonyms::NotesController do
       specify { expect(post(:create, params: { protonym_id: 1 })).to have_http_status :forbidden }
       specify { expect(get(:edit, params: { protonym_id: 1 })).to have_http_status :forbidden }
       specify { expect(put(:update, params: { protonym_id: 1 })).to have_http_status :forbidden }
+      specify { expect(delete(:destroy, params: { protonym_id: 1 })).to have_http_status :forbidden }
     end
 
     context "when signed in as a helper", as: :helper do
