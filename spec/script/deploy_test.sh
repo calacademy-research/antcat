@@ -711,6 +711,8 @@ check "  never the checkout's copy" not grep -q "BRANCH COPY RAN" <<<"$CI_OUT"
 check "  and keeps the output in a log of its own" grep -q "master copy" "$T"/ci.log.*
 ci_run env TMPDIR="$T" FAKE_RC=3 "$T/ci"
 check "returns the deploy script's exit code" [ "$CI_RC" -eq 3 ]
+ci_run env TMPDIR="$T" FAKE_RC=75 "$T/ci"
+check "a 75 from the deploy script is not taken for a hold (1)" [ "$CI_RC" -eq 1 ]
 ci_run env TMPDIR="$T" SSH_ORIGINAL_COMMAND=deploy "$T/ci"
 check "accepts the job's command 'deploy'" [ "$CI_RC" -eq 0 ]
 ci_run env TMPDIR="$T" SSH_ORIGINAL_COMMAND="rm -rf /" "$T/ci"

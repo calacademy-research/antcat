@@ -50,4 +50,5 @@ pid=$!
 tail -n +1 -f --pid="$pid" "$log" || true
 rc=0
 wait "$pid" || rc=$?
+[ "$rc" -eq 75 ] && rc=1   # 75 means "staging is held" to the workflow, and only this script says that
 exit "$rc"
