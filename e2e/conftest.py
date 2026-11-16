@@ -15,7 +15,13 @@ TIMEOUT = 60
 TAXON_ID = 429011   # the taxon the deploy health check and the uptime check ask for (script/deploy)
 
 
+PRODUCTION = {"antcat.org", "www.antcat.org"}   # these tests never run there (the sign-in test writes to the user row)
+
+
 def pytest_collection_modifyitems(config, items):
+    target = urllib.parse.urlsplit(BASE_URL).hostname or ""
+    if target in PRODUCTION:
+        raise pytest.UsageError("ANTCAT_URL is production (" + target + "): these tests run on staging only")
     if BASE_URL:
         return
     skip = pytest.mark.skip(reason="ANTCAT_URL not set")
