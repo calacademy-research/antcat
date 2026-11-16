@@ -70,12 +70,15 @@ describe "Function catalog (docs/catalog/routes.tsv)" do # rubocop:disable RSpec
   end
 
   # Step 5 (2026-11-16): a route that stays has a test, or a written reason why none can run ("none: <reason>",
-  # e.g. a route that exists only in development). A new route cannot be added without one.
+  # e.g. a route that exists only in development; system routes only). A new route cannot be added without one.
   it "names a test for every route that stays" do
     untested = rows.select { |r| r["status"] == "keep" && r["test"].blank? }
-    bare = rows.select { |r| r["test"].to_s.start_with?(no_test) && r["test"].delete_prefix(no_test).strip.empty? }
+    excused = rows.select { |r| r["test"].to_s.start_with?(no_test) }
+    bare = excused.select { |r| r["test"].delete_prefix(no_test).strip.empty? }
+    not_system = excused.reject { |r| r["who"] == "system" } # only a route no person uses may go without a test
     expect(untested).to be_empty, "#{untested.size} kept routes name no test: #{untested.map { |r| key.call(r).join(' ') }}"
     expect(bare).to be_empty, "#{no_test} needs a reason: #{bare.map { |r| key.call(r).join(' ') }}"
+    expect(not_system).to be_empty, "#{no_test} is only for system routes: #{not_system.map { |r| key.call(r).join(' ') }}"
   end
 
   it "uses the known values for who and status" do

@@ -288,4 +288,4 @@ GET	/my/recently_used_references	my/recently_used_references#show	my_recently_us
 POST	/my/recently_used_references	my/recently_used_references#create		public	add: recently used references (kept in the session only)	keep	spec/controllers/my/recently_used_references_controller_spec.rb
 PATCH	/my/default_reference	my/default_reference#update	my_default_reference	user	change: the editor's default reference	keep	spec/controllers/my/default_reference_controller_spec.rb
 PUT	/my/default_reference	my/default_reference#update		user	change: the editor's default reference	keep	spec/controllers/my/default_reference_controller_spec.rb
-GET	/*id	high_voltage/pages#show	page	public	static pages from app/views/pages (catch-all, last route)	keep	spec/requests/footer_version_spec.rb
+GET	/*id	high_voltage/pages#show	page	public	static pages from app/views/pages (catch-all, last route)	keep	spec/requests/static_pages_spec.rb
