@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# The only thing GitHub's staging deploy job can run on antcat-staging (road map step D2, 2026-11-16): the forced
+# command of its key in /root/.ssh/authorized_keys,
+#   command="/var/www/antcat-2/script/ci-deploy-staging",restrict ssh-ed25519 AAAA... github-deploy-antcat-staging
+# so whatever the job asks, the server runs this, and this deploys the branch `staging` from GitHub with script/deploy.
+#
+# It refuses, and changes nothing, while staging is held: the file /root/antcat-staging-hold exists (the AntCat chat
+# or a person is using staging's data; its first line says who and why; remove it to release staging). The hold and
+# the board (coordination board, "who holds antcat-staging") say the same thing.
+#
+# Exit codes: what script/deploy returns; 75 when staging is held; 64 when it is not run as the forced command of the
+# deploy key (any argument or SSH_ORIGINAL_COMMAND other than none or "deploy" is refused).
+# For the tests (spec/script/deploy_test.sh): ANTCAT_HOLD_FILE, ANTCAT_DEPLOY_CMD override the hold file and the
+# deploy command.
+set -Eeuo pipefail
+
+HOLD="${ANTCAT_HOLD_FILE:-/root/antcat-staging-hold}"
+DEPLOY="${ANTCAT_DEPLOY_CMD:-$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/deploy}"
+
+if [ "$#" -ne 0 ] || { [ -n "${SSH_ORIGINAL_COMMAND:-}" ] && [ "${SSH_ORIGINAL_COMMAND}" != "deploy" ]; }; then
+  echo "ci-deploy-staging: takes no arguments (it deploys origin/staging and nothing else)" >&2
+  exit 64
+fi
+
+if [ -e "$HOLD" ]; then
+  echo "ci-deploy-staging: staging is held, nothing deployed: $(head -n 1 "$HOLD" 2>/dev/null || true)" >&2
+  echo "ci-deploy-staging: remove $HOLD to release it (and update the board)" >&2
+  exit 75
+fi
+
+exec "$DEPLOY" --ref staging --yes

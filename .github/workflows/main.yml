@@ -58,7 +58,7 @@ jobs:
           fetch-depth: 1
 
       - name: ShellCheck
-        run: shellcheck --version && shellcheck script/deploy spec/script/deploy_test.sh
+        run: shellcheck --version && shellcheck script/deploy script/ci-deploy-staging spec/script/deploy_test.sh
 
       - name: Tests (fake docker, local git repositories)
         run: |
