@@ -56,12 +56,16 @@ jobs:
           RUN_SHA: ${{ github.event.workflow_run.head_sha }}
         run: |
           set +e -uo pipefail   # a closed gate exits 1: go on with the next PR
-          open=$(gh api "repos/$REPO/pulls?state=open&base=master&per_page=100" --jq '.[] | "\(.number) \(.head.sha)"')
+          # a failed API call fails the job, so it is seen (review of #1627: it ended green and gated nothing)
+          open=$(gh api "repos/$REPO/pulls?state=open&base=master&per_page=100" --jq '.[] | "\(.number) \(.head.sha)"') \
+            || { echo "::error::could not list the open pull requests"; exit 1; }
+          failed=0
           prs=$(python3 tools/release/gate_targets.py "$EVENT" "${EVENT_PR:-}" "${RUN_PRS:-[]}" "${RUN_SHA:-}" <<< "$open")
           echo "gating: ${prs:-none}"
           for pr in $prs; do
             started=$(date -u +%Y-%m-%dT%H:%M:%S.%NZ)   # to the nanosecond: two runs in one second still order
             head=$(gh api "repos/$REPO/pulls/$pr" --jq .head.sha)
+            [ -n "$head" ] || { echo "::error::PR #$pr: could not read its head"; failed=1; continue; }
             python3 tools/release/gate.py "$pr" > /tmp/gate.txt 2>&1
             code=$?
             cat /tmp/gate.txt
@@ -83,5 +87,7 @@ jobs:
             # cut by characters, not bytes (a review line can hold non-ASCII text)
             desc="$(python3 -c 'import sys; print(sys.argv[1][:96])' "$desc") · checked $started"
             gh api -X POST "repos/$REPO/statuses/$head" -f state="$state" -f context=release-gate \
-              -f description="$desc" -f target_url="$RUN_URL" >/dev/null
+              -f description="$desc" -f target_url="$RUN_URL" >/dev/null \
+              || { echo "::error::PR #$pr: could not write the status"; failed=1; }
           done
+          exit "$failed"

@@ -16,7 +16,11 @@ with AntCat's workflows. Road map step 5 (D5), 2026-11-19.
 `.github/workflows/release-gate.yml` runs the gate for every open pull request and writes the commit status
 `release-gate` (green: GATE OPEN). It runs on PR events, after Main, Deploy staging, the end-to-end tests and the
 Claude review, and every hour. The gate's code always comes from master (`pull_request_target`), so a PR cannot change
-what writes its own status.
+what writes its own status. Limit: a branch of this repository could add another workflow that writes a status
+or a comment in the review's name with its own token (both come from the GitHub Actions app). Before the status
+becomes a required check, changes to `.github/workflows/` should be limited to the maintainers (CODEOWNERS or a
+ruleset, a repository setting); until then the gate relies on only maintainers pushing branches here. AntWeb's gate
+has the same limit.
 
 ## Merging a pull request
 

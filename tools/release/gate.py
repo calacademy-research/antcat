@@ -12,9 +12,9 @@ Prints one line per check and then GATE OPEN or GATE CLOSED (exit 0 or 1). The s
               `staging`) succeeded, and its end-to-end job ran and passed. The server deploys whatever `staging` is
               when the run reaches it, so a run that another push to `staging` followed before it finished does not
               count (it may have deployed that one). A run that found staging held (the AntCat chat's hold file)
-              deployed nothing and does not count. A PR that changes only files outside the site (NO_SITE_PATHS:
-              docs, specs, release tools and the CI files other than the staging deploy and its tests) needs no
-              staging run.
+              deployed nothing and does not count. A PR that changes only files outside the site (NO_SITE_DIRS and
+              NO_SITE_FILES: docs, specs, release tools, top-level Markdown files and the CI files other than the
+              staging deploy and its tests) needs no staging run.
  3. review    The latest Claude review comment is for the head commit and starts "No blocking issues";
               --no-review "reason" when there is none.
  4. window    Not between 02:45 and 03:45 Pacific: antcat-export copies the database at 03:00 for AntWeb's 05:00
@@ -25,7 +25,6 @@ Read-only: it reads the GitHub API (through the gh command line tool) and nothin
 """
 import argparse
 import datetime as dt
-import fnmatch
 import json
 import re
 import subprocess
@@ -43,18 +42,23 @@ E2E_JOB = "End-to-end"   # the end-to-end job of a Deploy staging run has this i
 
 # Files that are not part of the running site: changing only these needs no staging run. The end-to-end tests
 # themselves (e2e/) are not here: a change to them is proved by running them against staging.
-NO_SITE_PATHS = [
-    "doc/*", "docs/*", "*.md", "spec/*", "tools/release/*", ".rubocop*", "release-notes/*",
+# Directories (anything below them) and single files; a Markdown file counts only at the top level (README.md), so
+# one the app reads at run time is never waved through (review of #1627).
+NO_SITE_DIRS = ["doc/", "docs/", "spec/", "tools/release/", "release-notes/"]
+NO_SITE_FILES = [
+    ".rubocop.yml", ".rubocop_todo.yml",
     ".github/workflows/main.yml", ".github/workflows/release-gate.yml", ".github/workflows/claude-review.yml",
-    ".github/workflows/release.yml", ".github/scripts/*",
-]   # not deploy-staging.yml or e2e-staging.yml: a change to them is proved by a staging run (review of #1627)
+    ".github/workflows/release.yml", ".github/scripts/claude_review.py",
+]   # not deploy-staging.yml or e2e-staging.yml: a change to them is proved by a staging run
 
 
 # ---- the checks, as plain functions (tools/release/test_gate.py) ----
 
 def no_site_code(files):
     """True when every changed file is outside the site (NO_SITE_PATHS): staging has nothing to run."""
-    return bool(files) and all(any(fnmatch.fnmatch(f, p) for p in NO_SITE_PATHS) for f in files)
+    outside = lambda f: (("/" not in f and f.endswith(".md")) or f in NO_SITE_FILES
+                         or any(f.startswith(d) for d in NO_SITE_DIRS))
+    return bool(files) and all(outside(f) for f in files)
 
 
 def run_tree(run, tree_of):

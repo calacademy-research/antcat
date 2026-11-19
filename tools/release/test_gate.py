@@ -60,6 +60,8 @@ class StagingTest(unittest.TestCase):
         self.assertTrue(gate.no_site_code(["spec/models/taxon_spec.rb", "README.md", ".github/workflows/main.yml"]))
         self.assertFalse(gate.no_site_code([".github/workflows/deploy-staging.yml"]))   # proved by a staging run
         self.assertFalse(gate.no_site_code([".github/workflows/e2e-staging.yml"]))
+        self.assertFalse(gate.no_site_code(["app/views/help/notes.md"]))   # Markdown inside the app
+        self.assertFalse(gate.no_site_code(["config/specials.yml"]))
         self.assertFalse(gate.no_site_code(["app/models/taxon.rb", "spec/models/taxon_spec.rb"]))
         self.assertFalse(gate.no_site_code(["e2e/test_api.py"]))   # proved only by running them on staging
         self.assertFalse(gate.no_site_code([]))
