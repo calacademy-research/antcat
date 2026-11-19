@@ -44,14 +44,17 @@ class StagingTest(unittest.TestCase):
 
     def test_staging_state(self):
         good = run("head", "t", rid=7)
+        tests = [{"name": "Run the tests", "conclusion": "success"}]
         e2e_ok = [{"name": "Deploy origin/staging to antcat-staging", "conclusion": "success"},
-                  {"name": "e2e / End-to-end tests against antcat-staging", "conclusion": "success"}]
+                  {"name": "e2e / End-to-end tests against antcat-staging", "conclusion": "success", "steps": tests}]
         self.assertTrue(gate.staging_state(good, e2e_ok)[0])
         held = [e2e_ok[0], dict(e2e_ok[1], conclusion="skipped")]
         ok, text = gate.staging_state(good, held)
         self.assertFalse(ok)
         self.assertIn("held", text)
         self.assertFalse(gate.staging_state(good, e2e_ok[:1])[0])          # no end-to-end job at all
+        no_secrets = [e2e_ok[0], dict(e2e_ok[1], steps=[{"name": "Run the tests", "conclusion": "skipped"}])]
+        self.assertFalse(gate.staging_state(good, no_secrets)[0])          # green job, tests skipped
         self.assertFalse(gate.staging_state(good, [e2e_ok[0], dict(e2e_ok[1], conclusion="failure")])[0])
         self.assertFalse(gate.staging_state(run("head", "t", "failure"), e2e_ok)[0])
         self.assertFalse(gate.staging_state(None, [])[0])

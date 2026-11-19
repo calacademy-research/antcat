@@ -98,6 +98,10 @@ def staging_state(run, jobs, followed=False):
         return False, f"run {run.get('id')} deployed nothing or skipped its end-to-end tests (staging held?)"
     if not all(j.get("conclusion") == "success" for j in e2e):
         return False, f"end-to-end tests {', '.join(sorted({str(j.get('conclusion')) for j in e2e}))} (run {run.get('id')})"
+    # the job is green with a notice when its secrets are missing: its "Run the tests" step must have run (review of #1627)
+    ran = [st for j in e2e for st in (j.get("steps") or []) if st.get("name") == "Run the tests"]
+    if not ran or any(st.get("conclusion") != "success" for st in ran):
+        return False, f"run {run.get('id')}: the end-to-end job did not run its tests (secrets missing?)"
     return True, f"deployed to staging and end-to-end tests passed (run {run.get('id')})"
 
 
