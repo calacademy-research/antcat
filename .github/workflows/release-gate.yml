@@ -60,7 +60,8 @@ jobs:
           open=$(gh api "repos/$REPO/pulls?state=open&base=master&per_page=100" --jq '.[] | "\(.number) \(.head.sha)"') \
             || { echo "::error::could not list the open pull requests"; exit 1; }
           failed=0
-          prs=$(python3 tools/release/gate_targets.py "$EVENT" "${EVENT_PR:-}" "${RUN_PRS:-[]}" "${RUN_SHA:-}" <<< "$open")
+          prs=$(python3 tools/release/gate_targets.py "$EVENT" "${EVENT_PR:-}" "${RUN_PRS:-[]}" "${RUN_SHA:-}" <<< "$open") \
+            || { echo "::error::gate_targets.py failed"; exit 1; }
           echo "gating: ${prs:-none}"
           for pr in $prs; do
             started=$(date -u +%Y-%m-%dT%H:%M:%S.%NZ)   # to the nanosecond: two runs in one second still order

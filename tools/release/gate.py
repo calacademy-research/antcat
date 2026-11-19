@@ -55,7 +55,7 @@ NO_SITE_FILES = [
 # ---- the checks, as plain functions (tools/release/test_gate.py) ----
 
 def no_site_code(files):
-    """True when every changed file is outside the site (NO_SITE_PATHS): staging has nothing to run."""
+    """True when every changed file is outside the site (NO_SITE_DIRS, NO_SITE_FILES): staging has nothing to run."""
     outside = lambda f: (("/" not in f and f.endswith(".md")) or f in NO_SITE_FILES
                          or any(f.startswith(d) for d in NO_SITE_DIRS))
     return bool(files) and all(outside(f) for f in files)
@@ -172,7 +172,9 @@ def main(argv=None):
 
     pr = gh(f"repos/{REPO}/pulls/{args.pr}")
     head = pr["head"]["sha"]
-    files = [f["filename"] for f in gh_all(f"repos/{REPO}/pulls/{args.pr}/files?per_page=100")]
+    # a rename counts with its old path too: a file moved out of the site still changes the site (review of #1627)
+    files = [p for f in gh_all(f"repos/{REPO}/pulls/{args.pr}/files?per_page=100")
+             for p in (f["filename"], f.get("previous_filename")) if p]
     results = []
 
     def check(n, name, ok, text):
