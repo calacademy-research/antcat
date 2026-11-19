@@ -27,6 +27,20 @@ class StagingTest(unittest.TestCase):
         self.assertIsNone(gate.staged_run("T9", runs, tree_of))
         # a run still in progress does not count
         self.assertIsNone(gate.staged_run("T2", [run("other", "x", None, "in_progress")], tree_of))
+        # the tree from the run itself, when GitHub gives it (no lookup)
+        own = dict(run("unknown-sha", "2026-11-19T13:00:00Z", rid=5), head_commit={"tree_id": "T7"})
+        self.assertEqual(5, gate.staged_run("T7", [own], tree_of)["id"])
+
+    def test_a_later_push_before_the_run_finished(self):
+        a = dict(run("head", "2026-11-19T10:00:00Z", rid=1), updated_at="2026-11-19T10:20:00Z")
+        b = dict(run("other", "2026-11-19T10:05:00Z", rid=2), updated_at="2026-11-19T10:40:00Z")
+        later = dict(run("other", "2026-11-19T10:30:00Z", rid=3), updated_at="2026-11-19T10:50:00Z")
+        self.assertTrue(gate.followed_by_push(a, [a, b]))            # b may have been what a deployed
+        self.assertFalse(gate.followed_by_push(a, [a, later]))       # pushed after a had finished
+        self.assertFalse(gate.followed_by_push(b, [a, b]))           # an earlier run does not matter
+        ok, text = gate.staging_state(a, [], followed=True)
+        self.assertFalse(ok)
+        self.assertIn("another push", text)
 
     def test_staging_state(self):
         good = run("head", "t", rid=7)
@@ -44,6 +58,8 @@ class StagingTest(unittest.TestCase):
 
     def test_no_site_code(self):
         self.assertTrue(gate.no_site_code(["spec/models/taxon_spec.rb", "README.md", ".github/workflows/main.yml"]))
+        self.assertFalse(gate.no_site_code([".github/workflows/deploy-staging.yml"]))   # proved by a staging run
+        self.assertFalse(gate.no_site_code([".github/workflows/e2e-staging.yml"]))
         self.assertFalse(gate.no_site_code(["app/models/taxon.rb", "spec/models/taxon_spec.rb"]))
         self.assertFalse(gate.no_site_code(["e2e/test_api.py"]))   # proved only by running them on staging
         self.assertFalse(gate.no_site_code([]))
@@ -61,6 +77,8 @@ class OtherChecksTest(unittest.TestCase):
         blocking = dict(ok, body=ok["body"].replace("No blocking issues", "Blocking: SQL injection"))
         self.assertFalse(gate.review_state([ok, blocking], "abc1234")[0])             # the latest one counts
         self.assertFalse(gate.review_state([], "abc1234")[0])
+        quoted = dict(ok, body=ok["body"].replace("No blocking issues\n", "No blocking issues\nAs the last Automatic review of 9999999 said.\n"))
+        self.assertTrue(gate.review_state([quoted], "abc1234")[0])                    # the footer counts, not a quote
 
     def test_window_around_the_export(self):
         at = lambda h, m: dt.datetime(2026, 11, 19, h, m, tzinfo=gate.PACIFIC)
@@ -76,6 +94,8 @@ class OtherChecksTest(unittest.TestCase):
         self.assertTrue(gate.has_rollback("- **Rollback:** script/deploy --rollback"))
         self.assertFalse(gate.has_rollback("no way back"))
         self.assertFalse(gate.has_rollback(None))
+        self.assertFalse(gate.has_rollback("Rollback:"))
+        self.assertFalse(gate.has_rollback("Rollback:  \nnext line"))
 
 
 class TargetsTest(unittest.TestCase):

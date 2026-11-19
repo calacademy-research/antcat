@@ -9,9 +9,12 @@ Prints one line per check and then GATE OPEN or GATE CLOSED (exit 0 or 1). The s
  1. ci        The "Main" workflow (RSpec, RuboCop, migrations, security scan, container build) passed on the PR head.
  2. staging   antcat-staging ran the PR's code and the end-to-end tests passed against it: the newest "Deploy staging"
               run of a commit with the PR head's files (the same git tree: Claude pushes the head to the branch
-              `staging`) succeeded, and its end-to-end job ran and passed. A run that found staging held (the AntCat
-              chat's hold file) deployed nothing and does not count. A PR that changes only files outside the site
-              (NO_SITE_PATHS: docs, specs, CI files, release tools) needs no staging run.
+              `staging`) succeeded, and its end-to-end job ran and passed. The server deploys whatever `staging` is
+              when the run reaches it, so a run that another push to `staging` followed before it finished does not
+              count (it may have deployed that one). A run that found staging held (the AntCat chat's hold file)
+              deployed nothing and does not count. A PR that changes only files outside the site (NO_SITE_PATHS:
+              docs, specs, release tools and the CI files other than the staging deploy and its tests) needs no
+              staging run.
  3. review    The latest Claude review comment is for the head commit and starts "No blocking issues";
               --no-review "reason" when there is none.
  4. window    Not between 02:45 and 03:45 Pacific: antcat-export copies the database at 03:00 for AntWeb's 05:00
@@ -41,8 +44,10 @@ E2E_JOB = "End-to-end"   # the end-to-end job of a Deploy staging run has this i
 # Files that are not part of the running site: changing only these needs no staging run. The end-to-end tests
 # themselves (e2e/) are not here: a change to them is proved by running them against staging.
 NO_SITE_PATHS = [
-    "doc/*", "docs/*", "*.md", "spec/*", ".github/*", "tools/release/*", ".rubocop*", "release-notes/*",
-]
+    "doc/*", "docs/*", "*.md", "spec/*", "tools/release/*", ".rubocop*", "release-notes/*",
+    ".github/workflows/main.yml", ".github/workflows/release-gate.yml", ".github/workflows/claude-review.yml",
+    ".github/workflows/release.yml", ".github/scripts/*",
+]   # not deploy-staging.yml or e2e-staging.yml: a change to them is proved by a staging run (review of #1627)
 
 
 # ---- the checks, as plain functions (tools/release/test_gate.py) ----
@@ -52,19 +57,36 @@ def no_site_code(files):
     return bool(files) and all(any(fnmatch.fnmatch(f, p) for p in NO_SITE_PATHS) for f in files)
 
 
+def run_tree(run, tree_of):
+    """The git tree of the commit a run is for: the run's own head_commit.tree_id (no extra request: review of
+    #1627, the API budget), else one lookup."""
+    return (run.get("head_commit") or {}).get("tree_id") or tree_of(run["head_sha"])
+
+
 def staged_run(head_tree, staging_runs, tree_of):
     """The newest finished Deploy staging run whose commit has the PR head's tree, or None (a failed or newer
     redeploy of the same tree decides: the newest one counts)."""
     for run in sorted(staging_runs, key=lambda r: r.get("created_at") or "", reverse=True):
-        if run.get("status", "completed") == "completed" and tree_of(run["head_sha"]) == head_tree:
+        if run.get("status", "completed") == "completed" and run_tree(run, tree_of) == head_tree:
             return run
     return None
 
 
-def staging_state(run, jobs):
+def followed_by_push(run, staging_runs):
+    """True when another push to staging started a run after this one was created and before it finished: the server
+    deploys what `staging` is when the run reaches it, so this run may have deployed and tested that later commit
+    (review of #1627)."""
+    start, end = run.get("created_at") or "", run.get("updated_at") or run.get("created_at") or ""
+    return any(r is not run and r.get("id") != run.get("id") and start < (r.get("created_at") or "") <= end
+               for r in staging_runs)
+
+
+def staging_state(run, jobs, followed=False):
     """(ok, text) for a Deploy staging run and its jobs: it succeeded, and its end-to-end job ran and passed."""
     if run is None:
         return False, "no staging deploy of the head's files (push the head to the branch staging)"
+    if followed:
+        return False, f"another push to staging came in before run {run.get('id')} finished (push the head again)"
     if run.get("conclusion") != "success":
         return False, f"the last staging deploy of the head's files ended {run.get('conclusion')} (run {run.get('id')})"
     e2e = [j for j in jobs if E2E_JOB in (j.get("name") or "")]
@@ -82,7 +104,8 @@ def review_state(comments, head_sha):
     if not reviews:
         return False, "no Claude review comment"
     body = reviews[-1]["body"]
-    m = re.search(r"Automatic review of ([0-9a-f]{7,40})", body)
+    found = re.findall(r"Automatic review of ([0-9a-f]{7,40})", body)   # the footer: the last one (review of #1627)
+    m = re.match(r"([0-9a-f]+)", found[-1]) if found else None
     if not m or not head_sha.startswith(m.group(1)):
         return False, f"the review is of {m.group(1) if m else 'an unknown commit'}, not the head {head_sha[:7]}"
     text = body[len(REVIEW_MARKER):].replace("### Claude review", "", 1).strip()
@@ -98,7 +121,8 @@ def window_closed(now):
 
 
 def has_rollback(body):
-    return bool(re.search(r"(?im)^\W*rollback\W*:", body or ""))
+    """A "Rollback:" line that says something (review of #1627: a bare "Rollback:" passed)."""
+    return bool(re.search(r"(?im)^[^\w\n]*rollback[^\w\n]*:[^\w\n]*\w", body or ""))
 
 
 # ---- GitHub ----
@@ -163,8 +187,9 @@ def main(argv=None):
     else:
         deploys = gh(f"repos/{REPO}/actions/workflows/deploy-staging.yml/runs?branch=staging&per_page={STAGING_HISTORY}")["workflow_runs"]
         run = staged_run(tree_of(head), deploys, tree_of)
-        jobs = gh_all(f"repos/{REPO}/actions/runs/{run['id']}/jobs?per_page=100", "jobs") if run else []
-        check(2, "staging", *staging_state(run, jobs))
+        followed = bool(run) and followed_by_push(run, deploys)
+        jobs = gh_all(f"repos/{REPO}/actions/runs/{run['id']}/jobs?per_page=100", "jobs") if run and not followed else []
+        check(2, "staging", *staging_state(run, jobs, followed))
 
     if args.no_review:
         check(3, "review", True, f"no review: {args.no_review}")
