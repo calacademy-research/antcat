@@ -1,0 +1,84 @@
+name: Release gate
+
+# The release gate (tools/release/gate.py, road map step 5 / D5, 2026-11-19: the same gate as AntWeb's) as a GitHub
+# check: commit status "release-gate" on the head of every open pull request into master, green when GATE OPEN. It
+# becomes a required check on master (a repository setting, Brian's yes) once it has been green on real PRs.
+# Re-evaluated when anything the checks read changes: a push, label or text change on a PR of this repository (not a
+# fork's), a finished Main, Deploy staging, End-to-end tests (staging) or Claude review run, and every hour (check 4
+# changes with the time of day; a status stays as written until the next run, so Claude still runs the gate by hand at
+# merge time). A PR event or a finished run of a PR's head gates only that PR; a run of no open PR's head (a staging
+# deploy), the hourly runs and a manual run gate every open PR (gate_targets.py).
+# pull_request_target, not pull_request: the workflow file and the gate's code always come from master, so a PR cannot
+# change what writes its own status. No PR code runs here. Read-only except for the statuses it writes; no secrets.
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, labeled, unlabeled, edited]
+  workflow_run:
+    workflows: ["Main", "Deploy staging", "End-to-end tests (staging)", "Claude review"]
+    types: [completed]
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+
+# Runs for the same target wait for each other, none is cancelled (a cancelled run could leave a PR's status from an
+# older head). A run writes its status only when no newer status was written since it started gating that PR.
+concurrency:
+  group: release-gate-${{ github.event.pull_request.number || github.event.workflow_run.pull_requests[0].number || github.event.workflow_run.head_sha || 'all' }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+  statuses: write
+  pull-requests: read
+
+jobs:
+  gate:
+    if: github.event_name != 'pull_request_target' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: master
+          persist-credentials: false
+
+      - name: Gate the pull request concerned (or every open one)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          EVENT: ${{ github.event_name }}
+          EVENT_PR: ${{ github.event.pull_request.number }}
+          RUN_PRS: ${{ toJSON(github.event.workflow_run.pull_requests) }}
+          RUN_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          set +e -uo pipefail   # a closed gate exits 1: go on with the next PR
+          open=$(gh api "repos/$REPO/pulls?state=open&base=master&per_page=100" --jq '.[] | "\(.number) \(.head.sha)"')
+          prs=$(python3 tools/release/gate_targets.py "$EVENT" "${EVENT_PR:-}" "${RUN_PRS:-[]}" "${RUN_SHA:-}" <<< "$open")
+          echo "gating: ${prs:-none}"
+          for pr in $prs; do
+            started=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+            head=$(gh api "repos/$REPO/pulls/$pr" --jq .head.sha)
+            python3 tools/release/gate.py "$pr" > /tmp/gate.txt 2>&1
+            code=$?
+            cat /tmp/gate.txt
+            { echo "### PR #$pr"; echo '```'; cat /tmp/gate.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+            if [ "$code" = 0 ]; then
+              state=success; desc="GATE OPEN"
+            else
+              state=failure; desc=$(grep -m1 ' FAIL ' /tmp/gate.txt | sed 's/  */ /g' | cut -c1-138)
+              [ -n "$desc" ] || desc="GATE CLOSED (the gate did not finish: see the run)"
+            fi
+            # a push while the gate ran: the next run (the push starts one) writes the new head's status
+            [ "$(gh api "repos/$REPO/pulls/$pr" --jq .head.sha)" = "$head" ] || { echo "PR #$pr got a new commit: no status"; continue; }
+            # a run that began gating this PR later than this one has already written the status: it stays
+            last=$(gh api "repos/$REPO/commits/$head/statuses?per_page=100" --jq '[.[] | select(.context == "release-gate")][0].description // ""')
+            lastchecked=$(printf '%s' "$last" | sed -n 's/.*checked \([0-9TZ:-]*\)$/\1/p')
+            if [ -n "$lastchecked" ] && [[ "$lastchecked" > "$started" ]]; then
+              echo "PR #$pr: a gate run that began at $lastchecked wrote the status: no status"; continue
+            fi
+            desc="$(printf '%s' "$desc" | cut -c1-105) · checked $started"
+            gh api -X POST "repos/$REPO/statuses/$head" -f state="$state" -f context=release-gate \
+              -f description="$desc" -f target_url="$RUN_URL" >/dev/null
+          done
