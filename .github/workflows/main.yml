@@ -66,6 +66,19 @@ jobs:
           git config --global user.name ci
           spec/script/deploy_test.sh
 
+  release-tools:
+    name: Release gate (unit tests)
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+
+      - name: Tests
+        run: python3 -m unittest tools/release/test_gate.py
+
   rubocop:
     name: RuboCop
     runs-on: ubuntu-24.04

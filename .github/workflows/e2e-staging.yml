@@ -1,6 +1,6 @@
 # End-to-end tests against antcat-staging (e2e/, road map step D3, 2026-11-16): read-only checks of the running site
 # through an SSH tunnel. They test what is deployed on staging, so they run after a staging deploy (called by the deploy
-# workflow of step D2) or by hand, not on every pull request; that also keeps the test secrets away from branch code
+# workflow of step D2), every day (schedule, 2026-11-19) or by hand, not on every pull request; that also keeps the test secrets away from branch code
 # nobody has looked at. Skipped (green, with a note) until the deploy key and the
 # staging settings are saved as repository secrets (step D1): ANTCAT_STAGING_SSH_KEY, ANTCAT_STAGING_SSH_HOST,
 # ANTCAT_STAGING_HOST_KEYS (the server's public host keys, pinned), optional ANTCAT_TEST_API_KEY,
@@ -13,6 +13,11 @@ name: End-to-end tests (staging)
 on:
   workflow_dispatch:
   workflow_call:
+  # Every day at 21:47 UTC (13:47 Pacific in winter, 14:47 in summer), as AntWeb's daily run (road map D4 waits for a clean week
+  # of these): whatever staging runs then is tested, so a run that fails while a branch is on staging says so in its
+  # summary; the gate (tools/release/gate.py) reads only the runs inside Deploy staging.
+  schedule:
+    - cron: "47 21 * * *"
 
 permissions:
   contents: read

@@ -81,7 +81,17 @@ Sent by the app over SMTP (`Settings.smtp_settings`, a server-only file):
 
 ## 6. Deploys
 
-No automatic deploy. `script/deploy` (staging first, then production) records the running commit for rollback,
-checks out the new one, restarts the app container and checks `/v1`, a catalog page and the home page. CI
-(`.github/workflows/main.yml`) runs RSpec on MySQL 8.4, RuboCop, migrations, the security scan and the deploy
-script's own tests on every push.
+`script/deploy` (staging first, then production) records the running commit for rollback, checks out the new one,
+restarts the app container and checks `/v1`, a catalog page and the home page. CI (`.github/workflows/main.yml`) runs
+RSpec on MySQL 8.4, RuboCop, migrations, the security scan, the deploy script's own tests and the release gate's unit
+tests on every push.
+
+- Staging (since 2026-11-16): a push to the branch `staging` deploys antcat-staging (`deploy-staging.yml`, through a
+  key whose only command is `/usr/local/sbin/antcat-ci-deploy-staging`) and then runs the end-to-end tests (`e2e/`,
+  `e2e-staging.yml`) against it. It waits while the AntCat chat holds staging (`/root/antcat-staging-hold`). The
+  end-to-end tests also run every day at 21:47 UTC.
+- Release gate (since 2026-11-19, `tools/release/README.md`): commit status `release-gate` on every open pull request
+  (`release-gate.yml`): CI passed, staging ran the head's files and its end-to-end tests passed, the Claude review has
+  no blocking issues, not during the export window (02:45 to 03:45 Pacific), and a `Rollback:` line in the PR text.
+- Production is deployed by hand with `script/deploy`; automatic production deploys (road map D4) come after a clean
+  week of staging runs.
