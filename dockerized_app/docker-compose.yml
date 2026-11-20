@@ -100,7 +100,8 @@ services:
   web:
     # Pinned to a stable release (was nginx:latest). To update: change the version here (stable
     # branch, nginx.org/en/download.html), then recreate `web` (see README.md in this directory).
-    # 1.30.7 (2026-11-20): the fixes for the HTTP/2 flaws of 2026-11-18. HTTP/2 is not enabled here (no http2 line).
+    # 1.30.7 (released 2026-11-18, pinned 2026-11-20): fixes for two HTTP/2 flaws. HTTP/2 is not enabled here: no http2
+    # in nginx/default.conf or the image's nginx.conf (checked with grep -rn http2 /etc/nginx in the container).
     image: nginx:1.30.7
     restart: unless-stopped
     ports:
