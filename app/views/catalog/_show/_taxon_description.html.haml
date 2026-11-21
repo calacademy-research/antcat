@@ -32,6 +32,25 @@
     =decorated_protonym_type_name.format_rank
     =CatalogFormatter.link_to_taxon(protonym_type_name.taxon) + decorated_protonym_type_name.compact_taxon_status + Detax[decorated_protonym_type_name.format_fixation_method]
 
+/--- Etymology and part of speech: the answer in one line; the protonym page has every field and the notes page the reasoning ---
+-if protonym.etymology? || protonym.gender_agreement_type?
+  .mb-4{data: { testid: 'catalog-etymology' }}
+    -if protonym.etymology_taxt?
+      %span.font-bold.mr-1 Etymology:
+      -if protonym.etymology_source?
+        =safe_join(['“', Detax[protonym.etymology_taxt], '”'])
+        =protonym.decorate.format_etymology_source
+      -else
+        =Detax[protonym.etymology_taxt]
+    -elsif protonym.etymology_derivation?
+      -# wiki 17: an AntCat derivation is shown only where no sourced etymology exists, and is marked as AntCat's.
+      %span.font-bold.mr-1 Etymology (AntCat):
+      =protonym.decorate.format_etymology_derivation
+    -if protonym.gender_agreement_type?
+      %span.font-bold.mx-1 Part of speech:
+      =succeed '.' do
+        =protonym.gender_agreement_type.humanize(capitalize: false)
+
 /--- Type names ---
 -if current_user
   -if taxon.type_names.present?
