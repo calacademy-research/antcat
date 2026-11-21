@@ -61,6 +61,7 @@ feature "Using the catalog", as: :visitor do
     taxon = create :species
 
     visit catalog_path(taxon)
+    i_should_see taxon.name.name
     expect(page).to have_no_css "[data-testid='catalog-etymology']"
   end
 
