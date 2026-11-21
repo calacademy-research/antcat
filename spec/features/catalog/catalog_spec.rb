@@ -21,7 +21,7 @@ feature "Using the catalog", as: :visitor do
     taxon = create :species, protonym: protonym
 
     visit catalog_path(taxon)
-    i_follow "[notes on this name]"
+    i_follow "[Etymological notes]"
     i_should_see "Notes on #{protonym.name.name}"
     within "[data-testid='notes-page-content']" do
       expect(page).to have_css "h2", text: "Etymological notes"
@@ -69,7 +69,8 @@ feature "Using the catalog", as: :visitor do
     taxon = create :species
 
     visit catalog_path(taxon)
-    i_should_not_see "[notes on this name]"
+    i_should_see taxon.name.name
+    expect(page).to have_no_link href: protonym_notes_path(taxon.protonym)
   end
 
   scenario "Selecting a subfamily" do
