@@ -43,6 +43,10 @@
         =protonym.decorate.format_etymology_source
       -else
         =Detax[protonym.etymology_taxt]
+      -# The author's words may not be in English: AntCat's translation follows, marked as AntCat's (as on the protonym page).
+      -if protonym.etymology_translation?
+        %span.font-bold.mx-1 Translation (AntCat):
+        =protonym.etymology_translation
     -elsif protonym.etymology_derivation?
       -# wiki 17: an AntCat derivation is shown only where no sourced etymology exists, and is marked as AntCat's.
       %span.font-bold.mr-1 Etymology (AntCat):

@@ -57,6 +57,19 @@ feature "Using the catalog", as: :visitor do
     end
   end
 
+  scenario "An author's etymology not in English is followed by AntCat's translation" do
+    protonym = create :protonym, :species_group, etymology_taxt: "Nommé d'après la localité type.",
+      etymology_source: 'original_description', etymology_pages: '12',
+      etymology_translation: "From the French: Named for the type locality."
+    taxon = create :species, protonym: protonym
+
+    visit catalog_path(taxon)
+    within "[data-testid='catalog-etymology']" do
+      i_should_see "“Nommé d'après la localité type.”"
+      i_should_see "Translation (AntCat): From the French: Named for the type locality."
+    end
+  end
+
   scenario "A name without etymology or part of speech has no etymology line" do
     taxon = create :species
 
