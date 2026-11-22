@@ -60,6 +60,20 @@ describe DatabaseScripts::SpeciesGroupTaxaNotSpelledForTheirGenusGender do
       specify { expect(database_script.results).to eq [] }
     end
 
+    context 'when the species is an obsolete combination' do
+      let(:species) do
+        create :species, :obsolete_combination, name_string: 'Atta crassispinus', current_taxon: create(:species)
+      end
+
+      specify { expect(database_script.results).to eq [] }
+    end
+
+    context 'when the species is an unavailable name' do
+      let(:species) { create :species, :unavailable, name_string: 'Atta crassispinus' }
+
+      specify { expect(database_script.results).to eq [] }
+    end
+
     context 'when the species is an unavailable misspelling' do
       let(:species) do
         create :species, :unavailable_misspelling, name_string: 'Atta crassispinus', current_taxon: create(:species)

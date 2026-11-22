@@ -2,6 +2,10 @@
 
 module DatabaseScripts
   class SpeciesGroupTaxaNotSpelledForTheirGenusGender < DatabaseScript
+    # Historical records keep the spelling under which they were published or recorded (Brian Fisher,
+    # 22 Nov 2026): obsolete combinations, unavailable names and unavailable misspellings are not respelled.
+    HISTORICAL_STATUSES = [Status::OBSOLETE_COMBINATION, Status::UNAVAILABLE, Status::UNAVAILABLE_MISSPELLING].freeze
+
     def self.record_in_results? taxon
       return false unless taxon.is_a?(SpeciesGroupTaxon)
       new.results.where(id: taxon.id).exists?
@@ -9,7 +13,7 @@ module DatabaseScripts
 
     def results
       SpeciesGroupTaxon.
-        where.not(status: Status::UNAVAILABLE_MISSPELLING).
+        where.not(status: HISTORICAL_STATUSES).
         preload(:protonym, genus: :name).
         joins(:name, :protonym).
         joins('INNER JOIN taxa genera ON genera.id = taxa.genus_id').
@@ -65,8 +69,9 @@ description: >
   spellings is wrong.
 
 
-  Taxa with no recorded spellings, or in genera with no gender, are not checked. Unavailable misspellings are
-  excluded.
+  Taxa with no recorded spellings, or in genera with no gender, are not checked. Historical records are
+  excluded: obsolete combinations, unavailable names and unavailable misspellings keep the spelling under which
+  they were recorded.
 
 issue_description: This name is not spelled for the gender of its genus.
 
