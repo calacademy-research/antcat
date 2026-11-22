@@ -61,7 +61,9 @@ describe DatabaseScripts::SpeciesGroupTaxaNotSpelledForTheirGenusGender do
     end
 
     context 'when the species is an obsolete combination' do
-      let(:species) { create :species, :obsolete_combination, name_string: 'Atta crassispinus' }
+      let(:species) do
+        create :species, :obsolete_combination, name_string: 'Atta crassispinus', current_taxon: create(:species)
+      end
 
       specify { expect(database_script.results).to eq [] }
     end
