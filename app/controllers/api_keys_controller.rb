@@ -10,8 +10,8 @@
 #    form says so.
 # 2. `confirm` (the emailed link, GET): a page with a button. The key is not made on GET, so a mail
 #    scanner that opens links does not use up the link. The link's token is in the web address, so
-#    this page tells the browser to send a referrer to antcat.org only (`same_origin_referrer`) and
-#    the next page none at all (`no_referrer`).
+#    this page tells the browser to send only the site's origin as the referrer, never the address
+#    (`origin_only_referrer`), and the next page none at all (`no_referrer`).
 # 3. `issue` (the button, POST): makes the key and shows it once; emails a copy of the registration
 #    (without the key) to `Settings.api_keys.registration_copy_to`.
 #
@@ -62,7 +62,7 @@ class ApiKeysController < ApplicationController
     @token = params[:token].to_s
     return redirect_to new_api_key_path, alert: INVALID_LINK_MESSAGE unless ApiKey.find_pending_by_confirmation_token(@token)
 
-    same_origin_referrer
+    origin_only_referrer
   end
 
   def issue
@@ -101,7 +101,7 @@ class ApiKeysController < ApplicationController
     end
 
     # The confirmation link has its token in the web address, so the address must not reach another
-    # site (the layout loads fonts from Google). nginx adds its own Referrer-Policy header after this
+    # site (the layout loads fonts from Google) or a log, as the referrer of the next request. nginx adds its own Referrer-Policy header after this
     # one and browsers take the last, so the two pages also carry `<meta name="referrer">` (in their
     # views), which is read after the headers.
     #
@@ -113,9 +113,10 @@ class ApiKeysController < ApplicationController
     # The link's page has the button, a form that posts to antcat.org. Under `no-referrer` a browser
     # sends that POST with `Origin: null`, and Rails (origin check, on since `load_defaults`) rejects
     # it: "The change you wanted was rejected (HTTP 422)", so nobody could get a key (reported
-    # 2026-11-23). `same-origin`: nothing goes to another site, and the form's POST carries its origin.
-    def same_origin_referrer
-      response.headers['Referrer-Policy'] = 'same-origin'
+    # 2026-11-23). `strict-origin`: the referrer is only "https://www.antcat.org/", on the site and
+    # to other sites, so the token stays in the address bar; and the form's POST carries its origin.
+    def origin_only_referrer
+      response.headers['Referrer-Policy'] = 'strict-origin'
     end
 
     # The key is already issued and only shown on this page, so a mail problem must not stop the page.

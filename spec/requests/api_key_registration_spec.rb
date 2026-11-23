@@ -98,17 +98,17 @@ describe "Registering for a free API key" do
 
     # The link's token is in the web address. nginx adds its own Referrer-Policy header after the app's
     # and browsers take the last one, so the pages carry the meta tag too.
-    it "keeps the link's address from other sites (same-origin on its page, no referrer with the key)" do
+    it "keeps the link's address out of every referrer (strict-origin on its page, no referrer with the key)" do
       register
       token = token_from_last_email
 
       meta_tag = /<meta (?=[^>]*name=["']referrer["'])(?=[^>]*content=["']no-referrer["'])[^>]*>/
-      same_origin_meta_tag = /<meta (?=[^>]*name=["']referrer["'])(?=[^>]*content=["']same-origin["'])[^>]*>/
+      origin_only_meta_tag = /<meta (?=[^>]*name=["']referrer["'])(?=[^>]*content=["']strict-origin["'])[^>]*>/
 
       # Not no-referrer on the page with the button: see the next example.
       get confirm_api_key_path(token: token)
-      expect(response.headers['Referrer-Policy']).to eq 'same-origin'
-      expect(response.body).to match same_origin_meta_tag
+      expect(response.headers['Referrer-Policy']).to eq 'strict-origin'
+      expect(response.body).to match origin_only_meta_tag
       expect(response.body).not_to match meta_tag
 
       post issue_api_key_path, params: { token: token }
@@ -123,18 +123,31 @@ describe "Registering for a free API key" do
     # Reported 2026-11-23: the button answered "The change you wanted was rejected (HTTP 422)" for everyone.
     # A browser posts a form from a `no-referrer` page with `Origin: null`, and Rails' origin check
     # rejects that. Request specs send no Origin header, so the earlier examples could not see it.
-    context "with forgery protection on, as in production", :protect_from_forgery do
+    # Under `strict-origin` a browser sends the site's origin with the POST (and only the origin,
+    # never the link's address, as the referrer).
+    context "with forgery protection on, as in production" do
+      # On only for the button: the registration form's POST above it is not what is tested here.
+      def with_forgery_protection
+        original = ActionController::Base.allow_forgery_protection
+        ActionController::Base.allow_forgery_protection = true
+        yield
+      ensure
+        ActionController::Base.allow_forgery_protection = original
+      end
+
       def button_token token
         get confirm_api_key_path(token: token)
         response.body[/name="authenticity_token" value="([^"]+)"/, 1].then { |value| CGI.unescapeHTML(value) }
       end
 
-      it "gives the key when the button's POST carries the site's origin, as a same-origin page sends it" do
+      it "gives the key when the button's POST carries the site's origin" do
         register
         token = token_from_last_email
 
-        post issue_api_key_path, params: { token: token, authenticity_token: button_token(token) },
-          headers: { 'Origin' => "http://#{host}" }
+        with_forgery_protection do
+          post issue_api_key_path, params: { token: token, authenticity_token: button_token(token) },
+            headers: { 'Origin' => "http://#{host}" }
+        end
         expect(response).to have_http_status :ok
         expect(response.body).to match(/ac_[1-9A-HJ-NP-Za-km-z]{#{ApiKey::KEY_RANDOM_LENGTH}}/o)
       end
@@ -142,12 +155,11 @@ describe "Registering for a free API key" do
       it "rejects a POST with Origin null, which is what a no-referrer page would send" do
         register
         token = token_from_last_email
-        authenticity_token = button_token(token)
 
         # Raised here, or answered 422 where the test setup shows error pages.
         rejected =
-          begin
-            post issue_api_key_path, params: { token: token, authenticity_token: authenticity_token },
+          with_forgery_protection do
+            post issue_api_key_path, params: { token: token, authenticity_token: button_token(token) },
               headers: { 'Origin' => 'null' }
             response.status == 422
           rescue ActionController::InvalidAuthenticityToken

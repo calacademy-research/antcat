@@ -1,10 +1,10 @@
 -page_title "Free API Key"
 -breadcrumb :api_key
--# The link's token is in the web address: send no referrer to other sites. Not `no-referrer`: the
--# button's POST would then carry `Origin: null`, which Rails rejects (see
--# `ApiKeysController#same_origin_referrer`).
+-# The link's token is in the web address: the referrer is the site's origin only, never the address.
+-# Not `no-referrer`: the button's POST would then carry `Origin: null`, which Rails rejects (see
+-# `ApiKeysController#origin_only_referrer`).
 -content_for :meta_tags do
-  %meta{content: "same-origin", name: "referrer"}
+  %meta{content: "strict-origin", name: "referrer"}
 
 %p Press the button to see your API key. It is shown only once, so please copy it and keep it somewhere safe.
 
