@@ -2,7 +2,9 @@
 
 module EditorsPanels
   # Superadmins: API key registrations and their usage (see `ApiAccess`). Revoke, reactivate, change
-  # the level, set per-key limits and a note; CSV of the list. Works whether or not API keys are on.
+  # the level, set per-key limits and a note; send a pending registration a new link (its first one
+  # expired, or the button did not work: 2026-11-23); CSV of the list. Works whether or not API keys
+  # are on.
   class ApiKeysController < ApplicationController
     NO_KEY_DAYS_SHOWN = 14
     CSV_COLUMNS = [
@@ -13,7 +15,7 @@ module EditorsPanels
     ]
 
     before_action :ensure_user_is_superadmin
-    before_action :set_api_key, only: [:edit, :update, :revoke, :reactivate]
+    before_action :set_api_key, only: [:edit, :update, :revoke, :reactivate, :send_new_link]
 
     def index
       @api_keys = ApiKey.newest_first
@@ -50,6 +52,22 @@ module EditorsPanels
       else
         redirect_to panel_api_keys_path, alert: "API key ##{@api_key.id} was never confirmed, so it has no key to reactivate."
       end
+    end
+
+    # A pending registration gets a new link by email, good for the usual time; the old link stops
+    # working. The registrant does not have to fill in the form again.
+    def send_new_link
+      unless @api_key.status == ApiKey::PENDING
+        return redirect_to panel_api_keys_path, alert: "API key ##{@api_key.id} is not pending, so it needs no link."
+      end
+
+      token = @api_key.new_confirmation_token
+      @api_key.save!
+      ApiKeyMailer.confirm_email(@api_key, token).deliver_now
+      redirect_to panel_api_keys_path, notice: "A new link was sent to #{@api_key.email}."
+    rescue StandardError => e
+      Rails.logger.error "API key ##{@api_key.id}: new link not sent (#{e.class})"
+      redirect_to panel_api_keys_path, alert: "The email with the new link could not be sent. Please try again in a few minutes."
     end
 
     private

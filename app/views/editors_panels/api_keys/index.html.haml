@@ -71,6 +71,8 @@
             =link_to "Edit", edit_panel_api_key_path(api_key), class: "btn-default"
             -if api_key.active?
               =link_to "Revoke", revoke_panel_api_key_path(api_key), method: :put, data: { confirm: "Revoke API key ##{api_key.id}?" }, class: "btn-danger"
+            -elsif api_key.status == ApiKey::PENDING
+              =link_to "Send new link", send_new_link_panel_api_key_path(api_key), method: :put, data: { confirm: "Email #{api_key.email} a new link to get the key?" }, class: "btn-default"
             -elsif api_key.revoked? && api_key.key_prefix
               =link_to "Reactivate", reactivate_panel_api_key_path(api_key), method: :put, class: "btn-default"
 
