@@ -11,6 +11,7 @@ export default class extends Controller {
     "typeSpecificTextValue",
     "typeSpecificReference",
     "typeSpecificPages",
+    "typeSpecificCitationNote",
     "typeSpecificObjectProtonym",
     "typeSpecificObjectTaxon",
     "typeSpecificForceAuthorCitation",
@@ -331,6 +332,12 @@ export default class extends Controller {
 
       default:
         alert(`unknown type: ${selectedType}`)
+    }
+
+    // A citation note belongs to a citation: shown for every type that shows Pages. (It shared the Pages
+    // target, but a singular Stimulus target is only the first element, so the row never appeared here.)
+    if (inputsToShow.includes(this.typeSpecificPagesTarget)) {
+      inputsToShow.push(this.typeSpecificCitationNoteTarget)
     }
 
     (inputsToShow).forEach((input) => {
