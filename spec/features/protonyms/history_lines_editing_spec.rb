@@ -13,7 +13,7 @@ feature "Editing grouped history lines", as: :editor do
   scenario "The reorder page has one row per line, and a grouped line moves as one piece" do
     visit protonym_reorder_history_items_path(protonym)
 
-    rows = all("li[data-sortable-id]").map { |row| row["data-sortable-id"] }
+    rows = all("li[data-sortable-id]").pluck("data-sortable-id")
     expect(rows.size).to eq 2
     expect(rows.first).to eq note.id.to_s
     expect(rows.second.split(",").map(&:to_i)).to contain_exactly(first_status.id, second_status.id)
