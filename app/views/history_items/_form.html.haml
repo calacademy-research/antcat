@@ -16,7 +16,7 @@
     .medium-3
       =f.label :position do
         Position
-        =tooltip_icon 'Leave blank to add new items last. Only relevant for items of Taxt type'
+        =tooltip_icon 'Leave blank to add new items last. A line with several citations is shown where its first item is; a new citation of an existing line can go last.'
       =f.number_field :position, placeholder: ('Leave blank for default' if history_item.new_record?)
 
     .medium-2
@@ -123,7 +123,7 @@
           %td
             %code pages
 
-        %tr.hidden{"data-history-item-form-target" => "typeSpecificPages typeSpecificSection"}
+        %tr.hidden{"data-history-item-form-target" => "typeSpecificCitationNote typeSpecificSection"}
           %th.no-wrap
             =f.label :citation_note do
               Citation note

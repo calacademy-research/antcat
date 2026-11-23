@@ -4,18 +4,27 @@
 -if @protonym.history_items.blank?
   %p This protonym does not have any history items
 -else
-  %p.mb-8 Drag and drop history items to reorder them
+  %p.mb-8
+    Drag and drop history lines to reorder them. A line with several citations (shown as "x 12") moves as one
+    piece; its citations stay in order of year.
 
+  -# One row per line as shown on the catalog page (HistoryPresenter). A row's id is the ids of its items,
+  -# comma-separated, so the hidden field always holds every item id in the new order.
+  -grouped_items = HistoryPresenter.new(@protonym.history_items).grouped_items
   =form_with url: protonym_reorder_history_items_path, html: { "data-controller" => "reorder" } do |f|
-    =f.hidden_field :new_order, value: @protonym.history_items.pluck(:id).join(','), "data-reorder-target" => 'hiddenInput'
+    =f.hidden_field :new_order, value: grouped_items.flat_map { |grouped_item| grouped_item.items.map(&:id) }.join(','), "data-reorder-target" => 'hiddenInput'
 
     %ol.list-decimal{"data-reorder-target" => "sortableList"}
-      -@protonym.history_items.each do |history_item|
-        %li.cursor-grab{"data-sortable-id" => history_item.id}
-          %span.text-sm.font-bold.text-gray-500.mr-4=history_item.underscored_type
+      -grouped_items.each do |grouped_item|
+        -history_item = grouped_item.items.first
+        %li.cursor-grab{"data-sortable-id" => grouped_item.items.map(&:id).join(',')}
+          %span.text-sm.font-bold.text-gray-500.mr-4
+            =grouped_item.underscored_type
+            -if grouped_item.grouped?
+              x #{grouped_item.number_of_items}
           =history_item.decorate.rank_specific_badge if history_item.rank?
           %br
-          =Detax[history_item.to_taxt]
+          =Detax[grouped_item.taxt]
           %hr
 
     =f.button "Reorder", class: "btn-saves btn-md"
