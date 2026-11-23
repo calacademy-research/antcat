@@ -63,6 +63,31 @@ describe "API keys admin page (/panel/api_keys)" do
       expect(api_key.reload.status).to eq ApiKey::ACTIVE
     end
 
+    # 2026-11-23: the first registrant's link expired while the button was broken.
+    it "sends a pending registration a new link; the old link stops working" do
+      pending_key = create :api_key
+      old_token = pending_key.new_confirmation_token
+      pending_key.update!(confirmation_sent_at: 3.days.ago)
+      ActionMailer::Base.deliveries.clear
+
+      put send_new_link_panel_api_key_path(pending_key)
+      expect(response).to redirect_to panel_api_keys_path
+      email = ActionMailer::Base.deliveries.sole
+      expect(email.to).to eq [pending_key.email]
+      new_token = email.body.decoded[%r{/api_keys/confirm\?token=([^"\s&]+)}, 1].
+        then { |token| CGI.unescape(CGI.unescapeHTML(token)) }
+
+      expect(ApiKey.find_pending_by_confirmation_token(new_token)).to eq pending_key
+      expect(ApiKey.find_pending_by_confirmation_token(old_token)).to be_nil
+    end
+
+    it "sends no link for a key that is not pending" do
+      ActionMailer::Base.deliveries.clear
+      put send_new_link_panel_api_key_path(api_key)
+      expect(flash[:alert]).to include "not pending"
+      expect(ActionMailer::Base.deliveries).to be_empty
+    end
+
     it "sets the level, per-key limits and a note; blank limits mean the level's value" do
       put panel_api_key_path(api_key), params: {
         api_key: { level: ApiKey::COLLABORATOR, requests_per_day: '20000', records_per_page: '', note: 'Revision of Pheidole' }

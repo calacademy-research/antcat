@@ -208,6 +208,7 @@ Rails.application.routes.draw do
         member do
           put :revoke
           put :reactivate
+          put :send_new_link
         end
       end
     end
