@@ -52,11 +52,11 @@ class WikiPage < ApplicationRecord
 
   before_validation { self.permanent_identifier = permanent_identifier.presence }
 
-  def policy?
-    POLICY_IDENTIFIERS.include?(permanent_identifier)
-  end
-
   def self.from_permanent_identifier_or_missing permanent_identifier
     find_by(permanent_identifier: permanent_identifier) || MissingWikiPage.new(permanent_identifier)
+  end
+
+  def policy?
+    POLICY_IDENTIFIERS.include?(permanent_identifier)
   end
 end
