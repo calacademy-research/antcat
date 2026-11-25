@@ -10,8 +10,7 @@
     =render 'taxt_editors/field_taxt_editor', name: "#{name_prefix}[etymology_taxt]", content: protonym.etymology_taxt
     .text-sm
       The author's words exactly as printed, in the original language; nothing added or changed. Needs a source
-      and a page. AntCat's own reading goes in "AntCat derivation", never here.
-    =policy_links_for_editors
+      and a page. AntCat's own reading goes in "AntCat derivation".
 %tr
   %td
     =f.label :etymology_source do
@@ -49,5 +48,5 @@
     =f.text_area :etymology_derivation, rows: 2
     .text-sm
       AntCat's own reading of the name, under the AntCat policy on derived etymologies (for example Latin
-      <i>laevigatus</i>, 'smoothed, polished'). Always shown as AntCat's, never as the author's. Italics: &lt;i&gt;...&lt;/i&gt;;
+      <i>laevigatus</i>, 'smoothed, polished'). Shown as AntCat's, not as the author's. Italics: &lt;i&gt;...&lt;/i&gt;;
       no other markup is shown.
