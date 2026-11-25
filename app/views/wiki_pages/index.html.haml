@@ -1,40 +1,51 @@
--page_title "Wiki Pages"
+-page_title(@only_policies ? "AntCat policies" : "Wiki Pages")
 -breadcrumb :wiki_pages
 
 -content_for :breadcrumbs_right do
   -if user_is_at_least_helper?
     =link_to "New", new_wiki_page_path, class: "btn-default"
 
--if @policy_wiki_pages.present?
-  #policies.mb-8{data: { testid: 'wiki-policies' }}
+-if @only_policies
+  .mb-8{data: { testid: 'wiki-policies' }}
     %h5 AntCat policies
-    %ul.no-bullet
-      -@policy_wiki_pages.each do |wiki_page|
-        %li=link_to wiki_page.title, wiki_page
-
-%h5 All wiki pages
--if @wiki_pages.empty?
-  There are currently no wiki pages.
+    -if @policy_wiki_pages.present?
+      %ul.no-bullet
+        -@policy_wiki_pages.each do |wiki_page|
+          %li=link_to wiki_page.title, wiki_page
+    -else
+      %p There are no policy pages yet.
+    %p.mt-8.text-sm=link_to "All help pages", wiki_pages_path
 -else
-  %table.table-striped
-    %tbody
-      -@wiki_pages.each do |wiki_page|
-        %tr
-          %td=link_to wiki_page.title, wiki_page
-          %td
-            -if wiki_page.featured?
-              Featured
-              =antcat_icon("check")
-          -if current_user
+  -if @policy_wiki_pages.present?
+    .mb-8{data: { testid: 'wiki-policies' }}
+      %h5 AntCat policies
+      %ul.no-bullet
+        -@policy_wiki_pages.each do |wiki_page|
+          %li=link_to wiki_page.title, wiki_page
+
+  %h5 All wiki pages
+  -if @wiki_pages.empty?
+    There are currently no wiki pages.
+  -else
+    %table.table-striped
+      %tbody
+        -@wiki_pages.each do |wiki_page|
+          %tr
+            %td=link_to wiki_page.title, wiki_page
             %td
-              -if wiki_page.permanent_identifier?
-                .text-sm
-                  %code=wiki_page.permanent_identifier
-                  =logged_in_only_tooltip_icon "Permanent identifier"
+              -if wiki_page.featured?
+                Featured
+                =antcat_icon("check")
+            -if current_user
+              %td
+                -if wiki_page.permanent_identifier?
+                  .text-sm
+                    %code=wiki_page.permanent_identifier
+                    =logged_in_only_tooltip_icon "Permanent identifier"
 
-=will_paginate @wiki_pages
+  =will_paginate @wiki_pages
 
-.mb-20
+  .mb-20
 
-%h5 Most recent activity (#{link_to "see more", activities_path(trackable_type: 'WikiPage')})
-=render "activities/table", activities: @recent_activities
+  %h5 Most recent activity (#{link_to "see more", activities_path(trackable_type: 'WikiPage')})
+  =render "activities/table", activities: @recent_activities

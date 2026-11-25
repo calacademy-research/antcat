@@ -16,7 +16,7 @@ class WikiPage < ApplicationRecord
     OPEN_GRAMMAR_AND_SPELLING_QUESTIONS = 'open_grammar_and_spelling_questions'
   ]
   # AntCat's public policies, in the order they are listed (wiki index, linked from the footer): pages for readers
-  # of the catalog, not how-tos for editors.
+  # of the catalog, not how-tos for editors. The footer's "Policies" shows these alone.
   POLICY_IDENTIFIERS = [GRAMMAR_AND_SPELLING_POLICY, DERIVED_ETYMOLOGIES_POLICY, OPEN_GRAMMAR_AND_SPELLING_QUESTIONS]
 
   MissingWikiPage = Struct.new(:permanent_identifier) do

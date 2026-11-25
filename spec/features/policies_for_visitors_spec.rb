@@ -12,10 +12,11 @@ feature "Policies and institutions for visitors" do
     within "footer" do
       i_follow "Policies"
     end
-    within "[data-testid='wiki-policies']" do
-      i_should_see "AntCat policy on name grammar and spelling"
-      i_should_not_see "How to add a reference"
-    end
+    i_should_see "AntCat policy on name grammar and spelling"
+    i_should_not_see "How to add a reference"
+
+    i_follow "All help pages"
+    i_should_see "How to add a reference"
 
     within "footer" do
       i_follow "Institutions"
