@@ -14,6 +14,10 @@ feature "Policies and institutions for visitors" do
     end
     i_should_see "AntCat policy on name grammar and spelling"
     i_should_not_see "How to add a reference"
+    within "#breadcrumbs" do
+      i_should_see "Help pages"
+      i_should_not_see "Editor's Panel"
+    end
 
     i_follow "All help pages"
     i_should_see "How to add a reference"
@@ -22,6 +26,10 @@ feature "Policies and institutions for visitors" do
       i_follow "Institutions"
     end
     expect(page).to have_current_path institutions_path
+    within "#breadcrumbs" do
+      i_should_see "Institutions"
+      i_should_not_see "Editor's Panel"
+    end
   end
 
   scenario "Without policy pages the wiki index has no policies section" do
