@@ -32,6 +32,7 @@
     %ul.no-bullet.flex.items-center
       %li.uppercase.mr-6=link_to 'References', references_latest_additions_path, class: "big-screaming-orange-button #{'very-active' if menu_active?(:references)}"
       %li.uppercase.mr-6=link_to 'Catalog', root_path, class: "big-screaming-green-button #{'very-active' if menu_active?(:catalog)}"
+      %li.uppercase.mr-6=link_to 'Policies & help', wiki_pages_path(policies: 1), class: "big-screaming-blue-button #{'very-active' if menu_active?(:policies_and_help)}"
       %li.text-black
         =form_with url: references_search_index_path, method: :get, class: "mr-4" do |f|
           .flex
@@ -78,6 +79,7 @@
     %ul.no-bullet{class: "[&>*]:py-1"}
       %li=link_to 'References', references_latest_additions_path
       %li=link_to "Catalog", root_path
+      %li=link_to "Policies & help", wiki_pages_path(policies: 1)
       -if user_signed_in?
         %li=link_to "Editor's Panel", editors_panel_path
         %li=link_to 'Activity Feed', activities_path

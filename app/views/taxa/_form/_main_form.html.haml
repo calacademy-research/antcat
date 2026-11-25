@@ -90,7 +90,9 @@
           -if Rank.genus_group_name?(taxon.type)
             %tr
               %td=name_form.label :gender
-              %td=name_form.select :gender, Name::GENDERS, include_blank: '(blank)'
+              %td
+                =name_form.select :gender, Name::GENDERS, include_blank: '(blank)'
+                =policy_links_for_editors
 
           %tr
             %td=form.label :incertae_sedis_in, "<i>Incertae sedis</i> in".html_safe

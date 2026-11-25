@@ -2,8 +2,7 @@
 
 crumb :wiki_pages do
   link "Help pages", wiki_pages_path
-  # The help pages are public (footer: "Help pages", "Policies"): a visitor is not shown the Editor's Panel above them.
-  parent :editors_panel if current_user
+  parent :policies_and_help
 end
 
 crumb :wiki_page do |wiki_page|
@@ -12,7 +11,8 @@ crumb :wiki_page do |wiki_page|
   else
     link "##{wiki_page.id} [deleted]"
   end
-  parent :wiki_pages
+  # A policy page sits under "Policies", any other page under "Help pages".
+  parent(wiki_page.policy? ? :policies : :wiki_pages)
 end
 
 crumb :edit_wiki_page do |wiki_page|

@@ -107,7 +107,8 @@ Rails.application.routes.draw do
     end
   end
   # The history of a name's page of notes, by the page's id (as the other histories: by the record's id).
-  resources :notes_pages, only: [] do
+  # ... and the list of the names that have one (the "Policies and help" section).
+  resources :notes_pages, only: [:index] do
     scope module: :notes_pages do
       resource :history, only: :show
     end

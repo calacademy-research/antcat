@@ -1,6 +1,9 @@
 -page_title "Institutions"
 -breadcrumb :institutions
 
+-content_for :breadcrumbs_left do
+  =render 'shared/policies_and_help/subnavigation', active: :institutions
+
 -if user_is_at_least_helper?
   -content_for :breadcrumbs_right do
     =link_to 'New', new_institution_path, class: 'btn-default'

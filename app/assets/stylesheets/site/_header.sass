@@ -34,6 +34,16 @@ header
         transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)
         color: $color_scream_orange
 
+    // "Policies & help": the third section, in the header's own blue.
+    .big-screaming-blue-button
+      @extend .base__big-screaming-button
+      &.very-active
+        color: $color_ac_blue
+        background-color: $color_ac_blue_pale
+      &:hover
+        box-shadow: 0 0 0 0.5rem rgba(255, 255, 255, 0.35)
+        transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+
     .desktop-upper-menu-link
       &:hover
         font-weight: bold

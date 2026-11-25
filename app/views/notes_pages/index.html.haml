@@ -1,0 +1,34 @@
+-page_title "Names with notes"
+-breadcrumb :notes_pages
+
+-content_for :breadcrumbs_left do
+  =render 'shared/policies_and_help/subnavigation', active: :notes_pages
+
+%h5 Names with notes
+%p
+  Names whose etymology, grammar, spelling, type specimens or nomenclature needed more explanation than the
+  catalog page holds. Each has one page of notes.
+
+-if @notes_pages.empty?
+  %p There are no names with notes yet.
+-else
+  %table.table-striped{data: { testid: 'names-with-notes' }}
+    %thead
+      %tr
+        %th Name
+        %th Notes
+        %th.no-wrap Last changed
+    %tbody
+      -@notes_pages.each do |notes_page|
+        %tr
+          %td=notes_page.protonym.decorate.link_to_protonym_with_author_citation
+          %td=link_to notes_page.standalone_link_label, protonym_notes_path(notes_page.protonym)
+          %td.no-wrap=l notes_page.updated_at.to_date
+
+-if @open_questions_wiki_page
+  .mt-8
+    %h5 Open questions
+    %p
+      Names whose grammar or spelling is not settled are listed, with the question, in
+      =succeed '.' do
+        =link_to @open_questions_wiki_page.title, @open_questions_wiki_page

@@ -14,7 +14,7 @@ class WikiPagesController < ApplicationController
   def index
     @wiki_pages = WikiPage.order(:title).paginate(page: params[:page], per_page: 30)
     @policy_wiki_pages = WikiPage.policies
-    # /wiki?policies=1 (the footer's "Policies"): the policy pages alone, without the editors' how-tos.
+    # /wiki?policies=1 ("Policies" in the menus): the policy pages alone, without the editors' how-tos.
     @only_policies = params[:policies].present?
     @recent_activities = Activity.wiki_page_activities.most_recent_first.limit(5).includes(:user)
   end

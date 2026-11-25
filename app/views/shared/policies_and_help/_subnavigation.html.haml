@@ -1,0 +1,8 @@
+-# The menu bar of the "Policies and help" section, on each of its pages. Local: active (:policies,
+-# :notes_pages, :wiki_pages or :institutions; nil on a page below one of them).
+-active = local_assigns[:active]
+.my-4{data: { testid: 'policies-and-help-subnavigation' }}
+  =link_to 'Policies', wiki_pages_path(policies: 1), class: (active == :policies ? 'btn-neutral' : 'btn-default')
+  =link_to 'Names with notes', notes_pages_path, class: (active == :notes_pages ? 'btn-neutral' : 'btn-default')
+  =link_to 'Help pages', wiki_pages_path, class: (active == :wiki_pages ? 'btn-neutral' : 'btn-default')
+  =link_to 'Institutions', institutions_path, class: (active == :institutions ? 'btn-neutral' : 'btn-default')
