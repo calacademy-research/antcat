@@ -20,8 +20,8 @@
       -NotesPage::SECTIONS.each do |section|
         %code ## #{section}
       Etymological notes cover the derivation, the part of speech, gender agreement and the accepted spelling.
-      The public Spelling note on the protonym still gives the short explanation. Policy:
-      =link_to_wiki_page_or_missing WikiPage::GRAMMAR_AND_SPELLING_POLICY
+      The public Spelling note on the protonym still gives the short explanation.
+    =policy_links_for_editors
 
   .mb-4
     =f.text_area :content, rows: 30, data: { has_mentionables: true, has_linkables: true, previewable: true, previewable_title: "Notes" }

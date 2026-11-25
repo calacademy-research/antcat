@@ -12,7 +12,7 @@ describe "AntCat derivation on the protonym page" do
     get protonym_path(protonym)
 
     expect(response).to have_http_status :ok
-    expect(response.body).to include "AntCat derivation:"
+    expect(response.body).to include "Etymology (AntCat):"
     expect(response.body).to include "<i>-ensis</i>"
     expect(response.body).not_to include "&lt;i&gt;-ensis"
   end

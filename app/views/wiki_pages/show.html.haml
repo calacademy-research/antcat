@@ -1,6 +1,9 @@
 -page_title "#{@wiki_page.title} - Wiki Page"
 -breadcrumb :wiki_page, @wiki_page
 
+-content_for :breadcrumbs_left do
+  =render 'shared/policies_and_help/subnavigation', active: (@wiki_page.policy? ? :policies : :wiki_pages)
+
 -content_for :breadcrumbs_right do
   =link_to "History", wiki_page_history_path(@wiki_page), class: "btn-default"
   -if user_is_at_least_helper?

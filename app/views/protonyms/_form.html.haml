@@ -145,7 +145,7 @@
         %tr
           %td
             =f.label :gender_agreement_type do
-              Gender agreement type (only for species-group names)
+              Part of speech (species-group names only)
               =db_tooltip_icon :gender_agreement_type, scope: :protonyms
           %td=f.select :gender_agreement_type, Protonym::GENDER_AGREEMENT_TYPES, include_blank: '(blank)'
 
@@ -163,9 +163,11 @@
           %tr
             %td
             %td.text-sm
-              Predicted from the original epithet, as TaxonWorks does:
-              =predicted_gender_epithets.values.join(', ')
-              (masculine, feminine, neuter). Leave blank for nouns.
+              Suggested masculine, feminine and neuter forms for adjectives and participles, to be verified against
+              the name's grammatical formation:
+              =succeed '.' do
+                =predicted_gender_epithets.values.join(', ')
+              Leave blank when gender agreement does not apply or the grammatical treatment is unresolved.
 
       -if protonym.species_group_name? || protonym.part_of_speech_basis? || protonym.spelling_basis? || protonym.interpretation_status?
         %tr
@@ -191,11 +193,8 @@
               Disputed only when substantial evidence supports a competing interpretation, even if the adopted
               one has strong evidence; it needs a public note (not a hidden note) giving the alternative and its
               evidence. A merely possible alternative goes in the note of a reasonably inferred name. This is
-              AntCat's interpretation, not a ruling of the Commission. Disputed and unresolved names are never
-              changed by scripts.
-            .text-sm
-              Policy:
-              =link_to_wiki_page_or_missing WikiPage::GRAMMAR_AND_SPELLING_POLICY
+              AntCat's interpretation, not a ruling of the Commission. Disputed and unresolved names are not
+              changed until the question is settled.
       -# Any rank.
       %tr
         %td Notes on this name
@@ -203,6 +202,7 @@
           Longer background (the evidence and decision behind a reviewed name's grammar and spelling, its type
           specimens, its nomenclatural status) goes on the name's page of notes, added and edited from the
           protonym's page ("Add notes on this name"). The public notes here still give the short explanation.
+          =policy_links_for_editors
 
       =render 'protonyms/etymology_fields', f: f, protonym: protonym, name_prefix: 'protonym', id_prefix: 'protonym'
 

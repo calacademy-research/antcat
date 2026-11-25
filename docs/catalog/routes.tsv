@@ -90,6 +90,7 @@ PATCH	/protonyms/:protonym_id/notes	protonyms/notes#update		helper	change: the p
 PUT	/protonyms/:protonym_id/notes	protonyms/notes#update		helper	change: the page of notes on a name ("Notes on this name")	keep	spec/controllers/protonyms/notes_controller_spec.rb
 DELETE	/protonyms/:protonym_id/notes	protonyms/notes#destroy		editor	delete: the page of notes on a name ("Notes on this name")	keep	spec/controllers/protonyms/notes_controller_spec.rb
 POST	/protonyms/:protonym_id/notes	protonyms/notes#create		helper	add: the page of notes on a name ("Notes on this name")	keep	spec/controllers/protonyms/notes_controller_spec.rb
+GET	/notes_pages	notes_pages#index	notes_pages	public	list: the names that have a page of notes ("Names with notes", in the Policies and help section)	keep	spec/controllers/notes_pages_controller_spec.rb
 GET	/notes_pages/:notes_page_id/history	notes_pages/histories#show	notes_page_history	public	the edit history of the page of notes on a name	keep	spec/controllers/notes_pages/histories_controller_spec.rb
 GET	/protonyms	protonyms#index	protonyms	public	list: protonyms (original names and their type data)	keep	spec/controllers/protonyms_controller_spec.rb
 POST	/protonyms	protonyms#create		helper	add: protonyms (original names and their type data)	keep	spec/controllers/protonyms_controller_spec.rb

@@ -33,6 +33,25 @@ module TooltipHelper
     link_to label, wiki_page, title: wiki_page.title
   end
 
+  # One line of links for an editor at work on an etymology, a part of speech or a gender: the policies, the names
+  # with notes and the open questions. They open in a new tab, so the form being filled in is not lost.
+  def policy_links_for_editors
+    identifiers = WikiPage::POLICY_IDENTIFIERS + [WikiPage::OPEN_GRAMMAR_AND_SPELLING_QUESTIONS]
+    wiki_pages = WikiPage.where(permanent_identifier: identifiers).index_by(&:permanent_identifier)
+    links = [
+      [WikiPage::GRAMMAR_AND_SPELLING_POLICY, "Policy on grammar and spelling"],
+      [WikiPage::DERIVED_ETYMOLOGIES_POLICY, "Policy on derived etymologies"]
+    ].filter_map { |identifier, label| [label, wiki_pages[identifier]] if wiki_pages[identifier] }
+    links << ["Names with notes", notes_pages_path]
+    if (open_questions = wiki_pages[WikiPage::OPEN_GRAMMAR_AND_SPELLING_QUESTIONS])
+      links << ["Open questions", open_questions]
+    end
+
+    tag.div class: "text-sm", data: { testid: 'policy-links-for-editors' } do
+      safe_join(links.map { |label, target| link_to(label, target, target: "_blank", rel: "noopener") }, " · ")
+    end
+  end
+
   def link_to_wiki_page_or_missing permanent_identifier
     wiki_page = WikiPage.from_permanent_identifier_or_missing permanent_identifier
     link_to wiki_page.title, wiki_page

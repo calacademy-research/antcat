@@ -2,8 +2,7 @@
 
 crumb :institutions do
   link "Institutions", institutions_path
-  # Public since the footer and the references submenu link here: no Editor's Panel above it for a visitor.
-  parent :editors_panel if current_user
+  parent :policies_and_help
 end
 
 crumb :institution do |institution|
