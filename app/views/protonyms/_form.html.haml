@@ -145,7 +145,7 @@
         %tr
           %td
             =f.label :gender_agreement_type do
-              Gender agreement type (only for species-group names)
+              Part of speech (species-group names only)
               =db_tooltip_icon :gender_agreement_type, scope: :protonyms
           %td=f.select :gender_agreement_type, Protonym::GENDER_AGREEMENT_TYPES, include_blank: '(blank)'
 
@@ -163,9 +163,11 @@
           %tr
             %td
             %td.text-sm
-              Predicted from the original epithet, as TaxonWorks does:
-              =predicted_gender_epithets.values.join(', ')
-              (masculine, feminine, neuter). Leave blank for nouns.
+              Suggested masculine, feminine and neuter forms for adjectives and participles, to be verified against
+              the name's grammatical formation:
+              =succeed '.' do
+                =predicted_gender_epithets.values.join(', ')
+              Leave blank when gender agreement does not apply or the grammatical treatment is unresolved.
 
       -if protonym.species_group_name? || protonym.part_of_speech_basis? || protonym.spelling_basis? || protonym.interpretation_status?
         %tr

@@ -89,7 +89,7 @@
             %tr
               %td
                 =protonym_form.label :gender_agreement_type do
-                  Gender agreement type (only for species-group names)
+                  Part of speech (species-group names only)
                   =db_tooltip_icon :gender_agreement_type, scope: :protonyms
               %td=protonym_form.select :gender_agreement_type, Protonym::GENDER_AGREEMENT_TYPES, include_blank: '(blank)'
 

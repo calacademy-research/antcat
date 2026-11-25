@@ -19,8 +19,8 @@
   %td
     =f.select :etymology_source, Protonym::ETYMOLOGY_SOURCES.invert, include_blank: '(blank)'
     .text-sm
-      Original description: the reference is the authorship reference, so leave the reference below blank.
-      Later work: pick its reference below.
+      If the etymology is in the original description, leave the reference blank. If it is in a later work,
+      choose that work below.
 %tr
   %td
     =f.label :etymology_reference_id do
