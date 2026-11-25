@@ -43,6 +43,28 @@ feature "Using the catalog", as: :visitor do
     end
   end
 
+  scenario "The etymology and part-of-speech labels link to AntCat's policy pages, for any visitor" do
+    create :wiki_page, title: "AntCat policy on derived etymologies", permanent_identifier: WikiPage::DERIVED_ETYMOLOGIES_POLICY
+    create :wiki_page, title: "AntCat policy on name grammar and spelling", permanent_identifier: WikiPage::GRAMMAR_AND_SPELLING_POLICY
+    protonym = create :protonym, :species_group, gender_agreement_type: Protonym::NOUN_IN_APPOSITION,
+      etymology_derivation: "From Greek <i>akantha</i> 'thorn'."
+    taxon = create :species, protonym: protonym
+
+    visit catalog_path(taxon)
+    within "[data-testid='catalog-etymology']" do
+      i_should_see "Etymology (AntCat):"
+      i_should_see "Part of speech: noun in apposition."
+      i_follow "Etymology (AntCat)"
+    end
+    i_should_see "AntCat policy on derived etymologies"
+
+    visit catalog_path(taxon)
+    within "[data-testid='catalog-etymology']" do
+      i_follow "Part of speech"
+    end
+    i_should_see "AntCat policy on name grammar and spelling"
+  end
+
   scenario "An author's etymology is quoted with its source, and no AntCat derivation is shown beside it" do
     protonym = create :protonym, :species_group, etymology_taxt: "Named for the type locality.",
       etymology_source: 'original_description', etymology_pages: '12', etymology_derivation: "AntCat's own reading."
