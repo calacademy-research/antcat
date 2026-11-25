@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 crumb :wiki_pages do
-  link "Wiki Pages", wiki_pages_path
-  parent :editors_panel
+  link "Help pages", wiki_pages_path
+  # The help pages are public (footer: "Help pages", "Policies"): a visitor is not shown the Editor's Panel above them.
+  parent :editors_panel if current_user
 end
 
 crumb :wiki_page do |wiki_page|

@@ -43,4 +43,26 @@ feature "Wiki pages", as: :editor do
 
     there_should_be_an_activity "Archibald edited the wiki page Name guidelines", edit_summary: "updated info"
   end
+
+  scenario "A superadmin gives a page the identifier that lists it among the policies", as: :superadmin do
+    wiki_page = create :wiki_page, title: "AntCat policy on derived etymologies"
+
+    visit edit_wiki_page_path(wiki_page)
+    select WikiPage::DERIVED_ETYMOLOGIES_POLICY, from: "wiki_page_permanent_identifier"
+    click_button "Save"
+    i_should_see "Successfully updated wiki page"
+
+    visit wiki_pages_path
+    within "[data-testid='wiki-policies']" do
+      i_should_see "AntCat policy on derived etymologies"
+    end
+  end
+
+  scenario "An editor is not offered the identifier" do
+    wiki_page = create :wiki_page
+
+    visit edit_wiki_page_path(wiki_page)
+    expect(page).to have_field "wiki_page_title"
+    expect(page).to have_no_field "wiki_page_permanent_identifier"
+  end
 end

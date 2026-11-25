@@ -26,6 +26,13 @@ module TooltipHelper
     tag.span antcat_icon("info-tooltip"), tooltip2: title
   end
 
+  # A label that links to the policy page behind it, or the plain label while that page does not exist.
+  def label_linked_to_wiki_page label, permanent_identifier
+    wiki_page = WikiPage.find_by(permanent_identifier: permanent_identifier)
+    return label unless wiki_page
+    link_to label, wiki_page, title: wiki_page.title
+  end
+
   def link_to_wiki_page_or_missing permanent_identifier
     wiki_page = WikiPage.from_permanent_identifier_or_missing permanent_identifier
     link_to wiki_page.title, wiki_page

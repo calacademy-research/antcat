@@ -26,4 +26,23 @@ describe WikiPage do
       it { is_expected.to validate_uniqueness_of(:permanent_identifier).ignoring_case_sensitivity }
     end
   end
+
+  describe ".policies" do
+    it "returns the policy pages that exist, in the listed order" do
+      create :wiki_page
+      open_questions = create :wiki_page, permanent_identifier: described_class::OPEN_GRAMMAR_AND_SPELLING_QUESTIONS
+      grammar = create :wiki_page, permanent_identifier: described_class::GRAMMAR_AND_SPELLING_POLICY
+
+      expect(described_class.policies).to eq [grammar, open_questions]
+    end
+  end
+
+  describe "permanent identifier" do
+    it "stores a blank identifier as none, so that several pages can be without one" do
+      create :wiki_page, permanent_identifier: ""
+      wiki_page = create :wiki_page, permanent_identifier: ""
+
+      expect(wiki_page.reload.permanent_identifier).to be_nil
+    end
+  end
 end

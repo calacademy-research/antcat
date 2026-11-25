@@ -11,8 +11,13 @@ class WikiPage < ApplicationRecord
     FORMS = 'forms',
     NEW_CONTRIBUTORS_HELP_PAGE = 'new_contributors_help_page',
     TYPE_INFORMATION = 'type_information',
-    GRAMMAR_AND_SPELLING_POLICY = 'grammar_and_spelling_policy'
+    GRAMMAR_AND_SPELLING_POLICY = 'grammar_and_spelling_policy',
+    DERIVED_ETYMOLOGIES_POLICY = 'derived_etymologies_policy',
+    OPEN_GRAMMAR_AND_SPELLING_QUESTIONS = 'open_grammar_and_spelling_questions'
   ]
+  # AntCat's public policies, in the order they are listed (wiki index, linked from the footer): pages for readers
+  # of the catalog, not how-tos for editors. The footer's "Policies" shows these alone.
+  POLICY_IDENTIFIERS = [GRAMMAR_AND_SPELLING_POLICY, DERIVED_ETYMOLOGIES_POLICY, OPEN_GRAMMAR_AND_SPELLING_QUESTIONS]
 
   MissingWikiPage = Struct.new(:permanent_identifier) do
     def title
@@ -38,6 +43,14 @@ class WikiPage < ApplicationRecord
   trackable parameters: proc { { title: title } }
 
   scope :featured, -> { where(featured: true) }
+
+  # The policy pages that exist, in the order of `POLICY_IDENTIFIERS`.
+  def self.policies
+    where(permanent_identifier: POLICY_IDENTIFIERS).
+      sort_by { |wiki_page| POLICY_IDENTIFIERS.index(wiki_page.permanent_identifier) }
+  end
+
+  before_validation { self.permanent_identifier = permanent_identifier.presence }
 
   def self.from_permanent_identifier_or_missing permanent_identifier
     find_by(permanent_identifier: permanent_identifier) || MissingWikiPage.new(permanent_identifier)

@@ -49,10 +49,14 @@
         =protonym.etymology_translation
     -elsif protonym.etymology_derivation?
       -# wiki 17: an AntCat derivation is shown only where no sourced etymology exists, and is marked as AntCat's.
-      %span.font-bold.mr-1 Etymology (AntCat):
+      %span.font-bold.mr-1
+        =succeed ':' do
+          =label_linked_to_wiki_page 'Etymology (AntCat)', WikiPage::DERIVED_ETYMOLOGIES_POLICY
       =protonym.decorate.format_etymology_derivation
     -if protonym.gender_agreement_type?
-      %span.font-bold.mx-1 Part of speech:
+      %span.font-bold.mx-1
+        =succeed ':' do
+          =label_linked_to_wiki_page 'Part of speech', WikiPage::GRAMMAR_AND_SPELLING_POLICY
       =succeed '.' do
         =protonym.gender_agreement_type.humanize(capitalize: false)
 

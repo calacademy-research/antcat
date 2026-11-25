@@ -13,6 +13,9 @@ class WikiPagesController < ApplicationController
 
   def index
     @wiki_pages = WikiPage.order(:title).paginate(page: params[:page], per_page: 30)
+    @policy_wiki_pages = WikiPage.policies
+    # /wiki?policies=1 (the footer's "Policies"): the policy pages alone, without the editors' how-tos.
+    @only_policies = params[:policies].present?
     @recent_activities = Activity.wiki_page_activities.most_recent_first.limit(5).includes(:user)
   end
 
@@ -69,6 +72,8 @@ class WikiPagesController < ApplicationController
     def wiki_page_params
       permitted_keys = [:content, :title]
       permitted_keys << :featured if user_is_editor? || user_is_superadmin?
+      # The permanent identifier is what the code links to (policies in the footer and on catalog pages).
+      permitted_keys << :permanent_identifier if user_is_superadmin?
       params.expect(wiki_page: permitted_keys)
     end
 end
