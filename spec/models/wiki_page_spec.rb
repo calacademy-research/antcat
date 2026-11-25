@@ -30,10 +30,11 @@ describe WikiPage do
   describe ".policies" do
     it "returns the policy pages that exist, in the listed order" do
       create :wiki_page
-      open_questions = create :wiki_page, permanent_identifier: described_class::OPEN_GRAMMAR_AND_SPELLING_QUESTIONS
+      create :wiki_page, permanent_identifier: described_class::OPEN_GRAMMAR_AND_SPELLING_QUESTIONS
+      derived = create :wiki_page, permanent_identifier: described_class::DERIVED_ETYMOLOGIES_POLICY
       grammar = create :wiki_page, permanent_identifier: described_class::GRAMMAR_AND_SPELLING_POLICY
 
-      expect(described_class.policies).to eq [grammar, open_questions]
+      expect(described_class.policies).to eq [grammar, derived]
     end
   end
 

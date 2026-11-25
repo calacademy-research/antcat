@@ -2,7 +2,7 @@
 -breadcrumb :wiki_page, @wiki_page
 
 -content_for :breadcrumbs_left do
-  =render 'shared/policies_and_help/subnavigation', active: nil
+  =render 'shared/policies_and_help/subnavigation', active: (@wiki_page.policy? ? :policies : :wiki_pages)
 
 -content_for :breadcrumbs_right do
   =link_to "History", wiki_page_history_path(@wiki_page), class: "btn-default"

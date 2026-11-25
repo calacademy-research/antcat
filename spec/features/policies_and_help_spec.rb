@@ -32,6 +32,7 @@ feature "Policies and help" do
     end
     i_should_see "AntCat policy on name grammar and spelling"
     i_should_not_see "How to add a reference"
+    i_should_not_see "Names with open questions"
     within "#breadcrumbs" do
       i_should_see "Policies and help"
       i_should_not_see "Editor's Panel"
@@ -92,6 +93,29 @@ feature "Policies and help" do
       expect(page).to have_link "Names with notes"
       expect(page).to have_link "Open questions"
     end
+  end
+
+  scenario "An editor has the policy links beside the gender of a genus", as: :editor do
+    visit edit_taxon_path(create(:genus))
+    within "[data-testid='policy-links-for-editors']" do
+      expect(page).to have_link "Policy on grammar and spelling"
+    end
+  end
+
+  scenario "An editor has the policy links on the form of a page of notes", as: :editor do
+    visit new_protonym_notes_path(create(:protonym))
+    within "[data-testid='policy-links-for-editors']" do
+      expect(page).to have_link "Names with notes"
+    end
+  end
+
+  scenario "The footer's Policies link opens the policies alone" do
+    visit wiki_pages_path
+    within "footer" do
+      i_follow "Policies"
+    end
+    i_should_see "AntCat policy on name grammar and spelling"
+    i_should_not_see "How to add a reference"
   end
 
   scenario "Without policy pages the help pages index has no policies section" do
