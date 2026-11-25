@@ -36,6 +36,7 @@
   %td
     =f.label :etymology_translation do
       Etymology translation (AntCat)
+      =db_tooltip_icon :etymology_translation, scope: :protonyms
   %td
     =f.text_area :etymology_translation, rows: 2
     .text-sm English, only when the original is not in English. Shown as AntCat's translation.
